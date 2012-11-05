@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * <copyright>
+ *
+ * Copyright (c) 2012 SAP AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Petya Sabeva - initial API, implementation and documentation
+ *
+ * </copyright>
+ *
+ *******************************************************************************/
+
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
 import java.util.Hashtable;
@@ -9,11 +25,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 
 public abstract class HasReferanceRelation {
 	protected final static String SEPARATOR = ";hasReference;";							//$NON-NLS-1$
-	public final static String HAS_REFERENCE_CONNECTION_PROP_KEY = "is_has_reference_connection";	//$NON-NLS-1$
 
 	protected JavaPersistentType embeddingEntity;
 	protected JavaPersistentType embeddable;
@@ -58,14 +72,9 @@ public abstract class HasReferanceRelation {
 	public JavaPersistentType getEmbeddingEntity() {
 		return embeddingEntity; 
 	}
-	
-	public static boolean isHasReferenceConnection(Connection conn) {
-		String val = JPAEditorUtil.getPeUtil().getPropertyValue(conn, HAS_REFERENCE_CONNECTION_PROP_KEY);
-		return (Boolean.TRUE.toString().equals(val));
-	}
 
 	public String getId() {
-		return generateId(embeddable, embeddingEntity, embeddedAnnotatedAttribute.getName(), getReferenceType());
+		return generateId(embeddingEntity, embeddable, embeddedAnnotatedAttribute.getName(), getReferenceType());
 	}
 
 	public static String generateId(JavaPersistentType startJpt, JavaPersistentType endJpt, String embeddedAttributeName, HasReferenceType relType) {		

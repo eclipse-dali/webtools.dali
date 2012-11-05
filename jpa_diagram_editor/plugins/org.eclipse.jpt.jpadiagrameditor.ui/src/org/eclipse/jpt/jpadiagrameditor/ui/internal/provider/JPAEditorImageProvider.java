@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2012 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,15 +24,16 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
     
     public static final String JPA_ENTITY 				= PREFIX + "entity"; 							//$NON-NLS-1$
     public static final String MAPPED_SUPERCLASS 		= PREFIX + "mapped_superclass"; 				//$NON-NLS-1$
-    public static final String EMBEDDABLE 		        = PREFIX + "embeddable"; 				//$NON-NLS-1$
+    public static final String EMBEDDABLE 		        = PREFIX + "embeddable"; 				        //$NON-NLS-1$
     public static final String ADD_JPA_ENTITY 			= PREFIX + "add_entity"; 						//$NON-NLS-1$    
     public static final String ADD_INHERITED_ENTITY 	= PREFIX + "add_inherited_entity";		        //$NON-NLS-1$
     public static final String ADD_MAPPED_SUPERCLASS	= PREFIX + "add_mapped_superclass";	        	//$NON-NLS-1$    
-    public static final String ADD_EMBEDDABLE	        = PREFIX + "add_embeddable";	        	//$NON-NLS-1$    
+    public static final String ADD_EMBEDDABLE	        = PREFIX + "add_embeddable";	        	    //$NON-NLS-1$    
     
     public static final String PRIMARY_KEY 				= PREFIX + "pk"; 								//$NON-NLS-1$
     public static final String ICON_BASIC 				= PREFIX + "field"; 							//$NON-NLS-1$
     public static final String ADD_ATTRIBUTE 			= PREFIX + "add_attribute"; 					//$NON-NLS-1$
+    public static final String ADD_ELEMENT_COLLECTION 	= PREFIX + "add_element-collection.gif";    	//$NON-NLS-1$
     public static final String REMOVE_ATTRIBUTE 		= PREFIX + "remove_attribute"; 					//$NON-NLS-1$
     public static final String ICON_ONE_TO_ONE 			= PREFIX + "one_to_one_relation"; 				//$NON-NLS-1$
     public static final String ICON_ONE_TO_MANY 		= PREFIX + "one_to_many_relation"; 				//$NON-NLS-1$
@@ -42,7 +43,7 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
     public static final String ICON_VERSION 			= PREFIX + "version"; 							//$NON-NLS-1$ 
     public static final String ICON_TRANSIENT 			= PREFIX + "transient"; 						//$NON-NLS-1$  
     public static final String ICON_EMBEDDED 			= PREFIX + "embedded"; 							//$NON-NLS-1$ 
-    public static final String ICON_ELEMENT_COLLECTION  = PREFIX + "element-collection"; 							//$NON-NLS-1$ 
+    public static final String ICON_ELEMENT_COLLECTION  = PREFIX + "element-collection"; 				//$NON-NLS-1$ 
     public static final String ICON_UNMAPPED 			= PREFIX + "unmapped"; 							//$NON-NLS-1$  
 
 
@@ -71,13 +72,14 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
         addImageFilePath(ICON_BASIC, ROOT_FOLDER_FOR_IMG + "ent/basic.gif");							//$NON-NLS-1$
         addImageFilePath(JPA_ENTITY, ROOT_FOLDER_FOR_IMG + "ent/entity.gif");							//$NON-NLS-1$
         addImageFilePath(MAPPED_SUPERCLASS, ROOT_FOLDER_FOR_IMG + "ent/mapped-superclass.gif");			//$NON-NLS-1$
-        addImageFilePath(EMBEDDABLE, ROOT_FOLDER_FOR_IMG + "ent/embeddable.gif");			//$NON-NLS-1$
+        addImageFilePath(EMBEDDABLE, ROOT_FOLDER_FOR_IMG + "ent/embeddable.gif");			            //$NON-NLS-1$
         addImageFilePath(ADD_JPA_ENTITY, ROOT_FOLDER_FOR_IMG + "ent/add_entity.gif");					//$NON-NLS-1$        
         addImageFilePath(ADD_INHERITED_ENTITY, ROOT_FOLDER_FOR_IMG + "ent/add_entity.gif"); 			//$NON-NLS-1$
         addImageFilePath(ADD_MAPPED_SUPERCLASS, ROOT_FOLDER_FOR_IMG + "ent/add_mapped-superclass.gif"); //$NON-NLS-1$
-        addImageFilePath(ADD_EMBEDDABLE, ROOT_FOLDER_FOR_IMG + "ent/add_embeddable.gif"); //$NON-NLS-1$
+        addImageFilePath(ADD_EMBEDDABLE, ROOT_FOLDER_FOR_IMG + "ent/add_embeddable.gif");               //$NON-NLS-1$
         addImageFilePath(PRIMARY_KEY, ROOT_FOLDER_FOR_IMG + "ent/id.gif");								//$NON-NLS-1$
         addImageFilePath(ADD_ATTRIBUTE, ROOT_FOLDER_FOR_IMG + "ent/add_attribute.gif");					//$NON-NLS-1$
+        addImageFilePath(ADD_ELEMENT_COLLECTION, ROOT_FOLDER_FOR_IMG + "ent/add_element-collection.gif"); //$NON-NLS-1$
         addImageFilePath(REMOVE_ATTRIBUTE, ROOT_FOLDER_FOR_IMG + "ent/remove_attribute.gif");			//$NON-NLS-1$
         addImageFilePath(ICON_ONE_TO_ONE, ROOT_FOLDER_FOR_IMG + "ent/one-to-one.gif");					//$NON-NLS-1$
         addImageFilePath(ICON_ONE_TO_MANY, ROOT_FOLDER_FOR_IMG + "ent/one-to-many.gif");				//$NON-NLS-1$
@@ -87,7 +89,7 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
         addImageFilePath(ICON_VERSION, ROOT_FOLDER_FOR_IMG + "ent/version.gif"); 						//$NON-NLS-1$
         addImageFilePath(ICON_TRANSIENT, ROOT_FOLDER_FOR_IMG + "ent/transient.gif"); 					//$NON-NLS-1$
         addImageFilePath(ICON_EMBEDDED, ROOT_FOLDER_FOR_IMG + "ent/embedded.gif"); 						//$NON-NLS-1$
-        addImageFilePath(ICON_ELEMENT_COLLECTION, ROOT_FOLDER_FOR_IMG + "ent/element-collection.gif"); 						//$NON-NLS-1$
+        addImageFilePath(ICON_ELEMENT_COLLECTION, ROOT_FOLDER_FOR_IMG + "ent/element-collection.gif"); 	//$NON-NLS-1$
         addImageFilePath(ICON_UNMAPPED, ROOT_FOLDER_FOR_IMG + "ent/null-attribute-mapping.gif"); 		//$NON-NLS-1$
 
         addImageFilePath(ICON_ONE_TO_ONE_1_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-one-1-dir.gif");		//$NON-NLS-1$

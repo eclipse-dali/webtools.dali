@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * <copyright>
+ *
+ * Copyright (c) 2012 SAP AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Petya Sabeva - initial API, implementation and documentation
+ *
+ * </copyright>
+ *
+ *******************************************************************************/
+
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -130,7 +146,6 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	 * For each unvalid relationship's target, change the color of the respective
 	 * java persistent type in gray to simulate disability of the persistent type.
 	 */
-	@SuppressWarnings("restriction")
 	private void disableUnvalidRelationTargets(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
@@ -169,7 +184,6 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	 * registered in the persistence unit.
 	 * @param unit
 	 */
-	@SuppressWarnings("restriction")
 	private void disableAllMappedSuperclasses() {
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());

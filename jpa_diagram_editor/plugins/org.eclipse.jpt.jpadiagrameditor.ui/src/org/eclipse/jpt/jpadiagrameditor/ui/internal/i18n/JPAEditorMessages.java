@@ -29,6 +29,10 @@ public class JPAEditorMessages extends NLS {
 	public static String ClickAddAttributeButtonFeature_createAttributeButtonDescription;
 	public static String ClickAddAttributeButtonFeature_createAttributeButtonLabel;
 	
+	public static String ClickAddElementCollectionButtonFeature_CreateElementCollectionAttributeFeatureDescription;
+
+	public static String ClickAddElementCollectionButtonFeature_CreateElementCollectionAttributeFeatureName;
+
 	public static String ClickRemoveAttributeButtonFeature_createAttributeButtonDescription;
 	public static String ClickRemoveAttributeButtonFeature_createAttributeButtonlabel;
 	public static String ClickRemoveAttributeButtonFeature_deleteAttributeQuestion;
@@ -176,6 +180,9 @@ public class JPAEditorMessages extends NLS {
 	public static String JPAEditorToolBehaviorProvider_openMiniatureViewDesc;
 
 	public static String JPAEditorToolBehaviorProvider_CompositionPaletteName;
+
+	public static String JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonLabel;
+	public static String JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonDescription;
 	public static String JPAEditorToolBehaviorProvider_expandAttrMenuItem;
 
 	public static String JPAEditorToolBehaviorProvider_expandAttrMenuItemDescr;

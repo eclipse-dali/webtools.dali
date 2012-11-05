@@ -53,7 +53,7 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(entityShape);
 		String newAttrName = JpaArtifactFactory.instance().createNewAttribute(jpt, false, getFeatureProvider());
 
-		JavaPersistentAttribute newAttr = jpt.getAttributeNamed(newAttrName);
+		JavaPersistentAttribute newAttr = (JavaPersistentAttribute) jpt.resolveAttribute(newAttrName);
 
 		getFeatureProvider().addAddIgnore((JavaPersistentType)newAttr.getParent(), newAttr.getName());
 		addGraphicalRepresentation(context, newAttr);

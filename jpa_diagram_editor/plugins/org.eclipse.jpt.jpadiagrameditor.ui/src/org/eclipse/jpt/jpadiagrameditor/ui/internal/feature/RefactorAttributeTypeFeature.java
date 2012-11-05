@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2011 SAP AG.
+ * Copyright (c) 2005, 2012 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.text.MessageFormat;
 import java.util.List;
+
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
@@ -25,7 +26,6 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -37,10 +37,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
-
 public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
-
-	//private static final TracerI tracer = TracingManager.getTracer(RefactorAttributeTypeFeature.class);				
 	
 	public RefactorAttributeTypeFeature(IFeatureProvider fp) {
 		super(fp);
@@ -72,18 +69,20 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		getFeatureProvider().addAddIgnore((JavaPersistentType)jpa.getParent(), jpa.getName());
 		JavaResourceAttribute jra = jpa.getResourceAttribute();
 		getFeatureProvider().addRemoveIgnore((JavaPersistentType)jpa.getParent(), jra.getName());
-		boolean isMethodAnnotated = jra.getKind() == Kind.METHOD;
 
 		List<String> annotations = JpaArtifactFactory.instance().getAnnotationStrings(jpa);
 		JpaArtifactFactory.instance().deleteAttribute((JavaPersistentType)jpa.getParent(), jpa.getName(),
-				getFeatureProvider());		
-		JavaPersistentAttribute newAt = JpaArtifactFactory.instance().createANewAttribute((JavaPersistentType)jpa.getParent(),
-				jpa.getName(), newTypeName, attributeTypeTypeNames, jpa.getName(), annotations,
-				false, isMethodAnnotated, getFeatureProvider());
+				getFeatureProvider());
+		
+		JavaPersistentAttribute newAt = JpaArtifactFactory.instance().makeNewAttribute(getFeatureProvider(), (JavaPersistentType)jpa.getParent(),
+				null, jpa.getName(), newTypeName, jpa.getName(), newTypeName, attributeTypeTypeNames, annotations, false);
+		
 		getFeatureProvider().replaceAttribute(jpa, newAt);
+		
         IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
         ICompilationUnit cu = getFeatureProvider().getCompilationUnit((JavaPersistentType)newAt.getParent());
-        getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);					
+        getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);	
+        JPAEditorUtil.organizeImports(cu, ws);
 		JpaArtifactFactory.instance().remakeRelations(getFeatureProvider(), 
 				((Shape)pe).getContainer(), (JavaPersistentType)newAt.getParent());
 	}

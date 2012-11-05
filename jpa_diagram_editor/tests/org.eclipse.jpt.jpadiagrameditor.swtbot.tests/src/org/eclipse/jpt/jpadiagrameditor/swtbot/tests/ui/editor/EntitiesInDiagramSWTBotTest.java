@@ -1,17 +1,17 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
@@ -32,7 +32,7 @@ import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -88,6 +88,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testAddEntity() {
 		Utils.sayTestStarted("testAddEntity");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		editorProxy.addEntityToDiagram(50, 50, "Entity1");
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
@@ -108,6 +110,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testRemoveEntityViaButton() {
 		Utils.sayTestStarted("testRemoveEntityViaButton");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.deleteJPTViaButton(entity);
@@ -126,6 +130,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testRemoveEntityViaContextMenu() {
 		Utils.sayTestStarted("testRemoveEntityViaContextMenu");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.deleteJPTViaMenu(entity);
@@ -142,7 +148,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 */
 	@Test
 	public void testAddAttribute() {
-		Utils.sayTestStarted("testRemoveEntityViaContextMenu");
+		Utils.sayTestStarted("testAddAttribute");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -157,7 +165,29 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
 
-		Utils.sayTestFinished("testRemoveEntityViaContextMenu");
+		Utils.sayTestFinished("testAddAttribute");
+	}
+	
+	@Test
+	public void testAddElementCollectionAttribute(){
+		Utils.sayTestStarted("testAddElementCollectionAttribute");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
+
+		assertFalse(
+				"\"Other Attributes\" section must not be visible!",
+				editorProxy.isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, entity));
+
+		editorProxy.addElementCollectionAttributeToJPT(entity, "attribute1");
+		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
+
+		entity.click();
+		editorProxy.deleteDiagramElements();
+		jpaDiagramEditor.save();
+
+		Utils.sayTestFinished("testAddElementCollectionAttribute");
 	}
 
 	/**
@@ -166,6 +196,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testRemoveAttributeViaContextButton() {
 		Utils.sayTestStarted("testRemoveAttributeViaContextButton");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -185,6 +217,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testRemoveAttributeViaMenu() {
 		Utils.sayTestStarted("testRemoveAttributeViaMenu");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.removeAttributeViaMenu(entity, "attribute1");
@@ -202,6 +236,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testDirectEditingAttribute() {
 		Utils.sayTestStarted("testDirectEditingAttribute");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -222,6 +258,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testDirectEditingEntity() {
 		Utils.sayTestStarted("testDirectEditingEntity");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
@@ -255,6 +293,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testDoubleClickOnEntity() {
 		Utils.sayTestStarted("testDoubleClickOnEntity");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 		editorProxy.moveMouse(100, 70);
@@ -278,6 +318,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testChangeAttributeType() {
 		Utils.sayTestStarted("testChangeAttributeType");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -349,6 +391,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testRenameEntityViaMenu() {
 		Utils.sayTestStarted("testRenameEntityViaMenu");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		entity.click();
@@ -393,6 +437,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testMoveEntityViaMenu() throws JavaModelException {
 		Utils.sayTestStarted("testMoveEntityViaMenu");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 		JpaArtifactFactory factory = JpaArtifactFactory.instance();
 
@@ -433,6 +479,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testCollapseExapandEntityViaContextButton() {
 		Utils.sayTestStarted("testCollapseExapandEntityViaContextButton");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.collapseExpandJPTViaButton(entity);
@@ -450,6 +498,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testCollapseExapandEntityViaMenu() {
 		Utils.sayTestStarted("testCollapseExapandEntityViaMenu");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.collapseExpandJPTViaMenu(entity);
@@ -466,6 +516,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testCollapseExapandAllEntitiesViaMenu() {
 		Utils.sayTestStarted("testCollapseExapandAllEntitiesViaMenu");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(300, 50, "Entity2");
@@ -487,6 +539,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testDiscardChanges() {
 		Utils.sayTestStarted("testDiscardChanges");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.discardChanges(entity, "attribute1");
@@ -507,6 +561,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testRemoveAndDiscardChangesViaMenu() {
 		Utils.sayTestStarted("testRemoveAndDiscardChangesViaMenu");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -531,6 +587,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testRemoveAndSaveChangesViaMenu() {
 		Utils.sayTestStarted("testRemoveAndSaveChangesViaMenu");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.removeAndSaveChangesViaMenu(entity, "attribute1");
@@ -550,6 +608,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testSaveOnlyEntity() {
 		Utils.sayTestStarted("testSaveOnlyEntity");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 		editorProxy.saveOnlyJPT(entity, "attribute1");
@@ -571,11 +631,15 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testShowAllEntities() throws Exception {
 		Utils.sayTestStarted("testShowAllEntities");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		factory.createEntity(jpaProject, "com.sap.test.Customer");
 		assertTrue(jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities);
+		
+		bot.waitUntil(new ElementAppearsInDiagram(jpaDiagramEditor), 20000);
 
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
 				.children();
@@ -598,6 +662,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testCollapseExpandCompartmentByDoubleClick() {
 		Utils.sayTestStarted("testCollapseExpandCompartmentByDoubleClick");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -642,6 +708,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testCollapseExpandCompartmentByContextMenu() {
 		Utils.sayTestStarted("testCollapseExpandCompartmentByContextMenu");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -698,6 +766,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testChangeEntityMappingTypeViaJPADetailsView() {
 		Utils.sayTestStarted("testChangeEntityMappingTypeViaJPADetailsView");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		workbenchBot.viewByTitle("JPA Details").close();
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
@@ -798,6 +868,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testChangeAttributeMappingTypeViaJPADetailsView() {
 		Utils.sayTestStarted("testChangeAttributeMappingTypeViaJPADetailsView");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		workbenchBot.viewByTitle("JPA Details").close();
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50, "Entity1");
@@ -933,8 +1005,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testOneToOneUniDirRelationship() {
 		Utils.sayTestStarted("testOneToOneUniDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+		
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create One-to-One unidirectional relation from entity1 to entity2
 		editorProxy.testUniDirRelation(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
@@ -962,6 +1036,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testSelfOneToOneUniDirRelationship() {
 		Utils.sayTestStarted("testSelfOneToOneUniDirRelationship");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -992,8 +1068,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testOneToOneBiDirRelationship() {
 		Utils.sayTestStarted("testOneToOneBiDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy.testBiDirRel(
@@ -1029,6 +1107,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testSelfOneToOneBiDirRelationship() {
 		Utils.sayTestStarted("testSelfOneToOneBiDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		// create One-to-One bidirectional self relation from entity1 to entity1
@@ -1055,8 +1135,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testOneToManyUniDirRelationship() {
 		Utils.sayTestStarted("testOneToManyUniDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create One-to-Many unidirectional relation from entity1 to entity2
 		editorProxy.testUniDirRelation(
@@ -1086,6 +1168,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testSelfOneToManyUniDirRelationship() {
 		Utils.sayTestStarted("testSelfOneToManyUniDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		// create One-to-Many unidirectional self relation from entity1 to
@@ -1114,8 +1198,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testManyToOneUniDirRelationship() {
 		Utils.sayTestStarted("testManyToOneUniDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create Many-to-One unidirectional relation from entity1 to entity2
 		editorProxy.testUniDirRelation(
@@ -1144,6 +1230,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testSelfManyToOneUniDirRelationship() {
 		Utils.sayTestStarted("testSelfManyToOneUniDirRelationship");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -1174,8 +1262,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testManyToOneBiDirRelationship() {
 		Utils.sayTestStarted("testManyToOneBiDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy.testBiDirRelWithTwoMappingTypes(
@@ -1214,6 +1304,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testSelfManyToOneBiDirRelationship() {
 		Utils.sayTestStarted("testSelfManyToOneBiDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		// create Many-to-Many bidirectional self relation from entity1 to
@@ -1241,8 +1333,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testManyToManyUniDirRelationship() {
 		Utils.sayTestStarted("testManyToManyUniDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create Many-to-Many unidirectional relation from entity1 to entity2
 		editorProxy.testUniDirRelation(
@@ -1271,6 +1365,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testSelfManyToManyUniDirRelationship() {
 		Utils.sayTestStarted("testSelfManyToManyUniDirRelationship");
+
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
@@ -1301,8 +1397,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testManyToManyBiDirRelationship() {
 		Utils.sayTestStarted("testManyToManyBiDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
-		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(50, 200, "Entity2");
+		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50, "Entity2");
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy.testBiDirRel(
@@ -1338,6 +1436,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testSelfManyToManyBiDirRelationship() {
 		Utils.sayTestStarted("testSelfManyToManyBiDirRelationship");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		// create Many-to-Many bidirectional self relation from entity1 to
@@ -1362,6 +1462,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testInheritedEntityByEntity() {
 		Utils.sayTestFinished("testInheritedEntityByEntity");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50, "Entity1");
 
 		editorProxy.createInheritedEntity(entity1, "Entity2",
@@ -1382,6 +1484,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testOpenDiagramOnProjectLevel() {
 		Utils.sayTestStarted("testOpenDiagramOnProjectLevel");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		workbenchBot.closeAllEditors();
 		// open JPA diagram editor on project level: JPA Tools -> Open Diagram
 		SWTBotGefEditor diagramEditor = editorProxy
@@ -1399,6 +1503,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 	public void testOpenDiagramOnJPAContentNodeLevel() {
 		Utils.sayTestStarted("testOpenDiagramOnJPAContentNodeLevel");
 
+		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
+
 		workbenchBot.closeAllEditors();
 		// open JPA diagram editor on JPA content level: Open Diagram
 		SWTBotGefEditor diagramEditor = editorProxy
@@ -1407,14 +1513,19 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		Utils.sayTestFinished("testOpenDiagramOnJPAContentNodeLevel");
 	}
-	
-	@AfterClass
-	public static void afterClass() throws CoreException{
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		for(IProject project : projects){
-			project.delete(true, true, new NullProgressMonitor());
-		}
+
+	@After
+	public void tearDown() throws Exception {
+		editorProxy.deleteDiagramElements();
+		Utils.printFormatted(">>>>>>>>>>>> elements are deleted from the diagram.");
 		
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+		PersistenceUnit pu = lit.next();
+		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu.getPersistentTypes().iterator();
+		while(persistentTypesIterator.hasNext()){
+			Utils.printFormatted(">>>>>>>>>>>>>> persistent type resource must be deleted.");
+			PersistentType type = persistentTypesIterator.next();
+			type.getResource().delete(true, new NullProgressMonitor());
+		}
 	}
 }

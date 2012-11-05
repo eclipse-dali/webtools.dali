@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * <copyright>
+ *
+ * Copyright (c) 2012 SAP AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Petya Sabeva - initial API, implementation and documentation
+ *
+ * </copyright>
+ *
+ *******************************************************************************/
+
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.Set;
@@ -14,6 +30,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -139,13 +156,21 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	/**
 	 * Checks whether the connection is possible. If the source of the connection is embeddable and it already
 	 * embeds in itself an element collection of another embeddable, or if the target of the connection is already
-	 * embedded as an element connection in some entity, then the connection is not allowed by specification.
+	 * embedded as an element connection in some entity, or the if the target embeddable contains an attribute with
+	 * mapping element-collection, then the connection is not allowed by specification.
 	 * @param embeddingEntity - the source entity of the connection
 	 * @param embeddable - the target entity of the connection
 	 * @return true if the connection is possible, false otherwise.
 	 */
 	private boolean isNotAllowed(JavaPersistentType embeddingEntity, JavaPersistentType embeddable){
 		boolean notAllowed = false;
+		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddable)){
+			for(ReadOnlyPersistentAttribute attr : embeddable.getAllAttributes()){
+				if(attr.getMappingKey().equals(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY)){
+					return true;
+				}
+			}
+		}
 		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddingEntity)){
 			notAllowed = isEmbeddableAlreadyEmbeddedAsElementCollection(embeddingEntity, false);
 		} else if(JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity)){
@@ -181,7 +206,6 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	 * For each unvalid relationship's target, change the color of the respective
 	 * java persistent type in gray to simulate disability of the persistent type.
 	 */
-	@SuppressWarnings("restriction")
 	private void disableUnvalidRelationTargets(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
@@ -233,7 +257,6 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	 * registered in the persistence unit.
 	 * @param unit
 	 */
-	@SuppressWarnings("restriction")
 	private void disableAllMappedSuperclasses() {
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());

@@ -70,7 +70,6 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		return true;
 	}
 	
-	@SuppressWarnings("restriction")
 	public void execute(ICustomContext context) {
 		Diagram d = getDiagram();
 		JpaProject project = getTargetJPAProject();

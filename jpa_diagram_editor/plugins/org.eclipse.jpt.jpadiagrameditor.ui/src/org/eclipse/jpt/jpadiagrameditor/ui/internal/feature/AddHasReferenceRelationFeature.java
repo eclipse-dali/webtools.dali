@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * <copyright>
+ *
+ * Copyright (c) 2012 SAP AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Petya Sabeva - initial API, implementation and documentation
+ *
+ * </copyright>
+ *
+ *******************************************************************************/
+
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import static org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation.HasReferenceType.COLLECTION;
@@ -87,7 +103,6 @@ public class AddHasReferenceRelationFeature extends AbstractAddFeature {
             IAddBendpointFeature ft = getFeatureProvider().getAddBendpointFeature(ctx);
             ft.addBendpoint(ctx);
         }
-        getFeatureProvider().getPeServiceUtil().setPropertyValue(connection, HasReferanceRelation.HAS_REFERENCE_CONNECTION_PROP_KEY, Boolean.TRUE.toString());
         addDecorators(connection, relation);
         addTextDecorators(connection, relation);
 

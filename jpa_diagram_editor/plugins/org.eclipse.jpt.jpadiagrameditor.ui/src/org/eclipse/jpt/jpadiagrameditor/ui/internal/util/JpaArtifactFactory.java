@@ -86,7 +86,6 @@ import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.AddAttributeCommand;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.CreateNewAttributeCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.DeleteAttributeCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.RenameAttributeCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.RenameEntityCommand;
@@ -572,32 +571,6 @@ public class JpaArtifactFactory {
 			gje.setSpecifiedName(newName);
 		}
 	}
-
-	/**
-	 * Create inverseSideAttribute of the bidirectional relationship between an embeddable class
-	 * and an entity.
-	 * @param embeddableOwner - the embeddable class
-	 * @param inverseEntity - the entity class
-	 * @param mapKeyType
-	 * @param isCollection - whether the attribute is of a collection type
-	 * @param fp
-	 * @return the inverse attribute of the relationship.
-	 */
-	public JavaPersistentAttribute addEmbeddedAttribute(JavaPersistentType embeddableOwner, JavaPersistentType inverseEntity, String mapKeyType, boolean isCollection, IJPAEditorFeatureProvider fp){
-		ICompilationUnit ijl = fp.getCompilationUnit(inverseEntity);
-		JavaPersistentType embeddingEntity = null;
-		String attributeName = ""; //$NON-NLS-1$
-		String actName = ""; //$NON-NLS-1$
-		ICompilationUnit cu2 = null;
-		HasReferanceRelation ref = findFisrtHasReferenceRelationByEmbeddable(embeddableOwner, fp);
-		if(ref != null){
-			embeddingEntity = ref.getEmbeddingEntity();
-			attributeName = JPAEditorUtil.decapitalizeFirstLetter(embeddingEntity.getSimpleName());
-			actName = JPAEditorUtil.decapitalizeFirstLetter(embeddingEntity.getSimpleName());
-			cu2 = JPAEditorUtil.getCompilationUnit(embeddingEntity);
-		}
-		return  addAttribute(fp, inverseEntity, embeddingEntity, mapKeyType, attributeName, actName, isCollection, ijl, cu2);
-	}
 	
 	/**
 	 * Find the first {@link HasReferenceRelation} for the given embeddable class from all existing
@@ -655,33 +628,23 @@ public class JpaArtifactFactory {
 	 * @param attributeName - the name of the attribute
 	 * @param actName - the actual name of the attribute
 	 * @param isCollection - whether the attribute is of a collection type
-	 * @param cu1 - the {@link ICompilationUnit} of the referencing {@link JavaPersistentType}
-	 * @param cu2 - the {@link ICompilationUnit} of the referenced {@link JavaPersistentType}
+	 * @param cu - the {@link ICompilationUnit} of the referencing {@link JavaPersistentType}
 	 * @return the newly created relationship attribute.
 	 */
 	public JavaPersistentAttribute addAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType jpt, 
 			JavaPersistentType attributeType, String mapKeyType, String attributeName,
-			String actName, boolean isCollection, ICompilationUnit cu1,
-			ICompilationUnit cu2) {
+			String actName, boolean isCollection, ICompilationUnit cu) {
 				
 		try {
 			if (doesAttributeExist(jpt, actName)) {
-				return (JavaPersistentAttribute) jpt
-						.resolveAttribute(attributeName);
+				return (JavaPersistentAttribute) jpt.resolveAttribute(attributeName);
 			}
-
 		} catch (JavaModelException e) {
 			JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
 		}
 		
-		Command addAttributeCommand = new AddAttributeCommand(fp, jpt, attributeType, mapKeyType, attributeName, actName, isCollection, cu1, cu2);
-		try {
-			getJpaProjectManager().execute(addAttributeCommand, SynchronousUiCommandExecutor.instance());
-		} catch (InterruptedException e) {
-			JPADiagramEditorPlugin.logError("Cannot add a new attribute with name " + actName, e); //$NON-NLS-1$		
-		}
-
-		JavaPersistentAttribute res = jpt.getAttributeNamed(actName);
+		JavaPersistentAttribute res = makeNewAttribute(fp, jpt, cu, attributeName, attributeType.getName(), actName, mapKeyType, null, null, isCollection);
+		
 		return res;
 	}
 	
@@ -759,72 +722,31 @@ public class JpaArtifactFactory {
 	public String createNewAttribute(JavaPersistentType jpt, 
 			boolean isCollection, IJPAEditorFeatureProvider fp) {
 		
-		ICompilationUnit ijl = fp.getCompilationUnit(jpt);
 		String attrTypeName = "java.lang.String"; 																	//$NON-NLS-1$
 		String newAttrName = genUniqueAttrName(jpt, attrTypeName, fp);
-		return addNewAttribute(jpt, ijl, newAttrName, attrTypeName,
-				"", newAttrName, isCollection, fp); //$NON-NLS-1$
+		ICompilationUnit cu = fp.getCompilationUnit(jpt);
+		makeNewAttribute(fp, jpt, cu, newAttrName, attrTypeName, newAttrName, attrTypeName, null, null, isCollection);
+		return newAttrName;
 	}
-	
-	public String addNewAttribute(JavaPersistentType jpt, ICompilationUnit cu,
-			String attrName, String attrTypeName, String annotation,
-			String actName, boolean isCollection, IJPAEditorFeatureProvider fp) {
-		
-		try {
-			List<String> annotations = new LinkedList<String>();
-			annotations.add(annotation);
-			boolean isMethodAnnotated = JpaArtifactFactory.instance()
-					.isMethodAnnotated(jpt);
-			makeNewAttribute(fp, jpt, cu, attrName, attrTypeName, null, actName,
-					annotations, isCollection, isMethodAnnotated);
-		} catch (JavaModelException e) {
-			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
+
+	public JavaPersistentAttribute makeNewAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType jpt, ICompilationUnit cu, String attrName, String attrTypeName,
+			String actName, String mapKeyType, String[] attrTypes, List<String> annotations, boolean isCollection) {
+
+		if(cu == null){
+			cu = fp.getCompilationUnit(jpt);
 		}
-		return attrName;				
-	}
-	
-	public JavaPersistentAttribute createANewAttribute(JavaPersistentType jpt, 
-			String attrName, String attrTypeName, String[] attrTypeElementNames,
-			String actName, List<String> annotations, boolean isCollection,
-			boolean isMethodAnnotated, IJPAEditorFeatureProvider fp) {
 		
-		ICompilationUnit ijl = fp.getCompilationUnit(jpt);
-		return addANewAttribute(jpt, ijl, attrName, attrTypeName,
-				attrTypeElementNames, actName, annotations, isCollection,
-				isMethodAnnotated, fp);
-	}
-	
-	private JavaPersistentAttribute addANewAttribute(JavaPersistentType jpt, 
-			ICompilationUnit cu, String attrName, String attrTypeName,
-			String[] attrTypeElementNames, String actName,
-			List<String> annotations, boolean isCollection,
-			boolean isMethodAnnotated, IJPAEditorFeatureProvider fp) {
-		
-		JavaPersistentAttribute attr = null;
-		try {
-			attr = makeNewAttribute(fp, jpt, cu, attrName, attrTypeName,
-					attrTypeElementNames, actName, annotations, isCollection,
-					isMethodAnnotated);
-		} catch (JavaModelException e) {
-			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
-		}
-		return attr;						
-	}
-	
-	public JavaPersistentAttribute makeNewAttribute(IFeatureProvider fp, JavaPersistentType jpt, 
-			ICompilationUnit cu, String attrName, String attrTypeName,
-			String[] attrTypes, String actName,
-			List<String> annotations, boolean isCollection,
-			boolean isMethodAnnotated) throws JavaModelException {
-				
-		Command createNewAttributeCommand = new CreateNewAttributeCommand(jpt, cu, attrName, attrTypeName, attrTypes, actName, annotations, isCollection, isMethodAnnotated);
+		Command createNewAttributeCommand = new AddAttributeCommand(fp, jpt, attrTypeName, mapKeyType, attrName, actName, attrTypes, annotations, isCollection, cu);
 		try {
 			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
 		} catch (InterruptedException e) {
 			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
 		}
 
-		JavaPersistentAttribute jpa = jpt.getAttributeNamed(attrName);		
+		JavaPersistentAttribute jpa = jpt.getAttributeNamed(attrName);
+		if(jpa == null){
+			jpa = jpt.getAttributeNamed(actName);
+		}
 		return jpa;
 	}
 		
@@ -936,7 +858,7 @@ public class JpaArtifactFactory {
 		CompilationUnit jdtCU = jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot();
 		JavaResourceAttribute jrpt = persistentAttribite.getResourceAttribute();
 		List<String> res = new LinkedList<String>();
-		for (Annotation an : jrpt.getAnnotations()) {
+		for (Annotation an : jrpt.getTopLevelAnnotations()) {
 			org.eclipse.jdt.core.dom.Annotation jdtAn = an.getAstAnnotation(jdtCU);
 			res.add(jdtAn.toString());
 		}
@@ -1589,81 +1511,6 @@ public class JpaArtifactFactory {
 			return true;
 		}
 		return false;
-	}
-	
-	/**
-	 * Create the attribute's getter method in entity's compilation unit.
-	 * @param attrName - the name of the attribute
-	 * @param attrType - the type of the attribute
-	 * @param attrTypeElementNames
-	 * @param actName
-	 * @param annotations
-	 * @param isCollection
-	 * @return the string representation of the attribute's getter method.
-	 */
-	public String genGetterContents(String attrName, String attrType,
-			String[] attrTypeElementNames, String actName,
-			List<String> annotations, boolean isCollection) {
-		
-		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(Locale.ENGLISH)
-				+ actName.substring(1);
-		String contents = ""; //$NON-NLS-1$
-		if (annotations != null) {
-			Iterator<String> it = annotations.iterator();
-			while (it.hasNext()) {
-				String an = it.next();
-				contents += "   " + an + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}
-		if (isCollection) {
-			contents += "    public Collection<"+ attrType + "> get" + attrNameWithCapitalA + "() {\n" +  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-					"        return "	//$NON-NLS-1$
-					+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ 
-			  "    }\n";  //$NON-NLS-1$			
-		} else {
-			contents += "    public "+ attrType + //$NON-NLS-1$
-							((attrTypeElementNames == null)?"":("<" + JPAEditorUtil.createCommaSeparatedListOfSimpleTypeNames(attrTypeElementNames) + ">")) + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							(attrType.equals("boolean") ? " is" : " get") + attrNameWithCapitalA + "() {\n" +  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
-					"        return "	//$NON-NLS-1$
-					+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ 
-			  "    }\n";  																//$NON-NLS-1$			
-		}
-		return contents;
-	}
-	
-	/**
-	 * Create the attribute's setter method in entity's compilation unit.
-	 * @param attrName - the name of the attribute
-	 * @param attrType - the type of the attribute
-	 * @param attrTypeElementNames
-	 * @param actName
-	 * @param isCollection
-	 * @return the string representation of the attribute's setter method.
-	 */
-	public String genSetterContents(String attrName, String attrType,
-			String[] attrTypeElementNames, String actName, boolean isCollection) {
-		
-		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(Locale.ENGLISH)
-				+ actName.substring(1);
-		String contents = ""; //$NON-NLS-1$
-		if (isCollection) {
-			contents = "    public void set" + attrNameWithCapitalA + "(Collection<" + attrType + "> param) " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					"{\n" + //$NON-NLS-1$ 
-					"        this."	//$NON-NLS-1$
-					+ JPAEditorUtil.decapitalizeFirstLetter(actName)
-					+ " = param;\n" + //$NON-NLS-1$ 
-						  "    }\n";  	//$NON-NLS-1$
-		} else {
-			contents = "    public void set" + attrNameWithCapitalA + "(" + attrType + //$NON-NLS-1$ //$NON-NLS-2$
-								((attrTypeElementNames == null)?"":("<" + JPAEditorUtil.createCommaSeparatedListOfSimpleTypeNames(attrTypeElementNames) + ">")) + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					" param) {\n"	//$NON-NLS-1$
-					+ 
-					"        this."	//$NON-NLS-1$
-					+ JPAEditorUtil.decapitalizeFirstLetter(actName)
-					+ " = param;\n" + //$NON-NLS-1$ 
-			  "    }\n";  			//$NON-NLS-1$			
-		}
-		return contents;
 	}
 	
 	private boolean doesAttributeExist(JavaPersistentType jpt, String name)

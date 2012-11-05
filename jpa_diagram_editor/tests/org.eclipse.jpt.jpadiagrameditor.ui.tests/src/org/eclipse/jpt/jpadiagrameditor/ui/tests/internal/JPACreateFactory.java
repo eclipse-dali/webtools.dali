@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -589,7 +590,7 @@ public class JPACreateFactory {
 		if (javaPersistentType == null)
 			throw new RuntimeException("The entity could not be created");
 		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(entity);
-		JpaArtifactFactory.instance().addNewAttribute(javaPersistentType, compilationUnit, attName, attType, annotation, attActName, isCollection, null);
+		JpaArtifactFactory.instance().makeNewAttribute(null, javaPersistentType, compilationUnit, attName, attType, attActName, attType, null, null, isCollection);
 	}
 	
 	private IFile createFieldAnnotatedEntity(IFolder folder, String packageName, String entityName) throws IOException, CoreException {

@@ -100,7 +100,6 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
         return context.getTargetContainer() instanceof Diagram;
     }
 
-    @SuppressWarnings("restriction")
 	public Object[] create(ICreateContext context) {
 		List<Shape> shapes = this.getFeatureProvider().getDiagramTypeProvider().getDiagram().getChildren();
 		IProject targetProject = null;

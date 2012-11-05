@@ -25,8 +25,11 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.internal.ExternalPictogramLink;
+import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
+import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButton;
 import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButtonPad;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
@@ -35,7 +38,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
@@ -63,6 +68,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 
@@ -73,7 +80,7 @@ public class EditorProxy {
 	protected SWTGefBot bot;
 
 	private SWTBotGefEditor jpaDiagramEditor;
-	
+
 	/**
 	 * Create proxy object.
 	 * 
@@ -84,19 +91,22 @@ public class EditorProxy {
 		this.bot = bot;
 	}
 
-	public SWTBotGefEditor openDiagramOnJPAContentNode(String name, boolean isJPA20) {
+	public SWTBotGefEditor openDiagramOnJPAContentNode(String name,
+			boolean isJPA20) {
 		SWTBotTree projectTree = workbenchBot.viewByTitle("Project Explorer")
 				.bot().tree();
-		projectTree.expandNode(name).expandNode("JPA Content").select();
+		SWTBotTreeItem item = projectTree.expandNode(name)
+				.expandNode("JPA Content").select();
+		assertTrue("The JPA Content node is disabled.", item.isEnabled());
 		ContextMenuHelper.clickContextMenu(projectTree, "Open Diagram");
 
-		if(isJPA20) {
+		if (isJPA20) {
 			workbenchBot
-				.waitUntil(
-						shellIsActive(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle),
-						10000);
+					.waitUntil(
+							shellIsActive(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle),
+							10000);
 			SWTBotShell jpaSupportWarningDialog = workbenchBot
-				.shell(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle);
+					.shell(JPAEditorMessages.OpenJpaDiagramActionDelegate_jpaSupportWarningTitle);
 			getOkButton(jpaSupportWarningDialog).click();
 		}
 
@@ -137,7 +147,8 @@ public class EditorProxy {
 	 * @param attribute
 	 * @return the "Select Type" dialog
 	 */
-	public SWTBotShell getSelectNewAttributeTypeDialog(SWTBotGefEditPart attribute) {
+	public SWTBotShell getSelectNewAttributeTypeDialog(
+			SWTBotGefEditPart attribute) {
 		attribute.click();
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_refactorAttributeType);
@@ -176,7 +187,8 @@ public class EditorProxy {
 	 * @param fp
 	 * @return the value of the attribute's type
 	 */
-	public String getAttributeType(String attributeName, final IFeatureProvider fp) {
+	public String getAttributeType(String attributeName,
+			final IFeatureProvider fp) {
 		SWTBotGefEditPart attribute = jpaDiagramEditor
 				.getEditPart(attributeName);
 		PictogramElement el = (PictogramElement) attribute.part().getModel();
@@ -198,15 +210,51 @@ public class EditorProxy {
 	 */
 	public SWTBotGefEditPart addAttributeToJPT(SWTBotGefEditPart jptType,
 			String attributeName) {
-		pressEntityContextButton(jptType,
+		
+		JavaPersistentType jpt = getJPTObjectForGefElement(jptType);
+		
+		System.out.println(">>>>>> Attribute is trying to be added in " + jpt.getName());
+		
+		pressEntityContextButton(
+				jptType,
 				JPAEditorMessages.JPAEditorToolBehaviorProvider_createAttributeButtonlabel);
 
 		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, attributeName),
 				10000);
 		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
 		editParts.add(jptType);
-		SWTBotGefEditPart attribute = jpaDiagramEditor
-				.getEditpart(attributeName, editParts);
+		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
+				attributeName, editParts);
+		assertNotNull("Atrribute is not added.", attribute);
+		
+		System.out.println(">>>>>> Attribute is successfully added in " + jpt.getName());
+
+		assertTrue("The newly added attribute must be selected.",
+				jpaDiagramEditor.selectedEditParts().size() == 1);
+		// assertTrue("The newly added attribute must be selected.",
+		// jpaDiagramEditor.selectedEditParts().contains(attribute));
+
+		assertTrue(
+				"\"Other Attributes\" section must be visible!",
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+						jptType));
+
+		return attribute;
+	}
+
+	public SWTBotGefEditPart addElementCollectionAttributeToJPT(
+			SWTBotGefEditPart jptType, String attributeName) {
+		pressEntityContextButton(
+				jptType,
+				JPAEditorMessages.JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonLabel);
+
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, attributeName),
+				10000);
+		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
+		editParts.add(jptType);
+		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
+				attributeName, editParts);
 		assertNotNull("Atrribute is not added.", attribute);
 
 		assertTrue("The newly added attribute must be selected.",
@@ -214,8 +262,17 @@ public class EditorProxy {
 		assertTrue("The newly added attribute must be selected.",
 				jpaDiagramEditor.selectedEditParts().contains(attribute));
 
-		assertTrue("\"Other Attributes\" section must be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, jptType));
+		assertTrue(
+				"\"Other Attributes\" section must be visible!",
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+						jptType));
+
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		assertEquals(
+				"The newly added attribute must be mapped as element-collection.",
+				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
+				jpa.getMappingKey());
 
 		return attribute;
 	}
@@ -228,7 +285,8 @@ public class EditorProxy {
 	 * @return true, if the section with the specified name is visible, false
 	 *         otherwise
 	 */
-	public boolean isSectionVisible(String sectionTitle, SWTBotGefEditPart editPart) {
+	public boolean isSectionVisible(String sectionTitle,
+			SWTBotGefEditPart editPart) {
 		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
 		editParts.add(editPart);
 		SWTBotGefEditPart section = jpaDiagramEditor.getEditpart(sectionTitle,
@@ -249,8 +307,21 @@ public class EditorProxy {
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateJPAEntityFeature_jpaEntityFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 10000);
 
+		try{
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
+		} catch (TimeoutException e){
+			jpaDiagramEditor.activateDefaultTool();
+			
+			Utils.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> yavno tova e");
+			
+			jpaDiagramEditor
+			.activateTool(JPAEditorMessages.CreateJPAEntityFeature_jpaEntityFeatureName);
+			jpaDiagramEditor.doubleClick(x, y);
+	
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
+		}
+		
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
 				.children();
 		assertFalse("Editor must contains at least one entity!",
@@ -264,13 +335,19 @@ public class EditorProxy {
 
 		assertTrue(
 				"\"Primary Key\" section must be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape, entity));
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape,
+						entity));
 		assertFalse(
 				"\"Relation Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes, entity));
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
+						entity));
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, entity));
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+						entity));
 
 		return entity;
 	}
@@ -282,11 +359,25 @@ public class EditorProxy {
 	 *            - the name of the mapped superclass to be added
 	 * @return the added mapped superclass
 	 */
-	public SWTBotGefEditPart addMappedSuperclassToDiagram(int x, int y, String entityName) {
+	public SWTBotGefEditPart addMappedSuperclassToDiagram(int x, int y,
+			String entityName) {
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateMappedSuperclassFeature_createMappedSuperclassFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 10000);
+				
+		try{
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
+		} catch (TimeoutException e){
+			jpaDiagramEditor.activateDefaultTool();
+			
+			Utils.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> yavno tova e");
+			
+			jpaDiagramEditor
+			.activateTool(JPAEditorMessages.CreateMappedSuperclassFeature_createMappedSuperclassFeatureName);
+			jpaDiagramEditor.doubleClick(x, y);
+	
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
+		}
 
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
 				.children();
@@ -299,22 +390,26 @@ public class EditorProxy {
 
 		List<SWTBotGefEditPart> parts = new ArrayList<SWTBotGefEditPart>();
 		parts.add(mappedSuperclass);
-		
-		SWTBotGefEditPart idAttribute = jpaDiagramEditor.getEditpart("id", parts);
+
+		SWTBotGefEditPart idAttribute = jpaDiagramEditor.getEditpart("id",
+				parts);
 		assertNull("Mapped superclass must not have a primary key attribute!",
 				idAttribute);
 
 		assertFalse(
 				"\"Primary Key\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape,
 						mappedSuperclass));
 		assertFalse(
 				"\"Relation Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
 						mappedSuperclass));
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						mappedSuperclass));
 
 		return mappedSuperclass;
@@ -327,11 +422,26 @@ public class EditorProxy {
 	 *            - the name of the mapped superclass to be added
 	 * @return the added mapped superclass
 	 */
-	public SWTBotGefEditPart addEmbeddableToDiagram(int x, int y, String entityName) {
-		jpaDiagramEditor.activateTool(JPAEditorMessages.CreateEmbeddableFeature_EmbeddableFeatureName);
+	public SWTBotGefEditPart addEmbeddableToDiagram(int x, int y,
+			String entityName) {
+		jpaDiagramEditor
+				.activateTool(JPAEditorMessages.CreateEmbeddableFeature_EmbeddableFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 10000);
-
+		
+		try{
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
+		} catch (TimeoutException e){
+			jpaDiagramEditor.activateDefaultTool();
+			
+			Utils.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> yavno tova e");
+			
+			jpaDiagramEditor
+			.activateTool(JPAEditorMessages.CreateEmbeddableFeature_EmbeddableFeatureName);
+			jpaDiagramEditor.doubleClick(x, y);
+	
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
+		}
+		
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
 				.children();
 		assertFalse("Editor must contains at least one embeddable!",
@@ -349,15 +459,18 @@ public class EditorProxy {
 
 		assertFalse(
 				"\"Primary Key\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape,
 						embeddable));
 		assertFalse(
 				"\"Relation Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
 						embeddable));
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						embeddable));
 
 		return embeddable;
@@ -429,8 +542,10 @@ public class EditorProxy {
 	 * menu is pressed. Press the OK button.
 	 */
 	public void confirmRemoveEntitiesFromDiagramDialog() {
-		workbenchBot.waitUntil(
-			shellIsActive(JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAllEntitiesMenu), 10000);
+		workbenchBot
+				.waitUntil(
+						shellIsActive(JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAllEntitiesMenu),
+						10000);
 		SWTBotShell shell = workbenchBot
 				.shell(JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAllEntitiesMenu);
 		assertTrue("Ok button is disabled", getOkButton(shell).isEnabled());
@@ -450,8 +565,8 @@ public class EditorProxy {
 
 		List<SWTBotGefEditPart> entitiesInDiagram = jpaDiagramEditor
 				.mainEditPart().children();
-		assertFalse("Diagram must contain at least one entity!",
-				entitiesInDiagram.isEmpty());
+//		assertFalse("Diagram must contain at least one entity!",
+//				entitiesInDiagram.isEmpty());
 
 		for (int i = 0; i < entitiesInDiagram.size(); i++) {
 			SWTBotGefEditPart editPart = entitiesInDiagram.get(i);
@@ -467,14 +582,14 @@ public class EditorProxy {
 		waitASecond();
 		entitiesInDiagram = jpaDiagramEditor.mainEditPart().children();
 		assertTrue("Diagram must be empty!", entitiesInDiagram.isEmpty());
-		assertTrue("Editor must be dirty!", jpaDiagramEditor.isDirty());
+//		assertTrue("Editor must be dirty!", jpaDiagramEditor.isDirty());
 	}
 
 	public void deleteAttributeInJPT(SWTBotGefEditPart jpt, String attributeName) {
-		
+
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
-		
+
 		List<SWTBotGefEditPart> jptParts = new ArrayList<SWTBotGefEditPart>();
 		jptParts.add(jpt);
 		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
@@ -483,8 +598,8 @@ public class EditorProxy {
 		attribute.click();
 		jpaDiagramEditor.clickContextMenu("Delete");
 		confirmDelete();
-		bot.waitUntil(new ElementDisappears(jpaDiagramEditor, jpt, attributeName),
-				10000);
+		bot.waitUntil(new ElementDisappears(jpaDiagramEditor, jpt,
+				attributeName), 10000);
 	}
 
 	/**
@@ -494,7 +609,8 @@ public class EditorProxy {
 	 * @param contextButtonName
 	 *            - the name of the button to be pressed
 	 */
-	public void pressEntityContextButton(SWTBotGefEditPart part, String contextButtonName) {
+	public void pressEntityContextButton(SWTBotGefEditPart part,
+			String contextButtonName) {
 		pressContextButton(part, contextButtonName);
 	}
 
@@ -503,7 +619,8 @@ public class EditorProxy {
 	 * 
 	 */
 	public void pressAttributeDeleteContextButton(SWTBotGefEditPart part) {
-		pressContextButton(part,
+		pressContextButton(
+				part,
 				JPAEditorMessages.JPAEditorToolBehaviorProvider_deleteAttributeButtonlabel);
 	}
 
@@ -514,7 +631,8 @@ public class EditorProxy {
 	 * @param contextButtonName
 	 *            - the name of the button to be pressed.
 	 */
-	private void pressContextButton(SWTBotGefEditPart part, String contextButtonName) {
+	private void pressContextButton(SWTBotGefEditPart part,
+			String contextButtonName) {
 		jpaDiagramEditor.click(0, 0);
 		jpaDiagramEditor.click(part);
 
@@ -658,14 +776,22 @@ public class EditorProxy {
 	 * @return the IRelation object for the given GEF Connection
 	 */
 	@SuppressWarnings("restriction")
-	public HasReferanceRelation getHasReferenceConnection(SWTBotGefConnectionEditPart gefConn) {
+	public HasReferanceRelation getHasReferenceConnection(
+			SWTBotGefConnectionEditPart gefConn) {
 		IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 		FreeFormConnection conn = (FreeFormConnection) gefConn.part()
 				.getModel();
+		assertNotNull("Relation is not created.", conn);
+			
 		Object ob = fp.getBusinessObjectForPictogramElement(conn);
+		
+		assertNotNull("Such a relation must exists.", ob);
 		if (ob instanceof HasReferanceRelation) {
+			System.out.println("======================= axam axam");
 			return (HasReferanceRelation) ob;
+		} else if (ob instanceof IRelation) {
+			System.out.println("++++++++++++ dobre");
 		}
 
 		return null;
@@ -678,7 +804,8 @@ public class EditorProxy {
 	 * @return the java persistent type for the given element, null if the
 	 *         selected element is not an entity
 	 */
-	public JavaPersistentType getJPTObjectForGefElement(SWTBotGefEditPart element) {
+	public JavaPersistentType getJPTObjectForGefElement(
+			SWTBotGefEditPart element) {
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 		PictogramElement el = (PictogramElement) element.part().getModel();
@@ -689,7 +816,8 @@ public class EditorProxy {
 		return null;
 	}
 
-	public JavaPersistentAttribute getJPAObjectForGefElement(SWTBotGefEditPart element) {
+	public JavaPersistentAttribute getJPAObjectForGefElement(
+			SWTBotGefEditPart element) {
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 		PictogramElement el = (PictogramElement) element.part().getModel();
@@ -774,11 +902,13 @@ public class EditorProxy {
 		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		assertTrue(
 				"\"Relation Attributes\" section of the inverse entity must be visible!",
-				isSectionVisible(entity2,
+				isSectionVisible(
+						entity2,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -807,7 +937,8 @@ public class EditorProxy {
 		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -836,11 +967,13 @@ public class EditorProxy {
 		assertNotNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		assertFalse(
 				"\"Relation Attributes\" section of the inverse entity must not be visible!",
-				isSectionVisible(entity2,
+				isSectionVisible(
+						entity2,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -867,7 +1000,8 @@ public class EditorProxy {
 		assertNotNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -883,9 +1017,9 @@ public class EditorProxy {
 	 * @param ownerAttributeName
 	 * @param inverseAttributeName
 	 */
-	public void assertBiDirRelationIsDeleted(SWTBotGefEditPart entity1, SWTBotGefEditPart entity2,
-			SWTBotGefConnectionEditPart connection, String ownerAttributeName,
-			String inverseAttributeName) {
+	public void assertBiDirRelationIsDeleted(SWTBotGefEditPart entity1,
+			SWTBotGefEditPart entity2, SWTBotGefConnectionEditPart connection,
+			String ownerAttributeName, String inverseAttributeName) {
 		connection.select();
 		jpaDiagramEditor.clickContextMenu("Delete");
 		confirmDelete();
@@ -895,14 +1029,16 @@ public class EditorProxy {
 		assertTrue(entity2.targetConnections().isEmpty());
 		assertNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
 		assertNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
-				
+
 		assertFalse(
 				"\"Relation Attributes\" section of the owner entity must not be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		assertFalse(
 				"\"Relation Attributes\" section of the inverse entity must not be visible!",
-				isSectionVisible(entity2,
+				isSectionVisible(
+						entity2,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -931,7 +1067,8 @@ public class EditorProxy {
 		assertNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
 		assertFalse(
 				"\"Relation Attributes\" section of the owner entity must not be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -947,8 +1084,9 @@ public class EditorProxy {
 	 * @param ownerAttributeName
 	 * @param inverseAttributeName
 	 */
-	public void assertUniDirRelationIsDeleted(SWTBotGefEditPart entity1, SWTBotGefEditPart entity2,
-			SWTBotGefConnectionEditPart connection, String attributeName) {
+	public void assertUniDirRelationIsDeleted(SWTBotGefEditPart entity1,
+			SWTBotGefEditPart entity2, SWTBotGefConnectionEditPart connection,
+			String attributeName) {
 		connection.select();
 		jpaDiagramEditor.clickContextMenu("Delete");
 		confirmDelete();
@@ -959,11 +1097,13 @@ public class EditorProxy {
 		assertNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertFalse(
 				"\"Relation Attributes\" section of the owner entity must not be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		assertFalse(
 				"\"Relation Attributes\" section of the inverse entity must not be visible!",
-				isSectionVisible(entity2,
+				isSectionVisible(
+						entity2,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -990,7 +1130,8 @@ public class EditorProxy {
 		assertNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertFalse(
 				"\"Relation Attributes\" section of the owner entity must not be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
@@ -1001,8 +1142,8 @@ public class EditorProxy {
 	 * @param entity1
 	 * @param entity2
 	 */
-	public void assertConnectionIsCreated(SWTBotGefEditPart entity1, SWTBotGefEditPart entity2,
-			boolean isBiDIr) {
+	public void assertConnectionIsCreated(SWTBotGefEditPart entity1,
+			SWTBotGefEditPart entity2, boolean isBiDIr) {
 		// assert that there is exactly one relationship, which start from
 		// entity1
 		// and that there is no relationship which starts from entity2
@@ -1014,26 +1155,30 @@ public class EditorProxy {
 		// and that there is no relationship which end in entity1.
 		assertFalse(entity2.targetConnections().isEmpty());
 		assertEquals(1, entity2.targetConnections().size());
-//		assertTrue(entity1.targetConnections().isEmpty());
+		// assertTrue(entity1.targetConnections().isEmpty());
 
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
-				isSectionVisible(entity1,
+				isSectionVisible(
+						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		if (isBiDIr) {
 			assertTrue(
 					"\"Relation Attributes\" section of the inverse entity must be visible!",
-					isSectionVisible(entity2,
+					isSectionVisible(
+							entity2,
 							JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		} else {
 			assertFalse(
 					"\"Relation Attributes\" section of the inverse entity must not be visible!",
-					isSectionVisible(entity2,
+					isSectionVisible(
+							entity2,
 							JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		}
 	}
 
-	public void assertIsARelationExists(SWTBotGefEditPart entity1, SWTBotGefEditPart entity2) {
+	public void assertIsARelationExists(SWTBotGefEditPart entity1,
+			SWTBotGefEditPart entity2) {
 		// assert that there is exactly one relationship, which start from
 		// entity2 and that there is no relationship which starts from entity2
 		assertFalse(entity2.sourceConnections().isEmpty());
@@ -1063,7 +1208,8 @@ public class EditorProxy {
 		assertFalse(entity1.targetConnections().isEmpty());
 		assertEquals(1, entity1.targetConnections().size());
 
-		assertTrue(isSectionVisible(entity1, JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		assertTrue(isSectionVisible(entity1,
+				JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
 	/**
@@ -1125,7 +1271,8 @@ public class EditorProxy {
 	 * @return true, if the sections is visible, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
-	public boolean isSectionVisible(SWTBotGefEditPart editPart, String sectionTitle) {
+	public boolean isSectionVisible(SWTBotGefEditPart editPart,
+			String sectionTitle) {
 		List<SWTBotGefEditPart> children = editPart.children();
 		SWTBotGefEditPart section = jpaDiagramEditor.getEditpart(sectionTitle,
 				children);
@@ -1134,7 +1281,8 @@ public class EditorProxy {
 		return figure.isVisible() || figure.isShowing();
 	}
 
-	public SWTBotGefEditPart getSectionInJPT(SWTBotGefEditPart editPart, String sectionTitle) {
+	public SWTBotGefEditPart getSectionInJPT(SWTBotGefEditPart editPart,
+			String sectionTitle) {
 		List<SWTBotGefEditPart> children = editPart.children();
 		SWTBotGefEditPart section = jpaDiagramEditor.getEditpart(sectionTitle,
 				children);
@@ -1216,39 +1364,62 @@ public class EditorProxy {
 	 *            - the expected type mapping
 	 */
 	public void assertTypeIsCorretlyMapped(String typeName, String typeMapping) {
-		workbenchBot.viewByTitle("JPA Details").close();
-		
-		SWTBotGefEditPart type = jpaDiagramEditor.getEditPart(typeName);
-		type.click();
-		
-		jpaDiagramEditor
-				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_openJPADetailsView);
+		// workbenchBot.viewByTitle("JPA Details").close();
+
+//		SWTBotGefEditPart type = jpaDiagramEditor.getEditPart(typeName);
+
+//		JavaPersistentType jpt = getJPTObjectForGefElement(type);
+//		assertEquals("Type is not mapped correctly.", jpt.getMappingKey(),
+//				typeMapping);
+
+		// type.click();
+		//
+		// jpaDiagramEditor
+		// .clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_openJPADetailsView);
+		// // assert that the JPA Details view is opened
+		// SWTBotView jpaDetailsView = workbenchBot.viewByTitle("JPA Details");
+		// assertTrue("JPA Details view must be opened!",
+		// jpaDetailsView.isActive());
+		//
+		// // assert that the default entity's attribute is mapped as the given
+		// // mapping key
+		// SWTBot jpaDetailsBot = jpaDetailsView.bot();
+		// SWTBotStyledText styledText = jpaDetailsBot.styledText();
+		// assertEquals("Type '" + typeName + "' is mapped as " + typeMapping
+		// + ".", styledText.getText());
+
 		// assert that the JPA Details view is opened
 		SWTBotView jpaDetailsView = workbenchBot.viewByTitle("JPA Details");
+		jpaDetailsView.setFocus();
 		assertTrue("JPA Details view must be opened!",
 				jpaDetailsView.isActive());
 
-		// assert that the default entity's attribute is mapped as the given
-		// mapping key
+		SWTBotGefEditPart type = jpaDiagramEditor.getEditPart(typeName);
+
+		type.select();
+		type.click();
+
+		// assert that the default entity's attribute is mapped as primary key
 		SWTBot jpaDetailsBot = jpaDetailsView.bot();
 		SWTBotStyledText styledText = jpaDetailsBot.styledText();
-		assertEquals("Type '" + typeName + "' is mapped as " + typeMapping
-				+ ".", styledText.getText());
+		assertEquals("Type '" + typeName + "' is mapped as "
+				+ typeMapping + ".", styledText.getText());
 	}
 
 	public void deleteJPTViaButton(SWTBotGefEditPart jptType) {
 
-		String jptName = getJPTObjectForGefElement(jptType)
-				.getSimpleName();
+		String jptName = getJPTObjectForGefElement(jptType).getSimpleName();
 
-		pressEntityContextButton(jptType,
+		pressEntityContextButton(
+				jptType,
 				JPAEditorMessages.JPAEditorToolBehaviorProvider_deleteEntityFromModelButtonLabel);
 		denyDelete();
 
 		jptType = jpaDiagramEditor.getEditPart(jptName);
 		assertNotNull("Entity is deleted!", jptType);
 
-		pressEntityContextButton(jptType,
+		pressEntityContextButton(
+				jptType,
 				JPAEditorMessages.JPAEditorToolBehaviorProvider_deleteEntityFromModelButtonLabel);
 		confirmDelete();
 		bot.waitUntil(new ElementDisappears(jpaDiagramEditor, jptName), 10000);
@@ -1258,8 +1429,7 @@ public class EditorProxy {
 
 	public void deleteJPTViaMenu(SWTBotGefEditPart jptType) {
 
-		String jptName = getJPTObjectForGefElement(jptType)
-				.getSimpleName();
+		String jptName = getJPTObjectForGefElement(jptType).getSimpleName();
 
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_deleteEntityFromModelButtonLabel);
@@ -1276,12 +1446,14 @@ public class EditorProxy {
 		assertNull("Entity is not deleted!", jptType);
 	}
 
-	public void removeAttributeViaButton(SWTBotGefEditPart jptType, String attributeName) {
+	public void removeAttributeViaButton(SWTBotGefEditPart jptType,
+			String attributeName) {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
 
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 
 		SWTBotGefEditPart attribute = addAttributeToJPT(jptType, attributeName);
@@ -1303,15 +1475,18 @@ public class EditorProxy {
 		jpaDiagramEditor.save();
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 
 	}
 
-	public void removeAttributeViaMenu(SWTBotGefEditPart jptType, String attributeName) {
+	public void removeAttributeViaMenu(SWTBotGefEditPart jptType,
+			String attributeName) {
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 
 		SWTBotGefEditPart attribute = addAttributeToJPT(jptType, attributeName);
@@ -1334,15 +1509,18 @@ public class EditorProxy {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 	}
 
-	public void directEditAttribute(SWTBotGefEditPart jptType, String attributeName) {
+	public void directEditAttribute(SWTBotGefEditPart jptType,
+			String attributeName) {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 
 		SWTBotGefEditPart attribute = addAttributeToJPT(jptType, attributeName);
@@ -1373,7 +1551,7 @@ public class EditorProxy {
 
 		pressEntityContextButton(jptType, "Expand");
 		waitASecond();
-		
+
 		newHeight = ((PictogramElement) jptType.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
 		assertEquals("Entity must be expanded!", heigth, newHeight);
@@ -1384,13 +1562,13 @@ public class EditorProxy {
 
 		int heigth = ((PictogramElement) jptType.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
-		
+
 		jpaDiagramEditor.click(jptType);
 
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_collapseEntityMenuItem);
 		waitASecond();
-		
+
 		int newHeight = ((PictogramElement) jptType.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
 		assertEquals("Entity must be collapsed!",
@@ -1400,14 +1578,15 @@ public class EditorProxy {
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_expandEntityMenuItem);
 		waitASecond();
-		
+
 		newHeight = ((PictogramElement) jptType.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
 		assertEquals("Entity must be expanded!", heigth, newHeight);
 		assertTrue(newHeight > JPAEditorConstants.ENTITY_MIN_HEIGHT);
 	}
 
-	public void collapseExpandAllJPTsViaMenu(SWTBotGefEditPart jptType1, SWTBotGefEditPart jptType2) {
+	public void collapseExpandAllJPTsViaMenu(SWTBotGefEditPart jptType1,
+			SWTBotGefEditPart jptType2) {
 
 		int heigth1 = ((PictogramElement) jptType1.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
@@ -1418,7 +1597,7 @@ public class EditorProxy {
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_collapseAllEntitiesMenuItem);
 		waitASecond();
-		
+
 		// check that entity1 is collapsed
 		int newHeight1 = ((PictogramElement) jptType1.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
@@ -1436,7 +1615,7 @@ public class EditorProxy {
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_expandAllEntitiesMenuItem);
 		waitASecond();
-		
+
 		// check that entity1 is expanded
 		newHeight1 = ((PictogramElement) jptType1.part().getModel())
 				.getGraphicsAlgorithm().getHeight();
@@ -1454,7 +1633,8 @@ public class EditorProxy {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 		assertFalse(isJPTDirty(jptType));
 
@@ -1465,7 +1645,8 @@ public class EditorProxy {
 		jptType.click();
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_discardChangesMenuItem);
-		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditPart(attributeName);
+		SWTBotGefEditPart attribute = jpaDiagramEditor
+				.getEditPart(attributeName);
 		assertNull("Changes must be discard!", attribute);
 		assertFalse(isJPTDirty(jptType));
 	}
@@ -1480,7 +1661,9 @@ public class EditorProxy {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, jptType));
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+						jptType));
 		assertFalse(isJPTDirty(jptType));
 
 		addAttributeToJPT(jptType, attributeName);
@@ -1496,6 +1679,9 @@ public class EditorProxy {
 
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities);
+		
+		bot.waitUntil(new ElementAppearsInDiagram(jpaDiagramEditor), 20000);
+		
 		assertFalse("Diagram must contain at least one entity!",
 				jpaDiagramEditor.mainEditPart().children().isEmpty());
 
@@ -1506,7 +1692,8 @@ public class EditorProxy {
 		assertFalse(isJPTDirty(jptType));
 	}
 
-	public void removeAndSaveChangesViaMenu(SWTBotGefEditPart jptType, String attributeName) {
+	public void removeAndSaveChangesViaMenu(SWTBotGefEditPart jptType,
+			String attributeName) {
 
 		assertFalse("Diagram must contain at least one entity!",
 				jpaDiagramEditor.mainEditPart().children().isEmpty());
@@ -1515,7 +1702,9 @@ public class EditorProxy {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, jptType));
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+						jptType));
 		assertFalse(isJPTDirty(jptType));
 
 		addAttributeToJPT(jptType, attributeName);
@@ -1531,6 +1720,9 @@ public class EditorProxy {
 
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities);
+		
+		bot.waitUntil(new ElementAppearsInDiagram(jpaDiagramEditor), 20000);
+		
 		assertFalse("Diagram must contain at least one entity!",
 				jpaDiagramEditor.mainEditPart().children().isEmpty());
 
@@ -1545,7 +1737,8 @@ public class EditorProxy {
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+				isSectionVisible(
+						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
 		assertFalse(isJPTDirty(jptType));
 
@@ -1560,8 +1753,9 @@ public class EditorProxy {
 		assertFalse(isJPTDirty(jptType));
 	}
 
-	public void testUniDirRelation(String relationFeatureName, SWTBotGefEditPart owner,
-			SWTBotGefEditPart inverse, RelType reltype, String linkLabel) {
+	public void testUniDirRelation(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
+			RelType reltype, String linkLabel) {
 
 		jpaDiagramEditor.activateTool(relationFeatureName, 0);
 
@@ -1584,42 +1778,41 @@ public class EditorProxy {
 		String attributeName = testOwnerRelationAttributeProperties(rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 
-		assertAttributeIsCorretlyMapped(attributeName,
-				linkLabel);
+		assertAttributeIsCorretlyMapped(attributeName, linkLabel);
 
-		assertUniDirRelationIsNotDeleted(owner, inverse,
-				connection, attributeName);
+		assertUniDirRelationIsNotDeleted(owner, inverse, connection,
+				attributeName);
 
-		assertUniDirRelationIsDeleted(owner, inverse,
-				connection, attributeName);
+		assertUniDirRelationIsDeleted(owner, inverse, connection, attributeName);
 	}
-	
-	public void testSelfUniDirRelation(String relationFeatureName, SWTBotGefEditPart entity,
-			RelType reltype, String linkLabel){
-		
-		jpaDiagramEditor.activateTool(relationFeatureName, 0);		
+
+	public void testSelfUniDirRelation(String relationFeatureName,
+			SWTBotGefEditPart entity, RelType reltype, String linkLabel) {
+
+		jpaDiagramEditor.activateTool(relationFeatureName, 0);
 		jpaDiagramEditor.click(entity);
 		jpaDiagramEditor.click(entity);
 		bot.waitUntil(new ConnectionIsShown(entity));
-		
+
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
-		
+
 		assertSelfConnectionIsCreated(entity);
-		
-		SWTBotGefConnectionEditPart connection = entity.sourceConnections().get(0);
+
+		SWTBotGefConnectionEditPart connection = entity.sourceConnections()
+				.get(0);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
 		assertEquals(reltype, rel.getRelType());
-		
+
 		String attributeName = testOwnerRelationAttributeProperties(rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
-		
+
 		assertAttributeIsCorretlyMapped(attributeName, linkLabel);
-		
+
 		assertSelfUniDirRelationIsNotDeleted(entity, connection, attributeName);
-		
+
 		assertSelfUniDirRelationIsDeleted(entity, connection, attributeName);
 	}
 
@@ -1661,19 +1854,21 @@ public class EditorProxy {
 		assertTrue(owner.sourceConnections().isEmpty());
 		assertTrue(inverse.targetConnections().isEmpty());
 		assertNull(jpaDiagramEditor.getEditPart(attributeName));
-		assertFalse(isSectionVisible(owner, JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		assertFalse(isSectionVisible(owner,
+				JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
-	public void testBiDirRel(String relationFeatureName, SWTBotGefEditPart owner,
-			SWTBotGefEditPart inverse, RelType reltype, String linkLabel) {
-		testBiDirRelWithTwoMappingTypes(relationFeatureName,
-				owner, inverse, reltype, linkLabel, linkLabel);
-	}
-	
-	public void testSelfBiDirRel(String relationFeatureName, SWTBotGefEditPart owner,
+	public void testBiDirRel(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
 			RelType reltype, String linkLabel) {
-		testSelfBiDirRelWithTwoMappings(relationFeatureName,
-				owner, reltype, linkLabel, linkLabel);
+		testBiDirRelWithTwoMappingTypes(relationFeatureName, owner, inverse,
+				reltype, linkLabel, linkLabel);
+	}
+
+	public void testSelfBiDirRel(String relationFeatureName,
+			SWTBotGefEditPart owner, RelType reltype, String linkLabel) {
+		testSelfBiDirRelWithTwoMappings(relationFeatureName, owner, reltype,
+				linkLabel, linkLabel);
 	}
 
 	public void testBiDirRelWithTwoMappingTypes(String relationFeatureName,
@@ -1704,56 +1899,60 @@ public class EditorProxy {
 		assertAttributeIsCorretlyMapped(ownerAttributeName, ownerLinkLabel);
 		assertAttributeIsCorretlyMapped(inverseAttributeName, inverseLinkLabel);
 
-		assertBiDirRelationIsNotDeleted(owner, inverse,
-				connection, ownerAttributeName, inverseAttributeName);
+		assertBiDirRelationIsNotDeleted(owner, inverse, connection,
+				ownerAttributeName, inverseAttributeName);
 
-		assertBiDirRelationIsDeleted(owner, inverse,
-				connection, ownerAttributeName, inverseAttributeName);
+		assertBiDirRelationIsDeleted(owner, inverse, connection,
+				ownerAttributeName, inverseAttributeName);
 	}
-	
+
 	public void testSelfBiDirRelWithTwoMappings(String relationFeatureName,
-			SWTBotGefEditPart entity, RelType reltype, String ownerLinkLabel, String inverseLinkLabel){
-		
-		jpaDiagramEditor.activateTool(relationFeatureName, 1);		
+			SWTBotGefEditPart entity, RelType reltype, String ownerLinkLabel,
+			String inverseLinkLabel) {
+
+		jpaDiagramEditor.activateTool(relationFeatureName, 1);
 		jpaDiagramEditor.click(entity);
-		jpaDiagramEditor.click(entity);		
+		jpaDiagramEditor.click(entity);
 		bot.waitUntil(new ConnectionIsShown(entity));
-		
+
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
-		
+
 		assertSelfConnectionIsCreated(entity);
-		
-		SWTBotGefConnectionEditPart connection = entity.sourceConnections().get(0);
+
+		SWTBotGefConnectionEditPart connection = entity.sourceConnections()
+				.get(0);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.BI, rel.getRelDir());
 		assertEquals(reltype, rel.getRelType());
-		
+
 		String ownerAttributeName = testOwnerRelationAttributeProperties(rel);
-		
+
 		String inverseAttributeName = testInverseRelationAttributeProperties(rel);
-		
+
 		assertAttributeIsCorretlyMapped(ownerAttributeName, ownerLinkLabel);
 		assertAttributeIsCorretlyMapped(inverseAttributeName, inverseLinkLabel);
-		
-		assertSelfBiDirRelationIsNotDeleted(entity, connection, ownerAttributeName,
-				inverseAttributeName);
-		
-		assertSelfBiDirRelationIsDeleted(entity, connection, ownerAttributeName, inverseAttributeName);
+
+		assertSelfBiDirRelationIsNotDeleted(entity, connection,
+				ownerAttributeName, inverseAttributeName);
+
+		assertSelfBiDirRelationIsDeleted(entity, connection,
+				ownerAttributeName, inverseAttributeName);
 	}
 
 	public void testBiDirRelRemoveInverseAttribute(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
 			RelType reltype, String linkLabel) {
 
-		testBiDirRelWithTwoMappingsWithoutInverseAttr(relationFeatureName, owner, inverse, reltype, linkLabel,
-				linkLabel);
+		testBiDirRelWithTwoMappingsWithoutInverseAttr(relationFeatureName,
+				owner, inverse, reltype, linkLabel, linkLabel);
 	}
 
-	public void testBiDirRelWithTwoMappingsWithoutInverseAttr(String relationFeatureName,
-			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String ownerLinkLabel, String inverseLinkLabel) {
+	public void testBiDirRelWithTwoMappingsWithoutInverseAttr(
+			String relationFeatureName, SWTBotGefEditPart owner,
+			SWTBotGefEditPart inverse, RelType reltype, String ownerLinkLabel,
+			String inverseLinkLabel) {
 
 		jpaDiagramEditor.activateTool(relationFeatureName, 1);
 		jpaDiagramEditor.click(owner);
@@ -1776,7 +1975,7 @@ public class EditorProxy {
 
 		String inverseAttributeName = testInverseRelationAttributeProperties(rel);
 
-		assertAttributeIsCorretlyMapped(ownerAttributeName,	ownerLinkLabel);
+		assertAttributeIsCorretlyMapped(ownerAttributeName, ownerLinkLabel);
 		assertAttributeIsCorretlyMapped(inverseAttributeName, inverseLinkLabel);
 
 		// delete the inverse attribute
@@ -1797,13 +1996,12 @@ public class EditorProxy {
 		assertEquals(ownerAttributeName,
 				testOwnerRelationAttributeProperties(rel));
 		assertNull(rel.getInverseAnnotatedAttribute());
-		assertAttributeIsCorretlyMapped(ownerAttributeName,
-				ownerLinkLabel);
+		assertAttributeIsCorretlyMapped(ownerAttributeName, ownerLinkLabel);
 
 		// delete the owner attribute
 		SWTBotGefEditPart ownerAttr = jpaDiagramEditor
 				.getEditPart(ownerAttributeName);
-		ownerAttr.click();
+		ownerAttr.select();
 		jpaDiagramEditor.clickContextMenu("Delete");
 		confirmDelete();
 		bot.waitUntil(new ElementDisappears(jpaDiagramEditor,
@@ -1819,16 +2017,17 @@ public class EditorProxy {
 				JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
-	public void testBiDirRelRemoveOwnerAttr(String relationFeatureName, SWTBotGefEditPart owner,
-			SWTBotGefEditPart inverse, RelType reltype, String linkLabel) {
-		testBiDirRelWithTwoMappingsWithoutOwnerAttr(
-				relationFeatureName, owner, inverse, reltype, linkLabel,
-				linkLabel);
+	public void testBiDirRelRemoveOwnerAttr(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
+			RelType reltype, String linkLabel) {
+		testBiDirRelWithTwoMappingsWithoutOwnerAttr(relationFeatureName, owner,
+				inverse, reltype, linkLabel, linkLabel);
 	}
 
-	public void testBiDirRelWithTwoMappingsWithoutOwnerAttr(String relationFeatureName,
-			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String ownerLinkLabel, String inverseLinkLabel) {
+	public void testBiDirRelWithTwoMappingsWithoutOwnerAttr(
+			String relationFeatureName, SWTBotGefEditPart owner,
+			SWTBotGefEditPart inverse, RelType reltype, String ownerLinkLabel,
+			String inverseLinkLabel) {
 
 		jpaDiagramEditor.activateTool(relationFeatureName, 1);
 		jpaDiagramEditor.click(owner);
@@ -1851,7 +2050,7 @@ public class EditorProxy {
 
 		String inverseAttributeName = testInverseRelationAttributeProperties(rel);
 
-		assertAttributeIsCorretlyMapped(ownerAttributeName,	ownerLinkLabel);
+		assertAttributeIsCorretlyMapped(ownerAttributeName, ownerLinkLabel);
 		assertAttributeIsCorretlyMapped(inverseAttributeName, inverseLinkLabel);
 
 		// delete the owner attribute
@@ -1875,10 +2074,12 @@ public class EditorProxy {
 				JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
 
-	public void createInheritedEntity(SWTBotGefEditPart superclass, String subclassName,
-			String superclassMappingLinkLabel, boolean byMappedSuperclass) {
+	public void createInheritedEntity(SWTBotGefEditPart superclass,
+			String subclassName, String superclassMappingLinkLabel,
+			boolean byMappedSuperclass) {
 
-		String superclassName = getJPTObjectForGefElement(superclass).getSimpleName();
+		String superclassName = getJPTObjectForGefElement(superclass)
+				.getSimpleName();
 
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateJPAEntityFromMappedSuperclassFeature_createInheritedEntityFeatureName);
@@ -1890,7 +2091,7 @@ public class EditorProxy {
 		SWTBotGefEditPart inheritedEntity = jpaDiagramEditor
 				.getEditPart(subclassName);
 		assertNotNull(inheritedEntity);
-		if(byMappedSuperclass){
+		if (byMappedSuperclass) {
 			assertTrue(isSectionVisible(inheritedEntity,
 					JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape));
 		} else {
@@ -1914,17 +2115,19 @@ public class EditorProxy {
 		IsARelation rel = getIsARelationship();
 		assertNotNull(rel);
 
-		assertEquals(getJPTObjectForGefElement(inheritedEntity), rel.getSubclass());
-		assertEquals(getJPTObjectForGefElement(superclass),	rel.getSuperclass());
+		assertEquals(getJPTObjectForGefElement(inheritedEntity),
+				rel.getSubclass());
+		assertEquals(getJPTObjectForGefElement(superclass), rel.getSuperclass());
 
 		assertTypeIsCorretlyMapped(superclassName, superclassMappingLinkLabel);
-		assertTypeIsCorretlyMapped(subclassName, JptUiDetailsMessages.EntityUiProvider_linkLabel);
+		assertTypeIsCorretlyMapped(subclassName,
+				JptUiDetailsMessages.EntityUiProvider_linkLabel);
 	}
-	
+
 	public void testNoConnectionIsCreated(String relationFeatureName,
 			int indexInPallete, SWTBotGefEditPart owner,
 			SWTBotGefEditPart inverse) {
-		
+
 		jpaDiagramEditor.activateTool(relationFeatureName, indexInPallete);
 
 		jpaDiagramEditor.click(owner);
@@ -1932,18 +2135,18 @@ public class EditorProxy {
 
 		waitASecond();
 
-		assertTrue("There is no connection created.", owner
-				.sourceConnections().isEmpty());
+		assertTrue("There is no connection created.", owner.sourceConnections()
+				.isEmpty());
 		assertTrue("There is no connection created.", inverse
 				.sourceConnections().isEmpty());
 		assertTrue("There is no connection.", inverse.targetConnections()
 				.isEmpty());
 	}
-	
-	public void testNoConnectionIsCreatedWithEmbeddable(String relationFeatureName,
-			int indexInPallete, SWTBotGefEditPart owner,
-			SWTBotGefEditPart inverse) {
-		
+
+	public void testNoConnectionIsCreatedWithEmbeddable(
+			String relationFeatureName, int indexInPallete,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse) {
+
 		jpaDiagramEditor.activateTool(relationFeatureName, indexInPallete);
 
 		jpaDiagramEditor.click(owner);
@@ -1951,16 +2154,16 @@ public class EditorProxy {
 
 		waitASecond();
 
-		assertTrue("There is no connection created.", owner
-				.sourceConnections().isEmpty());
+		assertTrue("There is no connection created.", owner.sourceConnections()
+				.isEmpty());
 		assertTrue("There is no connection created.", inverse
 				.sourceConnections().isEmpty());
 	}
-	
+
 	public void testNoEmbeddedConnectionIsCreated(String relationFeatureName,
 			int indexInPallete, SWTBotGefEditPart owner,
 			SWTBotGefEditPart inverse, boolean alreadyEmbed) {
-		
+
 		jpaDiagramEditor.activateTool(relationFeatureName, indexInPallete);
 
 		jpaDiagramEditor.click(owner);
@@ -1968,9 +2171,9 @@ public class EditorProxy {
 
 		waitASecond();
 
-		assertTrue("There is no connection created.", owner
-				.sourceConnections().isEmpty());
-		if(alreadyEmbed){
+		assertTrue("There is no connection created.", owner.sourceConnections()
+				.isEmpty());
+		if (alreadyEmbed) {
 			assertFalse("There is no connection created.", inverse
 					.sourceConnections().isEmpty());
 		} else {

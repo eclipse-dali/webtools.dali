@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * <copyright>
+ *
+ * Copyright (c) 2010, 2012 SAP AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Petya Sabeva - initial API, implementation and documentation
+ *
+ * </copyright>
+ *
+ *******************************************************************************/
+
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
 import java.io.Closeable;
@@ -42,6 +58,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("resource")
 public class EntitiesCoordinatesXML {
 	
 	private Document document;
@@ -88,10 +105,8 @@ public class EntitiesCoordinatesXML {
 		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 	
-    private Closeable findXMLFile(boolean inputStream) throws FileNotFoundException{
-    	
-    	Iterator<JpaProject> iter = getJpaProjectManager().getJpaProjects().iterator();
-    	
+	private Closeable findXMLFile(boolean inputStream) throws FileNotFoundException{
+    	    	
     	IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		try {
 			IResource[] resources = project.members();

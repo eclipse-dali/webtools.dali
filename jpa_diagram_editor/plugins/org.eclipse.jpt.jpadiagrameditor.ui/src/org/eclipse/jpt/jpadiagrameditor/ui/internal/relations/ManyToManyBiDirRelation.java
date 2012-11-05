@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2012 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,6 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 		
 		mapKeyType = getMapKeyType(isMap, owner, embeddingEntity);
 		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
-//			inverseAnnotatedAttribute = JpaArtifactFactory.instance().addEmbeddedAttribute(owner, inverse, mapKeyType, true, fp);
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, true, mapKeyType);
 
 		} else {

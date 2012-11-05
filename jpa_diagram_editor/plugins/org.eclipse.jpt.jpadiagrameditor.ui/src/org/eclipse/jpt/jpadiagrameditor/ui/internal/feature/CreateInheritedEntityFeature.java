@@ -120,7 +120,6 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 		disableAllNotValidJPTs();
 	}
 	
-	@SuppressWarnings("restriction")
 	private void disableAllNotValidJPTs(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());

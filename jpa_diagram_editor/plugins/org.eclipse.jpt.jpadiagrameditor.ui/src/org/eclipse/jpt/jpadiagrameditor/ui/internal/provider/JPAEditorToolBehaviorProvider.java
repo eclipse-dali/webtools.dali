@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2012 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickAddAttributeButtonFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickAddElementCollectionButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickRemoveAttributeButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseCompartmentShapeFeature;
@@ -169,6 +170,17 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 			button.setDescription(JPAEditorMessages.JPAEditorToolBehaviorProvider_createAttributeButtonDescription);
 			button.setIconId(JPAEditorImageProvider.ADD_ATTRIBUTE);
 			data.getDomainSpecificContextButtons().add(button);
+			
+			if(!JPAEditorUtil.checkJPAFacetVersion(getTargetJPAProject(), JPAEditorUtil.JPA_PROJECT_FACET_10)){
+				ClickAddElementCollectionButtonFeature addCollectionfeature = getConcreteFeatureProvider().getClickAddElementCollectionButtonFeature();
+				createCtx = new CreateContext();
+				createCtx.setTargetContainer(cs);
+				button = new ContextButtonEntry(addCollectionfeature, createCtx);
+				button.setText(JPAEditorMessages.JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonLabel);
+				button.setDescription(JPAEditorMessages.JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonDescription);
+				button.setIconId(JPAEditorImageProvider.ADD_ELEMENT_COLLECTION);
+				data.getDomainSpecificContextButtons().add(button);
+			}
 
 			PictogramElementContext c = (PictogramElementContext) context;
 			RemoveAndSaveEntityFeature ft2 = new RemoveAndSaveEntityFeature(getFeatureProvider());
@@ -550,18 +562,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         		expandCompartmentMenuItem.setSubmenu(false);
         		return new IContextMenuEntry[] {collapseCompartmentMenuItem, expandCompartmentMenuItem};
             }
-            
-            /*
-            //Apply Pattern menu
-            
-            ICustomFeature applyPatternFeature = new ApplyPatternFeature(getFeatureProvider());
-            ContextMenuEntry applyPatternMenuItem = new ContextMenuEntry(applyPatternFeature, context);
-            applyPatternMenuItem.setText(JPAEditorMessages.JPAEditorToolBehaviorProvider_applyPattern);
-            applyPatternMenuItem.setDescription(JPAEditorMessages.JPAEditorToolBehaviorProvider_applyPatternDesc);
-            applyPatternMenuItem.setSubmenu(false);
-            //Apply Pattern menu
-             */
-            
+
             ContextMenuEntry refactorClassSubmenu = new ContextMenuEntry(null, null);
             refactorClassSubmenu.setText(JPAEditorMessages.JPAEditorToolBehaviorProvider_refactorSubMenu);
             refactorClassSubmenu.setDescription(JPAEditorMessages.JPAEditorToolBehaviorProvider_refactorSubMenu);
@@ -593,22 +594,21 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
             		                             expandEntityMenuItem,
             		                             expandAllMenuItem,
             		                             restoreEntityMenuItem,
-            									 //applyPatternMenuItem, 
             									 removeAllEntitiesSubmenu,
             									 openJPADetailsViewMenuItem,
             									 openMiniatureViewMenuItem};
-            
-    		customFeature = new RefactorAttributeTypeFeature(getFeatureProvider());     		
+
+            customFeature = new RefactorAttributeTypeFeature(getFeatureProvider());     		
             ContextMenuEntry refactorAttributeTypeMenuItem = new ContextMenuEntry(customFeature, context);
             refactorAttributeTypeMenuItem.setText(JPAEditorMessages.JPAEditorToolBehaviorProvider_refactorAttributeType);
             refactorAttributeTypeMenuItem.setDescription(JPAEditorMessages.JPAEditorToolBehaviorProvider_refactorAttributeTypeDesc);
             refactorAttributeTypeMenuItem.setSubmenu(false);                   
 
+            
         	return new IContextMenuEntry[] { refactorClassSubmenu, 
         									 refactorAttributeTypeMenuItem, 
         									 collapseAllMenuItem,
         									 expandAllMenuItem,
-        									 //applyPatternMenuItem, 
         									 openJPADetailsViewMenuItem,
         									 openMiniatureViewMenuItem};
     	}

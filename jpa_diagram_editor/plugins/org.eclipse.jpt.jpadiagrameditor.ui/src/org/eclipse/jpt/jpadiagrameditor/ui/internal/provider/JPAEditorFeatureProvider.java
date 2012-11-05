@@ -84,6 +84,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddHasReferenceRelat
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddJPAEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickAddAttributeButtonFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickAddElementCollectionButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickRemoveAttributeButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseCompartmentShapeFeature;
@@ -144,6 +145,8 @@ import org.eclipse.ui.PlatformUI;
 public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements IJPAEditorFeatureProvider {
 	
 	private ClickAddAttributeButtonFeature clickAddAttBtnFeat = null;
+	private ClickAddElementCollectionButtonFeature clickAddCollectionAttBtnFeat = null;
+
 	private ClickRemoveAttributeButtonFeature clickRemoveAttBtnFeat = null;
 	private IPeServiceUtil peServiceUtil = new PeServiceUtilImpl();
 	private IPeService peService = Graphiti.getPeService();
@@ -189,12 +192,14 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		EList<Connection> allCons = getDiagram().getConnections();
 		HashSet<HasReferanceRelation> res = new HashSet<HasReferanceRelation>();
 		for (Connection conn : allCons) {
-			if (HasReferanceRelation.isHasReferenceConnection(conn)) 
-				try {
-					HasReferanceRelation hasReferenceRelation = (HasReferanceRelation) getBusinessObjectForPictogramElement(conn);
+			try {
+				Object ob = getBusinessObjectForPictogramElement(conn);
+				if(ob instanceof HasReferanceRelation) {
+					HasReferanceRelation hasReferenceRelation = (HasReferanceRelation) ob;
 					res.add(hasReferenceRelation);
-				} catch (NullPointerException e) {
 				}
+			} catch (NullPointerException e) {
+			}
 		}
 		return res;
 	}
@@ -492,6 +497,13 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     		clickAddAttBtnFeat = new ClickAddAttributeButtonFeature(this);
     	}
     	return clickAddAttBtnFeat;
+    }
+    
+    public ClickAddElementCollectionButtonFeature getClickAddElementCollectionButtonFeature() {
+    	if (clickAddCollectionAttBtnFeat == null) {
+    		clickAddCollectionAttBtnFeat = new ClickAddElementCollectionButtonFeature(this);
+    	}
+    	return clickAddCollectionAttBtnFeat;
     }
     
     public ClickRemoveAttributeButtonFeature getClickRemoveAttributeButtonFeature() {
