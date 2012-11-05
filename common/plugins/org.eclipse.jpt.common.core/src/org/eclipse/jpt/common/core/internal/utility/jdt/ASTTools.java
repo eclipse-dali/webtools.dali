@@ -65,7 +65,7 @@ public class ASTTools {
 	}
 
 	private static ASTParser astParser() {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS4);
 		parser.setIgnoreMethodBodies(true);  // we don't need method bodies
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);  // see bugs 196200, 222735
