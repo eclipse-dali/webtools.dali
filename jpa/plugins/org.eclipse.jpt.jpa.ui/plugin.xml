@@ -272,12 +272,13 @@
 		<command
 			id="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa"
 			name="%convertJavaProjectToJpaCommandName"
-			categoryId="org.eclipse.ui.category.file"
-			defaultHandler="org.eclipse.jpt.jpa.ui.internal.commands.ConvertJavaProjectToJpaCommandHandler"/>
-			
+			categoryId="org.eclipse.ui.category.file">
+		</command>
+
 		<command
 			id="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion"
-			name="%upgradeToLatestVersion"/>
+			name="%upgradeToLatestVersion">
+		</command>
 		
 		<category
 			id="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands"
@@ -514,6 +515,30 @@
 			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaQueryConversionHandler"
 			commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"/>
 		
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa"
+			class="org.eclipse.jpt.jpa.ui.internal.commands.ConvertJavaProjectToJpaCommandHandler">
+			<activeWhen>
+					<and>
+						<count value="1"/>
+						<iterate ifEmpty="false" operator="and">
+							<adapt type="org.eclipse.core.resources.IProject">
+								<and>
+									<test
+										property="org.eclipse.core.resources.projectNature"
+										value="org.eclipse.jdt.core.javanature"/>
+									<not>
+										<test 
+											property="org.eclipse.core.resources.projectNature" 
+											value="org.eclipse.wst.common.project.facet.core.nature"/>
+									</not>
+								</and>
+							</adapt>
+						</iterate>
+					</and>
+			</activeWhen>
+		</handler>
+
  	</extension>
  	
  	
