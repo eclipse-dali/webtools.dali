@@ -14,14 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.service.prefs.BackingStoreException;
@@ -179,27 +173,10 @@ public class JaxbPreferences {
 	// ********** flush preferences **********
 
 	private static void flushPreferences(Preferences prefs) {
-		new FlushPreferencesJob(prefs).schedule();
-	}
-
-	/* CU private */ static class FlushPreferencesJob
-		extends Job
-	{
-		private final Preferences prefs;
-
-		FlushPreferencesJob(Preferences prefs) {
-			super(NLS.bind(JptCommonCoreMessages.PREFERENCES_FLUSH_JOB_NAME, prefs.absolutePath()));
-			this.prefs = prefs;
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			try {
-				this.prefs.flush();
-			} catch(BackingStoreException ex) {
-				return JptJaxbCorePlugin.instance().logError(ex);
-			}
-			return Status.OK_STATUS;
+		try {
+			prefs.flush();
+		} catch (BackingStoreException ex) {
+			JptJaxbCorePlugin.instance().logError(ex);
 		}
 	}
 
