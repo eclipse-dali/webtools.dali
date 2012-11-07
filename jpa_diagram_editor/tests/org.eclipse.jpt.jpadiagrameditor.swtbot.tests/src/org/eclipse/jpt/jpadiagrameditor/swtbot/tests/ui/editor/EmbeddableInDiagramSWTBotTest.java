@@ -52,8 +52,6 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 	protected static JPACreateFactory factory = JPACreateFactory.instance();
 	protected static JpaProject jpaProject;
 
-	// protected static JpaProject jpaProject10;
-
 	protected static SWTGefBot bot = new SWTGefBot();
 	protected static SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
 	protected static EditorProxy editorProxy = new EditorProxy(workbenchBot,
@@ -82,7 +80,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertNotNull(jpaProject);
 
 		jpaDiagramEditor = editorProxy
-				.openDiagramOnJPAContentNode(TEST_PROJECT, true);
+				.openDiagramOnJPAProjectNode(TEST_PROJECT, true);
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor);
 
 		Thread.sleep(2000);
@@ -1967,7 +1965,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertNotNull(jpaProject10);
 
 		SWTBotGefEditor jpaDiagramEditor10 = editorProxy
-				.openDiagramOnJPAContentNode(name, false);
+				.openDiagramOnJPAProjectNode(name, false);
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor10);
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,

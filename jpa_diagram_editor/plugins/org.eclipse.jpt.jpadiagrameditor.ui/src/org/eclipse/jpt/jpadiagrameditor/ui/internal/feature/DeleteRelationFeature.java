@@ -23,6 +23,7 @@ import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
@@ -30,7 +31,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelati
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IUnidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.PlatformUI;
@@ -76,11 +80,25 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         	deleteAbstractRelation(businessObjectForPictogramElement);   
         } else if (businessObjectForPictogramElement instanceof HasReferanceRelation){
         	deleteEmbeddedRelation(businessObjectForPictogramElement);
+        } else if (businessObjectForPictogramElement instanceof IsARelation) {
+        	deleteInheritanceRelation(businessObjectForPictogramElement);
         }
 
         postDelete(context);
     }
 
+    private void deleteInheritanceRelation(Object businessObjectForPictogramElement) {
+		IsARelation rel = (IsARelation)businessObjectForPictogramElement;
+		JavaPersistentType superclass = rel.getSuperclass();
+		JavaPersistentType subclass = rel.getSubclass();
+		JpaArtifactFactory.instance().buildHierarchy(superclass, subclass, false);
+		
+		JPAEditorUtil.getCompilationUnit(subclass);
+//		subclass.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		
+		getFeatureProvider().addJPTForUpdate(subclass.getName());
+	}
+    
 	private void deleteEmbeddedRelation(Object businessObjectForPictogramElement) {
 		HasReferanceRelation rel = (HasReferanceRelation)businessObjectForPictogramElement;
 		JavaPersistentAttribute attribute = rel.getEmbeddedAnnotatedAttribute();
@@ -141,6 +159,10 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 		} else if(businessObjectForPictogramElement instanceof HasReferanceRelation){
 			HasReferanceRelation rel = (HasReferanceRelation) businessObjectForPictogramElement;
 			ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getEmbeddingEntity());
+			ut.organizeImports(cu, ws); 
+		} else if (businessObjectForPictogramElement instanceof IsARelation){
+			IsARelation rel = (IsARelation) businessObjectForPictogramElement;
+			ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getSubclass());
 			ut.organizeImports(cu, ws); 
 		}
 	}

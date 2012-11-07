@@ -100,7 +100,7 @@ public class AddAttributeCommand implements Command {
 				JPAEditorUtil.createImports(cu, attrTypes);
 			}
 
-			String contents = "";
+			String contents = ""; //$NON-NLS-1$
 			if (annotations != null) {
 				Iterator<String> it = annotations.iterator();
 				while (it.hasNext()) {
@@ -181,7 +181,7 @@ public class AddAttributeCommand implements Command {
 				((attrTypes == null) ? "" : ("<" + JPAEditorUtil.createCommaSeparatedListOfSimpleTypeNames(attrTypes) + ">")) + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				" " + JPAEditorUtil.decapitalizeFirstLetter(actName) + ";"; //$NON-NLS-1$ //$NON-NLS-2$
 		
-		String contents = "";
+		String contents = ""; //$NON-NLS-1$
 		if(!JpaArtifactFactory.instance().isMethodAnnotated(jpt)){
 			contents = annotationContents + attrFieldContent;
 		} else {
@@ -316,7 +316,7 @@ public class AddAttributeCommand implements Command {
 				Locale.ENGLISH)
 				+ actName.substring(1);
 		String contents = "    public " + JPAEditorUtil.returnSimpleName(type) + //$NON-NLS-1$
-				"<"
+				"<" //$NON-NLS-1$
 				+ ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				"get" + attrNameWithCapitalA + "() {\n" + //$NON-NLS-1$ //$NON-NLS-2$
 				"        return " //$NON-NLS-1$
@@ -346,12 +346,12 @@ public class AddAttributeCommand implements Command {
 				Locale.ENGLISH)
 				+ actName.substring(1);
 		String contents = "    public void set" + attrNameWithCapitalA + //$NON-NLS-1$
-				"("
+				"(" //$NON-NLS-1$
 				+ JPAEditorUtil.returnSimpleName(type)
 				+ //$NON-NLS-1$
-				"<"
+				"<" //$NON-NLS-1$
 				+ ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> param) " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				"{\n"
+				"{\n" //$NON-NLS-1$
 				+ //$NON-NLS-1$
 				"        this." //$NON-NLS-1$
 				+ JPAEditorUtil.decapitalizeFirstLetter(actName)
@@ -378,7 +378,7 @@ public class AddAttributeCommand implements Command {
 				Locale.ENGLISH)
 				+ actName.substring(1);
 		
-		String contents = "";
+		String contents = ""; //$NON-NLS-1$
 		if(JpaArtifactFactory.instance().isMethodAnnotated(jpt)){
 			contents += annotationContents;
 		}
@@ -413,7 +413,7 @@ public class AddAttributeCommand implements Command {
 				+ "        this." //$NON-NLS-1$
 				+ JPAEditorUtil.decapitalizeFirstLetter(actName)
 				+ " = param;\n" + //$NON-NLS-1$ 
-				"    }\n";
+				"    }\n"; //$NON-NLS-1$
 		return contents;
 	}
 

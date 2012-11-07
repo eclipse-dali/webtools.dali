@@ -72,6 +72,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseAllEntitiesF
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseCompartmentShapeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateInheritedEntityFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateIsARelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteJPAEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DiscardAndRemoveAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.EmbedCollectionOfObjectsFeature;
@@ -298,6 +299,15 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
     	isARelToolEntry.addCreateConnectionFeature(ft);
     	
 		ent.addToolEntry(isARelToolEntry);
+		
+		
+		CreateIsARelationFeature ft1 = new CreateIsARelationFeature((IJPAEditorFeatureProvider) this.getFeatureProvider());
+    	ConnectionCreationToolEntry isARelToolEntry1 = new ConnectionCreationToolEntry(ft1.getCreateName(),
+				ft1.getCreateDescription(), ft1.getCreateImageId(), ft1.getCreateLargeImageId());
+    	isARelToolEntry1.addCreateConnectionFeature(ft1);
+    	
+		ent.addToolEntry(isARelToolEntry1);
+
     	ret.add(1, ent);
 	}
    

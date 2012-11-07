@@ -1057,7 +1057,6 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					try {
 						final String newHeader = (cu.hasUnsavedChanges() ? "* " : "") + entName;	//$NON-NLS-1$ //$NON-NLS-2$
 						GraphicsUpdater.updateHeader(cs, newHeader);
-						JpaArtifactFactory.instance().rearrangeIsARelationsInTransaction(solver.featureProvider);
 					} catch (JavaModelException e) {
 						JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e); //$NON-NLS-1$				 
 					}

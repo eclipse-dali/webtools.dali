@@ -44,6 +44,10 @@ public class JPAEditorMessages extends NLS {
 
 	public static String CreateEmbeddableFeature_EmbeddableFeatureName;
 
+	public static String CreateIsARelationFeature_CreateIsARelationFeatureDescription;
+
+	public static String CreateIsARelationFeature_CreateIsARelationFeatureName;
+
 	public static String CreateIsARelationFeature_description;
 	public static String CreateIsARelationFeature_name;
 	

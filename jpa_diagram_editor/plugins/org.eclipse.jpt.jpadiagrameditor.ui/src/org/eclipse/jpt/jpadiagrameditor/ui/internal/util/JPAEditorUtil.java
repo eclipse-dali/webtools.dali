@@ -1033,11 +1033,11 @@ public class JPAEditorUtil {
 		String mappedSuperclassShortName = mappedSuperclassName
 				.substring(mappedSuperclassName.lastIndexOf('.') + 1);
 		String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
-				+ "import java.io.Serializable;\n"
+				+ "import java.io.Serializable;\n" //$NON-NLS-1$
 				+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
 				+ "@MappedSuperclass \n" //$NON-NLS-1$
 				+ "public abstract class " + mappedSuperclassShortName + " implements Serializable {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
-				+ "private static final long serialVersionUID = 1L;\n"
+				+ "private static final long serialVersionUID = 1L;\n" //$NON-NLS-1$
 				+ "}"; //$NON-NLS-1$ 
 		return createClassInProject(project, folder, mappedSuperclassShortName, content);
 	}
@@ -1188,13 +1188,13 @@ public class JPAEditorUtil {
 		boolean fieldBasedAccess = JPADiagramPropertyPage.isAccessFieldBased(project, props);
 		
 		String classDeclarationStringContent = null;
-		String importSerializable = "";
+		String importSerializable = ""; //$NON-NLS-1$
 		if (isMappedSuperclassChild) {
 			String mappedSuperclassShortName = mappedSuperclassName.substring(mappedSuperclassName.lastIndexOf('.') + 1);
 			classDeclarationStringContent = "public class " + entityShortName + " extends " + mappedSuperclassShortName + " {\n\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} else {
 			classDeclarationStringContent = "public class " + entityShortName + " implements Serializable {\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			importSerializable += "import java.io.Serializable;\n";
+			importSerializable += "import java.io.Serializable;\n"; //$NON-NLS-1$
 		}
 
 		String packageImport = ""; //$NON-NLS-1$
@@ -1217,9 +1217,9 @@ public class JPAEditorUtil {
 		  		 + ((tableName.length() > 0) ? ("@Table(name=\"" 							//$NON-NLS-1$
 		  		 + tableName + "\")\n") : "")  												//$NON-NLS-1$	//$NON-NLS-2$
 		  		 + classDeclarationStringContent
-		  		 + "private static final long serialVersionUID = 1L;\n"
-		  		 + "public " + entityShortName + "() {\n"
-		  		 + "}\n"
+		  		 + "private static final long serialVersionUID = 1L;\n" //$NON-NLS-1$
+		  		 + "public " + entityShortName + "() {\n" //$NON-NLS-1$ //$NON-NLS-2$
+		  		 + "}\n" //$NON-NLS-1$
 		  		 + primaryKeyDeclaration
 		  		 +"}"; 																		//$NON-NLS-1$
 		

@@ -330,7 +330,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	if (bo instanceof JavaPersistentType) {
     		return new DeleteJPAEntityFeature(this);	
     	} else if ((bo instanceof AbstractRelation) ||
-    			(bo instanceof HasReferanceRelation)) {
+    			(bo instanceof HasReferanceRelation || (bo instanceof IsARelation))) {
     		return new DeleteRelationFeature(this);
     	} else if (bo instanceof JavaPersistentAttribute) {
     		return new ClickRemoveAttributeButtonFeature(this);
@@ -399,7 +399,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	if (bo instanceof JavaPersistentType) {
     		return new RemoveJPAEntityFeature(this, true);	
     	} else if ((bo instanceof AbstractRelation) ||
-    			(bo instanceof HasReferanceRelation)){ 
+    			(bo instanceof HasReferanceRelation) || (bo instanceof IsARelation)){ 
     		return new RemoveRelationFeature(this);
     	}
     	GraphicsAlgorithm ga = pe.getGraphicsAlgorithm();

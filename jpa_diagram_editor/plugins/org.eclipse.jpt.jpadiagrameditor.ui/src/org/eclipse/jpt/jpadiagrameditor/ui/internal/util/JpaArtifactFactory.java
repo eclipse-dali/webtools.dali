@@ -86,6 +86,7 @@ import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.AddAttributeCommand;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.CreateEntityTypeHierarchy;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.DeleteAttributeCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.RenameAttributeCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.RenameEntityCommand;
@@ -1604,9 +1605,6 @@ public class JpaArtifactFactory {
 		Iterator<Connection> iter = Graphiti.getPeService().getAllConnections(cs).iterator();
 		while (iter.hasNext()) {
 			Connection conn = iter.next();
-			String v = Graphiti.getPeService().getPropertyValue(conn, IsARelation.IS_A_CONNECTION_PROP_KEY);
-			if (Boolean.TRUE.toString().equals(v))
-				continue;
 			IRemoveContext ctx = new RemoveContext(conn);
 			ctxs.add(ctx);
 		}
@@ -1622,6 +1620,7 @@ public class JpaArtifactFactory {
 			JavaPersistentType jpt) {
 		addIRelationships(fp, jpt);
 		addEmbeddedRelation(fp, jpt);
+		rearrangeIsARelations(fp);
 	}
 
 	private void addEmbeddedRelation(IJPAEditorFeatureProvider fp,
@@ -1859,6 +1858,14 @@ public class JpaArtifactFactory {
 		}
 		return packageName;
 	}
+
+	public void buildHierarchy(JavaPersistentType superclass, JavaPersistentType subclass, boolean build) {
 	
-		
+		Command createNewAttributeCommand = new CreateEntityTypeHierarchy(superclass, subclass, build);
+		try {
+			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
+		} catch (InterruptedException e) {
+			JPADiagramEditorPlugin.logError("Cannot create hierarchy of entity type " + subclass.getName(), e); //$NON-NLS-1$		
+		}
+	}
 }

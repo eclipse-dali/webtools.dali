@@ -45,6 +45,7 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
     public static final String ICON_EMBEDDED 			= PREFIX + "embedded"; 							//$NON-NLS-1$ 
     public static final String ICON_ELEMENT_COLLECTION  = PREFIX + "element-collection"; 				//$NON-NLS-1$ 
     public static final String ICON_UNMAPPED 			= PREFIX + "unmapped"; 							//$NON-NLS-1$  
+    public static final String ICON_DERIVE_JPT 			= PREFIX + "derive_jpt"; 							//$NON-NLS-1$ 
 
 
     public static final String ICON_ONE_TO_ONE_1_DIR 	= PREFIX + "one_to_one_1_dir_relation"; 		//$NON-NLS-1$
@@ -91,6 +92,7 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
         addImageFilePath(ICON_EMBEDDED, ROOT_FOLDER_FOR_IMG + "ent/embedded.gif"); 						//$NON-NLS-1$
         addImageFilePath(ICON_ELEMENT_COLLECTION, ROOT_FOLDER_FOR_IMG + "ent/element-collection.gif"); 	//$NON-NLS-1$
         addImageFilePath(ICON_UNMAPPED, ROOT_FOLDER_FOR_IMG + "ent/null-attribute-mapping.gif"); 		//$NON-NLS-1$
+        addImageFilePath(ICON_DERIVE_JPT, ROOT_FOLDER_FOR_IMG + "ent/derive_jpt.gif"); 		//$NON-NLS-1$
 
         addImageFilePath(ICON_ONE_TO_ONE_1_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-one-1-dir.gif");		//$NON-NLS-1$
         addImageFilePath(ICON_ONE_TO_MANY_1_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-many-1-dir.gif");	//$NON-NLS-1$

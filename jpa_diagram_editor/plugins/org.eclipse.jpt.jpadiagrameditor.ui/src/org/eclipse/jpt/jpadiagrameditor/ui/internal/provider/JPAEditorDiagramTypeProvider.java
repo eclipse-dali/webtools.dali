@@ -106,7 +106,6 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
     	return (JPAEditorFeatureProvider)super.getFeatureProvider();
     }
     
-	@SuppressWarnings("restriction")
 	public boolean hasToAdd() {
 		JpaProject project = getTargetJPAProject();
 		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
