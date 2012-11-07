@@ -14,8 +14,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Transform an object into the string returned by its {@link Object#toString()}
- * method. A <code>null</code> object is transformed into a <code>null</code>
- * string.
+ * method. A <code>null</code> object is transformed into <code>null</code>.
+ * 
+ * @param <T> the type of the object passed to the transformer
  */
 public final class StringObjectTransformer<T>
 	extends AbstractTransformer<T, String>

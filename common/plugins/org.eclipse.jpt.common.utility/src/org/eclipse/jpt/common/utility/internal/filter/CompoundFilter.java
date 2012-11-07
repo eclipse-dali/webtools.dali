@@ -17,6 +17,8 @@ import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 /**
  * This filter provides a simple framework for combining the behavior
  * of multiple filters.
+ * 
+ * @param <T> the type of objects to be filtered
  */
 public abstract class CompoundFilter<T>
 	implements Filter<T>, Cloneable, Serializable

@@ -14,6 +14,8 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 /**
  * This compound filter will "accept" any object that is accepted by either of
  * the wrapped filters, but not both. Both filters will always be evaluated.
+ * 
+ * @param <T> the type of objects to be filtered
  */
 public class XORFilter<T>
 	extends CompoundFilter<T>

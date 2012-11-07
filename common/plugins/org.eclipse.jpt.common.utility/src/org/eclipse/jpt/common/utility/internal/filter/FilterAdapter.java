@@ -14,6 +14,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Convenience filter that "accepts" every object.
+ * 
+ * @param <T> the type of objects to be filtered
  */
 public class FilterAdapter<T>
 	implements Filter<T>

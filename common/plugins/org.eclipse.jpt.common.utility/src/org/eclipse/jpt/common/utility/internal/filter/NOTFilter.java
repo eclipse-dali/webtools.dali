@@ -16,6 +16,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * This filter will "accept" any object that is NOT accepted by
  * the wrapped filter.
+ * 
+ * @param <T> the type of objects to be filtered
  */
 public class NOTFilter<T>
 	implements Filter<T>, Cloneable, Serializable

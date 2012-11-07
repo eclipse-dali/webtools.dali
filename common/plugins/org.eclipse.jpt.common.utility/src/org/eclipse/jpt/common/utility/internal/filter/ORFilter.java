@@ -18,6 +18,8 @@ import org.eclipse.jpt.common.utility.filter.Filter;
  * If there are wrapped filters, this filter will
  * exhibit "short-circuit" behavior; i.e. if any wrapped filter "accepts"
  * the operand, no following wrapped filters will be evaluated.
+ * 
+ * @param <T> the type of objects to be filtered
  */
 public class ORFilter<T>
 	extends CompoundFilter<T>

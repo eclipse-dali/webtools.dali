@@ -13,6 +13,11 @@ package org.eclipse.jpt.common.utility.internal.transformer;
  * Convenience transformer that returns <code>null</code> if the original
  * object is <code>null</code>; otherwise it calls {@link #transform_(Object)},
  * which is to be implemented by subclasses.
+ * 
+ * @param <T1> the type of the object passed to the transformer
+ * @param <T2> the type of the object returned by the transformer
+ * 
+ * @see TransformerAdapter
  */
 public abstract class AbstractTransformer<T1, T2>
 	extends TransformerAdapter<T1, T2>

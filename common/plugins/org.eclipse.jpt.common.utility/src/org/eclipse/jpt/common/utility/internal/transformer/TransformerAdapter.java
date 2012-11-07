@@ -15,6 +15,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 /**
  * Convenience transformer that returns <code>null</code> for every
  * transformation.
+ * 
+ * @param <T1> the type of the object passed to the transformer
+ * @param <T2> the type of the object returned by the transformer
+ * 
+ * @see AbstractTransformer
  */
 public class TransformerAdapter<T1, T2>
 	implements Transformer<T1, T2>

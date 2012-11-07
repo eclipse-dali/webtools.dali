@@ -15,6 +15,8 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 
 /**
  * This filter accepts only non-null objects.
+ * 
+ * @param <T> the type of objects to be filtered
  */
 public final class NotNullFilter<T>
 	implements Filter<T>, Serializable

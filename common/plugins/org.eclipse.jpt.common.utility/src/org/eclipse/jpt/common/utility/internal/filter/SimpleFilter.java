@@ -35,6 +35,9 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  *     }
  * };
  * </pre>
+ * 
+ * @param <T> the type of objects to be filtered
+ * @param <C> the type of the filter's criterion
  */
 public abstract class SimpleFilter<T, C>
 	implements Filter<T>, Cloneable, Serializable
