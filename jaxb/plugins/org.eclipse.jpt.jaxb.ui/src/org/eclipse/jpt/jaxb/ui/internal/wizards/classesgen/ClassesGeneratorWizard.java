@@ -42,8 +42,8 @@ import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
 
@@ -52,8 +52,8 @@ import org.eclipse.xsd.XSDSchema;
  */
 public class ClassesGeneratorWizard
 		extends Wizard
-		implements IWorkbenchWizard {
-	
+		implements INewWizard {
+
 	private IJavaProject javaProject;
 	private IFile preselectedXsdFile;
 	protected IStructuredSelection selection;

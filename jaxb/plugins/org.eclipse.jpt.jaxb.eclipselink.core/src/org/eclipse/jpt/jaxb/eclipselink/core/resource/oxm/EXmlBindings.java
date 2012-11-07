@@ -74,14 +74,10 @@ public class EXmlBindings extends ERootObjectImpl
 
 
 	/**
-	 * The default value of the '{@link #getXmlAccessorOrder() <em>Xml Accessor Order</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlAccessorOrder()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = EXmlAccessOrder.ALPHABETICAL;
+	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = null;
 
 
 	/**
