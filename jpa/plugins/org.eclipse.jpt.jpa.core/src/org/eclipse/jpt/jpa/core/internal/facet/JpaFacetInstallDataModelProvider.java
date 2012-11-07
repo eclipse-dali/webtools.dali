@@ -10,7 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.facet;
 
 import java.util.Set;
+
+import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
@@ -22,6 +25,10 @@ public class JpaFacetInstallDataModelProvider
 	extends JpaFacetDataModelProvider
 	implements JpaFacetInstallDataModelProperties
 {
+	
+	/** used for adopter product customization */
+	private static final String DISCOVER_ANNOTATED_CLASSES_DEFAULT = "discoverAnnotatedClassesDefault"; //$NON-NLS-1$
+	
 	/**
 	 * required default constructor
 	 */
@@ -121,7 +128,12 @@ public class JpaFacetInstallDataModelProvider
 	
 	@Override
 	protected Boolean getDefaultDiscoverAnnotatedClasses() {
-		return Boolean.valueOf(this.runtimeSupportsEjb30());
+		//Check for product preference first to determine default setting
+		IProduct product = Platform.getProduct();
+		String discoverAnnotatedClassesDefaultPreference = (product == null) ? null : product.getProperty(DISCOVER_ANNOTATED_CLASSES_DEFAULT);
+		//if no product preference is defined check the runtime for support, otherwise check the preference to determine override
+		return (discoverAnnotatedClassesDefaultPreference == null) ? 
+				Boolean.valueOf(this.runtimeSupportsEjb30()) : discoverAnnotatedClassesDefaultPreference.equals("true");
 	}
 	
 	
