@@ -78,8 +78,8 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 			for(JavaPersistentAttribute jpa : subclass.getAttributes()){
 				if(jpa.getMappingKey().equals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)){
 					jpa.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-				} else if(jpa.getMappingKey().equals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY)) {
-					jpa.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+				} else if(jpa.getMappingKey().equals(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
+					jpa.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 				}
 			}
 		}

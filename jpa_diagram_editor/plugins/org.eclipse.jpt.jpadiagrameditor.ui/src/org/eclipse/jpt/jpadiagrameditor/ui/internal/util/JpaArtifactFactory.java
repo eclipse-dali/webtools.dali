@@ -1062,6 +1062,7 @@ public class JpaArtifactFactory {
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError("Sleep interrupted", e); //$NON-NLS-1$		
 			}
+			pu.synchronizeWithResourceModel();
 			jpt = (JavaPersistentType)pu.getPersistentType(name);
 			cnt++;
 		}		

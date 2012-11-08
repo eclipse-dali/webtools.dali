@@ -1,17 +1,12 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
@@ -71,6 +66,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		factory = JPACreateFactory.instance();
 		jpaProject = factory.createJPA20Project(TEST_PROJECT);
 		assertNotNull(jpaProject);
+		
+		workbenchBot.closeAllEditors();
 
 		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
 				TEST_PROJECT, true);
@@ -91,7 +88,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		editorProxy.addEntityToDiagram(50, 50, "Entity1");
+		editorProxy.addEntityToDiagram(50, 50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		jpaDiagramEditor.save();
@@ -115,7 +112,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.deleteJPTViaButton(entity);
 
@@ -137,7 +134,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.deleteJPTViaMenu(entity);
 
@@ -159,7 +156,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -186,7 +183,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -216,7 +213,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.removeAttributeViaButton(entity, "attribute1");
 
@@ -238,7 +235,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.removeAttributeViaMenu(entity, "attribute1");
 
@@ -260,7 +257,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.directEditAttribute(entity, "attribute1");
 
@@ -284,7 +281,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
+		
+		String oldEntityName = editorProxy.getJPTObjectForGefElement(entity).getSimpleName();
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.moveMouse(100, 70);
@@ -293,7 +292,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		jpaDiagramEditor.directEditType("NewEntityName");
 		editorProxy.moveMouse(0, 0);
 
-		SWTBotGefEditPart oldEntity = jpaDiagramEditor.getEditPart("Entity1");
+		SWTBotGefEditPart oldEntity = jpaDiagramEditor.getEditPart(oldEntityName);
 		SWTBotGefEditPart newEntity = jpaDiagramEditor
 				.getEditPart("NewEntityName");
 		assertNotNull("The entity must be renamed!", newEntity);
@@ -320,7 +319,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 		editorProxy.moveMouse(100, 70);
 		jpaDiagramEditor.doubleClick(entity);
@@ -348,7 +347,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -429,7 +428,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
+		String oldEntityName = editorProxy.getJPTObjectForGefElement(entity).getSimpleName();
 
 		entity.click();
 		jpaDiagramEditor
@@ -455,7 +455,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		entity = jpaDiagramEditor.getEditPart("NewEntityName");
 		assertNotNull("Entity name must be changed!", entity);
 		assertNull("Entity naem must be changed!",
-				jpaDiagramEditor.getEditPart("Entity1"));
+				jpaDiagramEditor.getEditPart(oldEntityName));
 
 		entity.click();
 		editorProxy.deleteDiagramElements();
@@ -477,7 +477,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
+		String entityName = editorProxy.getJPTObjectForGefElement(entity).getSimpleName();
 		JpaArtifactFactory factory = JpaArtifactFactory.instance();
 
 		String packageName = factory
@@ -495,7 +496,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.getOkButton(moveEntityDialog).click();
 		editorProxy.waitASecond();
 
-		entity = jpaDiagramEditor.getEditPart("Entity1");
+		entity = jpaDiagramEditor.getEditPart(entityName);
 		String newEntityPackage = factory
 				.getMappedSuperclassPackageDeclaration(editorProxy
 						.getJPTObjectForGefElement(entity));
@@ -521,7 +522,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.collapseExpandJPTViaButton(entity);
 
@@ -542,7 +543,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.collapseExpandJPTViaMenu(entity);
 
@@ -563,9 +564,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(300, 50,
-				"Entity2");
+				jpaProject);
 
 		editorProxy.collapseExpandAllJPTsViaMenu(entity1, entity2);
 
@@ -588,7 +589,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.discardChanges(entity, "attribute1");
 
@@ -613,7 +614,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.removeAndDiscardChangesViaMenu(entity, "attribute1");
 
@@ -639,7 +640,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.removeAndSaveChangesViaMenu(entity, "attribute1");
 
@@ -663,7 +664,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		editorProxy.saveOnlyJPT(entity, "attribute1");
 
 		editorProxy.deleteDiagramElements();
@@ -719,7 +720,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		editorProxy.addEntityToDiagram(50, 50, "Entity1");
+		editorProxy.addEntityToDiagram(50, 50, jpaProject);
 
 		editorProxy.moveMouse(100, 100);
 		SWTBotGefEditPart primaryKeySection = jpaDiagramEditor
@@ -767,7 +768,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// editorProxy.moveMouse(jpaDiagramEditor, 100, 100);
 		SWTBotGefEditPart primaryKeySection = editorProxy.getSectionInJPT(
@@ -828,7 +829,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		workbenchBot.viewByTitle("JPA Details").close();
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
+		String entityName = editorProxy.getJPTObjectForGefElement(entity).getSimpleName();
 
 		jpaDiagramEditor.save();
 		jpaDiagramEditor
@@ -843,10 +845,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		entity.click();
 		SWTBot jpaDetailsBot = jpaDetailsView.bot();
 		SWTBotStyledText styledText = jpaDetailsBot.styledText();
-		assertEquals("Type 'Entity1' is mapped as entity.",
+		assertEquals("Type '" +entityName+ "' is mapped as entity.",
 				styledText.getText());
 		assertNotNull("Entity must be shown in the diagram!",
-				jpaDiagramEditor.getEditPart("Entity1"));
+				jpaDiagramEditor.getEditPart(entityName));
 		// assert that the entity's sections are enabled
 		assertTrue(jpaDetailsBot.label("Entity").isEnabled());
 		assertTrue(jpaDetailsBot.label("Queries").isEnabled());
@@ -861,10 +863,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.clickOnStyledText(styledText, 30);
 		editorProxy.changeMappingtype("Mapped Superclass");
 		styledText = jpaDetailsBot.styledText();
-		assertEquals("Type 'Entity1' is mapped as mapped superclass.",
+		assertEquals("Type '" + entityName + "' is mapped as mapped superclass.",
 				styledText.getText());
 		assertNotNull("Entity must be shown in the diagram!",
-				jpaDiagramEditor.getEditPart("Entity1"));
+				jpaDiagramEditor.getEditPart(entityName));
 		// assert that the mapped superclass'es sections are enabled
 		assertTrue(jpaDetailsBot.label("Mapped Superclass").isEnabled());
 		assertTrue(jpaDetailsBot.label("Queries").isEnabled());
@@ -875,10 +877,10 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.clickOnStyledText(styledText, 30);
 		editorProxy.changeMappingtype("Embeddable");
 		styledText = jpaDetailsBot.styledText();
-		assertEquals("Type 'Entity1' is mapped as embeddable.",
+		assertEquals("Type '" + entityName + "' is mapped as embeddable.",
 				styledText.getText());
 		assertNotNull("Entity must disappear from the diagram!",
-				jpaDiagramEditor.getEditPart("Entity1"));
+				jpaDiagramEditor.getEditPart(entityName));
 		// assert that the embeddable's section is enabled
 		// assertTrue(jpaDetailsBot.label("Embeddable").isEnabled());
 
@@ -886,13 +888,13 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.clickOnStyledText(styledText, 30);
 		editorProxy.changeMappingtype("Entity");
 		assertNotNull("Entity must disappear from the diagram!",
-				jpaDiagramEditor.getEditPart("Entity1"));
+				jpaDiagramEditor.getEditPart(entityName));
 
 		jpaDiagramEditor.click(0, 0);
 
-		jpaDiagramEditor.select("Entity1");
+		jpaDiagramEditor.select(entityName);
 		styledText = jpaDetailsBot.styledText();
-		assertEquals("Type 'Entity1' is mapped as entity.",
+		assertEquals("Type '" + entityName + "' is mapped as entity.",
 				styledText.getText());
 		// assert that the entity's sections are enabled
 		assertTrue(jpaDetailsBot.label("Entity").isEnabled());
@@ -932,7 +934,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		workbenchBot.viewByTitle("JPA Details").close();
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		jpaDiagramEditor.save();
 		jpaDiagramEditor
@@ -1081,9 +1083,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create One-to-One unidirectional relation from entity1 to entity2
 		editorProxy
@@ -1123,7 +1125,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create One-to-One unidirectional self relation from entity1 to
 		// entity1
@@ -1157,9 +1159,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1208,7 +1210,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create One-to-One bidirectional self relation from entity1 to entity1
 		editorProxy
@@ -1240,9 +1242,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create One-to-Many unidirectional relation from entity1 to entity2
 		editorProxy
@@ -1282,7 +1284,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create One-to-Many unidirectional self relation from entity1 to
 		// entity1
@@ -1316,9 +1318,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create Many-to-One unidirectional relation from entity1 to entity2
 		editorProxy
@@ -1358,7 +1360,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create Many-to-One unidirectional self relation from entity1 to
 		// entity1
@@ -1392,9 +1394,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1446,7 +1448,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create Many-to-Many bidirectional self relation from entity1 to
 		// entity1
@@ -1479,9 +1481,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create Many-to-Many unidirectional relation from entity1 to entity2
 		editorProxy
@@ -1521,7 +1523,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create Many-to-Many unidirectional self relation from entity1 to
 		// entity1
@@ -1555,9 +1557,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart entity2 = editorProxy.addEntityToDiagram(200, 50,
-				"Entity2");
+				jpaProject);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1606,7 +1608,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
 		// create Many-to-Many bidirectional self relation from entity1 to
 		// entity1
@@ -1636,9 +1638,9 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 
-		editorProxy.createInheritedEntity(entity1, "Entity2",
+		editorProxy.createInheritedEntity(entity1, jpaProject,
 				JptUiDetailsMessages.EntityUiProvider_linkLabel, false, false);
 
 		editorProxy.deleteDiagramElements();
@@ -1661,12 +1663,12 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart superclass = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		String superclassName = editorProxy.getJPTObjectForGefElement(
 				superclass).getSimpleName();
 
 		SWTBotGefEditPart subclass = editorProxy.addEntityToDiagram(50, 300,
-				"Entity2");
+				jpaProject);
 		String subclassName = editorProxy.getJPTObjectForGefElement(subclass)
 				.getSimpleName();
 
@@ -1730,18 +1732,6 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		editorProxy.deleteDiagramElements();
-		Utils.printFormatted(">>>>>>>>>>>> elements are deleted from the diagram.");
-
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode()
-				.getPersistenceXml().getRoot().getPersistenceUnits().iterator();
-		PersistenceUnit pu = lit.next();
-		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu
-				.getPersistentTypes().iterator();
-		while (persistentTypesIterator.hasNext()) {
-			Utils.printFormatted(">>>>>>>>>>>>>> persistent type resource must be deleted.");
-			PersistentType type = persistentTypesIterator.next();
-			type.getResource().delete(true, new NullProgressMonitor());
-		}
+		editorProxy.deleteResources(jpaProject);
 	}
 }

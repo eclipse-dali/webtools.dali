@@ -1,19 +1,10 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.Iterator;
-import java.util.ListIterator;
-
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -68,6 +59,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		factory = JPACreateFactory.instance();
 		jpaProject = factory.createJPA20Project(TEST_PROJECT);
 		assertNotNull(jpaProject);
+		
+		workbenchBot.closeAllEditors();
 
 		jpaDiagramEditor = editorProxy.openDiagramOnJPAProjectNode(
 				TEST_PROJECT, true);
@@ -87,8 +80,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
-
-		editorProxy.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+		
+		editorProxy.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		jpaDiagramEditor.save();
@@ -112,7 +105,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.deleteJPTViaButton(mappedSuperclass);
 
@@ -132,9 +125,9 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
-
+		
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.deleteJPTViaMenu(mappedSuperclass);
 
@@ -156,7 +149,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -182,20 +175,20 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addMappedSuperclassToDiagram(50,
-				50, "MpdSuprcls1");
+		SWTBotGefEditPart mappedSuperclass = editorProxy
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
 				editorProxy
 						.isSectionVisible(
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
-								entity));
+								mappedSuperclass));
 
-		editorProxy.addElementCollectionAttributeToJPT(entity, "attribute1");
+		editorProxy.addElementCollectionAttributeToJPT(mappedSuperclass, "attribute1");
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		entity.click();
+		mappedSuperclass.click();
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
 
@@ -213,7 +206,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.removeAttributeViaButton(mappedSuperclass, "attribute1");
 
@@ -235,7 +228,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.removeAttributeViaMenu(mappedSuperclass, "attribute1");
 
@@ -257,7 +250,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.directEditAttribute(mappedSuperclass, "attribute1");
 
@@ -281,7 +274,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+		String oldMpdSuprclsName = editorProxy.getJPTObjectForGefElement(mappedSuperclass).getSimpleName();
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.moveMouse(100, 70);
@@ -291,7 +285,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.moveMouse(0, 0);
 
 		SWTBotGefEditPart oldMappedSuperclass = jpaDiagramEditor
-				.getEditPart("MpdSuprcls1");
+				.getEditPart(oldMpdSuprclsName);
 		SWTBotGefEditPart newMappedSuperclass = jpaDiagramEditor
 				.getEditPart("NewEntityName");
 		assertNotNull("The entity must be renamed!", newMappedSuperclass);
@@ -318,7 +312,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 		editorProxy.moveMouse(100, 70);
 		jpaDiagramEditor.doubleClick(mappedSuperclass);
@@ -346,7 +340,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -427,7 +421,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+		String oldMappedSuperclassName = editorProxy.getJPTObjectForGefElement(mappedSuperclass).getSimpleName();
 
 		mappedSuperclass.click();
 		jpaDiagramEditor
@@ -452,8 +447,9 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		mappedSuperclass = jpaDiagramEditor.getEditPart("NewEntityName");
 		assertNotNull("Entity name must be changed!", mappedSuperclass);
+		
 		assertNull("Entity naem must be changed!",
-				jpaDiagramEditor.getEditPart("MpdSuprcls1"));
+				jpaDiagramEditor.getEditPart(oldMappedSuperclassName));
 
 		mappedSuperclass.click();
 		editorProxy.deleteDiagramElements();
@@ -475,9 +471,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
-		JpaArtifactFactory factory = JpaArtifactFactory.instance();
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+		String mappedSuperclassName = editorProxy.getJPTObjectForGefElement(mappedSuperclass).getSimpleName();
 
+		JpaArtifactFactory factory = JpaArtifactFactory.instance();
 		String packageName = factory
 				.getMappedSuperclassPackageDeclaration(editorProxy
 						.getJPTObjectForGefElement(mappedSuperclass));
@@ -493,7 +490,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.getOkButton(moveEntityDialog).click();
 		editorProxy.waitASecond();
 
-		mappedSuperclass = jpaDiagramEditor.getEditPart("MpdSuprcls1");
+		mappedSuperclass = jpaDiagramEditor.getEditPart(mappedSuperclassName);
 		String newEntityPackage = factory
 				.getMappedSuperclassPackageDeclaration(editorProxy
 						.getJPTObjectForGefElement(mappedSuperclass));
@@ -519,7 +516,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.addAttributeToJPT(mappedSuperclass, "attribute1");
 
@@ -542,7 +539,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.addAttributeToJPT(mappedSuperclass, "attribute1");
 
@@ -567,7 +564,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(200, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.discardChanges(mappedSuperclass, "attribute1");
 
@@ -593,7 +590,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.removeAndDiscardChangesViaMenu(mappedSuperclass,
 				"attribute1");
@@ -621,7 +618,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		editorProxy.removeAndSaveChangesViaMenu(mappedSuperclass, "attribute1");
 
@@ -646,7 +643,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		editorProxy.saveOnlyJPT(mappedSuperclass, "attribute1");
 
 		editorProxy.deleteDiagramElements();
@@ -667,9 +664,9 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
-
-		editorProxy.createInheritedEntity(mappedSuperclass, "Entity1",
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+		
+		editorProxy.createInheritedEntity(mappedSuperclass, jpaProject,
 				JptUiDetailsMessages.MappedSuperclassUiProvider_linkLabel,
 				true, false);
 
@@ -694,12 +691,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart superclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		String superclassName = editorProxy.getJPTObjectForGefElement(
 				superclass).getSimpleName();
 
 		SWTBotGefEditPart subclass = editorProxy.addEntityToDiagram(50, 300,
-				"Entity1");
+				jpaProject);
 		String subclassName = editorProxy.getJPTObjectForGefElement(subclass)
 				.getSimpleName();
 
@@ -739,12 +736,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart superclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 		String superclassName = editorProxy.getJPTObjectForGefElement(
 				superclass).getSimpleName();
 
 		SWTBotGefEditPart subclass = editorProxy.addEntityToDiagram(50, 300,
-				"Entity1");
+				jpaProject);
 		String subclassName = editorProxy.getJPTObjectForGefElement(subclass)
 				.getSimpleName();
 
@@ -760,7 +757,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				true, superclassName, subclass, false);
 
 		SWTBotGefEditPart secondSuperclass = editorProxy.addEntityToDiagram(
-				300, 50, "Entity2");
+				300, 50, jpaProject);
 
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateIsARelationFeature_CreateIsARelationFeatureName);
@@ -793,9 +790,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 
 		// create One-to-One unidirectional relation from the mapped superclass
 		// to entity
@@ -827,9 +825,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 
 		// create One-to-many unidirectional relation from the mapped superclass
 		// to entity1
@@ -861,9 +860,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 
 		// create Many-to-One unidirectional relation from the mapped superclass
 		// to entity1
@@ -895,9 +895,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 				.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 
 		// create Many-to-Many unidirectional relation from the mapped
 		// superclass
@@ -929,10 +930,11 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -961,10 +963,11 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -988,10 +991,11 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1014,11 +1018,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart mappedSuperclass = editorProxy
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1046,11 +1051,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart mappedSuperclass = editorProxy
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1074,10 +1080,10 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
 		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1105,11 +1111,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor
 				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart mappedSuperclass = editorProxy
+				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
-		SWTBotGefEditPart mappedSuperclass = editorProxy
-				.addMappedSuperclassToDiagram(50, 50, "MpdSuprcls1");
+				jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1124,19 +1131,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		editorProxy.deleteDiagramElements();
-		Utils.printFormatted(">>>>>>>>>>>> elements are deleted from the diagram.");
-
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode()
-				.getPersistenceXml().getRoot().getPersistenceUnits().iterator();
-		PersistenceUnit pu = lit.next();
-		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu
-				.getPersistentTypes().iterator();
-		while (persistentTypesIterator.hasNext()) {
-			Utils.printFormatted(">>>>>>>>>>>>>> persistent type resource must be deleted.");
-
-			PersistentType type = persistentTypesIterator.next();
-			type.getResource().delete(true, new NullProgressMonitor());
-		}
+		editorProxy.deleteResources(jpaProject);
 	}
+
 }

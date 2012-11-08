@@ -1,36 +1,24 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation.HasReferenceType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTBotGefTestCase;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefConnectionEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -79,10 +67,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		jpaProject = factory.createJPA20Project(TEST_PROJECT);
 		assertNotNull(jpaProject);
 
+		workbenchBot.closeAllEditors();
+
 		jpaDiagramEditor = editorProxy
 				.openDiagramOnJPAProjectNode(TEST_PROJECT, true);
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor);
-
+		
 		Thread.sleep(2000);
 	}
 
@@ -96,7 +86,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 		
-		editorProxy.addEmbeddableToDiagram(50, 50, "Embeddable1");
+		editorProxy.addEmbeddableToDiagram(50, 50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		jpaDiagramEditor.save();
@@ -119,7 +109,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 		
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.deleteJPTViaButton(embeddable);
@@ -141,7 +131,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.deleteJPTViaMenu(embeddable);
@@ -163,7 +153,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		assertFalse(
@@ -189,7 +179,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addEmbeddableToDiagram(50, 50, "Embeddable1");
+		SWTBotGefEditPart entity = editorProxy.addEmbeddableToDiagram(50, 50, jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -220,11 +210,11 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		SWTBotGefEditPart embeddable2 = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable2");
+				200, jpaProject);
 		
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(200, 50, "Entity1");
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(200, 50, jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
@@ -239,7 +229,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.testNoEmbeddedConnectionIsCreated(
 				JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, 0, embeddable2, embeddable1, false);
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -261,7 +251,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.removeAttributeViaButton(embeddable, "attribute1");
@@ -283,7 +273,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.removeAttributeViaMenu(embeddable, "attribute1");
@@ -305,7 +295,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.directEditAttribute(embeddable, "attribute1");
@@ -329,7 +319,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
+		String oldEmbeddableName = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.moveMouse(100, 70);
@@ -339,7 +330,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.moveMouse(0, 0);
 
 		SWTBotGefEditPart oldEmbeddable = jpaDiagramEditor
-				.getEditPart("Embeddable1");
+				.getEditPart(oldEmbeddableName);
 		SWTBotGefEditPart newEmbeddable = jpaDiagramEditor
 				.getEditPart("NewEntityName");
 		assertNotNull("The entity must be renamed!", newEmbeddable);
@@ -365,7 +356,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.moveMouse(100, 70);
@@ -393,7 +384,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		assertFalse(
@@ -474,7 +465,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
+		String oldEmbeddableName = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
+
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		embeddable.click();
@@ -500,8 +493,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		embeddable = jpaDiagramEditor.getEditPart("NewEntityName");
 		assertNotNull("Entity name must be changed!", embeddable);
+		
 		assertNull("Entity naem must be changed!",
-				jpaDiagramEditor.getEditPart("Embeddable1"));
+				jpaDiagramEditor.getEditPart(oldEmbeddableName));
 
 		embeddable.click();
 		editorProxy.deleteDiagramElements();
@@ -522,7 +516,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
+		String embeddableName = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		JpaArtifactFactory factory = JpaArtifactFactory.instance();
@@ -542,7 +537,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.getOkButton(moveEntityDialog).click();
 		editorProxy.waitASecond();
 
-		embeddable = jpaDiagramEditor.getEditPart("Embeddable1");
+		embeddable = jpaDiagramEditor.getEditPart(embeddableName);
 		String newEntityPackage = factory
 				.getMappedSuperclassPackageDeclaration(editorProxy
 						.getJPTObjectForGefElement(embeddable));
@@ -567,7 +562,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.addAttributeToJPT(embeddable, "attribute1");
@@ -590,7 +585,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.addAttributeToJPT(embeddable, "attribute1");
@@ -616,7 +611,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.discardChanges(embeddable, "attribute1");
@@ -642,7 +637,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.removeAndDiscardChangesViaMenu(embeddable, "attribute1");
@@ -668,7 +663,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.removeAndSaveChangesViaMenu(embeddable, "attribute1");
@@ -692,7 +687,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		editorProxy.saveOnlyJPT(embeddable, "attribute1");
@@ -715,12 +710,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable1");
+				200, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, entity, embeddable,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, entity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
@@ -744,12 +739,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable1");
+				200, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, entity,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, entity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -773,12 +768,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		SWTBotGefEditPart embeddable2 = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable2");
+				200, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddable1,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddable1,
 				embeddable2, HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
@@ -802,12 +797,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		SWTBotGefEditPart embeddable2 = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable2");
+				200, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -833,25 +828,25 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		SWTBotGefEditPart embeddable2 = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable2");
+				200, jpaProject);
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
 				2);
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(200, 50,
-				"Entity1");
+				jpaProject);
 
 		editorProxy.testNoEmbeddedConnectionIsCreated(
 				JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, 0, entity, embeddable1, true);
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, entity,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, entity,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -879,25 +874,25 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		SWTBotGefEditPart embeddable2 = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable2");
+				200, jpaProject);
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable1,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
 				2);
 
 		SWTBotGefEditPart embeddable3 = editorProxy.addEmbeddableToDiagram(200, 50,
-				"Embeddable3");
+				jpaProject);
 
 		editorProxy.testNoEmbeddedConnectionIsCreated(
 				JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, 0, embeddable3, embeddable1, true);
 
-		_testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable3,
+		editorProxy._testEmbeddedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddable3,
 				embeddable2, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -922,9 +917,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -948,9 +943,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -974,9 +969,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1000,9 +995,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1026,9 +1021,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1052,9 +1047,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1078,9 +1073,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1109,9 +1104,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1119,9 +1114,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1172,9 +1167,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1182,9 +1177,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1239,9 +1234,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1249,9 +1244,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1301,9 +1296,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1311,9 +1306,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						0, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1355,9 +1350,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1365,9 +1360,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						0, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1409,9 +1404,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1419,9 +1414,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						0, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1463,9 +1458,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1473,9 +1468,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -1527,9 +1522,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1537,9 +1532,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -1589,22 +1584,22 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		SWTBotGefEditPart embeddingEntity1 = editorProxy.addEntityToDiagram(
-				200, 50, "Entity2");
+				200, 50, jpaProject);
 
 		SWTBotGefEditPart embeddingEntity2 = editorProxy.addEntityToDiagram(
-				200, 200, "Entity3");
+				200, 200, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1647,22 +1642,22 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		SWTBotGefEditPart embeddingEntity1 = editorProxy.addEntityToDiagram(
-				200, 50, "Entity2");
+				200, 50, jpaProject);
 
 		SWTBotGefEditPart embeddingEntity2 = editorProxy.addEntityToDiagram(
-				200, 200, "Entity3");
+				200, 200, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1705,22 +1700,22 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		SWTBotGefEditPart embeddingEntity1 = editorProxy.addEntityToDiagram(
-				200, 50, "Entity2");
+				200, 50, jpaProject);
 
 		SWTBotGefEditPart embeddingEntity2 = editorProxy.addEntityToDiagram(
-				200, 200, "Entity3");
+				200, 200, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity1, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
 
-		embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity2, embeddable,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 3);
@@ -1767,9 +1762,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1777,9 +1772,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						0, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -1822,9 +1817,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1832,9 +1827,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -1874,9 +1869,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1889,9 +1884,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						1, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -1924,9 +1919,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 200,
-				"Entity1");
+				jpaProject);
 		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 
 		editorProxy
 				.testNoConnectionIsCreated(
@@ -1934,9 +1929,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						0, embeddable, entity);
 
 		SWTBotGefEditPart embeddingEntity = editorProxy.addEntityToDiagram(200,
-				50, "Entity2");
+				50, jpaProject);
 
-		embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
+		editorProxy.embedConnection(JPAEditorMessages.EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName, embeddingEntity,
 				embeddable, HasReferenceType.COLLECTION,
 				MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel,
@@ -1969,12 +1964,12 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.setJpaDiagramEditor(jpaDiagramEditor10);
 
 		SWTBotGefEditPart embeddable1 = editorProxy.addEmbeddableToDiagram(50,
-				50, "Embeddable1");
+				50, jpaProject);
 		SWTBotGefEditPart embeddable2 = editorProxy.addEmbeddableToDiagram(50,
-				200, "Embeddable2");
+				200, jpaProject);
 		
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(300, 50,
-				"Entity1");
+				jpaProject);
 		
 		boolean notAllowed = false;
 
@@ -1990,13 +1985,13 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		
 		editorProxy.testNoEmbeddedConnectionIsCreated(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, 0, embeddable1, embeddable2, false);
 				
-		embedConnection(jpaDiagramEditor10, JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, entity, embeddable1,
+		editorProxy.embedConnection(jpaDiagramEditor10, JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, entity, embeddable1,
 				HasReferenceType.SINGLE,
 				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel, 2);
 
 		SWTBotGefEditPart entity1 = editorProxy.addEntityToDiagram(300, 300,
-				"Entity2");
+				jpaProject);
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateOneToManyUniDirRelationFeature_oneToManyUniDirFeatureName,
@@ -2041,151 +2036,10 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		Utils.sayTestFinished("testJPA10WithEmbeddables");
 
 	}
-
-	/**
-	 * Test all specific for the embedded connections properties and delete the
-	 * embedded attribute and check that the connection is deleted as well.
-	 * 
-	 * @param toolEntry
-	 *            - the name of the feature in the palette
-	 * @param embeddingEntity
-	 * @param embeddable
-	 * @param refType
-	 * @param embeddedMappingKey
-	 * @param linkLabel
-	 * @param elementsInDiagramCount1
-	 */
-	private void _testEmbeddedConnection(String toolEntry,
-			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
-			HasReferenceType refType, String embeddedMappingKey,
-			String linkLabel, int elementsInDiagramCount1) {
-		List<SWTBotGefEditPart> entitiesInDiagram = jpaDiagramEditor
-				.mainEditPart().children();
-		int elementsInDiagramCount = entitiesInDiagram.size();
-		assertEquals("Editor contains " + elementsInDiagramCount
-				+ " pictogram elements.", elementsInDiagramCount1,
-				elementsInDiagramCount);
-
-		String attributeName = embedConnection(toolEntry, embeddingEntity,
-				embeddable, refType, embeddedMappingKey, linkLabel,
-				elementsInDiagramCount);
-
-		editorProxy.deleteAttributeInJPT(embeddingEntity, attributeName);
-
-		editorProxy.waitASecond();
-
-		entitiesInDiagram = jpaDiagramEditor.mainEditPart().children();
-		assertEquals("Connection must disappear.", elementsInDiagramCount,
-				entitiesInDiagram.size());
-	}
-
-	/**
-	 * Test all specific for the embedded connections properties.
-	 * 
-	 * @param toolEntry
-	 * @param embeddingEntity
-	 * @param embeddable
-	 * @param refType
-	 * @param embeddedMappingKey
-	 * @param linkLabel
-	 * @param elementsInDiagramCount
-	 * @return the name of the embedded attribute
-	 */
-	private String embedConnection(String toolEntry,
-			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
-			HasReferenceType refType, String embeddedMappingKey,
-			String linkLabel, int elementsInDiagramCount) {
-
-		jpaDiagramEditor.activateTool(toolEntry);
-		
-		jpaDiagramEditor.click(embeddingEntity);
-		jpaDiagramEditor.click(embeddable);
-
-		String attributeName = checkEmbeddedConnectionProperties(
-				embeddingEntity, embeddable, refType, embeddedMappingKey,
-				linkLabel);
-		return attributeName;
-	}
-	
-	private String embedConnection(SWTBotGefEditor gefEditor, String toolEntry,
-			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
-			HasReferenceType refType, String embeddedMappingKey,
-			String linkLabel, int elementsInDiagramCount) {
-
-		gefEditor.activateTool(toolEntry);
-		
-		gefEditor.click(embeddingEntity);
-		gefEditor.click(embeddable);
-
-		String attributeName = checkEmbeddedConnectionProperties(
-				embeddingEntity, embeddable, refType, embeddedMappingKey,
-				linkLabel);
-		return attributeName;
-	}
-
-	private String checkEmbeddedConnectionProperties(
-			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
-			HasReferenceType refType, String embeddedMappingKey,
-			String linkLabel) {
-		
-		bot.waitUntil(new ConnectionIsShown(embeddingEntity), 30000);
-
-//		List<SWTBotGefEditPart> entitiesInDiagram = jpaDiagramEditor
-//				.mainEditPart().children();
-//		assertEquals("Connection must appear.", entitiesInDiagram.size(),
-//				elementsInDiagramCount + 1);
-
-		assertFalse("The connection must appear", embeddingEntity
-				.sourceConnections().isEmpty());
-		SWTBotGefConnectionEditPart connection = embeddingEntity
-				.sourceConnections().get(0);
-		
-		JavaPersistentType emb = editorProxy.getJPTObjectForGefElement(embeddable);
-		String embAttr = JPAEditorUtil.decapitalizeFirstLetter(emb.getSimpleName());
-		
-		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
-		editParts.add(embeddingEntity);
-		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
-				embAttr, editParts);
-		
-		assertNotNull("Embedded attribute must be added.", attribute);
-
-		HasReferanceRelation rel = editorProxy
-				.getHasReferenceConnection(connection);
-		assertNotNull(rel);
-		assertEquals(refType, rel.getReferenceType());
-
-		String attributeName = editorProxy.testEmbeddedAttributeProperties(rel,
-				embeddedMappingKey);
-		assertNotNull(rel.getEmbeddedAnnotatedAttribute());
-
-		editorProxy.assertAttributeIsCorretlyMapped(attributeName, linkLabel);
-
-		JavaPersistentType parententity = (JavaPersistentType) rel
-				.getEmbeddedAnnotatedAttribute().getOwningPersistentType();
-		assertEquals("The entity must contain an embedded attribute.",
-				parententity,
-				editorProxy.getJPTObjectForGefElement(embeddingEntity));
-		assertEquals(rel.getEmbeddingEntity(),
-				editorProxy.getJPTObjectForGefElement(embeddingEntity));
-		assertEquals(rel.getEmbeddable(),
-				editorProxy.getJPTObjectForGefElement(embeddable));
-		return attributeName;
-	}
 	
 	@After
 	public void tearDown() throws Exception {
-		editorProxy.deleteDiagramElements();
-		Utils.printFormatted(">>>>>>>>>>>> elements are deleted from the diagram.");
-		
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
-		PersistenceUnit pu = lit.next();
-		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu.getPersistentTypes().iterator();
-		while(persistentTypesIterator.hasNext()){
-			Utils.printFormatted(">>>>>>>>>>>>>> persistent type resource must be deleted.");
-			PersistentType type = persistentTypesIterator.next();
-			type.getResource().delete(true, new NullProgressMonitor());
-		}
+		editorProxy.deleteResources(jpaProject);
 	}
 }
 
