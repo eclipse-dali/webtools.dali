@@ -12,6 +12,21 @@
 
 <plugin>
 
+	<!-- ***** expressions ***** -->
+
+	<extension point="org.eclipse.core.expressions.definitions">
+		<!-- A test for determining whether something has an EclipseLink JPA platform.
+			Typical usage:
+			<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+				<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+			</adapt>
+		 -->
+		<definition id="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform">
+			<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup" value="eclipselink"/>
+		</definition>
+		
+	</extension>
+
 	<!-- ***** content types ***** -->
 
 	<extension

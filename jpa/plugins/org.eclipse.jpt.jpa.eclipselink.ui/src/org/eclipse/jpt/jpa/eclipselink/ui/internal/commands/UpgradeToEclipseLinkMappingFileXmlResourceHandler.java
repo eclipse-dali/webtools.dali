@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
@@ -50,30 +49,34 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class UpgradeToEclipseLinkMappingFileHandler extends AbstractHandler {
+/**
+ * Handler used to upgrade an orm.xml file to an eclipselink orm.xml file
+ * when the selected object adapts to a <code>JptXmlResource</code>.
+ * See org.eclipse.jpt.jpa.eclipselink.ui/plugin.xml
+ */
+public class UpgradeToEclipseLinkMappingFileXmlResourceHandler 
+	extends AbstractHandler
+{
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection 	= (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 
 		for (Object selectedObject : selection.toArray()) {
-			upgradeToEclipseLinkOrm(selectedObject);
+			this.upgradeToEclipseLinkMappingFile(selectedObject);
 		}
 		return null;
 	}
 
-	protected void upgradeToEclipseLinkOrm(Object selectedObject) {
-		JptXmlResource xmlResource = PlatformTools.getAdapter(selectedObject, JptXmlResource.class);
-		if (xmlResource == null) {
-			XmlFile xmlFile = PlatformTools.getAdapter(selectedObject, XmlFile.class);
-			if (xmlFile != null) {
-				xmlResource = xmlFile.getXmlResource();
-			}
-		}
-		if (xmlResource == null) {
-			return;
-		}
+	protected void upgradeToEclipseLinkMappingFile(Object selectedObject) {
+		upgradeToEclipseLinkMappingFile(this.adaptSelection(selectedObject));
+	}
 
-		JpaProject jpaProject = this.getJpaProject(xmlResource.getFile().getProject());
+	protected JptXmlResource adaptSelection(Object selectedObject) {
+		return PlatformTools.getAdapter(selectedObject, JptXmlResource.class);
+	}
+
+	protected static void upgradeToEclipseLinkMappingFile(JptXmlResource xmlResource) {
+		JpaProject jpaProject = getJpaProject(xmlResource.getFile().getProject());
 		String fileLocation = xmlResource.getFile().getRawLocation().toOSString();
 		String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(XmlEntityMappings.CONTENT_TYPE).getVersion();
 			
@@ -114,7 +117,7 @@ public class UpgradeToEclipseLinkMappingFileHandler extends AbstractHandler {
 		}
 	}
 
-	private JpaProject getJpaProject(IProject project) {
+	private static JpaProject getJpaProject(IProject project) {
 		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 
@@ -122,11 +125,11 @@ public class UpgradeToEclipseLinkMappingFileHandler extends AbstractHandler {
 		return namespace + ' ' + schemaLocation;
 	}
 
-	protected String getNamespace() {
+	protected static String getNamespace() {
 		return EclipseLink.SCHEMA_NAMESPACE;
 	}
 
-	protected String getSchemaLocationForVersion(String schemaVersion) {
+	protected static String getSchemaLocationForVersion(String schemaVersion) {
 		return SCHEMA_LOCATIONS.get(schemaVersion);
 	}
 

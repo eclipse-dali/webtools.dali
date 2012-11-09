@@ -22,19 +22,15 @@
 	
 	<!-- ***** expressions ***** -->
 
-	<extension
-		point="org.eclipse.core.expressions.definitions">
+	<extension point="org.eclipse.core.expressions.definitions">
 		
 		<!-- 
 			A test for determining whether our current context is within the 
 			JPA Structure View                                
 		-->
-		<definition
-			id="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-			<with
-				variable="activePartId">
-				<equals
-					value="org.eclipse.jpt.ui.jpaStructureView"/>
+		<definition id="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
+			<with variable="activePartId">
+				<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
 			</with>
 		</definition>
 		
@@ -148,11 +144,8 @@
 			icon="$nl$/icons/full/eview16/jpa_perspective.gif">
 			<enablement>
 				<with variable="project">
-					<adapt
-						type="org.eclipse.core.resources.IProject">
-						<test 
-							property="org.eclipse.wst.common.project.facet.core.projectFacet"
-							value="jpt.jpa" forcePluginActivation="true"/>
+					<adapt type="org.eclipse.core.resources.IProject">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
 				</with>
 	        </enablement>
@@ -205,20 +198,16 @@
 	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
-			<contentType
-				id="org.eclipse.core.runtime.xml">
-			</contentType>
+			<contentType id="org.eclipse.core.runtime.xml"/>
 		</proposalComputer>
 		
-		<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XMl preferences  -->
+		<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XML preferences  -->
 		<proposalComputer 
 	       activate="true"
 	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer">
-			<contentType
-				id="org.eclipse.core.runtime.xml">
-			</contentType>
+			<contentType id="org.eclipse.core.runtime.xml"/>
 		</proposalComputer>
 	</extension>
 
@@ -337,13 +326,13 @@
 		
 		<command
 			id="org.eclipse.jpt.jpa.ui.convertJavaGenerators"
-			name="%convertJavaGenerators"
+			name="%moveJavaGeneratorsToXML"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands">
 		</command>        
        	
        	<command
 	        id="org.eclipse.jpt.jpa.ui.convertJavaQueries"
-			name="%convertJavaQueries"
+			name="%moveJavaQueriesToXML"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands">
   		</command>
 	
@@ -361,8 +350,7 @@
 			icon="$nl$/icons/full/obj16/jpa-file.gif"
 			id="org.eclipse.jpt.jpa.ui.internal.editors.PersistenceEditor"
 			name="%persistenceEditor">
-      		<contentTypeBinding
-				contentTypeId="org.eclipse.jpt.jpa.core.content.persistence"/>
+      		<contentTypeBinding contentTypeId="org.eclipse.jpt.jpa.core.content.persistence"/>
 		</editor>
 		
  	</extension>
@@ -374,50 +362,87 @@
 		point="org.eclipse.ui.handlers">
 		
 		<handler
+			commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa"
+			class="org.eclipse.jpt.jpa.ui.internal.commands.ConvertJavaProjectToJpaCommandHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<and>
+								<test
+									property="org.eclipse.core.resources.projectNature"
+									value="org.eclipse.jdt.core.javanature"/>
+								<not>
+									<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+								</not>
+							</and>
+						</adapt>
+					</iterate>
+				</with>
+			</activeWhen>
+		</handler>
+		
+		<handler
 			commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.UpgradeXmlFileVersionHandler">
-			<enabledWhen>
-				<iterate>
-					<or>
-						<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
-							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
-						</adapt>
-						<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
-							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
-						</adapt>
-					</or>
+			<activeWhen>
+				<iterate ifEmpty="false">
+					<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
+						<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
+					</adapt>
 				</iterate>
-			</enabledWhen>
+			</activeWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion"
+			class="org.eclipse.jpt.jpa.ui.internal.commands.UpgradeXmlResourceVersionHandler">
+			<activeWhen>
+				<iterate ifEmpty="false">
+					<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
+						<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
+					</adapt>
+				</iterate>
+			</activeWhen>
 		</handler>
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.entityMappingsAddPersistentClass"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.AddPersistentClassHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-				</reference>
-			</activeWhen>
-			<enabledWhen>
-				<and>
+				<and>			
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
 					<count value="1"/>
 					<iterate>
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.EntityMappings"/>
 					</iterate>
 				</and>
-			</enabledWhen>
+			</activeWhen>
 		</handler>
 		
 		<handler
 			commandId="org.eclipse.ui.edit.delete"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentClassHandler">
 			<activeWhen>
-				<and>
-					<with variable="activePartId">
-		    			<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
-		   			</with>
-					<iterate>
+				<and>			
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+					<iterate ifEmpty="false">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType"/>
+					</iterate>
+				</and>
+			</activeWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.ui.edit.delete"
+			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentAttributeFromXmlHandler">
+			<activeWhen>
+				<and>
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</iterate>
 				</and>
 			</activeWhen>
@@ -427,50 +452,26 @@
 			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXml"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.AddPersistentAttributeToXmlHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-				</reference>
-			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<and>
+				<and>
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+					<iterate ifEmpty="false">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 						<test property="org.eclipse.jpt.jpa.core.isMapped"/>
-					</and>
-				</iterate>
-			</enabledWhen>
+					</iterate>
+				</and>
+			</activeWhen>
 		</handler>
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXmlAndMap"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.AddPersistentAttributeToXmlAndMapHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-				</reference>
-			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<and>
+				<and>
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+					<iterate ifEmpty="false">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
-					</and>
-				</iterate>
-			</enabledWhen>
-		</handler>
-		
-		<handler
-			commandId="org.eclipse.ui.edit.delete"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentAttributeFromXmlHandler">
-			<activeWhen>
-				<and>
-					<with variable="activePartId">
-		    			<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
-		   			</with>
-					<iterate operator="and">
-						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</iterate>
 				</and>
 			</activeWhen>
@@ -480,64 +481,61 @@
 			commandId="org.eclipse.jpt.jpa.ui.persistentTypeMapAs"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.PersistentTypeMapAsHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+				<and>
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentType"/>
+					</iterate>
+				</and>
 			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentType"/>
-				</iterate>
-			</enabledWhen>
 		</handler>
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeMapAs"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.PersistentAttributeMapAsHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
-			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<and>
+				<and>
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
+					<iterate ifEmpty="false">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
-					</and>
-				</iterate>
-			</enabledWhen>
+					</iterate>
+				</and>
+			</activeWhen>
 		</handler>
 		
 		<handler
 			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaGeneratorConversionHandler"
-        	commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators"/>
+        	commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators">
+        	
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+						</adapt>
+					</iterate>
+				</with>
+			</activeWhen>
+ 		</handler>
+        	
 			
 		<handler
 			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaQueryConversionHandler"
-			commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"/>
-		
-		<handler
-			commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.ConvertJavaProjectToJpaCommandHandler">
+			commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries">
+			
 			<activeWhen>
-					<and>
-						<count value="1"/>
-						<iterate ifEmpty="false" operator="and">
-							<adapt type="org.eclipse.core.resources.IProject">
-								<and>
-									<test
-										property="org.eclipse.core.resources.projectNature"
-										value="org.eclipse.jdt.core.javanature"/>
-									<not>
-										<test 
-											property="org.eclipse.core.resources.projectNature" 
-											value="org.eclipse.wst.common.project.facet.core.nature"/>
-									</not>
-								</and>
-							</adapt>
-						</iterate>
-					</and>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+						</adapt>
+					</iterate>
+				</with>
 			</activeWhen>
-		</handler>
+ 		</handler>
 
  	</extension>
  	
@@ -559,27 +557,20 @@
 				id="org.eclipse.jpt.jpa.ui.menu.JpaTools"
 				label="%jpaMenuName">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<or>
-								<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource"/>
-								<adapt type="org.eclipse.core.resources.IProject">
-									<test
-										property="org.eclipse.wst.common.project.facet.core.projectFacet"
-										value="jpt.jpa"/>
-								</adapt>
-								<and>
-	        						<adapt type="org.eclipse.core.resources.IResource">
-										<test
-											property="org.eclipse.wst.common.project.facet.core.projectFacet"
-											value="jpt.jpa"/>
-        							</adapt>
-        							<adapt type="org.eclipse.jdt.core.IJavaElement"/>
-								</and>
-							</or>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<or>
+							<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource"/>
+							<adapt type="org.eclipse.core.resources.IProject">
+								<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+							</adapt>
+							<and>
+        						<adapt type="org.eclipse.core.resources.IResource">
+									<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+    							</adapt>
+    							<adapt type="org.eclipse.jdt.core.IJavaElement"/>
+							</and>
+						</or>
+					</iterate>
 				</visibleWhen>
 			</menu>
 			
@@ -587,14 +578,11 @@
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
-								<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
-							</adapt>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
+							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
+						</adapt>
+					</iterate>
 				</visibleWhen>
 			</command>	
 
@@ -608,14 +596,11 @@
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
-								<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
-							</adapt>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
+							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
+						</adapt>
+					</iterate>
 				</visibleWhen>
 			</command>
 			
@@ -623,70 +608,39 @@
 			<menu
 				id="org.eclipse.jpt.jpa.ui.menu.moveToXml"
 				label="%moveToXml">
-				<visibleWhen
-                  checkEnabled="false">
-               		<with
-                    	 variable="activeMenuSelection">
-                  		<iterate
-                        	ifEmpty="false">
-                     		<adapt
-                           		type="org.eclipse.core.resources.IProject">
-                   				<test
-									property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-									value="jpt.jpa"/>
+				<visibleWhen>
+               		<with variable="selection">
+	                    <count value="1"/>
+                   		<iterate>
+                     		<adapt type="org.eclipse.core.resources.IProject">
+								<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
                      		</adapt>
                   		</iterate>
-	                    <count
-	                          value="1"/>
-               		</with>
+              		</with>
             	</visibleWhen>
+            	
+ 				<!-- contributions to "Move to XML" submenu -->
+				<command
+					commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"
+					label="%convertJavaQueries">
+				</command>
+				
+				<command
+					commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators"
+					label="%convertJavaGenerators">
+				</command>
+
 			</menu>
 			
-			<separator
-				name="generate"/>
+			<separator name="generate"/>
 			
-		</menuContribution>
-		
-		<!-- contributions to "Move to XML" submenu -->
-		
-		<menuContribution
-			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.moveToXml">
-			
-			<command
-				commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"
-				label="%convertJavaQueries"
-				style="push">
-			</command>
-			
-			<command
-				commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators"
-				label="%convertJavaGenerators"
-				style="push">
-			</command>
-
 		</menuContribution>
 		
 		<!-- contributions to the project configure menu -->
 		<menuContribution locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
-			<command commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa" style="push">
-				<visibleWhen checkEnabled="false">
-					<and>
-						<count value="1"/>
-						<iterate ifEmpty="false" operator="and">
-							<adapt type="org.eclipse.core.resources.IProject">
-								<and>
-									<test
-										property="org.eclipse.core.resources.projectNature"
-										value="org.eclipse.jdt.core.javanature"/>
-									<not>
-										<test 
-											property="org.eclipse.core.resources.projectNature" 
-											value="org.eclipse.wst.common.project.facet.core.nature"/>
-									</not>
-								</and>
-							</adapt>
-						</iterate>
-					</and>
+			<command commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa">
+				<visibleWhen
+          			checkEnabled="true">
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -697,68 +651,43 @@
 
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.entityMappingsAddPersistentClass">
-				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<instanceof value="org.eclipse.jpt.jpa.core.context.orm.EntityMappings"/>
-						</iterate>
-					</with>
-				</visibleWhen>
+				<visibleWhen checkEnabled="true"/>
 			</command>
 			<command
 				commandId="org.eclipse.ui.edit.delete"
 				label="%removePersistentClass">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType"/>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType"/>
+					</iterate>
 				</visibleWhen>
 			</command>
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXml">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<and>
-								<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
-							</and>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
+					</iterate>
 				</visibleWhen>
 			</command>
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXmlAndMap">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<and>
-								<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
-							</and>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
+					</iterate>
 				</visibleWhen>
 			</command>
 			<command
 				commandId="org.eclipse.ui.edit.delete"
 				label="%removePersistentAttributeFromXml">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<and>
-								<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
-							</and>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
+						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
+					</iterate>
 				</visibleWhen>
 			</command>
 			
@@ -768,12 +697,9 @@
 				mnemonic="%mapAsMnemonic"
 				icon="$nl$/icons/full/eview16/jpa_perspective.gif">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentType"/>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentType"/>
+					</iterate>
 				</visibleWhen>
 				<dynamic
 					id="org.eclipse.jpt.jpa.ui.persistentTypeMapAs"
@@ -787,15 +713,10 @@
 				mnemonic="%mapAsMnemonic"
 				icon="$nl$/icons/full/eview16/jpa_perspective.gif">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<and>
-								<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
-							</and>
-						</iterate>
-					</with>
+					<iterate ifEmpty="false">
+						<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
+						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
+					</iterate>
 				</visibleWhen>
 				<dynamic
 					id="org.eclipse.jpt.jpa.ui.persistentAttributeMapAs"
@@ -843,10 +764,7 @@
 					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
 					<instanceof value="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel"/>
 					<adapt type="org.eclipse.core.resources.IProject"> 
-						<test 
-							property="org.eclipse.wst.common.project.facet.core.projectFacet"
-							value="jpt.jpa"
-							forcePluginActivation="true"/>
+						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
 				</or>
 			</triggerPoints>
@@ -875,10 +793,7 @@
 							<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
 						</or>
 						<adapt type="org.eclipse.core.resources.IResource">
-							<test 
-								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa"
-								forcePluginActivation="true"/>
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 						</adapt>
 					</and>
 				</enablement>
@@ -897,10 +812,7 @@
 							<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
 						</or>
 						<adapt type="org.eclipse.core.resources.IResource">
-							<test 
-								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa"
-								forcePluginActivation="true"/>
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 						</adapt>
 					</and>
 				</enablement>
@@ -918,10 +830,7 @@
 							<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
 						</or>
 						<adapt type="org.eclipse.core.resources.IResource">
-							<test 
-								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa"
-								forcePluginActivation="true"/>
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 						</adapt>
 					</and>
 				</enablement>
@@ -1078,9 +987,7 @@
 			
 			<!-- ignore the warning - see bug 247250 -->
 			<enablement>
-				<test
-					property="org.eclipse.wst.common.project.facet.core.projectFacet"
-					value="jpt.jpa"/>
+				<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 			</enablement>
 			
 			<action
@@ -1187,10 +1094,7 @@
 			class="org.eclipse.jpt.jpa.ui.internal.properties.JpaProjectPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"
-						forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -1202,10 +1106,7 @@
 			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaEntityGenPreferencePage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<test
-						forcePluginActivation="true"
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"/>
+					<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -1217,10 +1118,7 @@
 			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaProblemSeveritiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<test
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"
-						forcePluginActivation="true"/>
+					<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -1256,11 +1154,8 @@
 	
 	<!-- ***** WTP facet framework ***** -->
 
-	<extension
-		point="org.eclipse.wst.common.project.facet.ui.images">
-		
+	<extension point="org.eclipse.wst.common.project.facet.ui.images">
 		<image facet="jpt.jpa" path="icons/full/etool16/jpa_facet.gif"/>
-		
 	</extension>
 	
 	

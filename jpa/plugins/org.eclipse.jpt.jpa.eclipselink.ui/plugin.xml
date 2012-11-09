@@ -119,14 +119,10 @@
 						<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
 					</or>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<test 
-							property="org.eclipse.wst.common.project.facet.core.projectFacet"
-							value="jpt.jpa"
-							forcePluginActivation="true"/>
+						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
-					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
-						<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-							value="eclipselink"/>
+					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 					</adapt>
 				</and>
 			</enablement>
@@ -144,14 +140,10 @@
 						<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
 					</or>
 					<adapt type="org.eclipse.core.resources.IResource">
-						<test 
-							property="org.eclipse.wst.common.project.facet.core.projectFacet"
-							value="jpt.jpa"
-							forcePluginActivation="true"/>
+						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
 					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
-						<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-							value="eclipselink"/>
+						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 						<not> 
                         	<test 
                             	property="org.eclipse.jpt.jpa.core.jpaPlatform" 
@@ -208,12 +200,16 @@
 			category="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipseLinkPreferencePage">
 			<enabledWhen>
-				<adapt type="org.eclipse.core.resources.IProject">
-					<test
-						forcePluginActivation="true"
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"/>
-				</adapt>
+				<and>
+					<adapt type="org.eclipse.core.resources.IProject">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+					</adapt>
+					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
+					this will result in true and properties page will appear for a non-eclipselink platform project  -->
+					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+					</adapt>
+				</and>
 			</enabledWhen>
 		</page>
 		
@@ -231,7 +227,7 @@
 		
 		<command
 			id="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
-			name="%convertJavaConverters"
+			name="%moveJavaConvertersToXML"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands"/>
 		
 		<command
@@ -255,12 +251,10 @@
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.AddVirtualAttributeHandler">
 			<activeWhen>
 				<and>
-					<with variable="activePartId">
-		    			<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
-		   			</with>
+					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
 					<with variable="selection">
 						<count value="1"/>
-						<iterate operator="and">
+						<iterate>
 							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
 							<test property="org.eclipse.jpt.common.core.resourceTypeIsKindOf" value="org.eclipse.jpt.jpa.eclipselink.core.content.orm:2.1"/>
 						</iterate>
@@ -272,34 +266,77 @@
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.JavaConverterConversionHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+						</adapt>
+						<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
+						this will result in true and the command will appear in the Quick Access  -->
+						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+						</adapt>
+					</iterate>
+				</with>
+			</activeWhen>
 		</handler>
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.GenerateDynamicEntitiesHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
+						</adapt>
+						<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
+						this will result in true and the command will appear in the Quick Access  -->
+						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+						</adapt>
+					</iterate>
+				</with>
+			</activeWhen>
 		</handler>
 
   		<handler
-        	class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.UpgradeToEclipseLinkMappingFileHandler"
+        	class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.UpgradeToEclipseLinkMappingFileXmlResourceHandler"
         	commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
-     		<enabledWhen>
-        		<iterate>
-           			<or>
-             			<adapt
-                    		type="org.eclipse.jpt.jpa.core.context.XmlFile">
-                 			<test
-                       			property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
-                 			</test>
-              			</adapt>
-              			<adapt
-                    		type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
-                 			<test
-                       			property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
-                 			</test>
-              			</adapt>
-           			</or>
-        		</iterate>
-        	</enabledWhen>
+     		
+			<activeWhen>
+				<iterate ifEmpty="false">
+					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
+					this will result in true and the command will appear in the Quick Access  -->
+					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+					</adapt>
+					<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
+						<test property="org.eclipse.jpt.jpa.core.isGenericMappingFile"/>
+					</adapt>
+				</iterate>
+			</activeWhen>
+  		</handler>
+
+  		<handler
+        	class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.UpgradeToEclipseLinkMappingFileXmlFileHandler"
+        	commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
+     		
+			<activeWhen>
+				<iterate ifEmpty="false">
+					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
+					this will result in true and the command will appear in the Quick Access  -->
+					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+					</adapt>
+					<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
+						<test property="org.eclipse.jpt.jpa.core.isGenericMappingFile"/>
+					</adapt>
+				</iterate>
+			</activeWhen>
   		</handler>
 		
 	</extension>
@@ -311,143 +348,63 @@
 		point="org.eclipse.ui.menus">
 		
 		<!-- contributions to the "JPA Tools" submenu -->
-		<menuContribution
-			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools?after=generate">
+		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools?after=generate">
 			
-			<command
-				commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities">
-				<visibleWhen>
-					<with
-						variable="selection">
-						<and>
-							<count value="1"/>
-							<iterate>
-								<and>
-									<adapt type="org.eclipse.core.resources.IProject">
-										<test
-											property="org.eclipse.wst.common.project.facet.core.projectFacet"
-											value="jpt.jpa"/>
-									</adapt>
-									<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
-										<test 
-											property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-											value="eclipselink"/>
-									</adapt>
-								</and>
-							</iterate>
-						</and>
-					</with>
-				</visibleWhen>
+			<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities">
+				<visibleWhen checkEnabled="true"/>
 			</command>
 
-   			<command
-         		commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile"
-         		style="push">
-      			<visibleWhen>
-         			<with
-               		variable="selection">
-            			<iterate
-                     ifEmpty="false">
-               				<adapt
-                     			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
-                  				<test
-                        			property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-                        			value="eclipselink">
-                  					</test>
-               				</adapt>
-               				<adapt
-                     			type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
-                  				<test
-                        			property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
-                  				</test>
-               				</adapt>
-            			</iterate>
-         			</with>
-      			</visibleWhen>
-   			</command>
+   			<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
+	   			<visibleWhen>
+					<iterate ifEmpty="false">
+						<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
+							<test property="org.eclipse.jpt.jpa.core.isGenericMappingFile"/>
+	           			</adapt>
+						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+						</adapt>
+					</iterate>
+				</visibleWhen>
+  			</command>
 			
 		</menuContribution>
 		
 		<!-- contributions to objects in the JPA structure view -->
-		<menuContribution
-			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
+		<menuContribution locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
 			
-			<command
-				commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
-				<visibleWhen>
-					<with variable="selection">
-						<count value="1"/>
-						<iterate operator="and">
-							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
-							<test property="org.eclipse.jpt.common.core.resourceTypeIsKindOf" value="org.eclipse.jpt.jpa.eclipselink.core.content.orm:2.1"/>
-						</iterate>
-					</with>
-				</visibleWhen>
+			<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
+				<visibleWhen checkEnabled="true"/>
 			</command>
 		</menuContribution>
 		
         <!-- contributions to "Move to XML" submenu-->
-        <menuContribution
-			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.moveToXml">
+        <menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.moveToXml">
 			
-			<command
-				commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters">	
-				<visibleWhen
-					checkEnabled="false">
-					<with
-						variable="activeMenuSelection">
-						<iterate 
-							ifEmpty="false"
-							operator="and">
-							<adapt
-								type="org.eclipse.core.resources.IProject">
-								<test
-									property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-									value="jpt.jpa"/>
-							</adapt>
-							<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
-								<test
-									property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-									value="eclipselink"/>
-							</adapt>
-						</iterate>
-					</with>
-				</visibleWhen>
+			<command 
+				commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
+         		label="%convertJavaConverters">	
+				<visibleWhen checkEnabled="true"/>
 			</command>
 			
 		</menuContribution>
 
 		<!-- contributions for any popup -->
-        <menuContribution
-              locationURI="popup:org.eclipse.ui.popup.any">
-           	  <command
-                  commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
-              	  <visibleWhen>
-                 	<with
-                       variable="selection">
-                       <iterate
-                             ifEmpty="false">
-                       	   <adapt
-                               type="org.eclipse.jpt.jpa.core.context.XmlFile">
-                          	   <test
-                                   property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
-                          	   </test>
-                       	   </adapt>
-                           <adapt
-                                 type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
-                              <test
-                                    property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
-                                    value="eclipselink">
-                              </test>
-                           </adapt>
-                       </iterate>
-                    </with>
-                 </visibleWhen>
-              </command>
+        <menuContribution locationURI="popup:org.eclipse.ui.popup.any">
+        	<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
+        		<visibleWhen>
+        			<iterate ifEmpty="false">
+        				<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
+        					<test property="org.eclipse.jpt.jpa.core.isGenericMappingFile"/>
+                   	   	</adapt>
+						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
+						</adapt>
+					</iterate>
+				</visibleWhen>
+			</command>
               
          </menuContribution>
-	
-	
+         
 	 </extension>
 	
 </plugin>

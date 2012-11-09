@@ -87,11 +87,8 @@
 		<proposalCategory icon="icons/full/etool16/jaxb_facet.gif">
 			<enablement>
 				<with variable="project">
-					<adapt
-						type="org.eclipse.core.resources.IProject">
-						<test 
-							property="org.eclipse.wst.common.project.facet.core.projectFacet"
-							value="jpt.jaxb" forcePluginActivation="true"/>
+					<adapt type="org.eclipse.core.resources.IProject">
+						<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
 					</adapt>
 				</with>
 			</enablement>
@@ -187,20 +184,15 @@
 				id="org.eclipse.jpt.jaxb.ui.menu.jaxb"
 				label="%jaxbMenu">
 				<visibleWhen>
-					<with
-						variable="selection">
+					<with variable="selection">
 						<iterate ifEmpty="false">
 							<!-- bug 377809 test for jaxb facet: if o.e.jpt.jaxb.core plug-in not active, 
 							     the JaxbPackage AdapterFactory will not be called and the expression evaluates to true,
 							     that causes the JAXB menu to appear for JPA project packages -->
-							<and>
-	        					<adapt type="org.eclipse.core.resources.IResource">
-									<test
-										property="org.eclipse.wst.common.project.facet.core.projectFacet"
-										value="jpt.jaxb"/>
-        						</adapt>
- 								<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
-							</and>
+	        				<adapt type="org.eclipse.core.resources.IResource">
+								<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+        					</adapt>
+ 							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
 						</iterate>
 					</with>
 				</visibleWhen>
@@ -219,8 +211,7 @@
 			<command
 				commandId="org.eclipse.jpt.jaxb.ui.command.createPackageInfo">
 				<visibleWhen>
-					<with
-						variable="selection">
+					<with variable="selection">
 						<iterate ifEmpty="false">
 							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
 								<test 
@@ -252,32 +243,22 @@
 			
 			<triggerPoints>
 				<or>
-					<instanceof
-						value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
-					<and>
-						<adapt type="org.eclipse.core.resources.IProject"> 
-							<test 
-								forcePluginActivation="true"
-								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jaxb" />
-						</adapt>
-					</and>
+					<instanceof value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
+					<adapt type="org.eclipse.core.resources.IProject"> 
+						<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
+					</adapt>
 				</or>
-			</triggerPoints>x
+			</triggerPoints>
 			
 			<possibleChildren>
-				<instanceof
-					value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
+				<instanceof value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
 			</possibleChildren>
 			
 			<actionProvider
 				class="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorActionProvider"
 				id="org.eclipse.jpt.jaxb.ui.jaxbActionProvider">
 				<enablement>
-					<and>
-						<instanceof
-							value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
-					</and>
+					<instanceof value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
 				</enablement>
 			</actionProvider>
 			
@@ -360,10 +341,7 @@
 			class="org.eclipse.jpt.jaxb.ui.internal.properties.JaxbProjectPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<test 
-						forcePluginActivation="true"
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jaxb"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -375,10 +353,7 @@
 			class="org.eclipse.jpt.jaxb.ui.internal.properties.JaxbSchemasPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-					<test 
-						forcePluginActivation="true"
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jaxb"/>
+					<reference definitionId="org.eclipse.jpt.jaxb.reference.hasJaxbFacet"/>
 				</adapt>
 			</enabledWhen>
 		</page>

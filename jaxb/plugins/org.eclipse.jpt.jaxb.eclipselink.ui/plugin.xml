@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <!--
-  Copyright (c) 2007, 2011 Oracle. All rights reserved.
+  Copyright (c) 2007, 2012 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -79,20 +79,8 @@
 				"Add EclipseLink JAXB property" menu item for any JaxbPackage
 				that does not already have one
 			-->
-			<command
-				commandId="org.eclipse.jpt.jaxb.eclipselink.ui.command.addEclipseLinkJaxbProperty">
-				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
-							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
-								<test 
-									property="org.eclipse.jpt.jaxb.eclipselink.core.hasEclipseLinkJaxbProperty" 
-									value="false"/>
-							</adapt>
-						</iterate>
-					</with>
-				</visibleWhen>
+			<command commandId="org.eclipse.jpt.jaxb.eclipselink.ui.command.addEclipseLinkJaxbProperty">
+				<visibleWhen checkEnabled="true"/>
 			</command>
 			
 		</menuContribution>
