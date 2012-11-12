@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -26,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.LinkedStack;
-import org.eclipse.jpt.common.utility.io.JptPrintWriter;
+import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -38,7 +37,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 
@@ -222,7 +220,7 @@ public class GenericMetamodelSynchronizer
 		BodySourceWriter bodySourceWriter = this.buildBodySourceWriter(memberTypeTree);
 
 		StringWriter sw = new StringWriter(bodySourceWriter.getLength() + 2000);
-		JptPrintWriter pw = new JptPrintWriter(sw, this.getLineSeparator());
+		IndentingPrintWriter pw = new IndentingPrintWriter(sw, this.getLineSeparator());
 		this.printPackageAndImportsOn(pw, bodySourceWriter);
 		pw.print(bodySourceWriter.getSource());
 		return sw.toString();
@@ -407,7 +405,7 @@ public class GenericMetamodelSynchronizer
 
 	// ********** package and imports **********
 
-	protected void printPackageAndImportsOn(JptPrintWriter pw, BodySourceWriter bodySourceWriter) {
+	protected void printPackageAndImportsOn(IndentingPrintWriter pw, BodySourceWriter bodySourceWriter) {
 		if (this.getPackageName().length() != 0) {
 			pw.print("package ");
 			pw.print(this.getPackageName());

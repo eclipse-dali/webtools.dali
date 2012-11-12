@@ -9,11 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.io;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
- * Extend {@link JptPrintWriter} to automatically indent new lines.
+ * Extend {@link PrintWriter} to automatically indent new lines and
+ * support using a line separator other than the current system default
+ * (i.e. the string returned from a call to
+ * <code>System.getProperty("line.separator")</code>).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,60 +28,91 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public class IndentingPrintWriter
-	extends JptPrintWriter
+	extends PrintWriter
 {
 	private final String indent;
-	private int indentLevel;
-	private boolean needsIndent;
+	private volatile int indentLevel;
+    private final String lineSeparator;
+	private volatile boolean needsIndent = true;
+
 
 	public static String DEFAULT_INDENT = "\t"; //$NON-NLS-1$
 
 
 	/**
-	 * Construct a writer that indents with tabs.
+	 * Construct a writer that indents with tabs and uses the current system
+	 * default line separator.
 	 */
 	public IndentingPrintWriter(Writer out) {
 		this(out, DEFAULT_INDENT, StringTools.CR);
 	}
 
 	/**
-	 * Construct a writer that indents with the specified string.
+	 * Construct a writer that indents with the specified string and uses the
+	 * current system default line separator.
 	 */
 	public IndentingPrintWriter(Writer out, String indent) {
 		this(out, indent, 0, StringTools.CR);
 	}
-	
+
+	/**
+	 * Construct a writer that indents with the specified string and uses the
+	 * specified line separator.
+	 */
 	public IndentingPrintWriter(Writer out, String indent, String lineSeparator) {
 		this(out, indent, 0, lineSeparator);
 	}
 
 	/**
-	 * Construct a writer that indents with the specified string
-	 * and begins with the specified indent level.
+	 * Construct a writer that indents with the specified string,
+	 * begins with the specified indent level, and uses the
+	 * current system default line separator.
 	 */
 	public IndentingPrintWriter(Writer out, String indent, int initialIndentLevel) {
 		this(out, indent, initialIndentLevel, StringTools.CR);
 	}
-	
+
+	/**
+	 * Construct a writer that indents with the specified string,
+	 * begins with the specified indent level, and uses the
+	 * specified line separator.
+	 */
 	public IndentingPrintWriter(Writer out, String indent, int initialIndentLevel, String lineSeparator) {
-		super(out, lineSeparator);
-		if (indent == null) {
+		super(out);
+		if ((indent == null) || (lineSeparator == null)) {
 			throw new NullPointerException();
 		}
 		this.indent = indent;
 		this.indentLevel = initialIndentLevel;
-		this.needsIndent = true;
+		this.lineSeparator = lineSeparator;
 	}
 
 	/**
-	 * Set flag so following line is indented.
 	 */
 	@Override
 	public void println() {
-		synchronized (this.lock) {
-			super.println();
-			this.needsIndent = true;
+		try {
+			synchronized (this.lock) {
+				this.println_();
+			}
+		} catch (InterruptedIOException ex) {
+			Thread.currentThread().interrupt();
+		} catch (IOException ex) {
+			this.setError();
 		}
+	}
+
+	/**
+	 * Print the appropriate line separator and
+	 * set flag so following line is indented.
+	 * Pre-condition: synchronized
+	 */
+	private void println_() throws IOException {
+		if (this.out == null) {
+			throw new IOException("Stream closed"); //$NON-NLS-1$
+		}
+		this.out.write(this.lineSeparator);
+		this.needsIndent = true;
 	}
 
 	/**
@@ -176,5 +213,4 @@ public class IndentingPrintWriter
 			return old;
 		}
 	}
-
 }
