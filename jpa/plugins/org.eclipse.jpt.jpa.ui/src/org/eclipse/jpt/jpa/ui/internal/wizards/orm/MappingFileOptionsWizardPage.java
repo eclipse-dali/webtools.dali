@@ -100,7 +100,7 @@ public class MappingFileOptionsWizardPage
 		data = new GridData();
 		data.horizontalIndent = 10;
 		this.persistenceUnitLabel.setLayoutData(data);
-		this.persistenceUnitLabel.setEnabled(false);
+		this.persistenceUnitLabel.setEnabled(getDataModel().isPropertyEnabled(ADD_TO_PERSISTENCE_UNIT));
 		this.addToPersistenceUnitButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				persistenceUnitLabel.setEnabled(addToPersistenceUnitButton.getSelection());
