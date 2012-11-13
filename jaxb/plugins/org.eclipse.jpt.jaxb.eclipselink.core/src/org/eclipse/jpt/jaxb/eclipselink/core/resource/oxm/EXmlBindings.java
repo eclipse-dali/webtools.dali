@@ -909,7 +909,7 @@ public class EXmlBindings extends ERootObjectImpl
 	
 	// ***** version -> schema location mapping *****
 	
-	private static HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
+	private static final HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
 	
 	private static HashMap<String, String> buildSchemaLocations() {
 		HashMap<String, String> map = new HashMap<String, String>();
