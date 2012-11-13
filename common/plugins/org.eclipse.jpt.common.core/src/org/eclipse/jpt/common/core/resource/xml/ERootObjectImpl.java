@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
@@ -371,7 +372,11 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	protected abstract HashMap<String, String> schemaLocations();
 	
 	protected String getSchemaLocationForVersion(String version) {
-		return schemaLocations().get(version);
+		String schemaLocation = schemaLocations().get(version);
+		if (schemaLocation == null) {
+			JptCommonCorePlugin.instance().logError(new Throwable("No schema location defined for version: " + version));
+		}
+		return schemaLocation;
 	}
 	
 	private static String buildSchemaLocationString(String namespace, String schemaLocation) {
