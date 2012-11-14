@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.commands;
 
-import static org.eclipse.wst.common.project.facet.core.util.internal.FileUtil.FILE_DOT_PROJECT;
-import static org.eclipse.wst.common.project.facet.core.util.internal.FileUtil.validateEdit;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -79,42 +77,60 @@ public class ConvertJavaProjectToJpaCommandHandler
 		
 		private final IProject project;
 		private IFacetedProjectWorkingCopy fprojwc;
-		
+
 		public static void runInProgressDialog(Shell shell, IProject project) {
+			final boolean startedWithFacetNature = hasFacetNature(project);
 			final ConvertJavaProjectToJpaRunnable runnable 
 					= new ConvertJavaProjectToJpaRunnable(project);
-			
+
 			try {
-				new ProgressMonitorDialog(shell).run(true, true, runnable);
+				try {
+					new ProgressMonitorDialog(shell).run(true, true, runnable);
+				}
+				catch (InvocationTargetException ex) {
+					JptJpaUiPlugin.instance().logError(ex);
+					return;
+				}
 				
 				ModifyFacetedProjectWizard wizard 
 						= new ModifyFacetedProjectWizard(runnable.getFacetedProjectWorkingCopy());
 				WizardDialog dialog = new WizardDialog(shell, wizard);
 				
 				if (dialog.open() == Window.CANCEL) {
+					//throw an InterruptedException since this is also what the above
+					//ProgressMonitorDialog will do if the user cancels that.
 					throw new InterruptedException();
 				}
 			}
-			catch (InvocationTargetException ex) {
-				JptJpaUiPlugin.instance().logError(ex);
-			}
 			catch(InterruptedException ex) {
+				//No need to log since InterruptedException is thrown when the user cancels:
+				//1. the ProgressMonitorDialog for converting to a faceted project
+				//2. the ModifyFacetedProjectWizard
+				if (!startedWithFacetNature && hasFacetNature(project)) {
+					//only remove the facet nature if the project did not have it to begin with
+					//and it has already been added before cancellation
+					removeFacetNature(project);
+				}
 				Thread.currentThread().interrupt();
-				JptJpaUiPlugin.instance().logError(ex);
-				removeFacetNature(project);
 			}
 		}
-		
-		
-		public static void removeFacetNature(IProject project) {
+
+		protected static boolean hasFacetNature(IProject project) {
+			try {
+				return project.getDescription().hasNature(FacetedProjectNature.NATURE_ID);
+			}
+			catch (CoreException ce) {
+				JptJpaUiPlugin.instance().logError(ce);
+			}
+			return false;
+		}
+
+		protected static void removeFacetNature(IProject project) {
 			try {
 				IProjectDescription description = project.getDescription();
 				String[] prevNatures = description.getNatureIds();
 				String[] newNatures = ArrayTools.remove(prevNatures, FacetedProjectNature.NATURE_ID);
-				description.setNatureIds( newNatures );
-				
-				validateEdit( project.getFile( FILE_DOT_PROJECT ) );
-		            
+				description.setNatureIds(newNatures);
 				project.setDescription(description, null);
 			}
 			catch (CoreException ce) {
@@ -131,7 +147,6 @@ public class ConvertJavaProjectToJpaCommandHandler
 				throws InvocationTargetException, InterruptedException {
 			
 			monitor.beginTask(JptUiMessages.convertToJpa_convertingProject, 1000);
-			
 			try {
 				IProgressMonitor createProgressMonitor = new SubProgressMonitor(monitor, 100);
 				IFacetedProject fproj = ProjectFacetsManager.create(this.project, true, createProgressMonitor);
@@ -140,17 +155,15 @@ public class ConvertJavaProjectToJpaCommandHandler
 					throw new InterruptedException();
 				}
 				
-				monitor.setTaskName(JptUiMessages.convertToJpa_detectingTechnologies);
-				
-				IProgressMonitor detectProgressMonitor = new SubProgressMonitor(monitor, 800);
+				monitor.setTaskName(JptUiMessages.convertToJpa_detectingTechnologies);				
+				IProgressMonitor detectProgressMonitor = new SubProgressMonitor(monitor, 400);
 				this.fprojwc = fproj.createWorkingCopy();
 				this.fprojwc.detect(detectProgressMonitor);
-				
-				if (! this.fprojwc.hasProjectFacet(JpaProject.FACET)) {
-					this.fprojwc.addProjectFacet(JpaProject.FACET.getDefaultVersion());
-				}
+
+				monitor.setTaskName(JptUiMessages.convertToJpa_installingJpaFacet);
+				this.fprojwc.addProjectFacet(JpaProject.FACET.getDefaultVersion());
 			}
-			catch(CoreException e) {
+			catch (CoreException e) {
 				throw new InvocationTargetException(e);
 			}
 			finally {

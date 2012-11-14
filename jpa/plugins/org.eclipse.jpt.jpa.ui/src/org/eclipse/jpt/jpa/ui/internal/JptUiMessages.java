@@ -46,6 +46,7 @@ public class JptUiMessages {
 	public static String AddPersistentClassDialog_title;
 	public static String convertToJpa_convertingProject;
 	public static String convertToJpa_detectingTechnologies;
+	public static String convertToJpa_installingJpaFacet;
 	public static String DatabaseSchemaWizardPage_title;
 	public static String DatabaseSchemaWizardPage_desc;
 	public static String DatabaseSchemaWizardPage_schemaSettings;
