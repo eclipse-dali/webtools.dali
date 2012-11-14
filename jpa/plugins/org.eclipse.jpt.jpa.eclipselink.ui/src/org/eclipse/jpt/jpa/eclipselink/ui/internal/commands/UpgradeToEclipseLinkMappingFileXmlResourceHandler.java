@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.commands;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,13 +33,6 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.w3c.dom.Document;
@@ -130,22 +122,10 @@ public class UpgradeToEclipseLinkMappingFileXmlResourceHandler
 	}
 
 	protected static String getSchemaLocationForVersion(String schemaVersion) {
-		return SCHEMA_LOCATIONS.get(schemaVersion);
+		String schemaLocation =  XmlEntityMappings.SCHEMA_LOCATIONS.get(schemaVersion);
+		if (schemaLocation == null) {
+			JptJpaEclipseLinkUiPlugin.instance().logError(new Throwable("No schema location defined for version: " + schemaVersion)); //$NON-NLS-1$
+		}
+		return schemaLocation;
 	}
-
-	private static HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
-
-	private static HashMap<String, String> buildSchemaLocations() {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(EclipseLink.SCHEMA_VERSION, EclipseLink.SCHEMA_LOCATION);
-		map.put(EclipseLink1_1.SCHEMA_VERSION, EclipseLink1_1.SCHEMA_LOCATION);
-		map.put(EclipseLink1_2.SCHEMA_VERSION, EclipseLink1_2.SCHEMA_LOCATION);
-		map.put(EclipseLink2_0.SCHEMA_VERSION, EclipseLink2_0.SCHEMA_LOCATION);
-		map.put(EclipseLink2_1.SCHEMA_VERSION, EclipseLink2_1.SCHEMA_LOCATION);
-		map.put(EclipseLink2_2.SCHEMA_VERSION, EclipseLink2_2.SCHEMA_LOCATION);
-		map.put(EclipseLink2_3.SCHEMA_VERSION, EclipseLink2_3.SCHEMA_LOCATION);
-		map.put(EclipseLink2_4.SCHEMA_VERSION, EclipseLink2_4.SCHEMA_LOCATION);
-		return map;
-	}
-
 }

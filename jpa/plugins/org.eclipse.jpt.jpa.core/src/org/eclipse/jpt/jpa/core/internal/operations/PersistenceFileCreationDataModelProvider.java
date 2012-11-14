@@ -11,10 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.operations;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 public class PersistenceFileCreationDataModelProvider
@@ -46,21 +43,6 @@ public class PersistenceFileCreationDataModelProvider
 	
 	
 	// **************** validation *********************************************
-	
-	@Override
-	protected boolean fileVersionSupported(String fileVersion) {
-		return (fileVersion.equals(JPA.SCHEMA_VERSION)
-				|| fileVersion.equals(JPA2_0.SCHEMA_VERSION));
-	}
-	
-	@Override
-	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
-		if (jpaFacetVersion.equals(JpaProject.FACET_VERSION_STRING)
-				&& fileVersion.equals(JPA2_0.SCHEMA_VERSION)) {
-			return false;
-		}
-		return true;
-	}
 
 	@Override
 	protected boolean platformIsSupported(JpaPlatform jpaPlatform) {

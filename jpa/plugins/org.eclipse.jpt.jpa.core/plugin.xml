@@ -188,6 +188,11 @@
 			content-type="org.eclipse.jpt.jpa.core.content.orm"
 			version="2.0"/>
 
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.orm_2_1"
+			content-type="org.eclipse.jpt.jpa.core.content.orm"
+			version="2.1"/>
+
 	</extension>
 
 
@@ -282,6 +287,14 @@
 	        factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaPlatformFactory"
 	        group="generic"
 	        jpaFacetVersion="2.0"
+	        default="false"/>
+
+	  <jpaPlatform
+	        id="generic2_1"
+	        label="%GENERIC_2_1_PLATFORM_LABEL"
+	        factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaPlatformFactory"
+	        group="generic"
+	        jpaFacetVersion="2.1"
 	        default="false"/>
 		
 	</extension>
@@ -530,6 +543,12 @@
 		</project-facet-version>
 		
 		<project-facet-version facet="jpt.jpa" version="2.0">
+			<constraint>
+				<requires facet="java" version="[5.0"/>
+			</constraint>
+		</project-facet-version>
+		
+		<project-facet-version facet="jpt.jpa" version="2.1">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>

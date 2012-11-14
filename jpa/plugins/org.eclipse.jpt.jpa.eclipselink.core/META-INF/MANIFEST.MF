@@ -62,4 +62,5 @@ Export-Package: org.eclipse.jpt.jpa.eclipselink.core,
  org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1,
  org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2,
  org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3,
- org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4
+ org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4,
+ org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5

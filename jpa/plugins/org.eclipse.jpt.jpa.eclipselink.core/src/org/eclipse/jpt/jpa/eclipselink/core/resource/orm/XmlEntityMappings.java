@@ -59,6 +59,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLink2_5;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -1343,7 +1344,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 
 	// ********** version -> schema location mapping **********
 	
-	private static HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
+	public static final HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
 	
 	private static HashMap<String, String> buildSchemaLocations() {
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -1355,6 +1356,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		map.put(EclipseLink2_2.SCHEMA_VERSION, EclipseLink2_2.SCHEMA_LOCATION);
 		map.put(EclipseLink2_3.SCHEMA_VERSION, EclipseLink2_3.SCHEMA_LOCATION);
 		map.put(EclipseLink2_4.SCHEMA_VERSION, EclipseLink2_4.SCHEMA_LOCATION);
+		map.put(EclipseLink2_5.SCHEMA_VERSION, EclipseLink2_5.SCHEMA_LOCATION);
 		return map;
 	}
 	

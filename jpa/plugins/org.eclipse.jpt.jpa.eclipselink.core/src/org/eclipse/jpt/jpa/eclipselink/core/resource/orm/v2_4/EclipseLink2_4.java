@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 
 
 @SuppressWarnings("nls")
 public interface EclipseLink2_4
-	extends EclipseLink2_2
+	extends EclipseLink2_3
 {
 	String SCHEMA_NAMESPACE = EclipseLink.SCHEMA_NAMESPACE;
 	String SCHEMA_LOCATION = "http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd";

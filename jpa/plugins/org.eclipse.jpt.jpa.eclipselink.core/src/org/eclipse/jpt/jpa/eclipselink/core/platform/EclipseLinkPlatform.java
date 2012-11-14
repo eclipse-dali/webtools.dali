@@ -47,6 +47,8 @@ public class EclipseLinkPlatform {
 	
 	public static final JpaPlatformConfig VERSION_2_4 = getJpaPlatformConfig("eclipselink2_4"); //$NON-NLS-1$
 	
+	public static final JpaPlatformConfig VERSION_2_5 = getJpaPlatformConfig("eclipselink2_5"); //$NON-NLS-1$
+
 	private static JpaPlatformGroupConfig getJpaPlatformGroupConfig(String platformGroupID) {
 		return getJpaPlatformManager().getJpaPlatformGroupConfig(platformGroupID);
 	}

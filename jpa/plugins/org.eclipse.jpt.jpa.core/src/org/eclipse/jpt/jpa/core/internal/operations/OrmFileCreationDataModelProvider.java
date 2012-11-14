@@ -26,9 +26,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.AccessType;
-import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -192,21 +190,6 @@ public class OrmFileCreationDataModelProvider
 		}
 		
 		return Status.OK_STATUS;
-	}
-	
-	@Override
-	protected boolean fileVersionSupported(String fileVersion) {
-		return (fileVersion.equals(JPA.SCHEMA_VERSION)
-				|| fileVersion.equals(JPA2_0.SCHEMA_VERSION));
-	}
-	
-	@Override
-	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
-		if (jpaFacetVersion.equals(JpaProject.FACET_VERSION_STRING)
-				&& fileVersion.equals(JPA2_0.SCHEMA_VERSION)) {
-			return false;
-		}
-		return true;
 	}
 	
 	protected IStatus validatePersistenceUnit() {

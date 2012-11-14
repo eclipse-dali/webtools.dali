@@ -108,6 +108,13 @@
 			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_0"/>
 		</resource-type>
 
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_2_5"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="2.5">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_1"/>
+		</resource-type>
+
 	</extension>
 
 
@@ -175,6 +182,13 @@
 	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
+		
+		<jpaPlatform
+	        id="eclipselink2_5"
+	        label="%ECLIPSELINK2_5_x_PLATFORM"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5JpaPlatformFactory"
+	        group="eclipselink"
+			jpaFacetVersion="2.1"/>
 	</extension>
 	
 	

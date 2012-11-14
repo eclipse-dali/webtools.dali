@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -1039,6 +1040,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_LOCATION);
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
+		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_LOCATION);
 		return map;
 	}
 	

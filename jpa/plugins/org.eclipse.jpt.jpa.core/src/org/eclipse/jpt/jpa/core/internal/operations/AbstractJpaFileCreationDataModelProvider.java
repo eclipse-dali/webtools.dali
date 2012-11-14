@@ -13,7 +13,6 @@ import java.util.Set;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
@@ -27,8 +26,6 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public abstract class AbstractJpaFileCreationDataModelProvider
 	extends AbstractJptFileCreationDataModelProvider
@@ -88,23 +85,6 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	// **************** validation *********************************************
 	
 	@Override
-	public IStatus validate(String propertyName) {
-		IStatus status = super.validate(propertyName);
-		if (! status.isOK()) {
-			return status;
-		}
-		if (propertyName.equals(CONTAINER_PATH)
-				|| propertyName.equals(VERSION)) {
-			status = validateVersion();
-		}
-		if (! status.isOK()) {
-			return status;
-		}
-		
-		return status;
-	}
-	
-	@Override
 	protected IStatus validateContainerPathAndFileName() {
 		IStatus status = super.validateContainerPathAndFileName();
 		if (! status.isOK()) {
@@ -126,31 +106,6 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		}
 		return Status.OK_STATUS;
 	}
-	
-	protected IStatus validateVersion() {
-		if (getProject() == null) {
-			return Status.OK_STATUS;
-		}
-		String fileVersion = getStringProperty(VERSION);
-		if (! fileVersionSupported(fileVersion)) {
-			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_FILE_VERSION_NOT_SUPPORTED);
-		}
-		try {
-			String jpaFacetVersion = getJpaFacetVersion(getProject());
-			if (! fileVersionSupportedForFacetVersion(fileVersion, jpaFacetVersion)) {
-				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_FILE_VERSION_NOT_SUPPORTED_FOR_FACET_VERSION);
-			}
-		}
-		catch (CoreException ce) {
-			// project should have been validated already, so assume that this will never get hit
-			// fall through to final return
-		}
-		return Status.OK_STATUS;
-	}
-	
-	protected abstract boolean fileVersionSupported(String fileVersion);
-	
-	protected abstract boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion);
 	
 	
 	// **************** helper methods *****************************************
@@ -174,11 +129,6 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	
 	protected JpaProject.Reference getJpaProjectReference(IProject project) {
 		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
-	}
-	
-	protected String getJpaFacetVersion(IProject project) throws CoreException {
-		IFacetedProject fproj = ProjectFacetsManager.create(project);
-		return fproj.getProjectFacetVersion(JpaProject.FACET).getVersionString();
 	}
 	
 	protected boolean hasSupportedPlatform(IProject project) {

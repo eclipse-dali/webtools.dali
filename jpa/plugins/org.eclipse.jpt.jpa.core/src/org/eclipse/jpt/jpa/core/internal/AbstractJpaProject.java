@@ -84,6 +84,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
@@ -122,7 +123,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJpaProject
 	extends AbstractJpaNode
-	implements JpaProject2_0
+	implements JpaProject2_1
 {
 	/**
 	 * The JPA project manager.

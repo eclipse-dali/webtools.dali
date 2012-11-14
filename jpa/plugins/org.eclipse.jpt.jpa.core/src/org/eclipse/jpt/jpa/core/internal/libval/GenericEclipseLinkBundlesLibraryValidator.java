@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationCon
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_1;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
 public class GenericEclipseLinkBundlesLibraryValidator 
@@ -32,6 +33,9 @@ public class GenericEclipseLinkBundlesLibraryValidator
 		}
 		else if (config.getProjectFacetVersion().equals(JpaProject2_0.FACET_VERSION)) {
 			versionRanges = new VersionRange[] {new VersionRange("[2.0, 3.0)")}; //$NON-NLS-1$
+		}
+		else if (config.getProjectFacetVersion().equals(JpaProject2_1.FACET_VERSION)) {
+			versionRanges = new VersionRange[] {new VersionRange("[2.5, 3.0)")}; //$NON-NLS-1$
 		}
 		bundleVersionRanges.put(bundleName, versionRanges);
 		return validate(jpaConfig, bundleVersionRanges);

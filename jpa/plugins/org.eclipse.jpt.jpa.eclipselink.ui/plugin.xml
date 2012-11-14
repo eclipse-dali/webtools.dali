@@ -53,6 +53,11 @@
 			id="eclipselink2_4.ui"
 			jpaPlatform="eclipselink2_4"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_4JpaPlatformUiFactory"/>
+		
+		<jpaPlatformUi
+			id="eclipselink2_5.ui"
+			jpaPlatform="eclipselink2_5"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_5JpaPlatformUiFactory"/>
 	</extension>
 	
 	
