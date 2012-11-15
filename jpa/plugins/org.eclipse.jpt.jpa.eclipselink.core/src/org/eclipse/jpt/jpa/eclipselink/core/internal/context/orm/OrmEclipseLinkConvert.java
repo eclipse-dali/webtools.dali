@@ -87,7 +87,7 @@ public class OrmEclipseLinkConvert
 	}
 
 	public void initialize() {
-		this.specifiedConverterName = DEFAULT_CONVERTER_NAME; //$NON-NLS-1$
+		this.specifiedConverterName = DEFAULT_CONVERTER_NAME;
 		this.getXmlConvertibleMapping().setConvert(this.specifiedConverterName);
 	}
 
