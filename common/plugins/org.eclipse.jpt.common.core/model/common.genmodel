@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.common.core/src" creationCommands="false"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.common.core/model/src" creationCommands="false"
     creationIcons="false" editDirectory="" editorDirectory="" modelPluginID="org.eclipse.jpt.common.core"
     modelName="Core" editPluginClass="" editorPluginClass="" updateClasspath="false"
     rootExtendsInterface="org.eclipse.jpt.common.core.resource.xml.EBaseObject" rootExtendsClass="org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl"

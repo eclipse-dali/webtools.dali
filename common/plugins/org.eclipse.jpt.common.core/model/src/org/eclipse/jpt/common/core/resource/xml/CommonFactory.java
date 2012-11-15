@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage
  * @generated
  */
-@SuppressWarnings("nls")
 public class CommonFactory extends EFactoryImpl
 {
 	/**

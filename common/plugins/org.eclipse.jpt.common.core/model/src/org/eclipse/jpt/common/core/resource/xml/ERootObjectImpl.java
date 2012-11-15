@@ -40,7 +40,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-@SuppressWarnings("nls")
 public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootObject
 {
 	/**

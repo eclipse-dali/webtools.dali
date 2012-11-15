@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @model kind="package"
  * @generated
  */
-@SuppressWarnings("nls")
 public class CommonPackage extends EPackageImpl
 {
 	/**
