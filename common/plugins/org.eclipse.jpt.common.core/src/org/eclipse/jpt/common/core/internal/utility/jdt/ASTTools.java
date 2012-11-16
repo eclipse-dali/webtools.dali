@@ -49,7 +49,7 @@ public class ASTTools {
 	 * with its bindings resolved (and the resultant performance hit).
 	 */
 	public static CompilationUnit buildASTRoot(ICompilationUnit compilationUnit) {
-		ASTParser parser = astParser();
+		ASTParser parser = newParser();
 		parser.setSource(compilationUnit);
 		return (CompilationUnit) parser.createAST(null);
 	}
@@ -59,12 +59,15 @@ public class ASTTools {
 	 * with its bindings resolved
 	 */
 	public static IBinding createBinding(IMember member) {
-		ASTParser parser = astParser();
+		ASTParser parser = newParser();
 		parser.setProject(member.getJavaProject());
 		return parser.createBindings(new IJavaElement[] { member }, null)[0];
 	}
 
-	private static ASTParser astParser() {
+	/**
+	 * Build an <code>ASTParser</code> ignoring method bodies.
+	 */
+	public static ASTParser newParser() {
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
 		parser.setIgnoreMethodBodies(true);  // we don't need method bodies
 		parser.setResolveBindings(true);
@@ -294,13 +297,10 @@ public class ASTTools {
 	 * specified text range, simply return the text range unchanged.
 	 */
 	public static List<TextRange> buildTextRanges(ASTNode astNode, TextRange textRange) {
-
 		if (astNode.getNodeType() == ASTNode.INFIX_EXPRESSION) {
 			return buildTextRanges((InfixExpression) astNode, textRange);
 		}
-		else {
-			return Collections.singletonList(buildTextRange(astNode, textRange));
-		}
+		return Collections.singletonList(buildTextRange(astNode, textRange));
 	}
 
 	/**

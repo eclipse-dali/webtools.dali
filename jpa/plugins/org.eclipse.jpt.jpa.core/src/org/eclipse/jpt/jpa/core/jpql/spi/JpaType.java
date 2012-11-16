@@ -26,7 +26,6 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -123,13 +122,10 @@ public class JpaType implements IJpaType {
 
 	protected CompilationUnit buildCompilationUnit() {
 
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		parser.setSource(type.getTypeRoot());
-		parser.setIgnoreMethodBodies(true);
-		parser.setResolveBindings(true);
-		parser.setBindingsRecovery(true);
+		ASTParser parser = ASTTools.newParser();
+		parser.setSource(this.type.getTypeRoot());
 
-		return (CompilationUnit) parser.createAST(new NullProgressMonitor());
+		return (CompilationUnit) parser.createAST(null);
 	}
 
 	protected Collection<IConstructor> buildConstructors() {
@@ -137,12 +133,12 @@ public class JpaType implements IJpaType {
 		ITypeBinding typeBinding = getTypeBinding();
 
 		// No Java source is attached to the Java class file, parse the class with a reader
-		if ((typeBinding == null) && type.isBinary()) {
+		if ((typeBinding == null) && this.type.isBinary()) {
 			Collection<IConstructor> constructors = new ArrayList<IConstructor>();
 
 			try {
 				// Root types
-				for (IJavaElement rootType : type.getTypeRoot().getChildren()) {
+				for (IJavaElement rootType : this.type.getTypeRoot().getChildren()) {
 					// Root type
 					if (rootType.getElementType() == IJavaElement.TYPE) {
 						for (IJavaElement javaElement : ((IType) rootType).getChildren()) {
@@ -184,10 +180,10 @@ public class JpaType implements IJpaType {
 
 		try {
 			// Retrieve the enum constants from IType
-			if (type.isEnum()) {
+			if (this.type.isEnum()) {
 				List<String> names = new ArrayList<String>();
 
-				for (IField field : type.getFields()) {
+				for (IField field : this.type.getFields()) {
 					if (field.isEnumConstant()) {
 						names.add(field.getElementName());
 					}
@@ -209,11 +205,11 @@ public class JpaType implements IJpaType {
 		try {
 			CompilationUnit compilationUnit = buildCompilationUnit();
 
-			if (type.isAnonymous()) {
-				IJavaElement parent = type.getParent();
+			if (this.type.isAnonymous()) {
+				IJavaElement parent = this.type.getParent();
 
 				if ((parent instanceof IField) && Flags.isEnum(((IMember) parent).getFlags())) {
-					ASTNode node = NodeFinder.perform(compilationUnit, type.getNameRange());
+					ASTNode node = NodeFinder.perform(compilationUnit, this.type.getNameRange());
 					EnumConstantDeclaration constant = (EnumConstantDeclaration) node;
 
 					if (constant != null) {
@@ -225,7 +221,7 @@ public class JpaType implements IJpaType {
 					}
 				}
 				else {
-					ASTNode node = NodeFinder.perform(compilationUnit, type.getNameRange());
+					ASTNode node = NodeFinder.perform(compilationUnit, this.type.getNameRange());
 					ClassInstanceCreation creation = (ClassInstanceCreation) getParent(node, ClassInstanceCreation.class);
 
 					if (creation != null) {
@@ -234,7 +230,7 @@ public class JpaType implements IJpaType {
 				}
 			}
 			else {
-				ASTNode node = NodeFinder.perform(compilationUnit, type.getNameRange());
+				ASTNode node = NodeFinder.perform(compilationUnit, this.type.getNameRange());
 				AbstractTypeDeclaration declaration = (AbstractTypeDeclaration) getParent(node, AbstractTypeDeclaration.class);
 
 				if (declaration != null) {
@@ -257,10 +253,10 @@ public class JpaType implements IJpaType {
 	 * {@inheritDoc}
 	 */
 	public Iterable<IConstructor> constructors() {
-		if (constructors == null) {
-			constructors = buildConstructors();
+		if (this.constructors == null) {
+			this.constructors = buildConstructors();
 		}
-		return new SnapshotCloneIterable<IConstructor>(constructors);
+		return new SnapshotCloneIterable<IConstructor>(this.constructors);
 	}
 
 	/**
@@ -275,24 +271,24 @@ public class JpaType implements IJpaType {
 	 * {@inheritDoc}
 	 */
 	public boolean equals(org.eclipse.persistence.jpa.jpql.spi.IType type) {
-		return (this == type) || typeName.equals(type.getName());
+		return (this == type) || this.typeName.equals(type.getName());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public String[] getEnumConstants() {
-		if (enumConstants == null) {
-			enumConstants = buildEnumConstants();
+		if (this.enumConstants == null) {
+			this.enumConstants = buildEnumConstants();
 		}
-		return enumConstants;
+		return this.enumConstants;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public String getName() {
-		return typeName;
+		return this.typeName;
 	}
 
 	protected ASTNode getParent(ASTNode node, Class<? extends ASTNode> parentClass) {
@@ -311,25 +307,25 @@ public class JpaType implements IJpaType {
 	 * @return The design-time representation of a Java type
 	 */
 	protected IType getType() {
-		return type;
+		return this.type;
 	}
 
 	protected ITypeBinding getTypeBinding() {
-		if ((typeBinding == null) && !typeBindingResolved) {
-			typeBinding = buildTypeBinding();
-			typeBindingResolved = true;
+		if ((this.typeBinding == null) && !this.typeBindingResolved) {
+			this.typeBinding = buildTypeBinding();
+			this.typeBindingResolved = true;
 		}
-		return typeBinding;
+		return this.typeBinding;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public ITypeDeclaration getTypeDeclaration() {
-		if (typeDeclaration == null) {
-			typeDeclaration = buildTypeDeclaration();
+		if (this.typeDeclaration == null) {
+			this.typeDeclaration = buildTypeDeclaration();
 		}
-		return typeDeclaration;
+		return this.typeDeclaration;
 	}
 
 	/**
@@ -338,14 +334,14 @@ public class JpaType implements IJpaType {
 	 * @return The external form of the type repository
 	 */
 	protected JpaTypeRepository getTypeRepository() {
-		return typeRepository;
+		return this.typeRepository;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean hasAnnotation(Class<? extends Annotation> annotationType) {
-		return type.getAnnotation(annotationType.getName()) != null;
+		return this.type.getAnnotation(annotationType.getName()) != null;
 	}
 
 	/**
@@ -353,7 +349,7 @@ public class JpaType implements IJpaType {
 	 */
 	@Override
 	public int hashCode() {
-		return typeName.hashCode();
+		return this.typeName.hashCode();
 	}
 
 	/**
@@ -371,12 +367,12 @@ public class JpaType implements IJpaType {
 		ITypeBinding typeBinding = getTypeBinding();
 
 		// Type hierarchy for Class files
-		if ((typeBinding == null) && type.isBinary()) {
+		if ((typeBinding == null) && this.type.isBinary()) {
 
 			// First create the type hierarchy
-			if (typeHierarchy == null) {
+			if (this.typeHierarchy == null) {
 				try {
-					typeHierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+					this.typeHierarchy = this.type.newSupertypeHierarchy(new NullProgressMonitor());
 				}
 				catch (Exception e) {
 					return false;
@@ -384,7 +380,7 @@ public class JpaType implements IJpaType {
 			}
 
 			// Now check if the other type name is in the type hierarchy
-			for (IType superType : typeHierarchy.getAllTypes()) {
+			for (IType superType : this.typeHierarchy.getAllTypes()) {
 				if (superType.getFullyQualifiedName().equals(otherTypeName)) {
 					return true;
 				}
@@ -404,7 +400,7 @@ public class JpaType implements IJpaType {
 	 */
 	public boolean isEnum() {
 		try {
-			return type.isEnum();
+			return this.type.isEnum();
 		}
 		catch (Exception e) {
 			// Simply ignore and return no
@@ -431,6 +427,6 @@ public class JpaType implements IJpaType {
 	 */
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, typeName);
+		return ObjectTools.toString(this, this.typeName);
 	}
 }
