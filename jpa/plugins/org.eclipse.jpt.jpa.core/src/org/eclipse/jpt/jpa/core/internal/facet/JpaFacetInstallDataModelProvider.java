@@ -132,8 +132,8 @@ public class JpaFacetInstallDataModelProvider
 		IProduct product = Platform.getProduct();
 		String discoverAnnotatedClassesDefaultPreference = (product == null) ? null : product.getProperty(DISCOVER_ANNOTATED_CLASSES_DEFAULT);
 		//if no product preference is defined check the runtime for support, otherwise check the preference to determine override
-		return (discoverAnnotatedClassesDefaultPreference == null) ? 
-				Boolean.valueOf(this.runtimeSupportsEjb30()) : discoverAnnotatedClassesDefaultPreference.equals("true");
+		return Boolean.valueOf((discoverAnnotatedClassesDefaultPreference == null) ? 
+				this.runtimeSupportsEjb30() : discoverAnnotatedClassesDefaultPreference.equals("true")); //$NON-NLS-1$
 	}
 	
 	

@@ -153,7 +153,7 @@ public final class SourceOneToOneAnnotation
 	}
 
 	public boolean mappedByTouches(int pos) {
-		return this.textRangeTouches(mappedByTextRange, pos);
+		return this.textRangeTouches(this.mappedByTextRange, pos);
 	}
 
 	// ***** optional

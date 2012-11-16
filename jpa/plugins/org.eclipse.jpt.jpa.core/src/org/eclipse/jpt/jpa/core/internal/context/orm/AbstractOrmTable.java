@@ -524,10 +524,10 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
-		if (this.getDbSchemaContainer() == null)
+		if (this.getDbSchemaContainer() == null) {
 			return EmptyIterable.<String>instance();
-		else
-			return this.getDbSchemaContainer().getSortedSchemaIdentifiers();
+		}
+		return this.getDbSchemaContainer().getSortedSchemaIdentifiers();
 	}
 
 	// ********* content assist : catalog

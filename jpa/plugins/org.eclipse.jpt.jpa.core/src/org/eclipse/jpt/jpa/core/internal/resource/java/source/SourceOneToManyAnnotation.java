@@ -137,7 +137,7 @@ public final class SourceOneToManyAnnotation
 	}
 
 	public boolean mappedByTouches(int pos) {
-		return this.textRangeTouches(mappedByTextRange, pos);
+		return this.textRangeTouches(this.mappedByTextRange, pos);
 	}
 
 	// ********** OneToMany2_0Annotation implementation **********

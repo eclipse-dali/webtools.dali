@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -105,12 +106,12 @@ public abstract class AbstractJpaFileCreationOperation
 	protected void createContainer(IProgressMonitor monitor) throws ExecutionException {
 		IContainer container = getContainer();
 		if (! container.exists()) {
-			if (container.getType() == IContainer.PROJECT) {
+			if (container.getType() == IResource.PROJECT) {
 				throw new ExecutionException("Project does not exist"); //$NON-NLS-1$
 			}
-			else if (container.getType() == IContainer.FOLDER) {
+			else if (container.getType() == IResource.FOLDER) {
 				try {
-					((IFolder) container).create(true, true, null);
+					((IFolder) container).create(true, true, monitor);
 				}
 				catch (CoreException e) {
 					throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$

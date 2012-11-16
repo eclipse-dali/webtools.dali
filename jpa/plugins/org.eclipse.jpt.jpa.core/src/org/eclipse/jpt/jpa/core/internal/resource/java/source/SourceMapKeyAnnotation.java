@@ -106,7 +106,7 @@ public final class SourceMapKeyAnnotation
 	}
 
 	public boolean nameTouches(int pos) {
-		return this.textRangeTouches(nameTextRange, pos);
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
 
 

@@ -67,7 +67,7 @@ public class OrmFileCreationOperation
 				return pUnit;
 			}
 		}
-		throw new ExecutionException("persistence.xml does not have persistence unit named \'" + pUnitName + "\'"); //$NON-NLS-1$
+		throw new ExecutionException("persistence.xml does not have persistence unit named \'" + pUnitName + "\'"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	protected void addMappingFileToPersistenceXml() throws ExecutionException {

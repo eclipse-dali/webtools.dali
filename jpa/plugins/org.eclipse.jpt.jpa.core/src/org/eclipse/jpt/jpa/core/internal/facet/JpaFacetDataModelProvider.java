@@ -212,7 +212,7 @@ public abstract class JpaFacetDataModelProvider
 			this.defaultLibraryProvider.dispose();
 			this.defaultLibraryProvider = buildDefaultLibraryProvider();
 		}
-		return defaultLibraryProvider;
+		return this.defaultLibraryProvider;
 	}
 	
 	protected  LibraryInstallDelegate buildDefaultLibraryProvider() {
@@ -227,7 +227,7 @@ public abstract class JpaFacetDataModelProvider
 		
 		Map<String, Object> customEnablementVariables = new HashMap<String, Object>();
 		JpaPlatformConfig jpaPlatformConfig = getPlatformConfig();
-		String jpaPlatformId = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId();
+		String jpaPlatformId = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
 		customEnablementVariables.put(
 					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformId);
 		customEnablementVariables.put(
@@ -391,7 +391,7 @@ public abstract class JpaFacetDataModelProvider
 		
 		if (lid != null) {
 			JpaPlatformConfig jpaPlatformConfig = getPlatformConfig();
-			String jpaPlatformId = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId();
+			String jpaPlatformId = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
 			
 			lid.setEnablementContextVariable(
 					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformId);
