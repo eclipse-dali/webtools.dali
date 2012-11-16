@@ -656,7 +656,6 @@ public class XmlSequenceGenerator extends EBaseObjectImpl implements XmlGenerato
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature, 
-			Translator.END_TAG_NO_INDENT, 
 			buildTranslatorChildren());
 	}
 
