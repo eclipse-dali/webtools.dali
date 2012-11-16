@@ -199,7 +199,8 @@ public class OxmXmlBindingsImpl
 	
 	protected String buildImpliedPackageName() {
 		for (OxmJavaType javaType : getJavaTypes()) {
-			String packageName = TypeDeclarationTools.packageName(javaType.getSpecifiedName());
+			String specifiedName = javaType.getSpecifiedName();
+			String packageName = specifiedName == null ? null : TypeDeclarationTools.packageName(specifiedName);
 			if (! StringTools.isBlank(packageName)) {
 				return packageName;
 			}
