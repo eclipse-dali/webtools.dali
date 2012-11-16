@@ -403,8 +403,10 @@ public abstract class AbstractJavaPersistentAttribute
 		
 		JavaAttributeMappingDefinition defaultDefinition = this.getDefaultMappingDefinition();
 		String newDefaultKey = (defaultDefinition == null) ? null : defaultDefinition.getKey();
+		boolean mappingChanged = false;
 		if (ObjectTools.notEquals(this.mapping.getKey(), newDefaultKey)) {
 			newDefinition = defaultDefinition;  // the default mapping has changed - hold on to the definition
+			mappingChanged = true;
 		}
 		this.setDefaultMappingKey(newDefaultKey);
 		
@@ -412,19 +414,21 @@ public abstract class AbstractJavaPersistentAttribute
 		String newSpecifiedKey = (specifiedDefinition == null) ? null : specifiedDefinition.getKey();
 		if (specifiedDefinition != null) {
 			newDefinition = null;  // unset definition if it was set from default calculation
+			mappingChanged = false;
 			if (this.mapping.isDefault() || ObjectTools.notEquals(this.mapping.getKey(), newSpecifiedKey)) {
 				newDefinition = specifiedDefinition; // mapping is now specified or a different specified
+				mappingChanged = true;
 			}
 		}
 		
-		if (newDefinition != null) {
-			setMapping(buildMapping(newDefinition));
+		if (mappingChanged) {
+			this.setMapping(this.buildMapping(newDefinition));
 		}
 		else {
 			this.mapping.update();
 		}
 	}
-	
+
 	protected JavaAttributeMappingDefinition getDefaultMappingDefinition() {
 		for (DefaultJavaAttributeMappingDefinition definition : this.getDefaultMappingDefinitions()) {
 			if (definition.isDefault(this)) {
