@@ -16,7 +16,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaMappedSuperclass;
@@ -46,7 +48,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkMappedSuperclassImpl
 	extends AbstractJavaMappedSuperclass
-	implements JavaEclipseLinkMappedSuperclass, JavaCacheableHolder2_0, JavaEclipseLinkConverterContainer.ParentAdapter
+	implements 
+		JavaEclipseLinkMappedSuperclass, 
+		JavaCacheableHolder2_0, 
+		JavaEclipseLinkConverterContainer.ParentAdapter,
+		JavaGeneratorContainer.ParentAdapter
 {
 	protected final JavaEclipseLinkCaching caching;
 
@@ -60,6 +66,8 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	protected final JavaEclipseLinkMultitenancy2_3 multitenancy;
 
+	protected final JavaGeneratorContainer generatorContainer;
+
 	public JavaEclipseLinkMappedSuperclassImpl(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.caching = this.buildCaching();
@@ -68,6 +76,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
 		this.multitenancy = this.buildMultitenancy();
+		this.generatorContainer = this.buildGeneratorContainer();
 	}
 
 
@@ -81,6 +90,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.converterContainer.synchronizeWithResourceModel();
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
+		this.generatorContainer.synchronizeWithResourceModel();
 		this.multitenancy.synchronizeWithResourceModel();
 	}
 
@@ -93,6 +103,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.changeTracking.update();
 		this.customizer.update();
 		this.multitenancy.update();
+		this.generatorContainer.update();
 	}
 
 
@@ -200,6 +211,37 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		return true;
 	}
 
+
+	// ********** generator container **********
+
+	public JavaGeneratorContainer getGeneratorContainer() {
+		return this.generatorContainer;
+	}
+
+	protected JavaGeneratorContainer buildGeneratorContainer() {
+		return this.getJpaFactory().buildJavaGeneratorContainer(this);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<Generator> getGenerators() {
+		return new CompositeIterable<Generator>(
+					super.getGenerators(),
+					this.generatorContainer.getGenerators()
+				);
+	}
+
+	// ********** generator container parent adapter **********
+
+	public JpaContextNode getGeneratorContainerParent() {
+		return this;  // no adapter
+	}
+
+	public boolean parentSupportsGenerators() {
+		return true;
+	}
+
+
 	// ********** misc **********
 
 	public boolean usesPrimaryKeyColumns() {
@@ -244,6 +286,10 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		if (result != null) {
 			return result;
 		}
+		result = this.generatorContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
 		return null;
 	}
 
@@ -258,6 +304,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.changeTracking.validate(messages, reporter);
 		this.customizer.validate(messages, reporter);
 		this.multitenancy.validate(messages, reporter);
+		this.generatorContainer.validate(messages, reporter);
 	}
 
 	@Override

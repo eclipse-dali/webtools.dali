@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,15 +13,16 @@ import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 
-public class EclipseLinkJavaMappedSuperclassDefinition2_2
+public class EclipseLinkJavaMappedSuperclassDefinition2_1
 	extends JavaTypeMappingDefinitionWrapper
 {
-	private static final JavaTypeMappingDefinition DELEGATE = EclipseLinkJavaMappedSuperclassDefinition2_1.instance();
+	private static final JavaTypeMappingDefinition DELEGATE = EclipseLinkJavaMappedSuperclassDefinition2_0.instance();
 
 	// singleton
-	private static final JavaTypeMappingDefinition INSTANCE = new EclipseLinkJavaMappedSuperclassDefinition2_2();
+	private static final JavaTypeMappingDefinition INSTANCE = new EclipseLinkJavaMappedSuperclassDefinition2_1();
 
 	/**
 	 * Return the singleton.
@@ -34,7 +35,7 @@ public class EclipseLinkJavaMappedSuperclassDefinition2_2
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkJavaMappedSuperclassDefinition2_2() {
+	private EclipseLinkJavaMappedSuperclassDefinition2_1() {
 		super();
 	}
 
@@ -48,17 +49,15 @@ public class EclipseLinkJavaMappedSuperclassDefinition2_2
 		return COMBINED_SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	public static final String[] ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		EclipseLink.CONVERTERS,
-		EclipseLink.OBJECT_TYPE_CONVERTERS,
-		EclipseLink.STRUCT_CONVERTERS,
-		EclipseLink.TYPE_CONVERTERS,
+	public static final String[] ECLIPSE_LINK2_1_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
+		TableGeneratorAnnotation.ANNOTATION_NAME,
+		SequenceGeneratorAnnotation.ANNOTATION_NAME
 	};
-	public static final Iterable<String> ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	public static final Iterable<String> ECLIPSE_LINK2_1_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK2_1_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	@SuppressWarnings("unchecked")
 	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
 		DELEGATE.getSupportingAnnotationNames(),
-		ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES
+		ECLIPSE_LINK2_1_SUPPORTING_ANNOTATION_NAMES
 	);
 }

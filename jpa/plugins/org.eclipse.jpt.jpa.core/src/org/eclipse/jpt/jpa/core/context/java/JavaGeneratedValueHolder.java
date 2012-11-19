@@ -1,19 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.context.java;
+package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.core.context.GeneratedValueHolder;
 
 /**
- * EclipseLink Java non-embeddable type mapping
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,12 +19,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableType
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaEclipseLinkNonEmbeddableTypeMapping
-	extends EclipseLinkNonEmbeddableTypeMapping, EclipseLinkJavaTypeMapping
+public interface JavaGeneratedValueHolder
+	extends GeneratedValueHolder, JavaAttributeMapping
 {
-	JavaEclipseLinkCaching getCaching();
-
-	JavaEclipseLinkMultitenancy2_3 getMultitenancy();
-
-	JavaGeneratorContainer getGeneratorContainer();
+	JavaGeneratedValue getGeneratedValue();
+	JavaGeneratedValue addGeneratedValue();
 }

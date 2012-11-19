@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_2ContextModelTestCase;
@@ -92,6 +93,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		entity.getConverterContainer().addTypeConverter(1);
 		entity.getConverterContainer().addStructConverter(0);
 		entity.getConverterContainer().addStructConverter(1);
+		entity.getReadOnly().setSpecifiedReadOnly(Boolean.TRUE);
 
 		getJavaPersistentType().setMappingKey(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof MappedSuperclass);
@@ -105,8 +107,8 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		assertNull(resourceType.getAnnotation(InheritanceAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME));
@@ -118,6 +120,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
@@ -147,6 +150,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		entity.getConverterContainer().addTypeConverter(1);
 		entity.getConverterContainer().addStructConverter(0);
 		entity.getConverterContainer().addStructConverter(1);
+		entity.getReadOnly().setSpecifiedReadOnly(Boolean.TRUE);
 		getJavaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof Embeddable);
 
@@ -172,5 +176,6 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 }

@@ -333,7 +333,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaTableGenerator(parent, tableGeneratorAnnotation);
 	}
 	
-	public JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation) {
+	public JavaGeneratedValue buildJavaGeneratedValue(JavaAttributeMapping parent, GeneratedValueAnnotation generatedValueAnnotation) {
 		return new GenericJavaGeneratedValue(parent, generatedValueAnnotation);
 	}
 	

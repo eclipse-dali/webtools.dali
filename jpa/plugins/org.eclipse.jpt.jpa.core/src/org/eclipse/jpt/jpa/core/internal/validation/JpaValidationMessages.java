@@ -293,7 +293,7 @@ public interface JpaValidationMessages {
 	//Generator
 	public static final String GENERATOR_DUPLICATE_NAME = "GENERATOR_DUPLICATE_NAME";
 	public static final String GENERATOR_NAME_UNDEFINED = "GENERATOR_NAME_UNDEFINED";
-	public static final String ID_MAPPING_UNRESOLVED_GENERATOR_NAME = "ID_MAPPING_UNRESOLVED_GENERATOR_NAME";
+	public static final String UNRESOLVED_GENERATOR_NAME = "UNRESOLVED_GENERATOR_NAME";
 	
 	//Query
 	public static final String JPQL_QUERY_VALIDATION = "JPQL_QUERY_VALIDATION";

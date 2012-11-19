@@ -168,7 +168,7 @@ public class GenericOrmGeneratedValue
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+				JpaValidationMessages.UNRESOLVED_GENERATOR_NAME,
 				new String[] {generator},
 				this.getParent(),
 				this.getGeneratorTextRange()

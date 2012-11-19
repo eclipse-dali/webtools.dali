@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -40,7 +40,7 @@ public class GenericJavaGeneratedValue
 	protected String defaultGenerator;
 
 
-	public GenericJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation) {
+	public GenericJavaGeneratedValue(JavaAttributeMapping parent, GeneratedValueAnnotation generatedValueAnnotation) {
 		super(parent);
 		this.generatedValueAnnotation = generatedValueAnnotation;
 		this.specifiedStrategy = this.buildSpecifiedStrategy();
@@ -144,11 +144,11 @@ public class GenericJavaGeneratedValue
 	// ********** misc **********
 
 	@Override
-	public JavaIdMapping getParent() {
-		return (JavaIdMapping) super.getParent();
+	public JavaAttributeMapping getParent() {
+		return (JavaAttributeMapping) super.getParent();
 	}
 
-	protected JavaIdMapping getIdMapping() {
+	protected JavaAttributeMapping getAttributeMapping() {
 		return this.getParent();
 	}
 
@@ -202,14 +202,14 @@ public class GenericJavaGeneratedValue
 			}
 		}
 
-		if (getIdMapping().getPersistentAttribute().isVirtual()) {
+		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME, //TODO KFB need a different message for virtual
+					JpaValidationMessages.UNRESOLVED_GENERATOR_NAME, //TODO KFB need a different message for virtual
 					new String[] {generator},
-					this.getIdMapping(),
-					this.getIdMapping().getPersistentAttribute().getValidationTextRange()
+					this.getAttributeMapping(),
+					this.getAttributeMapping().getPersistentAttribute().getValidationTextRange()
 				)
 			);
 		}
@@ -217,9 +217,9 @@ public class GenericJavaGeneratedValue
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+						JpaValidationMessages.UNRESOLVED_GENERATOR_NAME,
 						new String[] {generator},
-						this.getIdMapping(),
+						this.getAttributeMapping(),
 						this.getGeneratorTextRange()
 					)
 				);
@@ -228,7 +228,7 @@ public class GenericJavaGeneratedValue
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getAnnotationTextRange();
-		return (textRange != null) ? textRange : this.getIdMapping().getValidationTextRange();
+		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange();
 	}
 
 	protected TextRange getAnnotationTextRange() {

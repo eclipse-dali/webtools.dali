@@ -22,9 +22,12 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_2ContextModelTestCase;
@@ -68,6 +71,9 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		mappedSuperclass.getConverterContainer().addTypeConverter(1);
 		mappedSuperclass.getConverterContainer().addStructConverter(0);
 		mappedSuperclass.getConverterContainer().addStructConverter(1);
+		mappedSuperclass.getGeneratorContainer().addTableGenerator();
+		mappedSuperclass.getGeneratorContainer().addSequenceGenerator();
+		mappedSuperclass.getReadOnly().setSpecifiedReadOnly(Boolean.TRUE);
 
 		getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof Entity);
@@ -82,6 +88,9 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
@@ -98,6 +107,9 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		mappedSuperclass.getConverterContainer().addTypeConverter(1);
 		mappedSuperclass.getConverterContainer().addStructConverter(0);
 		mappedSuperclass.getConverterContainer().addStructConverter(1);
+		mappedSuperclass.getGeneratorContainer().addTableGenerator();
+		mappedSuperclass.getGeneratorContainer().addSequenceGenerator();
+		mappedSuperclass.getReadOnly().setSpecifiedReadOnly(Boolean.TRUE);
 
 		getJavaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof Embeddable);
@@ -113,6 +125,9 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToNull() throws Exception {

@@ -10,8 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_1ContextModelTestCase;
 
@@ -57,5 +61,150 @@ public class EclipseLink2_1OrmMappedSuperclassTests
 		ormTypeMapping.setSpecifiedParentClass(null);
 		assertNull(ormTypeMapping.getSpecifiedParentClass());
 		assertNull(xmlTypeMapping.getParentClass());
+	}
+
+	
+	public void testAddSequenceGenerator() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+		assertNull(mappedSuperclassResource.getSequenceGenerator());
+		
+		ormMappedSuperclass.getGeneratorContainer().addSequenceGenerator();
+		
+		assertNotNull(mappedSuperclassResource.getSequenceGenerator());
+		assertNotNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+				
+		//try adding another sequence generator, should get an IllegalStateException
+		try {
+			ormMappedSuperclass.getGeneratorContainer().addSequenceGenerator();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveSequenceGenerator() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+		assertNull(mappedSuperclassResource.getSequenceGenerator());
+
+		ormMappedSuperclass.getGeneratorContainer().addSequenceGenerator();
+		assertNotNull(mappedSuperclassResource.getSequenceGenerator());
+		assertNotNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+
+		ormMappedSuperclass.getGeneratorContainer().removeSequenceGenerator();
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+		assertNull(mappedSuperclassResource.getSequenceGenerator());
+
+		//try removing the sequence generator again, should get an IllegalStateException
+		try {
+			ormMappedSuperclass.getGeneratorContainer().removeSequenceGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+
+	public void testUpdateSequenceGenerator() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+		assertNull(mappedSuperclassResource.getSequenceGenerator());
+		assertEquals(0, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+		
+		mappedSuperclassResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGenerator());
+				
+		assertNotNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+		assertNotNull(mappedSuperclassResource.getSequenceGenerator());
+		assertEquals(1, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+		
+		ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator().setName("foo");
+		assertEquals(1, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+
+		mappedSuperclassResource.setSequenceGenerator(null);
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getSequenceGenerator());
+		assertNull(mappedSuperclassResource.getSequenceGenerator());
+		assertEquals(0, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+	}
+	
+	public void testAddTableGenerator() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+		assertNull(mappedSuperclassResource.getTableGenerator());
+		
+		ormMappedSuperclass.getGeneratorContainer().addTableGenerator();
+		
+		assertNotNull(mappedSuperclassResource.getTableGenerator());
+		assertNotNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+				
+		//try adding another table generator, should get an IllegalStateException
+		try {
+			ormMappedSuperclass.getGeneratorContainer().addTableGenerator();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveTableGenerator() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+		assertNull(mappedSuperclassResource.getTableGenerator());
+
+		ormMappedSuperclass.getGeneratorContainer().addTableGenerator();
+		assertNotNull(mappedSuperclassResource.getTableGenerator());
+		assertNotNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+
+		ormMappedSuperclass.getGeneratorContainer().removeTableGenerator();
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+		assertNull(mappedSuperclassResource.getTableGenerator());
+
+		//try removing the table generator again, should get an IllegalStateException
+		try {
+			ormMappedSuperclass.getGeneratorContainer().removeTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testUpdateTableGenerator() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		OrmEclipseLinkMappedSuperclass ormMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass mappedSuperclassResource = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+		assertNull(mappedSuperclassResource.getTableGenerator());
+		assertEquals(0, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+		
+		mappedSuperclassResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGenerator());
+				
+		assertNotNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+		assertNotNull(mappedSuperclassResource.getTableGenerator());
+		assertEquals(1, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+
+		ormMappedSuperclass.getGeneratorContainer().getTableGenerator().setName("foo");
+		assertEquals(1, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
+		
+		mappedSuperclassResource.setTableGenerator(null);
+		assertNull(ormMappedSuperclass.getGeneratorContainer().getTableGenerator());
+		assertNull(mappedSuperclassResource.getTableGenerator());
+		assertEquals(0, ormMappedSuperclass.getPersistenceUnit().getGeneratorsSize());
 	}
 }

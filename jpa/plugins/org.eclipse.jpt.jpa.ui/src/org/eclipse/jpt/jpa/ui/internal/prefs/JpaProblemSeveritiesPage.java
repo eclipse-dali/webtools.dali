@@ -581,13 +581,13 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.QUERIES_GENERATORS_CATEGORY);
 
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.GENERATOR_DUPLICATE_NAME,             				JpaValidationMessages.GENERATOR_DUPLICATE_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.GENERATOR_NAME_UNDEFINED, 							JpaValidationMessages.GENERATOR_NAME_UNDEFINED); //3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME, 		JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JPQL_QUERY_VALIDATION,                					JpaValidationMessages.JPQL_QUERY_VALIDATION);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_DUPLICATE_NAME,                						JpaValidationMessages.QUERY_DUPLICATE_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_NAME_UNDEFINED,                						JpaValidationMessages.QUERY_NAME_UNDEFINED); //3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_STATEMENT_UNDEFINED,                			JpaValidationMessages.QUERY_STATEMENT_UNDEFINED); //3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.GENERATOR_DUPLICATE_NAME,		JpaValidationMessages.GENERATOR_DUPLICATE_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.GENERATOR_NAME_UNDEFINED,		JpaValidationMessages.GENERATOR_NAME_UNDEFINED); //3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.UNRESOLVED_GENERATOR_NAME,	JpaValidationMessages.UNRESOLVED_GENERATOR_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JPQL_QUERY_VALIDATION,		JpaValidationMessages.JPQL_QUERY_VALIDATION);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_DUPLICATE_NAME,			JpaValidationMessages.QUERY_DUPLICATE_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_NAME_UNDEFINED,			JpaValidationMessages.QUERY_NAME_UNDEFINED); //3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_STATEMENT_UNDEFINED,	JpaValidationMessages.QUERY_STATEMENT_UNDEFINED); //3.0 M7
 	}
 
 	private Composite addExpandableSection(Composite parent, String text) {

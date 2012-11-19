@@ -308,7 +308,7 @@ public class JptUiValidationPreferenceMessages {
 	
 	public static String GENERATOR_DUPLICATE_NAME;
 	public static String GENERATOR_NAME_UNDEFINED; // 3.0 M7
-	public static String ID_MAPPING_UNRESOLVED_GENERATOR_NAME;
+	public static String UNRESOLVED_GENERATOR_NAME;
 	public static String JPQL_QUERY_VALIDATION; //3.0 M7
 	public static String QUERY_DUPLICATE_NAME;
 	public static String QUERY_NAME_UNDEFINED; // 3.0 M7

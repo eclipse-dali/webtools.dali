@@ -16,10 +16,16 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValueHolder;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBasicMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
@@ -37,17 +43,23 @@ public class OrmEclipseLinkBasicMapping
 	implements 
 		EclipseLinkBasicMapping, 
 		EclipseLinkOrmConvertibleMapping, 
-		OrmEclipseLinkConverterContainer.Owner
+		OrmEclipseLinkConverterContainer.Owner,
+		OrmGeneratedValueHolder
 {
 	protected final OrmEclipseLinkMutable mutable;
 	
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
+	protected final OrmGeneratorContainer generatorContainer;//supported in EL 1.1 and higher
+
+	protected OrmGeneratedValue generatedValue;//supported in EL 1.1 and higher
 
 	public OrmEclipseLinkBasicMapping(OrmPersistentAttribute parent, XmlBasic xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new OrmEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();
+		this.generatorContainer = this.buildGeneratorContainer();
+		this.generatedValue = this.buildGeneratedValue();
 	}
 
 
@@ -58,6 +70,8 @@ public class OrmEclipseLinkBasicMapping
 		super.synchronizeWithResourceModel();
 		this.mutable.synchronizeWithResourceModel();
 		this.converterContainer.synchronizeWithResourceModel();
+		this.generatorContainer.synchronizeWithResourceModel();
+		this.syncGeneratedValue();
 	}
 
 	@Override
@@ -65,6 +79,10 @@ public class OrmEclipseLinkBasicMapping
 		super.update();
 		this.mutable.update();
 		this.converterContainer.update();
+		this.generatorContainer.update();
+		if (this.generatedValue != null) {
+			this.generatedValue.update();
+		}
 	}
 
 
@@ -100,6 +118,85 @@ public class OrmEclipseLinkBasicMapping
 
 	public int getNumberSupportedConverters() {
 		return 1;
+	}
+
+	// ********** generator container **********
+
+	public OrmGeneratorContainer getGeneratorContainer() {
+		return this.generatorContainer;
+	}
+
+	protected OrmGeneratorContainer buildGeneratorContainer() {
+		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlAttributeMapping);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<Generator> getGenerators() {
+		return new CompositeIterable<Generator>(
+					super.getGenerators(),
+					this.generatorContainer.getGenerators()
+				);
+	}
+
+
+	// ********** generated value **********
+
+	public OrmGeneratedValue getGeneratedValue() {
+		return this.generatedValue;
+	}
+
+	public OrmGeneratedValue addGeneratedValue() {
+		if (this.generatedValue != null) {
+			throw new IllegalStateException("generated value already exists: " + this.generatedValue); //$NON-NLS-1$
+		}
+		XmlGeneratedValue xmlGeneratedValue = this.buildXmlGeneratedValue();
+		OrmGeneratedValue value = this.buildGeneratedValue(xmlGeneratedValue);
+		this.setGeneratedValue(value);
+		this.xmlAttributeMapping.setGeneratedValue(xmlGeneratedValue);
+		return value;
+	}
+
+	protected XmlGeneratedValue buildXmlGeneratedValue() {
+		return OrmFactory.eINSTANCE.createXmlGeneratedValue();
+	}
+
+	public void removeGeneratedValue() {
+		if (this.generatedValue == null) {
+			throw new IllegalStateException("generated value does not exist"); //$NON-NLS-1$
+		}
+		this.setGeneratedValue(null);
+		this.xmlAttributeMapping.setGeneratedValue(null);
+	}
+
+	protected void setGeneratedValue(OrmGeneratedValue value) {
+		OrmGeneratedValue old = this.generatedValue;
+		this.generatedValue = value;
+		this.firePropertyChanged(GENERATED_VALUE_PROPERTY, old, value);
+	}
+
+	protected OrmGeneratedValue buildGeneratedValue() {
+		XmlGeneratedValue xmlGeneratedValue = this.xmlAttributeMapping.getGeneratedValue();
+		return (xmlGeneratedValue == null) ? null : this.buildGeneratedValue(xmlGeneratedValue);
+	}
+
+	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue xmlGeneratedValue) {
+		return this.getContextNodeFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
+	}
+
+	protected void syncGeneratedValue() {
+		XmlGeneratedValue xmlGeneratedValue = this.xmlAttributeMapping.getGeneratedValue();
+		if (xmlGeneratedValue == null) {
+			if (this.generatedValue != null) {
+				this.setGeneratedValue(null);
+			}
+		} else {
+			if ((this.generatedValue != null) && (this.generatedValue.getXmlGeneratedValue() == xmlGeneratedValue)) {
+				this.generatedValue.synchronizeWithResourceModel();
+			} else {
+				this.setGeneratedValue(this.buildGeneratedValue(xmlGeneratedValue));
+			}
+		}
 	}
 
 
@@ -153,6 +250,11 @@ public class OrmEclipseLinkBasicMapping
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateAttributeType(messages);
+
+		if (this.generatedValue != null) {
+			this.generatedValue.validate(messages, reporter);
+		}
+		this.generatorContainer.validate(messages, reporter);
 		// TODO mutable validation
 	}
 
@@ -210,6 +312,16 @@ public class OrmEclipseLinkBasicMapping
 		result = this.converterContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
+		}
+		result = this.generatorContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.generatedValue != null) {
+			result = this.generatedValue.getCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
 		}
 		if (this.attributeTypeTouches(pos)) {
 			return this.getCandidateAttributeTypeNames();

@@ -40,6 +40,7 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 		this.initializeMappedSuperclassCollapsibleSection(container);
 		this.initializeCachingCollapsibleSection(container);
 		this.initializeQueriesCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
 		this.initializeConvertersCollapsibleSection(container);
 		this.initializeAdvancedCollapsibleSection(container);
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 
@@ -30,4 +31,6 @@ public interface OrmEclipseLinkNonEmbeddableTypeMapping
 	JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults();
 
 	OrmEclipseLinkMultitenancy2_3 getMultitenancy();
+
+	OrmGeneratorContainer getGeneratorContainer();
 }

@@ -20,7 +20,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -74,6 +76,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final OrmQueryContainer queryContainer;
 
+	protected final OrmGeneratorContainer generatorContainer;//supported in EL 2.1 and higher
 
 	public OrmEclipseLinkMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
 		super(parent, xmlMappedSuperclass);
@@ -84,6 +87,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.customizer = this.buildCustomizer();
 		this.multitenancy = this.buildMultitenancy();
 		this.queryContainer = this.buildQueryContainer();
+		this.generatorContainer = this.buildGeneratorContainer();
 	}
 
 
@@ -99,6 +103,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.customizer.synchronizeWithResourceModel();
 		this.multitenancy.synchronizeWithResourceModel();
 		this.queryContainer.synchronizeWithResourceModel();
+		this.generatorContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
@@ -111,6 +116,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.customizer.update();
 		this.multitenancy.update();
 		this.queryContainer.update();
+		this.generatorContainer.update();
 	}
 
 
@@ -218,6 +224,25 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return (EclipseLinkJpaPlatformVersion) super.getJpaPlatformVersion();
 	}
 
+
+	// ********** generator container **********
+
+	public OrmGeneratorContainer getGeneratorContainer() {
+		return this.generatorContainer;
+	}
+
+	protected OrmGeneratorContainer buildGeneratorContainer() {
+		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlTypeMapping);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<Generator> getGenerators() {
+		return new CompositeIterable<Generator>(
+					super.getGenerators(),
+					this.generatorContainer.getGenerators()
+				);
+	}
 
 	// ********** query container **********
 
@@ -370,6 +395,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.changeTracking.validate(messages, reporter);
 		this.customizer.validate(messages, reporter);
 		this.multitenancy.validate(messages, reporter);
+		this.generatorContainer.validate(messages, reporter);
 	}
 	
 	@Override
@@ -423,6 +449,10 @@ public class OrmEclipseLinkMappedSuperclassImpl
 			return result;
 		}
 		result = this.converterContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

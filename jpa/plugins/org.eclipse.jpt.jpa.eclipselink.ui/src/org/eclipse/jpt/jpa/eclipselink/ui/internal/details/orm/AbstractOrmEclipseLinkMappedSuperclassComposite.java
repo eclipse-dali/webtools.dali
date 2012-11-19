@@ -13,8 +13,11 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -29,6 +32,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -165,5 +169,33 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 
 	protected Control initializeAdvancedSection(Composite container) {
 		return new EclipseLinkNonEmbeddableTypeMappingAdvancedComposite(this, container).getControl();
+	}
+
+	protected void initializeGeneratorsCollapsibleSection(Composite container) {
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeGeneratorsSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeGeneratorsSection(Composite container) {
+		return new Generation2_0Composite(this, this.buildGeneratorContainerHolder(), container).getControl();
+	}
+
+	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerHolder() {
+		return new PropertyAspectAdapter<MappedSuperclass, GeneratorContainer>(getSubjectHolder()) {
+			@Override
+			protected GeneratorContainer buildValue_() {
+				return ((EclipseLinkMappedSuperclass) this.subject).getGeneratorContainer();
+			}
+		};
 	}
 }
