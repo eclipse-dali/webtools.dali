@@ -44,7 +44,6 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 
-@SuppressWarnings("nls")
 public abstract class PersistenceUnitMappingFilesComposite
 		extends Pane<PersistenceUnit> {
 
