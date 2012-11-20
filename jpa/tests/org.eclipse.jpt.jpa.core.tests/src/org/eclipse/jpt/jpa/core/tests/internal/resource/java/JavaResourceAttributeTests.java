@@ -591,7 +591,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		resourceAttribute.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		
 		assertSourceDoesNotContain("@AttributeOverride(name = \"FOO\")", cu);
-		assertSourceContains("@AttributeOverrides", cu);
+		assertSourceDoesNotContain("@AttributeOverrides", cu);
 	}
 	
 	public void testRemoveJavaAttributeAnnotationIndex() throws Exception {

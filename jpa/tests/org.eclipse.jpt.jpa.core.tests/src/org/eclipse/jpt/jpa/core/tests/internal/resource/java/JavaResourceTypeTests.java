@@ -542,7 +542,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		resourceType.removeAnnotation(0, JPA.SECONDARY_TABLE);
 		
 		assertSourceDoesNotContain("@SecondaryTable(name = \"FOO\")", cu);
-		assertSourceContains("@SecondaryTables", cu);
+		assertSourceDoesNotContain("@SecondaryTables", cu);
 	}
 	
 	public void testRemoveJavaTypeAnnotationIndex() throws Exception {
