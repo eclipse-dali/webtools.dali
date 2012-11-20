@@ -779,7 +779,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 		@Override
 		public NestableAnnotation removeNestedAnnotation(int index) {
-			if (this.nestedAnnotations.size() == 2) {
+			if (this.nestedAnnotations.size() <= 2) {
 				this.containerAnnotation = null;
 			}
 			return super.removeNestedAnnotation(index);
