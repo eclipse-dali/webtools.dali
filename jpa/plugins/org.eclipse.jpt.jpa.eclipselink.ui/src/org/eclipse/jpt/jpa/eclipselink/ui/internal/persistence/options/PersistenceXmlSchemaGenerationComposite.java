@@ -46,9 +46,7 @@ public class PersistenceXmlSchemaGenerationComposite
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	// ********** JpaPageComposite implementation **********
-
-	public String getHelpID() {
+	protected String getHelpID() {
 		return EclipseLinkHelpContextIds.PERSISTENCE_SCHEMA_GENERATION;
 	}
 
