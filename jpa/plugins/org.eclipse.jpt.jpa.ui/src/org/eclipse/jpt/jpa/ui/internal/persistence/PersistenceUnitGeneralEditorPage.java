@@ -105,29 +105,28 @@ public class PersistenceUnitGeneralEditorPage extends Pane<PersistenceUnit> {
 		generalSection.setLayoutData(gridData);
 		generalSection.setClient(generalComposite);
 
-		Section mappingFilesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
-		mappingFilesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors);
-		mappingFilesSection.setDescription(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description);
-		Control mappingFilesComposite = this.buildMappingFilesComposite(mappingFilesSection);
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.verticalAlignment = SWT.TOP;
-		mappingFilesSection.setLayoutData(gridData);
-		mappingFilesSection.setClient(mappingFilesComposite);
-
 		Section classesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		classesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_mappedClasses);
 		classesSection.setDescription(JptUiPersistenceMessages.PersistenceUnitClassesComposite_description);
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.verticalAlignment = SWT.TOP;
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3);
 		classesSection.setLayoutData(gridData);
 		Control classesComposite = this.buildClassesComposite(classesSection);
 		classesSection.setClient(classesComposite);
 
+		Section mappingFilesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
+		mappingFilesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors);
+		mappingFilesSection.setDescription(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description);
+		Control mappingFilesComposite = this.buildMappingFilesComposite(mappingFilesSection);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gridData.verticalIndent = 5;
+		mappingFilesSection.setLayoutData(gridData);
+		mappingFilesSection.setClient(mappingFilesComposite);
+
 		Section jarFilesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
 		jarFilesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jarFiles);
 		Control jarFilesComposite = this.buildJarFilesComposite(jarFilesSection);
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.verticalAlignment = SWT.TOP;
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gridData.verticalIndent = 5;
 		jarFilesSection.setLayoutData(gridData);
 		jarFilesSection.setClient(jarFilesComposite);
 	}
