@@ -261,6 +261,14 @@ public class ORMGenTable
 			setCustomized(CLASS_NAME, className);
 		}
 	}
+	
+	/**
+	 * Returns the alias for a Named Query.
+	 */
+	public String getAliasForQuery() {
+		String alias = getClassName().substring(0, 1);
+		return alias.toLowerCase();
+	}
 
 	/**
 	 * Returns a name suitable to be used as a variable or class name. This is

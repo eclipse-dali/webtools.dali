@@ -420,6 +420,13 @@ public class PackageGenerator {
 
 		    StringBuilder xmlFileContents = new StringBuilder();
 		    xmlFileContents.append(generateXmlHeaderFooter(ve, "header.vm")); //$NON-NLS-1$
+
+		    // Build sample named queries
+		    for (Iterator<String> names = tableNames.iterator(); names.hasNext();) {
+		    	ORMGenTable table = this.customizer.getTable(names.next());
+		    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "namedQuery.vm"));
+		    }
+		    
 		    List<ORMGenTable> compositeKeyTables = new ArrayList<ORMGenTable>();
 		    
 			for (Iterator<String> names = tableNames.iterator(); names.hasNext();) {
@@ -432,7 +439,7 @@ public class PackageGenerator {
 					return;
 				}
 			
-				xmlFileContents.append(generateXmlTypeMapping(table, ve, "main.xml.vm", sm.newChild(10))); //$NON-NLS-1$
+				xmlFileContents.append(generateXmlTypeMetadata(table, ve, "main.xml.vm")); //$NON-NLS-1$
 
 				if (table.isCompositeKey()) {
 					compositeKeyTables.add(table);
@@ -443,7 +450,7 @@ public class PackageGenerator {
 			for (ORMGenTable table : compositeKeyTables) {
 				SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName()), 1);
 			    if (table.isCompositeKey()) {
-			    	xmlFileContents.append(generateXmlTypeMapping(table, ve, "embeddable.vm", sm.newChild(1))); //$NON-NLS-1$
+			    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "embeddable.vm")); //$NON-NLS-1$
 			    }
 			}
 			
@@ -474,8 +481,8 @@ public class PackageGenerator {
 	}
 
 	
-	private String generateXmlTypeMapping(ORMGenTable table, VelocityEngine ve
-			, String templateName, IProgressMonitor monitor) throws Exception {
+	private String generateXmlTypeMetadata(ORMGenTable table, VelocityEngine ve
+			, String templateName) throws Exception {
 		VelocityContext context = new VelocityContext();
         context.put("table", table); //$NON-NLS-1$
         context.put("customizer", getCustomizer()); //$NON-NLS-1$

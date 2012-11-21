@@ -1,0 +1,3 @@
+    <named-query name="${table.className}.findAll">
+        <query>select ${table.aliasForQuery} from ${table.className} ${table.aliasForQuery}</query>
+    </named-query>
