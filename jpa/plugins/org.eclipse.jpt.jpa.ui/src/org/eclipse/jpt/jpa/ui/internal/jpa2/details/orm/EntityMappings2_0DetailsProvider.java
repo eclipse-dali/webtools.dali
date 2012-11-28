@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityMappingsDetailsProvider;
@@ -46,7 +47,8 @@ public class EntityMappings2_0DetailsProvider
 	
 	@Override
 	protected boolean providesDetails(JptResourceType resourceType) {
-		return resourceType.equals(GenericOrmXml2_0Definition.instance().getResourceType());
+		return resourceType.equals(GenericOrmXml2_0Definition.instance().getResourceType())
+			|| resourceType.equals(GenericOrmXml2_1Definition.instance().getResourceType());
 	}
 	
 	public JpaDetailsPageManager<EntityMappings> buildDetailsPageManager(
