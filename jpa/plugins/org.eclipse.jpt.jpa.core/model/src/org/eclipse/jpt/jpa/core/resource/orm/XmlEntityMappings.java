@@ -26,6 +26,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -66,7 +70,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContainer, XmlAccessHolder
+public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContainer, XmlAccessHolder, XmlEntityMappings_2_1
 {
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
@@ -107,6 +111,16 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @ordered
 	 */
 	protected String access = ACCESS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConverter_2_1> converters;
 
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -561,6 +575,29 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converters</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConverterContainer_2_1_Converters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConverter_2_1> getConverters()
+	{
+		if (converters == null)
+		{
+			converters = new EObjectContainmentEList<XmlConverter_2_1>(XmlConverter_2_1.class, this, OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS);
+		}
+		return converters;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Sequence Generators</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator}.
 	 * <!-- begin-user-doc -->
@@ -712,6 +749,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
+				return ((InternalEList<?>)getConverters()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				return basicSetPersistenceUnitMetadata(null, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
@@ -746,6 +785,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				return getAccess();
+			case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
+				return getConverters();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return getDescription();
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
@@ -793,6 +834,10 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				setAccess((String)newValue);
+				return;
+			case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
+				getConverters().clear();
+				getConverters().addAll((Collection<? extends XmlConverter_2_1>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription((String)newValue);
@@ -856,6 +901,9 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
+			case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
+				getConverters().clear();
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
@@ -909,6 +957,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				return ACCESS_EDEFAULT == null ? access != null : !ACCESS_EDEFAULT.equals(access);
+			case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
+				return converters != null && !converters.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
@@ -961,6 +1011,21 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConverterContainer_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS: return OrmV2_1Package.XML_CONVERTER_CONTAINER_21__CONVERTERS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -986,6 +1051,21 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return OrmPackage.XML_ENTITY_MAPPINGS__ACCESS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConverterContainer_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_CONVERTER_CONTAINER_21__CONVERTERS: return OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
 				default: return -1;
 			}
 		}
@@ -1103,6 +1183,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 			XmlMappedSuperclass.buildTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
 			XmlEntity.buildTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
 			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
+			XmlConverter.buildTranslator(JPA2_1.CONVERTER, OrmV2_1Package.eINSTANCE.getXmlConverterContainer_2_1_Converters()),
 		};
 	}
 

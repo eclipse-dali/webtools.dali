@@ -89,6 +89,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_COLLECTION_TABLE: return (EObject)createXmlCollectionTable();
 			case OrmPackage.XML_COLUMN: return (EObject)createXmlColumn();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
+			case OrmPackage.XML_CONVERTER: return (EObject)createXmlConverter();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN: return (EObject)createXmlDiscriminatorColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION: return (EObject)createXmlElementCollection();
 			case OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
@@ -290,6 +291,17 @@ public class OrmFactory extends EFactoryImpl
 	{
 		ColumnResult columnResult = new ColumnResult();
 		return columnResult;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlConverter createXmlConverter()
+	{
+		XmlConverter xmlConverter = new XmlConverter();
+		return xmlConverter;
 	}
 
 	/**

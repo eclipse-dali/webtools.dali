@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistencePackage;
 
 /**
@@ -204,18 +205,21 @@ public class PersistenceV2_0Package extends EPackageImpl
 		// Obtain or create and register interdependencies
 		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) instanceof OrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) : OrmV2_0Package.eINSTANCE);
+		OrmV2_1Package theOrmV2_1Package = (OrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_1Package.eNS_URI) instanceof OrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_1Package.eNS_URI) : OrmV2_1Package.eINSTANCE);
 		PersistencePackage thePersistencePackage = (PersistencePackage)(EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) instanceof PersistencePackage ? EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) : PersistencePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		thePersistenceV2_0Package.createPackageContents();
 		theOrmPackage.createPackageContents();
 		theOrmV2_0Package.createPackageContents();
+		theOrmV2_1Package.createPackageContents();
 		thePersistencePackage.createPackageContents();
 
 		// Initialize created meta-data
 		thePersistenceV2_0Package.initializePackageContents();
 		theOrmPackage.initializePackageContents();
 		theOrmV2_0Package.initializePackageContents();
+		theOrmV2_1Package.initializePackageContents();
 		thePersistencePackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed

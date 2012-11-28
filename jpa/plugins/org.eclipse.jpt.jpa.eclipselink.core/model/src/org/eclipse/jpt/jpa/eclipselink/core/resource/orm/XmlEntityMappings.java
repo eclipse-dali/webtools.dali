@@ -30,6 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
@@ -244,16 +245,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @ordered
 	 */
 	protected EList<XmlUuidGenerator_2_4> uuidGenerators;
-
-	/**
-	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConverters()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlConverter> converters;
 
 	/**
 	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
@@ -722,29 +713,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Converters</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_Converters()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlConverter> getConverters()
-	{
-		if (converters == null)
-		{
-			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS);
-		}
-		return converters;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Type Converters</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter}.
 	 * <!-- begin-user-doc -->
@@ -878,8 +846,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
 				return ((InternalEList<?>)getUuidGenerators()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
-				return ((InternalEList<?>)getConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
 				return ((InternalEList<?>)getTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS:
@@ -934,8 +900,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return getPlsqlTables();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
 				return getUuidGenerators();
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
-				return getConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
 				return getTypeConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS:
@@ -1022,10 +986,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				getUuidGenerators().clear();
 				getUuidGenerators().addAll((Collection<? extends XmlUuidGenerator_2_4>)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
-				getConverters().clear();
-				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
 				getTypeConverters().clear();
 				getTypeConverters().addAll((Collection<? extends XmlTypeConverter>)newValue);
@@ -1104,9 +1064,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
 				getUuidGenerators().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
-				getConverters().clear();
-				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
 				getTypeConverters().clear();
 				return;
@@ -1165,8 +1122,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return plsqlTables != null && !plsqlTables.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
 				return uuidGenerators != null && !uuidGenerators.isEmpty();
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
-				return converters != null && !converters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
 				return typeConverters != null && !typeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS:
@@ -1242,7 +1197,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS;
@@ -1323,7 +1277,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS;
@@ -1413,7 +1366,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			buildAccessTranslator(),
 			buildAccessMethodsTranslator(),
 			XmlTenantDiscriminatorColumn.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_TenantDiscriminatorColumns()),
-			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_Converters()),
+			XmlConverter.buildTranslator(EclipseLink.CONVERTER, OrmV2_1Package.eINSTANCE.getXmlConverterContainer_2_1_Converters()),
 			XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_TypeConverters()),
 			XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_ObjectTypeConverters()),
 			XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_StructConverters()),

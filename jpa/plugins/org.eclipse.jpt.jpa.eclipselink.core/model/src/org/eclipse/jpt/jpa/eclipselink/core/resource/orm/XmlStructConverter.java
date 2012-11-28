@@ -14,9 +14,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -47,8 +49,26 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlStructConverter extends XmlNamedConverter
+public class XmlStructConverter extends EBaseObjectImpl implements XmlNamedConverter
 {
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getConverter() <em>Converter</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -87,6 +107,41 @@ public class XmlStructConverter extends XmlNamedConverter
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_STRUCT_CONVERTER;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter_Name()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	public void setName(String newName)
+	{
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME, oldName, name));
 	}
 
 	/**
@@ -134,6 +189,8 @@ public class XmlStructConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
+				return getName();
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
 				return getConverter();
 		}
@@ -150,6 +207,9 @@ public class XmlStructConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
+				setName((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
 				setConverter((String)newValue);
 				return;
@@ -167,6 +227,9 @@ public class XmlStructConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
 				setConverter(CONVERTER_EDEFAULT);
 				return;
@@ -184,6 +247,8 @@ public class XmlStructConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
 				return CONVERTER_EDEFAULT == null ? converter != null : !CONVERTER_EDEFAULT.equals(converter);
 		}
@@ -201,7 +266,9 @@ public class XmlStructConverter extends XmlNamedConverter
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (converter: ");
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", converter: ");
 		result.append(converter);
 		result.append(')');
 		return result.toString();
@@ -209,6 +276,10 @@ public class XmlStructConverter extends XmlNamedConverter
 	
 	public TextRange getConverterClassTextRange() {
 		return getAttributeTextRange(EclipseLink.STRUCT_CONVERTER__CONVERTER);
+	}
+
+	public TextRange getNameTextRange() {
+		return getAttributeTextRange(JPA.NAME);
 	}
 	
 	// ********** translators **********
@@ -227,6 +298,10 @@ public class XmlStructConverter extends XmlNamedConverter
 			buildNameTranslator(),
 			buildConverterTranslator()
 		};
+	}
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(EclipseLink.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildConverterTranslator() {

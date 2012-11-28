@@ -134,6 +134,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ColumnResult">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConverter" eSuperTypes="#//v2_1/XmlConverter_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlConvertibleMapping" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lob" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
@@ -175,7 +176,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" upperBound="-1"
         eType="#//EntityListener" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.common.core/model/common.ecore#//ERootObjectImpl #//XmlQueryContainer #//XmlAccessHolder">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.common.core/model/common.ecore#//ERootObjectImpl #//XmlQueryContainer #//XmlAccessHolder #//v2_1/XmlEntityMappings_2_1">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitMetadata"
         eType="#//XmlPersistenceUnitMetadata" containment="true" resolveProxies="false"/>
@@ -577,6 +578,22 @@
       <eLiterals name="PESSIMISTIC_READ" value="5"/>
       <eLiterals name="PESSIMISTIC_WRITE" value="6"/>
       <eLiterals name="PESSIMISTIC_FORCE_INCREMENT" value="7"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="v2_1" nsURI="jpt.orm.v2_1.xmi" nsPrefix="org.eclipse.jpt.jpa.core.resource.orm.v2_1">
+    <eClassifiers xsi:type="ecore:EClass" name="XmlConverter_2_1" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoApply" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings_2_1" abstract="true"
+        interface="true" eSuperTypes="#//v2_1/XmlConverterContainer_2_1"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlConverterContainer_2_1" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="converters" upperBound="-1"
+          eType="#//v2_1/XmlConverter_2_1" containment="true"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

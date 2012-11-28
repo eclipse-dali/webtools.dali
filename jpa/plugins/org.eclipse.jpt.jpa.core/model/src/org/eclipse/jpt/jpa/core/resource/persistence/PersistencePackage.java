@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.PersistenceV2_0Package;
 
 /**
@@ -535,18 +536,21 @@ public class PersistencePackage extends EPackageImpl
 		// Obtain or create and register interdependencies
 		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) instanceof OrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) : OrmV2_0Package.eINSTANCE);
+		OrmV2_1Package theOrmV2_1Package = (OrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_1Package.eNS_URI) instanceof OrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_1Package.eNS_URI) : OrmV2_1Package.eINSTANCE);
 		PersistenceV2_0Package thePersistenceV2_0Package = (PersistenceV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(PersistenceV2_0Package.eNS_URI) instanceof PersistenceV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(PersistenceV2_0Package.eNS_URI) : PersistenceV2_0Package.eINSTANCE);
 
 		// Create package meta-data objects
 		thePersistencePackage.createPackageContents();
 		theOrmPackage.createPackageContents();
 		theOrmV2_0Package.createPackageContents();
+		theOrmV2_1Package.createPackageContents();
 		thePersistenceV2_0Package.createPackageContents();
 
 		// Initialize created meta-data
 		thePersistencePackage.initializePackageContents();
 		theOrmPackage.initializePackageContents();
 		theOrmV2_0Package.initializePackageContents();
+		theOrmV2_1Package.initializePackageContents();
 		thePersistenceV2_0Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed

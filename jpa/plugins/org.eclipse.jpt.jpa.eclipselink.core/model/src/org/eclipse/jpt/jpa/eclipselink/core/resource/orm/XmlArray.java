@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
@@ -29,6 +30,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
@@ -96,7 +100,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConverter> converters;
+	protected EList<XmlConverter_2_1> converters;
 
 	/**
 	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
@@ -356,7 +360,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 
 	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
@@ -364,15 +368,15 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Converters</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_Converters()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_2_1_Converters()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConverter> getConverters()
+	public EList<XmlConverter_2_1> getConverters()
 	{
 		if (converters == null)
 		{
-			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS);
+			converters = new EObjectContainmentEList<XmlConverter_2_1>(XmlConverter_2_1.class, this, EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS);
 		}
 		return converters;
 	}
@@ -850,7 +854,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS:
 				getConverters().clear();
-				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
+				getConverters().addAll((Collection<? extends XmlConverter_2_1>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__TYPE_CONVERTERS:
 				getTypeConverters().clear();
@@ -1019,11 +1023,18 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConverterContainer_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS: return OrmV2_1Package.XML_CONVERTER_CONTAINER_21__CONVERTERS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConverterContainer.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ARRAY__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ARRAY__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS;
@@ -1100,11 +1111,18 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConverterContainer_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_CONVERTER_CONTAINER_21__CONVERTERS: return EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConverterContainer.class)
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS: return EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ARRAY__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ARRAY__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS;
@@ -1255,7 +1273,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	}
 	
 	protected static Translator buildConverterTranslator() {
-		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_Converters());
+		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, OrmV2_1Package.eINSTANCE.getXmlConverterContainer_2_1_Converters());
 	}
 	
 	protected static Translator buildTypeConverterTranslator() {

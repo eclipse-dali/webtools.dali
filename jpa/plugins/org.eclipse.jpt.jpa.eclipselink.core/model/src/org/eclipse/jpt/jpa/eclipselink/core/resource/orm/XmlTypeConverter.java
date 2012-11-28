@@ -14,9 +14,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -48,8 +50,26 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlTypeConverter extends XmlNamedConverter
+public class XmlTypeConverter extends EBaseObjectImpl implements XmlNamedConverter
 {
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getDataType() <em>Data Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -106,6 +126,41 @@ public class XmlTypeConverter extends XmlNamedConverter
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_TYPE_CONVERTER;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter_Name()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	public void setName(String newName)
+	{
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_TYPE_CONVERTER__NAME, oldName, name));
 	}
 
 	/**
@@ -188,6 +243,8 @@ public class XmlTypeConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__NAME:
+				return getName();
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__DATA_TYPE:
 				return getDataType();
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__OBJECT_TYPE:
@@ -206,6 +263,9 @@ public class XmlTypeConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__NAME:
+				setName((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__DATA_TYPE:
 				setDataType((String)newValue);
 				return;
@@ -226,6 +286,9 @@ public class XmlTypeConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__DATA_TYPE:
 				setDataType(DATA_TYPE_EDEFAULT);
 				return;
@@ -246,6 +309,8 @@ public class XmlTypeConverter extends XmlNamedConverter
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__DATA_TYPE:
 				return DATA_TYPE_EDEFAULT == null ? dataType != null : !DATA_TYPE_EDEFAULT.equals(dataType);
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER__OBJECT_TYPE:
@@ -265,12 +330,18 @@ public class XmlTypeConverter extends XmlNamedConverter
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (dataType: ");
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", dataType: ");
 		result.append(dataType);
 		result.append(", objectType: ");
 		result.append(objectType);
 		result.append(')');
 		return result.toString();
+	}
+
+	public TextRange getNameTextRange() {
+		return getAttributeTextRange(JPA.NAME);
 	}
 	
 	// ********** translators **********
@@ -290,6 +361,10 @@ public class XmlTypeConverter extends XmlNamedConverter
 			buildDataTypeTranslator(),
 			buildObjectTypeTranslator(),
 		};
+	}
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(EclipseLink.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildDataTypeTranslator() {

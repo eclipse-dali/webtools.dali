@@ -135,6 +135,7 @@
     <genClasses ecoreClass="orm.ecore#//ColumnResult">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ColumnResult/name"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlConverter"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlConvertibleMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/lob"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/temporal"/>
@@ -437,6 +438,19 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlUniqueConstraint_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlUniqueConstraint_2_0/name"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="OrmV2_1" basePackage="org.eclipse.jpt.jpa.core.resource.orm"
+        disposableProviderFactory="true" adapterFactory="false" ecorePackage="orm.ecore#//v2_1">
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConverter_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/description"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/className"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/autoApply"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlEntityMappings_2_1"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConverterContainer_2_1">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlConverterContainer_2_1/converters"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

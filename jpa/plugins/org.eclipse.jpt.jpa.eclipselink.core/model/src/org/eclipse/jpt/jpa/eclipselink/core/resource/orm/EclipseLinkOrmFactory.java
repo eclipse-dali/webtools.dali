@@ -117,7 +117,6 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case EclipseLinkOrmPackage.XML_MULTITENANT: return (EObject)createXmlMultitenant();
-			case EclipseLinkOrmPackage.XML_NAMED_CONVERTER: return (EObject)createXmlNamedConverter();
 			case EclipseLinkOrmPackage.XML_NAMED_PLSQL_STORED_FUNCTION_QUERY: return (EObject)createXmlNamedPlsqlStoredFunctionQuery();
 			case EclipseLinkOrmPackage.XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedPlsqlStoredProcedureQuery();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_FUNCTION_QUERY: return (EObject)createXmlNamedStoredFunctionQuery();
@@ -605,17 +604,6 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlMultitenant xmlMultitenant = new XmlMultitenant();
 		return xmlMultitenant;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlNamedConverter createXmlNamedConverter()
-	{
-		XmlNamedConverter xmlNamedConverter = new XmlNamedConverter();
-		return xmlNamedConverter;
 	}
 
 	/**

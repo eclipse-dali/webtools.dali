@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -479,7 +479,7 @@ public class EclipseLinkOrmEmbeddableTests
 		
 		assertEquals(1, resourceEmbeddable.getConverters().size());
 		assertEquals("Foo", resourceEmbeddable.getConverters().get(0).getClassName());
-		assertEquals("myConverter", resourceEmbeddable.getConverters().get(0).getName());
+		assertEquals("myConverter", ((XmlConverter) resourceEmbeddable.getConverters().get(0)).getName());
 		assertEquals(1, ormContextConverterHolder.getCustomConvertersSize());
 		ListIterator<? extends EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		EclipseLinkCustomConverter ormContextConverter = ormContextConverters.next();
@@ -493,9 +493,9 @@ public class EclipseLinkOrmEmbeddableTests
 		
 		assertEquals(2, resourceEmbeddable.getConverters().size());
 		assertEquals("Foo2", resourceEmbeddable.getConverters().get(0).getClassName());
-		assertEquals("myConverter2", resourceEmbeddable.getConverters().get(0).getName());
+		assertEquals("myConverter2", ((XmlConverter) resourceEmbeddable.getConverters().get(0)).getName());
 		assertEquals("Foo", resourceEmbeddable.getConverters().get(1).getClassName());
-		assertEquals("myConverter", resourceEmbeddable.getConverters().get(1).getName());
+		assertEquals("myConverter", ((XmlConverter) resourceEmbeddable.getConverters().get(1)).getName());
 		assertEquals(2, ormContextConverterHolder.getCustomConvertersSize());
 		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
@@ -510,9 +510,9 @@ public class EclipseLinkOrmEmbeddableTests
 		
 		assertEquals(2, resourceEmbeddable.getConverters().size());
 		assertEquals("Foo", resourceEmbeddable.getConverters().get(0).getClassName());
-		assertEquals("myConverter", resourceEmbeddable.getConverters().get(0).getName());
+		assertEquals("myConverter", ((XmlConverter) resourceEmbeddable.getConverters().get(0)).getName());
 		assertEquals("Foo2", resourceEmbeddable.getConverters().get(1).getClassName());
-		assertEquals("myConverter2", resourceEmbeddable.getConverters().get(1).getName());
+		assertEquals("myConverter2", ((XmlConverter) resourceEmbeddable.getConverters().get(1)).getName());
 		assertEquals(2, ormContextConverterHolder.getCustomConvertersSize());
 		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
@@ -527,7 +527,7 @@ public class EclipseLinkOrmEmbeddableTests
 		
 		assertEquals(1, resourceEmbeddable.getConverters().size());
 		assertEquals("Foo2", resourceEmbeddable.getConverters().get(0).getClassName());
-		assertEquals("myConverter2", resourceEmbeddable.getConverters().get(0).getName());
+		assertEquals("myConverter2", ((XmlConverter) resourceEmbeddable.getConverters().get(0)).getName());
 		assertEquals(1, ormContextConverterHolder.getCustomConvertersSize());
 		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();

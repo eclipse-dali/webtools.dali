@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,8 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.orm.JPA;
-import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,51 +37,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * </p>
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter()
- * @model kind="class"
+ * @model kind="class" interface="true" abstract="true"
  * @extends EBaseObject
  * @generated
  */
-public class XmlNamedConverter extends EBaseObjectImpl implements EBaseObject
+public interface XmlNamedConverter extends EBaseObject
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected XmlNamedConverter()
-	{
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass()
-	{
-		return EclipseLinkOrmPackage.Literals.XML_NAMED_CONVERTER;
-	}
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -103,9 +58,7 @@ public class XmlNamedConverter extends EBaseObjectImpl implements EBaseObject
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	public String getName() {
-		return name;
-	}
+	String getName();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter#getName <em>Name</em>}' attribute.
@@ -115,104 +68,8 @@ public class XmlNamedConverter extends EBaseObjectImpl implements EBaseObject
 	 * @see #getName()
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_NAMED_CONVERTER__NAME, oldName, name));
-	}
+	void setName(String value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_NAMED_CONVERTER__NAME:
-				return getName();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_NAMED_CONVERTER__NAME:
-				setName((String)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_NAMED_CONVERTER__NAME:
-				setName(NAME_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_NAMED_CONVERTER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString()
-	{
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(')');
-		return result.toString();
-	}
-	
-	public TextRange getNameTextRange() {
-		return getAttributeTextRange(JPA.NAME);
-	}
-	
-	// ********** translators **********
-	
-	protected static Translator buildNameTranslator() {
-		return new Translator(EclipseLink.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
-	}
+	TextRange getNameTextRange();
 
 } // XmlNamedConverter

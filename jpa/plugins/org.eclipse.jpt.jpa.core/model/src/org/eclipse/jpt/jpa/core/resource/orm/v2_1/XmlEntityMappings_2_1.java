@@ -7,35 +7,29 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
-import org.eclipse.jpt.jpa.core.resource.orm.JPA;
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
- * JPA 2.1 orm.xml-related stuff (elements, attributes etc.)
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Xml Entity Mappings 21</b></em>'.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.3
- * @since 3.3
+ * <!-- end-user-doc -->
+ *
+ *
+ * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlEntityMappings_2_1()
+ * @model kind="class" interface="true" abstract="true"
+ * @generated
  */
-@SuppressWarnings("nls")
-public interface JPA2_1
-	extends JPA
+public interface XmlEntityMappings_2_1 extends XmlConverterContainer_2_1
 {
-	String SCHEMA_NAMESPACE = JPA.SCHEMA_NAMESPACE;
-	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/orm_2_1.xsd";
-	String SCHEMA_VERSION = "2.1";
-	
-	// JPA 2.1 specific nodes
 
-	String CONVERTER = "converter";
-		String CONVERTER__AUTO_APPLY = "auto-apply";
-		String CONVERTER__CLASS = "class";
-		String CONVERTER__DESCRIPTION = "description";
-}
+} // XmlEntityMappings_2_1
