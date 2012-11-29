@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -57,20 +56,6 @@ public interface JpaStructureNode
 	 * @see #getType()
 	 */
 	ContextType getContextType();
-
-	/**
-	 * Return the structure node's JPA platform.
-	 * This is used to find the appropriate UI platform for building the
-	 * structure node's JPA Details Page.
-	 */
-	JpaPlatform getJpaPlatform();
-
-	/**
-	 * Return the structure node's resource type.
-	 * This is used to find the appropriate UI provider for building the
-	 * structure node's JPA Details Page.
-	 */
-	JptResourceType getResourceType();
 
 	/**
 	 * Return the structure node's type.

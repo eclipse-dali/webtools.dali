@@ -9,15 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.List;
-
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Context persistent type.
@@ -157,20 +152,6 @@ public interface PersistentType
 	 * has a loop.
 	 */
 	Iterable<PersistentType> getAncestors();
-
-
-	// ********** validation **********
-
-	/**
-	 * Add to the list of current validation messages
-	 */
-	void validate(List<IMessage> messages, IReporter reporter);
-
-	/**
-	 * Return the text range to be used with any validation messages related
-	 * to the persistent type.
-	 */
-	TextRange getValidationTextRange();
 
 
 	// ********** misc **********

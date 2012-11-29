@@ -125,12 +125,6 @@ public interface JpaProject
 	IJavaProject getJavaProject();
 
 	/**
-	 * Return the vendor-specific JPA platform that builds the JPA project
-	 * and its contents.
-	 */
-	JpaPlatform getJpaPlatform();
-
-	/**
 	 * Return the root of the JPA project's context model.
 	 */
 	JpaRootContextNode getRootContextNode();

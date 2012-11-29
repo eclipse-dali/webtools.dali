@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.common.core.utility.TextRange;
-
 /**
  * Persistence unit metadata held by a mapping file.
  * <p>
@@ -46,8 +44,4 @@ public interface MappingFilePersistenceUnitMetadata
 	 * return <code>true</code>; otherwise <code>false</code>.
 	 */
 	boolean resourceExists();
-
-	// TODO remove when XmlContextNode.validate(...)
-	// is moved to JpaContextNode (and JavaJpaContextNode.validate(...) is gone as a result)
-	TextRange getValidationTextRange();
 }
