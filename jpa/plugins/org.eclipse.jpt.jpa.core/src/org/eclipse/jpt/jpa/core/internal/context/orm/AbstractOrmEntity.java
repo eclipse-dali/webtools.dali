@@ -1783,6 +1783,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 	}
 
+	@Override
+	public TextRange getNameTextRange() {
+		return this.getXmlTypeMapping().getNameTextRange();
+	}
+
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
 		this.buildPrimaryKeyValidator().validate(messages, reporter);
 	}

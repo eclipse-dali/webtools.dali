@@ -52,6 +52,11 @@ public interface EclipseLinkConverter
 	 */
 	char getEnclosingTypeSeparator();
 
+	/**
+	 * Return whether this query should be validated and have validation messages displayed
+	 */
+	boolean supportsValidationMessages();
+
 	TextRange getNameTextRange();
 
 }

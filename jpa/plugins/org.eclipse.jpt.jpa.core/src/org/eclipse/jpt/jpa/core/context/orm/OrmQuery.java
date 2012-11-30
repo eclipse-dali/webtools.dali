@@ -9,13 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.List;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <code>orm.xml</code> named and named native queries
@@ -42,10 +38,5 @@ public interface OrmQuery
 	OrmQueryHint addHint();
 
 	OrmQueryHint addHint(int index);
-
-
-	// ********** validation **********
-
-	void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
 
 }

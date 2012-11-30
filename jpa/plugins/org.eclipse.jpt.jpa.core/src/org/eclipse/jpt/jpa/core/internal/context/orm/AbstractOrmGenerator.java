@@ -73,6 +73,10 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 
 	// ********** validation **********
 
+	public boolean supportsValidationMessages() {
+		return true;
+	}
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);

@@ -42,6 +42,11 @@ public interface Generator
 	TextRange getNameTextRange();
 
 	/**
+	 * Return whether this generator should be validated and have validation messages displayed
+	 */
+	boolean supportsValidationMessages();
+
+	/**
 	 * Return the generator's type.
 	 */
 	Class<? extends Generator> getType();

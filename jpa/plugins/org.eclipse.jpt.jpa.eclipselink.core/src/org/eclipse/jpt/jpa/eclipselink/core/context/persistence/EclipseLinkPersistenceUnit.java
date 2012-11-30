@@ -53,7 +53,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.VirtualOrmXmlRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -72,7 +71,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelp
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
@@ -1006,7 +1004,7 @@ public class EclipseLinkPersistenceUnit
 		String[] parms = new String[] {converterName};
 		if (this.anyNodesAreInequivalent(dups)) {
 			for (EclipseLinkConverter dup : dups) {
-				if (this.converterSupportsValidationMessages(dup)) {
+				if (dup.supportsValidationMessages()) {
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -1043,23 +1041,9 @@ public class EclipseLinkPersistenceUnit
 		return false;
 	}
 
-	protected boolean converterSupportsValidationMessages(EclipseLinkConverter converter) {
-		return (converter instanceof OrmEclipseLinkConverter<?>) || this.converterSupportsValidationMessages((JavaEclipseLinkConverter<?>) converter);
-	}
-
-	protected boolean converterSupportsValidationMessages(JavaEclipseLinkConverter<?> javaConverter) {
-		return MappingTools.nodeIsInternalSource(javaConverter, javaConverter.getConverterAnnotation());
-	}
-
-	// TODO bjv isn't it obvious?
 	protected void validate(EclipseLinkConverter converter, List<IMessage> messages, IReporter reporter) {
-		if (converter instanceof OrmEclipseLinkConverter<?>) {
-			((OrmEclipseLinkConverter<?>) converter).validate(messages, reporter);
-		} else {
-			JavaEclipseLinkConverter<?> javaConverter = (JavaEclipseLinkConverter<?>) converter;
-			if (this.converterSupportsValidationMessages(javaConverter)) {
-				javaConverter.validate(messages, reporter);
-			}
+		if (converter.supportsValidationMessages()) {
+			converter.validate(messages, reporter);
 		}
 	}
 
@@ -1072,7 +1056,7 @@ public class EclipseLinkPersistenceUnit
 		if (this.allNodesAreEquivalent(dups)) {
 			String[] parms = new String[] {generatorName};
 			for (Generator dup : dups) {
-				if (this.generatorSupportsValidationMessages(dup)) {
+				if (dup.supportsValidationMessages()) {
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.LOW_SEVERITY,
@@ -1097,7 +1081,7 @@ public class EclipseLinkPersistenceUnit
 		if (this.allNodesAreEquivalent(dups)) {
 			String[] parms = new String[] {queryName};
 			for (Query dup : dups) {
-				if (this.querySupportsValidationMessages(dup)) {
+				if (dup.supportsValidationMessages()) {
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.LOW_SEVERITY,

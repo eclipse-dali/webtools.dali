@@ -211,6 +211,10 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	// ********** validation **********
 
+	public boolean supportsValidationMessages() {
+		return true;
+	}
+
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateName(messages);

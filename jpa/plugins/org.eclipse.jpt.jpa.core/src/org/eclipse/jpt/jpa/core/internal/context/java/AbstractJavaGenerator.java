@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
@@ -70,6 +71,10 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 
 	
 	// ********** validation **********
+
+	public boolean supportsValidationMessages() {
+		return MappingTools.nodeIsInternalSource(this, this.getGeneratorAnnotation());
+	}
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {

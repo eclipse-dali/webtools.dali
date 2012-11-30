@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
@@ -290,4 +291,10 @@ public interface Entity
 	 * Else return null.
 	 */
 	PersistentAttribute getIdAttribute();
+
+	/**
+	 * Returns the {@link TextRange} of the name property.
+	 */
+	TextRange getNameTextRange();
+
 }

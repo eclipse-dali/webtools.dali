@@ -73,8 +73,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
@@ -2519,7 +2517,7 @@ public abstract class AbstractPersistenceUnit
 	protected void validateGeneratorsWithSameName(String generatorName, ArrayList<Generator> dups, List<IMessage> messages) {
 		String[] parms = new String[] {generatorName};
 		for (Generator dup : dups) {
-			if (this.generatorSupportsValidationMessages(dup)) {
+			if (dup.supportsValidationMessages()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -2533,23 +2531,9 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected boolean generatorSupportsValidationMessages(Generator generator) {
-		return (generator instanceof OrmGenerator) || this.generatorSupportsValidationMessages((JavaGenerator) generator);
-	}
-
-	protected boolean generatorSupportsValidationMessages(JavaGenerator javaGenerator) {
-		return MappingTools.nodeIsInternalSource(javaGenerator, javaGenerator.getGeneratorAnnotation());
-	}
-
-	// TODO bjv isn't it obvious?
 	protected void validate(Generator generator, List<IMessage> messages, IReporter reporter) {
-		if (generator instanceof OrmGenerator) {
-			((OrmGenerator) generator).validate(messages, reporter);
-		} else {
-			JavaGenerator javaGenerator = (JavaGenerator) generator;
-			if (this.generatorSupportsValidationMessages(javaGenerator)) {
-				javaGenerator.validate(messages, reporter);
-			}
+		if (generator.supportsValidationMessages()) {
+			generator.validate(messages, reporter);
 		}
 	}
 
@@ -2583,7 +2567,7 @@ public abstract class AbstractPersistenceUnit
 	protected void validateQueriesWithSameName(String queryName, ArrayList<Query> dups, List<IMessage> messages) {
 		String[] parms = new String[] {queryName};
 		for (Query dup : dups) {
-			if (this.querySupportsValidationMessages(dup)) {
+			if (dup.supportsValidationMessages()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -2597,23 +2581,9 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected boolean querySupportsValidationMessages(Query query) {
-		return (query instanceof OrmQuery) || this.querySupportsValidationMessages((JavaQuery) query);
-	}
-
-	protected boolean querySupportsValidationMessages(JavaQuery javaQuery) {
-		return MappingTools.nodeIsInternalSource(javaQuery, javaQuery.getQueryAnnotation());
-	}
-
-	// TODO bjv isn't it obvious?
 	protected void validate(Query query, JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		if (query instanceof OrmQuery) {
-			((OrmQuery) query).validate(queryHelper, messages, reporter);
-		} else {
-			JavaQuery javaQuery = (JavaQuery) query;
-			if (this.querySupportsValidationMessages(javaQuery)) {
-				javaQuery.validate(queryHelper, messages, reporter);
-			}
+		if (query.supportsValidationMessages()) {
+			query.validate(queryHelper, messages, reporter);
 		}
 	}
 
@@ -2659,7 +2629,7 @@ public abstract class AbstractPersistenceUnit
 						JpaValidationMessages.ENTITY_NAME_DUPLICATED,
 						parms,
 						dup,
-						this.extractNameTextRange(dup)
+						dup.getNameTextRange()
 					)
 				);
 			}
@@ -2672,13 +2642,6 @@ public abstract class AbstractPersistenceUnit
 
 	protected boolean entitySupportsValidationMessages(JavaEntity javaEntity) {
 		return MappingTools.nodeIsInternalSource(javaEntity, javaEntity.getJavaResourceType());
-	}
-
-	// TODO bjv isn't it obvious?
-	protected TextRange extractNameTextRange(Entity entity) {
-		return (entity instanceof OrmEntity) ?
-				((OrmEntity) entity).getXmlTypeMapping().getNameTextRange():
-				((JavaEntity) entity).getMappingAnnotation().getNameTextRange();
 	}
 
 	public boolean validatesAgainstDatabase() {

@@ -13,6 +13,9 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Named and named native queries.
  * <p>
@@ -94,6 +97,16 @@ public interface Query
 	void moveHint(int targetIndex, int sourceIndex);
 
 	QueryHint getHint(int i);
+
+
+	// ********** validation **********
+
+	void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
+
+	/**
+	 * Return whether this query should be validated and have validation messages displayed
+	 */
+	boolean supportsValidationMessages();
 
 	/**
 	 * Returns the {@link TextRange} of the name property.

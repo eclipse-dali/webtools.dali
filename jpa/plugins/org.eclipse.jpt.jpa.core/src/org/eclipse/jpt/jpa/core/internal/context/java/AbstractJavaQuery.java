@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -189,6 +190,10 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	}
 
 	// ********** validation **********
+
+	public boolean supportsValidationMessages() {
+		return MappingTools.nodeIsInternalSource(this, this.getQueryAnnotation());
+	}
 
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);

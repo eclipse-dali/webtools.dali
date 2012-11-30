@@ -105,6 +105,10 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 	// ********** validation **********
 
+	public boolean supportsValidationMessages() {
+		return true;
+	}
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);

@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -114,6 +115,10 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 
 	// ********** validation **********
+
+	public boolean supportsValidationMessages() {
+		return MappingTools.nodeIsInternalSource(this, this.getConverterAnnotation());
+	}
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {

@@ -1341,6 +1341,10 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
+	public TextRange getNameTextRange() {
+		return this.getMappingAnnotation().getNameTextRange();
+	}
+
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
 		this.buildPrimaryKeyValidator().validate(messages, reporter);
 	}

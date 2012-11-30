@@ -9,14 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.List;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java named and named native queries
@@ -44,10 +40,6 @@ public interface JavaQuery
 
 	JavaQueryHint addHint(int index);
 
-
-	// ********** validation **********
-
-	void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
 
 	// ********** metadata conversion *********
 	
