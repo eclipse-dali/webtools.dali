@@ -1783,6 +1783,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 	}
 
+	public boolean supportsValidationMessages() {
+		return true;
+	}
+
 	@Override
 	public TextRange getNameTextRange() {
 		return this.getXmlTypeMapping().getNameTextRange();

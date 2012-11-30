@@ -278,6 +278,19 @@ public interface Entity
 		String DESCENDANTS_COLLECTION = "descendants"; //$NON-NLS-1$
 
 
+	// ********** validation **********
+
+	/**
+	 * Returns the {@link TextRange} of the name property.
+	 */
+	TextRange getNameTextRange();
+
+	/**
+	 * Return whether this entity should be validated and have validation messages displayed
+	 */
+	boolean supportsValidationMessages();
+
+
 	// ********** misc **********
 
 	/**
@@ -291,10 +304,5 @@ public interface Entity
 	 * Else return null.
 	 */
 	PersistentAttribute getIdAttribute();
-
-	/**
-	 * Returns the {@link TextRange} of the name property.
-	 */
-	TextRange getNameTextRange();
 
 }

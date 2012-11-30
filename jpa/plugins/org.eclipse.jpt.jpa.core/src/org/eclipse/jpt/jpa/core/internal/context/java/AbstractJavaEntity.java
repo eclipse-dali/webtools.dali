@@ -1341,6 +1341,10 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
+	public boolean supportsValidationMessages() {
+		return MappingTools.nodeIsInternalSource(this, this.getJavaResourceType());
+	}
+
 	public TextRange getNameTextRange() {
 		return this.getMappingAnnotation().getNameTextRange();
 	}

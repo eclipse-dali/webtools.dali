@@ -66,13 +66,11 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
@@ -83,7 +81,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -2622,7 +2619,7 @@ public abstract class AbstractPersistenceUnit
 	protected void validateEntitiesWithSameName(String entityName, ArrayList<Entity> dups, List<IMessage> messages) {
 		String[] parms = new String[] {entityName};
 		for (Entity dup : dups) {
-			if (this.entitySupportsValidationMessages(dup)) {
+			if (dup.supportsValidationMessages()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -2634,14 +2631,6 @@ public abstract class AbstractPersistenceUnit
 				);
 			}
 		}
-	}
-
-	protected boolean entitySupportsValidationMessages(Entity entity) {
-		return (entity instanceof OrmEntity) || this.entitySupportsValidationMessages((JavaEntity) entity);
-	}
-
-	protected boolean entitySupportsValidationMessages(JavaEntity javaEntity) {
-		return MappingTools.nodeIsInternalSource(javaEntity, javaEntity.getJavaResourceType());
 	}
 
 	public boolean validatesAgainstDatabase() {
