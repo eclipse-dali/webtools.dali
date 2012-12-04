@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -80,6 +81,11 @@ public interface ClassRef
 	 * Set the class name of the class ref.
 	 */
 	void setClassName(String className);
+
+	/**
+	 * Return the corresponding JavaResourceAbstractType, null if the name does not resolve to a class.
+	 */
+	JavaResourceAbstractType getJavaResourceType();
 
 
 	// ********** java persistent type **********

@@ -165,7 +165,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected final ContextListContainer<ClassRef, XmlJavaClassRef> specifiedClassRefContainer;
 
-	protected final ContextCollectionContainer<ClassRef, String> impliedClassRefContainer;
+	protected final ContextCollectionContainer<ClassRef, JavaResourceAbstractType> impliedClassRefContainer;
 
 	protected final ContextListContainer<Property, XmlProperty> propertyContainer;
 
@@ -805,14 +805,14 @@ public abstract class AbstractPersistenceUnit
 		return classRef;
 	}
 
-	protected Iterable<ClassRef> addSpecifiedClassRefs(Iterable<String> classNames) {
+	protected Iterable<ClassRef> addSpecifiedClassRefs(Iterable<JavaResourceAbstractType> classNames) {
 		return this.addSpecifiedClassRefs(this.getSpecifiedClassRefsSize(), classNames);
 	}
 
-	protected Iterable<ClassRef> addSpecifiedClassRefs(int index, Iterable<String> classNames) {
+	protected Iterable<ClassRef> addSpecifiedClassRefs(int index, Iterable<JavaResourceAbstractType> jrats) {
 		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
-		for (String className : classNames) {
-			xmlClassRefs.add(this.buildXmlJavaClassRef(className));
+		for (JavaResourceAbstractType jrat : jrats) {
+			xmlClassRefs.add(this.buildXmlJavaClassRef(jrat.getTypeBinding().getQualifiedName()));
 		}
 		Iterable<ClassRef> classRefs = this.specifiedClassRefContainer.addContextElements(index, xmlClassRefs);
 		this.xmlPersistenceUnit.getClasses().addAll(index, xmlClassRefs);
@@ -905,22 +905,18 @@ public abstract class AbstractPersistenceUnit
 		return this.impliedClassRefContainer.getContextElementsSize();
 	}
 
-	protected ClassRef addImpliedClassRef(String className) {
-		return this.impliedClassRefContainer.addContextElement(getImpliedClassRefsSize(), className);
-	}
-
-	protected ClassRef buildClassRef(String className) {
-		return this.getContextNodeFactory().buildClassRef(this, className);
+	protected ClassRef buildClassRef(JavaResourceAbstractType jrat) {
+		return this.getContextNodeFactory().buildClassRef(this, jrat);
 	}
 
 	protected void updateImpliedClassRefs() {
 		this.impliedClassRefContainer.update();
 	}
 
-	protected Iterable<String> getImpliedClassNames() {
+	protected Iterable<JavaResourceAbstractType> getImpliedClassResourceTypes() {
 		return this.excludesUnlistedClasses() ?
-				EmptyIterable.<String>instance() :
-				this.getImpliedClassNames_();
+				EmptyIterable.<JavaResourceAbstractType>instance() :
+				this.getImpliedClassResourceTypes_();
 	}
 
 	/**
@@ -928,24 +924,23 @@ public abstract class AbstractPersistenceUnit
 	 * mapped (i.e. have the appropriate annotation etc.) but not specified
 	 * in the persistence unit or any of its mapping files.
 	 */
-	protected Iterable<String> getImpliedClassNames_() {
-		return new FilteringIterable<String>(this.getJpaProject().getMappedJavaSourceClassNames()) {
+	protected Iterable<JavaResourceAbstractType> getImpliedClassResourceTypes_() {
+		return new FilteringIterable<JavaResourceAbstractType>(this.getJpaProject().getMappedJavaSourceTypes()) {
 				@Override
-				protected boolean accept(String mappedClassName) {
-					return ! AbstractPersistenceUnit.this.specifiesPersistentType(mappedClassName);
+				protected boolean accept(JavaResourceAbstractType jrat) {
+					return ! AbstractPersistenceUnit.this.specifiesPersistentType(jrat.getTypeBinding().getQualifiedName());
 				}
 			};
 	}
 
-	protected ContextCollectionContainer<ClassRef, String> buildImpliedClassRefContainer() {
+	protected ContextCollectionContainer<ClassRef, JavaResourceAbstractType> buildImpliedClassRefContainer() {
 		return new ImpliedClassRefContainer();
 	}
 
 	/**
 	 * Virtual class ref container adapter.
 	 * <p>
-	 * <strong>NB:</strong> The context class ref is matched with a resource
-	 * class by name.
+	 * <strong>NB:</strong> The context class ref is matched with a java resource type.
 	 * <p>
 	 * This is used during <strong>both</strong> <em>sync</em> and
 	 * <em>update</em> because the list of implied class refs can be modified
@@ -966,23 +961,23 @@ public abstract class AbstractPersistenceUnit
 	 * collection must also be synchronized during <em>update</em>.
 	 */
 	protected class ImpliedClassRefContainer
-		extends ContextCollectionContainer<ClassRef, String>
+		extends ContextCollectionContainer<ClassRef, JavaResourceAbstractType>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return IMPLIED_CLASS_REFS_COLLECTION;
 		}
 		@Override
-		protected ClassRef buildContextElement(String resourceElement) {
+		protected ClassRef buildContextElement(JavaResourceAbstractType resourceElement) {
 			return AbstractPersistenceUnit.this.buildClassRef(resourceElement);
 		}
 		@Override
-		protected Iterable<String> getResourceElements() {
-			return AbstractPersistenceUnit.this.getImpliedClassNames();
+		protected Iterable<JavaResourceAbstractType> getResourceElements() {
+			return AbstractPersistenceUnit.this.getImpliedClassResourceTypes();
 		}
 		@Override
-		protected String getResourceElement(ClassRef contextElement) {
-			return contextElement.getClassName();
+		protected JavaResourceAbstractType getResourceElement(ClassRef contextElement) {
+			return contextElement.getJavaResourceType();
 		}
 		@Override
 		protected void disposeElement(ClassRef contextElement) {
@@ -2036,7 +2031,7 @@ public abstract class AbstractPersistenceUnit
 		SubMonitor sm = SubMonitor.convert(monitor, 3);
 
 		// calculate the refs to remove and add
-		HashSet<String> newTypeNames = CollectionTools.set(this.getJpaProject().getMappedJavaSourceClassNames());
+		HashSet<JavaResourceAbstractType> newTypes = CollectionTools.set(this.getJpaProject().getMappedJavaSourceTypes());
 		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
 		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
 
@@ -2046,11 +2041,11 @@ public abstract class AbstractPersistenceUnit
 				// Java type cannot be resolved
 				deadClassRefs.add(classRef);
 			} else {
-				String specifiedName = specifiedJPT.getName();
-				if ( ! newTypeNames.remove(specifiedName)) {
+				JavaResourceType specifiedType = specifiedJPT.getJavaResourceType();
+				if ( ! newTypes.remove(specifiedType)) {
 					// Java type is not annotated
 					deadClassRefs.add(classRef);
-				} else if (mappingFileTypeNames.contains(specifiedName)) {
+				} else if (mappingFileTypeNames.contains(specifiedType.getTypeBinding().getQualifiedName())) {
 					// type is also listed in a mapping file
 					deadClassRefs.add(classRef);
 				}
@@ -2067,7 +2062,7 @@ public abstract class AbstractPersistenceUnit
 		}
 		sm.worked(1);
 
-		this.addSpecifiedClassRefs(newTypeNames);
+		this.addSpecifiedClassRefs(newTypes);
 		sm.worked(1);
 	}
 
@@ -2147,6 +2142,7 @@ public abstract class AbstractPersistenceUnit
 		this.xmlPersistenceUnit.getClasses().addAll(addedXmlClassRefs);
 		sm.worked(5);
 	}
+
 	protected JavaTypeMappingDefinition getJavaTypeMappingDefinition(String key) {
 		for (JavaTypeMappingDefinition definition : this.getJpaPlatform().getJavaTypeMappingDefinitions()) {
 			if (ObjectTools.equals(definition.getKey(), key)) {

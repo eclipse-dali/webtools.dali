@@ -13,8 +13,9 @@ import java.util.Collection;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -60,6 +61,10 @@ public class GenericClassRef
 	 */
 	protected JavaPersistentType javaPersistentType;
 
+	/**
+	 * Hold on to this for validation if the resourceType is not of type {@link AstNodeType#TYPE}
+	 */
+	protected JavaResourceAbstractType resourceType;
 
 	// ********** constructors **********
 
@@ -68,25 +73,27 @@ public class GenericClassRef
 	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
 	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef) {
-		this(parent, xmlJavaClassRef, xmlJavaClassRef.getJavaClass());
+		this(parent, null, xmlJavaClassRef, xmlJavaClassRef.getJavaClass());
 	}
 
 	/**
 	 * Construct an <em>virtual</em> class ref; i.e. a class ref without
 	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
-	public GenericClassRef(PersistenceUnit parent, String className) {
-		this(parent, null, className);
+	public GenericClassRef(PersistenceUnit parent, JavaResourceAbstractType jrat) {
+		this(parent, jrat, null, jrat.getTypeBinding().getQualifiedName());
 	}
 
-	protected GenericClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef, String className) {
+	protected GenericClassRef(PersistenceUnit parent, JavaResourceAbstractType jrat, XmlJavaClassRef xmlJavaClassRef, String className) {
 		super(parent);
 		this.xmlJavaClassRef = xmlJavaClassRef;
 		this.className = className;
 		// build 'javaPersistentType' here, but also resolve in the update
-		JavaResourceType resourceType = this.resolveJavaResourceType();
-		if (resourceType != null) {
-			this.javaPersistentType = this.buildJavaPersistentType(resourceType);
+		if (jrat != null) {
+			this.resourceType = jrat;
+			if (jrat.getKind() == Kind.TYPE) {
+				this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) jrat);
+			}
 		}
 	}
 
@@ -148,6 +155,10 @@ public class GenericClassRef
 		return StringTools.isBlank(this.className) ? null : this.className.replace('$', '.');
 	}
 
+	public JavaResourceAbstractType getJavaResourceType() {
+		return this.resourceType;
+	}
+
 
 	// ********** java persistent type **********
 
@@ -162,33 +173,34 @@ public class GenericClassRef
 	}
 
 	protected void updateJavaPersistentType() {
-		JavaResourceType resourceType = this.resolveJavaResourceType();
-		if (resourceType == null) {
+		this.resourceType = this.resolveJavaResourceType();
+		if (this.resourceType == null || this.resourceType.getKind() != Kind.TYPE) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
 			}
 		} else {
+			JavaResourceType jrt = (JavaResourceType) this.resourceType;
 			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
+				this.setJavaPersistentType(this.buildJavaPersistentType(jrt));
 			} else {
-				if (this.javaPersistentType.getJavaResourceType() == resourceType) {
+				if (this.javaPersistentType.getJavaResourceType() == jrt) {
 					this.javaPersistentType.update();
 				} else {
 					this.javaPersistentType.dispose();
-					this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
+					this.setJavaPersistentType(this.buildJavaPersistentType(jrt));
 				}
 			}
 		}
 	}
 
-	protected JavaResourceType resolveJavaResourceType() {
+	protected JavaResourceAbstractType resolveJavaResourceType() {
 		String javaClassName = this.getJavaClassName();
-		return (javaClassName == null) ? null : (JavaResourceType) this.getJpaProject().getJavaResourceType(javaClassName, Kind.TYPE);
+		return (javaClassName == null) ? null : this.getJpaProject().getJavaResourceType(javaClassName);
 	}
 
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrpt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
+	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
+		return this.getJpaFactory().buildJavaPersistentType(this, jrt);
 	}
 
 
@@ -344,11 +356,37 @@ public class GenericClassRef
 			return;
 		}
 
-		if (this.javaPersistentType == null) {
+		if (this.resourceType == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
+					new String[] {this.getJavaClassName()},
+					this,
+					this.getValidationTextRange()
+				)
+			);
+			return;
+		}
+
+		if (this.resourceType.getKind() == Kind.ENUM) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
+					new String[] {this.getJavaClassName()},
+					this,
+					this.getValidationTextRange()
+				)
+			);
+			return;
+		}
+
+		if (this.resourceType.getKind() == Kind.TYPE && this.resourceType.getTypeBinding().isInterface()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
 					new String[] {this.getJavaClassName()},
 					this,
 					this.getValidationTextRange()

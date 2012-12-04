@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -57,8 +58,8 @@ public abstract class AbstractPersistenceXmlContextNodeFactory
 		return new GenericClassRef(parent, classRef);
 	}
 	
-	public ClassRef buildClassRef(PersistenceUnit parent, String className) {
-		return new GenericClassRef(parent, className);
+	public ClassRef buildClassRef(PersistenceUnit parent, JavaResourceAbstractType jrat) {
+		return new GenericClassRef(parent, jrat);
 	}
 	
 	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {

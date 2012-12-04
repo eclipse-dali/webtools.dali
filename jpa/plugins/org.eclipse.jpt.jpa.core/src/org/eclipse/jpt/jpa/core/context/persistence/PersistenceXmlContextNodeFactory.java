@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
@@ -54,7 +55,7 @@ public interface PersistenceXmlContextNodeFactory
 	/**
 	 * Build a "virtual" class ref.
 	 */
-	ClassRef buildClassRef(PersistenceUnit parent, String className);
+	ClassRef buildClassRef(PersistenceUnit parent, JavaResourceAbstractType jrat);
 	
 	JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef);
 

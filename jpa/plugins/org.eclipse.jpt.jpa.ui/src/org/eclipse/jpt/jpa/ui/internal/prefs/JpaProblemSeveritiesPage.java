@@ -295,6 +295,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,                          		JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,    	JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,                             		JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,                             		JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,                             		JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,                          		JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,                      	JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,                               			JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS);

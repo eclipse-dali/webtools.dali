@@ -228,12 +228,12 @@ public interface JpaProject
 	Iterable<String> getAnnotatedJavaSourceClassNames();
 	
 	/**
-	 * Return only the names of those valid <em>mapped</em> (i.e. annotated with
+	 * Return only the types of those valid <em>mapped</em> (i.e. annotated with
 	 * <code>@Entity</code>, <code>@Embeddable</code>, etc.) Java resource
-	 * persistent types that are directly part of the JPA project, ignoring
+	 * types that are directly part of the JPA project, ignoring
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
-	Iterable<String> getMappedJavaSourceClassNames();
+	Iterable<JavaResourceAbstractType> getMappedJavaSourceTypes();
 
 	Iterable<String> getTypeMappingAnnotationNames();
 

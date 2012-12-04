@@ -827,7 +827,7 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * Return only those valid annotated Java resource persistent types that are
+	 * Return only those valid annotated Java resource types that are
 	 * directly part of the JPA project, ignoring those in JARs referenced in
 	 * <code>persistence.xml</code>.
 	 * @see JavaResourceAbstractType#isAnnotated()
@@ -836,24 +836,19 @@ public abstract class AbstractJpaProject
 		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceAbstractType jraType) {
-				return jraType.isAnnotated();  // i.e. the type has a valid type annotation
+				return jraType.isAnnotated();  // i.e. the type has a valid JPA type annotation
 			}
 		};
 	}
 
 	/**
-	 * Return only the names of those valid <em>mapped</em> (i.e. annotated with
+	 * Return only the types of those valid <em>mapped</em> (i.e. annotated with
 	 * <code>@Entity</code>, <code>@Embeddable</code>, etc.) Java resource
-	 * persistent types that are directly part of the JPA project, ignoring
+	 * types that are directly part of the JPA project, ignoring
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
-	public Iterable<String> getMappedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourceAbstractType, String>(this.getInternalMappedSourceJavaResourceTypes()) {
-			@Override
-			protected String transform(JavaResourceAbstractType jraType) {
-				return jraType.getTypeBinding().getQualifiedName();
-			}
-		};
+	public Iterable<JavaResourceAbstractType> getMappedJavaSourceTypes() {
+		return getInternalAnnotatedSourceJavaResourceTypes();
 	}
 
 	/**
