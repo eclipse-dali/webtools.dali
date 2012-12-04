@@ -158,7 +158,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								mappedSuperclass));
 
-		editorProxy.addAttributeToJPT(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		mappedSuperclass.click();
@@ -185,7 +186,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								mappedSuperclass));
 
-		editorProxy.addElementCollectionAttributeToJPT(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.addElementCollectionAttributeToJPT(mappedSuperclass, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		mappedSuperclass.click();
@@ -208,7 +210,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.removeAttributeViaButton(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.removeAttributeViaButton(mappedSuperclass, attributeName);
 
 		mappedSuperclass.click();
 		editorProxy.deleteDiagramElements();
@@ -230,7 +233,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.removeAttributeViaMenu(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.removeAttributeViaMenu(mappedSuperclass, attributeName);
 
 		mappedSuperclass.click();
 		editorProxy.deleteDiagramElements();
@@ -252,7 +256,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.directEditAttribute(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.directEditAttribute(mappedSuperclass, attributeName);
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
@@ -349,15 +354,16 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								mappedSuperclass));
 
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
 		SWTBotGefEditPart attribute = editorProxy.addAttributeToJPT(
-				mappedSuperclass, "attribute1");
+				mappedSuperclass, attributeName);
 		assertNotNull("The attribute must not be renamed!", attribute);
 
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 
 		String currentAttributeType = editorProxy.getAttributeType(
-				"attribute1", fp);
+				attributeName, fp);
 		assertEquals("java.lang.String", currentAttributeType);
 
 		SWTBotShell changeTypeDialog = editorProxy
@@ -377,7 +383,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.getCancelButton(changeTypeDialog).click();
 
 		// assert that the attribute type is not changed
-		currentAttributeType = editorProxy.getAttributeType("attribute1", fp);
+		currentAttributeType = editorProxy.getAttributeType(attributeName, fp);
 		assertEquals("The attribute type must not be changed!",
 				"java.lang.String", currentAttributeType);
 
@@ -394,7 +400,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 		// assert that the attribute's type is changed
 		String newAttributeType = editorProxy
-				.getAttributeType("attribute1", fp);
+				.getAttributeType(attributeName, fp);
 		assertFalse("The attribute type must be changed!",
 				("java.lang.String").equals(newAttributeType));
 		assertEquals("The attribute type must be changed!", "int",
@@ -518,7 +524,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.addAttributeToJPT(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName);
 
 		editorProxy.collapseExpandJPTViaButton(mappedSuperclass);
 
@@ -541,7 +548,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.addAttributeToJPT(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.addAttributeToJPT(mappedSuperclass, attributeName);
 
 		editorProxy.collapseExpandJPTViaMenu(mappedSuperclass);
 
@@ -566,7 +574,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.discardChanges(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.discardChanges(mappedSuperclass, attributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -592,8 +601,9 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
 		editorProxy.removeAndDiscardChangesViaMenu(mappedSuperclass,
-				"attribute1");
+				attributeName);
 
 		mappedSuperclass.click();
 		editorProxy.deleteDiagramElements();
@@ -620,7 +630,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
 
-		editorProxy.removeAndSaveChangesViaMenu(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.removeAndSaveChangesViaMenu(mappedSuperclass, attributeName);
 
 		mappedSuperclass.click();
 		editorProxy.deleteDiagramElements();
@@ -644,7 +655,8 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		SWTBotGefEditPart mappedSuperclass = editorProxy
 				.addMappedSuperclassToDiagram(50, 50, jpaProject);
-		editorProxy.saveOnlyJPT(mappedSuperclass, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(mappedSuperclass);
+		editorProxy.saveOnlyJPT(mappedSuperclass, attributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();

@@ -775,7 +775,7 @@ public class JpaArtifactFactory {
 	 * @param fp
 	 * @return an unique attribute name.
 	 */
-	private String genUniqueAttrName(JavaPersistentType jpt, 
+	public String genUniqueAttrName(JavaPersistentType jpt, 
 			String attrTypeName, IJPAEditorFeatureProvider fp) {
 		
 		ICompilationUnit ijl = fp.getCompilationUnit(jpt);

@@ -72,7 +72,7 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 			String name = jpt.getName();
 			
 			
-			JpaArtifactFactory.instance().forceSaveEntityClass(jpt, getFeatureProvider());
+//			JpaArtifactFactory.instance().forceSaveEntityClass(jpt, getFeatureProvider());
 			JpaArtifactFactory.instance().deleteEntityClass(jpt, getFeatureProvider());
 			if (! JpaPreferences.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
 				JPAEditorUtil.createUnregisterEntityFromXMLJob(jpaProject, name);

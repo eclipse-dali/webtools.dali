@@ -162,8 +162,9 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 						.isSectionVisible(
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								embeddable));
-
-		editorProxy.addAttributeToJPT(embeddable, "attribute1");
+		
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.addAttributeToJPT(embeddable, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		embeddable.click();
@@ -179,16 +180,17 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		assertTrue("The diagram must be empty.", jpaDiagramEditor.mainEditPart().children().isEmpty());
 
-		SWTBotGefEditPart entity = editorProxy.addEmbeddableToDiagram(50, 50, jpaProject);
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(50, 50, jpaProject);
 
 		assertFalse(
 				"\"Other Attributes\" section must not be visible!",
-				editorProxy.isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, entity));
+				editorProxy.isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, embeddable));
 
-		editorProxy.addElementCollectionAttributeToJPT(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.addElementCollectionAttributeToJPT(embeddable, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		entity.click();
+		embeddable.click();
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
 
@@ -220,7 +222,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				"\"Other Attributes\" section must not be visible!",
 				editorProxy.isSectionVisible(JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes, embeddable1));
 
-		editorProxy.addElementCollectionAttributeToJPT(embeddable1, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable1);
+		editorProxy.addElementCollectionAttributeToJPT(embeddable1, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 		
 		editorProxy.testNoEmbeddedConnectionIsCreated(
@@ -254,7 +257,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.removeAttributeViaButton(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.removeAttributeViaButton(embeddable, attributeName);
 
 		embeddable.click();
 		editorProxy.deleteDiagramElements();
@@ -276,7 +280,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.removeAttributeViaMenu(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.removeAttributeViaMenu(embeddable, attributeName);
 
 		embeddable.click();
 		editorProxy.deleteDiagramElements();
@@ -298,7 +303,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.directEditAttribute(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.directEditAttribute(embeddable, attributeName);
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
@@ -394,15 +400,16 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								embeddable));
 
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
 		SWTBotGefEditPart attribute = editorProxy.addAttributeToJPT(embeddable,
-				"attribute1");
+				attributeName);
 		assertNotNull("The attribute must not be renamed!", attribute);
 
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 
 		String currentAttributeType = editorProxy.getAttributeType(
-				"attribute1", fp);
+				attributeName, fp);
 		assertEquals("java.lang.String", currentAttributeType);
 
 		SWTBotShell changeTypeDialog = editorProxy
@@ -422,7 +429,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.getCancelButton(changeTypeDialog).click();
 
 		// assert that the attribute type is not changed
-		currentAttributeType = editorProxy.getAttributeType("attribute1", fp);
+		currentAttributeType = editorProxy.getAttributeType(attributeName, fp);
 		assertEquals("The attribute type must not be changed!",
 				"java.lang.String", currentAttributeType);
 
@@ -439,7 +446,7 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 		// assert that the attribute's type is changed
 		String newAttributeType = editorProxy
-				.getAttributeType("attribute1", fp);
+				.getAttributeType(attributeName, fp);
 		assertFalse("The attribute type must be changed!",
 				("java.lang.String").equals(newAttributeType));
 		assertEquals("The attribute type must be changed!", "int",
@@ -565,7 +572,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.addAttributeToJPT(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.addAttributeToJPT(embeddable, attributeName);
 
 		editorProxy.collapseExpandJPTViaButton(embeddable);
 
@@ -588,7 +596,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.addAttributeToJPT(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.addAttributeToJPT(embeddable, attributeName);
 
 		editorProxy.collapseExpandJPTViaMenu(embeddable);
 
@@ -614,7 +623,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.discardChanges(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.discardChanges(embeddable, attributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -640,7 +650,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.removeAndDiscardChangesViaMenu(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.removeAndDiscardChangesViaMenu(embeddable, attributeName);
 
 		embeddable.click();
 		editorProxy.deleteDiagramElements();
@@ -666,7 +677,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.removeAndSaveChangesViaMenu(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.removeAndSaveChangesViaMenu(embeddable, attributeName);
 
 		embeddable.click();
 		editorProxy.deleteDiagramElements();
@@ -690,7 +702,8 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 				50, jpaProject);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
-		editorProxy.saveOnlyJPT(embeddable, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(embeddable);
+		editorProxy.saveOnlyJPT(embeddable, attributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -731,7 +744,6 @@ public class EmbeddableInDiagramSWTBotTest extends SWTBotGefTestCase {
 	 * the embeddable into the entity and checks that the connection exists and
 	 * a new embedded attribute is added to the entity.
 	 */
-	@Ignore
 	@Test
 	public void testEmbedCollectionOfObjectsInEntity() {
 		Utils.sayTestStarted("testEmbedCollectionOfObjectsInEntity");

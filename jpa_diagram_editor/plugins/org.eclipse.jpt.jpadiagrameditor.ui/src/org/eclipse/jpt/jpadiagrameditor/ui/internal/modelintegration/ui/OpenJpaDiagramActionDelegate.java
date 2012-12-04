@@ -137,7 +137,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 
 
 	private static final String ERROR_OPENING_DIAGRAM = JPAEditorMessages.OpenJpaDiagramActionDelegate_openJPADiagramErrorMsg;
-	private JpaProject jpaProject;
+//	private JpaProject jpaProject;
 	private Shell shell;
 	private WeakReference<ISelection> selectionRef = new WeakReference<ISelection>(null); 
 	
@@ -175,6 +175,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 	}
 
 	protected PersistenceUnit obtainJpaProjectAndPersistenceUnit(ISelection selection) throws CoreException {
+		JpaProject jpaProject = null;
 		Object firstElement = ((IStructuredSelection) selection).getFirstElement();
 		if(firstElement instanceof JpaRootContextNodeModel){
 			jpaProject = JpaArtifactFactory.instance().getJpaProject(((JpaRootContextNodeModel)firstElement).getProject());

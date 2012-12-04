@@ -70,7 +70,6 @@ import org.eclipse.swt.widgets.Display;
 
 public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 
-	protected JavaPersistentType jpt = null;
 	protected Set<JavaPersistentAttribute> ats = null;
 	protected boolean hasNameAnnotation = false;
 
@@ -86,7 +85,8 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
     	PictogramElement pe = ctx.getInnerPictogramElement();
     	Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	if (bo instanceof JavaPersistentType) {
-    		jpt = (JavaPersistentType)bo;
+    		JavaPersistentType jpt = (JavaPersistentType)bo;
+    		ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
     		hasNameAnnotation = JpaArtifactFactory.instance().hasNameAnnotation(jpt);
     		return true;
     	}
@@ -96,7 +96,8 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
     			return false;
      		bo = getFeatureProvider().getBusinessObjectForPictogramElement(cs);
         	if (bo instanceof JavaPersistentType) {
-        		jpt = (JavaPersistentType)bo;
+        		JavaPersistentType jpt = (JavaPersistentType)bo;
+        		ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
         		hasNameAnnotation = JpaArtifactFactory.instance().hasNameAnnotation(jpt);
         		return true;
         	}
@@ -109,11 +110,15 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		return true;
 	}
 	
-	public void execute(ICustomContext context, SelectionDispatchAction action, ICompilationUnit cu) {
-		StructuredSelection sel = new StructuredSelection(cu);
-		final Shape pict = (Shape)getFeatureProvider().getPictogramElementForBusinessObject(jpt);
+	public void execute(ICustomContext context, SelectionDispatchAction action) {
+		final Shape pict = (Shape)context.getInnerPictogramElement();
+		
 		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().
 									getBusinessObjectForPictogramElement(pict);
+		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
+
+		StructuredSelection sel = new StructuredSelection(cu);
+
 		final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
 		final PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 		final Semaphore s = new Semaphore(0);

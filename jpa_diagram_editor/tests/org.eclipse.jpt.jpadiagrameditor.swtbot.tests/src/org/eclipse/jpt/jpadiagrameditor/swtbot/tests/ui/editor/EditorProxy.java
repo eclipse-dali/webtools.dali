@@ -13,7 +13,6 @@ import static org.junit.Assert.fail;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -30,6 +29,7 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButton;
@@ -39,6 +39,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -56,6 +57,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
@@ -80,7 +82,7 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 
-@SuppressWarnings({"restriction", "deprecation", "unchecked"})
+@SuppressWarnings({ "restriction", "deprecation", "unchecked" })
 public class EditorProxy {
 
 	private final SWTWorkbenchBot workbenchBot;
@@ -128,7 +130,7 @@ public class EditorProxy {
 			boolean isJPA20) {
 		SWTBotTree projectTree = workbenchBot.viewByTitle("Project Explorer")
 				.bot().tree();
-		projectTree.expandNode(name).select();
+		projectTree.getTreeItem(name).select();
 		ContextMenuHelper.clickContextMenu(projectTree, "JPA Tools",
 				"Open Diagram");
 
@@ -208,8 +210,7 @@ public class EditorProxy {
 	}
 
 	/**
-	 * Adds a new attribute to the entity and checks that: 1. The newly created
-	 * attribute is selected 2. The "Other Attributes" section is visible
+	 * Adds a new attribute to the entity and checks that the "Other Attributes" section is visible
 	 * 
 	 * @param attributeName
 	 *            - the name of the attribute
@@ -238,16 +239,17 @@ public class EditorProxy {
 		System.out.println(">>>>>> Attribute is successfully added in "
 				+ jpt.getName());
 
-		assertTrue("The newly added attribute must be selected.",
-				jpaDiagramEditor.selectedEditParts().size() == 1);
-		// assertTrue("The newly added attribute must be selected.",
-		// jpaDiagramEditor.selectedEditParts().contains(attribute));
-
 		assertTrue(
 				"\"Other Attributes\" section must be visible!",
 				isSectionVisible(
 						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 						jptType));
+		
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		assertEquals(
+				"The newly added attribute must be mapped as basic attribute.",
+				MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY,
+				jpa.getMappingKey());
 
 		return attribute;
 	}
@@ -265,11 +267,6 @@ public class EditorProxy {
 		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
 				attributeName, editParts);
 		assertNotNull("Atrribute is not added.", attribute);
-
-		assertTrue("The newly added attribute must be selected.",
-				jpaDiagramEditor.selectedEditParts().size() == 1);
-		assertTrue("The newly added attribute must be selected.",
-				jpaDiagramEditor.selectedEditParts().contains(attribute));
 
 		assertTrue(
 				"\"Other Attributes\" section must be visible!",
@@ -305,21 +302,23 @@ public class EditorProxy {
 		return figure.isVisible();
 	}
 
-    /**
-     * Add entity to diagram
-     * @param x
-     * @param y
-     * @param jpaProject
-     * @return the newly added entity
-     */
-	public SWTBotGefEditPart addEntityToDiagram(int x, int y, JpaProject jpaProject) {
+	/**
+	 * Add entity to diagram
+	 * 
+	 * @param x
+	 * @param y
+	 * @param jpaProject
+	 * @return the newly added entity
+	 */
+	public SWTBotGefEditPart addEntityToDiagram(int x, int y,
+			JpaProject jpaProject) {
 		
 		String entityName = getUniqueEntityName(jpaProject);
-		
+
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateJPAEntityFeature_jpaEntityFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
-		
+
 		try {
 			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName),
 					15000);
@@ -333,7 +332,6 @@ public class EditorProxy {
 			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName),
 					15000);
 		}
-	
 
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
 				.children();
@@ -356,34 +354,35 @@ public class EditorProxy {
 				isSectionVisible(
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
 						entity));
-		assertFalse(
-				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(
-						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
-						entity));
+//		assertFalse(
+//				"\"Other Attributes\" section must not be visible!",
+//				isSectionVisible(
+//						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+//						entity));
 
 		return entity;
 	}
 
-	 /**
-     * Add mapped superclass to diagram
-     * @param x
-     * @param y
-     * @param jpaProject
-     * @return the newly added mapped superclass
-     */
+	/**
+	 * Add mapped superclass to diagram
+	 * 
+	 * @param x
+	 * @param y
+	 * @param jpaProject
+	 * @return the newly added mapped superclass
+	 */
 	public SWTBotGefEditPart addMappedSuperclassToDiagram(int x, int y,
 			JpaProject jpaProject) {
-		
+
 		String mappedSuperclassName = getUniqueMappedSuperclassName(jpaProject);
-		
+
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateMappedSuperclassFeature_createMappedSuperclassFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
 
 		try {
-			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, mappedSuperclassName),
-					15000);
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor,
+					mappedSuperclassName), 15000);
 		} catch (TimeoutException e) {
 			jpaDiagramEditor.activateDefaultTool();
 
@@ -391,8 +390,8 @@ public class EditorProxy {
 					.activateTool(JPAEditorMessages.CreateMappedSuperclassFeature_createMappedSuperclassFeatureName);
 			jpaDiagramEditor.doubleClick(x, y);
 
-			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, mappedSuperclassName),
-					15000);
+			bot.waitUntil(new ElementIsShown(jpaDiagramEditor,
+					mappedSuperclassName), 15000);
 		}
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
 				.children();
@@ -421,34 +420,35 @@ public class EditorProxy {
 				isSectionVisible(
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
 						mappedSuperclass));
-		assertFalse(
-				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(
-						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
-						mappedSuperclass));
+//		assertFalse(
+//				"\"Other Attributes\" section must not be visible!",
+//				isSectionVisible(
+//						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+//						mappedSuperclass));
 
 		return mappedSuperclass;
 	}
 
-	 /**
-     * Add embeddable to diagram
-     * @param x
-     * @param y
-     * @param jpaProject
-     * @return the newly added embeddable
-     */
+	/**
+	 * Add embeddable to diagram
+	 * 
+	 * @param x
+	 * @param y
+	 * @param jpaProject
+	 * @return the newly added embeddable
+	 */
 	public SWTBotGefEditPart addEmbeddableToDiagram(int x, int y,
 			JpaProject jpaProject) {
-		
+
 		String embeddableName = getUniqueEmbeddableName(jpaProject);
-		
+
 		jpaDiagramEditor
 				.activateTool(JPAEditorMessages.CreateEmbeddableFeature_EmbeddableFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
 
 		try {
 			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, embeddableName),
-					15000);
+					20000);
 		} catch (TimeoutException e) {
 			jpaDiagramEditor.activateDefaultTool();
 
@@ -457,7 +457,7 @@ public class EditorProxy {
 			jpaDiagramEditor.doubleClick(x, y);
 
 			bot.waitUntil(new ElementIsShown(jpaDiagramEditor, embeddableName),
-					15000);
+					20000);
 		}
 
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart()
@@ -465,7 +465,8 @@ public class EditorProxy {
 		assertFalse("Editor must contains at least one embeddable!",
 				entities.isEmpty());
 
-		SWTBotGefEditPart embeddable = jpaDiagramEditor.getEditPart(embeddableName);
+		SWTBotGefEditPart embeddable = jpaDiagramEditor
+				.getEditPart(embeddableName);
 		assertNotNull("Embeddable is not added!", embeddable);
 
 		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
@@ -485,11 +486,11 @@ public class EditorProxy {
 				isSectionVisible(
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
 						embeddable));
-		assertFalse(
-				"\"Other Attributes\" section must not be visible!",
-				isSectionVisible(
-						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
-						embeddable));
+//		assertFalse(
+//				"\"Other Attributes\" section must not be visible!",
+//				isSectionVisible(
+//						JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+//						embeddable));
 
 		return embeddable;
 	}
@@ -593,20 +594,24 @@ public class EditorProxy {
 				editPart.select();
 				jpaDiagramEditor.clickContextMenu("Delete");
 				confirmDelete();
+				bot.waitUntil(
+						new ElementDisappears(jpaDiagramEditor, type
+								.getSimpleName()), 10000);
+				editPart = jpaDiagramEditor.getEditPart(type.getSimpleName());
+				assertNull("Entity is not deleted!", editPart);
 			}
 		}
 
 		waitASecond();
 		entitiesInDiagram = jpaDiagramEditor.mainEditPart().children();
 		assertTrue("Diagram must be empty!", entitiesInDiagram.isEmpty());
-		
+
 		jpaDiagramEditor.save();
 		// assertTrue("Editor must be dirty!", jpaDiagramEditor.isDirty());
 	}
 
 	public void deleteAttributeInJPT(SWTBotGefEditPart jpt, String attributeName) {
-
-		waitASecond();
+		
 		jpaDiagramEditor.activateDefaultTool();
 
 		List<SWTBotGefEditPart> jptParts = new ArrayList<SWTBotGefEditPart>();
@@ -793,7 +798,8 @@ public class EditorProxy {
 	 * @return the IRelation object for the given GEF Connection
 	 */
 	public HasReferanceRelation getHasReferenceConnection(
-			SWTBotGefConnectionEditPart gefConn) {
+			SWTBotGefConnectionEditPart gefConn, SWTBotGefEditPart attribute) {
+
 		IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider) ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 		FreeFormConnection conn = (FreeFormConnection) gefConn.part()
@@ -801,17 +807,30 @@ public class EditorProxy {
 		assertNotNull("Relation is not created.", conn);
 
 		Object ob = fp.getBusinessObjectForPictogramElement(conn);
-		if(ob == null){
-			HashSet<HasReferanceRelation> refs = fp.getAllExistingHasReferenceRelations();
-			for(HasReferanceRelation ref : refs){
-				FreeFormConnection connection = (FreeFormConnection) fp.getPictogramElementForBusinessObject(ref);
-				if(connection.equals(conn)){
-					return ref;
-				}
-			}			
+		if (ob == null) {
+			JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+			HasReferanceRelation rel = fp
+					.getEmbeddedRelationRelatedToAttribute(jpa);
+			assertNotNull(rel);
+			FreeFormConnection connection = (FreeFormConnection) fp
+					.getPictogramElementForBusinessObject(rel);
+			assertNotNull(connection);
+			return rel;
 		} else {
 			if (ob instanceof HasReferanceRelation) {
 				return (HasReferanceRelation) ob;
+			}
+		}
+		return null;
+	}
+
+	protected PersistentType getPersistentType(IFeatureProvider fp,
+			Anchor anchor) {
+		if (anchor != null) {
+			Object refObject = fp.getBusinessObjectForPictogramElement(anchor
+					.getParent());
+			if (refObject instanceof PersistentType) {
+				return (PersistentType) refObject;
 			}
 		}
 		return null;
@@ -829,7 +848,7 @@ public class EditorProxy {
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 		PictogramElement el = (PictogramElement) element.part().getModel();
-		if(el == null)
+		if (el == null)
 			return null;
 		Object bo = fp.getBusinessObjectForPictogramElement(el);
 		if (bo instanceof JavaPersistentType) {
@@ -874,6 +893,7 @@ public class EditorProxy {
 	public boolean isJPTDirty(SWTBotGefEditPart element) {
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
+		assertNotNull(element);
 		PictogramElement el = (PictogramElement) element.part().getModel();
 		Object bo = fp.getBusinessObjectForPictogramElement(el);
 		IResource res = null;
@@ -916,7 +936,7 @@ public class EditorProxy {
 		denyDelete();
 		assertFalse(entity1.sourceConnections().isEmpty());
 		assertFalse(entity2.targetConnections().isEmpty());
-		connection = entity1.sourceConnections().get(0);
+		connection = getConnection(entity1, entity2);
 		assertNotNull("Attribute must not be deleted!", connection);
 		assertNotNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
 		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
@@ -951,7 +971,7 @@ public class EditorProxy {
 		denyDelete();
 		assertFalse(entity1.sourceConnections().isEmpty());
 		assertFalse(entity1.targetConnections().isEmpty());
-		connection = entity1.sourceConnections().get(0);
+		connection = getConnection(entity1, entity1);
 		assertNotNull("Attribute must not be deleted!", connection);
 		assertNotNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
 		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
@@ -982,7 +1002,7 @@ public class EditorProxy {
 		denyDelete();
 		assertFalse(entity1.sourceConnections().isEmpty());
 		assertFalse(entity2.targetConnections().isEmpty());
-		connection = entity1.sourceConnections().get(0);
+		connection = getConnection(entity1, entity2);
 		assertNotNull("Attribute must not be deleted!", connection);
 		assertNotNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertTrue(
@@ -1015,7 +1035,7 @@ public class EditorProxy {
 		denyDelete();
 		assertFalse(entity1.sourceConnections().isEmpty());
 		assertFalse(entity1.targetConnections().isEmpty());
-		connection = entity1.sourceConnections().get(0);
+		connection = getConnection(entity1, entity1);
 		assertNotNull("Attribute must not be deleted!", connection);
 		assertNotNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertTrue(
@@ -1743,7 +1763,7 @@ public class EditorProxy {
 		jpaDiagramEditor
 				.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities);
 
-		bot.waitUntil(new ElementAppearsInDiagram(jpaDiagramEditor), 20000);
+		bot.waitUntil(new ElementAppearsInDiagram(jpaDiagramEditor), 30000);
 
 		assertFalse("Diagram must contain at least one entity!",
 				jpaDiagramEditor.mainEditPart().children().isEmpty());
@@ -1783,15 +1803,15 @@ public class EditorProxy {
 
 		jpaDiagramEditor.click(owner);
 		jpaDiagramEditor.click(inverse);
-		bot.waitUntil(new ConnectionIsShown(owner));
+		bot.waitUntil(new ConnectionIsShown(owner), 10000);
 
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
 
 		assertConnectionIsCreated(owner, inverse, false);
 
-		SWTBotGefConnectionEditPart connection = owner.sourceConnections().get(
-				0);
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
@@ -1821,8 +1841,8 @@ public class EditorProxy {
 
 		assertSelfConnectionIsCreated(entity);
 
-		SWTBotGefConnectionEditPart connection = entity.sourceConnections()
-				.get(0);
+		SWTBotGefConnectionEditPart connection = getConnection(entity, entity);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
@@ -1852,8 +1872,8 @@ public class EditorProxy {
 
 		assertConnectionIsCreated(owner, inverse, false);
 
-		SWTBotGefConnectionEditPart connection = owner.sourceConnections().get(
-				0);
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
@@ -1907,8 +1927,8 @@ public class EditorProxy {
 
 		assertConnectionIsCreated(owner, inverse, true);
 
-		SWTBotGefConnectionEditPart connection = owner.sourceConnections().get(
-				0);
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.BI, rel.getRelDir());
@@ -1942,8 +1962,8 @@ public class EditorProxy {
 
 		assertSelfConnectionIsCreated(entity);
 
-		SWTBotGefConnectionEditPart connection = entity.sourceConnections()
-				.get(0);
+		SWTBotGefConnectionEditPart connection = getConnection(entity, entity);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.BI, rel.getRelDir());
@@ -1986,8 +2006,8 @@ public class EditorProxy {
 
 		assertConnectionIsCreated(owner, inverse, true);
 
-		SWTBotGefConnectionEditPart connection = owner.sourceConnections().get(
-				0);
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.BI, rel.getRelDir());
@@ -2010,7 +2030,8 @@ public class EditorProxy {
 		waitASecond();
 		// assert that the connection still exists, but it is unidirectional now
 		assertConnectionIsCreated(owner, inverse, false);
-		connection = owner.sourceConnections().get(0);
+		connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
@@ -2061,8 +2082,8 @@ public class EditorProxy {
 
 		assertConnectionIsCreated(owner, inverse, true);
 
-		SWTBotGefConnectionEditPart connection = owner.sourceConnections().get(
-				0);
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		IRelation rel = getConnection(connection);
 		assertNotNull(rel);
 		assertEquals(IRelation.RelDir.BI, rel.getRelDir());
@@ -2166,8 +2187,9 @@ public class EditorProxy {
 
 		assertIsARelationExists(superclass, inheritedEntity);
 
-		SWTBotGefConnectionEditPart connection = superclass.targetConnections()
-				.get(0);
+		SWTBotGefConnectionEditPart connection = getConnection(inheritedEntity,
+				superclass);
+		assertNotNull("Connection must be shown in the diagram.", connection);
 		FreeFormConnection conn = (FreeFormConnection) connection.part()
 				.getModel();
 		assertTrue(IsARelation.isIsAConnection(conn));
@@ -2251,8 +2273,7 @@ public class EditorProxy {
 		assertTrue("There is no connection.", inverse.targetConnections()
 				.isEmpty());
 	}
-	
-	
+
 	/**
 	 * Test all specific for the embedded connections properties and delete the
 	 * embedded attribute and check that the connection is deleted as well.
@@ -2308,7 +2329,7 @@ public class EditorProxy {
 			String linkLabel, int elementsInDiagramCount) {
 
 		jpaDiagramEditor.activateTool(toolEntry);
-		
+
 		jpaDiagramEditor.click(embeddingEntity);
 		jpaDiagramEditor.click(embeddable);
 
@@ -2317,14 +2338,14 @@ public class EditorProxy {
 				linkLabel);
 		return attributeName;
 	}
-	
+
 	public String embedConnection(SWTBotGefEditor gefEditor, String toolEntry,
 			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
 			HasReferenceType refType, String embeddedMappingKey,
 			String linkLabel, int elementsInDiagramCount) {
 
 		gefEditor.activateTool(toolEntry);
-		
+
 		gefEditor.click(embeddingEntity);
 		gefEditor.click(embeddable);
 
@@ -2334,29 +2355,50 @@ public class EditorProxy {
 		return attributeName;
 	}
 
+	private SWTBotGefConnectionEditPart getConnection(SWTBotGefEditPart start,
+			SWTBotGefEditPart end) {
+		List<SWTBotGefConnectionEditPart> connections = start
+				.sourceConnections();
+		assertFalse(connections.isEmpty());
+		for (SWTBotGefConnectionEditPart connection : connections) {
+			FreeFormConnection freeFormConnection = (FreeFormConnection) connection.part().getModel();
+			if (freeFormConnection.getStart() != null && freeFormConnection.getEnd() != null) {
+				PictogramElement startPe = freeFormConnection.getStart().getParent();
+				PictogramElement endPe = freeFormConnection.getEnd().getParent();
+				if (startPe.equals(start.part().getModel())	&& endPe.equals(end.part().getModel()))
+					return connection;
+			}
+		}
+
+		return null;
+	}
+
 	public String checkEmbeddedConnectionProperties(
 			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
 			HasReferenceType refType, String embeddedMappingKey,
 			String linkLabel) {
-		
+
 		bot.waitUntil(new ConnectionIsShown(embeddingEntity), 30000);
 
 		assertFalse("The connection must appear", embeddingEntity
 				.sourceConnections().isEmpty());
-		SWTBotGefConnectionEditPart connection = embeddingEntity
-				.sourceConnections().get(0);
-		
+		SWTBotGefConnectionEditPart connection = getConnection(embeddingEntity,
+				embeddable);
+		assertNotNull("Connection must be shown in the diagram.", connection);
+
 		JavaPersistentType emb = getJPTObjectForGefElement(embeddable);
-		String embAttr = JPAEditorUtil.decapitalizeFirstLetter(emb.getSimpleName());
-		
+		String embAttr = JPAEditorUtil.decapitalizeFirstLetter(emb
+				.getSimpleName());
+
 		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
 		editParts.add(embeddingEntity);
-		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
-				embAttr, editParts);
-		
+		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(embAttr,
+				editParts);
+
 		assertNotNull("Embedded attribute must be added.", attribute);
 
-		HasReferanceRelation rel = getHasReferenceConnection(connection);
+		HasReferanceRelation rel = getHasReferenceConnection(connection,
+				attribute);
 		assertNotNull("Such a connection must exist.", rel);
 		assertEquals(refType, rel.getReferenceType());
 
@@ -2370,7 +2412,8 @@ public class EditorProxy {
 				.getEmbeddedAnnotatedAttribute().getOwningPersistentType();
 		assertEquals("The entity must contain an embedded attribute.",
 				parententity, getJPTObjectForGefElement(embeddingEntity));
-		assertEquals(rel.getEmbeddingEntity(), getJPTObjectForGefElement(embeddingEntity));
+		assertEquals(rel.getEmbeddingEntity(),
+				getJPTObjectForGefElement(embeddingEntity));
 		assertEquals(rel.getEmbeddable(), getJPTObjectForGefElement(embeddable));
 		return attributeName;
 	}
@@ -2378,48 +2421,64 @@ public class EditorProxy {
 	public void setJpaDiagramEditor(SWTBotGefEditor jpaDiagramEditor) {
 		this.jpaDiagramEditor = jpaDiagramEditor;
 	}
-	
+
+	public String getUniqueAttrName(SWTBotGefEditPart jptType) {
+		IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider) ((DiagramEditPart) jpaDiagramEditor
+				.mainEditPart().part()).getFeatureProvider();
+		JavaPersistentType jpt = getJPTObjectForGefElement(jptType);
+		String attrName = JpaArtifactFactory.instance().genUniqueAttrName(jpt,
+				"java.lang.String", fp);
+
+		return attrName;
+	}
+
 	public String getUniqueMappedSuperclassName(JpaProject jpaProject) {
 		IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider) ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
-		
-		String mappedSuperclassName = fp.getJPAEditorUtil().generateUniqueTypeName(jpaProject,
-				JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
-				".MpdSuprcls", fp); //$NON-NLS-1$
-		
+
+		String mappedSuperclassName = fp.getJPAEditorUtil()
+				.generateUniqueTypeName(
+						jpaProject,
+						JPADiagramPropertyPage.getDefaultPackage(jpaProject
+								.getProject()), ".MpdSuprcls", fp); //$NON-NLS-1$
+
 		return JPAEditorUtil.returnSimpleName(mappedSuperclassName);
 	}
-	
+
 	public String getUniqueEntityName(JpaProject jpaProject) {
 		IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider) ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
-		
-		String entityName = fp.getJPAEditorUtil().generateUniqueTypeName(jpaProject,
-				JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
-				".Entity", fp); //$NON-NLS-1$
-		
+
+		String entityName = fp.getJPAEditorUtil().generateUniqueTypeName(
+				jpaProject,
+				JPADiagramPropertyPage.getDefaultPackage(jpaProject
+						.getProject()), ".Entity", fp); //$NON-NLS-1$
+
 		return JPAEditorUtil.returnSimpleName(entityName);
 	}
-	
+
 	public String getUniqueEmbeddableName(JpaProject jpaProject) {
 		IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider) ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
-		
-		String embeddableName = fp.getJPAEditorUtil().generateUniqueTypeName(jpaProject,
-				JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
-				".Embeddable", fp); //$NON-NLS-1$
-		
+
+		String embeddableName = fp.getJPAEditorUtil().generateUniqueTypeName(
+				jpaProject,
+				JPADiagramPropertyPage.getDefaultPackage(jpaProject
+						.getProject()), ".Embeddable", fp); //$NON-NLS-1$
+
 		return JPAEditorUtil.returnSimpleName(embeddableName);
 	}
-	
-	public void deleteResources(JpaProject jpaProject) throws CoreException{
+
+	public void deleteResources(JpaProject jpaProject) throws CoreException {
 		deleteDiagramElements();
 		Utils.printFormatted(">>>>>>>>>>>> elements are deleted from the diagram.");
-		
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+
+		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode()
+				.getPersistenceXml().getRoot().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();
-		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu.getPersistentTypes().iterator();
-		while(persistentTypesIterator.hasNext()){
+		Iterator<PersistentType> persistentTypesIterator = (Iterator<PersistentType>) pu
+				.getPersistentTypes().iterator();
+		while (persistentTypesIterator.hasNext()) {
 			Utils.printFormatted(">>>>>>>>>>>>>> persistent type resource must be deleted.");
 			PersistentType type = persistentTypesIterator.next();
 			type.getResource().delete(true, new NullProgressMonitor());

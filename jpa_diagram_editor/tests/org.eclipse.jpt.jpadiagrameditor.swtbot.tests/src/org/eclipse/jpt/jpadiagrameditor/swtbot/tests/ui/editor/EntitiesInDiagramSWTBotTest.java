@@ -165,7 +165,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								entity));
 
-		editorProxy.addAttributeToJPT(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.addAttributeToJPT(entity, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		entity.click();
@@ -192,7 +193,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								entity));
 
-		editorProxy.addElementCollectionAttributeToJPT(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.addElementCollectionAttributeToJPT(entity, attributeName);
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
 		entity.click();
@@ -215,7 +217,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
 
-		editorProxy.removeAttributeViaButton(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.removeAttributeViaButton(entity, attributeName);
 
 		entity.click();
 		editorProxy.deleteDiagramElements();
@@ -237,7 +240,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
 
-		editorProxy.removeAttributeViaMenu(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.removeAttributeViaMenu(entity, attributeName);
 
 		entity.click();
 		editorProxy.deleteDiagramElements();
@@ -259,7 +263,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
 
-		editorProxy.directEditAttribute(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.directEditAttribute(entity, attributeName);
 
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
@@ -356,15 +361,16 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 								JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
 								entity));
 
+		String attributeName = editorProxy.getUniqueAttrName(entity);
 		SWTBotGefEditPart attribute = editorProxy.addAttributeToJPT(entity,
-				"attribute1");
+				attributeName);
 		assertNotNull("The attribute must not be renamed!", attribute);
 
 		final IFeatureProvider fp = ((DiagramEditPart) jpaDiagramEditor
 				.mainEditPart().part()).getFeatureProvider();
 
 		String currentAttributeType = editorProxy.getAttributeType(
-				"attribute1", fp);
+				attributeName, fp);
 		assertEquals("java.lang.String", currentAttributeType);
 
 		SWTBotShell changeTypeDialog = editorProxy
@@ -384,7 +390,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.getCancelButton(changeTypeDialog).click();
 
 		// assert that the attribute type is not changed
-		currentAttributeType = editorProxy.getAttributeType("attribute1", fp);
+		currentAttributeType = editorProxy.getAttributeType(attributeName, fp);
 		assertEquals("The attribute type must not be changed!",
 				"java.lang.String", currentAttributeType);
 
@@ -401,7 +407,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy.waitASecond();
 		// assert that the attribute's type is changed
 		String newAttributeType = editorProxy
-				.getAttributeType("attribute1", fp);
+				.getAttributeType(attributeName, fp);
 		assertFalse("The attribute type must be changed!",
 				("java.lang.String").equals(newAttributeType));
 		assertEquals("The attribute type must be changed!", "int",
@@ -591,7 +597,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
 
-		editorProxy.discardChanges(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.discardChanges(entity, attributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -616,7 +623,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
 
-		editorProxy.removeAndDiscardChangesViaMenu(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.removeAndDiscardChangesViaMenu(entity, attributeName);
 
 		entity.click();
 		editorProxy.deleteDiagramElements();
@@ -642,7 +650,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
 
-		editorProxy.removeAndSaveChangesViaMenu(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.removeAndSaveChangesViaMenu(entity, attributeName);
 
 		entity.click();
 		editorProxy.deleteDiagramElements();
@@ -665,7 +674,8 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(50, 50,
 				jpaProject);
-		editorProxy.saveOnlyJPT(entity, "attribute1");
+		String attributeName = editorProxy.getUniqueAttrName(entity);
+		editorProxy.saveOnlyJPT(entity, attributeName);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
