@@ -10,16 +10,20 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link KeyListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class KeyAdapter
+	implements KeyListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void keyPressed(KeyEvent e) {
+		// NOP
+	}
+
+	public void keyReleased(KeyEvent e) {
 		// NOP
 	}
 

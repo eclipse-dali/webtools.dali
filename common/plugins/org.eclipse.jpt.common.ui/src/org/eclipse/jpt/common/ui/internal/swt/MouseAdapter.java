@@ -10,16 +10,24 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link MouseListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class MouseAdapter
+	implements MouseListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void mouseDown(MouseEvent e) {
+		// NOP
+	}
+
+	public void mouseUp(MouseEvent e) {
+		// NOP
+	}
+
+	public void mouseDoubleClick(MouseEvent e) {
 		// NOP
 	}
 

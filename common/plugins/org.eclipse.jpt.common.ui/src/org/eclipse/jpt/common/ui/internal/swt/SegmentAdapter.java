@@ -10,16 +10,16 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SegmentEvent;
+import org.eclipse.swt.events.SegmentListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link SegmentListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class SegmentAdapter
+	implements SegmentListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void getSegments(SegmentEvent event) {
 		// NOP
 	}
 

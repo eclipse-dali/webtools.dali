@@ -10,16 +10,20 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link MenuListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class MenuAdapter
+	implements MenuListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void menuShown(MenuEvent e) {
+		// NOP
+	}
+
+	public void menuHidden(MenuEvent e) {
 		// NOP
 	}
 

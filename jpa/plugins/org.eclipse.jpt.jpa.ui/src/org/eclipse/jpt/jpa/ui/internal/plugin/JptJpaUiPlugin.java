@@ -13,7 +13,7 @@ import java.util.HashMap;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.ui.internal.swt.Adapter;
 import org.eclipse.jpt.common.utility.internal.reference.AbstractBooleanReference;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
@@ -154,14 +154,11 @@ public class JptJpaUiPlugin
 	 * This listener is registered to receive only {@link SWT#FocusIn} events.
 	 */
 	/* CU private */ class FocusListener
-		implements Listener
+		extends Adapter
 	{
+		@Override
 		public void handleEvent(Event event) {
 			JptJpaUiPlugin.this.focusIn((Control) event.widget);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
 		}
 	}
 

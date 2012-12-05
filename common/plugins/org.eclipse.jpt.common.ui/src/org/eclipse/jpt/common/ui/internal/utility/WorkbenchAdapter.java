@@ -7,19 +7,24 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt;
+package org.eclipse.jpt.common.ui.internal.utility;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link IWorkbenchListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class WorkbenchAdapter
+	implements IWorkbenchListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public boolean preShutdown(IWorkbench workbench, boolean forced) {
+		// allow the workbench to proceed with shutdown
+		return true;
+	}
+
+	public void postShutdown(IWorkbench workbench) {
 		// NOP
 	}
 

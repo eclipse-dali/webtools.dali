@@ -20,29 +20,37 @@ public class PartAdapter2
 	implements IPartListener2
 {
 	public void partOpened(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partActivated(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partVisible(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partInputChanged(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partHidden(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partDeactivated(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	public void partClosed(IWorkbenchPartReference partRef) {
-		// do nothing
+		// NOP
 	}
+
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this);

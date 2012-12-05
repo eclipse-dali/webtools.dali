@@ -10,16 +10,32 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link ShellListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class ShellAdapter
+	implements ShellListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void shellActivated(ShellEvent e) {
+		// NOP
+	}
+
+	public void shellDeactivated(ShellEvent e) {
+		// NOP
+	}
+
+	public void shellIconified(ShellEvent e) {
+		// NOP
+	}
+
+	public void shellDeiconified(ShellEvent e) {
+		// NOP
+	}
+
+	public void shellClosed(ShellEvent e) {
 		// NOP
 	}
 

@@ -9,34 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.utility;
 
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.ui.IWindowListener;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 
 /**
- * Convenience implementation of {@link IWindowListener}.
+ * {@link IWorkbenchWindow} utility methods.
  */
-public class WindowAdapter
-	implements IWindowListener
-{
-	public void windowOpened(IWorkbenchWindow window) {
-		// NOP
-	}
+public class WorkbenchWindowTools {
 
-	public void windowActivated(IWorkbenchWindow window) {
-		// NOP
+	/**
+	 * Close all the views in the specified workbench window with the
+	 * specified ID.
+	 */
+	public static void closeAllViews(IWorkbenchWindow window, String viewID) {
+		for (IWorkbenchPage page : window.getPages()) {
+			WorkbenchPageTools.closeAllViews(page, viewID);
+		}
 	}
+ 
 
-	public void windowDeactivated(IWorkbenchWindow window) {
-		// NOP
-	}
+	// ********** constructor **********
 
-	public void windowClosed(IWorkbenchWindow window) {
-		// NOP
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
+	/**
+	 * Suppress default constructor, ensuring non-instantiability.
+	 */
+	private WorkbenchWindowTools() {
+		super();
+		throw new UnsupportedOperationException();
 	}
 }

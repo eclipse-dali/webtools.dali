@@ -7,19 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt;
+package org.eclipse.jpt.common.ui.internal.utility;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.ui.ISaveablesLifecycleListener;
+import org.eclipse.ui.SaveablesLifecycleEvent;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link ISaveablesLifecycleListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class SaveablesLifecycleAdapter
+	implements ISaveablesLifecycleListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void handleLifecycleEvent(SaveablesLifecycleEvent event) {
 		// NOP
 	}
 

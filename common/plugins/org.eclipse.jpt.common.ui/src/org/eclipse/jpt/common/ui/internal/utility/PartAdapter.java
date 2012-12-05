@@ -20,20 +20,25 @@ public class PartAdapter
 	implements IPartListener
 {
 	public void partOpened(IWorkbenchPart part) {
-		// do nothing
+		// NOP
 	}
+
 	public void partBroughtToTop(IWorkbenchPart part) {
-		// do nothing
+		// NOP
 	}
+
 	public void partActivated(IWorkbenchPart part) {
-		// do nothing
+		// NOP
 	}
+
 	public void partDeactivated(IWorkbenchPart part) {
-		// do nothing
+		// NOP
 	}
+
 	public void partClosed(IWorkbenchPart part) {
-		// do nothing
+		// NOP
 	}
+
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this);

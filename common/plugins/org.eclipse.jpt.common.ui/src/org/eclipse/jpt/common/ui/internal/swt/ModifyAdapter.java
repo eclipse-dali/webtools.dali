@@ -10,16 +10,16 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link ModifyListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class ModifyAdapter
+	implements ModifyListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void modifyText(ModifyEvent e) {
 		// NOP
 	}
 

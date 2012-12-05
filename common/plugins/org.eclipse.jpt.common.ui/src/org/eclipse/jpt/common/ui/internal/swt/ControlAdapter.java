@@ -10,16 +10,20 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link ControlListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class ControlAdapter
+	implements ControlListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void controlMoved(ControlEvent e) {
+		// NOP
+	}
+
+	public void controlResized(ControlEvent e) {
 		// NOP
 	}
 

@@ -7,19 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt;
+package org.eclipse.jpt.common.ui.internal.utility;
 
+import java.util.Map;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.ui.ISourceProviderListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link ISourceProviderListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class SourceProviderAdapter
+	implements ISourceProviderListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void sourceChanged(int sourcePriority, @SuppressWarnings("rawtypes") Map sourceValuesByName) {
+		// NOP
+	}
+
+	public void sourceChanged(int sourcePriority, String sourceName, Object sourceValue) {
 		// NOP
 	}
 

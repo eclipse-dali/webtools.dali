@@ -19,7 +19,7 @@ public class PropertyAdapter
 	implements IPropertyListener
 {
 	public void propertyChanged(Object source, int propId) {
-		// do nothing
+		// NOP
 	}
 
 	@Override

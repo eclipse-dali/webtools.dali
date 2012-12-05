@@ -10,16 +10,16 @@
 package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link DragDetectListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class DragDetectAdapter
+	implements DragDetectListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void dragDetected(DragDetectEvent e) {
 		// NOP
 	}
 

@@ -10,29 +10,34 @@
 package org.eclipse.jpt.common.ui.internal.utility;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.ui.IPageListener;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 
 /**
- * Convenience implementation of {@link IPageListener}.
+ * {@link IWorkbenchPage} utility methods.
  */
-public class PageAdapter
-	implements IPageListener
-{
-	public void pageOpened(IWorkbenchPage page) {
-		// NOP
-	}
+public class WorkbenchPageTools {
 
-	public void pageActivated(IWorkbenchPage page) {
-		// NOP
+	/**
+	 * Close all the views in the specified workbench page with the
+	 * specified ID.
+	 */
+	public static void closeAllViews(IWorkbenchPage page, String viewID) {
+		for (IViewReference ref : page.getViewReferences()) {
+			if (ObjectTools.equals(ref.getId(), viewID)) {
+				page.hideView(ref);
+			}
+		}
 	}
+ 
 
-	public void pageClosed(IWorkbenchPage page) {
-		// NOP
-	}
+	// ********** constructor **********
 
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
+	/**
+	 * Suppress default constructor, ensuring non-instantiability.
+	 */
+	private WorkbenchPageTools() {
+		super();
+		throw new UnsupportedOperationException();
 	}
 }

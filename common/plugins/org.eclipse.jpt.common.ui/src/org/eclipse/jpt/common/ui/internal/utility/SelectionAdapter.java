@@ -7,19 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.ui.internal.swt;
+package org.eclipse.jpt.common.ui.internal.utility;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * Convenience implementation of {@link DisposeListener}.
+ * Convenience implementation of {@link ISelectionListener}.
  */
-public class DisposeAdapter
-	implements DisposeListener
+public class SelectionAdapter
+	implements ISelectionListener
 {
-	public void widgetDisposed(DisposeEvent e) {
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		// NOP
 	}
 
