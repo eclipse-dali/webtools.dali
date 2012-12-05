@@ -73,27 +73,28 @@ public class GenericClassRef
 	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
 	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef) {
-		this(parent, null, xmlJavaClassRef, xmlJavaClassRef.getJavaClass());
+		super(parent);
+		this.xmlJavaClassRef = xmlJavaClassRef;
+		this.className = xmlJavaClassRef.getJavaClass();
+		JavaResourceAbstractType resourceType = this.resolveJavaResourceType();
+		this.initializeJavaPersistentType(resourceType);
 	}
 
 	/**
 	 * Construct an <em>virtual</em> class ref; i.e. a class ref without
 	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
-	public GenericClassRef(PersistenceUnit parent, JavaResourceAbstractType jrat) {
-		this(parent, jrat, null, jrat.getTypeBinding().getQualifiedName());
+	public GenericClassRef(PersistenceUnit parent, JavaResourceAbstractType resourceType) {
+		super(parent);
+		this.xmlJavaClassRef = null;
+		this.className = resourceType.getTypeBinding().getQualifiedName();
+		this.initializeJavaPersistentType(resourceType);
 	}
 
-	protected GenericClassRef(PersistenceUnit parent, JavaResourceAbstractType jrat, XmlJavaClassRef xmlJavaClassRef, String className) {
-		super(parent);
-		this.xmlJavaClassRef = xmlJavaClassRef;
-		this.className = className;
-		// build 'javaPersistentType' here, but also resolve in the update
-		if (jrat != null) {
-			this.resourceType = jrat;
-			if (jrat.getKind() == Kind.TYPE) {
-				this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) jrat);
-			}
+	protected void initializeJavaPersistentType(JavaResourceAbstractType resourceType) {
+		this.resourceType = resourceType;
+		if (this.resourceType.getKind() == Kind.TYPE) {
+			this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) this.resourceType);
 		}
 	}
 
@@ -369,32 +370,37 @@ public class GenericClassRef
 			return;
 		}
 
-		if (this.resourceType.getKind() == Kind.ENUM) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
-					new String[] {this.getJavaClassName()},
-					this,
-					this.getValidationTextRange()
-				)
-			);
-			return;
+		if (this.isNotVirtual()) {
+			if (this.resourceType.getKind() == Kind.ENUM) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
+						new String[] {this.getJavaClassName()},
+						this,
+						this.getValidationTextRange()
+					)
+				);
+				return;
+			}
+	
+			if (this.resourceType.getKind() == Kind.TYPE && this.resourceType.getTypeBinding().isInterface()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
+						new String[] {this.getJavaClassName()},
+						this,
+						this.getValidationTextRange()
+					)
+				);
+				return;
+			}
 		}
 
-		if (this.resourceType.getKind() == Kind.TYPE && this.resourceType.getTypeBinding().isInterface()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
-					new String[] {this.getJavaClassName()},
-					this,
-					this.getValidationTextRange()
-				)
-			);
+		if (this.javaPersistentType == null) {
 			return;
 		}
-
 		// 190062 validate Java class only if this is the only reference to it
 		// i.e. the persistence.xml ref is the only ref - none of the mapping
 		// files reference the same class
