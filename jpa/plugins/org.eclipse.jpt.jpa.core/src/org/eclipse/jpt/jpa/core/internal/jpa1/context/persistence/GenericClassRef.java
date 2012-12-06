@@ -93,7 +93,7 @@ public class GenericClassRef
 
 	protected void initializeJavaPersistentType(JavaResourceAbstractType resourceType) {
 		this.resourceType = resourceType;
-		if (this.resourceType.getKind() == Kind.TYPE) {
+		if (this.resourceType != null && this.resourceType.getKind() == Kind.TYPE) {
 			this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) this.resourceType);
 		}
 	}
