@@ -9,41 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * This pane does not have any widgets.
- *
- * @see Embeddable
- * @see EmbeddableUiProvider
- *
- * @version 2.3
- * @since 2.0
- */
-public class JavaEmbeddableComposite extends AbstractEmbeddableComposite<Embeddable>
-                                 implements JpaComposite
+public class JavaEmbeddableComposite
+	extends Pane<Embeddable>
+	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>EmbeddableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaEmbeddableComposite(PropertyValueModel<? extends Embeddable> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public JavaEmbeddableComposite(
+			PropertyValueModel<JavaEmbeddable> embeddableModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		//nothing
+		// NOP
 	}
 }

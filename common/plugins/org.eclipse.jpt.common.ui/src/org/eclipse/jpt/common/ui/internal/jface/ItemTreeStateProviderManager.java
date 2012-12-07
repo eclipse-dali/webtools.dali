@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
@@ -32,12 +32,12 @@ public class ItemTreeStateProviderManager
 	protected final ItemTreeContentProviderFactory itemContentProviderFactory;
 
 
-	public ItemTreeStateProviderManager(ItemTreeContentProviderFactory itemContentProviderFactory) {
-		this(itemContentProviderFactory, null);
+	public ItemTreeStateProviderManager(ItemTreeContentProviderFactory itemContentProviderFactory, ResourceManager resourceManager) {
+		this(itemContentProviderFactory, null, resourceManager);
 	}
 
-	public ItemTreeStateProviderManager(ItemTreeContentProviderFactory itemContentProviderFactory, ItemExtendedLabelProviderFactory itemLabelProviderFactory) {
-		super(itemLabelProviderFactory);
+	public ItemTreeStateProviderManager(ItemTreeContentProviderFactory itemContentProviderFactory, ItemExtendedLabelProviderFactory itemLabelProviderFactory, ResourceManager resourceManager) {
+		super(itemLabelProviderFactory, resourceManager);
 		if (itemContentProviderFactory == null) {
 			throw new NullPointerException();
 		}
@@ -74,7 +74,7 @@ public class ItemTreeStateProviderManager
 	 * Dispatch to the UI thread.
 	 */
 	public void updateChildren(Object inputElement) {
-		SWTUtil.execute(this.viewer, new UpdateChildrenRunnable(inputElement));
+		this.execute(new UpdateChildrenRunnable(inputElement));
 	}
 
 	/* CU private */ class UpdateChildrenRunnable

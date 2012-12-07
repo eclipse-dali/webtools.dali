@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import java.util.HashMap;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -56,12 +57,21 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 
 	protected final HashMap<Object, ItemExtendedLabelProvider> itemLabelProviders = new HashMap<Object, ItemExtendedLabelProvider>();
 
+	/**
+	 * Never <code>null</code>.
+	 */
+	protected final ResourceManager resourceManager;
+
 	protected volatile V viewer;
 
 
-	protected AbstractItemStructuredStateProviderManager(ItemExtendedLabelProviderFactory itemLabelProviderFactory) {
+	protected AbstractItemStructuredStateProviderManager(ItemExtendedLabelProviderFactory itemLabelProviderFactory, ResourceManager resourceManager) {
 		super();
 		this.itemLabelProviderFactory = itemLabelProviderFactory;
+		if (resourceManager == null) {
+			throw new NullPointerException();
+		}
+		this.resourceManager = resourceManager;
 	}
 
 
@@ -85,7 +95,7 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 
 	public Image getImage(Object element) {
 		ItemLabelProvider provider = this.getItemLabelProvider(element);
-		return (provider == null) ? null :provider.getImage();
+		return (provider == null) ? null : provider.getImage();
 	}
 
 	public String getText(Object element) {
@@ -218,13 +228,12 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 
 	// ********** misc **********
 
-	protected void execute(Runnable runnable) {
-		SWTUtil.execute(this.viewer, runnable);
+	public ResourceManager getResourceManager() {
+		return this.resourceManager;
 	}
 
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
+	protected void execute(Runnable runnable) {
+		SWTUtil.execute(this.viewer, runnable);
 	}
 
 	protected boolean viewerIsAlive() {
@@ -232,15 +241,21 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 		return (control != null) && ! control.isDisposed();
 	}
 
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this);
+	}
+
 
 	// ********** dispose **********
 
 	/**
-	 * Disposes all items
+	 * Disposes resource manager and all item providers.
 	 */
 	@Override
 	public synchronized void dispose() {
 		this.disposeProviders();
+		this.resourceManager.dispose();
 		super.dispose();
 	}
 

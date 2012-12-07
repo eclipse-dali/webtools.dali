@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -31,12 +32,12 @@ public class OrmEclipseLinkEmbeddedIdMapping1_1Composite
 	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
 {
 	public OrmEclipseLinkEmbeddedIdMapping1_1Composite(
-			PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	

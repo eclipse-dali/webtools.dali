@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 
 /**
- * All the state in the JPA platform ui provider should be "static"
+ * All the state in the JPA platform UI provider should be "static"
  * (i.e. unchanging once it is initialized).
  */
 public abstract class AbstractJpaPlatformUiProvider
@@ -73,7 +73,7 @@ public abstract class AbstractJpaPlatformUiProvider
 	}
 
 	/**
-	 * Implement this to specify JPA mapping file ui definitions.
+	 * Implement this to specify JPA resource UI definitions.
 	 */
 	protected abstract void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions);
 

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -38,20 +37,11 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructConverter>
+public class EclipseLinkStructConverterComposite
+	extends Pane<EclipseLinkStructConverter>
 {
-
-	/**
-	 * Creates a new <code>StructConverterComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public EclipseLinkStructConverterComposite(PropertyValueModel<? extends EclipseLinkStructConverter> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public EclipseLinkStructConverterComposite(Pane<?> parentPane, PropertyValueModel<? extends EclipseLinkStructConverter> subjectModel, Composite parentComposite) {
+		super(parentPane, subjectModel, parentComposite);
 	}
 
 	@Override

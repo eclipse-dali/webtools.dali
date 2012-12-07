@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 
@@ -66,4 +68,19 @@ public interface EclipseLinkConvert
 	String[] RESERVED_CONVERTER_NAMES = {NO_CONVERTER, CLASS_INSTANCE_CONVERTER, SERIALIZED_CONVERTER};
 	
 	String DEFAULT_CONVERTER_NAME = NO_CONVERTER;
+
+	/**
+	 * A transformer that returns an {@link EclipseLinkConvert} if the passed
+	 * in {@link Converter} can be cast as such;
+	 * otherwise, it returns <code>null</code>.
+	 */
+	Transformer<Converter, EclipseLinkConvert> CONVERTER_TRANSFORMER = new ConverterTransformer();
+	class ConverterTransformer
+		extends TransformerAdapter<Converter, EclipseLinkConvert>
+	{
+		@Override
+		public EclipseLinkConvert transform(Converter converter) {
+			return (converter.getType() == EclipseLinkConvert.class) ? (EclipseLinkConvert) converter : null;
+		}
+	}
 }

@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.wizard.IWizardContainer;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
@@ -34,7 +35,6 @@ import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -90,7 +90,7 @@ public class DatabaseGroup
 		this.connectionComboBox = this.buildConnectionComboBox(parent, widthHint);
 
 		// add connection button
-		Button addConnectionButton = this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, ImageRepository.getAddConnectionButtonImage(this.resourceManager), this.buildAddConnectionLinkSelectionListener());
+		Button addConnectionButton = this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, this.resourceManager.createImage(JptCommonUiImages.ADD_CONNECTION_BUTTON), this.buildAddConnectionLinkSelectionListener());
 		addConnectionButton.setLayoutData(new GridData());
 
 		// A composite holds the reconnect button & text
@@ -106,7 +106,7 @@ public class DatabaseGroup
 		comp.setLayout(gridLayout);
 
 		// reconnection button
-		this.reconnectButton = this.buildButton(comp, JptUiEntityGenMessages.connectLink, ImageRepository.getReconnectButtonImage(this.resourceManager),  this.buildReconnectLinkSelectionListener());
+		this.reconnectButton = this.buildButton(comp, JptUiEntityGenMessages.connectLink, this.resourceManager.createImage(JptCommonUiImages.RECONNECT_BUTTON),  this.buildReconnectLinkSelectionListener());
 		this.buildLabel(comp, 1, JptUiEntityGenMessages.schemaInfo);
 
 		// schema combo-box

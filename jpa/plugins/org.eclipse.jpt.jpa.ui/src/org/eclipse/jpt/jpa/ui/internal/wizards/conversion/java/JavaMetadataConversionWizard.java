@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 public class JavaMetadataConversionWizard
 	extends Wizard
@@ -26,7 +25,7 @@ public class JavaMetadataConversionWizard
 		}
 		this.page = page;
 		this.setWindowTitle(JptUiMessages.JavaMetadataConversionWizard_title);
-		this.setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.JPA_FILE_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptJpaUiImages.JPA_FILE_BANNER);
 	}
 
 	@Override

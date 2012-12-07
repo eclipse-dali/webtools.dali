@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,103 +9,80 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * The abstract definition the dialog showing the information for a join column
- * to edit or to create.
- *
- * @see BaseJoinColumnStateObject
- *
- * @version 2.0
- * @since 1.0
- */
-public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject>
-	extends ValidatingDialog<T>
+public abstract class BaseJoinColumnDialog<O, C extends ReadOnlyBaseJoinColumn, S extends BaseJoinColumnStateObject>
+	extends ValidatingDialog<S>
 {
+	/**
+	 * This will be <code>null</code> when creating a new join column.
+	 */
+	private final C joinColumn;
 
 	/**
-	 * Either the join column to edit or <code>null</code> if this state object
-	 * is used to create a new one.
+	 * The owner of the new or existing join column.
 	 */
-	private ReadOnlyBaseJoinColumn joinColumn;
+	private final O owner;
+
 
 	/**
-	 * The owner of the join column to create or where it is located.
+	 * Use this constructor to create a <em>new</em> join column.
 	 */
-	private Object owner;
+	protected BaseJoinColumnDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			O owner) {
+		this(parentShell, resourceManager, owner, null);
+	}
 
 	/**
-	 * Creates a new <code>BaseJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param owner The owner of the join column to create or where it is located
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * Use this constructor to edit an <em>existing</em> join column.
 	 */
-	public BaseJoinColumnDialog(Shell parent,
-	                            Object owner,
-	                            ReadOnlyBaseJoinColumn joinColumn) {
+	protected BaseJoinColumnDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			O owner,
+			C joinColumn) {
+		this(parentShell, resourceManager, owner, joinColumn, buildTitle(joinColumn));
+	}
 
-		super(parent);
+	private static String buildTitle(ReadOnlyBaseJoinColumn joinColumn) {
+		return (joinColumn == null) ?
+				JptUiDetailsMessages.JoinColumnDialog_addJoinColumnTitle :
+				JptUiDetailsMessages.JoinColumnDialog_editJoinColumnTitle;
+	}
 
-		this.owner      = owner;
+	protected BaseJoinColumnDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			O owner,
+			C joinColumn,
+			String title) {
+		super(parentShell, resourceManager, title);
+		this.owner = owner;
 		this.joinColumn = joinColumn;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getDescription() {
 		return JptUiDetailsMessages.JoinColumnDialog_description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getDescriptionTitle() {
-
-		if (joinColumn == null) {
-			return JptUiDetailsMessages.JoinColumnDialog_addJoinColumnDescriptionTitle;
-		}
-
-		return JptUiDetailsMessages.JoinColumnDialog_editJoinColumnDescriptionTitle;
+		return (this.joinColumn == null) ?
+				JptUiDetailsMessages.JoinColumnDialog_addJoinColumnDescriptionTitle :
+				JptUiDetailsMessages.JoinColumnDialog_editJoinColumnDescriptionTitle;
 	}
 
-	/**
-	 * Returns the join column used by this state object for editing or
-	 * <code>null</code> if this state object is used to create a new one.
-	 *
-	 * @return Either the edited join column or <code>null</code>
-	 */
-	public ReadOnlyBaseJoinColumn getJoinColumn() {
-		return joinColumn;
+	public C getJoinColumn() {
+		return this.joinColumn;
 	}
 
-	/**
-	 * Returns the owner where the join column is located or where a new one can
-	 * be added.
-	 *
-	 * @return The parent of the join column
-	 */
-	protected Object getOwner() {
-		return owner;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String getTitle() {
-
-		if (joinColumn == null) {
-			return JptUiDetailsMessages.JoinColumnDialog_addJoinColumnTitle;
-		}
-
-		return JptUiDetailsMessages.JoinColumnDialog_editJoinColumnTitle;
+	protected O getOwner() {
+		return this.owner;
 	}
 }

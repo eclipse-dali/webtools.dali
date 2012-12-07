@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -23,76 +24,46 @@ import org.eclipse.jpt.jpa.db.Table;
  * @see PrimaryKeyJoinColumn
  * @see SecondaryTable
  * @see PrimaryKeyJoinColumnInSecondaryTableDialog
- *
- * @version 2.0
- * @since 2.0
  */
-public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends BaseJoinColumnStateObject
+public class PrimaryKeyJoinColumnInSecondaryTableStateObject
+	extends BaseJoinColumnStateObject
 {
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnInSecondaryTableStateObject</code>.
-	 *
-	 * @param secondaryTable The owner of the join column to create or where it
-	 * is located
-	 * @param joinColumn The join column to edit or <code>null</code> if it is to
-	 * create a new one
-	 */
-	public PrimaryKeyJoinColumnInSecondaryTableStateObject(SecondaryTable secondaryTable,
-	                                                       PrimaryKeyJoinColumn joinColumn) {
-
+	public PrimaryKeyJoinColumnInSecondaryTableStateObject(
+			ReadOnlySecondaryTable secondaryTable,
+			ReadOnlyPrimaryKeyJoinColumn joinColumn) {
 		super(secondaryTable, joinColumn);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public String getDefaultTable() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	public PrimaryKeyJoinColumn getJoinColumn() {
-		return (PrimaryKeyJoinColumn) super.getJoinColumn();
+	public ReadOnlyPrimaryKeyJoinColumn getJoinColumn() {
+		return (ReadOnlyPrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Table getNameTable() {
 		return getOwner().getDbTable();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	public SecondaryTable getOwner() {
-		return (SecondaryTable) super.getOwner();
+	public ReadOnlySecondaryTable getOwner() {
+		return (ReadOnlySecondaryTable) super.getOwner();
 	}
 
-	/* (non-Javadoc)
-	 */
 	@Override
 	public Table getReferencedNameTable() {
 		return getOwner().getParent().getPrimaryDbTable();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getInitialTable() {
 		return getOwner().getName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public ListIterator<String> tables() {
 		return new SingleElementListIterator<String>(getInitialTable());

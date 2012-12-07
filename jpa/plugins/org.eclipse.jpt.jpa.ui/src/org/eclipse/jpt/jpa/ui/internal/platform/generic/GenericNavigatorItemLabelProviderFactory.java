@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
@@ -20,8 +21,7 @@ import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 /**
  * This factory builds item label providers for the JPA content in the
@@ -67,16 +67,16 @@ public class GenericNavigatorItemLabelProviderFactory
 		return null;
 	}
 
-	protected ItemExtendedLabelProvider buildPersistenceXmlProvider(PersistenceXml item, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
-		return this.buildResourceItemLabelProvider(item);
+	protected ItemExtendedLabelProvider buildPersistenceXmlProvider(PersistenceXml item, ItemExtendedLabelProvider.Manager manager) {
+		return this.buildResourceItemLabelProvider(item, manager);
 	}
 
 	protected ItemExtendedLabelProvider buildPersistenceUnitProvider(PersistenceUnit item, ItemExtendedLabelProvider.Manager manager) {
 		return new PersistenceUnitItemLabelProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildOrmXmlProvider(OrmXml item, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
-		return this.buildResourceItemLabelProvider(item);
+	protected ItemExtendedLabelProvider buildOrmXmlProvider(OrmXml item, ItemExtendedLabelProvider.Manager manager) {
+		return this.buildResourceItemLabelProvider(item, manager);
 	}
 
 	protected ItemExtendedLabelProvider buildPersistentTypeProvider(PersistentType item, ItemExtendedLabelProvider.Manager manager) {
@@ -87,27 +87,28 @@ public class GenericNavigatorItemLabelProviderFactory
 		return new PersistentAttributeItemLabelProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildJarFileProvider(JarFile item, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
-		return this.buildResourceItemLabelProvider(item, JptUiIcons.JAR_FILE);
+	protected ItemExtendedLabelProvider buildJarFileProvider(JarFile item, ItemExtendedLabelProvider.Manager manager) {
+		return this.buildResourceItemLabelProvider(item, JptJpaUiImages.JAR_FILE, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node) {
-		return this.buildResourceItemLabelProvider(node.getResource());
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node, ItemExtendedLabelProvider.Manager manager) {
+		return this.buildResourceItemLabelProvider(node.getResource(), manager);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node, String imageKey) {
-		return this.buildResourceItemLabelProvider(node.getResource(), imageKey);
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node, ImageDescriptor imageDescriptor, ItemExtendedLabelProvider.Manager manager) {
+		return this.buildResourceItemLabelProvider(node.getResource(), imageDescriptor, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(IResource resource) {
-		return this.buildResourceItemLabelProvider(resource, JptUiIcons.JPA_FILE);
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(IResource resource, ItemExtendedLabelProvider.Manager manager) {
+		return this.buildResourceItemLabelProvider(resource, JptJpaUiImages.JPA_FILE, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(IResource resource, String imageKey) {
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(IResource resource, ImageDescriptor imageDescriptor, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJpaUiPlugin.instance().getImage(imageKey),
+					imageDescriptor,
 					resource.getName(),
-					this.buildResourceDescription(resource)
+					this.buildResourceDescription(resource),
+					manager
 				);
 	}
 

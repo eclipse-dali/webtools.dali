@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -58,9 +57,9 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 
 	// ********** type mappings **********
 
-	public JpaComposite buildTypeMappingComposite(String mappingKey, PropertyValueModel<TypeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite buildTypeMappingComposite(String mappingKey, org.eclipse.jpt.common.utility.model.value.PropertyValueModel<TypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, org.eclipse.jface.resource.ResourceManager resourceManager) {
 		OrmTypeMappingUiDefinition<TypeMapping> definition = this.getOrmTypeMappingUiDefinition(mappingKey);
-		return definition.buildTypeMappingComposite(this.factory, mappingModel, parent, widgetFactory);
+		return definition.buildTypeMappingComposite(this.factory, mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(String mappingKey) {
@@ -108,9 +107,9 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 
 	// ********** attribute mappings **********
 
-	public JpaComposite buildAttributeMappingComposite(String mappingKey, PropertyValueModel<AttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite buildAttributeMappingComposite(String mappingKey, org.eclipse.jpt.common.utility.model.value.PropertyValueModel<AttributeMapping> mappingModel, org.eclipse.jpt.common.utility.model.value.PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, org.eclipse.jface.resource.ResourceManager resourceManager) {
 		OrmAttributeMappingUiDefinition<AttributeMapping> definition = this.getOrmAttributeMappingUiDefinition(mappingKey);
-		return definition.buildAttributeMappingComposite(this.factory, mappingModel, enabledModel, parent, widgetFactory);
+		return definition.buildAttributeMappingComposite(this.factory, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(String mappingKey) {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -43,13 +44,7 @@ public class OrmEntityUiDefinition
 		super();
 	}
 	
-	
-	public JpaComposite buildTypeMappingComposite(
-			OrmXmlUiFactory factory,
-			PropertyValueModel<OrmEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return factory.createOrmEntityComposite(subjectHolder, parent, widgetFactory);
+	public JpaComposite buildTypeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel<OrmEntity> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return factory.createOrmEntityComposite(mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

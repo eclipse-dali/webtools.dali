@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.ui.internal.views;
 
 import java.util.HashMap;
-
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -19,6 +20,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -29,6 +31,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.PageBook;
@@ -47,16 +50,6 @@ import org.eclipse.ui.part.ViewPart;
 public class JpaDetailsView
 	extends ViewPart
 {
-	/**
-	 * The factory used by the details view and its page managers
-	 * to create the their widgets.
-	 * The widgetFactory is created when the view's control is
-	 * {@link #createPartControl(Composite) created}
-	 * and disposed, if necessary, when the view is
-	 * {@link #dispose() disposed}.
-	 */
-	private FormWidgetFactory widgetFactory;
-
 	/**
 	 * The scrolled form that holds the {@link #pageBook page book}.
 	 * We need to force it to reflow whenever we change the page book's
@@ -80,6 +73,24 @@ public class JpaDetailsView
 	 * current JPA selection.
 	 */
 	private volatile JpaDetailsPageManager<? extends JpaStructureNode> currentPageManager;
+
+	/**
+	 * The resource manager is created when the view's control is
+	 * {@link #createPartControl(Composite) created}
+	 * and disposed, if necessary, when the view is
+	 * {@link #dispose() disposed}.
+	 */
+	private volatile ResourceManager resourceManager;
+
+	/**
+	 * The factory used by the details view and its page managers
+	 * to create the their widgets.
+	 * The widgetFactory is created when the view's control is
+	 * {@link #createPartControl(Composite) created}
+	 * and disposed, if necessary, when the view is
+	 * {@link #dispose() disposed}.
+	 */
+	private volatile FormWidgetFactory widgetFactory;
 
 	/**
 	 * The manager is created when the view's control is
@@ -108,6 +119,7 @@ public class JpaDetailsView
 
 	@Override
 	public void createPartControl(Composite parent) {
+		this.resourceManager = this.buildResourceManager();
 		this.widgetFactory = new FormWidgetFactory(new FormToolkit(parent.getDisplay()));
 		this.scrolledForm = this.widgetFactory.createScrolledForm(parent);
 		JptJpaUiPlugin.instance().controlAffectsJavaSource(this.scrolledForm);
@@ -125,6 +137,18 @@ public class JpaDetailsView
 		this.manager = this.buildManager();
 		this.manager.getJpaSelectionModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
 		this.setJpaSelection(this.manager.getJpaSelectionModel().getValue());
+	}
+
+	private ResourceManager buildResourceManager() {
+		return this.getJpaWorkbench().buildLocalResourceManager();
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
+	}
+
+	private IWorkbench getWorkbench() {
+		return this.getSite().getWorkbenchWindow().getWorkbench();
 	}
 
 	private Control buildDefaultPage() {
@@ -235,7 +259,7 @@ public class JpaDetailsView
 	}
 
 	private JpaDetailsPageManager<? extends JpaStructureNode> buildPageManager(JpaStructureNode node) {
-		return this.getJpaDetailsPageManagerFactory(node).buildPageManager(this.pageBook, this.widgetFactory);
+		return this.getJpaDetailsPageManagerFactory(node).buildPageManager(this.pageBook, this.widgetFactory, this.resourceManager);
 	}
 
 	private JpaDetailsPageManager.Factory getJpaDetailsPageManagerFactory(JpaStructureNode node) {
@@ -252,9 +276,6 @@ public class JpaDetailsView
 
 	@Override
 	public void dispose() {
-		if (this.widgetFactory != null) {
-			this.widgetFactory.dispose();
-		}
 		if (this.manager != null) {
 			this.dispose_();
 		}
@@ -262,14 +283,19 @@ public class JpaDetailsView
 	}
 
 	private void dispose_() {
-		this.manager.getJpaSelectionModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
-		this.manager.dispose();
-
 		if (this.currentPageManager != null) {
 			this.currentPageManager.setSubject(null);
 			this.currentPageManager = null;
 		}
+
 		this.pageManagers.clear();
+
+		this.manager.getJpaSelectionModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
+		this.manager.dispose();
+
+		this.widgetFactory.dispose();
+
+		this.resourceManager.dispose();
 	}
 
 	@Override

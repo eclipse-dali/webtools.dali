@@ -10,10 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
@@ -42,12 +44,12 @@ public class PersistenceUnitOptions2_0EditorPageDefinition
 		super();
 	}
 
-	public String getPageText() {
-		return JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsTab_title;
+	public ImageDescriptor getTitleImageDescriptor() {
+		return null;
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
+	public String getTitleText() {
+		return JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsTab_title;
 	}
 
 	public String getHelpID() {
@@ -55,16 +57,22 @@ public class PersistenceUnitOptions2_0EditorPageDefinition
 	}
 
 	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new PersistenceUnit2_0OptionsEditorPage(this.buildJpaOptions2_0Model(jpaRootStructureNodeModel), parent, widgetFactory);
+	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new PersistenceUnit2_0OptionsEditorPage(buildOptionsModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
-	private PropertyValueModel<JpaOptions2_0> buildJpaOptions2_0Model(PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, JpaOptions2_0>(this.buildPersistenceUnitModel(jpaRootStructureNodeModel)) {
-			@Override
-			protected JpaOptions2_0 transform_(PersistenceUnit value) {
-				return (JpaOptions2_0) ((PersistenceUnit2_0) value).getOptions();
-			}
-		};
+	public static PropertyValueModel<JpaOptions2_0> buildOptionsModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, JpaOptions2_0>(persistenceUnitModel, OPTIONS_TRANSFORMER);
+	}
+
+	public static final Transformer<PersistenceUnit, JpaOptions2_0> OPTIONS_TRANSFORMER = new OptionsTransformer();
+
+	public static class OptionsTransformer
+		extends AbstractTransformer<PersistenceUnit, JpaOptions2_0>
+	{
+		@Override
+		protected JpaOptions2_0 transform_(PersistenceUnit persistenceUnit) {
+			return (JpaOptions2_0) ((PersistenceUnit2_0) persistenceUnit).getOptions();
+		}
 	}
 }

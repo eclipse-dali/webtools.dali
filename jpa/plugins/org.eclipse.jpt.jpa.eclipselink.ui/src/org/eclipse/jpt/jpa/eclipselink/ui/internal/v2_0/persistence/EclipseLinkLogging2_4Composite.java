@@ -1,18 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import java.util.Collection;
-
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_4;
@@ -22,17 +21,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *  EclipseLinkLogging2_4Composite
- */
-
-public class EclipseLinkLogging2_4Composite extends EclipseLinkLogging2_0Composite {
-
+public class EclipseLinkLogging2_4Composite
+	extends EclipseLinkLogging2_0Composite
+{
 	public EclipseLinkLogging2_4Composite(
-			PropertyValueModel<Logging2_0> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Pane<?> parent,
+			PropertyValueModel<Logging2_0> subjectModel,
+			Composite parentComposite) {
+		super(parent, subjectModel, parentComposite);
 	}
 
 	@Override

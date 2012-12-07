@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.swt.widgets.Composite;
@@ -48,6 +49,6 @@ public interface JpaDetailsPageManager<T extends JpaStructureNode> {
 	void setSubject(Object subject);
 
 	interface Factory {
-		<T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory);
+		<T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager);
 	}
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -23,17 +24,16 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-
 public abstract class AbstractMappedSuperclassComposite<T extends MappedSuperclass>
 	extends Pane<T>
     implements JpaComposite
 {
 	protected AbstractMappedSuperclassComposite(
-			PropertyValueModel<? extends T> subjectHolder,
-	        Composite parent,
-	        WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends T> mappedSuperclassModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override

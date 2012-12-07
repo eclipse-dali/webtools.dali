@@ -38,28 +38,8 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | - Join Columns ---------------------------------------------------------- |
- * | |                                                                       | |
- * | | x Override Default                                                    | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | AddRemoveListPane                                                 | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see Entity
- *
- * @version 2.0
- * @since 2.0
- */
-public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> extends Pane<T>
+public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
+	extends Pane<T>
 {
 	protected ModifiableCollectionValueModel<PrimaryKeyJoinColumn> selectedPkJoinColumnsModel;
 
@@ -76,19 +56,10 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	}
 
 	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
-
-		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
-			getShell(),
-			getSubject(),
-			null
-		);
-
+		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(this.getShell(), this.getResourceManager(), this.getSubject());
 		dialog.setBlockOnOpen(true);
 		dialog.open();
-		if (dialog.wasConfirmed()) {
-			return addJoinColumn(dialog.getSubject());
-		}
-		return null;
+		return dialog.wasConfirmed() ? this.addJoinColumn(dialog.getSubject()) : null;
 	}
 
 	protected abstract ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
@@ -220,13 +191,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	}
 
 	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
-
-		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
-			getShell(),
-			getSubject(),
-			joinColumn
-		);
-
+		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 		if (dialog.wasConfirmed()) {

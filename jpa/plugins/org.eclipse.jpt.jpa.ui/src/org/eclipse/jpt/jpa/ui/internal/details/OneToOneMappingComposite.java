@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
@@ -18,63 +19,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TargetEntityComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoiningStrategyComposite                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OptionalComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see OneToOneMapping
- * @see TargetEntityClassChooser
- * @see JoiningStrategyComposite
- * @see FetchTypeComboViewer
- * @see OptionalTriStateCheckBox
- * @see CascadeComposite
- *
- * @version 2.3
- * @since 1.0
- */
 public class OneToOneMappingComposite 
 	extends AbstractOneToOneMappingComposite<OneToOneMapping, OneToOneRelationship>
 {
-	/**
-	 * Creates a new <code>OneToOneMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IOneToOneMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public OneToOneMappingComposite(
+			PropertyValueModel<? extends OneToOneMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}	
 
 	@Override

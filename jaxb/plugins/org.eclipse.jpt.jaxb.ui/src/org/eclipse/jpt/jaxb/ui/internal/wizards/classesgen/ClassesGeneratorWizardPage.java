@@ -36,6 +36,8 @@ import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TrayDialog;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -90,8 +92,9 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public final String[] bindingdFilesFilterExtensions = {".xjb",".xml",".xbd"}; //$NON-NLS-1$
 	public static final String ECLIPSELINK_PLATFORM_GROUP_ID = "eclipselink";   //$NON-NLS-1$
 
-	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.jaxb.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
+	final ResourceManager resourceManager;
 	private SettingsGroup settingsGroup;
 	
 	private String targetFolder;
@@ -102,9 +105,10 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 	// ********** constructor **********
 	
-	public ClassesGeneratorWizardPage() {
+	public ClassesGeneratorWizardPage(ResourceManager resourceManager) {
 		super(true, "Classes Generator"); //$NON-NLS-1$
 
+		this.resourceManager = resourceManager;
 		this.setDescription(JptJaxbUiMessages.ClassesGeneratorWizardPage_desc);
 	}
 
@@ -495,6 +499,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		this.setMessage(message, WARNING);
 	}
 
+
 	// ********** inner class **********
 	
 	// ********** SettingsGroup class **********
@@ -796,7 +801,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		protected Control createDialogArea(Composite parent) {
 			Composite composite = (Composite) super.createDialogArea(parent);
 			
-			this.locationPanel = new SelectFileOrXMLCatalogIdPanel(composite, StructuredSelection.EMPTY);
+			this.locationPanel = new SelectFileOrXMLCatalogIdPanel(composite, StructuredSelection.EMPTY, resourceManager);
 			this.locationPanel.setFilterExtensions(bindingdFilesFilterExtensions);
 			this.locationPanel.update();
 			this.locationPanel.setVisibleHelper(true);

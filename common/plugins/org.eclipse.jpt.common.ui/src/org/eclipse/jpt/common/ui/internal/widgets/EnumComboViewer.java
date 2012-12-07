@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -94,21 +93,6 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
         			Composite parent) {
 
 		super(parentPane, subjectHolder, enabledModel, parent);
-	}
-
-	/**
-	 * Creates a new <code>EnumComboViewer</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
-	 */
-	EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
-        					PropertyValueModel<Boolean> enabledModel,
-	                        Composite parent,
-	                        WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override

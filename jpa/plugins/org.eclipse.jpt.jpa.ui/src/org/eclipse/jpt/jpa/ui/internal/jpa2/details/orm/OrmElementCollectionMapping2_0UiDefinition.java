@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -44,14 +45,8 @@ public class OrmElementCollectionMapping2_0UiDefinition
 	private OrmElementCollectionMapping2_0UiDefinition() {
 		super();
 	}
-	
-	public JpaComposite buildAttributeMappingComposite(
-			OrmXmlUiFactory factory, 
-			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder, 
-			PropertyValueModel<Boolean> enabledModel, 
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return ((OrmXmlUiFactory2_0) factory).createOrmElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+
+	public JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel<OrmElementCollectionMapping2_0> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return ((OrmXmlUiFactory2_0) factory).createOrmElementCollectionMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

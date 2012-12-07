@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -26,13 +27,14 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkMappedSuperclass2_1Composite
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite {
-
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite
+{
 	public OrmEclipseLinkMappedSuperclass2_1Composite(
-			PropertyValueModel<? extends OrmMappedSuperclass> subjectHolder, 
-			Composite parent, WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends OrmMappedSuperclass> mappedSuperclassModel, 
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

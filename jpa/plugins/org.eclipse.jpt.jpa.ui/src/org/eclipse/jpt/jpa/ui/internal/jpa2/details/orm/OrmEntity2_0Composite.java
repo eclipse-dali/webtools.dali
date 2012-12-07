@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -34,28 +35,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * The pane used for an ORM entity 2.0.
- *
- * @see OrmEntity
- * @see Entity2_0OverridesComposite
- */
 public class OrmEntity2_0Composite
 	extends AbstractOrmEntityComposite
 {
-	/**
-	 * Creates a new <code>OrmEntityComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>OrmEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	public OrmEntity2_0Composite(
-			PropertyValueModel<? extends OrmEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends OrmEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
@@ -16,72 +17,23 @@ import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JoinTableComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TargetEntityComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoiningStrategyComposite                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OrderingComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see OneToManyMapping
- * @see CascadeComposite
- * @see FetchTypeComboViewer
- * @see JoinTableComposite
- * @see OrderingComposite
- * @see TargetEntityClassChooser
- *
- * @version 2.3
- * @since 1.0
- */
 public class OrmOneToManyMappingComposite 
 	extends AbstractOneToManyMappingComposite<OneToManyMapping, OneToManyRelationship>
 {
-	/**
-	 * Creates a new <code>OneToManyMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IOneToManyMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmOneToManyMappingComposite(PropertyValueModel<? extends OneToManyMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public OrmOneToManyMappingComposite(
+			PropertyValueModel<? extends OneToManyMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

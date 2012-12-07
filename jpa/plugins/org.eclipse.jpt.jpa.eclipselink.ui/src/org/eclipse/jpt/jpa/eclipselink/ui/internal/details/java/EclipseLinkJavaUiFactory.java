@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
@@ -34,135 +35,147 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToOneMa
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkJavaUiFactory extends BaseJavaUiFactory
+public class EclipseLinkJavaUiFactory
+	extends AbstractJavaUiFactory
 {
-	public EclipseLinkJavaUiFactory() {
-		super();
-	}
-	
-	// **************** java type mapping composites ***************************
+	// ********** type mappings **********
 	
 	@Override
 	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkMappedSuperclassComposite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkEntityComposite(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<JavaEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkEntityComposite(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkEmbeddableComposite(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<JavaEmbeddable> embeddableModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkEmbeddableComposite(embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	
-	// **************** java attribute mapping composites **********************
+	// ********** attribute mappings **********
 	
 	@Override
 	public JpaComposite createJavaIdMappingComposite(
-			PropertyValueModel<JavaIdMapping> subjectHolder,
+			PropertyValueModel<JavaIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkIdMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkIdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaBasicMappingComposite(
-			PropertyValueModel<JavaBasicMapping> subjectHolder,
+			PropertyValueModel<JavaBasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkBasicMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkBasicMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaVersionMappingComposite(
-			PropertyValueModel<JavaVersionMapping> subjectHolder,
+			PropertyValueModel<JavaVersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkVersionMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkVersionMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaManyToOneMappingComposite(
-			PropertyValueModel<JavaManyToOneMapping> subjectHolder, 
+			PropertyValueModel<JavaManyToOneMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent, 
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkManyToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite, 
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<JavaOneToManyMapping> subjectHolder, 
+			PropertyValueModel<JavaOneToManyMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent, 
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkOneToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite, 
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkOneToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaOneToOneMappingComposite(
-			PropertyValueModel<JavaOneToOneMapping> subjectHolder, 
+			PropertyValueModel<JavaOneToOneMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent, 
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkOneToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite, 
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkOneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
 	public JpaComposite createJavaManyToManyMappingComposite(
-			PropertyValueModel<JavaManyToManyMapping> subjectHolder, 
+			PropertyValueModel<JavaManyToManyMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent, 
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkManyToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite, 
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkManyToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	public JpaComposite createJavaEclipseLinkBasicMapMappingComposite(
-			PropertyValueModel<EclipseLinkBasicMapMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkBasicMapMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkBasicMapMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkBasicMapMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	public JpaComposite createJavaEclipseLinkBasicCollectionMappingComposite(
-			PropertyValueModel<EclipseLinkBasicCollectionMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkBasicCollectionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkBasicCollectionMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkBasicCollectionMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	public JpaComposite createJavaEclipseLinkVariableOneToOneMappingComposite(
-			PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkVariableOneToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkVariableOneToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkVariableOneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	public JpaComposite createJavaEclipseLinkTransformationMappingComposite(
-			PropertyValueModel<EclipseLinkTransformationMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkTransformationMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new EclipseLinkTransformationMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new EclipseLinkTransformationMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-
-
 }

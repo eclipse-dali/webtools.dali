@@ -18,9 +18,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
@@ -65,11 +64,12 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		return null;
 	}
 
-	protected ItemExtendedLabelProvider buildJaxbContextRootProvider(JaxbContextRoot root, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildJaxbContextRootProvider(JaxbContextRoot root, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_CONTENT),
+					JptJaxbUiImages.JAXB_CONTENT,
 					JptJaxbUiMessages.JaxbContent_label,
-					this.buildJaxbContextRootDescription(root)
+					this.buildJaxbContextRootDescription(root),
+					manager
 				);
 	}
 
@@ -81,18 +81,20 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		return sb.toString();
 	}
 
-	protected ItemExtendedLabelProvider buildJaxbEnumConstantProvider(JaxbEnumConstant enumConstant, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildJaxbEnumConstantProvider(JaxbEnumConstant enumConstant, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.ENUM_CONSTANT),
-					enumConstant.getName()
+					JptJaxbUiImages.ENUM_CONSTANT,
+					enumConstant.getName(),
+					manager
 				);
 	}
 
-	protected ItemExtendedLabelProvider buildJaxbPackageProvider(JaxbPackage pkg, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildJaxbPackageProvider(JaxbPackage pkg, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.PACKAGE),
+					JptJaxbUiImages.JAXB_PACKAGE,
 					pkg.getName(),
-					this.buildJaxbPackageDescription(pkg)
+					this.buildJaxbPackageDescription(pkg),
+					manager
 				);
 	}
 

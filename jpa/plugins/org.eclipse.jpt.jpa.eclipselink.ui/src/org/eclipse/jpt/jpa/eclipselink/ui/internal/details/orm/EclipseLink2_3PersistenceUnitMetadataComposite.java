@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPage;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.Group;
  *
  * @see PersistenceUnitMetadata
  * @see OrmPersistenceUnitDefaults
- * @see EntityMappingsDetailsPage - The parent container
+ * @see EntityMappingsDetailsPageManager - The parent container
  * @see CatalogCombo
  * @see SchemaCombo
  * @see EnumFormComboViewer
@@ -143,12 +143,12 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		tenantDiscriminatorColumnGroupPane.setLayoutData(gridData);
 
 		this.tenantDiscriminatorColumnsComposite = new TenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults>(
-			getPersistenceUnitDefaultsHolder(),
-			buildPaneEnablerHolder(),
-			tenantDiscriminatorColumnGroupPane,
-			getWidgetFactory(),
-			buildTenantDiscriminatorColumnsEditor()
-		);
+				this,
+				this.getPersistenceUnitDefaultsHolder(),
+				this.buildPaneEnablerHolder(),
+				tenantDiscriminatorColumnGroupPane,
+				this.buildTenantDiscriminatorColumnsEditor()
+			);
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {

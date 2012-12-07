@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractTransientMappingUiDefinition<M, T extends TransientMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractTransientMappingUiDefinition<M, T extends Transien
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.TRANSIENT;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.TRANSIENT;
 	}
 }

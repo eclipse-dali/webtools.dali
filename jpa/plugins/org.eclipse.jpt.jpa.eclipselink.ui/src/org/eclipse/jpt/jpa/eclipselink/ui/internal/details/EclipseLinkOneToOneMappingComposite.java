@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -32,21 +33,14 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class EclipseLinkOneToOneMappingComposite<T extends OneToOneMapping>
 	extends AbstractOneToOneMappingComposite<T, OneToOneRelationship>
-	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>EclipselinkOneToOneMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IOneToOneMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public EclipseLinkOneToOneMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public EclipseLinkOneToOneMappingComposite(
+			PropertyValueModel<? extends T> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

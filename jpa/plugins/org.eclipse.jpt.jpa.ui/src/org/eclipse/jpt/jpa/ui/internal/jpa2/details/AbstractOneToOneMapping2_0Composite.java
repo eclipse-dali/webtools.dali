@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -23,12 +24,12 @@ public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapp
 	extends AbstractOneToOneMappingComposite<T, R>
 {
 	protected AbstractOneToOneMapping2_0Composite(
-			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-	        WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

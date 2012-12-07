@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
@@ -81,9 +82,9 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	// ********** type mappings **********
 
-	public JpaComposite buildTypeMappingComposite(String mappingKey, PropertyValueModel<TypeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite buildTypeMappingComposite(String mappingKey, PropertyValueModel<TypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		JavaTypeMappingUiDefinition<TypeMapping> definition = this.getJavaTypeMappingUiDefinition(mappingModel.getValue());
-		return definition.buildTypeMappingComposite(this.factory, mappingModel, parent, widgetFactory);
+		return definition.buildTypeMappingComposite(this.factory, mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -137,9 +138,9 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	// ********** attribute mappings **********
 
-	public JpaComposite buildAttributeMappingComposite(String mappingKey, PropertyValueModel<AttributeMapping> mappingModel,PropertyValueModel<Boolean> enabledModel,  Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite buildAttributeMappingComposite(String mappingKey, PropertyValueModel<AttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		JavaAttributeMappingUiDefinition<AttributeMapping> definition = this.getAttributeMappingUiDefinition(mappingModel.getValue());
-		return definition.buildAttributeMappingComposite(this.factory, mappingModel, enabledModel, parent, widgetFactory);
+		return definition.buildAttributeMappingComposite(this.factory, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")

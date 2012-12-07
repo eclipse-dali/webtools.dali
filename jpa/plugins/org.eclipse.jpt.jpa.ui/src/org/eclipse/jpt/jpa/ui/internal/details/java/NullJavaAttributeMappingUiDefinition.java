@@ -9,18 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.MapAsComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class NullJavaAttributeMappingUiDefinition
@@ -58,24 +61,24 @@ public class NullJavaAttributeMappingUiDefinition
 	}
 
 	/**
-	 * The MapAsComposite in the JPA Details view will display this text for
-	 * an unmapped attribute:
+	 * The {@link MapAsComposite} in the JPA Details view will display this text for
+	 * an unmapped attribute:<pre>
 	 * Attribute 'foo' is not mapped, click here to change the mapping type.
-	 * 
+	 * </pre>
 	 * We are returning the part of the string that will appear to the user as 
-	 * a link that they can click: 'click here'
+	 * a link that they can click; i.e. 'click here'.
 	 */
 	public String getLinkLabel() {
 		return JptUiDetailsMessages.MapAsComposite_unmappedAttributeText_linkLabel;
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.NULL_ATTRIBUTE_MAPPING;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.NULL_ATTRIBUTE_MAPPING;
 	}
 
-	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaAttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory) {
-		return new NullComposite(mappingModel, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaAttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new NullComposite(mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 
@@ -85,8 +88,8 @@ public class NullJavaAttributeMappingUiDefinition
 		extends Pane<JavaAttributeMapping>
 		implements JpaComposite
 	{
-		NullComposite(PropertyValueModel<JavaAttributeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
-			super(mappingModel, parent, widgetFactory);
+		NullComposite(PropertyValueModel<JavaAttributeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+			super(mappingModel, parent, widgetFactory, resourceManager);
 		}
 		
 		@Override

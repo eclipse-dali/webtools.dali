@@ -11,12 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Comparator;
 import java.util.List;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -52,12 +50,8 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 	private Control combo;
 
 
-	public TemporalTypeCombo(PropertyValueModel<? extends BaseTemporalConverter> subjectHolder,
-								PropertyValueModel<Boolean> enabledModel,
-        						Composite parent,
-        						WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public TemporalTypeCombo(Pane<?> parentPane, PropertyValueModel<? extends BaseTemporalConverter> subjectModel, Composite parentComposite) {
+		super(parentPane, subjectModel, parentComposite);
 	}
 
 	@Override
@@ -138,11 +132,6 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<BaseTemporalConverter, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform(BaseTemporalConverter value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+		return this.buildNotNullSubjectModel();
 	}
 }

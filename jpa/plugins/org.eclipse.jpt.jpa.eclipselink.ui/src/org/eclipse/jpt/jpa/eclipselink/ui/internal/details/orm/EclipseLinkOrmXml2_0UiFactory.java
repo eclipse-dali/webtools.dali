@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
@@ -27,114 +28,129 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkOrmXml2_0UiFactory 
-	extends BaseEclipseLinkOrmXmlUiFactory
+public class EclipseLinkOrmXml2_0UiFactory
+	extends AbstractEclipseLinkOrmXmlUiFactory
 	implements OrmXmlUiFactory2_0
 {
-	@Override
-	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkEntity2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
+	// ********** type mappings **********
+
 	@Override
 	public JpaComposite createOrmMappedSuperclassComposite(
-			PropertyValueModel<OrmMappedSuperclass> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkMappedSuperclass2_0Composite(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<OrmMappedSuperclass> mappedSuperclassModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkMappedSuperclass2_0Composite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
-	// **************** orm attribute mapping composites ***********************
-	
+
+	@Override
+	public JpaComposite createOrmEntityComposite(
+			PropertyValueModel<OrmEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkEntity2_0Composite(entityModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+
+	// ********** attribute mappings **********
+
 	@Override
 	public JpaComposite createOrmIdMappingComposite(
-			PropertyValueModel<OrmIdMapping> subjectHolder,
+			PropertyValueModel<OrmIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkIdMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmEmbeddedMappingComposite(
-			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+			PropertyValueModel<OrmEmbeddedMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkEmbeddedMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkEmbeddedMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmEmbeddedIdMappingComposite(
-			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<OrmEmbeddedIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkEmbeddedIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkEmbeddedIdMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmBasicMappingComposite(
-			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			PropertyValueModel<OrmBasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkBasicMapping1_1Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkBasicMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmVersionMappingComposite(
-			PropertyValueModel<OrmVersionMapping> subjectHolder,
+			PropertyValueModel<OrmVersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkVersionMapping1_1Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkVersionMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmManyToOneMappingComposite(
-			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+			PropertyValueModel<OrmManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkManyToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkManyToOneMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmOneToManyMappingComposite(
-			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<OrmOneToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkOneToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkOneToManyMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmOneToOneMappingComposite(
-			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+			PropertyValueModel<OrmOneToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkOneToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkOneToOneMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	@Override
 	public JpaComposite createOrmManyToManyMappingComposite(
-			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			PropertyValueModel<OrmManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkManyToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkManyToManyMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-	
+
 	public JpaComposite createOrmElementCollectionMapping2_0Composite(
-			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
+			PropertyValueModel<OrmElementCollectionMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkElementCollectionMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

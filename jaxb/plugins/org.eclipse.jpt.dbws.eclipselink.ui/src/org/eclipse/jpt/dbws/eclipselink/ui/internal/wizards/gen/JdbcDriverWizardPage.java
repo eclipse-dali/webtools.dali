@@ -12,7 +12,6 @@ package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -30,9 +29,8 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiIcons;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiImages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -74,7 +72,7 @@ public class JdbcDriverWizardPage extends WizardPage
 	protected void initialize() {
 		this.setTitle(JptDbwsUiMessages.JdbcDriverWizardPage_title);
 		this.setDescription(JptDbwsUiMessages.JdbcDriverWizardPage_desc);
-		this.setImageDescriptor(JptDbwsEclipseLinkUiPlugin.instance().buildImageDescriptor(JptDbwsUiIcons.DBWS_GEN_WIZ_BANNER));
+		this.setImageDescriptor(JptDbwsEclipseLinkUiImages.NEW_WEB_SERVICES_CLIENT_BANNER);
 	}
 
 	// ********** intra-wizard methods **********

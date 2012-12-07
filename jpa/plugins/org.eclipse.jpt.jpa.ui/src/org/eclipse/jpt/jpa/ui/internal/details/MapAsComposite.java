@@ -17,13 +17,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.JFaceColors;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -39,12 +37,12 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 import com.ibm.icu.text.Collator;
 
@@ -58,15 +56,13 @@ import com.ibm.icu.text.Collator;
  * -----------------------------------------------------------------------------
  * |                                                                           |
  * | Attribute 'name' is mapped as one to one.                                 |
- * |                               ¯¯¯¯¯¯¯¯¯¯                                  |
+ * |                               ----------                                  |
  * -----------------------------------------------------------------------------</pre>
- *
- * @version 2.0
- * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
-
+public abstract class MapAsComposite<T extends JpaNode>
+	extends Pane<T>
+{
 	protected boolean dragEvent;
 	protected MappingChangeHandler<T> mappingChangeHandler;
 	protected int mappingTypeLength;
@@ -75,29 +71,18 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	protected int nameLength;
 	protected int nameStart;
 	protected StyledText styledText;
-	protected PropertyChangeListener enabledModelListener;
 
 	/**
 	 * The constant ID used to retrieve the dialog settings.
 	 */
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.jpa.ui.dialogs.MapAsDialog";
 
-	/**
-	 * Creates a new <code>MapAsComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
-	public MapAsComposite(Pane<? extends T> parentPane,
-	                      Composite parent) {
 
-		super(parentPane, parent);
+	protected MapAsComposite(Pane<? extends T> parentPane, Composite parentComposite) {
+		super(parentPane, parentComposite);
 	}
 
-	public MapAsComposite(Pane<? extends T> parentPane,
-							Composite parent,
-							PropertyValueModel<Boolean> enabledModel) {
-
+	protected MapAsComposite(Pane<? extends T> parentPane, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 		super(parentPane, parent, enabledModel);
 	}
 	
@@ -228,49 +213,38 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		styledText.setStyleRange(null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		updateDescription();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 
 		super.initialize();
 		this.mappingChangeHandler = buildMappingChangeHandler();
-		this.enabledModelListener = this.buildEnabledModelListener();
-		this.getEnabledModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
 	}
 
-	protected PropertyChangeListener buildEnabledModelListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				if (!styledText.isDisposed()) {
-					if (((Boolean)event.getNewValue()).booleanValue()) {
-						updateLinkRange();
-					}
-					else {
-						clearStyleRange();					
-					}
-				}
+	@Override
+	protected void enabledModelChanged(boolean oldEnabled, boolean newEnabled) {
+		if ( ! this.styledText.isDisposed()) {
+			if (newEnabled) {
+				this.updateLinkRange();
+			} else {
+				this.clearStyleRange();					
 			}
-		};
+		}
 	}
+
 	@Override
 	protected Composite addComposite(Composite parent) {
-		styledText = new StyledText(parent, SWT.WRAP | SWT.READ_ONLY);
-		SWTTools.controlEnabledState(getEnabledModel(), styledText);
-		styledText.addMouseListener(buildMouseListener());
-		styledText.addMouseMoveListener(buildMouseMoveListener());
-		styledText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		return styledText;
+		this.styledText = new StyledText(parent, SWT.WRAP | SWT.READ_ONLY);
+		this.controlEnabledState(this.styledText);
+		this.styledText.addMouseListener(buildMouseListener());
+		this.styledText.addMouseMoveListener(buildMouseMoveListener());
+		this.styledText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		return this.styledText;
 	}
 
 	@Override
@@ -278,9 +252,12 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		return (Composite) super.getControl();
 	}
 
+	/**
+	 * @see #addComposite(Composite)
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		// see addComposite(Composite)
+		// NOP - code is in addComposite(...)
 	}
 
 	/**
@@ -325,7 +302,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 */
 	protected void openMappingSelectionDialog() {
 
-		MappingSelectionDialog dialog = new MappingSelectionDialog();
+		MappingSelectionDialog dialog = new MappingSelectionDialog(this.getShell(), this.getResourceManager());
 		dialog.setBlockOnOpen(true);
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) dialog.getFirstResult();
@@ -344,8 +321,8 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		clearStyleRange();
 		updateText();
 
-		if (getEnabledModel().getValue().booleanValue()) {
-			updateLinkRange();
+		if (this.isEnabled()) {
+			this.updateLinkRange();
 		}
 	}
 
@@ -400,12 +377,6 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		nameLength = name.length();
 
 		styledText.setText(text);
-	}
-
-	@Override
-	protected void controlDisposed() {
-		this.getEnabledModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
-		super.controlDisposed();
 	}
 
 	/**
@@ -472,29 +443,21 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		/**
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
-		private MappingSelectionDialog() {
-			super(MapAsComposite.this.getShell(), false);
-			setMessage(JptUiDetailsMessages.MapAsComposite_labelText);
-			setTitle(JptUiDetailsMessages.MapAsComposite_dialogTitle);
-			setListLabelProvider(buildLabelProvider());
-			setDetailsLabelProvider(buildLabelProvider());
+		protected MappingSelectionDialog(Shell shell, ResourceManager resourceManager) {
+			super(shell, false);
+			this.setMessage(JptUiDetailsMessages.MapAsComposite_labelText);
+			this.setTitle(JptUiDetailsMessages.MapAsComposite_dialogTitle);
+			ILabelProvider labelProvider = this.buildLabelProvider(resourceManager);
+			this.setListLabelProvider(labelProvider);
+			this.setDetailsLabelProvider(labelProvider);
 		}
 
-		private ILabelProvider buildLabelProvider() {
-			return new MappingUiDefinitionLabelProvider();
-		}
-
-		class MappingUiDefinitionLabelProvider
-			extends LabelProvider
-		{
-			@Override
-			public Image getImage(Object element) {
-				return (element == null) ? null : ((MappingUiDefinition<?,?>) element).getImage();
-			}
-			@Override
-			public String getText(Object element) {
-				return (element == null) ? "" : ((MappingUiDefinition<?,?>) element).getLabel();
-			}
+		private ILabelProvider buildLabelProvider(ResourceManager resourceManager) {
+			return new ResourceManagerLabelProvider<MappingUiDefinition>(
+					MappingUiDefinition.IMAGE_DESCRIPTOR_TRANSFORMER,
+					MappingUiDefinition.LABEL_TRANSFORMER,
+					resourceManager
+				);
 		}
 
 		@Override
@@ -517,7 +480,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 			try {
 				// Add the default provider
-				defaultDefinition = getDefaultDefinition();
+				this.defaultDefinition = getDefaultDefinition();
 
 				if (defaultDefinition != null) {
 					provider.add(defaultDefinition, itemsFilter);

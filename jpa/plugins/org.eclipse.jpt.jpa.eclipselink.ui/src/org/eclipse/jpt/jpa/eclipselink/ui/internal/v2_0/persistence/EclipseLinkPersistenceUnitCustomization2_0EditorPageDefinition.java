@@ -10,13 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.EclipseLinkPersistenceUnitCustomizationEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
@@ -44,33 +41,20 @@ public class EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition
 		super();
 	}
 
-	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new EclipseLinkPersistenceUnitCustomization2_0EditorPage(
-				this.buildCustomizationModel(jpaRootStructureNodeModel), 
-				parent, 
-				widgetFactory);
+	public ImageDescriptor getTitleImageDescriptor() {
+		return EclipseLinkPersistenceUnitCustomizationEditorPageDefinition.instance().getTitleImageDescriptor();
 	}
 
-	private PropertyValueModel<Customization> buildCustomizationModel(PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Customization>(this.buildPersistenceUnitModel(jpaRootStructureNodeModel)) {
-			@Override
-			protected Customization transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getCustomization();
-			}
-		};
-	}
-
-	public String getPageText() {
-		return EclipseLinkPersistenceUnitCustomizationEditorPageDefinition.instance().getPageText();
+	public String getTitleText() {
+		return EclipseLinkPersistenceUnitCustomizationEditorPageDefinition.instance().getTitleText();
 	}
 
 	public String getHelpID() {
 		return EclipseLinkPersistenceUnitCustomizationEditorPageDefinition.instance().getHelpID();
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return EclipseLinkPersistenceUnitCustomizationEditorPageDefinition.instance().getPageImageDescriptor();
+	@Override
+	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new EclipseLinkPersistenceUnitCustomization2_0EditorPage(EclipseLinkPersistenceUnitCustomizationEditorPageDefinition.buildCustomizationModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
 	}
-
 }

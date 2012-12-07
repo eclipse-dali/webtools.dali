@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.ui.tests.internal.jface;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -28,7 +30,6 @@ import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
@@ -37,8 +38,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -56,28 +57,29 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 @SuppressWarnings("nls")
-public class DelegatingLabelProviderUiTest extends ApplicationWindow
+public class DelegatingLabelProviderUiTest
+	extends ApplicationWindow
 {
 	private TreeViewer tree;
-	
-	private ModifiablePropertyValueModel<Vehicle> selectedVehicle;
-	
-	
+
+	/* CU private */ ModifiablePropertyValueModel<Vehicle> selectedVehicleModel = new SimplePropertyValueModel<Vehicle>();
+
+
 	public static void main(String[] args) {
-		Window window = new DelegatingLabelProviderUiTest(args);
+		Window window = new DelegatingLabelProviderUiTest();
 		window.setBlockOnOpen(true);
 		window.open();
+
 		Display.getCurrent().dispose();
 		System.exit(0);
 	}
-	
-	
-	private DelegatingLabelProviderUiTest(String[] args) {
+
+
+	private DelegatingLabelProviderUiTest() {
 		super(null);
-		this.selectedVehicle = new SimplePropertyValueModel<Vehicle>();
 	}
-	
-	
+
+
 	@Override
 	protected Control createContents(Composite parent) {
 		((Shell) parent).setText(this.getClass().getSimpleName());
@@ -86,56 +88,57 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		Composite mainPanel = new Composite(parent, SWT.NONE);
 		mainPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		mainPanel.setLayout(new GridLayout());
-		buildTreePanel(mainPanel);
-		buildControlPanel(mainPanel);
+		this.buildTreePanel(mainPanel);
+		this.buildControlPanel(mainPanel);
 		return mainPanel;
 	}
-	
+
 	private void buildTreePanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		panel.setLayout(new GridLayout());
-		
+
 		Label label = new Label(panel, SWT.NONE);
 		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 		label.setText("My Vehicles");
-		
-		tree = new TreeViewer(panel, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		tree.getTree().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		TreeStateProvider contentAndLabelProvider = 
+
+		this.tree = new TreeViewer(panel, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		this.tree.getTree().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+		TreeStateProvider contentAndLabelProvider =
 			new ItemTreeStateProviderManager(
 				new VehicleContentProviderFactory(),
-				new VehicleLabelProviderFactory());
-		tree.setContentProvider(contentAndLabelProvider);
-		tree.setLabelProvider(contentAndLabelProvider);
-		tree.setInput(new Root());
-		tree.addSelectionChangedListener(buildTreeSelectionChangedListener());
+				new VehicleLabelProviderFactory(),
+				JFaceResources.getResources());
+		this.tree.setContentProvider(contentAndLabelProvider);
+		this.tree.setLabelProvider(contentAndLabelProvider);
+		this.tree.setInput(new Root());
+		this.tree.addSelectionChangedListener(this.buildTreeSelectionChangedListener());
 	}
-	
+
 	private ISelectionChangedListener buildTreeSelectionChangedListener() {
 		return new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				selectedVehicle.setValue((Vehicle) ((IStructuredSelection) event.getSelection()).getFirstElement());
+				DelegatingLabelProviderUiTest.this.selectedVehicleModel.setValue((Vehicle) ((IStructuredSelection) event.getSelection()).getFirstElement());
 			}
 		};
 	}
-	
+
 	private void buildControlPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		panel.setLayout(new GridLayout());
-		buildUpperControlPanel(panel);
-		buildLowerControlPanel(panel);
+		this.buildUpperControlPanel(panel);
+		this.buildLowerControlPanel(panel);
 	}
-	
+
 	private void buildUpperControlPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		panel.setLayout(new GridLayout(2, true));
-		buildVehicleCombo(panel);
-		buildColorCombo(panel);
+		this.buildVehicleCombo(panel);
+		this.buildColorCombo(panel);
 	}
-	
+
 	private void buildVehicleCombo(Composite parent) {
 		final ComboViewer combo = new ComboViewer(parent, SWT.READ_ONLY);
 		combo.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -143,89 +146,89 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		combo.setLabelProvider(new VehicleTypeLabelProvider());
 		combo.setInput(
 			new VehicleType[] {
-				VehicleType.BICYCLE, VehicleType.CAR, 
+				VehicleType.BICYCLE, VehicleType.CAR,
 				VehicleType.TRUCK, VehicleType.BOAT
 			});
 		combo.getCombo().setEnabled(false);
 		combo.addSelectionChangedListener(
 			new ISelectionChangedListener() {
 				public void selectionChanged(SelectionChangedEvent event) {
-					selectedVehicle().setVehicleType((VehicleType) ((StructuredSelection) event.getSelection()).getFirstElement()); 
+					DelegatingLabelProviderUiTest.this.getSelectedVehicle().setVehicleType((VehicleType) ((StructuredSelection) event.getSelection()).getFirstElement());
 				}
 			});
-		selectedVehicle.addPropertyChangeListener(
-			PropertyValueModel.VALUE, 
+		this.selectedVehicleModel.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
 			new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					Vehicle vehicle = selectedVehicle();
+					Vehicle vehicle = DelegatingLabelProviderUiTest.this.getSelectedVehicle();
 					combo.getCombo().setEnabled(vehicle != null);
-					combo.setSelection(new StructuredSelection((vehicle == null) ? null : vehicle.vehicleType()));
+					combo.setSelection(new StructuredSelection((vehicle == null) ? null : vehicle.getVehicleType()));
 				}
 			});
 	}
-	
+
 	private void buildColorCombo(Composite parent) {
 		final ComboViewer combo = new ComboViewer(parent, SWT.READ_ONLY);
 		combo.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		combo.setContentProvider(new ArrayContentProvider());
 		combo.setLabelProvider(new ColorLabelProvider());
-		combo.setInput(new Color[] {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN});
+		combo.setInput(new VehicleColor[] {VehicleColor.RED, VehicleColor.BLUE, VehicleColor.YELLOW, VehicleColor.GREEN});
 		combo.addSelectionChangedListener(
 			new ISelectionChangedListener() {
 				public void selectionChanged(SelectionChangedEvent event) {
-					selectedVehicle().setColor((Color) ((StructuredSelection) event.getSelection()).getFirstElement()); 
+					DelegatingLabelProviderUiTest.this.getSelectedVehicle().setColor((VehicleColor) ((StructuredSelection) event.getSelection()).getFirstElement());
 				}
 			});
-		selectedVehicle.addPropertyChangeListener(
-			PropertyValueModel.VALUE, 
+		this.selectedVehicleModel.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
 			new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					Vehicle vehicle = selectedVehicle();
+					Vehicle vehicle = DelegatingLabelProviderUiTest.this.getSelectedVehicle();
 					combo.getCombo().setEnabled(vehicle != null);
-					combo.setSelection(new StructuredSelection((vehicle == null) ? null : vehicle.color()));
+					combo.setSelection(new StructuredSelection((vehicle == null) ? null : vehicle.getColor()));
 				}
 			});
 	}
-	
+
 	private void buildLowerControlPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		panel.setLayout(new GridLayout(3, false));
-		buildEffectsLabel(panel);
-		buildGreyedCheckBox(panel);
-		buildTranslucentCheckBox(panel);
-		buildActionPanel(panel);
+		this.buildEffectsLabel(panel);
+		this.buildGrayedCheckBox(panel);
+		this.buildTranslucentCheckBox(panel);
+		this.buildActionPanel(panel);
 	}
-	
+
 	private void buildEffectsLabel(Composite parent) {
 		Label label = new Label(parent, SWT.LEFT);
 		label.setText("Color effects: ");
 		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
 	}
-	
-	private void buildGreyedCheckBox(Composite parent) {
+
+	private void buildGrayedCheckBox(Composite parent) {
 		final Button button = new Button(parent, SWT.CHECK);
 		button.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		button.setText("greyed");
+		button.setText("grayed");
 		button.setEnabled(false);
 		button.addSelectionListener(
 			new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					selectedVehicle().setGreyed(button.getSelection());
+					DelegatingLabelProviderUiTest.this.getSelectedVehicle().setGrayed(button.getSelection());
 				}
 			});
-		selectedVehicle.addPropertyChangeListener(
-			PropertyValueModel.VALUE, 
+		this.selectedVehicleModel.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
 			new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					Vehicle vehicle = selectedVehicle();
+					Vehicle vehicle = DelegatingLabelProviderUiTest.this.getSelectedVehicle();
 					button.setEnabled(vehicle != null);
-					button.setSelection(vehicle != null && vehicle.isGreyed());
+					button.setSelection((vehicle != null) && vehicle.isGrayed());
 				}
 			});
 	}
-	
+
 	private void buildTranslucentCheckBox(Composite parent) {
 		final Button button = new Button(parent, SWT.CHECK);
 		button.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
@@ -235,74 +238,76 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 			new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					selectedVehicle().setTranslucent(button.getSelection());
+					DelegatingLabelProviderUiTest.this.getSelectedVehicle().setTranslucent(button.getSelection());
 				}
 			});
-		selectedVehicle.addPropertyChangeListener(
-			PropertyValueModel.VALUE, 
+		this.selectedVehicleModel.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
 			new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					Vehicle vehicle = selectedVehicle();
+					Vehicle vehicle = DelegatingLabelProviderUiTest.this.getSelectedVehicle();
 					button.setEnabled(vehicle != null);
-					button.setSelection(vehicle != null && vehicle.isTranslucent());
+					button.setSelection((vehicle != null) && vehicle.isTranslucent());
 				}
 			});
 	}
-	
+
 	private void buildActionPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.END, GridData.FILL, false, false));
 		panel.setLayout(new GridLayout());
-		buildRefreshTreeACI().fill(panel);
+		this.buildRefreshTreeACI().fill(panel);
 	}
-	
+
 	private ActionContributionItem buildRefreshTreeACI() {
 		Action action = new Action("Refresh tree", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				refreshTree();
+				DelegatingLabelProviderUiTest.this.refreshTree();
 			}
 		};
 		action.setToolTipText("Refresh the tree's labels");
 		return new ActionContributionItem(action);
 	}
-	
+
 	void refreshTree() {
-		tree.refresh();
+		this.tree.refresh();
 	}
-	
-	private Vehicle selectedVehicle() {
-		return selectedVehicle.getValue();
+
+	Vehicle getSelectedVehicle() {
+		return this.selectedVehicleModel.getValue();
 	}
-	
-	
-	private static class VehicleTypeLabelProvider extends BaseLabelProvider
+
+
+	/* CU private */ static class VehicleTypeLabelProvider
+		extends BaseLabelProvider
 		implements ILabelProvider
 	{
 		public Image getImage(Object element) {
 			return null;
 		}
-		
+
 		public String getText(Object element) {
-			return ((VehicleType) element).description();
+			return ((VehicleType) element).getDescription();
 		}
 	}
-	
-	
-	private static class ColorLabelProvider extends BaseLabelProvider
+
+
+	/* CU private */ static class ColorLabelProvider
+		extends BaseLabelProvider
 		implements ILabelProvider
 	{
 		public Image getImage(Object element) {
 			return null;
 		}
-		
+
 		public String getText(Object element) {
-			return ((Color) element).description();
+			return ((VehicleColor) element).getDescription();
 		}
 	}
-	
-	
-	private static class VehicleContentProviderFactory
+
+
+	/* CU private */ static class VehicleContentProviderFactory
 		implements ItemTreeContentProviderFactory
 	{
 		public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
@@ -312,52 +317,52 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 			return this.buildVehicleProvider((Vehicle) item);
 		}
 		protected ItemTreeContentProvider buildRootProvider(Root item) {
-			return new StaticItemTreeContentProvider(null, item.vehicles());
+			return new StaticItemTreeContentProvider(null, item.getVehicles());
 		}
 		protected ItemTreeContentProvider buildVehicleProvider(Vehicle item) {
 			return new StaticItemTreeContentProvider(item.parent());
 		}
 	}
-	
-	
-	private static class VehicleLabelProviderFactory
+
+
+	/* CU private */ static class VehicleLabelProviderFactory
 		implements ItemExtendedLabelProviderFactory
 	{
 		public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
 			return new VehicleLabelProvider((Vehicle) item, manager);
 		}
 	}
-	
-	
-	private static class VehicleLabelProvider
+
+
+	/* CU private */ static class VehicleLabelProvider
 		extends AbstractItemExtendedLabelProvider<Vehicle>
 	{
-		public VehicleLabelProvider(Vehicle vehicle, ItemLabelProvider.Manager manager) {
+		public VehicleLabelProvider(Vehicle vehicle, ItemExtendedLabelProvider.Manager manager) {
 			super(vehicle, manager);
 		}
-		
+
 		@Override
-		protected PropertyValueModel<Image> buildImageModel() {
-			return new PropertyAspectAdapter<Vehicle, Image>(IMAGE_ASPECT_NAMES, this.item) {
+		protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+			return new PropertyAspectAdapter<Vehicle, ImageDescriptor>(IMAGE_ASPECT_NAMES, this.item) {
 				@Override
-				protected Image buildValue_() {
-					return subject.image();
+				protected ImageDescriptor buildValue_() {
+					return this.subject.getImageDescriptor();
 				}
 			};
 		}
 		private static final String[] IMAGE_ASPECT_NAMES =
 				new String[] {
 					Vehicle.COLOR_PROPERTY,
-					Vehicle.GREYED_PROPERTY,
+					Vehicle.GRAYED_PROPERTY,
 					Vehicle.TRANSLUCENT_PROPERTY
 				};
-		
+
 		@Override
 		protected PropertyValueModel<String> buildTextModel() {
 			return new PropertyAspectAdapter<Vehicle, String>(TEXT_ASPECT_NAMES, this.item) {
 				@Override
 				protected String buildValue_() {
-					return subject.color().description() + ' ' + subject.vehicleType().description();
+					return this.subject.getColor().getDescription() + ' ' + this.subject.getVehicleType().getDescription();
 				}
 			};
 		}
@@ -366,201 +371,198 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 					Vehicle.VEHICLE_TYPE_PROPERTY,
 					Vehicle.COLOR_PROPERTY
 				};
-		
+
 		@Override
 		protected PropertyValueModel<String> buildDescriptionModel() {
-			return buildTextModel();
+			return this.buildTextModel();
 		}
 	}
-	
-	
-	private static abstract class TreeNode extends AbstractModel
+
+
+	private static abstract class TreeNode
+		extends AbstractModel
 	{
 		private TreeNode parent;
-		
-		
+
 		public TreeNode(TreeNode parent) {
 			this.parent = parent;
 		}
-		
-		
+
 		public TreeNode parent() {
-			return parent;
+			return this.parent;
 		}
 	}
-	
-	
-	private static class Root extends TreeNode
+
+
+	private static class Root
+		extends TreeNode
 	{
 		protected final Vehicle[] vehicles;
-		
-		
+
 		public Root() {
 			super(null);
-			vehicles = new Vehicle[] {
-				new Vehicle(this, VehicleType.BICYCLE, Color.BLUE),
-				new Vehicle(this, VehicleType.CAR, Color.YELLOW),
-				new Vehicle(this, VehicleType.TRUCK, Color.RED),
-				new Vehicle(this, VehicleType.BOAT, Color.GREEN)};
+			this.vehicles = this.buildVehicles();
 		}
-		
-		public Vehicle[] vehicles() {
-			return vehicles;
+
+		private Vehicle[] buildVehicles() {
+			return new Vehicle[] {
+					new Vehicle(this, VehicleType.BICYCLE, VehicleColor.BLUE),
+					new Vehicle(this, VehicleType.CAR, VehicleColor.YELLOW),
+					new Vehicle(this, VehicleType.TRUCK, VehicleColor.RED),
+					new Vehicle(this, VehicleType.BOAT, VehicleColor.GREEN)
+				};
+		}
+
+		public Vehicle[] getVehicles() {
+			return this.vehicles;
 		}
 	}
-	
-	
-	private static class Vehicle extends TreeNode
+
+
+	/* CU private */ static class Vehicle
+		extends TreeNode
 	{
 		private VehicleType vehicleType;
 		public final static String VEHICLE_TYPE_PROPERTY = "vehicleType";
-		
-		private Color color;
+
+		private VehicleColor color;
 		public final static String COLOR_PROPERTY = "color";
-		
-		private boolean greyed = false;
-		public final static String GREYED_PROPERTY = "greyed";
-		
+
+		private boolean grayed = false;
+		public final static String GRAYED_PROPERTY = "grayed";
+
 		private boolean translucent = false;
 		public final static String TRANSLUCENT_PROPERTY = "translucent";
-		
-		private Image image;
-		
-			
-		public Vehicle(TreeNode parent, VehicleType vehicleType, Color color) {
+
+
+		Vehicle(TreeNode parent, VehicleType vehicleType, VehicleColor color) {
 			super(parent);
 			this.vehicleType = vehicleType;
 			this.color = color;
 		}
-		
-		public VehicleType vehicleType() {
-			return vehicleType;
+
+		public VehicleType getVehicleType() {
+			return this.vehicleType;
 		}
-		
-		public void setVehicleType(VehicleType newVehicleType) {
-			VehicleType oldVehicleType = vehicleType;
-			vehicleType = newVehicleType;
-			firePropertyChanged(VEHICLE_TYPE_PROPERTY, oldVehicleType, newVehicleType);
+
+		public void setVehicleType(VehicleType vehicleType) {
+			VehicleType old = this.vehicleType;
+			this.vehicleType = vehicleType;
+			this.firePropertyChanged(VEHICLE_TYPE_PROPERTY, old, vehicleType);
 		}
-		
-		public Color color() {
-			return color;
+
+		public VehicleColor getColor() {
+			return this.color;
 		}
-		
-		public void setColor(Color newColor) {
-			Color oldColor = color;
-			color = newColor;
-			firePropertyChanged(COLOR_PROPERTY, oldColor, newColor);
+
+		public void setColor(VehicleColor color) {
+			VehicleColor old = this.color;
+			this.color = color;
+			this.firePropertyChanged(COLOR_PROPERTY, old, color);
 		}
-		
-		public boolean isGreyed() {
-			return greyed;
+
+		public boolean isGrayed() {
+			return this.grayed;
 		}
-		
-		public void setGreyed(boolean newGreyed) {
-			boolean oldGreyed = greyed;
-			greyed = newGreyed;
-			firePropertyChanged(GREYED_PROPERTY, oldGreyed, newGreyed);
+
+		public void setGrayed(boolean grayed) {
+			boolean old = this.grayed;
+			this.grayed = grayed;
+			this.firePropertyChanged(GRAYED_PROPERTY, old, grayed);
 		}
-		
+
 		public boolean isTranslucent() {
-			return translucent;
+			return this.translucent;
 		}
-		
-		public void setTranslucent(boolean newTranslucent) {
-			boolean oldTranslucent = translucent;
-			translucent = newTranslucent;
-			firePropertyChanged(TRANSLUCENT_PROPERTY, oldTranslucent, newTranslucent);
+
+		public void setTranslucent(boolean translucent) {
+			boolean old = this.translucent;
+			this.translucent = translucent;
+			this.firePropertyChanged(TRANSLUCENT_PROPERTY, old, translucent);
 		}
-		
-		public Image image() {
-			if (image != null) {
-				image.dispose();
-			}
-			
-			return ImageFactory.image(color(), greyed, translucent);
+
+		public ImageDescriptor getImageDescriptor() {
+			return VehicleImageDescriptorFactory.buildImageDescriptor(this.color, this.grayed, this.translucent);
 		}
 	}
-	
-	
-	private static enum VehicleType
-	{
+
+
+	/* CU private */ static enum VehicleType {
 		BICYCLE("bicycle"),
 		CAR("car"),
 		TRUCK("truck"),
 		BOAT("boat");
-		
+
 		private final String description;
-		
+
 		private VehicleType(String description) {
 			this.description = description;
 		}
-		
-		public String description() {
-			return description;
+
+		public String getDescription() {
+			return this.description;
 		}
-		
+
 		@Override
 		public String toString() {
-			return description();
+			return this.description;
 		}
 	}
-	
-	
-	private static enum Color
-	{
+
+
+	/* CU private */ static enum VehicleColor {
 		RED("red", new RGB(255, 0, 0)),
 		BLUE("blue", new RGB(0, 0, 255)),
 		YELLOW("yellow", new RGB(255, 255, 0)),
 		GREEN("green", new RGB(0, 255, 0));
-		
+
 		private final String description;
-		
+
 		private final RGB rgb;
-		
-		private Color(String description, RGB rgb) {
+
+		private VehicleColor(String description, RGB rgb) {
 			this.description = description;
 			this.rgb = rgb;
 		}
-		
-		public String description() {
-			return description;
+
+		public String getDescription() {
+			return this.description;
 		}
-		
+
 		public RGB rgb() {
-			return rgb;
+			return this.rgb;
 		}
-		
+
 		@Override
 		public String toString() {
-			return description();
+			return this.description;
 		}
 	}
-	
-	
-	private static class ImageFactory
-	{
-		private static RGB rgb(Color color, boolean greyed, boolean translucent) {
-			RGB rgb = (greyed) ? new RGB(127, 127, 127) : color.rgb();
+
+
+	/* CU private */ static class VehicleImageDescriptorFactory {
+		static ImageDescriptor buildImageDescriptor(VehicleColor color, boolean grayed, boolean translucent) {
+			PaletteData pd = new PaletteData(new RGB[] { buildRGB(color, grayed, translucent) });
+			ImageData imageData = new ImageData(20, 20, 1, pd);
+			for (int x = 0; x < 20; x ++) {
+				for (int y = 0; y < 20; y ++) {
+					imageData.setPixel(x, y, 0);
+				}
+			}
+			return ImageDescriptor.createFromImageData(imageData);
+		}
+
+		private static RGB buildRGB(VehicleColor color, boolean grayed, boolean translucent) {
+			RGB rgb = (grayed) ? GRAY : color.rgb();
 			if (translucent) {
 				rgb = new RGB(translucify(rgb.red), translucify(rgb.green), translucify(rgb.blue));
 			}
 			return rgb;
 		}
-		
-		private static int translucify(int color) {
-			return 255 - (int) ((255 - color) * 0.3);
-		}
-		
-		public static Image image(Color color, boolean greyed, boolean translucent) {
-			PaletteData pd = new PaletteData(new RGB[] {rgb(color, greyed, translucent)});
-			ImageData id = new ImageData(20, 20, 1, pd);
-			for (int x = 0; x < 20; x ++) {
-				for (int y = 0; y < 20; y ++) {
-					id.setPixel(x, y, 0);
-				}
-			}
-			return new Image(Display.getCurrent(), id);
+		private static final RGB GRAY = new RGB(127, 127, 127);
+
+		private static int translucify(int colorComponent) {
+			return 255 - (int) ((255 - colorComponent) * 0.3);
 		}
 	}
 }

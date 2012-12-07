@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -16,36 +17,21 @@ import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * This pane does not have any widgets.
- *
- * @see TransientMapping
- *
- * @version 2.0
- * @since 1.0
- */
-public class TransientMappingComposite extends Pane<TransientMapping>
-                                       implements JpaComposite
+public class TransientMappingComposite
+	extends Pane<TransientMapping>
+	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>TransientMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>ITransientMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public TransientMappingComposite(PropertyValueModel<? extends TransientMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public TransientMappingComposite(
+			PropertyValueModel<? extends TransientMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
+		// NOP
 	}
 }

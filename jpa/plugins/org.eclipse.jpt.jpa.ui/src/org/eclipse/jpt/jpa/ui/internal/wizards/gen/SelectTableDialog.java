@@ -12,13 +12,12 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
@@ -31,7 +30,7 @@ public class SelectTableDialog extends ElementListSelectionDialog {
 	public SelectTableDialog(Shell shell, final ResourceManager resourceManager){
 		super(shell, new ILabelProvider(){
 			public Image getImage(Object element) {
-				return ImageRepository.getTableImage(resourceManager);
+				return resourceManager.createImage(JptJpaUiImages.ENTITY_GEN_TABLE);
 			}
 
 			public String getText(Object element) {

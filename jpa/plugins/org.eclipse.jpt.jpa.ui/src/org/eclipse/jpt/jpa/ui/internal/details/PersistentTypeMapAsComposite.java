@@ -23,16 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 public class PersistentTypeMapAsComposite
 	extends MapAsComposite<PersistentType>
 {
-	/**
-	 * Creates a new <code>PersistentTypeMapAsComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
-	public PersistentTypeMapAsComposite(
-			Pane<? extends PersistentType> parentPane,
-	        Composite parent) {
-		
+	public PersistentTypeMapAsComposite(Pane<? extends PersistentType> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 	
@@ -116,5 +107,4 @@ public class PersistentTypeMapAsComposite
 			updateDescription();
 		}
 	}
-
 }

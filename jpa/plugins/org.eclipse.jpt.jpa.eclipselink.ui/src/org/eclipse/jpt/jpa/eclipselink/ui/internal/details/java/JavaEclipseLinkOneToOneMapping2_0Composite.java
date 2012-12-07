@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -39,12 +40,12 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite
 	extends AbstractOneToOneMapping2_0Composite<JavaOneToOneMapping, JavaOneToOneRelationship2_0>
 {
 	public JavaEclipseLinkOneToOneMapping2_0Composite(
-			PropertyValueModel<? extends JavaOneToOneMapping> subjectHolder,
+			PropertyValueModel<? extends JavaOneToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override

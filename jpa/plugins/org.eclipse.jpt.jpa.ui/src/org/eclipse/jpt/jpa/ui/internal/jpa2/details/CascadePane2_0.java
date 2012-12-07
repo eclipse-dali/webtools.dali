@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
@@ -25,19 +24,11 @@ public class CascadePane2_0
 	extends CascadeComposite
 {
 	public CascadePane2_0(
-			Pane<? extends RelationshipMapping> parentPane,
-	        PropertyValueModel<? extends Cascade> subjectHolder,
-	        Composite parent) {
-		
-		super(parentPane, subjectHolder, parent);
-	}
-	
-	public CascadePane2_0(
-			PropertyValueModel<? extends Cascade> subjectHolder,
-			Composite parent,
-		    WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+		Pane<? extends RelationshipMapping> parentPane,
+		PropertyValueModel<? extends Cascade> cascadeModel,
+		Composite parent
+	) {
+		super(parentPane, cascadeModel, parent);
 	}
 	
 	@Override

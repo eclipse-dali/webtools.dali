@@ -10,18 +10,15 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * @version 3.3
- * @since 2.0
- */
 public class PersistenceUnitPropertiesEditorPageDefinition
 	extends PersistenceUnitEditorPageDefinition
 {
@@ -44,12 +41,12 @@ public class PersistenceUnitPropertiesEditorPageDefinition
 		super();
 	}
 
-	public String getPageText() {
-		return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties;
+	public ImageDescriptor getTitleImageDescriptor() {
+		return null;
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
+	public String getTitleText() {
+		return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties;
 	}
 
 	public String getHelpID() {
@@ -57,7 +54,7 @@ public class PersistenceUnitPropertiesEditorPageDefinition
 	}
 
 	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new PersistenceUnitPropertiesEditorPage(this.buildPersistenceUnitModel(jpaRootStructureNodeModel), parent, widgetFactory);
+	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new PersistenceUnitPropertiesEditorPage(persistenceUnitModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

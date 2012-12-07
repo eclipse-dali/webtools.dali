@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -25,64 +26,17 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TargetEntityComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoiningStrategyComposite                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OrderingComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see OneToManyMapping
- * @see CascadeComposite
- * @see FetchTypeComboViewer
- * @see JoinTableComposite
- * @see OrderingComposite
- * @see TargetEntityClassChooser
- *
- * @version 2.3
- * @since 1.0
- */
 public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMapping, R extends OneToManyRelationship> 
 	extends Pane<T>
 	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>OneToManyMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IOneToManyMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected AbstractOneToManyMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	protected AbstractOneToManyMappingComposite(
+			PropertyValueModel<? extends T> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -131,8 +85,8 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 		return new TransformationPropertyValueModel<T, R>(getSubjectHolder()) {
 			@SuppressWarnings("unchecked")
 			@Override
-			protected R transform_(T value) {
-				return (R) value.getRelationship();
+			protected R transform_(T mapping) {
+				return (R) mapping.getRelationship();
 			}
 		};
 	}	
@@ -140,8 +94,8 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
 			@Override
-			protected Cascade transform_(T value) {
-				return value.getCascade();
+			protected Cascade transform_(T mapping) {
+				return mapping.getCascade();
 			}
 		};
 	}

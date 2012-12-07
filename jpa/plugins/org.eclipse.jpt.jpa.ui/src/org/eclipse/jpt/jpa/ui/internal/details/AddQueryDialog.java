@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -18,22 +19,16 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Clients can use this dialog to prompt the user for SecondaryTable settings.
- * Use the following once the dialog is closed:
- *     @see #getSelectedTable()
- *     @see #getSelectedCatalog()
- *     @see #getSelectedSchema()
- * @version 2.1
- * @since 2.1
- */
-public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
+public class AddQueryDialog
+	extends ValidatingDialog<AddQueryStateObject>
+{
 	public static final String NAMED_QUERY = "namedQuery"; //$NON-NLS-1$
 	public static final String NAMED_NATIVE_QUERY = "namedNativeQuery"; //$NON-NLS-1$
 
@@ -42,33 +37,15 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 	 */
 	private PersistenceUnit pUnit;
 
-	// ********** constructors **********
 
-	/**
-	 * Use this constructor to edit an existing conversion value
-	 * @param pUnit 
-	 */
-	public AddQueryDialog(Shell parent, PersistenceUnit pUnit) {
-		super(parent);
+	public AddQueryDialog(Shell parentShell, ResourceManager resourceManager, PersistenceUnit pUnit) {
+		super(parentShell, resourceManager, JptUiDetailsMessages.AddQueryDialog_title);
 		this.pUnit = pUnit;
 	}
 
 	@Override
 	protected AddQueryStateObject buildStateObject() {
 		return new AddQueryStateObject(this.pUnit);
-	}
-
-	// ********** open **********
-
-	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(this.getTitle());
-	}
-
-	@Override
-	protected String getTitle() {
-		return JptUiDetailsMessages.AddQueryDialog_title;
 	}
 
 	@Override
@@ -83,7 +60,7 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 	
 	@Override
 	protected DialogPane<AddQueryStateObject> buildLayout(Composite container) {
-		return new QueryDialogPane(container);
+		return new QueryDialogPane(this.getSubjectHolder(), container, this.resourceManager);
 	}
 	
 	@Override
@@ -113,12 +90,17 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 		return getSubject().getQueryType();
 	}
 	
-	private class QueryDialogPane extends DialogPane<AddQueryStateObject> {
 
+	static class QueryDialogPane
+		extends DialogPane<AddQueryStateObject>
+	{
 		private Text nameText;
 
-		QueryDialogPane(Composite parent) {
-			super(AddQueryDialog.this.getSubjectHolder(), parent);
+		QueryDialogPane(
+				PropertyValueModel<AddQueryStateObject> subjectModel,
+				Composite parentComposite,
+				ResourceManager resourceManager) {
+			super(subjectModel, parentComposite, resourceManager);
 		}
 
 		@Override
@@ -129,10 +111,7 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 		@Override
 		protected void initializeLayout(Composite container) {
 			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_name);
-			this.nameText = addText(
-				container,
-				buildNameHolder()
-			);
+			this.nameText = addText(container, this.buildNameHolder());
 			
 			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_queryType);
 			this.addCombo(

@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 
 public abstract class AbstractIdMappingUiDefinition<M, T extends IdMapping>
@@ -34,7 +35,7 @@ public abstract class AbstractIdMappingUiDefinition<M, T extends IdMapping>
 	}
 	
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.ID;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.ID;
 	}
 }

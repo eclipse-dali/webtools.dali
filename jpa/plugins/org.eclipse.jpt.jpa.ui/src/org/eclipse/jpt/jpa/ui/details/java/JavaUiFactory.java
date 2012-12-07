@@ -3,12 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
@@ -24,252 +25,113 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Use {@link JavaUiFactory} to create any java JPA composites
+ * Use a Java UI factory to create any Java JPA composites.
  * <p>
  * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
  * It is available at this early stage to solicit feedback from pioneering
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
- *
- *
+ * 
  * @version 3.0
  * @since 3.0
  */
-public interface JavaUiFactory
-{	
-	
-	// **************** java type mapping composites ***************************
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaMappedSuperclass</code>.
-	 *
-	 * @param subjectHolder The holder of the mapped superclass
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createJavaMappedSuperclassComposite(
-		PropertyValueModel<JavaMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>JavaEntity</code>.
-	 *
-	 * @param subjectHolder The holder of the java entity
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createJavaEntityComposite(
-		PropertyValueModel<JavaEntity> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaEmbeddable</code>.
-	 *
-	 * @param subjectHolder The holder of the embeddable
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createJavaEmbeddableComposite(
-		PropertyValueModel<JavaEmbeddable> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	
-	// **************** orm type mapping composites ****************************
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>OrmMappedSuperclass</code>.
-	 *
-	 * @param subjectHolder The holder of the mapped superclass
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createOrmMappedSuperclassComposite(
-		PropertyValueModel<OrmMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>OrmEntity</code>.
-	 *
-	 * @param subjectHolder The holder of the orm entity
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createOrmEntityComposite(
-		PropertyValueModel<OrmEntity> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
+public interface JavaUiFactory {
 
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>OrmEmbeddable</code>.
-	 *
-	 * @param subjectHolder The holder of the embeddable
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createOrmEmbeddableComposite(
-		PropertyValueModel<OrmEmbeddable> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	
-	// **************** java attribute mapping composites **********************
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaIdMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the ID mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+	// ********** type mappings **********
+
+	JpaComposite createJavaMappedSuperclassComposite(
+		PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
+	JpaComposite createJavaEntityComposite(
+		PropertyValueModel<JavaEntity> entityModel,
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
+	JpaComposite createJavaEmbeddableComposite(
+		PropertyValueModel<JavaEmbeddable> embeddableModel,
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
+
+	// ********** attribute mappings **********
+
 	JpaComposite createJavaIdMappingComposite(
-		PropertyValueModel<JavaIdMapping> subjectHolder,
+		PropertyValueModel<JavaIdMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaEmbeddedIdMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the embedded ID mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaEmbeddedIdMappingComposite(
-		PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder,
+		PropertyValueModel<JavaEmbeddedIdMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaBasicMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the basic mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaBasicMappingComposite(
-		PropertyValueModel<JavaBasicMapping> subjectHolder,
+		PropertyValueModel<JavaBasicMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaVersionMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the version mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaVersionMappingComposite(
-		PropertyValueModel<JavaVersionMapping> subjectHolder,
+		PropertyValueModel<JavaVersionMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaManyToOneMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the many to one mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaManyToOneMappingComposite(
-		PropertyValueModel<JavaManyToOneMapping> subjectHolder,
+		PropertyValueModel<JavaManyToOneMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaOneToManyMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the one to many mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaOneToManyMappingComposite(
-		PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+		PropertyValueModel<JavaOneToManyMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaOneToOneMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the one to one mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaOneToOneMappingComposite(
-		PropertyValueModel<JavaOneToOneMapping> subjectHolder,
+		PropertyValueModel<JavaOneToOneMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaManyToManyMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the many to many mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaManyToManyMappingComposite(
-		PropertyValueModel<JavaManyToManyMapping> subjectHolder,
+		PropertyValueModel<JavaManyToManyMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaEmbeddedMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the embedded mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaEmbeddedMappingComposite(
-		PropertyValueModel<JavaEmbeddedMapping> subjectHolder,
+		PropertyValueModel<JavaEmbeddedMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaTransientMapping</code>.
-	 *
-	 * @param subjectHolder The holder of the transient mapping
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
+
 	JpaComposite createJavaTransientMappingComposite(
-		PropertyValueModel<JavaTransientMapping> subjectHolder,
+		PropertyValueModel<JavaTransientMapping> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
 }

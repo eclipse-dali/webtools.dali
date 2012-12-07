@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Collection;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -35,14 +35,15 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EclipseLinkPersistenceUnitConnectionEditorPage
-	extends Pane<Connection> {
-
+	extends Pane<Connection>
+{
 	public EclipseLinkPersistenceUnitConnectionEditorPage(
-			PropertyValueModel<Connection> subjectHolder,
-            Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+		PropertyValueModel<Connection> connectionModel,
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager
+	) {
+		super(connectionModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		);
 		IntegerCombo<?> combo = addCacheStatementsSizeCombo(client);
 
-		this.installControlEnabler(cacheStatementsHolder, combo);
+		this.controlEnabledState(cacheStatementsHolder, combo.getControl());
 
 
 		TriStateCheckBox nativeSqlCheckBox = this.addTriStateCheckBoxWithDefault(
@@ -341,9 +342,5 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 				};
 			}
 		};
-	}
-
-	private void installControlEnabler(ModifiablePropertyValueModel<Boolean> cacheStatementsHolder, IntegerCombo<?> combo) {
-		SWTTools.controlEnabledState(cacheStatementsHolder, combo.getControl());
 	}
 }

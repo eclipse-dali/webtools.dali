@@ -9,25 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
-import org.eclipse.jpt.jaxb.eclipselink.ui.internal.plugin.JptJaxbEclipseLinkUiPlugin;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 public class OxmJavaTypeItemLabelProvider
-		extends AbstractItemExtendedLabelProvider<OxmJavaType> {
-	
-	public OxmJavaTypeItemLabelProvider(OxmJavaType oxmJavaType, ItemLabelProvider.Manager manager) {
+	extends AbstractItemExtendedLabelProvider<OxmJavaType>
+{
+	public OxmJavaTypeItemLabelProvider(OxmJavaType oxmJavaType, ItemExtendedLabelProvider.Manager manager) {
 		super(oxmJavaType, manager);
 	}
-	
+
 	@Override
-	public Image getImage() {
-		return JptJaxbEclipseLinkUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_CLASS);
+	protected ImageDescriptor getImageDescriptor() {
+		return JptJaxbUiImages.JAXB_CLASS;
 	}
 	
 	@Override

@@ -37,179 +37,136 @@ import org.eclipse.ui.forms.widgets.Section;
  * @since 2.0
  */
 public interface WidgetFactory {
-
 	/**
-	 * Creates a new regular button.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @return A new <code>Button</code>
+	 * Create a new regular button with the specified parent and text.
+	 * @see #createCheckBox(Composite, String)
+	 * @see #createPushButton(Composite, String)
+	 * @see #createRadioButton(Composite, String)
 	 */
 	Button createButton(Composite parent, String text);
 
 	/**
-	 * Creates a new check box button.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @return A new <code>Button</code>
+	 * Create a new check box with the specified parent and text.
+	 * @see #createButton(Composite, String)
+	 * @see #createPushButton(Composite, String)
+	 * @see #createRadioButton(Composite, String)
 	 */
 	Button createCheckBox(Composite parent, String text);
 
 	/**
-	 * Creates a new non-editable <code>Combo</code>.
-	 *
-	 * @param parent The parent container
-	 * @return A new <code>Combo</code>
+	 * Create a new drop-down list box with the specified parent.
 	 */
 	Combo createCombo(Composite parent);
 
 	/**
-	 * Creates a new container.
-	 *
-	 * @param parent The parent container
-	 * @return A new <code>Composite</code>
+	 * Create a new composite with the specified parent.
 	 */
 	Composite createComposite(Composite parent);
 
 	/**
-	 * Creates a new DateTime.
-	 *
-	 * @param container The parent container
-	 * @param style The style is to tell the type of widget
-	 * (<code>SWT.DATE</code> or <code>SWT.TIME</code> or <code>SWT.CALENDAR</code>)
-	 * @return A new <code>DateTime</code>
+	 * Create a new date time widget with the specified parent and style.
+	 * @see org.eclipse.swt.SWT#DATE
+	 * @see org.eclipse.swt.SWT#TIME
+	 * @see org.eclipse.swt.SWT#CALENDAR
 	 */
 	DateTime createDateTime(Composite parent, int style);
 
 	/**
-	 * Creates a new editable <code>Combo</code>.
-	 *
-	 * @param parent The parent container
-	 * @return A new <code>Combo</code>
+	 * Create a new combo-box with the specified parent.
 	 */
 	Combo createEditableCombo(Composite parent);
 
 	/**
-	 * Creates a new titled pane (group box).
-	 *
-	 * @param parent The parent container
-	 * @param title The group pane's title
-	 * @return A new <code>Group</code>
+	 * Create a new group box with the specified parent and title.
 	 */
 	Group createGroup(Composite parent, String title);
 
 	/**
-	 * Creates a new label that is shown as a hyperlink.
-	 *
-	 * @param parent The parent container
-	 * @param text The label's text
-	 * @return A new <code>Hyperlink</code>
+	 * Create a new hyperlink label with the specified parent and
+	 * text.
 	 */
 	Hyperlink createHyperlink(Composite parent, String text);
 
 	/**
-	 * Creates a new label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The label's text
-	 * @return A new <code>Label</code>
+	 * Create a new label with the specified parent and text.
 	 */
-	Label createLabel(Composite container, String labelText);
+	Label createLabel(Composite parent, String text);
 
 	/**
-	 * Creates a new list.
-	 *
-	 * @param container The parent container
-	 * @param style The style is usually to tell what type of selection
-	 * (<code>SWT.MULTI</code> or <code>SWT.SINGLE</code>)
-	 * @return A new <code>Label</code>
+	 * Create a new list box with the specified parent and style.
+	 * @see org.eclipse.swt.SWT#MULTI
+	 * @see org.eclipse.swt.SWT#SINGLE
 	 */
-	List createList(Composite container, int style);
+	List createList(Composite parent, int style);
 
 	/**
-	 * Creates a new editable text area.
-	 *
-	 * @param parent The parent container
-	 * @param parent The number of lines the text area should display
-	 * @return A new <code>Text</code>
+	 * Create a new editable multi-line text field with the specified parent.
 	 */
 	Text createMultiLineText(Composite parent);
 
 	/**
-	 * Creates a new editable text field that handles password.
-	 *
-	 * @param container The parent container
-	 * @return A new <code>Text</code>
+	 * Create a new editable password text field with the specified parent.
 	 */
-	Text createPasswordText(Composite container);
+	Text createPasswordText(Composite parent);
 
 	/**
-	 * Creates a new push button (toggle between selected and unselected).
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @return A new <code>Button</code>
+	 * Create a new push button (i.e. a button that toggles between
+	 * <em>selected</em> and <em>unselected</em>) with the specified parent and
+	 * text.
+	 * @see #createButton(Composite, String)
+	 * @see #createCheckBox(Composite, String)
+	 * @see #createRadioButton(Composite, String)
 	 */
 	Button createPushButton(Composite parent, String text);
 
 	/**
-	 * Creates a new radio button.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @return A new <code>Button</code>
+	 * Create a new radio button with the specified parent and text.
+	 * @see #createButton(Composite, String)
+	 * @see #createCheckBox(Composite, String)
+	 * @see #createPushButton(Composite, String)
 	 */
 	Button createRadioButton(Composite parent, String text);
 
 	/**
-	 * Creates a new section, which is a collapsable pane with a title bar.
-	 *
-	 * @param parent The parent container
-	 * @param style The style of the title bar, which can be
-	 * <code>ExpandableComposite.TWISTIE</code> and
-	 * <code>ExpandableComposite.TITLE_BAR</code> and
-	 * <code>ExpandableComposite.EXPANDED</code>
-	 * @return A new <code>Section</code>
+	 * Create a new section (i.e. a collapsible group box) with the specified
+	 * parent and expansion style.
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#TWISTIE
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#TREE_NODE
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#FOCUS_TITLE
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#CLIENT_INDENT
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#COMPACT
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#EXPANDED
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#TITLE_BAR
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#SHORT_TITLE_BAR
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#NO_TITLE
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#LEFT_TEXT_CLIENT_ALIGNMENT
+	 * @see org.eclipse.ui.forms.widgets.ExpandableComposite#NO_TITLE_FOCUS_BOX
+	 * @see org.eclipse.ui.forms.widgets.Section#DESCRIPTION
 	 */
-	Section createSection(Composite parent, int style);
+	Section createSection(Composite parent, int expansionStyle);
 
 	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @return A new <code>Spinner</code>
+	 * Create a new spinner with the specified parent.
 	 */
 	Spinner createSpinner(Composite parent);
 
 	/**
-	 * Creates a new table.
-	 *
-	 * @param container The parent container
-	 * @param style The style to apply to the table
-	 * @return A new <code>Table</code>
+	 * Create a new table with the specified parent.
 	 */
 	Table createTable(Composite parent, int style);
 
 	/**
-	 * Creates a new editable text field.
-	 *
-	 * @param container The parent container
-	 * @return A new <code>Text</code>
+	 * Create a new editable text field with the specified parent.
 	 */
 	Text createText(Composite parent);
 
 	/**
-	 * Creates a new tri-state check box.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @return A new <code>Button</code> that has 3 selection states
+	 * Create a new tri-state check box with the specified parent and text.
 	 */
 	Button createTriStateCheckBox(Composite parent, String text);
 
 	/**
-	 * Dispose of the widget factory
+	 * Dispose the widget factory.
 	 */
 	void dispose();
 }

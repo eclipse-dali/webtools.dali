@@ -141,7 +141,7 @@
 		name="%JpaProposalCategory">
 
 		<proposalCategory
-			icon="$nl$/icons/full/eview16/jpa_perspective.gif">
+			icon="$nl$/images/views/jpa-perspective.gif">
 			<enablement>
 				<with variable="project">
 					<adapt type="org.eclipse.core.resources.IProject">
@@ -188,7 +188,7 @@
        id="org.eclipse.jpt.jpa.ui.xml.jpaCompletionProposal">
 
 		<proposalCategory 
-	           icon="$nl$/icons/full/eview16/jpa_perspective.gif"
+	           icon="$nl$/images/views/jpa-perspective.gif"
 	           id="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	           name="%JpaProposalCategory">
 		</proposalCategory>
@@ -246,8 +246,8 @@
 			label="%JptCreationActionSet.label">
 			<action
 				class="org.eclipse.jpt.jpa.ui.internal.wizards.NewEntityDropDownAction"
-				disabledIcon="icons/full/etool16/new_entity_wiz.gif"
-				icon="icons/full/etool16/new_entity_wiz.gif"
+				disabledIcon="$nl$/images/buttons/new-entity-disabled.gif"
+				icon="$nl$/images/buttons/new-entity.gif"
 				id="org.eclipse.jpt.jpa.ui.NewEntityAction"
 				label="%NewEntityAction.label"
 				style="pulldown"
@@ -352,7 +352,7 @@
 		<editor
 			class="org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditor"
 			contributorClass="org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditorContributor"
-			icon="$nl$/icons/full/obj16/jpa-file.gif"
+			icon="$nl$/images/objects/jpa-file.gif"
 			id="org.eclipse.jpt.jpa.ui.internal.editors.PersistenceEditor"
 			name="%persistenceEditor">
       		<contentTypeBinding contentTypeId="org.eclipse.jpt.jpa.core.content.persistence"/>
@@ -700,7 +700,7 @@
 				id="org.eclipse.jpt.jpa.ui.persistentTypeMapAs"
 				label="%mapAs"
 				mnemonic="%mapAsMnemonic"
-				icon="$nl$/icons/full/eview16/jpa_perspective.gif">
+				icon="$nl$/images/views/jpa-perspective.gif">
 				<visibleWhen>
 					<iterate ifEmpty="false">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.PersistentType"/>
@@ -716,7 +716,7 @@
 				id="org.eclipse.jpt.jpa.ui.persistentAttributeMapAs"
 				label="%mapAs"
 				mnemonic="%mapAsMnemonic"
-				icon="$nl$/icons/full/eview16/jpa_perspective.gif">
+				icon="$nl$/images/views/jpa-perspective.gif">
 				<visibleWhen>
 					<iterate ifEmpty="false">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
@@ -759,7 +759,7 @@
 			name="%jpaNavigatorContent" 
 			priority="higher"
 			appearsBefore="org.eclipse.jst.servlet.ui.EnhancedJavaRendering"
-			icon="icons/full/obj16/jpa-content.gif"
+			icon="$nl$/images/objects/jpa-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorContentProvider"
 			labelProvider="org.eclipse.jpt.common.ui.internal.jface.NavigatorLabelProvider">
@@ -858,7 +858,7 @@
 		<wizard
 			id="org.eclipse.jpt.jpa.ui.wizard.newJpaProject"
 			name="%newJpaProjectWizardName"
-			icon="icons/full/etool16/new_jpaproject_wiz.gif"
+			icon="$nl$/images/buttons/new-jpa-file.gif"
 			category="org.eclipse.jpt.jpa"
 			project="true"
 			finalPerspective="org.eclipse.jpt.ui.jpaPerspective">
@@ -871,7 +871,7 @@
 		<wizard
             id="org.eclipse.jpt.jpa.ui.wizard.newEntity"
 			name="%newJpaEntityWizardName"
-			icon="icons/full/etool16/new_entity_wiz.gif"
+			icon="$nl$/images/buttons/new-entity.gif"
 			category="org.eclipse.jpt.jpa">
 			<description>%newJpaEntityWizardDesc</description>
 			<class class="org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizard"> 
@@ -884,7 +884,7 @@
 		<wizard
 			category="org.eclipse.jpt.jpa"
 			class="org.eclipse.jpt.jpa.ui.internal.wizards.gen.GenerateEntitiesFromSchemaWizard"
-			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/icons/full/etool16/new_entity_wiz.gif"
+			icon="$nl$/images/buttons/new-entity.gif"
 			id="org.eclipse.jpt.jpa.ui.wizard.newEntitiesFromTables"
 			name="%newJpaEntityFromTableWizardName">
 			<description>%newJpaEntityFromTableWizardDesc</description>
@@ -894,7 +894,7 @@
 		<wizard
             id="org.eclipse.jpt.jpa.ui.wizard.newMappingFile"
 			name="%newJpaMappingFileWizardName"
-			icon="icons/full/etool16/new_jpa_file_wiz.gif"
+			icon="$nl$/images/buttons/new-jpa-file.gif"
 			category="org.eclipse.jpt.jpa">
 			<description>%newJpaMappingFileWizardDesc</description>
 			<class class="org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard"> 
@@ -913,9 +913,9 @@
 		point="org.eclipse.ui.perspectives">
 		
 		<perspective
-			class="org.eclipse.jpt.jpa.ui.internal.perspective.JpaPerspectiveFactory"
-			icon="icons/full/eview16/jpa_perspective.gif"
 			id="org.eclipse.jpt.ui.jpaPerspective"
+			class="org.eclipse.jpt.jpa.ui.internal.perspective.JpaPerspectiveFactory"
+			icon="$nl$/images/views/jpa-perspective.gif"
 			name="%jpaPerspective">
 			<description>%jpaPerspectiveDescription</description>
 		</perspective>
@@ -1144,14 +1144,14 @@
 	        id="org.eclipse.jpt.ui.jpaStructureView"
 	        category="org.eclipse.jpt.jpa.ui"
 	        class="org.eclipse.jpt.jpa.ui.internal.views.JpaStructureView"
-	        icon="icons/full/eview16/jpa_structure.gif"
+	        icon="$nl$/images/views/jpa-structure.gif"
 	        name="%jpaStructure"/>
 			
 		<view
 			id="org.eclipse.jpt.ui.jpaDetailsView"
 			category="org.eclipse.jpt.jpa.ui"
 	        class="org.eclipse.jpt.jpa.ui.internal.views.JpaDetailsView"
-	        icon="icons/full/eview16/jpa_details.gif"
+	        icon="$nl$/images/views/jpa-details.gif"
 			name="%jpaDetails"/>
 		
 	</extension>	
@@ -1160,7 +1160,7 @@
 	<!-- ***** WTP facet framework ***** -->
 
 	<extension point="org.eclipse.wst.common.project.facet.ui.images">
-		<image facet="jpt.jpa" path="icons/full/etool16/jpa_facet.gif"/>
+		<image facet="jpt.jpa" path="$nl$/images/jpa-facet.gif"/>
 	</extension>
 	
 	

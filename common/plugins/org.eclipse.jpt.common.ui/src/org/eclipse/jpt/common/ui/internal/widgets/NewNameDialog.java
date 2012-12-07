@@ -10,20 +10,17 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.Collection;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * The dialog used to requests a name from the user.
- *
- * @version 2.0
- * @since 2.0
- */
-public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
+public class NewNameDialog
+	extends ValidatingDialog<NewNameStateObject>
 {
 	private String description;
 	private Image descriptionImage;
@@ -32,29 +29,18 @@ public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
 	private String name;
 	private Collection<String> names;
 
-	/**
-	 * Creates a new <code>NewNameDialog</code>.
-	 *
-	 * @param parentShell
-	 * @param dialogTitle
-	 * @param descriptionTitle
-	 * @param descriptionImage
-	 * @param description
-	 * @param labelText
-	 * @param name
-	 * @param names
-	 */
-	NewNameDialog(Shell parentShell,
-	              String dialogTitle,
-	              String descriptionTitle,
-	              Image descriptionImage,
-	              String description,
-	              String labelText,
-	              String name,
-	              Collection<String> names)
-	{
-		super(parentShell, dialogTitle);
 
+	NewNameDialog(
+			Shell parentShell,
+			String dialogTitle,
+			String descriptionTitle,
+			Image descriptionImage,
+			String description,
+			String labelText,
+			String name,
+			Collection<String> names,
+			ResourceManager resourceManager) {
+		super(parentShell, resourceManager, dialogTitle);
 		this.name             = name;
 		this.names            = names;
 		this.labelText        = labelText;
@@ -63,87 +49,64 @@ public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
 		this.descriptionTitle = descriptionTitle;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected DialogPane<NewNameStateObject> buildLayout(Composite container) {
-		return new NewNameDialogPane(container);
+		return new NewNameDialogPane(this.labelText, this.getSubjectHolder(), container, this.resourceManager);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected NewNameStateObject buildStateObject() {
-		return new NewNameStateObject(name, names);
+		return new NewNameStateObject(this.name, this.names);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void create() {
 		super.create();
-
-		NewNameDialogPane pane = (NewNameDialogPane) getPane();
-		pane.selectAll();
-
-		getButton(OK).setEnabled(false);
+		this.getPane().selectAll();
+		this.getButton(OK).setEnabled(false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	@Override
+	protected NewNameDialogPane getPane() {
+		return (NewNameDialogPane) super.getPane();
+	}
+
 	@Override
 	protected String getDescription() {
-		return description;
+		return this.description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Image getDescriptionImage() {
-		return descriptionImage;
+		return this.descriptionImage;
 	}
 
-	/* (non-Javadoc)
-	 */
 	@Override
 	protected String getDescriptionTitle() {
-		return descriptionTitle;
+		return this.descriptionTitle;
 	}
 
 	/**
-	 * Returns the text field's input, which is the new name the user entered.
-	 *
-	 * @return The name the user entered
+	 * Return the text field's input, which is the new name the user entered.
 	 */
 	public String getName() {
-		return getSubject().getName();
+		return this.getSubject().getName();
 	}
 
-	private class NewNameDialogPane extends DialogPane<NewNameStateObject> {
 
+	static class NewNameDialogPane
+		extends DialogPane<NewNameStateObject>
+	{
+		private final String labelText;
 		private Text text;
 
-		NewNameDialogPane(Composite parent) {
-			super(NewNameDialog.this.getSubjectHolder(), parent);
-		}
-
-		private ModifiablePropertyValueModel<String> buildNameHolder() {
-			return new PropertyAspectAdapter<NewNameStateObject, String>(getSubjectHolder(), NewNameStateObject.NAME_PROPERTY) {
-				@Override
-				protected String buildValue_() {
-					return subject.getName();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setName(value);
-				}
-			};
+		NewNameDialogPane(
+				String labelText,
+				PropertyValueModel<NewNameStateObject> subjectModel,
+				Composite parentComposite,
+				ResourceManager resourceManager) {
+			super(subjectModel, parentComposite, resourceManager);
+			this.labelText = labelText;
 		}
 
 		@Override
@@ -153,12 +116,26 @@ public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.addLabel(container, labelText);
-			this.addText(container, buildNameHolder());
+			this.addLabel(container, this.labelText);
+			this.text = this.addText(container, this.buildNameModel());
+		}
+
+		private ModifiablePropertyValueModel<String> buildNameModel() {
+			return new PropertyAspectAdapter<NewNameStateObject, String>(getSubjectHolder(), NewNameStateObject.NAME_PROPERTY) {
+				@Override
+				protected String buildValue_() {
+					return this.subject.getName();
+				}
+
+				@Override
+				protected void setValue_(String value) {
+					this.subject.setName(value);
+				}
+			};
 		}
 
 		void selectAll() {
-			text.selectAll();
+			this.text.selectAll();
 		}
 	}
 }

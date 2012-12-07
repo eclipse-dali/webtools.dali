@@ -14,6 +14,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -105,11 +107,19 @@ public class JpaStructurePage
 	 */
 	private final ISelectionChangedListener treePostSelectionListener = new TreePostSelectionChangedListener();
 
+	/**
+	 * Resource manager passed to tree state provider.
+	 */
+	private final ResourceManager resourceManager;
 
-	public JpaStructurePage(JpaStructureView structureView, JpaEditorManager editorManager) {
+
+	public JpaStructurePage(JpaStructureView structureView, JpaEditorManager editorManager, ResourceManager resourceManager) {
 		super();
 		this.structureView = structureView;
 		this.editorManager = editorManager;
+		// we build a local resource manager because these pages come and go
+		// with their corresponding editors
+		this.resourceManager = new LocalResourceManager(resourceManager);
 	}
 
 	@Override
@@ -139,6 +149,7 @@ public class JpaStructurePage
 
 	@Override
 	public void dispose() {
+		this.resourceManager.dispose();
 		this.disengageListeners();
 		super.dispose();
 	}
@@ -275,7 +286,8 @@ public class JpaStructurePage
 	private TreeStateProvider buildStateProvider(ItemTreeStateProviderFactoryProvider factoryProvider) {
 		return new ItemTreeStateProviderManager(
 				factoryProvider.getItemContentProviderFactory(),
-				factoryProvider.getItemLabelProviderFactory()
+				factoryProvider.getItemLabelProviderFactory(),
+				this.resourceManager
 			);
 	}
 

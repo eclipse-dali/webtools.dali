@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -30,21 +31,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMappingComposite<BasicMapping>
+public class OrmEclipseLinkBasicMapping1_1Composite
+	extends EclipseLinkBasicMappingComposite<BasicMapping>
 {
-	/**
-	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>BasicMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmEclipseLinkBasicMapping1_1Composite(PropertyValueModel<? extends BasicMapping> subjectHolder,
-												PropertyValueModel<Boolean> enabledModel,
-												Composite parent,
-												WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public OrmEclipseLinkBasicMapping1_1Composite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

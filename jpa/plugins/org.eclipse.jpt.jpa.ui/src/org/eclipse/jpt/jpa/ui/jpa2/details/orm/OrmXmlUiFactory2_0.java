@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
@@ -17,7 +18,8 @@ import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Use {@link OrmXmlUiFactory2_0} to create any ORM JPA composites
+ * Use an <code>orm.xml</code> UI factory to create any <code>orm.xml</code>
+ * JPA composites.
  * <p>
  * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
@@ -25,18 +27,16 @@ import org.eclipse.swt.widgets.Composite;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.jpa.ui.internal.BaseJpaUiFactory
- *
  * @version 3.0
  * @since 3.0
  */
-public interface OrmXmlUiFactory2_0 extends OrmXmlUiFactory
+public interface OrmXmlUiFactory2_0
+	extends OrmXmlUiFactory
 {
-	
 	JpaComposite createOrmElementCollectionMapping2_0Composite(
-		PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
+		PropertyValueModel<OrmElementCollectionMapping2_0> mappingModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory);
-
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager);
 }

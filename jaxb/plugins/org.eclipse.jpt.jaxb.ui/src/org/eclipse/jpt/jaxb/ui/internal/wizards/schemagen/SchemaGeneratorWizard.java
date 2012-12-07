@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.core.internal.operations.SchemaFileCreationDataModelProvider;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -66,7 +66,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 	public SchemaGeneratorWizard() {
 		super();
 		setWindowTitle(JptJaxbUiMessages.SchemaGeneratorWizard_title);
-		setDefaultPageImageDescriptor(JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.SCHEMA_GEN_WIZ_BANNER));
+		setDefaultPageImageDescriptor(JptJaxbUiImages.SCHEMA_GEN_BANNER);
 	}
 	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {

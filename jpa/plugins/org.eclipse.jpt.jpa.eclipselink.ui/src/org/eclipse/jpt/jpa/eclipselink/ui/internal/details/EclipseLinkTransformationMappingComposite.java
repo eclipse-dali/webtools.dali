@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -16,31 +17,21 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTransformationMap
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- *
- * @version 2.1
- * @since 2.1
- */
-public class EclipseLinkTransformationMappingComposite extends Pane<EclipseLinkTransformationMapping>
-                                       implements JpaComposite
+public class EclipseLinkTransformationMappingComposite
+	extends Pane<EclipseLinkTransformationMapping>
+	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>EclipseLinkBasicCollectionMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IManyToOneMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public EclipseLinkTransformationMappingComposite(PropertyValueModel<? extends EclipseLinkTransformationMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public EclipseLinkTransformationMappingComposite(
+			PropertyValueModel<? extends EclipseLinkTransformationMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
+		// NOP
 	}
 }

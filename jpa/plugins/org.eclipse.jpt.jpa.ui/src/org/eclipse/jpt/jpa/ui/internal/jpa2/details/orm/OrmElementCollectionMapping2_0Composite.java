@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -32,19 +33,13 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 public class OrmElementCollectionMapping2_0Composite
 	extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
 {
-	/**
-	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>BasicMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmElementCollectionMapping2_0Composite(PropertyValueModel<? extends ElementCollectionMapping2_0> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public OrmElementCollectionMapping2_0Composite(
+			PropertyValueModel<? extends ElementCollectionMapping2_0> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

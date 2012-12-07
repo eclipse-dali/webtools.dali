@@ -10,10 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
@@ -43,12 +45,12 @@ public class PersistenceUnitConnection2_0EditorPageDefinition
 		super();
 	}
 
-	public String getPageText() {
-		return JptUiPersistence2_0Messages.GenericPersistenceUnit2_0ConnectionTab_title;
+	public ImageDescriptor getTitleImageDescriptor() {
+		return null;
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
+	public String getTitleText() {
+		return JptUiPersistence2_0Messages.GenericPersistenceUnit2_0ConnectionTab_title;
 	}
 
 	public String getHelpID() {
@@ -56,16 +58,22 @@ public class PersistenceUnitConnection2_0EditorPageDefinition
 	}
 
 	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new PersistenceUnitConnection2_0EditorPage(this.buildJpaConnection2_0Model(jpaRootStructureNodeModel), parent, widgetFactory);
+	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new PersistenceUnitConnection2_0EditorPage(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
-	protected PropertyValueModel<JpaConnection2_0> buildJpaConnection2_0Model(PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, JpaConnection2_0>(this.buildPersistenceUnitModel(jpaRootStructureNodeModel)) {
-			@Override
-			protected JpaConnection2_0 transform_(PersistenceUnit value) {
-				return (JpaConnection2_0) ((PersistenceUnit2_0) value).getConnection();
-			}
-		};
+	public static PropertyValueModel<JpaConnection2_0> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, JpaConnection2_0>(persistenceUnitModel, CONNECTION_TRANSFORMER);
+	}
+
+	public static final Transformer<PersistenceUnit, JpaConnection2_0> CONNECTION_TRANSFORMER = new ConnectionTransformer();
+
+	public static class ConnectionTransformer
+		extends AbstractTransformer<PersistenceUnit, JpaConnection2_0>
+	{
+		@Override
+		protected JpaConnection2_0 transform_(PersistenceUnit persistenceUnit) {
+			return (JpaConnection2_0) ((PersistenceUnit2_0) persistenceUnit).getConnection();
+		}
 	}
 }

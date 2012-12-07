@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -43,16 +42,16 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringMatcher;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -140,9 +139,14 @@ public class TablesSelectorWizardPage extends WizardPage {
 
     @Override
     public final void performHelp() {
-    	this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID);
+    	this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
     }
     
+	@Override
+	public GenerateEntitiesFromSchemaWizard getWizard() {
+		return (GenerateEntitiesFromSchemaWizard) super.getWizard();
+	}
+
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
@@ -406,7 +410,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private Button buildSelectAllButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
 			JptUiMessages.General_selectAll,
-			ImageRepository.getSelectAllButtonImage(this.resourceManager));
+			this.resourceManager.createImage(JptCommonUiImages.SELECT_ALL_BUTTON));
 		
 		button.addSelectionListener(this.buildSelectAllSelectionListener());
 		return button;
@@ -415,7 +419,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private Button buildDeselectAllButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
 			JptUiMessages.General_deselectAll,
-			ImageRepository.getDeselectAllButtonImage(this.resourceManager));
+			this.resourceManager.createImage(JptCommonUiImages.DESELECT_ALL_BUTTON));
 		
 		button.addSelectionListener(this.buildDeselectAllSelectionListener());
 		return button;
@@ -424,7 +428,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private Button buildRefreshTablesButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
 			JptUiMessages.General_refresh,
-			ImageRepository.getRefreshButtonImage(this.resourceManager));
+			this.resourceManager.createImage(JptCommonUiImages.REFRESH_BUTTON));
 		
 		button.addSelectionListener(this.buildRefreshTablesSelectionListener());
 		return button;
@@ -723,8 +727,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		}
 
 		//Create the ORMGenCustomizer
-		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();
-		this.customizer = wizard.createORMGenCustomizer(schema);
+		this.customizer = this.getWizard().createORMGenCustomizer(schema);
 
 		if(this.tableTable!=null && this.customizer != null) {
 			this.restoreWizardState();

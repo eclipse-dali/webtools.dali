@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
@@ -29,35 +30,8 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                         ------------------------------------------------- |
- * | Name:                   | I                                           |v| |
- * |                         ------------------------------------------------- |
- * |                         ------------------------------------------------- |
- * | Referenced Column Name: | I                                           |v| |
- * |                         ------------------------------------------------- |
- * |                         ------------------------------------------------- |
- * | Table:                  | I                                           |v| |
- * |                         ------------------------------------------------- |
- * |                         ------------------------------------------------- |
- * | Column Definition:      | I                                             | |
- * |                         ------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see BaseJoinColumnStateObject
- * @see InverseJoinColumnInJoinTableDialog - A container of this pane
- * @see JoinColumnInReferenceTableDialog - A container of this pane
- * @see PrimaryKeyJoinColumnDialog - A container of this pane
- * @see PrimaryKeyJoinColumnInSecondaryTableDialog - A container of this pane
- *
- * @version 2.0
- * @since 2.0
- */
-@SuppressWarnings("nls")
-public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> extends DialogPane<T>
+public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
+	extends DialogPane<T>
 {
 	/**
 	 * A key used to represent the default value, this is required to convert
@@ -66,18 +40,13 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 	 * <code>null</code> when it's time to set the new selected value into the
 	 * model.
 	 */
-	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
+	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?"; //$NON-NLS-1$
 
-	/**
-	 * Creates a new <code>BaseJoinColumnDialogPane</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	public BaseJoinColumnDialogPane(PropertyValueModel<? extends T> subjectHolder,
-	                                Composite parent) {
-
-		super(subjectHolder, parent);
+	public BaseJoinColumnDialogPane(
+			PropertyValueModel<? extends T> subjectModel,
+			Composite parentComposite,
+			ResourceManager resourceManager) {
+		super(subjectModel, parentComposite, resourceManager);
 	}
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {

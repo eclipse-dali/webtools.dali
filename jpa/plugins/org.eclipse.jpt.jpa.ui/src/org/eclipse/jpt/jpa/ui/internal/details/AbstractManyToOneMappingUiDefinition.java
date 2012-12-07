@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractManyToOneMappingUiDefinition<M, T extends ManyToOneMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractManyToOneMappingUiDefinition<M, T extends ManyToOn
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.MANY_TO_ONE;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.MANY_TO_ONE;
 	}
 }

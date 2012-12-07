@@ -69,10 +69,13 @@
 			name="%eclipseLinkWizardCategoryName"
 			parentCategory="org.eclipse.jpt.jpa"/>
 		
+<!-- bug 395126
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-jpa-file.gif"
+ -->
 		<wizard
             id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newEclipseLinkMappingFile"
 			name="%newEclipseLinkMappingFileWizardName"
-			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/icons/full/etool16/new_jpa_file_wiz.gif"
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-jpa-file.gif"
 			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink">
 			<description>%newEclipseLinkJpaMappingFileWizardDesc</description>
 			<class class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EclipseLinkMappingFileWizard"> 
@@ -82,20 +85,26 @@
 			</class> 
 		</wizard>
 		
+<!-- bug 395126
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-jpa-file.gif"
+ -->
 		<wizard
 			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.GenerateDynamicEntitiesFromSchemaWizard"
-			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/icons/full/etool16/new_jpa_file_wiz.gif"
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-jpa-file.gif"
 			id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newDynamicEntitiesFromTables"
 			name="%newDynamicEntityFromTableWizardName">
 			<description>%newDynamicEntityFromTableWizardDesc</description>
 			<selection class="org.eclipse.core.resources.IResource"/> 
         </wizard>		
 
+<!-- bug 395126
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-entity.gif"
+ -->
         <wizard
             id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newEclipseLinkDynamicEntity"
 			name="%newEclipseLinkDynamicEntityName"
-			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/icons/full/etool16/new_entity_wiz.gif"
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-entity.gif"
 			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink">
 			<description>%newEclipseLinkDynamicEntityWizardDesc</description>
 			<class class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EclipseLinkDynamicEntityWizard"> 

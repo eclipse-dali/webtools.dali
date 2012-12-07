@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -39,21 +38,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |            -------------------------------------------------------------- |
- * | Enum Type: |                                                          |v| |
- * |            -------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EclipseLinkConvert
- * @see EclipseLinkBasicMappingComposite - A container of this widget
- *
- * @version 2.1
- * @since 2.1
- */
 public class EclipseLinkConvertCombo
 	extends Pane<EclipseLinkConvert>
 {
@@ -70,15 +54,13 @@ public class EclipseLinkConvertCombo
 	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?"; //$NON-NLS-1$
 
 
-	/**
-	 * Creates a new <code>EclipseLinkConvertComposite</code>.
-	 */
-	public EclipseLinkConvertCombo(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public EclipseLinkConvertCombo(
+		Pane<?> parentPane,
+		PropertyValueModel<? extends EclipseLinkConvert> subjectModel,
+		PropertyValueModel<Boolean> enabledModel,
+		Composite parentComposite
+	) {
+		super(parentPane, subjectModel, enabledModel, parentComposite);
 	}
 
 	@Override

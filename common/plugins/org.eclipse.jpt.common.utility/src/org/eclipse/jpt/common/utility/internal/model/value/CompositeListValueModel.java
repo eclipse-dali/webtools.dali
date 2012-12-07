@@ -126,7 +126,7 @@ public class CompositeListValueModel<E1, E2>
 	 * model already contains other list value models.
 	 */
 	public static <E1 extends ListValueModel<? extends E2>, E2> CompositeListValueModel<E1, E2> forModels(ListValueModel<E1> listModel) {
-		return new CompositeListValueModel<E1, E2>(listModel, Transformer.Null.<E1>instance());
+		return new CompositeListValueModel<E1, E2>(listModel, Transformer.Non.<E1>instance());
 	}
 
 	/**

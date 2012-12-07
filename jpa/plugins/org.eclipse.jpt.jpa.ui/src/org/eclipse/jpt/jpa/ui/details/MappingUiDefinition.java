@@ -9,11 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.details;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * A mapping UI definition provides the labels and images for the (type or
- * attribute) mapping type indicated by {@link #getKey()}.
+ * A mapping UI definition provides the {@link #getLabel() label} and
+ * {@link #getImageDescriptor() image descriptor} for the
+ * (type or attribute) mapping type indicated by {@link #getKey()}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,7 +30,7 @@ import org.eclipse.swt.graphics.Image;
 public interface MappingUiDefinition<M, T> {
 
 	/**
-	 * Return a key that corresponds to the mapping's key.
+	 * Return a key corresponding to the mapping's key.
 	 * 
 	 * @see org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition#getKey()
 	 * @see org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition#getKey()
@@ -37,27 +40,40 @@ public interface MappingUiDefinition<M, T> {
 	String getKey();
 
 	/**
-	 * Return a string that indicates the mapping type.
+	 * Return a string corresponding to the mapping type.
 	 */
 	String getLabel();
 
+	Transformer<MappingUiDefinition, String> LABEL_TRANSFORMER = new LabelTransformer();
+	class LabelTransformer
+		extends AbstractTransformer<MappingUiDefinition, String>
+	{
+		@Override
+		public String transform_(MappingUiDefinition def) {
+			return def.getLabel();
+		}
+	}
+
 	/**
-	 * Return a string that indicates the mapping type and can be used
+	 * Return a string that corresponds to the mapping type and can be used
 	 * in the mapping change link label.
 	 */
 	String getLinkLabel();
 
 	/**
-	 * Return a "normal" image that indicates the mapping type.
-	 * @see #getGhostImage()
+	 * Return an image descriptor corresponding to the mapping type.
 	 */
-	Image getImage();
+	ImageDescriptor getImageDescriptor();
 
-	/**
-	 * Return a "ghost" image that indicates the mapping type.
-	 * @see #getImage()
-	 */
-	Image getGhostImage();
+	Transformer<MappingUiDefinition, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
+	class ImageDescriptorTransformer
+		extends AbstractTransformer<MappingUiDefinition, ImageDescriptor>
+	{
+		@Override
+		public ImageDescriptor transform_(MappingUiDefinition def) {
+			return def.getImageDescriptor();
+		}
+	}
 
 	/**
 	 * Return whether the mapping type represented by this definition is enabled for the given

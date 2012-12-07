@@ -10,10 +10,14 @@
 package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This provider is invoked for:<ul>
@@ -38,6 +42,15 @@ public class JpaNavigatorContentProvider
 	@Override
 	protected ItemExtendedLabelProviderFactory buildItemLabelProviderFactory() {
 		return new JpaNavigatorItemLabelProviderFactory();
+	}
+
+	@Override
+	protected ResourceManager buildResourceManager() {
+		return this.getJpaWorkbench().buildLocalResourceManager();
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
 	}
 
 	@Override

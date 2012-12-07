@@ -6,6 +6,7 @@
 		<accessrules>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/jpa/ui/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/jpa/core/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/ui/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/core/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/utility/**"/>
 		</accessrules>

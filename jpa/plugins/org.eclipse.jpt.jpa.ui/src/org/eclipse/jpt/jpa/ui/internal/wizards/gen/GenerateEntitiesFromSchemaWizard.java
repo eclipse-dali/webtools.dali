@@ -7,7 +7,6 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.io.File;
@@ -26,8 +25,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -51,7 +48,8 @@ import org.eclipse.jpt.jpa.gen.internal.DatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.gen.internal.PackageGenerator;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -60,11 +58,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
-public class GenerateEntitiesFromSchemaWizard extends Wizard 
-	implements INewWizard  {	
-	
-	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
+public class GenerateEntitiesFromSchemaWizard
+	extends Wizard 
+	implements INewWizard
+{	
+	private static final String HELP_CONTEXT_ID = JptJpaUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
 	protected JpaProject jpaProject;
 
@@ -85,7 +85,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	protected final ResourceManager resourceManager;
 	
 	public GenerateEntitiesFromSchemaWizard() {
-		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
+		this.resourceManager = this.buildResourceManager();
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 	}
 	
@@ -93,9 +93,21 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		super();
 		this.jpaProject = jpaProject;
 		this.selection = selection;
-		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
+		this.resourceManager = this.buildResourceManager();
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
-		this.setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
+	}
+
+	protected ResourceManager buildResourceManager() {
+		return this.getJpaWorkbench().buildLocalResourceManager();
+	}
+
+	protected JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
+	}
+	
+	protected IWorkbench getWorkbench() {
+		return PlatformUI.getWorkbench();
 	}
 	
 	@Override
@@ -530,7 +542,10 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	}
 
 	protected PromptJPAProjectWizardPage buildProjectWizardPage() {
-		return new PromptJPAProjectWizardPage(HELP_CONTEXT_ID);
+		return new PromptJPAProjectWizardPage(this.getHelpContextID());
+	}
+	public String getHelpContextID() {
+		return HELP_CONTEXT_ID;
 	}
 
 	protected JpaProject getJpaProject(IProject project) {

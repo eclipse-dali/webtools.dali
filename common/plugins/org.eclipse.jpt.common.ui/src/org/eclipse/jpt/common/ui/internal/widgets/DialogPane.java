@@ -9,61 +9,52 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.widgets;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The abstract pane to use when the pane is shown in an <code>Dialog</code>.
- *
- * @see Dialog
- *
- * @version 2.0
- * @since 2.0
+ * The abstract pane to use when the pane is shown in a {@link Dialog}.
  */
-public abstract class DialogPane<T extends Node> extends Pane<T> {
-
+public abstract class DialogPane<T extends Node>
+	extends Pane<T>
+{
 	/**
-	 * Creates a new <code>DialogPane</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 *
-	 * @category Constructor
+	 * Construct a dialog pane that uses the specified parent pane's:<ul>
+	 * <li>subject model
+	 * <li><em>enabled</em> model
+	 * </ul>
 	 */
-	protected DialogPane(DialogPane<? extends T> parentPane,
-	                             Composite parent) {
-
-		super(parentPane, parent);
+	protected DialogPane(
+			DialogPane<? extends T> parent,
+			Composite parentComposite) {
+		super(parent, parentComposite);
 	}
 
 	/**
-	 * Creates a new <code>DialogPane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 *
-	 * @category Constructor
+	 * Construct a dialog pane that uses the specified parent pane's:<ul>
+	 * <li><em>enabled</em> model
+	 * </ul>
 	 */
-	protected DialogPane(DialogPane<?> parentPane,
-	                             PropertyValueModel<? extends T> subjectHolder,
-	                             Composite parent) {
-
-		super(parentPane, subjectHolder, parent);
+	protected DialogPane(
+			DialogPane<?> parent,
+			PropertyValueModel<? extends T> subjectModel,
+			Composite parentComposite) {
+		super(parent, subjectModel, parentComposite);
 	}
 
 	/**
-	 * Creates a new <code>DialogPane</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 *
-	 * @category Constructor
+	 * Construct a <em>root</em> dialog pane with the specified subject model
+	 * and resource manager.
+	 * The pane will use the default (non-form) widget factory.
+	 * The pane will be <em>disabled</em> whenever the subject is
+	 * <code>null</code>.
 	 */
-	protected DialogPane(PropertyValueModel<? extends T> subjectHolder,
-	                             Composite parent) {
-
-		super(subjectHolder, parent, DefaultWidgetFactory.instance());
+	protected DialogPane(
+			PropertyValueModel<? extends T> subjectModel,
+			Composite parentComposite,
+			ResourceManager resourceManager) {
+		super(subjectModel, parentComposite, DefaultWidgetFactory.instance(), resourceManager);
 	}
 }

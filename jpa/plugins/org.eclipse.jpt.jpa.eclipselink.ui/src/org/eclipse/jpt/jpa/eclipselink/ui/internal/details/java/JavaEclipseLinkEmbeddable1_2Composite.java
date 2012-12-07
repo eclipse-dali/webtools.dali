@@ -9,70 +9,41 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * This pane does not have any widgets.
- *
- * @see Embeddable
- * @see JavaUiFactory - The factory creating this pane
- * @see EmbeddableUiProvider
- *
- * @version 2.3
- * @since 2.1
- */
-public class JavaEclipseLinkEmbeddable1_2Composite extends AbstractJavaEclipseLinkEmbeddableComposite
+public class JavaEclipseLinkEmbeddable1_2Composite
+	extends AbstractJavaEclipseLinkEmbeddableComposite
 {
-	/**
-	 * Creates a new <code>EmbeddableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaEclipseLinkEmbeddable1_2Composite(PropertyValueModel<? extends JavaEmbeddable> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public JavaEclipseLinkEmbeddable1_2Composite(
+			PropertyValueModel<? extends JavaEmbeddable> embeddableModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeEmbeddableCollapsibleSection(container);
-		this.initializeConvertersCollapsibleSection(container);
-		this.initializeAdvancedCollapsibleSection(container);
+		super.initializeLayout(container);
 	}
 
 	@Override
-	protected Control initializeEmbeddableSection(Composite container) {
-		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+	protected Control buildEmbeddableSectionClient(Section embeddableSection) {
+		Composite container = this.addSubPane(embeddableSection, 2, 0, 0, 0, 0);
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		return container;
-	}
-
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEmbeddable, AccessHolder>(
-			getSubjectHolder())
-		{
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
 	}
 }

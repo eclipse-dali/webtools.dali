@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -61,13 +62,14 @@ public class JpaStructureNodeAdapterFactory
 		}
 
 		@SuppressWarnings("unchecked")
-		public <T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory) {
-			return (JpaDetailsPageManager<T>) this.getJpaPlatformUi().buildJpaDetailsPageManager(parent, this.jpaStructureNode, widgetFactory);
+		public <T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+			return (JpaDetailsPageManager<T>) this.getJpaPlatformUi().buildJpaDetailsPageManager(parent, this.jpaStructureNode, widgetFactory, resourceManager);
 		}
 
 		private JpaPlatformUi getJpaPlatformUi() {
 			return (JpaPlatformUi) this.jpaStructureNode.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		}
+
 		@Override
 		public String toString() {
 			return ObjectTools.toString(this, this.jpaStructureNode);

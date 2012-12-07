@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.views;
 
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
@@ -20,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPage;
@@ -46,6 +50,14 @@ public class JpaStructureView
 	 */
 	private volatile Manager manager;
 
+	/**
+	 * The resource manager is created when the view's control is
+	 * {@link #createPartControl(Composite) created}
+	 * and disposed, if necessary, when the view is
+	 * {@link #dispose() disposed}.
+	 */
+	private volatile ResourceManager resourceManager;
+
 
 	public JpaStructureView() {
 		super();
@@ -54,6 +66,7 @@ public class JpaStructureView
 	@Override
 	public void createPartControl(Composite parent) {
 		this.manager = this.buildManager();
+		this.resourceManager = this.buildResourceManager();
 		super.createPartControl(parent);
 	}
 
@@ -69,6 +82,18 @@ public class JpaStructureView
 	 */
 	private JpaViewManager.PageManager getPageManager() {
 		return (JpaViewManager.PageManager) this.getAdapter(JpaViewManager.PageManager.class);
+	}
+
+	private ResourceManager buildResourceManager() {
+		return this.getJpaWorkbench().buildLocalResourceManager();
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
+	}
+
+	private IWorkbench getWorkbench() {
+		return this.getSite().getWorkbenchWindow().getWorkbench();
 	}
 
 	@Override
@@ -121,7 +146,7 @@ public class JpaStructureView
 			// editor return null so the default page is displayed
 			return null;
 		}
-		JpaStructurePage page = new JpaStructurePage(this, editorManager);
+		JpaStructurePage page = new JpaStructurePage(this, editorManager, this.resourceManager);
 		this.initPage(page);
 		page.createControl(this.getPageBook());
 		return new PageRec(editor, page);
@@ -138,8 +163,13 @@ public class JpaStructureView
 	public void dispose() {
 		super.dispose();
 		if (this.manager != null) {
-			this.manager.dispose();
+			this.dispose_();
 		}
+	}
+
+	private void dispose_() {
+		this.resourceManager.dispose();
+		this.manager.dispose();
 	}
 
 	@Override

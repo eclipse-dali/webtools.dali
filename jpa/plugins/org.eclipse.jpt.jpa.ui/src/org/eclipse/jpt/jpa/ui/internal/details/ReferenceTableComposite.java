@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Arrays;
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
@@ -40,7 +39,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.TableCombo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-
 public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	extends Pane<T>
 {
@@ -48,42 +46,19 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 	protected JoinColumnsComposite<T> joinColumnsComposite;
 
-	/**
-	 * Creates a new <code>ReferenceTableComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
 	protected ReferenceTableComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends T> subjectHolder,
-			Composite parent) {
-
-		super(parentPane, subjectHolder, parent);
+			PropertyValueModel<? extends T> tableModel,
+			Composite parentComposite) {
+		super(parentPane, tableModel, parentComposite);
 	}
 
 	protected ReferenceTableComposite(
-		Pane<?> parentPane,
-		PropertyValueModel<? extends T> subjectHolder,
-		PropertyValueModel<Boolean> enabledModel,
-		Composite parent) {
-
-	super(parentPane, subjectHolder, enabledModel, parent);
-}
-
-	/**
-	 * Creates a new <code>ReferenceTableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>CollectionTable2_0</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected ReferenceTableComposite(PropertyValueModel<? extends T> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> tableModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite) {
+		super(parentPane, tableModel, enabledModel, parentComposite);
 	}
 
 
@@ -93,8 +68,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 	JoinColumn addJoinColumn(T referenceTable) {
 
-		JoinColumnInReferenceTableDialog dialog =
-			new JoinColumnInReferenceTableDialog(getShell(), referenceTable, null);
+		JoinColumnInReferenceTableDialog dialog = new JoinColumnInReferenceTableDialog(this.getShell(), this.getResourceManager(), referenceTable);
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();
@@ -282,8 +256,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 	void editJoinColumn(ReadOnlyJoinColumn joinColumn) {
 
-		JoinColumnInReferenceTableDialog dialog =
-			new JoinColumnInReferenceTableDialog(getShell(), getSubject(), joinColumn);
+		JoinColumnInReferenceTableDialog dialog = new JoinColumnInReferenceTableDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -44,14 +45,7 @@ public class OrmManyToOneMappingUiDefinition
 		super();
 	}
 	
-	
-	public JpaComposite buildAttributeMappingComposite(
-			OrmXmlUiFactory factory,
-			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return factory.createOrmManyToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel<OrmManyToOneMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return factory.createOrmManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

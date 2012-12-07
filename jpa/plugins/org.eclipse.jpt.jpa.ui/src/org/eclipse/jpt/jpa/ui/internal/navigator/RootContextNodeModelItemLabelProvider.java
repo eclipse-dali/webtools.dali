@@ -9,39 +9,39 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.navigator;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.swt.graphics.Image;
 
 public class RootContextNodeModelItemLabelProvider
 	extends AbstractItemExtendedLabelProvider<JpaRootContextNodeModel>
 {
-	public RootContextNodeModelItemLabelProvider(JpaRootContextNodeModel rootContextNodeModel, ItemLabelProvider.Manager manager) {
+	public RootContextNodeModelItemLabelProvider(JpaRootContextNodeModel rootContextNodeModel, ItemExtendedLabelProvider.Manager manager) {
 		super(rootContextNodeModel, manager);
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new TransformationPropertyValueModel<JpaRootContextNode, Image>(this.item, IMAGE_TRANSFORMER);
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+		return new TransformationPropertyValueModel<JpaRootContextNode, ImageDescriptor>(this.item, IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 
-	protected static final Transformer<JpaRootContextNode, Image> IMAGE_TRANSFORMER = new ImageTransformer();
+	protected static final Transformer<JpaRootContextNode, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
 
-	protected static class ImageTransformer
-		extends TransformerAdapter<JpaRootContextNode, Image>
+	protected static class ImageDescriptorTransformer
+		extends TransformerAdapter<JpaRootContextNode, ImageDescriptor>
 	{
 		@Override
-		public Image transform(JpaRootContextNode root) {
-			return JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT, (root == null));
+		public ImageDescriptor transform(JpaRootContextNode root) {
+			return JptCommonUiImages.gray(JptJpaUiImages.JPA_CONTENT, (root == null));
 		}
 	}
 

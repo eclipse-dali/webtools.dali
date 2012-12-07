@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Defini
 public class OrmXml2_0FlagModel<R extends JptResourceTypeReference>
 	extends TransformationPropertyValueModel<R, Boolean>
 {
-	public OrmXml2_0FlagModel(PropertyValueModel<R> valueModel) {
+	public OrmXml2_0FlagModel(PropertyValueModel<? extends R> valueModel) {
 		super(valueModel);
 	}
 

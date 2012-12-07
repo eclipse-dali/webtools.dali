@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -30,63 +31,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TargetEntityComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoiningStrategyComposite                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OptionalComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see {@link ManyToOneMapping}
- * @see {@link TargetEntityClassChooser}
- * @see {@link ManyToOneJoiningStrategyPane}
- * @see {@link FetchTypeComboViewer}
- * @see {@link OptionalComposite}
- * @see {@link CascadeComposite}
- *
- * @version 2.3
- * @since 2.2
- */
 public class OrmEclipseLinkManyToOneMappingComposite
 	extends EclipseLinkManyToOneMappingComposite<ManyToOneMapping>
 {
-	/**
-	 * Creates a new <code>EclipseLink1_1ManyToOneMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>ManyToOneMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmEclipseLinkManyToOneMappingComposite(PropertyValueModel<? extends ManyToOneMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public OrmEclipseLinkManyToOneMappingComposite(
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

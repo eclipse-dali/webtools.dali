@@ -50,11 +50,16 @@ public class JoiningStrategyJoinColumnsComposite
 	
 	private JoinColumnsComposite<ReadOnlyJoinColumnRelationshipStrategy> joinColumnsComposite;
 	
+	public JoiningStrategyJoinColumnsComposite(Pane<? extends ReadOnlyJoinColumnRelationshipStrategy> parentPane, Composite parentComposite) {
+		super(parentPane, parentComposite);
+	}
+
 	public JoiningStrategyJoinColumnsComposite(
-			Pane<?> parentPane,
-			PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> subjectHolder,
-			Composite parent) {
-		super(parentPane, subjectHolder, parent);
+		Pane<?> parentPane,
+		PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> subjectModel,
+		Composite parent
+	) {
+		super(parentPane, subjectModel, parent);
 	}
 
 	@Override
@@ -109,8 +114,7 @@ public class JoiningStrategyJoinColumnsComposite
 	}
 	
 	JoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy) {
-		JoinColumnInJoiningStrategyDialog dialog =
-			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, null);
+		JoinColumnInJoiningStrategyDialog dialog = new JoinColumnInJoiningStrategyDialog(this.getShell(), this.getResourceManager(), joiningStrategy);
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();
@@ -132,8 +136,7 @@ public class JoiningStrategyJoinColumnsComposite
 	}
 	
 	void editJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy, ReadOnlyJoinColumn joinColumn) {
-		JoinColumnInJoiningStrategyDialog dialog =
-			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, joinColumn);
+		JoinColumnInJoiningStrategyDialog dialog = new JoinColumnInJoiningStrategyDialog(this.getShell(), this.getResourceManager(), joiningStrategy, joinColumn);
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();

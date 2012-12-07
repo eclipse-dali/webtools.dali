@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 
 /**
@@ -43,7 +45,36 @@ public interface JpaWorkbench {
 	IWorkbench getWorkbench();
 
 	/**
-	 * Return the manager for the workspace's JPA platform UIs.
+	 * Return the manager for the workbench's JPA platform UIs.
 	 */
 	JpaPlatformUiManager getJpaPlatformUiManager();
+
+
+	// ********** resources **********
+
+	/**
+	 * Return a new "local" resource manager. The resource manager's parent
+	 * will be the JPA workbench's resource manager, allowing any resources
+	 * to be shared across the JPA workbench. The client must dispose the
+	 * resource manager as appropriate.
+	 * 
+	 * @see #getResourceManager(Control)
+	 * @see org.eclipse.jpt.common.ui.internal.JptUIPlugin#buildImageDescriptor(String)
+	 */
+	ResourceManager buildLocalResourceManager();
+
+	/**
+	 * Return the resource manager associated with the specified control. The
+	 * control's resource manager's parent will be the JPA workbench's resource
+	 * manager, allowing any resources to be shared across the JPA workbench.
+	 * The returned resource manager will dispose itself when the specified
+	 * control is disposed, freeing the client from the obligation of disposing
+	 * the manager.
+	 * 
+	 * @see #buildLocalResourceManager()
+	 * @see org.eclipse.jface.resource.LocalResourceManager#LocalResourceManager(ResourceManager, Control)
+	 * @see org.eclipse.jpt.common.ui.internal.JptUIPlugin#buildImageDescriptor(String)
+	 * @see Control#getData(String)
+	 */
+	ResourceManager getResourceManager(Control control);
 }

@@ -10,21 +10,27 @@
 package org.eclipse.jpt.jpa.ui.editors;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.ui.forms.IManagedForm;
 
 /**
- * A {@link JpaEditorPageDefinition} defines the content of an editor page.
- * We take advantage of the FormEditor behavior by not building the content
- * of any particular editor page until that tab is selected. At this point
- * {@link #buildEditorPageContent(IManagedForm, WidgetFactory, PropertyValueModel)}
- * will be called.
+ * A JPA editor page definition defines an editor page's:<ul>
+ * <li>title image
+ * <li>title text
+ * <li>help ID
+ * <li>content
+ * </ul>
+ * We take advantage of the {@link org.eclipse.ui.forms.editor.FormEditor FormEditor}
+ * behavior by not building the content
+ * of any particular editor page until its tab is selected. When the tab
+ * <em>is</em> selected we call
+ * {@link #buildContent(IManagedForm, WidgetFactory, ResourceManager, PropertyValueModel)}.
  * 
  * @see org.eclipse.jpt.jpa.ui.ResourceUiDefinition
  * @see org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditor
- * 
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -35,30 +41,27 @@ import org.eclipse.ui.forms.IManagedForm;
 public interface JpaEditorPageDefinition {
 
 	/**
-	 * Returns the help ID. This ID will be used if the help button is invoked.
-	 *
-	 * @return Either the help ID of this page or <code>null</code> if no help
-	 * is required
+	 * Return the descriptor for the image to be displayed alongside the page's
+	 * title {@link #getTitleText() text}.
+	 * @see org.eclipse.ui.forms.widgets.ScrolledForm#getImage()
+	 */
+	ImageDescriptor getTitleImageDescriptor();
+
+	/**
+	 * Return the text to be displayed in the page's title.
+	 * @see org.eclipse.ui.forms.widgets.ScrolledForm#getText()
+	 */
+	String getTitleText();
+
+	/**
+	 * Return the page's help ID.
+	 * This ID will be used if the help button is invoked.
 	 */
 	String getHelpID();
 
 	/**
-	 * The image descriptor of the tab showing this page.
-	 *
-	 * @return The page's image
+	 * Build the page's content in the specified form, using the specified
+	 * widget factory, resource manager, and JPA structure node model.
 	 */
-	ImageDescriptor getPageImageDescriptor();
-
-	/**
-	 * The text of the tab showing this page.
-	 *
-	 * @return The page's text
-	 */
-	String getPageText();
-
-	/**
-	 * Build the content of this editor page using the given WidgetFactory
-	 * and the JpaStructureNode model.
-	 */
-	void buildEditorPageContent(IManagedForm form, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> rootStructureNodeModel);
+	void buildContent(IManagedForm form, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<JpaStructureNode> rootStructureNodeModel);
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -42,13 +43,7 @@ public class JavaEmbeddableUiDefinition
 		super();
 	}
 	
-	
-	public JpaComposite buildTypeMappingComposite(
-			JavaUiFactory factory,
-			PropertyValueModel<JavaEmbeddable> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return factory.createJavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
+	public JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaEmbeddable> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return factory.createJavaEmbeddableComposite(mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

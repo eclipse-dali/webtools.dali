@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -19,22 +20,21 @@ import org.eclipse.swt.widgets.Control;
 public class EclipseLinkPersistenceUnitGeneralEditorPage
 	extends PersistenceUnitGeneralEditorPage
 {
-
 	public EclipseLinkPersistenceUnitGeneralEditorPage(
 			PropertyValueModel<PersistenceUnit> subjectHolder,
             Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectHolder, parent, widgetFactory, resourceManager);
 	}
 
 	@Override
-	protected Control buildMappingFilesComposite(Composite parent) {
-		return new EclipseLinkPersistenceUnitMappingFilesComposite(this, parent).getControl();
+	protected Control buildMappingFilesComposite(Composite parentComposite) {
+		return new EclipseLinkPersistenceUnitMappingFilesComposite(this, parentComposite).getControl();
 	}
 
 	@Override
-	protected Control buildJarFilesComposite(Composite parent) {
-		return new EclipseLinkPersistenceUnitJarFilesComposite(this, parent).getControl();
+	protected Control buildJarFilesComposite(Composite parentComposite) {
+		return new EclipseLinkPersistenceUnitJarFilesComposite(this, parentComposite).getControl();
 	}
 }

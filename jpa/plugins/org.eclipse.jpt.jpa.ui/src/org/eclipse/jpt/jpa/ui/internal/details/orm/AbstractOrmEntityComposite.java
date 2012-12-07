@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -21,36 +22,20 @@ import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * The pane used for an ORM entity.
- *
- * @see OrmEntity
- * @see BaseJavaUiFactory - The factory creating this pane
- *
- * @version 2.3
- * @since 1.0
- */
-public abstract class AbstractOrmEntityComposite extends AbstractEntityComposite<OrmEntity>
+public abstract class AbstractOrmEntityComposite
+	extends AbstractEntityComposite<OrmEntity>
 {
-	/**
-	 * Creates a new <code>OrmEntityComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>OrmEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	protected AbstractOrmEntityComposite(
-			PropertyValueModel<? extends OrmEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends OrmEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	

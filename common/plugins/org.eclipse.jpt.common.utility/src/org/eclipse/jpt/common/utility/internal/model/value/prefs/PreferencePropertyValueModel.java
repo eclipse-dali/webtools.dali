@@ -94,7 +94,7 @@ public class PreferencePropertyValueModel<P>
 				preferences,
 				key,
 				defaultValue,
-				Transformer.Null.<String>instance()
+				Transformer.Non.<String>instance()
 			);
 	}
 
@@ -107,7 +107,7 @@ public class PreferencePropertyValueModel<P>
 				preferencesModel,
 				key,
 				defaultValue,
-				Transformer.Null.<String>instance()
+				Transformer.Non.<String>instance()
 			);
 	}
 

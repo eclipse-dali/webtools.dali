@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.ui.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.common.core.tests.BundleActivatorTest;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.tests.internal.swt.JptUiSWTTests;
 import org.eclipse.jpt.common.ui.tests.internal.util.JptUiUtilTests;
@@ -23,6 +24,7 @@ public class JptCommonUiTests {
 		suite.addTest(JptUiSWTTests.suite());
 		suite.addTest(JptUiUtilTests.suite());
 		suite.addTest(new BundleActivatorTest(WidgetFactory.class));
+		suite.addTest(new ImageDescriptorTest(JptCommonUiImages.class));
 		return suite;
 	}
 

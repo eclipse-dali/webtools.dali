@@ -229,14 +229,14 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		};
 	}
 
-	//TODO do i need to pass in the PaneEnabler from *this* pane as a Combined property value model?
 	protected TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>  buildTenantDiscriminatorColumnsComposite(Composite container) {
 		return new TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>(
-			getSubjectHolder(),
-			new TenantDiscriminatorColumnPaneEnablerHolder(),
-			container,
-			getWidgetFactory(),
-			buildTenantDiscriminatorColumnsEditor());
+				this,
+				this.getSubjectHolder(),
+				new TenantDiscriminatorColumnPaneEnablerHolder(),
+				container,
+				this.buildTenantDiscriminatorColumnsEditor()
+			);
 	}
 
 	protected TenantDiscriminatorColumnsEditor<EclipseLinkMultitenancy2_3> buildTenantDiscriminatorColumnsEditor() {

@@ -16,6 +16,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
@@ -67,6 +70,15 @@ public class JaxbNavigatorContentProvider
 	@Override
 	protected ItemExtendedLabelProviderFactory buildItemLabelProviderFactory() {
 		return new JaxbNavigatorItemLabelProviderFactory();
+	}
+
+	@Override
+	protected ResourceManager buildResourceManager() {
+		return new LocalResourceManager(this.getParentResourceManager());
+	}
+
+	protected ResourceManager getParentResourceManager() {
+		return JFaceResources.getResources();
 	}
 
 	@Override

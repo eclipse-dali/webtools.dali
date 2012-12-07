@@ -13,17 +13,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.BASIC;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ELEMENT_COLLECTION;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED_ID;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ID;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.VERSION;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
 import org.eclipse.persistence.jpa.jpql.WordParser;
@@ -32,9 +44,8 @@ import org.eclipse.persistence.jpa.jpql.parser.IdentifierRole;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The abstract definition of JPQL content assist support.
@@ -60,12 +71,6 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 * The provider of content assist items based on the position of the cursor within the JPQL query.
 	 */
 	ContentAssistProposals contentAssistProposals;
-
-	/**
-	 * The local registry containing the images used to display the possible proposals. The registry is
-	 * disposed when the session ended.
-	 */
-	private ImageRegistry imageRegistry;
 
 	/**
 	 * The same value as {@link #actualQuery} or the modified query that was used by the Hermes parser.
@@ -106,7 +111,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 	/**
 	 * Creates a new <code>JpqlCompletionProposalComputer</code>.
 	 */
-	public JpqlCompletionProposalComputer() {
+	JpqlCompletionProposalComputer() {
 		super();
 	}
 
@@ -115,9 +120,9 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 *
 	 * @param proposals The list used to store the new completion proposals
 	 */
-	private void addAbstractSchemaNames(List<T> proposals) {
+	private void addAbstractSchemaNames(List<T> proposals, ResourceManager resourceManager) {
 		for (IEntity abstractSchemaType : sortByNames(contentAssistProposals.abstractSchemaTypes())) {
-			proposals.add(buildAbstractSchemaNameProposal(abstractSchemaType));
+			proposals.add(buildAbstractSchemaNameProposal(abstractSchemaType, resourceManager));
 		}
 	}
 
@@ -126,9 +131,9 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 *
 	 * @param proposals The list used to store the new completion proposals
 	 */
-	private void addIdentificationVariables(List<T> proposals) {
+	private void addIdentificationVariables(List<T> proposals, ResourceManager resourceManager) {
 		for (String variable : sort(contentAssistProposals.identificationVariables())) {
-			proposals.add(buildIdentificationVariableProposal(variable));
+			proposals.add(buildIdentificationVariableProposal(variable, resourceManager));
 		}
 	}
 
@@ -137,9 +142,9 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 *
 	 * @param proposals The list used to store the new completion proposals
 	 */
-	private void addIdentifiers(List<T> proposals) {
+	private void addIdentifiers(List<T> proposals, ResourceManager resourceManager) {
 		for (String identifier : sort(contentAssistProposals.identifiers())) {
-			proposals.add(buildIdentifierProposal(identifier));
+			proposals.add(buildIdentifierProposal(identifier, resourceManager));
 		}
 	}
 
@@ -152,15 +157,15 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 *
 	 * @param proposals The list used to store the new completion proposals
 	 */
-	private void addMappings(List<T> proposals) {
+	private void addMappings(List<T> proposals, ResourceManager resourceManager) {
 		for (IMapping mapping : sort(contentAssistProposals.mappings())) {
-			proposals.add(buildMappingProposal(mapping));
+			proposals.add(buildMappingProposal(mapping, resourceManager));
 		}
 	}
 
-	private T buildAbstractSchemaNameProposal(IEntity abstractSchemaType) {
+	private T buildAbstractSchemaNameProposal(IEntity abstractSchemaType, ResourceManager resourceManager) {
 		String proposal = abstractSchemaType.getName();
-		return buildProposal(proposal, proposal, entityImage());
+		return buildProposal(proposal, proposal, resourceManager.createImage(JptJpaUiImages.ENTITY));
 	}
 
 	private Comparator<IEntity> buildEntityNameComparator() {
@@ -186,15 +191,15 @@ abstract class JpqlCompletionProposalComputer<T> {
 		return identificationVariable;
 	}
 
-	private T buildIdentificationVariableProposal(String proposal) {
+	private T buildIdentificationVariableProposal(String proposal, ResourceManager resourceManager) {
 		return buildProposal(
 			proposal,
 			buildIdentificationVariableDisplayString(proposal),
-			identificationVariableImage()
+			resourceManager.createImage(JptJpaUiImages.JPQL_VARIABLE)
 		);
 	}
 
-	private T buildIdentifierProposal(String proposal) {
+	private T buildIdentifierProposal(String proposal, ResourceManager resourceManager) {
 
 		String additionalInfo = additionalInfo(proposal);
 		IdentifierRole role = queryHelper.getQueryContext().getExpressionRegistry().getIdentifierRole(proposal);
@@ -220,22 +225,20 @@ abstract class JpqlCompletionProposalComputer<T> {
 			cursorOffset--;
 		}
 
+		Image image = resourceManager.createImage(realFunction ? JptJpaUiImages.JPQL_FUNCTION : JptJpaUiImages.JPQL_IDENTIFIER);
 		return buildProposal(
 			proposal,
 			proposal,
 			additionalInfo,
-			identifierImage(realFunction),
+			image,
 			cursorOffset
 		);
 	}
 
-	private ImageDescriptor buildImageDescriptor(String key) {
-		return JptJpaUiPlugin.instance().buildImageDescriptor(key);
-	}
-
-	private T buildMappingProposal(IMapping mapping) {
+	private T buildMappingProposal(IMapping mapping, ResourceManager resourceManager) {
 		String proposal = mapping.getName();
-		return buildProposal(proposal, proposal, mappingImage(mapping));
+		Image image = resourceManager.createImage(mappingImageDescriptor(mapping));
+		return buildProposal(proposal, proposal, image);
 	}
 
 	private T buildProposal(String proposal, String displayString, Image image) {
@@ -277,7 +280,8 @@ abstract class JpqlCompletionProposalComputer<T> {
 	                             String actualQuery,
 	                             int tokenStart,
 	                             int tokenEnd,
-	                             int position) {
+	                             int position,
+	                             ResourceManager resourceManager) {
 
 		try {
 			this.tokenStart     = tokenStart;
@@ -303,10 +307,10 @@ abstract class JpqlCompletionProposalComputer<T> {
 
 			// Create the proposals for those proposals
 			List<T> proposals = new ArrayList<T>();
-			addAbstractSchemaNames    (proposals);
-			addIdentificationVariables(proposals);
-			addIdentifiers            (proposals);
-			addMappings               (proposals);
+			addAbstractSchemaNames    (proposals, resourceManager);
+			addIdentificationVariables(proposals, resourceManager);
+			addIdentifiers            (proposals, resourceManager);
+			addMappings               (proposals, resourceManager);
 
 			return proposals;
 		}
@@ -338,10 +342,6 @@ abstract class JpqlCompletionProposalComputer<T> {
 		contentAssistProposals = null;
 	}
 
-	private Image entityImage() {
-		return getImage(JptUiIcons.ENTITY);
-	}
-
 	/**
 	 * Returns the reason why this computer was unable to produce any completion proposals or
 	 * context information.
@@ -352,34 +352,12 @@ abstract class JpqlCompletionProposalComputer<T> {
 		return null;
 	}
 
-	private Image getImage(String key) {
-		ImageRegistry registry = getImageRegistry();
-		Image image = registry.get(key);
-		if (image == null) {
-			registry.put(key, buildImageDescriptor(key));
-			image = registry.get(key);
-		}
-		return image;
+	ResourceManager getResourceManager(Control control) {
+		return this.getJpaWorkbench().getResourceManager(control);
 	}
 
-	private synchronized ImageRegistry getImageRegistry() {
-		if (imageRegistry == null) {
-			imageRegistry = new ImageRegistry(Display.getCurrent());
-		}
-		return imageRegistry;
-	}
-
-	private Image identificationVariableImage() {
-		return getImage(JptUiIcons.JPQL_VARIABLE);
-	}
-
-	private Image identifierImage(boolean function) {
-
-		if (function) {
-			return getImage(JptUiIcons.JPQL_FUNCTION);
-		}
-
-		return getImage(JptUiIcons.JPQL_IDENTIFIER);
+	JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
 	}
 
 	private boolean isRealFunction(String identifier) {
@@ -391,23 +369,23 @@ abstract class JpqlCompletionProposalComputer<T> {
 		       identifier != Expression.CURRENT_TIMESTAMP;
 	}
 
-	private Image mappingImage(IMapping mapping) {
+	private ImageDescriptor mappingImageDescriptor(IMapping mapping) {
 		switch (mapping.getMappingType()) {
-			case BASIC:               return getImage(JptUiIcons.BASIC);
-//			case BASIC_COLLECTION:    return getImage(JptUiIcons.ELEMENT_COLLECTION);
-//			case BASIC_MAP:           return getImage(JptUiIcons.ELEMENT_COLLECTION);
-			case ELEMENT_COLLECTION:  return getImage(JptUiIcons.ELEMENT_COLLECTION);
-			case EMBEDDED:            return getImage(JptUiIcons.EMBEDDED);
-			case EMBEDDED_ID:         return getImage(JptUiIcons.EMBEDDED_ID);
-			case ID:                  return getImage(JptUiIcons.ID);
-			case MANY_TO_MANY:        return getImage(JptUiIcons.MANY_TO_MANY);
-			case MANY_TO_ONE:         return getImage(JptUiIcons.MANY_TO_ONE);
-			case ONE_TO_MANY:         return getImage(JptUiIcons.ONE_TO_MANY);
-			case ONE_TO_ONE:          return getImage(JptUiIcons.ONE_TO_ONE);
-//			case TRANSFORMATION:      return getImage(JptUiIcons.BASIC);      // TODO
-//			case VARIABLE_ONE_TO_ONE: return getImage(JptUiIcons.ONE_TO_ONE); // TODO
-			case VERSION:             return getImage(JptUiIcons.VERSION);
-			default:                  return getImage(JptUiIcons.TRANSIENT);
+			case BASIC:               return JptJpaUiImages.BASIC;
+//			case BASIC_COLLECTION:    return JptJpaUiImages.ELEMENT_COLLECTION;
+//			case BASIC_MAP:           return JptJpaUiImages.ELEMENT_COLLECTION;
+			case ELEMENT_COLLECTION:  return JptJpaUiImages.ELEMENT_COLLECTION;
+			case EMBEDDED:            return JptJpaUiImages.EMBEDDED;
+			case EMBEDDED_ID:         return JptJpaUiImages.EMBEDDED_ID;
+			case ID:                  return JptJpaUiImages.ID;
+			case MANY_TO_MANY:        return JptJpaUiImages.MANY_TO_MANY;
+			case MANY_TO_ONE:         return JptJpaUiImages.MANY_TO_ONE;
+			case ONE_TO_MANY:         return JptJpaUiImages.ONE_TO_MANY;
+			case ONE_TO_ONE:          return JptJpaUiImages.ONE_TO_ONE;
+//			case TRANSFORMATION:      return JptJpaUiImages.BASIC;      // TODO
+//			case VARIABLE_ONE_TO_ONE: return JptJpaUiImages.ONE_TO_ONE; // TODO
+			case VERSION:             return JptJpaUiImages.VERSION;
+			default:                  return JptJpaUiImages.TRANSIENT;
 		}
 	}
 
@@ -436,10 +414,6 @@ abstract class JpqlCompletionProposalComputer<T> {
 
 		queryHelper = null;
 		clearInformation();
-
-		if (imageRegistry != null) {
-			imageRegistry.dispose();
-		}
 	}
 
 	/**

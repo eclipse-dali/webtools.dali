@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityDataModelProvider;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEEditorUtility;
@@ -47,7 +47,7 @@ public class EntityWizard
     public EntityWizard(IDataModel model) {
 		super(model);
         setWindowTitle(EntityWizardMsg.ENTITY_WIZARD_TITLE);
-        setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));        
+        setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}    
  
 	public EntityWizard(){

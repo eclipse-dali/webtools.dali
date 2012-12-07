@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -31,46 +30,48 @@ public abstract class PersistenceUnitEditorPageDefinition
 		super();
 	}
 
-	public void buildEditorPageContent(IManagedForm form, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		this.buildEditorPageContent(form.getForm().getBody(), widgetFactory, jpaRootStructureNodeModel);
+	public void buildContent(IManagedForm form, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
+		this.buildEditorPageContent(form.getForm().getBody(), widgetFactory, resourceManager, new PersistenceUnitModel(jpaRootStructureNodeModel));
 	}
 
-	protected abstract void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel);
+	protected abstract void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel);
 
-	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel(PropertyValueModel<JpaStructureNode> jpaStructureNodeModel) {
-		return new ListPropertyValueModelAdapter<PersistenceUnit>(this.buildPersistenceUnitListModel(jpaStructureNodeModel)) {
-			@Override
-			protected PersistenceUnit buildValue() {
-				return this.listModel.size() > 0 ? (PersistenceUnit) this.listModel.get(0) : null;
-			}
-		};
+	protected static class PersistenceUnitModel
+		extends ListPropertyValueModelAdapter<PersistenceUnit>
+	{
+		protected PersistenceUnitModel(PropertyValueModel<JpaStructureNode> jpaStructureNodeModel) {
+			super(new PersistenceUnitListModel(jpaStructureNodeModel));
+		}
+
+		@Override
+		protected PersistenceUnit buildValue() {
+			return (this.listModel.size() > 0) ? (PersistenceUnit) this.listModel.get(0) : null;
+		}
 	}
 
-	protected ListValueModel<PersistenceUnit> buildPersistenceUnitListModel(PropertyValueModel<JpaStructureNode> jpaStructureNodeModel) {
-		return new ListAspectAdapter<Persistence, PersistenceUnit>(this.buildPersistenceModel(jpaStructureNodeModel), Persistence.PERSISTENCE_UNITS_LIST) {
-			@Override
-			protected ListIterable<PersistenceUnit> getListIterable() {
-				return this.subject.getPersistenceUnits();
-			}
-	
-			@Override
-			protected int size_() {
-				return this.subject.getPersistenceUnitsSize();
-			}
-		};
-	}
+	/**
+	 * Assume the JPA structure node is a persistence.
+	 */
+	protected static class PersistenceUnitListModel
+		extends ListAspectAdapter<JpaStructureNode, PersistenceUnit>
+	{
+		protected PersistenceUnitListModel(PropertyValueModel<JpaStructureNode> jpaStructureNodeModel) {
+			super(jpaStructureNodeModel, Persistence.PERSISTENCE_UNITS_LIST);
+		}
 
-	protected PropertyValueModel<Persistence> buildPersistenceModel(PropertyValueModel<JpaStructureNode> jpaStructureNodeModel) {
-		return new TransformationPropertyValueModel<JpaStructureNode, Persistence>(jpaStructureNodeModel) {
-			@Override
-			protected Persistence transform(JpaStructureNode jpaStructureNode) {
-				return (Persistence) jpaStructureNode;
-			}
-		};
+		@Override
+		protected ListIterable<PersistenceUnit> getListIterable() {
+			return ((Persistence) this.subject).getPersistenceUnits();
+		}
+
+		@Override
+		protected int size_() {
+			return ((Persistence) this.subject).getPersistenceUnitsSize();
+		}
 	}
 
 	@Override
 	public String toString() {
-		return this.getPageText();
+		return this.getTitleText();
 	}
 }

@@ -13,9 +13,8 @@ import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
  * This factory builds item label providers for an <code>orm.xml</code> file
@@ -47,11 +46,12 @@ public class OrmStructureItemLabelProviderFactory
 		return super.buildProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildEntityMappingsProvider(EntityMappings entityMappings, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildEntityMappingsProvider(EntityMappings entityMappings, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJpaUiPlugin.instance().getImage(JptUiIcons.ENTITY_MAPPINGS),
+					JptJpaUiImages.ENTITY_MAPPINGS,
 					JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel,
-					this.buildEntityMappingsDescription(entityMappings)
+					this.buildEntityMappingsDescription(entityMappings),
+					manager
 				);
 	}
 

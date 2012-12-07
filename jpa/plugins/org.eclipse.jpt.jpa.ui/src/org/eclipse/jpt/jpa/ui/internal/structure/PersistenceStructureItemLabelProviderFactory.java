@@ -18,13 +18,12 @@ import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.ClassRefItemLabelProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.JarFileRefItemLabelProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.MappingFileRefItemLabelProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistenceUnitItemLabelProvider;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
  * This factory builds item label providers for a <code>persistence.xml</code> file
@@ -67,11 +66,12 @@ public class PersistenceStructureItemLabelProviderFactory
 		return null;
 	}
 
-	protected ItemExtendedLabelProvider buildPersistenceProvider(Persistence item, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildPersistenceProvider(Persistence item, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJpaUiPlugin.instance().getImage(JptUiIcons.PERSISTENCE),
+					JptJpaUiImages.PERSISTENCE,
 					JptUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel,
-					this.buildPersistenceDescription(item)
+					this.buildPersistenceDescription(item),
+					manager
 				);
 	}
 

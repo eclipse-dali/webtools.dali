@@ -106,11 +106,11 @@ public class JoinColumnJoiningStrategyPane
 
 	@Override
 	protected Control buildStrategyDetailsComposite(Composite parent) {
-		PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> joiningStrategyHolder = this.buildJoinColumnJoiningStrategyHolder();
+		PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> joiningStrategyModel = this.buildJoinColumnJoiningStrategyHolder();
 
 		return this.includeOverrideCheckBox ?
-				new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, joiningStrategyHolder, parent).getControl() :
-				new JoiningStrategyJoinColumnsComposite(this, joiningStrategyHolder, parent).getControl();
+				new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, joiningStrategyModel, parent).getControl() :
+				new JoiningStrategyJoinColumnsComposite(this, joiningStrategyModel, parent).getControl();
 	}
 
 	@Override

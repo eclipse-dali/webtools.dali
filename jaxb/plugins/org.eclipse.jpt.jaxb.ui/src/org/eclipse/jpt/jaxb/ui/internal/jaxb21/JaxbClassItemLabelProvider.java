@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
@@ -20,27 +21,25 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 
 public class JaxbClassItemLabelProvider
 	extends JaxbTypeItemLabelProvider<JaxbClass>
 {
 	
-	public JaxbClassItemLabelProvider(JaxbClass jaxbPersistentClass, ItemLabelProvider.Manager manager) {
+	public JaxbClassItemLabelProvider(JaxbClass jaxbPersistentClass, ItemExtendedLabelProvider.Manager manager) {
 		super(jaxbPersistentClass, manager);
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new JaxbClassImageModel(this.item);
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+		return new JaxbClassImageDescriptorModel(this.item);
 	}
 	
 	
-	protected class JaxbClassImageModel
-			extends AspectPropertyValueModelAdapter<JaxbClass, Image> {
+	protected class JaxbClassImageDescriptorModel
+			extends AspectPropertyValueModelAdapter<JaxbClass, ImageDescriptor> {
 		
 		protected final PropertyValueModel<Boolean> isXmlRegistryModel;
 			
@@ -51,7 +50,7 @@ public class JaxbClassItemLabelProvider
 		protected final PropertyChangeListener propertyChangeListener;
 		
 		
-		public JaxbClassImageModel(JaxbClass subject) {
+		public JaxbClassImageDescriptorModel(JaxbClass subject) {
 			super(new StaticPropertyValueModel<JaxbClass>(subject));
 			this.isXmlRegistryModel = buildIsXmlRegistryModel();
 			this.mappingModel = buildMappingModel();
@@ -91,22 +90,20 @@ public class JaxbClassItemLabelProvider
 			// transform the subject's property change events into VALUE property change events
 			return new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					JaxbClassImageModel.this.aspectChanged();
+					JaxbClassImageDescriptorModel.this.aspectChanged();
 				}
 			};
 		}
 		
 		@Override
-		protected Image buildValue_() {
-			if (this.mappingModel.getValue() != null) {
-				if (this.isXmlTransientModel.getValue() == Boolean.TRUE) {
-					return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_TRANSIENT_CLASS);
-				}
+		protected ImageDescriptor buildValue_() {
+			if ((this.mappingModel.getValue() != null) && (this.isXmlTransientModel.getValue() == Boolean.TRUE)) {
+				return JptJaxbUiImages.JAXB_TRANSIENT_CLASS;
 			}
-			else if (this.isXmlRegistryModel.getValue() == Boolean.TRUE) {
-				return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_REGISTRY);
+			if (this.isXmlRegistryModel.getValue() == Boolean.TRUE) {
+				return JptJaxbUiImages.JAXB_REGISTRY;
 			}
-			return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_CLASS);
+			return JptJaxbUiImages.JAXB_CLASS;
 		}
 		
 		@Override

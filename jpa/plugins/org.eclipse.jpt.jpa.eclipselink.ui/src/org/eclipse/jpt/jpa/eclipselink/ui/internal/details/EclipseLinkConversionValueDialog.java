@@ -10,51 +10,57 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Set;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Clients can use this dialog to prompt the user for SecondaryTable settings.
- * Use the following once the dialog is closed:
- *     @see #getSelectedTable()
- *     @see #getSelectedCatalog()
- *     @see #getSelectedSchema()
- * @version 2.1
- * @since 2.1
- */
-public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLinkConversionValueStateObject> {
-
+public class EclipseLinkConversionValueDialog
+	extends ValidatingDialog<EclipseLinkConversionValueStateObject>
+{
+	private final EclipseLinkObjectTypeConverter objectTypeConverter;
+	
 	/**
-	 * when creating a new EclipseLinkConversionValue, 'conversionValue' will be null
+	 * This will be <code>null</code> when creating a new conversion value.
 	 */
 	private final EclipseLinkConversionValue conversionValue;
 
-	private EclipseLinkObjectTypeConverter objectTypeConverter;
-	
-	// ********** constructors **********
 
 	/**
-	 * Use this constructor to create a new conversion value
+	 * Use this constructor to create a <em>new</em> conversion value.
 	 */
-	public EclipseLinkConversionValueDialog(Shell parent, EclipseLinkObjectTypeConverter objectTypeConverter) {
-		this(parent,objectTypeConverter, null);
+	public EclipseLinkConversionValueDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			EclipseLinkObjectTypeConverter objectTypeConverter) {
+		this(parentShell, resourceManager, objectTypeConverter, null);
 	}
 
 	/**
-	 * Use this constructor to edit an existing conversion value
+	 * Use this constructor to edit an <em>existing</em> conversion value.
 	 */
-	public EclipseLinkConversionValueDialog(Shell parent, EclipseLinkObjectTypeConverter objectTypeConverter, EclipseLinkConversionValue conversionValue) {
-		super(parent);
+	public EclipseLinkConversionValueDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			EclipseLinkObjectTypeConverter objectTypeConverter,
+			EclipseLinkConversionValue conversionValue) {
+		super(parentShell, resourceManager, buildTitle(conversionValue));
 		this.objectTypeConverter = objectTypeConverter;
 		this.conversionValue = conversionValue;
+	}
+
+	private static String buildTitle(EclipseLinkConversionValue conversionValue) {
+		return (conversionValue == null) ?
+				EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValue :
+				EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValue;
 	}
 
 	@Override
@@ -77,48 +83,34 @@ public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLi
 	// ********** open **********
 
 	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(this.getTitle());
-	}
-
-	@Override
-	protected String getTitle() {
-		return (this.isAddDialog()) ?
-						EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValue
-					:
-						EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValue;
-	}
-
-	@Override
 	protected String getDescriptionTitle() {
 		return (this.isAddDialog()) ?
-			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValueDescriptionTitle
-		:
+			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValueDescriptionTitle :
 			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValueDescriptionTitle;
 	}
 	
 	@Override
 	protected String getDescription() {
 		return (this.isAddDialog()) ?
-			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValueDescription
-		:
+			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValueDescription :
 			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValueDescription;
 	}
 	
 	@Override
 	protected DialogPane<EclipseLinkConversionValueStateObject> buildLayout(Composite container) {
-		return new ConversionValueDialogPane(container);
+		return new ConversionValueDialogPane(this.getSubjectHolder(), container, this.resourceManager);
 	}
 	
 	@Override
 	public void create() {
 		super.create();
+		this.getPane().selectAll();
+		this.getButton(OK).setEnabled(false);
+	}
 
-		ConversionValueDialogPane pane = (ConversionValueDialogPane) getPane();
-		pane.selectAll();
-
-		getButton(OK).setEnabled(false);
+	@Override
+	protected ConversionValueDialogPane getPane() {
+		return (ConversionValueDialogPane) super.getPane();
 	}
 
 
@@ -149,13 +141,18 @@ public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLi
 		return getSubject().getObjectValue();
 	}
 	
-	private class ConversionValueDialogPane extends DialogPane<EclipseLinkConversionValueStateObject> {
-
+	
+	static class ConversionValueDialogPane
+		extends DialogPane<EclipseLinkConversionValueStateObject>
+	{
 		private Text dataValueText;
 		private Text objectValueText;
 
-		ConversionValueDialogPane(Composite parent) {
-			super(EclipseLinkConversionValueDialog.this.getSubjectHolder(), parent);
+		ConversionValueDialogPane(
+				PropertyValueModel<EclipseLinkConversionValueStateObject> subjectModel,
+				Composite parentComposite,
+				ResourceManager resourceManager) {
+			super(subjectModel, parentComposite, resourceManager);
 		}
 
 		@Override

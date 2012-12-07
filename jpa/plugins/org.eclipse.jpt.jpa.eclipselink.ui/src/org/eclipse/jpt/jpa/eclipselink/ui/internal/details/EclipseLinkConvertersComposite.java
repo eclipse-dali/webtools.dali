@@ -124,48 +124,28 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 
 	protected EclipseLinkCustomConverterComposite getCustomConverterComposite(PageBook pageBook) {
 		if (this.converterComposite == null) {
-			this.converterComposite = new EclipseLinkCustomConverterComposite(
-				buildSelectedCustomConverterModel(),
-				pageBook,
-				getWidgetFactory()
-			);
-			registerSubPane(this.converterComposite);
+			this.converterComposite = new EclipseLinkCustomConverterComposite(this, this.buildSelectedCustomConverterModel(), pageBook);
 		}
 		return this.converterComposite;
 	}
 
 	protected EclipseLinkObjectTypeConverterComposite getObjectTypeConverterComposite(PageBook pageBook) {
 		if (this.objectTypeConverterComposite == null) {
-			this.objectTypeConverterComposite = new EclipseLinkObjectTypeConverterComposite(
-				buildSelectedObjectTypeConverterModel(),
-				pageBook,
-				getWidgetFactory()
-			);
-			registerSubPane(this.objectTypeConverterComposite);
+			this.objectTypeConverterComposite = new EclipseLinkObjectTypeConverterComposite(this, this.buildSelectedObjectTypeConverterModel(), pageBook);
 		}
 		return this.objectTypeConverterComposite;
 	}
 		
 	protected EclipseLinkStructConverterComposite getStructConverterComposite(PageBook pageBook) {
 		if (this.structConverterComposite == null) {
-			this.structConverterComposite = new EclipseLinkStructConverterComposite(
-				buildSelectedStructConverterModel(),
-				pageBook,
-				getWidgetFactory()
-			);
-			registerSubPane(this.structConverterComposite);
+			this.structConverterComposite = new EclipseLinkStructConverterComposite(this, this.buildSelectedStructConverterModel(), pageBook);
 		}
 		return this.structConverterComposite;
 	}
 
 	protected EclipseLinkTypeConverterComposite getTypeConverterComposite(PageBook pageBook) {
 		if (this.typeConverterComposite == null) {
-			this.typeConverterComposite = new EclipseLinkTypeConverterComposite(
-				buildSelectedTypeConverterModel(),
-				pageBook,
-				getWidgetFactory()
-			);
-			registerSubPane(this.typeConverterComposite);
+			this.typeConverterComposite = new EclipseLinkTypeConverterComposite(this, this.buildSelectedTypeConverterModel(), pageBook);
 		}
 		return this.typeConverterComposite;
 	}
@@ -225,7 +205,7 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 	}
 
 	protected EclipseLinkConverterDialog buildEclipseLinkConverterDialog() {
-		return new EclipseLinkConverterDialog(this.getShell(), this.getSubject());
+		return new EclipseLinkConverterDialog(this.getShell(), this.getResourceManager(), this.getSubject());
 	}
 
 	protected EclipseLinkConverter addEclipseLinkConverterFromDialog(EclipseLinkConverterDialog dialog) {

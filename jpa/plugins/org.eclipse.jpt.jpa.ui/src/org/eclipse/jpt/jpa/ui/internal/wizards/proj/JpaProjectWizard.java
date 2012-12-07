@@ -11,9 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.proj;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.proj.model.JpaProjectCreationDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -37,12 +36,12 @@ public class JpaProjectWizard
 	
 	@Override
 	protected ImageDescriptor getDefaultPageImageDescriptor() {
-		return JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.JPA_WIZ_BANNER);
+		return JptJpaUiImages.JPA_PROJECT_BANNER;
 	}
 	
 	@Override
 	protected IWizardPage createFirstPage() {
-		return new JpaProjectWizardFirstPage(model, "first.page"); //$NON-NLS-1$ 
+		return new JpaProjectWizardFirstPage(this.model, "first.page"); //$NON-NLS-1$ 
 	}
 	
 	@Override
@@ -52,11 +51,11 @@ public class JpaProjectWizard
 	
 	@Override
 	protected IFacetedProjectTemplate getTemplate() {
-		return ProjectFacetsManager.getTemplate("jpt.jpa.template");
+		return ProjectFacetsManager.getTemplate("jpt.jpa.template"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected String getFinalPerspectiveID() {
-		return "org.eclipse.jpt.ui.jpaPerspective";
+		return "org.eclipse.jpt.ui.jpaPerspective"; //$NON-NLS-1$
 	}
 }

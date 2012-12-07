@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
@@ -28,12 +29,12 @@ public class JavaManyToOneMapping2_0Composite
 	extends AbstractManyToOneMapping2_0Composite<JavaManyToOneMapping, JavaManyToOneRelationship2_0>
 {
 	public JavaManyToOneMapping2_0Composite(
-			PropertyValueModel<? extends JavaManyToOneMapping> subjectHolder,
+			PropertyValueModel<? extends JavaManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-	        WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	

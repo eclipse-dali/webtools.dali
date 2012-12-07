@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.ui.tests.internal;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.common.core.tests.BundleActivatorTest;
+import org.eclipse.jpt.common.ui.tests.ImageDescriptorTest;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.tests.internal.platform.JptJpaUiPlatformTests;
 
 // TODO we need to add BundleActivatorTests for:
@@ -26,6 +28,7 @@ public class JptJpaUiTests {
 		TestSuite suite = new TestSuite(JptJpaUiTests.class.getPackage().getName());
 		suite.addTest(JptJpaUiPlatformTests.suite());
 		suite.addTest(new BundleActivatorTest(JpaPlatformUi.class));
+		suite.addTest(new ImageDescriptorTest(JptJpaUiImages.class));
 		return suite;
 	}
 

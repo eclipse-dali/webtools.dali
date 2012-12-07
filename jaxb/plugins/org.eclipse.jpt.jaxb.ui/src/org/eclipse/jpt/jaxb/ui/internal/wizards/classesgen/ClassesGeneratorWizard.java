@@ -23,6 +23,9 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -35,7 +38,7 @@ import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
@@ -56,6 +59,7 @@ public class ClassesGeneratorWizard
 
 	private IJavaProject javaProject;
 	private IFile preselectedXsdFile;
+	private ResourceManager resourceManager;
 	protected IStructuredSelection selection;
 	
 	private String destinationFolder;
@@ -93,11 +97,12 @@ public class ClassesGeneratorWizard
 	
 	// ********** IWorkbenchWizard implementation  **********
 	
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+	public void init(IWorkbench workbench, IStructuredSelection sel) {
+		this.resourceManager = new LocalResourceManager(JFaceResources.getResources(workbench.getDisplay()));
+		this.selection = sel;
 		
 		this.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
-		this.setDefaultPageImageDescriptor(JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.CLASSES_GEN_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptJaxbUiImages.CLASSES_GEN_BANNER);
 		this.setNeedsProgressMonitor(true);
 	}
 	
@@ -123,7 +128,7 @@ public class ClassesGeneratorWizard
 		}
 		
 		if (this.preselectedXsdFile == null) {
-			this.schemaWizardPage = new SchemaWizardPage(this.selection);
+			this.schemaWizardPage = new SchemaWizardPage(this.selection, this.resourceManager);
 			this.addPage(this.schemaWizardPage);
 		}
 		
@@ -265,7 +270,7 @@ public class ClassesGeneratorWizard
     }
 	
     private ClassesGeneratorWizardPage buildClassesGeneratorPage() {
-		return new ClassesGeneratorWizardPage();
+		return new ClassesGeneratorWizardPage(this.resourceManager);
 	}
 	
 	private ClassesGeneratorOptionsWizardPage buildClassesGeneratorOptionsPage() {
@@ -410,6 +415,12 @@ public class ClassesGeneratorWizard
 				JptJaxbUiMessages.ClassesGeneratorWizard_errorDialogTitle,
 				message
 			);
+	}
+
+	@Override
+	public void dispose() {
+		this.resourceManager.dispose();
+		super.dispose();
 	}
 	
 	static class OverwriteConfirmerDialog extends OptionalMessageDialog {

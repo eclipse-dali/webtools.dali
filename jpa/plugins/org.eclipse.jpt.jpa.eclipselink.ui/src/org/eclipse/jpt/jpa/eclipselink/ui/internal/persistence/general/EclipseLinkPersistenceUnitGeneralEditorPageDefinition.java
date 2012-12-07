@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
@@ -40,20 +41,20 @@ public class EclipseLinkPersistenceUnitGeneralEditorPageDefinition
 		super();
 	}
 
-	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new EclipseLinkPersistenceUnitGeneralEditorPage(this.buildPersistenceUnitModel(jpaRootStructureNodeModel), parent, widgetFactory);
+	public ImageDescriptor getTitleImageDescriptor() {
+		return PersistenceUnitGeneralEditorPageDefinition.instance().getTitleImageDescriptor();
 	}
 
-	public String getPageText() {
-		return PersistenceUnitGeneralEditorPageDefinition.instance().getPageText();
-	}
-
-	public ImageDescriptor getPageImageDescriptor() {
-		return PersistenceUnitGeneralEditorPageDefinition.instance().getPageImageDescriptor();
+	public String getTitleText() {
+		return PersistenceUnitGeneralEditorPageDefinition.instance().getTitleText();
 	}
 
 	public String getHelpID() {
 		return PersistenceUnitGeneralEditorPageDefinition.instance().getHelpID();
+	}
+
+	@Override
+	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new EclipseLinkPersistenceUnitGeneralEditorPage(persistenceUnitModel, parent, widgetFactory, resourceManager);
 	}
 }

@@ -43,7 +43,7 @@ If you already have a JPA project, you  may skip this step by clicking the &quot
 If not, select <b>Window-&gt;Open Perspective-&gt;Other</b> in the menubar at the top of the workbench. In the Select Perspectives dialog, select <b>JPA Development</b> and click OK. This step changes the perspective to set up the Eclipse workbench for JPA development.
 You can click the &quot;Click to Perform&quot; button to have the &quot;Persistence&quot; perspective opened automatically.
       </description>
-      <action class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" pluginId="org.eclipse.ui.cheatsheets" confirm="false" param1="org.eclipse.jpt.ui.PersistencePerspective">
+      <action class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" pluginId="org.eclipse.ui.cheatsheets" confirm="false" param1="org.eclipse.jpt.ui.jpaPerspective">
       </action>
    </item>
    <item title="Create a Java Class" dialog="false" skip="false">

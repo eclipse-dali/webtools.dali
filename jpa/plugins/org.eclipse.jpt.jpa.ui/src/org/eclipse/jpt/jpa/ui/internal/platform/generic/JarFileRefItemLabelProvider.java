@@ -9,32 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public class JarFileRefItemLabelProvider
 	extends AbstractItemExtendedLabelProvider<JarFileRef>
 {
-	protected final Image image;
-
-	public JarFileRefItemLabelProvider(JarFileRef jarFileRef, ItemLabelProvider.Manager manager) {
+	public JarFileRefItemLabelProvider(JarFileRef jarFileRef, ItemExtendedLabelProvider.Manager manager) {
 		super(jarFileRef, manager);
-		this.image = this.buildImage();
 	}
 
 	@Override
-	public Image getImage() {
-		return this.image;
-	}
-
-	protected Image buildImage() {
-		return JptJpaUiPlugin.instance().getImage(JptUiIcons.JAR_FILE_REF);
+	protected ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.JAR_FILE_REF;
 	}
 
 	@Override

@@ -21,11 +21,6 @@ import org.eclipse.jpt.common.utility.node.Problem;
 /**
  * This is the state object used by the <code>NewNameDialog</code>, which stores
  * the current name and validates it when it is modified.
- *
- * @see NewNameDialog
- *
- * @version 2.0
- * @since 2.0
  */
 @SuppressWarnings("nls")
 final class NewNameStateObject extends AbstractNode

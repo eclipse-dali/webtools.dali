@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.FileChooserComboPane;
@@ -29,17 +28,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * EclipseLinkLoggingComposite
- */
 public class EclipseLinkLoggingComposite<T extends Logging>
 	extends Pane<T>
 {
 	public EclipseLinkLoggingComposite(
-				PropertyValueModel<T> subjectHolder,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Pane<?> parent,
+			PropertyValueModel<T> subjectModel,
+			Composite parentComposite) {
+		super(parent, subjectModel, parentComposite);
 	}
 
 	@Override

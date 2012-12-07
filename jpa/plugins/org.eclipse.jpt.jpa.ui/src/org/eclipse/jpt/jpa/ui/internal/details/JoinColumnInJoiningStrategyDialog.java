@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,54 +9,48 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * This dialog is used to either create or edit a joing column that is located
- * on a relational mapping.
- *
- * @see JoinColumn
- * @see JoinColumnRelationshipStrategy
- * @see JoinColumnInJoiningStrategyStateObject
- * @see JoinColumnDialogPane
- *
- * @version 2.0
- * @since 2.0
- */
 public class JoinColumnInJoiningStrategyDialog 
-	extends JoinColumnDialog<JoinColumnInJoiningStrategyStateObject> 
+	extends BaseJoinColumnDialog<ReadOnlyJoinColumnRelationshipStrategy, ReadOnlyJoinColumn, JoinColumnInJoiningStrategyStateObject> 
 {
 	/**
-	 * Creates a new <code>AbstractJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param relationshipMapping The owner of the join column to edit or to
-	 * create
-	 * @param joinColumn The join column to edit or <code>null</code> if this is
-	 * used to create a new one
+	 * Use this constructor to create a <em>new</em> join column.
 	 */
-	JoinColumnInJoiningStrategyDialog(
-		Shell parent,
-	    ReadOnlyJoinColumnRelationshipStrategy joinColumnOwner,
-	    ReadOnlyJoinColumn joinColumn) {
+	protected JoinColumnInJoiningStrategyDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			ReadOnlyJoinColumnRelationshipStrategy strategy) {
+		super(parentShell, resourceManager, strategy);
+	}
 
-		super(parent, joinColumnOwner, joinColumn);
+	/**
+	 * Use this constructor to edit an <em>existing</em> join column.
+	 */
+	protected JoinColumnInJoiningStrategyDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			ReadOnlyJoinColumnRelationshipStrategy strategy,
+			ReadOnlyJoinColumn joinColumn) {
+		super(parentShell, resourceManager, strategy, joinColumn);
 	}
 
 	@Override
 	protected JoinColumnInJoiningStrategyStateObject buildStateObject() {
-		return new JoinColumnInJoiningStrategyStateObject(
-			getOwner(),
-			getJoinColumn()
-		);
+		return new JoinColumnInJoiningStrategyStateObject(this.getOwner(), this.getJoinColumn());
 	}
 
 	@Override
-	protected JoinColumnRelationshipStrategy getOwner() {
-		return (JoinColumnRelationshipStrategy) super.getOwner();
+	protected DialogPane<?> buildLayout(Composite container) {
+		return new JoinColumnDialogPane<JoinColumnInJoiningStrategyStateObject>(
+				this.getSubjectHolder(),
+				container,
+				this.resourceManager
+			);
 	}
 }

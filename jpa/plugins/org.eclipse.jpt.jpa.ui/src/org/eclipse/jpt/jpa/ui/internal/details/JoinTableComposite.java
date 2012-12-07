@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -22,8 +21,8 @@ import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -35,78 +34,20 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |         ---------------------------------------------------------------   |
- * |   Name: |                                                           |v|   |
- * |         ---------------------------------------------------------------   |
- * |                                                                           |
- * | - Join Columns ---------------------------------------------------------- |
- * | |                                                                       | |
- * | | x Override Default                                                    | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | JoinColumnsComposite                                              | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - Inverse Join Columns -------------------------------------------------- |
- * | |                                                                       | |
- * | | x Override Default                                                    | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | JoinColumnsComposite                                              | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see JoinTable
- * @see JoinTableJoiningStrategyPane
- * @see JoinColumnsComposite
- *
- * @version 2.1
- * @since 1.0
- */
 public class JoinTableComposite
 	extends ReferenceTableComposite<ReadOnlyJoinTable>
 {
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 
 	private JoinColumnsComposite<ReadOnlyJoinTable> inverseJoinColumnsComposite;
-	/**
-	 * Creates a new <code>JoinTableComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
+
+
 	public JoinTableComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyJoinTable> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyJoinTable> tableModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent) {
-
-		super(parentPane, subjectHolder, enabledModel, parent);
-	}
-
-	/**
-	 * Creates a new <code>JoinTableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IJoinTable</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JoinTableComposite(PropertyValueModel<? extends ReadOnlyJoinTable> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+			Composite parentComposite) {
+		super(parentPane, tableModel, enabledModel, parentComposite);
 	}
 
 	@Override
@@ -184,8 +125,7 @@ public class JoinTableComposite
 
 	JoinColumn addInverseJoinColumn(ReadOnlyJoinTable joinTable) {
 
-		InverseJoinColumnInJoinTableDialog dialog =
-			new InverseJoinColumnInJoinTableDialog(getShell(), joinTable, null);
+		InverseJoinColumnInJoinTableDialog dialog = new InverseJoinColumnInJoinTableDialog(this.getShell(), this.getResourceManager(), joinTable);
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();
@@ -238,8 +178,7 @@ public class JoinTableComposite
 
 	void editInverseJoinColumn(ReadOnlyJoinColumn joinColumn) {
 
-		InverseJoinColumnInJoinTableDialog dialog =
-			new InverseJoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
+		InverseJoinColumnInJoinTableDialog dialog = new InverseJoinColumnInJoinTableDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 
 
 		dialog.setBlockOnOpen(true);

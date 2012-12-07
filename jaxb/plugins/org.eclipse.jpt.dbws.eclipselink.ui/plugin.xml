@@ -40,7 +40,7 @@
 			name="%generateDbwsFromXmlName"
  			category="org.eclipse.jpt.dbws"
  			class="org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen.DbwsGeneratorWizard"
-			icon="icons/full/etool16/newclient_webserv_wiz.gif">
+			icon="$nl$/images/buttons/new-web-services-client.gif">
 				<description>%generateDbwsFromXmlDesc</description>
 		</wizard>
 
@@ -52,7 +52,7 @@
 
 		<!-- contributions to the "Generate" submenu -->
 		<objectContribution
-			id="org.eclipse.jpt.ui.xsdFileActions"
+			id="org.eclipse.jpt.dbws.eclipelink.ui.xsdFileActions"
 			objectClass="org.eclipse.core.resources.IFile"
 			nameFilter="*builder.xml">
 			

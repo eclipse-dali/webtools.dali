@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
@@ -23,24 +23,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-/**
- * The pane used for an EclipseLink Java Mapped Superclass.
- *
- * @see EclipseLinkMappedSuperclass
- * @see EclipselinkJpaUiFactory - The factory creating this pane
- *
- * @version 3.3
- * @since 3.3
- */
 public class JavaEclipseLinkMappedSuperclass2_1Composite
 	extends AbstractJavaEclipseLinkMappedSuperclassComposite
 {
 	public JavaEclipseLinkMappedSuperclass2_1Composite(
-			PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

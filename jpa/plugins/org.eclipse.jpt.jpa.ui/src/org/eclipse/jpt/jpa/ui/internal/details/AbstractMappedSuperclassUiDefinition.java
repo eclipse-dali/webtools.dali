@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractMappedSuperclassUiDefinition<M, T extends MappedSuperclass>
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractMappedSuperclassUiDefinition<M, T extends MappedSu
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.MAPPED_SUPERCLASS;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.MAPPED_SUPERCLASS;
 	}
 }

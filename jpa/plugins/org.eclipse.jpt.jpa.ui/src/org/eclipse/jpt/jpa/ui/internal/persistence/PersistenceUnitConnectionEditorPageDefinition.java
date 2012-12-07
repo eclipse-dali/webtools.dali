@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -47,12 +47,12 @@ public class PersistenceUnitConnectionEditorPageDefinition
 		super();
 	}
 
-	public String getPageText() {
-		return JptUiPersistenceMessages.PersistenceUnitConnectionComposite_connection;
+	public ImageDescriptor getTitleImageDescriptor() {
+		return null;
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
+	public String getTitleText() {
+		return JptUiPersistenceMessages.PersistenceUnitConnectionComposite_connection;
 	}
 
 	public String getHelpID() {
@@ -60,7 +60,7 @@ public class PersistenceUnitConnectionEditorPageDefinition
 	}
 
 	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new PersistenceUnitConnectionEditorPage(this.buildPersistenceUnitModel(jpaRootStructureNodeModel), parent, widgetFactory);
+	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new PersistenceUnitConnectionEditorPage(persistenceUnitModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

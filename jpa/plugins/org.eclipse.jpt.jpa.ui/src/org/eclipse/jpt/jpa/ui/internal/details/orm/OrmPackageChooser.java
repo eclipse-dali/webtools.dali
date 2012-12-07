@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EntityMappings
- * @see EntityMappingsDetailsPage - The parent container
+ * @see EntityMappingsDetailsPageManager - The parent container
  * @see PackageChooserPane
  *
  * @version 2.0

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -39,30 +40,16 @@ import org.eclipse.ui.forms.widgets.Section;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see MappedSuperclass
- * @see IdClassComposite
- * @see QueriesComposite
- *
- * @version 2.3
- * @since 2.3
  */
-
-public abstract class AbstractJavaMappedSuperclassComposite extends
-		AbstractMappedSuperclassComposite<JavaMappedSuperclass> {
-	/**
-	 * Creates a new <code>MappedSuperclassComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
+public abstract class AbstractJavaMappedSuperclassComposite
+	extends AbstractMappedSuperclassComposite<JavaMappedSuperclass>
+{
 	public AbstractJavaMappedSuperclassComposite(
-			PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override

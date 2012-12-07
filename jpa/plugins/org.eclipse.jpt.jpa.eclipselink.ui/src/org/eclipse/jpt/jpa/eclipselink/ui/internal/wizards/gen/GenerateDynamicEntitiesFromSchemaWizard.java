@@ -42,10 +42,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
-public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFromSchemaWizard 
-	implements INewWizard  {	
-	
-	public static final String HELP_CONTEXT_ID = JptJpaEclipseLinkUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
+public class GenerateDynamicEntitiesFromSchemaWizard
+	extends GenerateEntitiesFromSchemaWizard
+{	
+	private static final String HELP_CONTEXT_ID = JptJpaEclipseLinkUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
 	// ********** constructor **********
 

@@ -22,16 +22,17 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
+import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.AssociationRole;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenColumn;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -136,7 +137,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		
 		createAssociationLink = new Button(c, SWT.NONE);
 		createAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_newAssoc );
-		createAssociationLink.setImage( ImageRepository.getAddButtonImage(this.resourceManager) );
+		createAssociationLink.setImage(this.resourceManager.createImage(JptCommonUiImages.ADD_BUTTON));
 		createAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
 			public void widgetSelected(SelectionEvent e) {
@@ -149,7 +150,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		Color foreground = new Color(deleteAssociationLink.getDisplay(), 0,0,255);
 		deleteAssociationLink.setForeground(foreground);
 		foreground.dispose();
-		deleteAssociationLink.setImage( ImageRepository.getDeleteButtonImage(this.resourceManager));
+		deleteAssociationLink.setImage(this.resourceManager.createImage(JptCommonUiImages.DELETE_BUTTON));
 		deleteAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_delAssoc );
 		deleteAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
@@ -265,7 +266,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		LayoutUtil.setWidthHint(referrerRoleCascadeField.getTextControl(null), maxFieldWidth );
 		Button btn = referrerRoleCascadeField.getChangeControl(null);
 		GridData data = (GridData)btn.getLayoutData();
-		btn.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager) );
+		btn.setImage(this.resourceManager.createImage(JptCommonUiImages.BROWSE_BUTTON));
 		data.horizontalAlignment = SWT.BEGINNING;
 		data.widthHint = 30;
 		btn.setLayoutData(data);
@@ -384,7 +385,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		int maxFieldWidth = convertWidthInCharsToPixels(40);
 		LayoutUtil.setWidthHint(referencedRoleCascadeField.getTextControl(null), maxFieldWidth );
 		Button btn = referencedRoleCascadeField.getChangeControl(null);
-		btn.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager) );
+		btn.setImage(this.resourceManager.createImage(JptCommonUiImages.BROWSE_BUTTON));
 		GridData data = (GridData)btn.getLayoutData();
 		data.horizontalAlignment = SWT.BEGINNING;
 		data.widthHint = 30;
@@ -743,15 +744,17 @@ public class TableAssociationsWizardPage extends WizardPage {
 	}	
 	
 	private ORMGenCustomizer getCustomizer(){
-		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
-		return wizard.getCustomizer();
+		return this.getWizard().getCustomizer();
 	}
-	
-	
+
+	@Override
+	public GenerateEntitiesFromSchemaWizard getWizard() {
+		return (GenerateEntitiesFromSchemaWizard) super.getWizard();
+	}
+
     @Override
-    public final void performHelp() 
-    {
-        this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
+    public final void performHelp() {
+        this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
     }
     
 	protected final IWorkbenchHelpSystem getHelpSystem() {

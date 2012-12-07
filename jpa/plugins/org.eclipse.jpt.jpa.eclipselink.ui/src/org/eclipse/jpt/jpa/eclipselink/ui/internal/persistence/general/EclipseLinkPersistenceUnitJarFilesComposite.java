@@ -14,18 +14,17 @@ import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.persistence.ArchiveFileSelectionDialog;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitJarFilesComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.ArchiveFileSelectionDialog.DeploymentPathCalculator;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitJarFilesComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitJarFilesComposite
 	extends PersistenceUnitJarFilesComposite
 {
 	public EclipseLinkPersistenceUnitJarFilesComposite(
-			Pane<? extends PersistenceUnit> parentPane,
-			Composite parent) {
-
-		super(parentPane, parent);
+			Pane<? extends PersistenceUnit> parent,
+			Composite parentComposite) {
+		super(parent, parentComposite);
 	}
 	
 	

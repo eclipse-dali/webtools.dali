@@ -9,100 +9,61 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * This dialog is used to either create or edit a primary key join column that
- * is located on an entity.
- *
- * @see PrimaryKeyJoinColumn
- * @see Entity
- * @see PrimaryKeyJoinColumnStateObject
- * @see BaseJoinColumnDialogPane
- *
- * @version 2.0
- * @since 2.0
- */
-public class PrimaryKeyJoinColumnDialog extends BaseJoinColumnDialog<PrimaryKeyJoinColumnStateObject> {
-
+public class PrimaryKeyJoinColumnDialog
+	extends BaseJoinColumnDialog<Entity, PrimaryKeyJoinColumn, PrimaryKeyJoinColumnStateObject>
+{
 	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param entity The owner of the join column to create or where it is
-	 * located
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * Use this constructor to create a <em>new</em> join column.
 	 */
-	public PrimaryKeyJoinColumnDialog(Shell parent,
-	                                  Entity entity,
-	                                  PrimaryKeyJoinColumn joinColumn) {
-
-		super(parent, entity, joinColumn);
+	protected PrimaryKeyJoinColumnDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			Entity entity) {
+		this(parentShell, resourceManager, entity, null);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Use this constructor to edit an <em>existing</em> join column.
 	 */
+	protected PrimaryKeyJoinColumnDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			Entity entity,
+			PrimaryKeyJoinColumn joinColumn) {
+		super(parentShell, resourceManager, entity, joinColumn, buildTitle(joinColumn));
+	}
+
+	private static String buildTitle(PrimaryKeyJoinColumn joinColumn) {
+		return (joinColumn == null) ?
+				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_addTitle :
+				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_editTitle;
+	}
+
 	@Override
 	protected DialogPane<PrimaryKeyJoinColumnStateObject> buildLayout(Composite container) {
 		return new BaseJoinColumnDialogPane<PrimaryKeyJoinColumnStateObject>(
-			getSubjectHolder(),
-			container
-		);
+				this.getSubjectHolder(),
+				container,
+				this.resourceManager
+			);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected PrimaryKeyJoinColumnStateObject buildStateObject() {
-		return new PrimaryKeyJoinColumnStateObject(getOwner(), getJoinColumn());
+		return new PrimaryKeyJoinColumnStateObject(this.getOwner(), this.getJoinColumn());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getDescriptionTitle() {
-
-		if (getJoinColumn() == null) {
-			return JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_addDescriptionTitle;
-		}
-
-		return JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_editDescriptionTitle;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public PrimaryKeyJoinColumn getJoinColumn() {
-		return (PrimaryKeyJoinColumn) super.getJoinColumn();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected Entity getOwner() {
-		return (Entity) super.getOwner();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String getTitle() {
-
-		if (getJoinColumn() == null) {
-			return JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_addTitle;
-		}
-
-		return JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_editTitle;
+		return (this.getJoinColumn() == null) ?
+				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_addDescriptionTitle :
+				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_editDescriptionTitle;
 	}
 }

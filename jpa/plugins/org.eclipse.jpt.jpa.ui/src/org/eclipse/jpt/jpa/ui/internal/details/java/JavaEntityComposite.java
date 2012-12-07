@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -16,30 +17,15 @@ import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * The pane used for a Java entity.
- *
- * @see JavaEntity
- * @see JavaUiFactory - The factory creating this pane
- * @see JavaSecondaryTablesComposite
- *
- * @version 2.3
- * @since 1.0
- */
-public class JavaEntityComposite extends AbstractEntityComposite<JavaEntity>
+public class JavaEntityComposite
+	extends AbstractEntityComposite<JavaEntity>
 {
-	/**
-	 * Creates a new <code>JavaEntityComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>JavaEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaEntityComposite(PropertyValueModel<? extends JavaEntity> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public JavaEntityComposite(
+			PropertyValueModel<? extends JavaEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

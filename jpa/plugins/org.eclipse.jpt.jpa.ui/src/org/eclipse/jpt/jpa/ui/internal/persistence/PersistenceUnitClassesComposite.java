@@ -17,13 +17,14 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -31,12 +32,14 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -45,53 +48,22 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | Description                                                               |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | x Exclude Unlisted Mapped Classes                                         |
- * |                                                                           |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
- * @see AddRemoveListPane
- *
- * @version 2.3
- * @since 2.0
- */
 @SuppressWarnings("nls")
-public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
+public class PersistenceUnitClassesComposite
+	extends Pane<PersistenceUnit>
 {
-	/**
-	 * Creates a new <code>PersistenceUnitMappedClassesComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
-	public PersistenceUnitClassesComposite(Pane<? extends PersistenceUnit> parentPane,
-	                                             Composite parent) {
-
-		super(parentPane, parent);
+	public PersistenceUnitClassesComposite(
+			Pane<? extends PersistenceUnit> parent,
+			Composite parentComposite) {
+		super(parent, parentComposite);
 	}
 
 	@Override
@@ -100,10 +72,10 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		new AddRemoveListPane<PersistenceUnit, ClassRef>(
 			this,
 			container,
-			this.buildAdapter(),
+			this.buildAddRemovePaneAdapter(),
 			this.buildItemListHolder(),
 			this.buildSelectedItemsModel(),
-			this.buildLabelProvider(),
+			this.buildClassRefLabelProvider(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
 
@@ -117,7 +89,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	}
 
 
-	private ClassRef addMappedClass() {
+	protected ClassRef addMappedClass() {
 
 		IType type = chooseType();
 
@@ -140,7 +112,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		return false;
 	}
 
-	private Adapter<ClassRef> buildAdapter() {
+	private AddRemovePane.Adapter<ClassRef> buildAddRemovePaneAdapter() {
 		return new AddRemovePane.AbstractAdapter<ClassRef>() {
 			public ClassRef addNewItem() {
 				return addMappedClass();
@@ -201,9 +173,9 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	private PropertyValueModel<String> buildExcludeUnlistedMappedClassesStringHolder() {
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeUnlistedMappedClassesHolder()) {
 			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+			protected String transform(Boolean v) {
+				if (v != null) {
+					String defaultStringValue = v.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault, defaultStringValue);
 				}
 				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
@@ -226,42 +198,48 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			}
 		};
 	}
-	private ILabelProvider buildLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public Image getImage(Object element) {
-				ClassRef classRef = (ClassRef) element;
-				JavaPersistentType persistentType = classRef.getJavaPersistentType();
-				if (persistentType != null) {
-					return this.getImage(persistentType);
-				}
-				return JptJpaUiPlugin.instance().getImage(JptUiIcons.WARNING);
-			}
 
-			private Image getImage(JavaPersistentType persistentType) {
-				return this.getTypeMappingUiDefinition(persistentType).getImage();
-			}
+	private ILabelProvider buildClassRefLabelProvider() {
+		return new ResourceManagerLabelProvider<ClassRef>(
+				CLASS_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER,
+				CLASS_REF_LABEL_TEXT_TRANSFORMER,
+				this.getResourceManager()
+			);
+	}
 
-			private MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JavaPersistentType persistentType) {
-				return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
-			}
+	private static final Transformer<ClassRef, ImageDescriptor> CLASS_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER = new ClassRefLabelImageDescriptorTransformer();
+	/* CU private */ static class ClassRefLabelImageDescriptorTransformer
+		extends AbstractTransformer<ClassRef, ImageDescriptor>
+	{
+		@Override
+		protected ImageDescriptor transform_(ClassRef classRef) {
+			return this.getImageDescriptor(classRef.getJavaPersistentType());
+		}
 
-			private JpaPlatformUi getJpaPlatformUi(JavaPersistentType persistentType) {
-				return (JpaPlatformUi) persistentType.getJpaPlatform().getAdapter(JpaPlatformUi.class);
-			}
+		private ImageDescriptor getImageDescriptor(JavaPersistentType persistentType) {
+			return (persistentType != null) ?
+					this.getTypeMappingUiDefinition(persistentType).getImageDescriptor() :
+					JptCommonUiImages.WARNING;
+		}
 
-			@Override
-			public String getText(Object element) {
-				ClassRef classRef = (ClassRef) element;
-				String name = classRef.getClassName();
+		private MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JavaPersistentType persistentType) {
+			return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
+		}
 
-				if (name == null) {
-					name = JptUiPersistenceMessages.PersistenceUnitClassesComposite_mappedClassesNoName;
-				}
+		private JpaPlatformUi getJpaPlatformUi(JavaPersistentType persistentType) {
+			return (JpaPlatformUi) persistentType.getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		}
+	}
 
-				return name;
-			}
-		};
+	private static final Transformer<ClassRef, String> CLASS_REF_LABEL_TEXT_TRANSFORMER = new ClassRefLabelTextTransformer();
+	/* CU private */ static class ClassRefLabelTextTransformer
+		extends AbstractTransformer<ClassRef, String>
+	{
+		@Override
+		protected String transform_(ClassRef classRef) {
+			String name = classRef.getClassName();
+			return (name != null) ? name : JptUiPersistenceMessages.PersistenceUnitClassesComposite_mappedClassesNoName;
+		}
 	}
 
 	private ListValueModel<ClassRef> buildItemListHolder() {
@@ -276,12 +254,12 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		return new ListAspectAdapter<PersistenceUnit, ClassRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_CLASS_REFS_LIST) {
 			@Override
 			protected ListIterable<ClassRef> getListIterable() {
-				return subject.getSpecifiedClassRefs();
+				return this.subject.getSpecifiedClassRefs();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.getSpecifiedClassRefsSize();
+				return this.subject.getSpecifiedClassRefsSize();
 			}
 		};
 	}
@@ -328,7 +306,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		return null;
 	}
 
-	private IType findType(ClassRef classRef) {
+	protected IType findType(ClassRef classRef) {
 		String className = classRef.getClassName();
 
 		if (className != null) {
@@ -343,7 +321,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		return null;
 	}
 
-	private void openMappedClass(ClassRef classRef) {
+	protected void openMappedClass(ClassRef classRef) {
 
 		IType type = findType(classRef);
 

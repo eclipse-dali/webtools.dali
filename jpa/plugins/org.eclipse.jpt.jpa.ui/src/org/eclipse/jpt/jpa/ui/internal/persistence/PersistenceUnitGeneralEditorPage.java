@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -21,69 +22,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | - General --------------------------------------------------------------- |
- * |                         ------------------------------------------------- |
- * |   Name:                 | I                                             | |
- * |                         ------------------------------------------------- |
- * |                         ------------------------------------------------- |
- * |   Persistence Provider: |                                             |v| |
- * |                         ------------------------------------------------- |
- * |                                                                           |
- * |                                                                           |
- * | - Mapped Classes -------------------------------------------------------- |
- * |                                                                           |
- * |   Description                                                             |
- * |                                                                           |
- * |   ----------------------------------------------------------------------- |
- * |   |                                                                     | |
- * |   | PersistenceUnitMappedClassesComposite                               | |
- * |   |                                                                     | |
- * |   ----------------------------------------------------------------------- |
- * |                                                                           |
- * |                                                                           |
- * | - XML Mapping Files ----------------------------------------------------- |
- * |                                                                           |
- * |   Description                                                             |
- * |                                                                           |
- * |   ----------------------------------------------------------------------- |
- * |   |                                                                     | |
- * |   | PersistenceUnitMappingFilesComposite                                | |
- * |   |                                                                     | |
- * |   ----------------------------------------------------------------------- |
- * |                                                                           |
- * |                                                                           |
- * | - JAR Files ------------------------------------------------------------- |
- * |                                                                           |
- * |   Description                                                             |
- * |                                                                           |
- * |   ----------------------------------------------------------------------- |
- * |   |                                                                     | |
- * |   | PersistenceUnitJarFilesComposite                                    | |
- * |   |                                                                     | |
- * |   ----------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- * @see PersistenceUnitMappedClassesComposite
- * @see PersistenceUnitMappingFilesComposite
- * @see PersistenceUnitJarFilesComposite
- *
- * @version 3.3
- * @since 2.0
- */
-public class PersistenceUnitGeneralEditorPage extends Pane<PersistenceUnit> {
-	
+public class PersistenceUnitGeneralEditorPage
+	extends Pane<PersistenceUnit>
+{
 	public PersistenceUnitGeneralEditorPage(
 			PropertyValueModel<PersistenceUnit> subjectHolder,
             Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectHolder, parent, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -131,19 +78,19 @@ public class PersistenceUnitGeneralEditorPage extends Pane<PersistenceUnit> {
 		jarFilesSection.setClient(jarFilesComposite);
 	}
 
-	protected Control buildGeneralComposite(Composite parent) {
-		return new PersistenceUnitGeneralComposite(this, parent).getControl();
+	protected Control buildGeneralComposite(Composite parentComposite) {
+		return new PersistenceUnitGeneralComposite(this, parentComposite).getControl();
 	}
 
-	protected Control buildClassesComposite(Composite parent) {
-		return new PersistenceUnitClassesComposite(this, parent).getControl();
+	protected Control buildClassesComposite(Composite parentComposite) {
+		return new PersistenceUnitClassesComposite(this, parentComposite).getControl();
 	}
 
-	protected Control buildMappingFilesComposite(Composite parent) {
-		return new GenericPersistenceUnitMappingFilesComposite(this, parent).getControl();
+	protected Control buildMappingFilesComposite(Composite parentComposite) {
+		return new GenericPersistenceUnitMappingFilesComposite(this, parentComposite).getControl();
 	}
 
-	protected Control buildJarFilesComposite(Composite parent) {
-		return new GenericPersistenceUnitJarFilesComposite(this, parent).getControl();
+	protected Control buildJarFilesComposite(Composite parentComposite) {
+		return new GenericPersistenceUnitJarFilesComposite(this, parentComposite).getControl();
 	}
 }

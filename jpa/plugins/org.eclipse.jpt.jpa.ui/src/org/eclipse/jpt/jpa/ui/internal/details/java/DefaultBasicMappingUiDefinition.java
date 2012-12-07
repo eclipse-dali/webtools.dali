@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -64,13 +65,7 @@ public class DefaultBasicMappingUiDefinition
 		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_linkLabel;
 	}
 
-	public JpaComposite buildAttributeMappingComposite(
-				JavaUiFactory factory,
-				PropertyValueModel<JavaBasicMapping> subjectHolder,
-				PropertyValueModel<Boolean> enabledModel,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-
-		return factory.createJavaBasicMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaBasicMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return factory.createJavaBasicMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

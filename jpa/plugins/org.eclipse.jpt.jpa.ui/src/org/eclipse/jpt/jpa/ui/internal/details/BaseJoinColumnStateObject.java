@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
@@ -367,8 +366,6 @@ public abstract class BaseJoinColumnStateObject
 	/**
 	 * Updates the given join column with the values contained in this state
 	 * object.
-	 *
-	 * @param joinColumn The join column to update
 	 */
 	public void updateJoinColumn(BaseJoinColumn jc) {
 

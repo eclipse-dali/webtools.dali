@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -30,31 +31,15 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * The pane used for an EclipseLink Java entity.
- *
- * @see JavaEclipseLinkEntity
- * @see EclipselinkJpaUiFactory - The factory creating this pane
- *
- * @version 2.3
- * @since 2.1
- */
 public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntity>
 	extends AbstractEntityComposite<T>
 {
-	/**
-	 * Creates a new <code>EclipseLinkJavaEntityComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>JavaEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	protected AbstractJavaEclipseLinkEntityComposite(
-			PropertyValueModel<? extends T> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends T> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	

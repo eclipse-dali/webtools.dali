@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -42,38 +43,19 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | - Properties ------------------------------------------------------------ |
- * |                                                                           |
- * |   Description                                                             |
- * |                                                                           |
- * |   ----------------------------------------------------------------------- |
- * |   |                                                                     | |
- * |   | AddRemoveTablePane                                                  | |
- * |   |                                                                     | |
- * |   ----------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- *
- * @version 3.3
- * @since 2.0
- */
 public class PersistenceUnitPropertiesEditorPage
 	extends Pane<PersistenceUnit> 
 {
 	private ModifiableCollectionValueModel<PersistenceUnit.Property> selectedPropertiesModel;
 	private TablePane tablePane;
 
-	public PersistenceUnitPropertiesEditorPage(
-			PropertyValueModel<PersistenceUnit> subjectModel,
-            Composite parent,
-            WidgetFactory widgetFactory) {
 
-		super(subjectModel, parent, widgetFactory);
+	public PersistenceUnitPropertiesEditorPage(
+			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
+            Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(persistenceUnitModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

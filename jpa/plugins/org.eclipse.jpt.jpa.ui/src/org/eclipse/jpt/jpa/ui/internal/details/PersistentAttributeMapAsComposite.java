@@ -28,24 +28,11 @@ import org.eclipse.swt.widgets.Composite;
 public class PersistentAttributeMapAsComposite 
 	extends MapAsComposite<ReadOnlyPersistentAttribute>
 {
-	/**
-	 * Creates a new <code>PersistentAttributeMapAsComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
-	public PersistentAttributeMapAsComposite(
-			Pane<? extends ReadOnlyPersistentAttribute> parentPane,
-            Composite parent) {
-		
+	public PersistentAttributeMapAsComposite(Pane<? extends ReadOnlyPersistentAttribute> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
-	public PersistentAttributeMapAsComposite(
-			Pane<? extends ReadOnlyPersistentAttribute> parentPane,
-	        Composite parent,
-	        PropertyValueModel<Boolean> enabledModel) {
-
+	public PersistentAttributeMapAsComposite(Pane<? extends ReadOnlyPersistentAttribute> parentPane, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 		super(parentPane, parent, enabledModel);
 	}
 	

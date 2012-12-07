@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
@@ -355,13 +356,17 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	}
 
 	protected ORMGenCustomizer getCustomizer() {
-		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
-		return wizard.getCustomizer();
-	}	
+		return this.getWizard().getCustomizer();
+	}
+
+	@Override
+	public GenerateEntitiesFromSchemaWizard getWizard() {
+		return (GenerateEntitiesFromSchemaWizard) super.getWizard();
+	}
 
 	@Override
     public final void performHelp() {
-        this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
+        this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
     }
     
 	protected final IWorkbenchHelpSystem getHelpSystem() {

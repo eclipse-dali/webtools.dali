@@ -118,7 +118,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * model already contains other collection value models.
 	 */
 	public static <E1 extends CollectionValueModel<? extends E2>, E2> CompositeCollectionValueModel<E1, E2> forModels(CollectionValueModel<E1> collectionModel) {
-		return new CompositeCollectionValueModel<E1, E2>(collectionModel, Transformer.Null.<E1>instance());
+		return new CompositeCollectionValueModel<E1, E2>(collectionModel, Transformer.Non.<E1>instance());
 	}
 
 	/**

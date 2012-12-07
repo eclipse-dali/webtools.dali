@@ -13,6 +13,7 @@ Require-Bundle:
  org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.jpt.common.core.tests,
+ org.eclipse.jpt.common.ui.tests,
  org.eclipse.jpt.jpa.core.tests,
  org.eclipse.jpt.jpa.core.tests.extension.resource,
  org.eclipse.jpt.common.utility,

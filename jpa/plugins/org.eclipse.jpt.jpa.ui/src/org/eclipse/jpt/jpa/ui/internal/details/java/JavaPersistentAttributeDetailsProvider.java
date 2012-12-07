@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -50,10 +51,7 @@ public class JavaPersistentAttributeDetailsProvider
 				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 	
-	public JpaDetailsPageManager<JavaPersistentAttribute> buildDetailsPageManager(
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return new JavaPersistentAttributeDetailsPage(parent, widgetFactory);
+	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new JavaPersistentAttributeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 }

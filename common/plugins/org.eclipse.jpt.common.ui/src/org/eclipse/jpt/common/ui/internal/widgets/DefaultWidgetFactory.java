@@ -25,190 +25,124 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * This <code>WidgetFactory</code> simply creates plain SWT widgets.
- *
- * @version 2.0
- * @since 2.0
+ * This widget factory simply creates plain SWT widgets.
+ * 
+ * @see FormWidgetFactory
  */
-public class DefaultWidgetFactory implements WidgetFactory {
+public final class DefaultWidgetFactory
+	implements WidgetFactory
+{
+	public static WidgetFactory instance() {
+		return INSTANCE;
+	}
 
-	/**
-	 * The singleton instance of this <code>IWidgetFactory</code>
-	 */
 	private static final WidgetFactory INSTANCE = new DefaultWidgetFactory();
 
 	/**
-	 * Creates a new <code>DefaultWidgetFactory</code>.
+	 * Ensure singleton.
 	 */
 	private DefaultWidgetFactory() {
 		super();
 	}
 
-	/**
-	 * Returns the singleton instance of this <code>IWidgetFactory</code>.
-	 *
-	 * @return The singleton instance of this <code>IWidgetFactory</code>
-	 */
-	public static WidgetFactory instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public Button createButton(Composite parent, String text) {
-		return this.createButton(parent, text, SWT.NULL);
+		return this.createButton(parent, text, SWT.NONE);
 	}
 
-	/**
-	 * Creates a new button.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @param style The style to apply to the button, which determines its type:
-	 * toggle, push, check box, radio
-	 * @return The newly created <code>Button</code>
-	 */
-	private Button createButton(Composite parent, String text, int style) {
-		Button button = new Button(parent, style);
-		button.setText(text);
-		return button;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public Button createCheckBox(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.CHECK);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Combo createCombo(Composite parent) {
-		return new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
+		return this.createCombo(parent, SWT.READ_ONLY);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Composite createComposite(Composite parent) {
-		return new Composite(parent, SWT.NULL);
+		return new Composite(parent, SWT.NONE);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	public DateTime createDateTime(Composite parent, int style) {
 		return new DateTime(parent, style);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Combo createEditableCombo(Composite parent) {
-		return new Combo(parent, SWT.BORDER);
+		return this.createCombo(parent, SWT.NONE);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Group createGroup(Composite parent, String title) {
-		Group group = new Group(parent, SWT.NULL);
+		Group group = new Group(parent, SWT.NONE);
 		group.setText(title);
 		return group;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Hyperlink createHyperlink(Composite parent, String text) {
-		Hyperlink hyperlink = new Hyperlink(parent, SWT.NULL);
+		Hyperlink hyperlink = new Hyperlink(parent, SWT.NONE);
 		hyperlink.setText(text);
 		return hyperlink;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Label createLabel(Composite parent, String labelText) {
 		Label label = new Label(parent, SWT.WRAP);
 		label.setText(labelText);
 		return label;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public List createList(Composite parent, int style) {
 		return new List(parent, SWT.BORDER | style);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Text createMultiLineText(Composite parent) {
-		return new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		return this.createText(parent, SWT.MULTI | SWT.V_SCROLL);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Text createPasswordText(Composite parent) {
-		return new Text(parent, SWT.BORDER | SWT.PASSWORD);
+		return this.createText(parent, SWT.PASSWORD);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Button createPushButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.PUSH);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Button createRadioButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.RADIO);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Section createSection(Composite parent, int style) {
 		return new Section(parent, style);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Spinner createSpinner(Composite parent) {
-		return new Spinner(parent, SWT.NULL);
+		return new Spinner(parent, SWT.NONE);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Table createTable(Composite parent, int style) {
 		return new Table(parent, SWT.BORDER | style);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Text createText(Composite parent) {
-		return new Text(parent, SWT.BORDER);
+		return this.createText(parent, SWT.NONE);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Button createTriStateCheckBox(Composite parent, String text) {
 		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);
 		return checkBox.getCheckBox();
 	}
 
+	private Button createButton(Composite parent, String text, int style) {
+		Button button = new Button(parent, style);
+		button.setText(text);
+		return button;
+	}
+
+	private Combo createCombo(Composite parent, int style) {
+		return new Combo(parent, style | SWT.BORDER);
+	}
+
+	private Text createText(Composite parent, int style) {
+		return new Text(parent, style | SWT.BORDER);
+	}
+
 	public void dispose() {
-		//nothing to dispose
+		// NOP
 	}
 }

@@ -16,6 +16,7 @@ import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -37,6 +38,7 @@ public class SchemaWizardPage
 	protected static final String[] browseXSDFilterExtensions = {".xsd"}; //$NON-NLS-1$
 	
 	private final IStructuredSelection initialSelection;
+	private final ResourceManager resourceManager;
 	private IProject targetProject;
 	
 	protected SelectFileOrXMLCatalogIdPanel selectSourcePanel;
@@ -60,10 +62,11 @@ public class SchemaWizardPage
     
 	// ********** constructor **********
     
-	SchemaWizardPage(IStructuredSelection selection) {
+	SchemaWizardPage(IStructuredSelection selection, ResourceManager resourceManager) {
 		super("SchemaWizardPage"); //$NON-NLS-1$
 		
 		this.initialSelection = selection;
+		this.resourceManager = resourceManager;
 	}
 	
 	
@@ -76,7 +79,7 @@ public class SchemaWizardPage
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		this.setControl(composite);
 		
-		this.selectSourcePanel = new SelectFileOrXMLCatalogIdPanel(composite, this.initialSelection);
+		this.selectSourcePanel = new SelectFileOrXMLCatalogIdPanel(composite, this.initialSelection, this.resourceManager);
 		this.selectSourcePanel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		SelectFileOrXMLCatalogIdPanel.PanelListener listener = new SelectFileOrXMLCatalogIdPanel.PanelListener() {
@@ -207,7 +210,7 @@ public class SchemaWizardPage
 		return errorMessage;
 	}
 	
-	private void selectFileOrXMLCatalogIdPanelChanged() {
+	void selectFileOrXMLCatalogIdPanelChanged() {
 		String errorMessage = this.computeErrorMessage();
 		this.setErrorMessage(errorMessage);
 		this.setPageComplete(this.isPageComplete());

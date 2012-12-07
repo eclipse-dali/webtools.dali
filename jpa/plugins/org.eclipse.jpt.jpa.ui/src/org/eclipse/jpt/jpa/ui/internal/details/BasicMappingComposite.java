@@ -9,73 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TemporalTypeComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EnumTypeComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OptionalComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | LobComposite                                                          | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see BasicMapping
- * @see ColumnComposite
- * @see EnumTypeComboViewer
- * @see FetchTypeComboViewer
- * @see LobComposite
- * @see OptionalTriStateCheckBox
- * @see TemporalTypeCombo
- *
- * @version 2.0
- * @since 1.0
- */
-public class BasicMappingComposite extends AbstractBasicMappingComposite<BasicMapping>
+public class BasicMappingComposite
+	extends AbstractBasicMappingComposite<BasicMapping>
 {
-	/**
-	 * Creates a new <code>BasicMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IBasicMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public BasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
-								 PropertyValueModel<Boolean> enabledModel,
-	                             Composite parent,
-	                             WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public BasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
-
 }

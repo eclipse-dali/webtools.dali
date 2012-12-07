@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -30,30 +31,17 @@ import org.eclipse.swt.widgets.Control;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see VersionMapping
- * @see ColumnComposite
- * @see TemporalTypeCombo
- *
- * @version 2.3
- * @since 1.0
  */
 public class VersionMappingComposite 
 	extends AbstractVersionMappingComposite<VersionMapping>
 {
-	/**
-	 * Creates a new <code>VersionMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IVersionMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public VersionMappingComposite(PropertyValueModel<? extends VersionMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-									WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public VersionMappingComposite(
+			PropertyValueModel<? extends VersionMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

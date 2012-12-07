@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
-import org.eclipse.jpt.jaxb.eclipselink.ui.internal.JptJaxbEclipseLinkUiIcons;
+import org.eclipse.jpt.jaxb.eclipselink.ui.JptJaxbEclipseLinkUiImages;
 import org.eclipse.jpt.jaxb.eclipselink.ui.internal.plugin.JptJaxbEclipseLinkUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorItemLabelProviderFactory;
 
@@ -54,9 +54,10 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	
 	protected ItemExtendedLabelProvider buildOxmFileLabelProvider(OxmFile file, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbEclipseLinkUiPlugin.instance().getImage(JptJaxbEclipseLinkUiIcons.OXM_FILE),
+					JptJaxbEclipseLinkUiImages.OXM_FILE,
 					buildOxmFileText(file),
-					buildOxmFileDescription(file)
+					buildOxmFileDescription(file),
+					manager
 				);
 	}
 	
@@ -64,7 +65,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 		StringBuffer text = new StringBuffer();
 		IPath path = file.getOxmResource().getFile().getRawLocation();
 		text.append(path.lastSegment());
-		text.append(" - ");
+		text.append(" - "); //$NON-NLS-1$
 		text.append(path.removeLastSegments(1).toOSString());
 		return text.toString();
 	}

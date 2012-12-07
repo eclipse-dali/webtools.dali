@@ -16,12 +16,12 @@ import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createText;
 import java.util.ArrayList;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -93,7 +93,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		});
 		
 		Button browser1 = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		browser1.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
+		browser1.setImage(this.resourceManager.createImage(JptCommonUiImages.BROWSE_BUTTON));
 
 		browser1.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
@@ -118,7 +118,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		});
 		
 		Button browser2 = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		browser2.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
+		browser2.setImage(this.resourceManager.createImage(JptCommonUiImages.BROWSE_BUTTON));
 
 		browser2.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
@@ -143,7 +143,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		joinTableTextField.setEnabled(false);
 
 		joinTableBrowse = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		joinTableBrowse.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
+		joinTableBrowse.setImage(this.resourceManager.createImage(JptCommonUiImages.BROWSE_BUTTON));
 		joinTableBrowse.setEnabled(false);
 		
 		joinTableBrowse.addSelectionListener(new SelectionListener(){

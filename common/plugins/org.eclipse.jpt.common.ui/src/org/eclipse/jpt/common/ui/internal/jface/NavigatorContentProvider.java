@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
@@ -28,6 +29,7 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
 public abstract class NavigatorContentProvider
 	implements ICommonContentProvider
 {
+	protected final ResourceManager resourceManager;
 	protected TreeStateProvider delegate;
 
 
@@ -38,7 +40,16 @@ public abstract class NavigatorContentProvider
 	 */
 	protected NavigatorContentProvider() {
 		super();
+		this.resourceManager = this.buildResourceManager();
 	}
+
+	/**
+	 * Return a <em>local</em> resource manager to be used, typically, by the
+	 * item label providers to retrieve {@link org.eclipse.swt.graphics.Image}s.
+	 * The returned resource manager will be disposed when the provider is
+	 * {@link #dispose() disposed}.
+	 */
+	protected abstract ResourceManager buildResourceManager();
 
 	/**
 	 * The content provider is initialized first; so we build the delegate
@@ -51,7 +62,8 @@ public abstract class NavigatorContentProvider
 	protected TreeStateProvider buildDelegate() {
 		return new ItemTreeStateProviderManager(
 				this.buildItemContentProviderFactory(),
-				this.buildItemLabelProviderFactory()
+				this.buildItemLabelProviderFactory(),
+				this.resourceManager
 			);
 	}
 
@@ -124,6 +136,7 @@ public abstract class NavigatorContentProvider
 
 	public void dispose() {
 		this.delegate.dispose();
+		this.resourceManager.dispose();
 	}
 
 	/**

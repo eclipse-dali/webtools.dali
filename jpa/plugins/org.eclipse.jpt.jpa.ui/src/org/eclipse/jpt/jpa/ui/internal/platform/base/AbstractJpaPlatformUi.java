@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.platform.base;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -87,11 +88,9 @@ public abstract class AbstractJpaPlatformUi
 
 	// ********** details providers **********
 
-	public JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(
-			Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
-
-		JpaDetailsProvider jpaDetailsProvider = this.getDetailsProvider(structureNode);
-		return jpaDetailsProvider == null ? null : jpaDetailsProvider.buildDetailsPageManager(parent, widgetFactory);
+	public JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		JpaDetailsProvider provider = this.getDetailsProvider(structureNode);
+		return (provider == null) ? null : provider.buildDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 
 	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
@@ -100,7 +99,7 @@ public abstract class AbstractJpaPlatformUi
 				return provider;
 			}
 		}
-		return null;//return null, some structure nodes do not have a details page
+		return null; // some JPA structure nodes do not have a details page
 	}
 
 	protected Iterable<JpaDetailsProvider> getDetailsProviders() {
@@ -110,14 +109,8 @@ public abstract class AbstractJpaPlatformUi
 
 	// ********** type mappings **********
 
-	public JpaComposite buildTypeMappingComposite(
-			JptResourceType resourceType,
-			String mappingKey,
-			Composite parent,
-			PropertyValueModel<TypeMapping> mappingHolder,
-			WidgetFactory widgetFactory
-	) {
-		return this.getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(mappingKey, mappingHolder, parent, widgetFactory);
+	public JpaComposite buildTypeMappingComposite(JptResourceType resourceType, String mappingKey, Composite parentComposite, PropertyValueModel<TypeMapping> mappingModel, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return this.getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(mappingKey, mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions(JptResourceType resourceType) {
@@ -135,15 +128,8 @@ public abstract class AbstractJpaPlatformUi
 
 	// ********** attribute mappings **********
 
-	public JpaComposite buildAttributeMappingComposite(
-			JptResourceType resourceType,
-			String mappingKey,
-			Composite parent,
-			PropertyValueModel<AttributeMapping> mappingHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			WidgetFactory widgetFactory
-	) {
-		return this.getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(mappingKey, mappingHolder, enabledModel, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(JptResourceType resourceType, String mappingKey, Composite parentComposite, PropertyValueModel<AttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return this.getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(mappingKey, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	public Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions(JptResourceType resourceType) {

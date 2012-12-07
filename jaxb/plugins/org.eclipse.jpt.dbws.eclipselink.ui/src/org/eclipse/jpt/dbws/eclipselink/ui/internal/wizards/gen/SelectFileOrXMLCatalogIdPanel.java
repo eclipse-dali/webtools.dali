@@ -13,11 +13,11 @@ package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -44,7 +44,7 @@ public class SelectFileOrXMLCatalogIdPanel extends Composite implements Selectio
 
 	// ********** constructor **********
 
-	public SelectFileOrXMLCatalogIdPanel(Composite parent, IStructuredSelection selection) {
+	public SelectFileOrXMLCatalogIdPanel(Composite parent, IStructuredSelection selection, ResourceManager resourceManager) {
 		super(parent, SWT.NONE);
 
 		// container group
@@ -62,7 +62,7 @@ public class SelectFileOrXMLCatalogIdPanel extends Composite implements Selectio
 		
 		// Catalog
 		ICatalog xmlCatalog = XMLCorePlugin.getDefault().getDefaultXMLCatalog();
-		selectXMLCatalogIdPanel = new SelectXMLCatalogIdPanel(pageBook, xmlCatalog);
+		selectXMLCatalogIdPanel = new SelectXMLCatalogIdPanel(pageBook, xmlCatalog, resourceManager);
 		selectXMLCatalogIdPanel.getTableViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				updateCompletionStateChange();

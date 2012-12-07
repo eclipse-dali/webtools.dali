@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -32,6 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -44,63 +44,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | - Join Columns ---------------------------------------------------------- |
- * | |                                                                       | |
- * | | x Override Default                                                    | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | AddRemoveListPane                                                 | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see SecondaryTable
- * @see AddRemoveListPane
- *
- * @version 2.0
- * @since 1.0
- */
-public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnlySecondaryTable>
+public class PrimaryKeyJoinColumnsInSecondaryTableComposite
+	extends Pane<ReadOnlySecondaryTable>
 {
 	private ModifiableCollectionValueModel<PrimaryKeyJoinColumn> selectedPkJoinColumnsModel;
 
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(Pane<?> parentPane,
-	                                                      PropertyValueModel<? extends ReadOnlySecondaryTable> subjectHolder,
-	                                                      Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>ISecondaryTable</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(PropertyValueModel<? extends ReadOnlySecondaryTable> subjectHolder,
-	                                                      Composite parent,
-	                                                      WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(
+			Pane<?> parent,
+			PropertyValueModel<? extends ReadOnlySecondaryTable> tableModel,
+			Composite parentComposite) {
+		super(parent, tableModel, parentComposite);
 	}
 
 	PrimaryKeyJoinColumn addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
 
-		SecondaryTable secondaryTable = stateObject.getOwner();
+		SecondaryTable secondaryTable = (SecondaryTable) stateObject.getOwner();
 		int index = secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize();
 
 		PrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
@@ -110,16 +69,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 	}
 
 	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
-
-		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
-			new PrimaryKeyJoinColumnInSecondaryTableDialog(getShell(), (SecondaryTable) getSubject(), null);
-
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getShell(), this.getResourceManager(), this.getSubject());
 		dialog.setBlockOnOpen(true);
 		dialog.open();
-		if (dialog.wasConfirmed()) {
-			return addJoinColumn(dialog.getSubject());
-		}
-		return null;
+		return (dialog.wasConfirmed()) ? this.addJoinColumn(dialog.getSubject()) : null;
 	}
 
 	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
@@ -275,14 +228,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 	}
 
 	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
-
-		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
-			new PrimaryKeyJoinColumnInSecondaryTableDialog(
-				getShell(),
-				(SecondaryTable) getSubject(),
-				joinColumn
-			);
-
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 		if (dialog.wasConfirmed()) {
@@ -291,7 +237,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 	}
 
 	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
-		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+		stateObject.updateJoinColumn((BaseJoinColumn) stateObject.getJoinColumn());
 	}
 
 	@Override

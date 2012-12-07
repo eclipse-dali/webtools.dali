@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @see OrmPersistentAttributeDetailsPage - The parent container
+ * @see OrmPersistentAttributeDetailsPageManager - The parent container
  *
  * @version 2.3
  * @since 1.0

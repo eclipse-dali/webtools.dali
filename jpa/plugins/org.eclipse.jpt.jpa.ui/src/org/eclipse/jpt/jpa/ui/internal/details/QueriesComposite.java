@@ -154,7 +154,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	}
 
 	protected AddQueryDialog buildAddQueryDialog() {
-		return new AddQueryDialog(getShell(), this.getSubject().getPersistenceUnit());
+		return new AddQueryDialog(getShell(), this.getResourceManager(), this.getSubject().getPersistenceUnit());
 	}
 
 	protected Query addQueryFromDialog(AddQueryDialog dialog) {

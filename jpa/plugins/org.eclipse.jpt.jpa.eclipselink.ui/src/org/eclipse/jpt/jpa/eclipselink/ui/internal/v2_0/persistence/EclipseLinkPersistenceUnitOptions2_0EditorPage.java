@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import java.util.Collection;
-
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -19,6 +18,7 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -65,11 +65,11 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 	private PropertyValueModel<Options2_0> optionsModel;
 
 	public EclipseLinkPersistenceUnitOptions2_0EditorPage(
-			PropertyValueModel<PersistenceUnit> subjectModel,
-            Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
+            Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(persistenceUnitModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 
 	@Override
 	protected Control initializeLoggingSection(Section section) {			
-		return new EclipseLinkLogging2_0Composite(this.buildLoggingModel(), section, getWidgetFactory()).getControl();
+		return new EclipseLinkLogging2_0Composite(this, this.buildLoggingModel(), section).getControl();
 	}
 
 	protected PropertyValueModel<Logging2_0> buildLoggingModel() {

@@ -13,9 +13,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.swt.SWT;
@@ -39,7 +38,7 @@ public abstract class JaxbFacetPage
 		super(pageName);
 		setTitle(JptJaxbUiMessages.JaxbFacetWizardPage_title);
 		setDescription(JptJaxbUiMessages.JaxbFacetWizardPage_desc);
-		setImageDescriptor(JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.JAXB_WIZ_BANNER));
+		setImageDescriptor(JptJaxbUiImages.JAXB_PROJECT_BANNER);
 	}
 	
 	

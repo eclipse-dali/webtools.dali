@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
@@ -37,10 +38,10 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 {
 	public EclipseLinkPersistenceUnitCustomizationEditorPage(
 			PropertyValueModel<T> subjectModel,
-			Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+			Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

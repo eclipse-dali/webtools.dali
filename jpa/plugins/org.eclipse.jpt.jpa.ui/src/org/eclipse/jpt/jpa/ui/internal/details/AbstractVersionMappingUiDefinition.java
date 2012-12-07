@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractVersionMappingUiDefinition<M, T extends VersionMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractVersionMappingUiDefinition<M, T extends VersionMap
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.VERSION;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.VERSION;
 	}
 }

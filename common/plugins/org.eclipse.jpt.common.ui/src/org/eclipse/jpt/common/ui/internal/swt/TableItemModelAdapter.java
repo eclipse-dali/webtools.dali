@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -13,9 +13,10 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -50,7 +51,7 @@ public class TableItemModelAdapter {
 	 * The value models used to listen to each property that are display by the
 	 * table item.
 	 */
-	private ModifiablePropertyValueModel<?>[] valueHolders;
+	private ModifiablePropertyValueModel<?>[] valueModels;
 
 	/**
 	 * The list of <code>PropertyChangeListener</code>s used to be notified when
@@ -61,7 +62,8 @@ public class TableItemModelAdapter {
 	/**
 	 * The label used to format the objects into a string representation.
 	 */
-	private ITableLabelProvider labelProvider;
+	private final ITableLabelProvider labelProvider;
+
 
 	// ********** static methods **********
 
@@ -82,7 +84,7 @@ public class TableItemModelAdapter {
 	@SuppressWarnings("unchecked")
 	protected TableItemModelAdapter(TableItem tableItem, ColumnAdapter<?> columnAdapter, ITableLabelProvider labelProvider) {
 		super();
-		if (tableItem == null || columnAdapter == null || labelProvider == null) {
+		if ((tableItem == null) || (columnAdapter == null) || (labelProvider == null)) {
 			throw new NullPointerException();
 		}
 		this.tableItem = tableItem;
@@ -92,12 +94,12 @@ public class TableItemModelAdapter {
 		this.tableItemDisposeListener = this.buildTableItemDisposeListener();
 		this.tableItem.addDisposeListener(this.tableItemDisposeListener);
 
-		this.valueHolders = this.columnAdapter.cellModels(tableItem.getData());
+		this.valueModels = this.columnAdapter.cellModels(tableItem.getData());
 		this.propertyChangeListeners = this.buildPropertyChangeListeners();
 
 		for (int index = this.columnAdapter.columnCount(); --index >= 0; ) {
-			tableItemChanged(index, tableItem.getData(), false);
-			valueHolders[index].addPropertyChangeListener(PropertyValueModel.VALUE, propertyChangeListeners[index]);
+			this.tableItemChanged(index, tableItem.getData(), false);
+			this.valueModels[index].addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListeners[index]);
 		}
 	}
 
@@ -105,9 +107,9 @@ public class TableItemModelAdapter {
 	// ********** initialization **********
 
 	private PropertyChangeListener[] buildPropertyChangeListeners() {
-		PropertyChangeListener[] listeners = new PropertyChangeListener[columnAdapter.columnCount()];
-		for (int index = listeners.length; --index >= 0; ) {
-			listeners[index] = buildPropertyChangeListener(index);
+		PropertyChangeListener[] listeners = new PropertyChangeListener[this.columnAdapter.columnCount()];
+		for (int index = listeners.length; index-- > 0; ) {
+			listeners[index] = this.buildPropertyChangeListener(index);
 		}
 		return listeners;
 	}
@@ -124,23 +126,31 @@ public class TableItemModelAdapter {
 	}
 
 	protected DisposeListener buildTableItemDisposeListener() {
-		return new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
-				TableItemModelAdapter.this.tableItemDisposed(event);
-			}
-		    @Override
-			public String toString() {
-				return "TableItem dispose listener";
-			}
-		};
+		return new TableItemDisposeListener();
+	}
+
+	protected class TableItemDisposeListener
+		extends DisposeAdapter
+	{
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			TableItemModelAdapter.this.tableItemDisposed();
+		}
+
 	}
 
 
 	// ********** behavior **********
 
-	protected void tableItemChanged(int index, Object subject, boolean revalidate) {
+	protected void cellModelChanged(int index) {
+		if ( ! this.tableItem.isDisposed()) {
+			Table table = this.tableItem.getParent();
+			this.tableItemChanged(index, this.tableItem.getData(), table.getColumnCount() == 0);
+		}
+	}
 
-		if (!this.tableItem.isDisposed()) {
+	protected void tableItemChanged(int index, Object subject, boolean revalidate) {
+		if ( ! this.tableItem.isDisposed()) {
 			this.updateTableItemText(index, subject);
 			this.updateTableItemImage(index, subject);
 
@@ -172,13 +182,13 @@ public class TableItemModelAdapter {
 
 	// ********** dispose **********
 
-	protected void tableItemDisposed(DisposeEvent event) {
+	protected void tableItemDisposed() {
 		// the button is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.tableItem.removeDisposeListener(this.tableItemDisposeListener);
 
-		for (int index = valueHolders.length; --index >= 0; ) {
-			valueHolders[index].removePropertyChangeListener(PropertyValueModel.VALUE, propertyChangeListeners[index]);
+		for (int index = this.valueModels.length; index-- > 0; ) {
+			this.valueModels[index].removePropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListeners[index]);
 		}
 	}
 
@@ -190,20 +200,19 @@ public class TableItemModelAdapter {
 		return ObjectTools.toString(this);
 	}
 
-   private class TableItemPropertyChangeListener implements PropertyChangeListener {
+	protected class TableItemPropertyChangeListener
+		extends PropertyChangeAdapter
+	{
+		private final int index;
 
-   	private final int index;
+		protected TableItemPropertyChangeListener(int index) {
+			super();
+			this.index = index;
+		}
 
-   	TableItemPropertyChangeListener(int index) {
-   		super();
-   		this.index = index;
-   	}
-
-   	public void propertyChanged(PropertyChangeEvent event) {
-   		if (!tableItem.isDisposed()) {
-   			Table table = tableItem.getParent();
-   			tableItemChanged(index, tableItem.getData(), table.getColumnCount() == 0);
-   		}
-   	}
-   }
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			TableItemModelAdapter.this.cellModelChanged(this.index);
+		}
+	}
 }

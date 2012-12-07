@@ -92,7 +92,7 @@ The following example is the included generic library validator, which is used f
    point=&quot;org.eclipse.jpt.common.core.libraryValidators&quot;&gt;
    &lt;libraryValidator
       id=&quot;genericUserLibraryValidator&quot;
-      class=&quot;org.eclipse.jpt.core.internal.libval.GenericJpaUserLibraryValidator&quot;&gt;
+      class=&quot;org.eclipse.jpt.jpa.core.internal.libval.GenericJpaUserLibraryValidator&quot;&gt;
       &lt;enablement&gt;
          &lt;with variable=&quot;libraryProvider&quot;&gt;
             &lt;test property=&quot;org.eclipse.jpt.core.extendsId&quot; value=&quot;jpa-user-library-provider&quot;/&gt;

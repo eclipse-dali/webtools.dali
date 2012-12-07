@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.jface;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -52,6 +53,15 @@ public interface ItemLabelProvider {
 	 * label has changed.
 	 */
 	interface Manager {
+		/**
+		 * Return a resource manager that can be used by the item label
+		 * provider to retrieve {@link Image}s. The provider manager will
+		 * dispose the resource manager;
+		 * but, to minimize resource usage, the item label provider should
+		 * dispose its own image(s) as appropriate.
+		 */
+		ResourceManager getResourceManager();
+
 		/**
 		 * The label (image and/or text) for the specified item has changed.
 		 * Update appropriately.

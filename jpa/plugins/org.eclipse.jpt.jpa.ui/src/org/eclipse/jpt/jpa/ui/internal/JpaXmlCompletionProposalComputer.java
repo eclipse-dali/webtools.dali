@@ -20,14 +20,22 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
@@ -182,12 +190,12 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 					if (proposedValue.startsWith("\"")) { //$NON-NLS-1$
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 
-								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), proposedValue, null, 
+								this.getImage(context, JptJpaUiImages.JPA_CONTENT), proposedValue, null, 
 								JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
 					} else {
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 
-								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), proposedValue, null, null);
+								this.getImage(context, JptJpaUiImages.JPA_CONTENT), proposedValue, null, null);
 					}
 
 					contentAssistRequest.addProposal(proposal);
@@ -287,5 +295,21 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 	 */
 	private boolean isCommentNode(IDOMNode node) {
 		return ((node != null) && (node instanceof IDOMElement) && ((IDOMElement) node).isCommentTag());
+	}
+
+	private Image getImage(CompletionProposalInvocationContext context, ImageDescriptor descriptor) {
+		return this.getImage(context.getViewer().getTextWidget(), descriptor);
+	}
+
+	private Image getImage(Control control, ImageDescriptor descriptor) {
+		return this.getResourceManager(control).createImage(descriptor);
+	}
+
+	private ResourceManager getResourceManager(Control control) {
+		return this.getJpaWorkbench().getResourceManager(control);
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
 	}
 }

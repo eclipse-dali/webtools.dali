@@ -11,9 +11,10 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.DateTimeModelAdapter;
+import org.eclipse.jpt.common.ui.internal.swt.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.util.LabeledButton;
@@ -28,11 +30,14 @@ import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.NonNullBooleanTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -69,35 +74,35 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.part.PageBook;
 
 /**
- * The abstract definition of a pane which holds onto a <code>PropertyValueModel</code>
- * that contains the subject of this pane.
+ * The abstract definition of a pane which holds a {@link PropertyValueModel}
+ * that contains the pane's subject.
  * <p>
- * It also contains convenience methods for building buttons, labels, check
- * boxes, and radio buttons, etc.
+ * This class contains convenience methods for building buttons, labels, check
+ * boxes, radio buttons, etc.
  * <p>
  * It is possible to easily listen to any property changes coming from the
- * subject, {@link #addPropertyNames(Collection)} is specify which properties
+ * subject, {@link #addPropertyNames(Collection)} specifies which properties
  * are of interest and {@link #propertyChanged(String)} is used to notify the
  * pane when the property has changed.
- *
- * @see FormPane
+ * 
  * @see DialogPane
- *
- * @version 2.0
- * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class Pane<T extends Model>
-{
+public abstract class Pane<T extends Model> {
+	/**
+	 * This will be <code>null</code> for <em>root</em> panes.
+	 */
+	private final Pane<?> parent;
+
 	/**
 	 * The listener registered with the subject in order to be notified when a
 	 * property has changed, the property names are determined by
-	 * {@link #propertyNames()}.
+	 * {@link #getPropertyNames()}.
 	 */
-	private PropertyChangeListener aspectChangeListener;
+	private final PropertyChangeListener aspectChangeListener;
 
 	/**
-	 * The container of this composite.
+	 * The container of the pane's composite.
 	 */
 	private final Composite container;
 
@@ -106,34 +111,37 @@ public abstract class Pane<T extends Model>
 	 */
 	private boolean populating;
 
+	/**
+	 * This listener is registered with the {@link #subjectModel} in order to
+	 * automatically repopulate this pane when the subject changes.
+	 */
+	private final PropertyChangeListener subjectChangeListener;
 
 	/**
-	 * This listener is registered with the subject holder in order to
-	 * automatically repopulate this pane with the new subject.
+	 * The pane's subject.
 	 */
-	private PropertyChangeListener subjectChangeListener;
+	private final PropertyValueModel<? extends T> subjectModel;
 
 	/**
-	 * The subject of this pane.
+	 * The widget factory used by the pane and all its descendant panes to
+	 * create various common widgets.
+	 * This will be <code>null</code> if the pane has a {@link #parent}.
 	 */
-	private PropertyValueModel<T> subjectModel;
+	private final WidgetFactory widgetFactory;
 
 	/**
-	 * The collection of registered sub-panes will be automatically notified
-	 * when listeners need to be engaged or disengaged or when to populate its
-	 * widgets.
+	 * The resource manager used by the pane and all its descendant panes to
+	 * allocate resources (images, colors, and fonts).
+	 * This will be <code>null</code> if the pane has a {@link #parent}.
 	 */
-	private Collection<Pane<?>> subPanes;
+	private final ResourceManager resourceManager;
 
 	/**
-	 * The factory used to create various common widgets.
+	 * The AND of the <em>enabled</em> model passed in via the constructor and
+	 * the parent pane's <em>enabled</em> model.
 	 */
-	private WidgetFactory widgetFactory;
-
-	/**
-	 * The "and" combination enabledModel passed in via constructor and the parent Pane's {@link #enabledModel}
-	 */
-	private PropertyValueModel<Boolean> enabledModel;
+	private final PropertyValueModel<Boolean> enabledModel;
+	private final PropertyChangeListener enabledModelListener;
 
 	/**
 	 * A listener that allows us to stop listening to stuff when the control
@@ -141,254 +149,277 @@ public abstract class Pane<T extends Model>
 	 */
 	private final DisposeListener controlDisposeListener;
 
+
 	/**
-	 * Creates a new <code>Pane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent pane;
-	 * <code>false</code> to not align them
-	 *
-	 * @category Constructor
+	 * Construct a pane that uses the specified parent pane's:<ul>
+	 * <li>subject model
+	 * <li><em>enabled</em> model
+	 * </ul>
 	 */
 	protected Pane(
-			Pane<? extends T> parentPane,
-	        Composite parent) {
-
-		this(
-			parentPane,
-			parentPane.getSubjectHolder(),
-			parent);
+		Pane<? extends T> parent,
+		Composite parentComposite
+	) {
+		this(parent, parent.getSubjectHolder(), parentComposite);
 	}
 
 	/**
-	 * Creates a new <code>Pane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent pane;
-	 * <code>false</code> to not align them
-	 *
-	 * @category Constructor
+	 * Construct a pane that uses the specified parent pane's:<ul>
+	 * <li><em>enabled</em> model
+	 * </ul>
 	 */
 	protected Pane(
-			Pane<? extends T> parentPane,
-	        Composite parent,
-	        PropertyValueModel<Boolean> enabledModel) {
-
-		this(
-			parentPane,
-			parentPane.getSubjectHolder(),
-			enabledModel,
-			parent);
+		Pane<?> parent,
+		PropertyValueModel<? extends T> subjectModel,
+		Composite parentComposite
+	) {
+		this(parent, subjectModel, buildDefaultEnabledModel(), parentComposite);
 	}
 
 	/**
-	 * Creates a new <code>Pane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent pane;
-	 * <code>false</code> to not align them
-	 *
-	 * @category Constructor
+	 * Construct a pane that uses the specified parent pane's:<ul>
+	 * <li>subject model
+	 * </ul>
+	 * The specified <em>enabled</em> model will be ANDed with the parent
+	 * pane's <em>enabled</em> model (i.e. the pane can be <em>enabled</em>
+	 * only if its parent pane is also <em>enabled</em>).
 	 */
 	protected Pane(
-			Pane<?> parentPane,
-			PropertyValueModel<? extends T> subjectHolder,
-			Composite parent) {
-
-		super();
-		this.initialize(subjectHolder, parentPane.getEnabledModel(), parentPane.getWidgetFactory());
-		this.initialize(parentPane);
-		if (this.addsComposite()) {
-			this.container = this.addComposite(parent);
-			this.initializeLayout(this.container);
-		}
-		else {
-			this.container = null;
-			this.initializeLayout(parent);
-		}
-		this.controlDisposeListener = this.buildControlDisposeListener();
-		this.getControl().addDisposeListener(this.controlDisposeListener);
-		this.engageSubjectHolder();
-		this.engageListeners(getSubject());
-		this.populate();
+		Pane<? extends T> parent,
+		Composite parentComposite,
+		PropertyValueModel<Boolean> enabledModel
+	) {
+		this(parent, parent.getSubjectHolder(), enabledModel, parentComposite);
 	}
 
 	/**
-	 * Creates a new <code>Pane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent pane;
-	 * <code>false</code> to not align them
-	 * @param parentManagePane <code>true</code> to have the parent pane manage
-	 * the enabled state of this pane
-	 *
-	 * @category Constructor
+	 * Construct a pane that uses the specified subject model and
+	 * <em>enabled</em> model.
+	 * <p>
+	 * The specified <em>enabled</em> model will be ANDed with the parent
+	 * pane's <em>enabled</em> model (i.e. the pane can be <em>enabled</em>
+	 * only if its parent pane is also <em>enabled</em>).
 	 */
 	protected Pane(
-			Pane<?> parentPane,
-			PropertyValueModel<? extends T> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent) {
-
-		
-		super();
-		this.initialize(subjectHolder, CompositeBooleanPropertyValueModel.and(this.wrapEnabledModel(enabledModel), parentPane.getEnabledModel()), parentPane.getWidgetFactory());
-		this.initialize(parentPane);
-		if (this.addsComposite()) {
-			this.container = this.addComposite(parent);
-			this.initializeLayout(this.container);
-		}
-		else {
-			this.container = null;
-			this.initializeLayout(parent);
-		}
-		this.controlDisposeListener = this.buildControlDisposeListener();
-		this.getControl().addDisposeListener(this.controlDisposeListener);
-		this.engageSubjectHolder();
-		this.engageListeners(getSubject());
-		this.populate();
+		Pane<?> parent,
+		PropertyValueModel<? extends T> subjectModel,
+		PropertyValueModel<Boolean> enabledModel,
+		Composite parentComposite
+	) {
+		this(parent, subjectModel, enabledModel, parentComposite, null, null);
 	}
 
 	/**
-	 * Creates a new <code>Pane</code>.
-	 *
-	 * @param subjectModel The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 *
-	 * @category Constructor
+	 * Construct a <em>root</em> pane with the specified subject model, widget
+	 * factory, and resource manager.
+	 * The pane will be <em>disabled</em> whenever the subject is
+	 * <code>null</code>.
 	 */
 	protected Pane(
 		PropertyValueModel<? extends T> subjectModel,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		super();
-		this.initialize(subjectModel, this.buildNonNullEnabledModel(subjectModel), widgetFactory);
-		if (this.addsComposite()) {
-			this.container = this.addComposite(parent);
-			this.initializeLayout(this.container);
-		}
-		else {
-			this.container = null;
-			this.initializeLayout(parent);
-		}
-		this.controlDisposeListener = this.buildControlDisposeListener();
-		this.getControl().addDisposeListener(this.controlDisposeListener);
-		this.engageSubjectHolder();
-		this.engageListeners(getSubject());
-		this.populate();
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager
+	) {
+		this(subjectModel, buildNotNullModel(subjectModel), parentComposite, widgetFactory, resourceManager);
 	}
-	
+
+	/**
+	 * Construct a <em>root</em> pane with the specified subject model,
+	 * <em>enabled</em> model, widget factory, and resource manager.
+	 * <p>
+	 * The specified <em>enabled</em> model will be ANDed with the parent
+	 * pane's <em>enabled</em> model (i.e. the pane can be <em>enabled</em>
+	 * only if its parent pane is also <em>enabled</em>).
+	 */
 	protected Pane(
-		PropertyValueModel<? extends T> subjectHolder,
+		PropertyValueModel<? extends T> subjectModel,
 		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory) {
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager
+	) {
+		this(null, subjectModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
 
+	/**
+	 * This constructor is <code>private</code> so we can enable, but also
+	 * require, <em>root</em> panes (i.e. panes without parents) to specify the
+	 * following:<ul>
+	 * <li>subject model
+	 * <li>widget factory
+	 * </ul>
+	 */
+	private Pane(
+		Pane<?> parent,
+		PropertyValueModel<? extends T> subjectModel,
+		PropertyValueModel<Boolean> enabledModel,
+		Composite parentComposite,
+		WidgetFactory widgetFactory,
+		ResourceManager resourceManager
+	) {
 		super();
-		this.initialize(subjectHolder, this.wrapEnabledModel(enabledModel), widgetFactory);
-		if (this.addsComposite()) {
-			this.container = this.addComposite(parent);
-			this.initializeLayout(this.container);
+		if ((subjectModel == null) || (enabledModel == null) || (parentComposite == null)) {
+			throw new NullPointerException();
 		}
-		else {
+		if (parent == null) {
+			if ((widgetFactory == null) || (resourceManager == null)) {
+				throw new NullPointerException();
+			}
+		}
+		this.parent = parent;
+		this.subjectModel = subjectModel;
+
+		this.enabledModel = andEnabledModel(parent, enabledModel);
+		this.enabledModelListener = this.buildEnabledModelListener();
+		this.enabledModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
+
+		this.widgetFactory = widgetFactory;
+		this.resourceManager = (resourceManager == null) ? null : new LocalResourceManager(resourceManager);
+
+		this.aspectChangeListener = this.buildAspectChangeListener();
+
+		this.initialize();
+
+		if (this.addsComposite()) {
+			this.container = this.addComposite(parentComposite);
+			this.initializeLayout(this.container);
+		} else {
 			this.container = null;
-			this.initializeLayout(parent);
+			this.initializeLayout(parentComposite);
 		}
 		this.controlDisposeListener = this.buildControlDisposeListener();
 		this.getControl().addDisposeListener(this.controlDisposeListener);
-		this.engageSubjectHolder();
+
+		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.subjectModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+
 		this.engageListeners(getSubject());
 		this.populate();
 	}
 
-	protected PropertyValueModel<Boolean> buildNonNullEnabledModel(PropertyValueModel<? extends T> subjectModel) {
-		return new TransformationPropertyValueModel<T, Boolean>(subjectModel) {
-			@Override
-			protected Boolean transform(T value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+
+	// ********** enabled model **********
+
+	/**
+	 * Return an <em>enabled</em> model that will result in the pane's
+	 * <em>enabled</em> state always matching that of its parent pane.
+	 */
+	private static PropertyValueModel<Boolean> buildDefaultEnabledModel() {
+		return new StaticPropertyValueModel<Boolean>(Boolean.TRUE);
 	}
-	
+
+	/**
+	 * Return a {@link Boolean} value model that will return
+	 * {@link Boolean#TRUE} if the value of the specified value model is
+	 * <em>not</em> <code>null</code>;
+	 * {@link Boolean#FALSE} if the value <em>is</em> <code>null</code>.
+	 */
+	protected static PropertyValueModel<Boolean> buildNotNullModel(PropertyValueModel<?> valueModel) {
+		return new TransformationPropertyValueModel<Object, Boolean>(valueModel, NotNullObjectTransformer.instance());
+	}
+
+	/**
+	 * Convenience method for sub-classes.
+	 * Wrap the pane's {@link #subjectModel} in a {@link #buildNotNullModel(PropertyValueModel)};
+	 * i.e. a model that returns whether the subject is <code>null</code>.
+	 */
+	protected PropertyValueModel<Boolean> buildNotNullSubjectModel() {
+		return buildNotNullModel(this.subjectModel);
+	}
+
+	/**
+	 * Return a {@link Boolean} value model that will return the AND of the
+	 * value of the <em>enabled</em> model of the specified (typically parent) pane
+	 * and the value of the specified <em>enabled</em> model.
+	 * <p>
+	 * This is useful for a pane that is <em>enabled</em> when both its parent
+	 * pane is <em>enabled</em> <em>and</em> the pane's model indicates the
+	 * pane should be <em>enabled</em>.
+	 */
+	@SuppressWarnings("unchecked")
+	private static PropertyValueModel<Boolean> andEnabledModel(Pane<?> pane, PropertyValueModel<Boolean> enabledModel) {
+		enabledModel = buildNonNullModel(enabledModel);
+		// NB: we fetch private state from the pane
+		return (pane == null) ? enabledModel : CompositeBooleanPropertyValueModel.and(pane.enabledModel, enabledModel);
+	}
+
+	/**
+	 * Return a {@link Boolean} value model that will return the value of the
+	 * specified {@link Boolean} value model if it is <em>not</em>
+	 * <code>null</code>;
+	 * {@link Boolean#FALSE} if the value is <code>null</code>.
+	 * <p>
+	 * This is useful for <em>enabled</em> models that might return <code>null</code>
+	 * (which is typical with aspect adapters etc.).
+	 */
+	private static PropertyValueModel<Boolean> buildNonNullModel(PropertyValueModel<Boolean> booleanModel) {
+		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, NonNullBooleanTransformer.FALSE);
+	}
+
 
 	// ********** initialization **********
 
-	@SuppressWarnings("unchecked")
-	private void initialize(
-			PropertyValueModel<? extends T> subjectModel,
-			PropertyValueModel<Boolean> enabledModel,
-	        WidgetFactory widgetFactory) {
-
-		Assert.isNotNull(subjectModel, "The subject model cannot be null");
-
-		this.subjectModel         = (PropertyValueModel<T>) subjectModel;
-		this.widgetFactory         = widgetFactory;
-		this.enabledModel 		   = enabledModel;
-		this.subPanes              = new ArrayList<Pane<?>>();
-		this.subjectChangeListener = this.buildSubjectChangeListener();
-		this.aspectChangeListener  = this.buildAspectChangeListener();
-
-		this.initialize();
+	private PropertyChangeListener buildEnabledModelListener() {
+		return new EnabledModelListener();
 	}
 
+	/* CU private */ class EnabledModelListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			Pane.this.enabledModelChanged(((Boolean) event.getOldValue()).booleanValue(), ((Boolean) event.getNewValue()).booleanValue());
+		}
+	}
+
+	protected void enabledModelChanged(@SuppressWarnings("unused") boolean oldEnabled, @SuppressWarnings("unused") boolean newEnabled) {
+		// NOP
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener_() {
+		return new SubjectChangeListener();
+	}
+
+	/* CU private */ class SubjectChangeListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		@SuppressWarnings("unchecked")
+		public void propertyChanged(PropertyChangeEvent e) {
+			Pane.this.subjectChanged((T) e.getOldValue(), (T) e.getNewValue());
+		}
+	}
+
+	/**
+	 * Initialize the pane's models. This method is called before the pane's
+	 * UI widget is built in {@link #initializeLayout(Composite)}.
+	 */
 	protected void initialize() {
 		// do nothing by default
 	}
 
 	/**
-	 * Registers this pane with the parent pane.
-	 *
-	 * @param parentPane The parent pane
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent pane;
-	 * <code>false</code> to not align them
-	 * @param parentManagePane <code>true</code> to have the parent pane manage
-	 * the enabled state of this pane
-	 *
-	 * @category Initialization
+	 * Build the pane's UI widget in the specified composite, using
+	 * the models built in {@link #initialize()}.
 	 */
-	private void initialize(Pane<?> parentPane) {
-		// Register this pane with the parent pane, it will call the methods
-		// automatically (engageListeners(), disengageListeners(), populate(),
-		// dispose(), etc)
-		parentPane.registerSubPane(this);
-	}
-
-	/**
-	 * Initializes the layout of this pane.
-	 *
-	 * @param container The parent container
-	 *
-	 * @category Layout
-	 */
-	protected abstract void initializeLayout(Composite container);
+	protected abstract void initializeLayout(Composite parentComposite);
 
 	private DisposeListener buildControlDisposeListener() {
-		return new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
-				Pane.this.controlDisposed();
-			}
-		    @Override
-			public String toString() {
-				return "control dispose listener";
-			}
-		};
+		return new ControlDisposeListener();
+	}
+
+	/* CU private */ class ControlDisposeListener
+		extends DisposeAdapter
+	{
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			Pane.this.controlDisposed();
+		}
 	}
 
 
@@ -514,7 +545,7 @@ public abstract class Pane<T extends Model>
 	                                   String helpId,
 	                                   final Runnable buttonAction) {
 
-		Button button = this.widgetFactory.createButton(container, text);
+		Button button = this.getWidgetFactory().createButton(container, text);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -629,7 +660,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	private Combo addUnmanagedCombo(Composite container) {
-		Combo combo = this.widgetFactory.createCombo(container);
+		Combo combo = this.getWidgetFactory().createCombo(container);
 		combo.setLayoutData(getFieldGridData());
 		return combo;
 	}
@@ -752,7 +783,6 @@ public abstract class Pane<T extends Model>
 	 * to reduce the number of SWT Controls (USER handles in windows) created.
 	 * Typically you would return false if the Pane is for only 1 widget. In this case
 	 * you need to override {@link #getControl()} to return the appropriate Control
-	 * @return
 	 */
 	protected boolean addsComposite() {
 		return true;
@@ -786,7 +816,7 @@ public abstract class Pane<T extends Model>
 	}
 
 	protected final Combo addEditableCombo(Composite container, String helpId) {
-		Combo combo = this.widgetFactory.createEditableCombo(container);
+		Combo combo = this.getWidgetFactory().createEditableCombo(container);
 
 		if (helpId != null) {
 			getHelpSystem().setHelp(combo, helpId);
@@ -874,7 +904,7 @@ public abstract class Pane<T extends Model>
 	                                         String text,
 	                                         final Runnable hyperLinkAction) {
 
-		Hyperlink link = this.widgetFactory.createHyperlink(parent, text);
+		Hyperlink link = this.getWidgetFactory().createHyperlink(parent, text);
 		this.controlEnabledState(link);
 
 		link.addMouseListener(new MouseAdapter() {
@@ -895,7 +925,7 @@ public abstract class Pane<T extends Model>
 	protected final Hyperlink addHyperlink(Composite parent,
 											String text) {
 
-		Hyperlink link = this.widgetFactory.createHyperlink(parent, text);
+		Hyperlink link = this.getWidgetFactory().createHyperlink(parent, text);
 		this.controlEnabledState(link);
 		
 		return link;
@@ -940,7 +970,7 @@ public abstract class Pane<T extends Model>
 	private Label addUnmanagedLabel(Composite container,
 	                                 String labelText) {
 
-		return this.widgetFactory.createLabel(container, labelText);
+		return this.getWidgetFactory().createLabel(container, labelText);
 	}
 
 	/**
@@ -991,7 +1021,7 @@ public abstract class Pane<T extends Model>
 	                                     int maximumValue,
 	                                     String helpId) {
 
-		Spinner spinner = this.widgetFactory.createSpinner(parent);
+		Spinner spinner = this.getWidgetFactory().createSpinner(parent);
 		spinner.setMinimum(minimumValue);
 		spinner.setMaximum(maximumValue);
 		GridData gridData = getFieldGridData();
@@ -1065,7 +1095,7 @@ public abstract class Pane<T extends Model>
 											ModifiablePropertyValueModel<Integer> secondsHolder,
 											String helpId) {
 
-		DateTime dateTime = this.widgetFactory.createDateTime(parent, SWT.TIME);
+		DateTime dateTime = this.getWidgetFactory().createDateTime(parent, SWT.TIME);
 
 		DateTimeModelAdapter.adapt(hoursHolder, minutesHolder, secondsHolder, dateTime);
 
@@ -1117,7 +1147,7 @@ public abstract class Pane<T extends Model>
 	private Combo addUnmanagedEditableCombo(Composite container,
 												String helpId) {
 
-		Combo combo = this.widgetFactory.createEditableCombo(container);
+		Combo combo = this.getWidgetFactory().createEditableCombo(container);
 		combo.setLayoutData(getFieldGridData());
 		
 
@@ -1188,7 +1218,7 @@ public abstract class Pane<T extends Model>
 	                               ModifiablePropertyValueModel<String> selectionHolder,
 	                               String helpId) {
 
-		List list = this.widgetFactory.createList(
+		List list = this.getWidgetFactory().createList(
 			container,
 			SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI
 		);
@@ -1212,7 +1242,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addMultiLineText(Composite container) {
 
-		Text text = this.widgetFactory.createMultiLineText(container);
+		Text text = this.getWidgetFactory().createMultiLineText(container);
 		text.setLayoutData(getFieldGridData());
 		this.controlEnabledState(text);
 
@@ -1321,7 +1351,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Composite addPane(Composite parent) {
-		return this.widgetFactory.createComposite(parent);
+		return this.getWidgetFactory().createComposite(parent);
 	}
 
 	/**
@@ -1369,7 +1399,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addPasswordText(Composite container) {
 
-		Text text = this.widgetFactory.createPasswordText(container);
+		Text text = this.getWidgetFactory().createPasswordText(container);
 		text.setLayoutData(getFieldGridData());
 
 		this.controlEnabledState(text);
@@ -1409,7 +1439,7 @@ public abstract class Pane<T extends Model>
 	                                       String helpId,
 	                                       final Runnable buttonAction) {
 
-		Button button = this.widgetFactory.createPushButton(parent, buttonText);
+		Button button = this.getWidgetFactory().createPushButton(parent, buttonText);
 		controlEnabledState(button);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1494,7 +1524,7 @@ public abstract class Pane<T extends Model>
 	                               String description,
 	                               int type) {
 
-		Section section = this.widgetFactory.createSection(container, type | ((description != null) ? Section.DESCRIPTION : SWT.NULL));
+		Section section = this.getWidgetFactory().createSection(container, type | ((description != null) ? Section.DESCRIPTION : SWT.NULL));
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(sectionText);
 
@@ -1520,19 +1550,6 @@ public abstract class Pane<T extends Model>
 				else {
 					selectionHolder.setValue(selectedItems[0]);
 				}
-			}
-		};
-	}
-
-	private PropertyChangeListener buildSubjectChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
-	}
-
-	private PropertyChangeListener buildSubjectChangeListener_() {
-		return new PropertyChangeListener() {
-			@SuppressWarnings("unchecked")
-			public void propertyChanged(PropertyChangeEvent e) {
-				Pane.this.subjectChanged((T) e.getOldValue(), (T) e.getNewValue());
 			}
 		};
 	}
@@ -1679,7 +1696,7 @@ public abstract class Pane<T extends Model>
 	                                 int style,
 	                                 String helpId) {
 
-		Table table = this.widgetFactory.createTable(container, style);
+		Table table = this.getWidgetFactory().createTable(container, style);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
@@ -1759,7 +1776,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	private Text addUnmanagedText(Composite container) {
-		Text text = this.widgetFactory.createText(container);
+		Text text = this.getWidgetFactory().createText(container);
 		text.setLayoutData(getFieldGridData());
 		return text;
 	}
@@ -1919,7 +1936,7 @@ public abstract class Pane<T extends Model>
 	                                      int columnCount,
 	                                      String helpId) {
 
-		Group group = this.widgetFactory.createGroup(container, title);
+		Group group = this.getWidgetFactory().createGroup(container, title);
 		//manageWidget(group); TODO unsure if I want to manage groups,
 		//also should probably rename this addUnmanagedTitledPane
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -1964,16 +1981,16 @@ public abstract class Pane<T extends Model>
 		Button button;
 
 		if (toggleButtonType == SWT.PUSH) {
-			button = this.widgetFactory.createPushButton(parent, buttonText);
+			button = this.getWidgetFactory().createPushButton(parent, buttonText);
 		}
 		else if (toggleButtonType == SWT.RADIO) {
-			button = this.widgetFactory.createRadioButton(parent, buttonText);
+			button = this.getWidgetFactory().createRadioButton(parent, buttonText);
 		}
 		else if (toggleButtonType == SWT.CHECK) {
-			button = this.widgetFactory.createCheckBox(parent, buttonText);
+			button = this.getWidgetFactory().createCheckBox(parent, buttonText);
 		}
 		else {
-			button = this.widgetFactory.createButton(parent, buttonText);
+			button = this.getWidgetFactory().createButton(parent, buttonText);
 		}
 
 		button.setLayoutData(new GridData());
@@ -2127,50 +2144,60 @@ public abstract class Pane<T extends Model>
 		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "doPopulate");
 	}
 
-	private void controlEnabledState(Control... controls) {
-		SWTTools.controlEnabledState(getEnabledModel(), controls);
-	}
 
-	private void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
-		this.controlEnabledState_(this.wrapEnabledModel(booleanModel), controls);
+	// ********** enabled models **********
+
+	protected boolean isEnabled() {
+		return this.enabledModel.getValue().booleanValue();
 	}
 
 	/**
-	 * Assume the "enabled" models can return null (which is typical with aspect
-	 * adapters etc.).
+	 * Control the <em>enabled</em> state of the specified controls with the
+	 * pane's {@link #enabledModel}.
+	 * <p>
+	 * Use {@link #controlEnabledState(PropertyValueModel, Control...)} if the
+	 * controls might be disabled when the pane is enabled.
 	 */
-	private PropertyValueModel<Boolean> wrapEnabledModel(PropertyValueModel<Boolean> booleanModel) {
-		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, NonNullBooleanTransformer.FALSE);
+	protected void controlEnabledState(Control... controls) {
+		SWTTools.controlEnabledState(this.enabledModel, controls);
 	}
 
-	private void controlEnabledState_(PropertyValueModel<Boolean> booleanModel, Control... controls) {
-		SWTTools.controlEnabledState(this.andEnabledModel(booleanModel), controls);
+	/**
+	 * Use the specified boolean model to determine the <em>enabled</em>
+	 * state of the specified controls (i.e. when the <em>pane</em> is enabled).
+	 * If the specified boolean model returns <code>null</code> (which is
+	 * typical of aspect adapters), the controls will be disabled.
+	 * <p>
+	 * Use {@link #controlEnabledState(Control...)} if the
+	 * controls are only enabled when the pane is enabled.
+	 */
+	protected void controlEnabledState(PropertyValueModel<Boolean> controlsEnabledModel, Control... controls) {
+		SWTTools.controlEnabledState(this.andEnabledModel(controlsEnabledModel), controls);
 	}
 
-	protected PropertyValueModel<Boolean> getEnabledModel() {
-		return this.enabledModel;
-	}
-
-	@SuppressWarnings("unchecked")
+	/**
+	 * AND the specified boolean model with the pane's {@link #enabledModel},
+	 * resulting in an <em>enabled</em> model that can only be <code>true</code>
+	 * when the pane as a whole is enabled.
+	 */
 	private PropertyValueModel<Boolean> andEnabledModel(PropertyValueModel<Boolean> booleanModel) {
-		return CompositeBooleanPropertyValueModel.and(getEnabledModel(), booleanModel);
+		return andEnabledModel(this, booleanModel);
 	}
 
-	private void engageSubjectHolder() {
-		this.subjectModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
-	}
+
+	// ********** subject listeners **********
 
 	/**
-	 * engage the specified subject
+	 * Engage the specified subject
 	 */
-	protected void engageListeners(T subject) {
+	private void engageListeners(T subject) {
 		if (subject != null) {
 			this.engageListeners_(subject);
 		}
 	}
 
 	/**
-	 * specified subject is not null
+	 * Pre-condition: the specified subject is not <code>null</code>
 	 */
 	protected void engageListeners_(T subject) {
 		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "engageListeners_({0})", subject);
@@ -2181,16 +2208,16 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * disengage the specified subject
+	 * Disengage the specified subject
 	 */
-	protected void disengageListeners(T subject) {
+	private void disengageListeners(T subject) {
 		if (subject != null) {
 			this.disengageListeners_(subject);
 		}
 	}
 
 	/**
-	 * specified subject is not null
+	 * Pre-condition: the specified subject is not <code>null</code>
 	 */
 	protected void disengageListeners_(T subject) {
 		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "disengageListeners_({0})", subject);
@@ -2198,10 +2225,6 @@ public abstract class Pane<T extends Model>
 		for (String propertyName : this.getPropertyNames()) {
 			subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
-	}
-
-	private void disengageSubjectHolder() {
-		this.subjectModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
 
 	/**
@@ -2225,40 +2248,30 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Populate
 	 */
-	protected final PropertyValueModel<T> getSubjectHolder() {
+	protected final PropertyValueModel<? extends T> getSubjectHolder() {
 		return this.subjectModel;
 	}
 
 	/**
-	 * Returns the factory responsible for creating the widgets.
-	 *
-	 * @return The factory used by this pane to create the widgets
-	 *
-	 * @category Layout
+	 * If the pane is a <em>root</em> pane, return its widget factory;
+	 * otherwise return the pane's parent's widget factory.
 	 */
 	protected final WidgetFactory getWidgetFactory() {
-		return this.widgetFactory;
+		return (this.parent == null) ? this.widgetFactory : this.parent.getWidgetFactory();
 	}
 
 	/**
-	 * Returns the helps system.
-	 *
-	 * @return The platform's help system
-	 *
-	 * @category Helper
+	 * If the pane is a <em>root</em> pane, return its resource manager;
+	 * otherwise return the pane's parent's resource manager.
 	 */
+	public final ResourceManager getResourceManager() {
+		return (this.parent == null) ? this.resourceManager : this.parent.getResourceManager();
+	}
+
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
-
-	/**
-	 * Determines whether
-	 *
-	 * @return
-	 *
-	 * @category Populate
-	 */
 	protected final boolean isPopulating() {
 		return this.populating;
 	}
@@ -2276,51 +2289,34 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Notifies the subject's property associated with the given property name
-	 * has changed.
-	 *
-	 * @param propertyName The property name associated with the property change
-	 *
-	 * @category Populate
+	 * The subject's specified property has changed.
 	 */
-	protected void propertyChanged(String propertyName) {
+	protected void propertyChanged(@SuppressWarnings("unused") String propertyName) {
+		// NOP
 	}
 
 	/**
-	 * Returns the list of names to listen for properties changing from the
-	 * subject.
-	 *
-	 * @return A non-<code>null</code> list of property names
-	 *
-	 * @category Populate
+	 * Return the names of the subject's properties we listen to here and notify
+	 * via calls to {@link #propertyChanged(String)}.
 	 */
-	protected Collection<String> getPropertyNames() {
+	private Collection<String> getPropertyNames() {
 		ArrayList<String> propertyNames = new ArrayList<String>();
-		addPropertyNames(propertyNames);
+		this.addPropertyNames(propertyNames);
 		return propertyNames;
 	}
 
 	/**
 	 * This method is called (perhaps internally) when this needs to repopulate
 	 * but the object of interest has not changed.
-	 *
-	 * @category Populate
 	 */
 	protected final void repopulate() {
 		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "repopulate");
 
-		// Populate this pane
 		try {
-			setPopulating(true);
-			doPopulate();
-		}
-		finally {
-			setPopulating(false);
-		}
-
-		// Ask the sub-panes to repopulate themselves
-		for (Pane<?> subPane : this.subPanes) {
-			subPane.repopulate();
+			this.setPopulating(true);
+			this.doPopulate();
+		} finally {
+			this.setPopulating(false);
 		}
 	}
 
@@ -2329,10 +2325,6 @@ public abstract class Pane<T extends Model>
 	 * populated or not. During population, it is required to not update the
 	 * widgets when the model is updated nor to update the model when the widgets
 	 * are being synchronized with the model's values.
-	 *
-	 * @param populating
-	 *
-	 * @category Populate
 	 */
 	protected final void setPopulating(boolean populating) {
 		this.populating = populating;
@@ -2340,8 +2332,6 @@ public abstract class Pane<T extends Model>
 
 	/**
 	 * Either show or hides this pane.
-	 *
-	 * @param visible The new visibility state
 	 */
 	public void setVisible(boolean visible) {
 		if (this.container != null && !this.container.isDisposed()) {
@@ -2350,74 +2340,30 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Returns the nearest <code>Shell</code> displaying the main widget of this
-	 * pane.
-	 *
-	 * @return The nearest window displaying this pane
+	 * @see Control#getShell()
 	 */
 	public final Shell getShell() {
 		return this.getControl().getShell();
 	}
 
 	/**
-	 * Returns the subject of this pane.
-	 *
-	 * @return The subject if this pane was not disposed; <code>null</code>
-	 * if it was
-	 *
-	 * @category Populate
+	 * Return the pane's subject.
 	 */
 	public T getSubject() {
 		return this.subjectModel.getValue();
 	}
 
 	/**
-	 * The subject has changed, disconnects any listeners from the old subject
-	 * and connects those listeners onto the new subject.
-	 *
-	 * @param oldsubject The old subject or <code>null</code> if none was set
-	 * @param newSubject The new subject or <code>null</code> if none needs to be
-	 * set
-	 *
-	 * @category Populate
+	 * The pane's subject has changed. Disconnect any listeners from the old
+	 * subject and connect those listeners to the new subject.
 	 */
-	protected final void subjectChanged(T oldSubject, T newSubject) {
-		if (!this.getControl().isDisposed()) {
-
+	/* CU private */ final void subjectChanged(T oldSubject, T newSubject) {
+		if ( ! this.getControl().isDisposed()) {
 			JptCommonUiPlugin.instance().trace(TRACE_OPTION, "subjectChanged({0}, {1})", oldSubject, newSubject);
 			this.disengageListeners(oldSubject);
-
 			this.repopulate();
-
 			this.engageListeners(newSubject);
 		}
-	}
-
-
-	/**
-	 * Registers another <code>Pane</code> with this one so it can
-	 * be automatically notified about certain events such as engaging or
-	 * disengaging the listeners, etc.
-	 *
-	 * @param subPane The sub-pane to register
-	 *
-	 * @category Controller
-	 */
-	protected final void registerSubPane(Pane<?> subPane) {
-		this.subPanes.add(subPane);
-	}
-
-	/**
-	 * Unregisters the given <code>Pane</code> from this one so it
-	 * can no longer be automatically notified about certain events such as
-	 * engaging or disengaging the listeners, etc.
-	 *
-	 * @param subPane The sub-pane to unregister
-	 *
-	 * @category Controller
-	 */
-	protected final void unregisterSubPane(Pane<?> subPane) {
-		this.subPanes.remove(subPane);
 	}
 
 	private void updatePane(String propertyName) {
@@ -2436,13 +2382,17 @@ public abstract class Pane<T extends Model>
 	protected void controlDisposed() {
 		// the control is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
-		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "dispose");
+		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "control disposed");
 
-		// Dispose this pane
 		this.disengageListeners(getSubject());
-		this.disengageSubjectHolder();
 
+		this.subjectModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+
+		this.enabledModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
 		this.getControl().removeDisposeListener(this.controlDisposeListener);
+		if (this.parent == null) {
+			this.resourceManager.dispose();
+		}
 	}
 
 	private static final String TRACE_OPTION = Pane.class.getSimpleName();

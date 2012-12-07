@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -27,19 +28,13 @@ import org.eclipse.swt.widgets.Control;
 public class OrmVersionMapping2_0Composite
 	extends AbstractVersionMappingComposite<VersionMapping>
 {
-	/**
-	 * Creates a new <code>EclipseLinkOrmVersionMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>VersionMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmVersionMapping2_0Composite(PropertyValueModel<? extends VersionMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-									WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public OrmVersionMapping2_0Composite(
+			PropertyValueModel<? extends VersionMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

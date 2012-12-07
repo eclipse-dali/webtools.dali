@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.ui.tests.internal.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
@@ -29,29 +30,30 @@ public final class PaneVisibilityEnablerTest {
 
 	@Before
 	public void setUp() {
-		parent = new Composite(SWTUtil.getShell(), SWT.NONE);
-		parent.setLayout(new GridLayout());
+		this.parent = new Composite(SWTUtil.getShell(), SWT.NONE);
+		this.parent.setLayout(new GridLayout());
 	}
 
 	@After
 	public void tearDown() {
-		if (parent != null) {
-			parent.dispose();
+		if (this.parent != null) {
+			this.parent.dispose();
 		}
 	}
 
 	@Test
 	public void testSwitchState() {
 
-		SimplePropertyValueModel<Boolean> booleanHolder =
-			new SimplePropertyValueModel<Boolean>(true);
+		SimplePropertyValueModel<Boolean> booleanHolder = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 
 		DialogPane<Node> pane = new DialogPane<Node>(
 			new SimplePropertyValueModel<Node>(),
-			parent)
-		{
+			this.parent,
+			JFaceResources.getResources()
+		) {
 			@Override
 			protected void initializeLayout(Composite container) {
+				// NOP
 			}
 		};
 
@@ -71,7 +73,7 @@ public final class PaneVisibilityEnablerTest {
 		);
 
 		// Change state (true)
-		booleanHolder.setValue(true);
+		booleanHolder.setValue(Boolean.TRUE);
 
 		assertTrue(
 			"The pane should be visible",
@@ -79,7 +81,7 @@ public final class PaneVisibilityEnablerTest {
 		);
 
 		// Change state (false)
-		booleanHolder.setValue(false);
+		booleanHolder.setValue(Boolean.FALSE);
 
 		assertFalse(
 			"The pane should not be visible",
@@ -87,6 +89,6 @@ public final class PaneVisibilityEnablerTest {
 		);
 
 		// Dispose
-		booleanHolder.setValue(true);
+		booleanHolder.setValue(Boolean.TRUE);
 	}
 }

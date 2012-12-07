@@ -200,7 +200,7 @@ public class PackageGenerator {
 		Path path = new Path( templatesPath);
 		URL url = FileLocator.find(bundle, path, null);
 		if (url == null) {
-			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID() + '/' + templatesPath));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound));
 		}		
 		URL templUrl = FileLocator.resolve(url);
 		
@@ -214,7 +214,7 @@ public class PackageGenerator {
 		
 
 		if (templDir == null || !templDir.exists()) {
-			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID()));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound));
 		}
 		return templDir;
 	}
@@ -301,7 +301,7 @@ public class PackageGenerator {
 			javaFile.refreshLocal(1, sm.newChild(1));
 			
 		} catch (Throwable e) {
-			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID());
+			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound);
 		}
 	}
 	
@@ -468,7 +468,7 @@ public class PackageGenerator {
 		    xmlFile.refreshLocal(1, null);
 			
 		} catch (Throwable e) {
-			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID());
+			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound);
 		}
 	}
 	

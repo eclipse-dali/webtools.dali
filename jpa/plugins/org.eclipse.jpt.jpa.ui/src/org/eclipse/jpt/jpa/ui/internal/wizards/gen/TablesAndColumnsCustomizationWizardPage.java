@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
@@ -33,7 +32,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenColumn;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -287,10 +286,14 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	}	
 	
 	protected ORMGenCustomizer getCustomizer(){
-		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
-		return wizard.getCustomizer();
+		return this.getWizard().getCustomizer();
 	}
 	
+	@Override
+	public GenerateEntitiesFromSchemaWizard getWizard() {
+		return (GenerateEntitiesFromSchemaWizard) super.getWizard();
+	}
+
 	public boolean isDynamic() {
 		return false;
 	}
@@ -349,12 +352,13 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		@Override
 		public Image getImage(Object element) {
 			if( element instanceof ORMGenTable ){
-				return ImageRepository.getTableImage(resourceManager);
-			}else 	if( element instanceof ORMGenColumn ){
+				return resourceManager.createImage(JptJpaUiImages.ENTITY_GEN_TABLE);
+			}
+			if( element instanceof ORMGenColumn ){
 				ORMGenColumn col = ( ORMGenColumn)element;
 				return col.isPrimaryKey() ?
-						ImageRepository.getKeyColumnImage(resourceManager) :
-						ImageRepository.getColumnImage(resourceManager);
+						resourceManager.createImage(JptJpaUiImages.ENTITY_GEN_KEY_COLUMN) :
+						resourceManager.createImage(JptJpaUiImages.ENTITY_GEN_COLUMN);
 			}
 			return null;
 		}
@@ -386,13 +390,11 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	}
 
     @Override
-    public final void performHelp() 
-    {
-        this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
+    public final void performHelp() {
+        this.getHelpSystem().displayHelp(this.getWizard().getHelpContextID());
     }
 
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
-
 }

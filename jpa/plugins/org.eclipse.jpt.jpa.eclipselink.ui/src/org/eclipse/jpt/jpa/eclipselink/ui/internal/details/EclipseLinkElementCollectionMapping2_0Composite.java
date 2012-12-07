@@ -9,18 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransformer;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -29,13 +36,13 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends ElementCollectionMapping2_0>
 	extends AbstractElementCollectionMapping2_0Composite<T>
 {
-
-	protected EclipseLinkElementCollectionMapping2_0Composite(PropertyValueModel<? extends T> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-									WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	protected EclipseLinkElementCollectionMapping2_0Composite(
+			PropertyValueModel<? extends T> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -74,13 +81,60 @@ public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends 
 		};
 	}
 
-	protected PropertyValueModel<Boolean> buildEclipseLinkConvertBooleanHolder(PropertyValueModel<EclipseLinkConvert> convertHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertHolder) {
+	@Override
+	protected Composite buildBasicValueTypeSectionClient(Section section) {
+		Composite container = super.buildBasicValueTypeSectionClient(section);
+		PropertyValueModel<Converter> converterHolder = buildConverterModel();
+
+		// EclipseLink Converter
+		Button elConverterButton = addRadioButton(
+			container, 
+			EclipseLinkUiDetailsMessages.TypeSection_converted, 
+			buildConverterBooleanHolder(EclipseLinkConvert.class), 
+			null);
+		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
+
+		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterHolder);
+		PropertyValueModel<Boolean> convertEnabledModel = this.buildNotNullModel(convertModel);
+		Label convertLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_converterNameLabel, convertEnabledModel);
+		GridData gridData = new GridData();
+		gridData.horizontalIndent = 20;
+		convertLabel.setLayoutData(gridData);
+		new EclipseLinkConvertCombo(this, convertModel, convertEnabledModel, container);
+
+		return container;
+	}
+
+	protected PropertyValueModel<Converter> buildConverterModel() {
+		return new PropertyAspectAdapter<ConvertibleMapping, Converter>(this.getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
-			protected Boolean transform(EclipseLinkConvert value) {
-				return Boolean.valueOf(value != null);
+			protected Converter buildValue_() {
+				return this.subject.getConverter();
 			}
 		};
 	}
 
+	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
+		return new PropertyAspectAdapter<ConvertibleMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getConverter();
+				return Boolean.valueOf(converter.getType() == converterType);
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setConverter(converterType);
+				}
+			}
+		};
+	}
+	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
+		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
+	}
+
+	protected <M> PropertyValueModel<Boolean> buildNotNullModel(PropertyValueModel<M> valueModel) {
+		return new TransformationPropertyValueModel<M, Boolean>(valueModel, NotNullObjectTransformer.<M>instance());
+	}
 }

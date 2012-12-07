@@ -13,36 +13,13 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
- * @see AddRemoveListPane
- *
- * @version 2.0
- * @since 2.0
- */
-public class GenericPersistenceUnitMappingFilesComposite extends PersistenceUnitMappingFilesComposite
+public class GenericPersistenceUnitMappingFilesComposite
+	extends PersistenceUnitMappingFilesComposite
 {
-	/**
-	 * Creates a new <code>PersistenceUnitMappingFilesComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
-	public GenericPersistenceUnitMappingFilesComposite(Pane<? extends PersistenceUnit> parentPane,
-	                                            Composite parent) {
-
-		super(parentPane, parent);
+	public GenericPersistenceUnitMappingFilesComposite(
+			Pane<? extends PersistenceUnit> parent,
+			Composite parentComposite) {
+		super(parent, parentComposite);
 	}
 
 	@Override

@@ -24,26 +24,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here is the layout of this pane:
- * <pre>
- * -------------------------------------------------------------------------
- * x Override Default                                                    
- * ---------------------------------------------------------------------
- * |                                                                   |
- * | JoiningStrategyJoinColumnsComposite                               |
- * |                                                                   |
- * ---------------------------------------------------------------------
- * -------------------------------------------------------------------------</pre>
- *
- * @see JoinColumnRelationship
- * @see JoinColumnRelationshipStrategy
- * @see JoinColumnJoiningStrategyPane
- * @see JoinColumnInJoiningStrategyDialog
- *
- * @version 3.0
- * @since 2.0
- */
 public class JoiningStrategyJoinColumnsWithOverrideOptionComposite 
 	extends Pane<ReadOnlyJoinColumnRelationshipStrategy>
 {
@@ -68,7 +48,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 			null
 		);
 		
-		this.joiningStrategyComposite = new JoiningStrategyJoinColumnsComposite(this, getSubjectHolder(), container);
+		this.joiningStrategyComposite = new JoiningStrategyJoinColumnsComposite(this, container);
 	}
 
 	void setSelectedJoinColumn(JoinColumn joinColumn) {

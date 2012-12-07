@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractEmbeddedMappingUiDefinition<M, T extends EmbeddedMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractEmbeddedMappingUiDefinition<M, T extends EmbeddedM
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.EMBEDDED;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.EMBEDDED;
 	}
 }

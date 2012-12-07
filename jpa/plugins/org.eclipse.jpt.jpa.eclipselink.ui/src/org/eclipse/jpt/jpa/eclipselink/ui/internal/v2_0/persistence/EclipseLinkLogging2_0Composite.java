@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -31,17 +31,14 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *  EclipseLinkLogging2_0Composite
- */
-public class EclipseLinkLogging2_0Composite extends EclipseLinkLoggingComposite<Logging2_0>
+public class EclipseLinkLogging2_0Composite
+	extends EclipseLinkLoggingComposite<Logging2_0>
 {
-
 	public EclipseLinkLogging2_0Composite(
-				PropertyValueModel<Logging2_0> subjectHolder,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Pane<?> parent,
+			PropertyValueModel<Logging2_0> subjectModel,
+			Composite parentComposite) {
+		super(parent, subjectModel, parentComposite);
 	}
 
 	@Override

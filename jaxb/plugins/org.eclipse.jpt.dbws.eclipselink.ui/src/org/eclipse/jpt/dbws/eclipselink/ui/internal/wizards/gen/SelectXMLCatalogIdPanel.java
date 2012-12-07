@@ -14,10 +14,10 @@ package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,7 +36,7 @@ public class SelectXMLCatalogIdPanel extends Composite {
 	protected XMLCatalogTableViewer tableViewer;
 	protected ICatalog fXmlCatalog;
 
-	public SelectXMLCatalogIdPanel(Composite parent, ICatalog xmlCatalog) {
+	public SelectXMLCatalogIdPanel(Composite parent, ICatalog xmlCatalog, ResourceManager resourceManager) {
 		super(parent, SWT.NONE);
 		this.fXmlCatalog = xmlCatalog;
 
@@ -50,17 +50,17 @@ public class SelectXMLCatalogIdPanel extends Composite {
 		Label label = new Label(this, SWT.NONE);
 		label.setText(JptDbwsUiMessages.BuilderXmlWizardPage_xmlCatalogTableTitle);
 
-		tableViewer = createTableViewer(this);
+		tableViewer = createTableViewer(this, resourceManager);
 		tableViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		tableViewer.setInput("dummy"); //$NON-NLS-1$
 	}
 
-	protected XMLCatalogTableViewer createTableViewer(Composite parent) {
+	protected XMLCatalogTableViewer createTableViewer(Composite parent, ResourceManager resourceManager) {
 		String headings[] = new String[2];
 		headings[0] = JptDbwsUiMessages.BuilderXmlWizardPage_xmlCatalogKeyColumn;
 		headings[1] = JptDbwsUiMessages.BuilderXmlWizardPage_xmlCatalogUriColumn;
 
-		XMLCatalogTableViewer theTableViewer = new XMLCatalogTableViewer(parent, headings) {
+		XMLCatalogTableViewer theTableViewer = new XMLCatalogTableViewer(parent, headings, resourceManager) {
 
 			protected void addXMLCatalogEntries(List list, ICatalogEntry[] entries) {
 				for (int i = 0; i < entries.length; i++) {

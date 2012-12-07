@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,53 +9,49 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- *
- * @see InverseJoinColumnInJoinTableStateObject
- * @see BaseJoinColumnDialogPane
- *
- * @version 2.0
- * @since 2.0
- */
-public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<InverseJoinColumnInJoinTableStateObject> {
+public class InverseJoinColumnInJoinTableDialog
+	extends BaseJoinColumnDialog<ReadOnlyJoinTable, ReadOnlyJoinColumn, InverseJoinColumnInJoinTableStateObject>
+{
+	/**
+	 * Use this constructor to create a <em>new</em> join column.
+	 */
+	protected InverseJoinColumnInJoinTableDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			ReadOnlyJoinTable joinTable) {
+		super(parentShell, resourceManager, joinTable);
+	}
 
 	/**
-	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param joinTable The owner of the join column to create or where it is
-	 * located
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * Use this constructor to edit an <em>existing</em> join column.
 	 */
-	public InverseJoinColumnInJoinTableDialog(Shell parent,
-	                                          ReadOnlyJoinTable joinTable,
-	                                          ReadOnlyJoinColumn joinColumn) {
-
-		super(parent, joinTable, joinColumn);
+	protected InverseJoinColumnInJoinTableDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			ReadOnlyJoinTable joinTable,
+			ReadOnlyJoinColumn joinColumn) {
+		super(parentShell, resourceManager, joinTable, joinColumn);
 	}
 
 	@Override
 	protected DialogPane<InverseJoinColumnInJoinTableStateObject> buildLayout(Composite container) {
 		return new JoinColumnDialogPane<InverseJoinColumnInJoinTableStateObject>(
-			getSubjectHolder(),
-			container
-		)
-		
-		{
-			@Override
-			protected boolean isTableEditable() {
-				return false;
-			}
-		};
+				this.getSubjectHolder(),
+				container,
+				this.resourceManager
+			) {
+				@Override
+				protected boolean isTableEditable() {
+					return false;
+				}
+			};
 	}
 
 	@Override
@@ -64,15 +60,5 @@ public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<Inv
 			getOwner(),
 			getJoinColumn()
 		);
-	}
-
-	@Override
-	public JoinColumn getJoinColumn() {
-		return (JoinColumn) super.getJoinColumn();
-	}
-
-	@Override
-	protected JoinTable getOwner() {
-		return (JoinTable) super.getOwner();
 	}
 }

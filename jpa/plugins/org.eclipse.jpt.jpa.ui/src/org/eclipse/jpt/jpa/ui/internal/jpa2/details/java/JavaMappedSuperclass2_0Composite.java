@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
@@ -48,33 +47,16 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see MappedSuperclass
- * @see Generic2_0JavaUiFactory - The factory creating this pane
- * @see AccessTypeComposite
- * @see IdClassComposite
- *
- * @version 2.3
- * @since 2.0
  */
-
 public class JavaMappedSuperclass2_0Composite
 	extends AbstractJavaMappedSuperclassComposite
-    implements JpaComposite
 {
-	/**
-	 * Creates a new <code>MappedSuperclassComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	public JavaMappedSuperclass2_0Composite(
-			PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override

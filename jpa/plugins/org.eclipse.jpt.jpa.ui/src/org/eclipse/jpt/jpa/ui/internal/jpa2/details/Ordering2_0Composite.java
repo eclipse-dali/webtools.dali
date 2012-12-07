@@ -44,24 +44,14 @@ import org.eclipse.swt.widgets.Text;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see CollectionMapping
- * @see OrmManyToManyMappingComposite - A container of this pane
- * @see OrmOneToManyMappingComposite - A container of this pane
- *
- * @version 2.3
- * @since 1.0
+ * @see OrmManyToManyMappingComposite
+ * @see OrmOneToManyMappingComposite
  */
-public class Ordering2_0Composite extends AbstractOrderingComposite
+public class Ordering2_0Composite
+	extends AbstractOrderingComposite
 {
-	/**
-	 * Creates a new <code>OrderingComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public Ordering2_0Composite(Pane<? extends CollectionMapping> parentPane,
-	                         Composite parent) {
-
-		super(parentPane, parent);
+	public Ordering2_0Composite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
+		super(parentPane, parentComposite);
 	}
 	
 	@Override

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -21,13 +22,13 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Abstract {@link ItemLabelProvider} that provides support for listening to an
  * {@link #item} and notifying the
- * {@link org.eclipse.jpt.common.ui.jface.ItemLabelProvider.Manager manager}
+ * {@link org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider.Manager manager}
  * whenever the item changes in a significant way.
  * <p>
  * Subclasses can implement the following methods if the corresponding aspects
  * of the {@link #item} change:<ul>
- * <li>{@link #buildImageModel()}<br>
- * 	   Return a {@link PropertyValueModel} that represents the item's image
+ * <li>{@link #buildImageDescriptorModel()}<br>
+ * 	   Return a {@link PropertyValueModel} that represents the item's image descriptor
  * <li>{@link #buildTextModel()}<br>
  * 	   Return a {@link PropertyValueModel} that represents the item's text
  * <li>{@link #buildDescriptionModel()}<br>
@@ -35,35 +36,46 @@ import org.eclipse.swt.graphics.Image;
  * </ul>
  * Alternatively, subclasses can implement the following methods if the
  * corresponding aspects of the {@link #item} do <em>not</em> change:<ul>
- * <li>{@link #getImage()}<br>
- * 	   Return the item's image
+ * <li>{@link #getImageDescriptor()}<br>
+ * 	   Return the item's image descriptor
  * <li>{@link #getText()}<br>
  * 	   Return the item's text
  * <li>{@link #getDescription()}<br>
  * 	   Return the item's description
  * </ul>
- * For each aspect (image, text, and description) one and only one of the two
- * methods must be overridden.
+ * For each aspect (image descriptor, text, and description) one and only one
+ * of the two methods must be overridden.
  * 
  * @see StaticItemExtendedLabelProvider
  */
 public abstract class AbstractItemExtendedLabelProvider<I>
 	implements ItemExtendedLabelProvider
 {
-	protected final ItemLabelProvider.Manager manager;
-
 	protected final I item;
 
-	protected volatile PropertyChangeListener listener;
+	protected final ItemExtendedLabelProvider.Manager manager;
 
-	protected volatile PropertyValueModel<Image> imageModel;
+	protected volatile PropertyValueModel<ImageDescriptor> imageDescriptorModel;
+
+	protected volatile PropertyChangeListener imageDescriptorListener;
 
 	protected volatile PropertyValueModel<String> textModel;
 
+	protected volatile PropertyChangeListener textListener;
+
 	protected volatile PropertyValueModel<String> descriptionModel;
 
+	protected volatile PropertyChangeListener descriptionListener;
 
-	protected AbstractItemExtendedLabelProvider(I item, ItemLabelProvider.Manager manager) {
+
+	protected AbstractItemExtendedLabelProvider(I item, ItemExtendedLabelProvider.Manager manager) {
+		super();
+		if (item == null) {
+			throw new NullPointerException();
+		}
+		if (manager == null) {
+			throw new NullPointerException();
+		}
 		this.item = item;
 		this.manager = manager;
 	}
@@ -71,41 +83,80 @@ public abstract class AbstractItemExtendedLabelProvider<I>
 
 	// ********** image **********
 
-	public Image getImage() {
-		return this.getImageModel().getValue();
+	public final Image getImage() {
+		ImageDescriptor descriptor = this.getImageDescriptor();
+		return (descriptor == null) ? null : this.manager.getResourceManager().createImage(descriptor);
+	}
+
+	protected ImageDescriptor getImageDescriptor() {
+		return this.getImageDescriptorModel().getValue();
 	}
 
 	/**
-	 * Return the image model (lazy-initialized).
+	 * Return the image descriptor model (lazy-initialized).
 	 */
-	protected synchronized PropertyValueModel<Image> getImageModel() {
-		if (this.imageModel == null) {
-			this.imageModel = this.buildImageModel();
-			this.engageImageModel();
+	protected synchronized PropertyValueModel<ImageDescriptor> getImageDescriptorModel() {
+		if (this.imageDescriptorModel == null) {
+			this.imageDescriptorModel = this.buildImageDescriptorModel();
+			this.engageImageDescriptorModel();
 		}
-		return this.imageModel;
+		return this.imageDescriptorModel;
 	}
 
 	/**
-	 * Construct an image model.
+	 * Construct an image descriptor model.
 	 */
-	protected PropertyValueModel<Image> buildImageModel() {
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
 		throw new UnsupportedOperationException();
 	}
 
-	protected void engageImageModel() {
-		this.imageModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.getListener());
+	protected void engageImageDescriptorModel() {
+		this.imageDescriptorModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.getImageDescriptorListener());
 	}
 
-	protected void disengageImageModel() {
-		this.imageModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
+	protected void disengageImageDescriptorModel() {
+		this.imageDescriptorModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.imageDescriptorListener);
 	}
 
-	protected void disposeImageModel() {
-		if (this.imageModel != null) {
-			this.disengageImageModel();
-			this.imageModel = null;
+	protected void disposeImageDescriptorModel() {
+		if (this.imageDescriptorModel != null) {
+			ImageDescriptor descriptor = this.imageDescriptorModel.getValue();
+			if (descriptor != null) {
+				this.manager.getResourceManager().destroyImage(descriptor);
+			}
+			this.disengageImageDescriptorModel();
+			this.imageDescriptorModel = null;
 		}
+	}
+
+
+	// ********** image descriptor listener **********
+
+	protected synchronized PropertyChangeListener getImageDescriptorListener() {
+		if (this.imageDescriptorListener == null) {
+			this.imageDescriptorListener = this.buildImageDescriptorListener();
+		}
+		return this.imageDescriptorListener;
+	}
+
+	/**
+	 * Build a listener that will listen to the {@link #imageDescriptorModel}.
+	 */
+	protected PropertyChangeListener buildImageDescriptorListener() {
+		return new ImageDescriptorListener();
+	}
+
+	/* CU private */ class ImageDescriptorListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			AbstractItemExtendedLabelProvider.this.imageDescriptorChanged();
+		}
+	}
+
+	/* CU private */ void imageDescriptorChanged() {
+		this.manager.updateLabel(this.item);
 	}
 
 
@@ -134,11 +185,11 @@ public abstract class AbstractItemExtendedLabelProvider<I>
 	}
 
 	protected void engageTextModel() {
-		this.textModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.getListener());
+		this.textModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.getTextListener());
 	}
 
 	protected void disengageTextModel() {
-		this.textModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
+		this.textModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.textListener);
 	}
 
 	protected void disposeTextModel() {
@@ -146,6 +197,36 @@ public abstract class AbstractItemExtendedLabelProvider<I>
 			this.disengageTextModel();
 			this.textModel = null;
 		}
+	}
+
+
+	// ********** text listener **********
+
+	protected synchronized PropertyChangeListener getTextListener() {
+		if (this.textListener == null) {
+			this.textListener = this.buildTextListener();
+		}
+		return this.textListener;
+	}
+
+	/**
+	 * Build a listener that will listen to the {@link #textModel}.
+	 */
+	protected PropertyChangeListener buildTextListener() {
+		return new TextListener();
+	}
+
+	/* CU private */ class TextListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			AbstractItemExtendedLabelProvider.this.textChanged();
+		}
+	}
+
+	/* CU private */ void textChanged() {
+		this.manager.updateLabel(this.item);
 	}
 
 
@@ -174,11 +255,11 @@ public abstract class AbstractItemExtendedLabelProvider<I>
 	}
 
 	protected void engageDescriptionModel() {
-		this.descriptionModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.getListener());
+		this.descriptionModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.getDescriptionListener());
 	}
 
 	protected void disengageDescriptionModel() {
-		this.descriptionModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
+		this.descriptionModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.descriptionListener);
 	}
 
 	protected void disposeDescriptionModel() {
@@ -189,41 +270,40 @@ public abstract class AbstractItemExtendedLabelProvider<I>
 	}
 
 
-	// ********** listener **********
+	// ********** description listener **********
 
-	protected synchronized PropertyChangeListener getListener() {
-		if (this.listener == null) {
-			this.listener = this.buildListener();
+	protected synchronized PropertyChangeListener getDescriptionListener() {
+		if (this.descriptionListener == null) {
+			this.descriptionListener = this.buildDescriptionListener();
 		}
-		return this.listener;
+		return this.descriptionListener;
 	}
 
 	/**
-	 * Build a listener that will listen to the {@link #imageModel},
-	 * {@link #textModel}, and {@link #descriptionModel}.
+	 * Build a listener that will listen to the {@link #descriptionModel}.
 	 */
-	protected PropertyChangeListener buildListener() {
-		return new Listener();
+	protected PropertyChangeListener buildDescriptionListener() {
+		return new DescriptionListener();
 	}
 
-	/* CU private */ class Listener
+	/* CU private */ class DescriptionListener
 		extends PropertyChangeAdapter
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			AbstractItemExtendedLabelProvider.this.itemChanged();
+			AbstractItemExtendedLabelProvider.this.descriptionChanged();
 		}
 	}
 
-	/* CU private */ void itemChanged() {
-		this.manager.updateLabel(this.item);
+	/* CU private */ void descriptionChanged() {
+		this.manager.updateDescription(this.item);
 	}
 
 
 	// ********** dispose **********
 
 	public synchronized void dispose() {
-		this.disposeImageModel();
+		this.disposeImageDescriptorModel();
 		this.disposeTextModel();
 		this.disposeDescriptionModel();
 	}

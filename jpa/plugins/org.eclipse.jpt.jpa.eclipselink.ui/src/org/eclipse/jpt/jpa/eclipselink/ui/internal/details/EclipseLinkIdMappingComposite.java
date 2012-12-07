@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
@@ -39,12 +40,12 @@ public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 	extends AbstractIdMappingComposite<T>
 {
 	protected EclipseLinkIdMappingComposite(
-			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<? extends T> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-	        WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	@Override
@@ -76,7 +77,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
-		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
 
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
@@ -86,35 +87,25 @@ public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 		
-		PropertyValueModel<EclipseLinkConvert> convertHolder = buildEclipseLinkConverterHolder(converterHolder);
-		PropertyValueModel<Boolean> convertEnabledModel = CompositeBooleanPropertyValueModel.and(getEnabledModel(), buildEclipseLinkConvertBooleanHolder(convertHolder));
+		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterHolder);
+		PropertyValueModel<Boolean> convertEnabledModel = this.buildNonNullEclipseLinkConvertModel(convertModel);
 		Label convertLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_converterNameLabel, convertEnabledModel);
 		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
 		convertLabel.setLayoutData(gridData);
-		registerSubPane(new EclipseLinkConvertCombo(convertHolder, convertEnabledModel, container, getWidgetFactory()));
+		new EclipseLinkConvertCombo(this, convertModel, convertEnabledModel, container);
 
 		return container;
 	}
 	
-	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
-			@Override
-			protected EclipseLinkConvert transform_(Converter converter) {
-				return converter.getType() == EclipseLinkConvert.class ? (EclipseLinkConvert) converter : null;
-			}
-		};
+	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
+		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
 	}
 
-	protected PropertyValueModel<Boolean> buildEclipseLinkConvertBooleanHolder(PropertyValueModel<EclipseLinkConvert> convertHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertHolder) {
-			@Override
-			protected Boolean transform(EclipseLinkConvert value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+	protected PropertyValueModel<Boolean> buildNonNullEclipseLinkConvertModel(PropertyValueModel<EclipseLinkConvert> convertModel) {
+		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertModel, NotNullObjectTransformer.<EclipseLinkConvert>instance());
 	}
-	
+
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
 		return new PropertyAspectAdapter<T, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override

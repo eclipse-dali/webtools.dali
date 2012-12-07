@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.jpa.ui.internal.details.PersistentTypeDetailsPage;
+import org.eclipse.jpt.jpa.ui.internal.details.PersistentTypeDetailsPageManager;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -53,10 +53,7 @@ public class OrmPersistentTypeDetailsProvider
 				&& structureNode.getResourceType().getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 	
-	public JpaDetailsPageManager<PersistentType> buildDetailsPageManager(
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return new PersistentTypeDetailsPage(parent, widgetFactory);
+	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new PersistentTypeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 }

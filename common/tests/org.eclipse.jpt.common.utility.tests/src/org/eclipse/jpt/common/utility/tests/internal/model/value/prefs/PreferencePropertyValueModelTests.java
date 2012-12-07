@@ -390,7 +390,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 					preferencesModel,
 					key,
 					defaultValue,
-					Transformer.Null.<String>instance()
+					Transformer.Non.<String>instance()
 				);
 		}
 

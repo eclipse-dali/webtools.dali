@@ -20,9 +20,8 @@ public interface DefaultMappingUiDefinition<M, T>
 	extends MappingUiDefinition<M, T>
 {
 	/**
-	 * Returns a unique string that corresponds to the key of the mapping in the
-	 * core.  For a default mapping the method getKey() will return null since
-	 * that is for the specified mapping.  This will return the default mapping key, not null
+	 * Return a key corresponding to the key to be used when the mapping's
+	 * specified key is <code>null</code>.
 	 */
 	String getDefaultKey();
 }

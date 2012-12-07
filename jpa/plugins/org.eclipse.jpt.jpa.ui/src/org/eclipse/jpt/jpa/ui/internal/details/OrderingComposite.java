@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
@@ -37,38 +36,14 @@ import org.eclipse.swt.widgets.Text;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see CollectionMapping
- * @see ManyToManyMappingComposite - A container of this pane
- * @see OneToManyMappingComposite - A container of this pane
- *
- * @version 3.0
- * @since 1.0
+ * @see ManyToManyMappingComposite
+ * @see OneToManyMappingComposite
  */
-public class OrderingComposite extends AbstractOrderingComposite
+public class OrderingComposite
+	extends AbstractOrderingComposite
 {
-	/**
-	 * Creates a new <code>OrderingComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public OrderingComposite(Pane<? extends CollectionMapping> parentPane,
-	                         Composite parent) {
-
-		super(parentPane, parent);
-	}
-
-	/**
-	 * Creates a new <code>OrderingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IMultiRelationshipMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrderingComposite(PropertyValueModel<? extends CollectionMapping> subjectHolder,
-	                         Composite parent,
-	                         WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public OrderingComposite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
+		super(parentPane, parentComposite);
 	}
 
 	@Override

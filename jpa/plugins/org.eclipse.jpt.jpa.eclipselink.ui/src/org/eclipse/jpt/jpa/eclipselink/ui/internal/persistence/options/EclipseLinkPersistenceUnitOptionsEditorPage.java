@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
@@ -55,19 +55,19 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-
 import com.ibm.icu.text.Collator;
 
-public class EclipseLinkPersistenceUnitOptionsEditorPage  extends Pane<PersistenceUnit>{
-
+public class EclipseLinkPersistenceUnitOptionsEditorPage
+	extends Pane<PersistenceUnit>
+{
 	private PropertyValueModel<Options> optionsHolder;
 
 	public EclipseLinkPersistenceUnitOptionsEditorPage(
-			PropertyValueModel<PersistenceUnit> subjectModel,
-            Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
+            Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(persistenceUnitModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -181,11 +181,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage  extends Pane<Persisten
 	}
 
 	protected Control initializeLoggingSection(Section section) {			
-		return new EclipseLinkLoggingComposite<Logging>(this.buildLoggingHolder(), section, getWidgetFactory()).getControl();
+		return new EclipseLinkLoggingComposite<Logging>(this, this.buildLoggingHolder(), section).getControl();
 	}
 
-	protected Control initializeSchemaGenerationSection(Section section) {			
-		return new PersistenceXmlSchemaGenerationComposite(this.buildSchemaGenerationHolder(), section, getWidgetFactory()).getControl();
+	protected Control initializeSchemaGenerationSection(Section section) {
+		return new PersistenceXmlSchemaGenerationComposite(this, this.buildSchemaGenerationHolder(), section).getControl();
 	}
 
 	protected Control initializeMiscellaneousSection(Section section) {			

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -18,44 +19,15 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | BaseJoinColumnDialogPane                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | x Insertable                                                              |
- * |                                                                           |
- * | x Nullable                                                                |
- * |                                                                           |
- * | x Unique                                                                  |
- * |                                                                           |
- * | x Updatable                                                               |
- * |                                                                           |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see JoinColumnStateObject
- * @see JoinColumnDialog - The parent container
- *
- * @version 2.0
- * @since 1.0
- */
-public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJoinColumnDialogPane<T>
+public class JoinColumnDialogPane<T extends JoinColumnStateObject>
+	extends BaseJoinColumnDialogPane<T>
 {
-	/**
-	 * Creates a new <code>JoinColumnDialogPane</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	public JoinColumnDialogPane(PropertyValueModel<? extends T> subjectHolder,
-	                            Composite parent)
+	public JoinColumnDialogPane(
+			PropertyValueModel<? extends T> subjectModel,
+			Composite parentComposite,
+			ResourceManager resourceManager)
 	{
-		super(subjectHolder, parent);
+		super(subjectModel, parentComposite, resourceManager);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {

@@ -48,10 +48,9 @@ public abstract class AbstractResourceUiDefinition
 	}
 
 	/**
-	 * Override to add the appropriate <code>JpaEditorPageDefinitions</code>
-	 * @param definitions
+	 * Add the appropriate definitions
 	 */
-	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
-		//subclasses override
+	protected void addEditorPageDefinitionsTo(@SuppressWarnings("unused") List<JpaEditorPageDefinition> definitions) {
+		// only resources for which Dali supplies an editor need implement this method
 	}
 }

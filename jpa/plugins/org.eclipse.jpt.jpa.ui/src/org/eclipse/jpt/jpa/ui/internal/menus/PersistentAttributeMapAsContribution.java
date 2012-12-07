@@ -19,39 +19,30 @@ import org.eclipse.jpt.jpa.ui.internal.commands.PersistentAttributeMapAsHandler;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 /**
- * This menu contribution is responsible to populate the Map As menu with the
- * registered attribute mapping types defined in the <code>JptPlatformUi</code>
- * for <code>PersistentAttribute</code> objects.
- *
- * @see PersistentAttributeMapAsHandler
- * @see PersistentAttribute
- *
- * @version 2.2
- * @since 2.0
+ * This menu contribution is responsible for populating the "Map As" menu with
+ * the registered mapping types defined in the {@link JpaPlatformUi} for
+ * {@link PersistentAttribute}s.
  */
 public class PersistentAttributeMapAsContribution
 	extends MapAsContribution<ReadOnlyPersistentAttribute>
 {
-	/**
-	 * Creates a new <code>PersistentAttributeMapAsContribution</code>.
-	 */
 	public PersistentAttributeMapAsContribution() {
 		super();
 	}
 
 	@Override
-	protected String getCommandId() {
+	protected String getCommandID() {
 		return PersistentAttributeMapAsHandler.COMMAND_ID;
 	}
 	
 	@Override
-	protected String getCommandParameterId() {
+	protected String getCommandParameterID() {
 		return PersistentAttributeMapAsHandler.SPECIFIED_MAPPING_COMMAND_PARAMETER_ID;
 	}
 	
 	@Override
-	protected CommandContributionItemParameter createParameter(MappingUiDefinition<ReadOnlyPersistentAttribute, ?> mappingUiProvider) {
-		CommandContributionItemParameter parameter = super.createParameter(mappingUiProvider);
+	protected CommandContributionItemParameter buildContributionItemParameter(MappingUiDefinition<ReadOnlyPersistentAttribute, ?> mappingUiProvider) {
+		CommandContributionItemParameter parameter = super.buildContributionItemParameter(mappingUiProvider);
 		String defaultKey = null;
 		if (mappingUiProvider instanceof DefaultMappingUiDefinition<?, ?>) {
 			defaultKey = ((DefaultMappingUiDefinition<? extends PersistentAttribute, ?>) mappingUiProvider).getDefaultKey();
@@ -61,23 +52,16 @@ public class PersistentAttributeMapAsContribution
 	}
 	
 	@Override
-	protected Iterable<? extends MappingUiDefinition<ReadOnlyPersistentAttribute, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
-		return jpaPlatformUi.getAttributeMappingUiDefinitions(resourceType);
+	protected Iterable<? extends MappingUiDefinition<ReadOnlyPersistentAttribute, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, JptResourceType resourceType) {
+		return jpaPlatformUI.getAttributeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(
-			JpaPlatformUi jpaPlatformUi, ReadOnlyPersistentAttribute node) {
-		
-		return getDefaultMappingUiDefinition(
-				jpaPlatformUi, 
-				((PersistentAttribute) node).getDefaultMappingKey(), 
-				node.getResourceType());
+	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, ReadOnlyPersistentAttribute node) {
+		return getDefaultMappingUiDefinition(jpaPlatformUI, ((PersistentAttribute) node).getDefaultMappingKey(), node.getResourceType());
 	}
 	
-	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(
-			JpaPlatformUi jpaPlatformUi, String defaultMappingKey, JptResourceType resourceType) {
-		
-		return jpaPlatformUi.getDefaultAttributeMappingUiDefinition(resourceType, defaultMappingKey);
+	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, String defaultMappingKey, JptResourceType resourceType) {
+		return jpaPlatformUI.getDefaultAttributeMappingUiDefinition(resourceType, defaultMappingKey);
 	}
 }

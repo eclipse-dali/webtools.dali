@@ -61,11 +61,12 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 
 	protected TenantDiscriminatorColumnsComposite<EntityMappings>  buildTenantDiscriminatorColumnsComposite(Composite container) {
 		return new TenantDiscriminatorColumnsComposite<EntityMappings>(
-			getSubjectHolder(),
-			new TenantDiscriminatorColumnPaneEnablerHolder(),
-			container,
-			getWidgetFactory(),
-			buildTenantDiscriminatorColumnsEditor());
+				this,
+				this.getSubjectHolder(),
+				new TenantDiscriminatorColumnPaneEnablerHolder(),
+				container,
+				this.buildTenantDiscriminatorColumnsEditor()
+			);
 	}
 
 

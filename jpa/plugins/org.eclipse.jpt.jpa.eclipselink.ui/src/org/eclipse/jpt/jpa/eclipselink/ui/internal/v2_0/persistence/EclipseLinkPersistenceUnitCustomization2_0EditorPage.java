@@ -9,22 +9,23 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.EclipseLinkPersistenceUnitCustomizationEditorPage;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkPersistenceUnitCustomization2_0EditorPage extends EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>
+public class EclipseLinkPersistenceUnitCustomization2_0EditorPage
+	extends EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>
 {
 	public EclipseLinkPersistenceUnitCustomization2_0EditorPage(
 		PropertyValueModel<Customization> subjectModel,
-		Composite parent,
-        WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+			Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectModel, parentComposite, widgetFactory, resourceManager);
 	}
-
 
 	@Override
 	protected void buildEntityListComposite(Composite parent) {

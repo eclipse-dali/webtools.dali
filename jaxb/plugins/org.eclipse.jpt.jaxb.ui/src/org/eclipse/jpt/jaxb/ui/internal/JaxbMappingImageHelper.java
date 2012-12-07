@@ -9,70 +9,45 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
-public class JaxbMappingImageHelper
-{
-//
-//	public static Image imageForTypeMapping(String mappingKey) {
-//		return JptUiPlugin.getImage(iconKeyForTypeMapping(mappingKey));
-//	}
-//
-//	public static String iconKeyForTypeMapping(String mappingKey) {
-//		if (MappingKeys.NULL_TYPE_MAPPING_KEY == mappingKey) {
-//			return JptUiIcons.NULL_TYPE_MAPPING;
-//		}
-//		else if (MappingKeys.ENTITY_TYPE_MAPPING_KEY.equals(mappingKey)) {
-//			return JptUiIcons.ENTITY;
-//		}
-//		else if (MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY.equals(mappingKey)) {
-//			return JptUiIcons.EMBEDDABLE;
-//		}
-//		else if (MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY.equals(mappingKey)) {
-//			return JptUiIcons.MAPPED_SUPERCLASS;
-//		}
-//		return null;
-//	}
+public class JaxbMappingImageHelper {
 
-	public static Image imageForAttributeMapping(String mappingKey) {
-		return JptJaxbUiPlugin.instance().getImage(iconKeyForAttributeMapping(mappingKey));
-	}
-
-	public static String iconKeyForAttributeMapping(String mappingKey) {
+	public static ImageDescriptor imageDescriptorForAttributeMapping(String mappingKey) {
 		if (MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY == mappingKey) {
-			return JptJaxbUiIcons.NULL_ATTRIBUTE_MAPPING;
+			return JptJaxbUiImages.NULL_ATTRIBUTE_MAPPING;
 		}
-		else if (MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ANY_ATTRIBUTE;
+		if (MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ANY_ATTRIBUTE;
 		}
-		else if (MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ANY_ELEMENT;
+		if (MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ANY_ELEMENT;
 		}
-		else if (MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ATTRIBUTE;
+		if (MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ATTRIBUTE;
 		}
-		else if (MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ELEMENT;
+		if (MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ELEMENT;
 		}
-		else if (MappingKeys.XML_ELEMENT_REF_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ELEMENT_REF;
+		if (MappingKeys.XML_ELEMENT_REF_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ELEMENT_REF;
 		}
-		else if (MappingKeys.XML_ELEMENT_REFS_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ELEMENT_REFS;
+		if (MappingKeys.XML_ELEMENT_REFS_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ELEMENT_REFS;
 		}
-		else if (MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_ELEMENTS;
+		if (MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_ELEMENTS;
 		}
-		else if (MappingKeys.XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_TRANSIENT;
+		if (MappingKeys.XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_TRANSIENT;
 		}
-		else if (MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptJaxbUiIcons.XML_VALUE;
+		if (MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiImages.XML_VALUE;
 		}
 		
 		//return the JAXB_CONTENT icon instead of null, might as well have an icon if one is not defined
-		return JptJaxbUiIcons.JAXB_CONTENT;
+		return JptJaxbUiImages.JAXB_CONTENT;
 	}
 }

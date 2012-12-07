@@ -9,23 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingImageHelper;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.JaxbPersistentAttributeItemLabelProvider;
-import org.eclipse.swt.graphics.Image;
 
 
 public class ELJaxbPersistentAttributeItemLabelProvider
 	extends JaxbPersistentAttributeItemLabelProvider
 {
-	public ELJaxbPersistentAttributeItemLabelProvider(JaxbPersistentAttribute attribute, ItemLabelProvider.Manager manager) {
+	public ELJaxbPersistentAttributeItemLabelProvider(JaxbPersistentAttribute attribute, ItemExtendedLabelProvider.Manager manager) {
 		super(attribute, manager);
 	}
 	
 	
 	@Override
-	protected Image buildImage(String mappingKey) {
-		return ELJaxbMappingImageHelper.imageForAttributeMapping(mappingKey);
+	protected ImageDescriptor buildImageDescriptor(String mappingKey) {
+		return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
 	}
 }

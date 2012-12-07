@@ -20,8 +20,8 @@ import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface DefaultJavaTypeMappingUiDefinition<T extends TypeMapping>
-	extends JavaTypeMappingUiDefinition<T>, DefaultMappingUiDefinition<PersistentType, T>
+public interface DefaultJavaTypeMappingUiDefinition<M extends TypeMapping>
+	extends JavaTypeMappingUiDefinition<M>, DefaultMappingUiDefinition<PersistentType, M>
 {
-	
+	// combine interfaces
 }

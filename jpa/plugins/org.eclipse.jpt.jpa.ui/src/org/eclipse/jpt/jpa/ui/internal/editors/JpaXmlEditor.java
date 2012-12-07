@@ -12,12 +12,10 @@ package org.eclipse.jpt.jpa.ui.internal.editors;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
@@ -42,6 +40,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -55,6 +54,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
@@ -62,6 +62,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.part.MultiPageEditorSite;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
@@ -92,7 +93,7 @@ public class JpaXmlEditor
 	 * persistence.xml and orm.xml models.
 	 * <p>
 	 * We listen to changes to this model and swap out the editor pages.
-	 * Do not use this model as the subjectModel for the pages, 
+	 * Do not use this model as the subjectModel for the pages,
 	 * we need to control that model ourselves.
 	 * @see #pageRootStructureNodeModel
 	 */
@@ -117,22 +118,25 @@ public class JpaXmlEditor
 	private final StructuredTextEditor structuredTextEditor;
 
 	/**
-	 * The factory used to create the various widgets.
-	 * The widgetFactory wraps the editor's toolkit, is created 
-	 * when the editor's toolkit is {@link #createToolkit(Display) created}
-	 * and disposed, when the editor is {@link #dispose() disposed}.
+	 * The (local) resource manager used by the editor pages to create
+	 * and destroy images. The resource manager wraps the
+	 * {@link JpaWorkbench JPA workbench}'s resource manager, is created
+	 * when the editor's {@link #createToolkit(Display) toolkit is created},
+	 * and is disposed when the editor is {@link #dispose() disposed}.
 	 */
-	private WidgetFactory widgetFactory;
+	ResourceManager resourceManager;
 
 	/**
-	 * The local resource manager, used to create/destroy Images
+	 * The factory used by the editor pages to create the various widgets.
+	 * The widget factory wraps the editor's toolkit, is created
+	 * when the editor's {@link #createToolkit(Display) toolkit is created},
+	 * and is disposed when the editor is {@link #dispose() disposed}.
 	 */
-	final ResourceManager localResourceManager;
+	WidgetFactory widgetFactory;
 
 
 	public JpaXmlEditor() {
 		super();
-		this.localResourceManager = new LocalResourceManager(JFaceResources.getResources());
 		this.structuredTextEditor = new StructuredTextEditor();
 		this.structuredTextEditor.setEditorPart(this);
 	}
@@ -140,8 +144,17 @@ public class JpaXmlEditor
 	@Override
 	protected FormToolkit createToolkit(Display display) {
 		FormToolkit toolkit = super.createToolkit(display);
+		this.resourceManager = this.getJpaWorkbench().buildLocalResourceManager();
 		this.widgetFactory = new FormWidgetFactory(toolkit);
 		return toolkit;
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(this.getWorkbench(), JpaWorkbench.class);
+	}
+
+	private IWorkbench getWorkbench() {
+		return this.getSite().getWorkbenchWindow().getWorkbench();
 	}
 
 	@Override
@@ -178,7 +191,7 @@ public class JpaXmlEditor
 	/**
 	 * Adds the page containing the XML source editor.
 	 */
-	protected void addXMLSourceEditorPage() {
+	private void addXMLSourceEditorPage() {
 		try {
 			int index = this.addPage(this.structuredTextEditor, this.getEditorInput());
 			this.setPageText(index, JptUiMessages.JpaXmlEditor_sourcePage);
@@ -192,10 +205,10 @@ public class JpaXmlEditor
 	 * Add the pages for editing the selected JpaStructureNode. These
 	 * will be the pages that come before the XML source editor.
 	 * <p>
-	 * @see #getRootStructureNode()
+	 * @see #setPageRootStructureNode_(JpaStructureNode)
 	 * @see Page
 	 */
-	protected void addSpecificPages(PropertyValueModel<JpaStructureNode> structureNodeModel) {
+	private void addSpecificPages(PropertyValueModel<JpaStructureNode> structureNodeModel) {
 		JpaStructureNode rootStructureNode = structureNodeModel.getValue();
 		JptResourceType resourceType = rootStructureNode.getResourceType();
 		if (resourceType == null) {
@@ -223,18 +236,25 @@ public class JpaXmlEditor
 
 	@Override
 	protected IEditorSite createSite(IEditorPart editor) {
-		if (editor == this.structuredTextEditor) {
-			return new MultiPageEditorSite(this, editor) {
-				@Override
-				public String getId() {
-					// sets this id so nested editor is considered an xml source page
-					// I know this makes the XML source toolbar buttons appear on all
-					// the tabs instead of just the Source tab, not sure what else it does ~kfb
-					return "org.eclipse.core.runtime.xml.source"; //$NON-NLS-1$;
-				}
-			};
+		return (editor == this.structuredTextEditor) ?
+				new Site(this, editor) :
+				super.createSite(editor);
+	}
+
+	/* CU private */ static class Site
+		extends MultiPageEditorSite
+	{
+		Site(MultiPageEditorPart multiPageEditor, IEditorPart editor) {
+			super(multiPageEditor, editor);
 		}
-		return super.createSite(editor);
+
+		@Override
+		public String getId() {
+			// sets this id so nested editor is considered an xml source page
+			// I know this makes the XML source toolbar buttons appear on all
+			// the tabs instead of just the Source tab, not sure what else it does ~kfb
+			return "org.eclipse.core.runtime.xml.source"; //$NON-NLS-1$;
+		}
 	}
 
 	/**
@@ -296,7 +316,7 @@ public class JpaXmlEditor
 		this.execute(new SetPageRootStructureNodeRunnable(jpaStructureNode));
 	}
 
-	protected void setPageRootStructureNode_(JpaStructureNode rootStructureNode) {
+	/* CU private */ void setPageRootStructureNode_(JpaStructureNode rootStructureNode) {
 		if (this.pageRootStructureNodeModel != null) {
 			this.pageRootStructureNodeModel.setValue(null);
 			this.pageRootStructureNodeModel = null;
@@ -319,27 +339,42 @@ public class JpaXmlEditor
 	}
 
 	//*should* be only 1 root structure node for the jpa file (this is true for persistence.xml and orm.xml files)
-	protected PropertyValueModel<JpaStructureNode> buildRootStructureNodeModel() {
-		return new CollectionPropertyValueModelAdapter<JpaStructureNode, JpaStructureNode>(this.buildRootStructureNodesCollectionModel()) {
-			@Override
-			protected JpaStructureNode buildValue() {
-				return this.collectionModel.size() > 0 ? this.collectionModel.iterator().next() : null;
-			}
-		};
+	private PropertyValueModel<JpaStructureNode> buildRootStructureNodeModel() {
+		return new RootStructureNodeModel(this.buildRootStructureNodesCollectionModel());
 	}
 
-	protected CollectionValueModel<JpaStructureNode> buildRootStructureNodesCollectionModel() {
-		return new CollectionAspectAdapter<JpaFile, JpaStructureNode>(this.buildJpaFileModel(), JpaFile.ROOT_STRUCTURE_NODES_COLLECTION) {
-			@Override
-			protected Iterable<JpaStructureNode> getIterable() {
-				return this.subject.getRootStructureNodes();
-			}
-	
-			@Override
-			protected int size_() {
-				return this.subject.getRootStructureNodesSize();
-			}
-		};
+	/* CU private */ static class RootStructureNodeModel
+		extends CollectionPropertyValueModelAdapter<JpaStructureNode, JpaStructureNode>
+	{
+		RootStructureNodeModel(CollectionValueModel<? extends JpaStructureNode> collectionModel) {
+			super(collectionModel);
+		}
+		@Override
+		protected JpaStructureNode buildValue() {
+			return this.collectionModel.size() > 0 ? this.collectionModel.iterator().next() : null;
+		}
+	}
+
+	private CollectionValueModel<JpaStructureNode> buildRootStructureNodesCollectionModel() {
+		return new RootStructureNodesCollectionModel(this.buildJpaFileModel());
+	}
+
+	/* CU private */ static class RootStructureNodesCollectionModel
+		extends CollectionAspectAdapter<JpaFile, JpaStructureNode>
+	{
+		RootStructureNodesCollectionModel(PropertyValueModel<? extends JpaFile> subjectModel) {
+			super(subjectModel, JpaFile.ROOT_STRUCTURE_NODES_COLLECTION);
+		}
+
+		@Override
+		protected Iterable<JpaStructureNode> getIterable() {
+			return this.subject.getRootStructureNodes();
+		}
+
+		@Override
+		protected int size_() {
+			return this.subject.getRootStructureNodesSize();
+		}
 	}
 
 	/* CU private */ class SetPageRootStructureNodeRunnable
@@ -363,13 +398,13 @@ public class JpaXmlEditor
 	}
 
 
-	
+
 	@Override
 	public void dispose() {
 		this.editorInputModel.setValue(null);
-		this.localResourceManager.dispose();
 		this.rootStructureNodeModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootStructureNodeListener);
 		this.widgetFactory.dispose();
+		this.resourceManager.dispose();
 
 		super.dispose();
 	}
@@ -380,10 +415,6 @@ public class JpaXmlEditor
 	@Override
 	public IFileEditorInput getEditorInput() {
 		return (IFileEditorInput) super.getEditorInput();
-	}
-
-	public WidgetFactory getWidgetFactory() {
-		return this.widgetFactory;
 	}
 
 	private void execute(Runnable runnable) {
@@ -400,33 +431,29 @@ public class JpaXmlEditor
 
 	/**
 	 * This extension over <code>FormPage</code> simply completes the layout by
-	 * using the <code>JpaEditorPageDefinition</code> 
-	 * 
-	 * @see JpaEditorPageDefinition#buildEditorPageContent(IManagedForm, WidgetFactory, PropertyValueModel)
+	 * using the <code>JpaEditorPageDefinition</code>
+	 *
+	 * @see JpaEditorPageDefinition#buildContent(IManagedForm, WidgetFactory, ResourceManager, PropertyValueModel)
 	 */
-	class Page
+	/* CU private */ class Page
 		extends FormPage
 	{
 		/**
-		 * The editor page definition, find the page's text, image, help ID
-		 * and build the content.
+		 * The editor page definition; supplies the page's text, image, help ID,
+		 * and content.
 		 */
 		private final JpaEditorPageDefinition editorPageDefinition;
 
 		/**
-		 * This root structure node model.
+		 * The root structure node model.
 		 */
-		private PropertyValueModel<JpaStructureNode> structureNodeModel;
+		private final PropertyValueModel<JpaStructureNode> structureNodeModel;
 
-		/**
-		 * The FormPage's image descriptor, stored so that we can dispose of it.
-		 */
-		private ImageDescriptor imageDescriptor;
 
 		Page(JpaEditorPageDefinition editorPageDefinition, PropertyValueModel<JpaStructureNode> structureNodeModel) {
 			super(JpaXmlEditor.this,
 					editorPageDefinition.getClass().getName(),
-					editorPageDefinition.getPageText());
+					editorPageDefinition.getTitleText());
 
 			this.editorPageDefinition = editorPageDefinition;
 			this.structureNodeModel = structureNodeModel;
@@ -434,42 +461,45 @@ public class JpaXmlEditor
 
 		@Override
 		protected void createFormContent(IManagedForm managedForm) {
-
 			ScrolledForm form = managedForm.getForm();
 			managedForm.getToolkit().decorateFormHeading(form.getForm());
 
 			// Update the text and image
-			updateForm(form);
+			this.updateForm(form);
 
 			// Update the layout
-			updateBody(managedForm);
+			this.updateBody(managedForm);
 
 			// This will finish the initialization of the buttons
-			updateHelpButton();
+			this.updateHelpButton();
 			form.updateToolBar();
 		}
 
 		/**
-		 * Updates the text and image of the form. The image can be null.
-		 * 
+		 * Set the form's title text and image.
+		 * The image can be <code>null</code>.
 		 */
 		private void updateForm(ScrolledForm form) {
-			form.setText(this.editorPageDefinition.getPageText());
-
-			this.imageDescriptor = this.editorPageDefinition.getPageImageDescriptor();
-			if (this.imageDescriptor != null) {
-				form.setImage(JpaXmlEditor.this.localResourceManager.createImage(this.imageDescriptor));
+			form.setText(this.editorPageDefinition.getTitleText());
+			ImageDescriptor imageDescriptor = this.editorPageDefinition.getTitleImageDescriptor();
+			if (imageDescriptor != null) {
+				form.setImage(JpaXmlEditor.this.resourceManager.createImage(imageDescriptor));
 			}
 		}
 
 		/**
-		 * Adds the page's control to this page.
+		 * Build the page's control.
 		 */
 		private void updateBody(IManagedForm form) {
 			Composite body = form.getForm().getBody();
 			body.setLayout(new GridLayout(1, true));
 
-			this.editorPageDefinition.buildEditorPageContent(form, getWidgetFactory(), this.structureNodeModel);
+			this.editorPageDefinition.buildContent(
+					form,
+					JpaXmlEditor.this.widgetFactory,
+					JpaXmlEditor.this.resourceManager,
+					this.structureNodeModel
+				);
 			//calling this because it makes the scroll bar appear on the editor tabs when the content
 			//is larger than the editor tab area. Not sure how else to make this happen
 			form.reflow(true);
@@ -480,19 +510,17 @@ public class JpaXmlEditor
 		 */
 		private void updateHelpButton() {
 			String helpID = this.editorPageDefinition.getHelpID();
-
 			if (helpID != null) {
-				Action helpAction = new HelpAction(helpID);
-
-				ScrolledForm form = getManagedForm().getForm();
-				IToolBarManager manager = form.getToolBarManager();
-				manager.add(helpAction);
+				this.getManagedForm().getForm().getToolBarManager().add(new HelpAction(helpID));
 			}
 		}
 
 		@Override
 		public void dispose() {
-			JpaXmlEditor.this.localResourceManager.destroyImage(this.imageDescriptor);
+			ImageDescriptor imageDescriptor = this.editorPageDefinition.getTitleImageDescriptor();
+			if (imageDescriptor != null) {
+				JpaXmlEditor.this.resourceManager.destroyImage(imageDescriptor);
+			}
 			super.dispose();
 		}
 
@@ -501,7 +529,7 @@ public class JpaXmlEditor
 			StringBuilder sb = new StringBuilder();
 			StringBuilderTools.appendHashCodeToString(sb, this);
 			sb.append('(');
-			sb.append(this.editorPageDefinition.getPageText());
+			sb.append(this.editorPageDefinition.getTitleText());
 			sb.append(')');
 			return sb.toString();
 		}
@@ -523,7 +551,7 @@ public class JpaXmlEditor
 
 			@Override
 			public void run() {
-				BusyIndicator.showWhile(getManagedForm().getForm().getDisplay(), new Runnable() {
+				BusyIndicator.showWhile(Page.this.getManagedForm().getForm().getDisplay(), new Runnable() {
 					public void run() {
 						PlatformUI.getWorkbench().getHelpSystem().displayHelp(HelpAction.this.helpID);
 					}

@@ -10,65 +10,38 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.StaticTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | Description                                                               |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
- * @see AddRemoveListPane
- *
- * @version 2.0
- * @since 2.0
- */
 public abstract class PersistenceUnitJarFilesComposite 
 	extends Pane<PersistenceUnit>
 {
-
-	/**
-	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
 	public PersistenceUnitJarFilesComposite(
-			Pane<? extends PersistenceUnit> parentPane,
-			Composite parent) {
-
-		super(parentPane, parent);
+			Pane<? extends PersistenceUnit> parent,
+			Composite parentComposite) {
+		super(parent, parentComposite);
 	}
 
 	@Override
@@ -84,7 +57,7 @@ public abstract class PersistenceUnitJarFilesComposite
 			this.buildAdapter(),
 			this.buildItemListHolder(),
 			this.buildSelectedJarFileRefsModel(),
-			this.buildLabelProvider(),
+			this.buildJarFileRefLabelProvider(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL);
 	}
 
@@ -132,28 +105,29 @@ public abstract class PersistenceUnitJarFilesComposite
 		return new SimpleCollectionValueModel<JarFileRef>();
 	}
 	
-	private ILabelProvider buildLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public Image getImage(Object element) {
-				return JptJpaUiPlugin.instance().getImage(JptUiIcons.JAR_FILE_REF);
-			}
-			
-			@Override
-			public String getText(Object element) {
-				JarFileRef jarFileRef = (JarFileRef) element;
-				String name = jarFileRef.getFileName();
-				
-				if (name == null) {
-					name = JptUiPersistenceMessages.PersistenceUnitJarFilesComposite_noFileName;
-				}
-				
-				return name;
-			}
-		};
+	private ILabelProvider buildJarFileRefLabelProvider() {
+		return new ResourceManagerLabelProvider<JarFileRef>(
+				JAR_FILE_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER,
+				JAR_FILE_REF_LABEL_TEXT_TRANSFORMER,
+				this.getResourceManager()
+			);
+	}
+
+	private static final Transformer<JarFileRef, ImageDescriptor> JAR_FILE_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER =
+			new StaticTransformer<JarFileRef, ImageDescriptor>(JptJpaUiImages.JAR_FILE_REF);
+
+	private static final Transformer<JarFileRef, String> JAR_FILE_REF_LABEL_TEXT_TRANSFORMER = new JarFileRefLabelTextTransformer();
+	/* CU private */ static class JarFileRefLabelTextTransformer
+		extends AbstractTransformer<JarFileRef, String>
+	{
+		@Override
+		protected String transform_(JarFileRef jarFileRef) {
+			String name = jarFileRef.getFileName();
+			return (name != null) ? name : JptUiPersistenceMessages.PersistenceUnitJarFilesComposite_noFileName;
+		}
 	}
 	
-	private JarFileRef addJarFileRef() {
+	JarFileRef addJarFileRef() {
 		IProject project = getSubject().getJpaProject().getProject();
 
 		ElementTreeSelectionDialog dialog = new ArchiveFileSelectionDialog(

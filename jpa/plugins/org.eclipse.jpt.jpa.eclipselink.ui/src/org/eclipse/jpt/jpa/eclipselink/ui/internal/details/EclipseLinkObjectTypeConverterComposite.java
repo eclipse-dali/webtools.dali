@@ -14,7 +14,6 @@ import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
@@ -59,20 +58,11 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObjectTypeConverter>
+public class EclipseLinkObjectTypeConverterComposite
+	extends Pane<EclipseLinkObjectTypeConverter>
 {
-
-	/**
-	 * Creates a new <code>ObjectTypeConverterComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public EclipseLinkObjectTypeConverterComposite(PropertyValueModel<? extends EclipseLinkObjectTypeConverter> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public EclipseLinkObjectTypeConverterComposite(Pane<?> parentPane, PropertyValueModel<? extends EclipseLinkObjectTypeConverter> subjectModel, Composite parentComposite) {
+		super(parentPane, subjectModel, parentComposite);
 	}
 
 	@Override
@@ -282,7 +272,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			@Override
 			public void optionOnSelection(CollectionValueModel<EclipseLinkConversionValue> selectedItemsModel) {
 				EclipseLinkConversionValue conversionValue = selectedItemsModel.iterator().next();
-				EclipseLinkConversionValueDialog dialog = new EclipseLinkConversionValueDialog(getShell(), getSubject(), conversionValue);
+				EclipseLinkConversionValueDialog dialog = new EclipseLinkConversionValueDialog(getShell(), getResourceManager(), getSubject(), conversionValue);
 				editConversionValueFromDialog(dialog, conversionValue);
 			}
 
@@ -303,7 +293,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 
 
 	protected EclipseLinkConversionValueDialog buildConversionValueDialogForAdd() {
-		return new EclipseLinkConversionValueDialog(getShell(), getSubject());
+		return new EclipseLinkConversionValueDialog(this.getShell(), this.getResourceManager(), this.getSubject());
 	}
 
 	protected EclipseLinkConversionValue addConversionValueFromDialog(EclipseLinkConversionValueDialog dialog) {

@@ -37,25 +37,56 @@ public interface Transformer<T1, T2> {
 
 
 	/**
-	 * A "null" transformer will perform no transformation at all;
+	 * A "non" transformer will perform no transformation at all;
 	 * it will simply return the object "untransformed".
 	 */
-	final class Null<S>
+	final class Non<S>
 		implements Transformer<S, S>, Serializable
+	{
+		@SuppressWarnings("rawtypes")
+		public static final Transformer INSTANCE = new Non();
+		@SuppressWarnings("unchecked")
+		public static <R> Transformer<R, R> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Non() {
+			super();
+		}
+		// simply return the object, unchanged
+		public S transform(S o) {
+			return o;
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
+	}
+
+	/**
+	 * A "null" transformer will always return <code>null</code>.
+	 */
+	final class Null<S1, S2>
+		implements Transformer<S1, S2>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
-		public static <R> Transformer<R, R> instance() {
+		public static <R1, R2> Transformer<R1, R2> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
 		private Null() {
 			super();
 		}
-		// simply return the object, unchanged
-		public S transform(S o) {
-			return o;
+		// simply return null
+		public S2 transform(S1 o) {
+			return null;
 		}
 		@Override
 		public String toString() {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -44,13 +45,7 @@ public class OrmEclipseLinkArrayMapping2_3UiDefinition
 		super();
 	}
 
-	public JpaComposite buildAttributeMappingComposite(
-			OrmXmlUiFactory factory, 
-			PropertyValueModel<EclipseLinkArrayMapping2_3> subjectHolder, 
-			PropertyValueModel<Boolean> enabledModel, 
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return new EclipseLinkArrayMapping2_3Composite(subjectHolder, enabledModel, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel<EclipseLinkArrayMapping2_3> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new EclipseLinkArrayMapping2_3Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

@@ -38,13 +38,12 @@ public interface ResourceUiDefinition {
 	ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider();
 
 	/**
-	 * Return the <code>JpaEditorPageDefinition</code>'s to be displayed
+	 * Return the JPA editor page definitions to be displayed
 	 * as tabs for an editor for the resource.
 	 * <p>
-	 * Currently we only have a persistence.xml editor
+	 * Currently Dali has only a <code>persistence.xml</code> editor.
 	 * 
 	 * @see org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditor
 	 */
 	ListIterable<JpaEditorPageDefinition> getEditorPageDefinitions();
-
 }

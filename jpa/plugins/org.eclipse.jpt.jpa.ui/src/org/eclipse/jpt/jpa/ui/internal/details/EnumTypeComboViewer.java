@@ -10,14 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -32,7 +29,6 @@ import org.eclipse.swt.widgets.Control;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see BasicMapping
  * @see BasicMappingComposite - A container of this widget
  *
  * @version 2.0
@@ -42,13 +38,9 @@ public class EnumTypeComboViewer extends Pane<BaseEnumeratedConverter>
 {
 	private Combo combo;
 
-	public EnumTypeComboViewer(PropertyValueModel<? extends BaseEnumeratedConverter> subjectHolder,
-		PropertyValueModel<Boolean> enabledModel,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-	super(subjectHolder, enabledModel, parent, widgetFactory);
-}
+	public EnumTypeComboViewer(Pane<?> parentPane, PropertyValueModel<? extends BaseEnumeratedConverter> subjectHolder, Composite parentComposite) {
+		super(parentPane, subjectHolder, parentComposite);
+	}
 
 	@Override
 	protected boolean addsComposite() {
@@ -115,11 +107,6 @@ public class EnumTypeComboViewer extends Pane<BaseEnumeratedConverter>
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<BaseEnumeratedConverter, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform(BaseEnumeratedConverter value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+		return this.buildNotNullSubjectModel();
 	}
 }

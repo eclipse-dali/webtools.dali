@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
@@ -52,10 +52,7 @@ public class OrmPersistentAttributeDetailsProvider
 				&& structureNode.getResourceType().getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 	
-	public JpaDetailsPageManager<OrmReadOnlyPersistentAttribute> buildDetailsPageManager(
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		return new OrmPersistentAttributeDetailsPage(parent, widgetFactory);
+	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new OrmPersistentAttributeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 }

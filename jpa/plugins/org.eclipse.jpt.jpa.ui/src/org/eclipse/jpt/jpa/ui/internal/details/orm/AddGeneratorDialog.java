@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -18,22 +19,16 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Clients can use this dialog to prompt the user for SecondaryTable settings.
- * Use the following once the dialog is closed:
- *     @see #getSelectedTable()
- *     @see #getSelectedCatalog()
- *     @see #getSelectedSchema()
- * @version 2.1
- * @since 2.1
- */
-public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject> {
+public class AddGeneratorDialog
+	extends ValidatingDialog<AddGeneratorStateObject>
+{
 	public static final String SEQUENCE_GENERATOR = "sequenceGenerator"; //$NON-NLS-1$
 	public static final String TABLE_GENERATOR = "tableGenerator"; //$NON-NLS-1$
 
@@ -42,13 +37,14 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 	 */
 	private PersistenceUnit pUnit;
 	
+
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public AddGeneratorDialog(Shell parent, PersistenceUnit pUnit) {
-		super(parent);
+	public AddGeneratorDialog(Shell parent, ResourceManager resourceManager, PersistenceUnit pUnit) {
+		super(parent, resourceManager, JptUiDetailsOrmMessages.AddGeneratorDialog_title);
 		this.pUnit = pUnit;
 	}
 
@@ -58,17 +54,6 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 	}
 
 	// ********** open **********
-
-	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(this.getTitle());
-	}
-
-	@Override
-	protected String getTitle() {
-		return JptUiDetailsOrmMessages.AddGeneratorDialog_title;
-	}
 
 	@Override
 	protected String getDescriptionTitle() {
@@ -82,7 +67,7 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 	
 	@Override
 	protected DialogPane<AddGeneratorStateObject> buildLayout(Composite container) {
-		return new GeneratorDialogPane(container);
+		return new GeneratorDialogPane(this.getSubjectHolder(), container, this.resourceManager);
 	}
 	
 	@Override
@@ -111,13 +96,15 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 	public String getGeneratorType() {
 		return getSubject().getGeneratorType();
 	}
-	
-	private class GeneratorDialogPane extends DialogPane<AddGeneratorStateObject> {
 
+
+	static class GeneratorDialogPane
+		extends DialogPane<AddGeneratorStateObject>
+	{
 		private Text nameText;
 
-		GeneratorDialogPane(Composite parent) {
-			super(AddGeneratorDialog.this.getSubjectHolder(), parent);
+		GeneratorDialogPane(PropertyValueModel<AddGeneratorStateObject> subjectModel, Composite parentComposite, ResourceManager resourceManager) {
+			super(subjectModel, parentComposite, resourceManager);
 		}
 
 		@Override

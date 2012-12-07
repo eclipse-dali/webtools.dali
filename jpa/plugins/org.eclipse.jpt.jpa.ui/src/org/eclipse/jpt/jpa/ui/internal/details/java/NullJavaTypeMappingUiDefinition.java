@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -18,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaTypeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
@@ -70,12 +72,12 @@ public class NullJavaTypeMappingUiDefinition
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.WARNING;
+	public ImageDescriptor getImageDescriptor() {
+		return JptCommonUiImages.WARNING;
 	}
 
-	public JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaTypeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
-		return new NullComposite(mappingModel, parent, widgetFactory);
+	public JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaTypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new NullComposite(mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 
@@ -85,8 +87,8 @@ public class NullJavaTypeMappingUiDefinition
 		extends Pane<JavaTypeMapping>
 		implements JpaComposite 
 	{
-		NullComposite(PropertyValueModel<JavaTypeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
-			super(mappingModel, parent, widgetFactory);
+		NullComposite(PropertyValueModel<JavaTypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+			super(mappingModel, parentComposite, widgetFactory, resourceManager);
 		}
 
 		@Override

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -71,12 +72,13 @@ public interface JpaPlatformUi {
 	ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JpaFile jpaFile);
 
 
-	// ********** details providers **********
+	// ********** details page managers **********
 
 	JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(
 			Composite parent,
 			JpaStructureNode structureNode,
-			WidgetFactory widgetFactory);
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager);
 
 
 	// ********** file ui definitions **********
@@ -94,7 +96,8 @@ public interface JpaPlatformUi {
 			String mappingKey, 
 			Composite parent, 
 			PropertyValueModel<TypeMapping> mappingHolder,
-			WidgetFactory widgetFactory);
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager);
 
 	Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions(JptResourceType resourceType);
 
@@ -109,9 +112,10 @@ public interface JpaPlatformUi {
 			JptResourceType resourceType, 
 			String mappingKey, 
 			Composite parent,
-			PropertyValueModel<AttributeMapping> mappingHolder,
+			PropertyValueModel<AttributeMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			WidgetFactory widgetFactory);
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager);
 
 	Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions(JptResourceType resourceType);
 

@@ -19,7 +19,7 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -50,7 +50,7 @@ public class TableFigure extends Figure
 		setBackgroundColor(this.tableColor);
 		setOpaque(true);
 		setSize(150, 20);
-		Label nameLabel = new Label("", ImageRepository.getTableObjImage(this.resourceManager));
+		Label nameLabel = new Label("", this.resourceManager.createImage(JptJpaUiImages.ENTITY_GEN_TABLE_OBJECT));
 		nameLabel.setFont(this.tableFont);
 		nameLabel.setText(name);
 		nameLabel.setForegroundColor(this.borderColor);

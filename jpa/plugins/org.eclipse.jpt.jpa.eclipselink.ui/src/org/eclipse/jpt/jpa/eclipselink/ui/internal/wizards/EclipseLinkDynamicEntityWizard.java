@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.ui.INewWizard;
@@ -46,7 +46,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 	public EclipseLinkDynamicEntityWizard(IDataModel model) {
 		super(model);
         setWindowTitle(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_title);
-        setDefaultPageImageDescriptor(JptJpaEclipseLinkUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
+        setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}
 
 	/**

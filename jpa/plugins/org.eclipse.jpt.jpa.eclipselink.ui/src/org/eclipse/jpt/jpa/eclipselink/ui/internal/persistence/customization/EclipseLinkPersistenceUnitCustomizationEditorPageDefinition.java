@@ -10,10 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -45,12 +47,12 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPageDefinition
 		super();
 	}
 
-	public String getPageText() {
-		return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_title;
+	public ImageDescriptor getTitleImageDescriptor() {
+		return null;
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
+	public String getTitleText() {
+		return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_title;
 	}
 
 	public String getHelpID() {
@@ -58,19 +60,22 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPageDefinition
 	}
 
 	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>(
-				this.buildCustomizationHolder(jpaRootStructureNodeModel), 
-				parent,
-				widgetFactory);
+	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>(buildCustomizationModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
 	}
 
-	private PropertyValueModel<Customization> buildCustomizationHolder(PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Customization>(this.buildPersistenceUnitModel(jpaRootStructureNodeModel)) {
-			@Override
-			protected Customization transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getCustomization();
-			}
-		};
+	public static PropertyValueModel<Customization> buildCustomizationModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Customization>(persistenceUnitModel, CUSTOMIZATION_TRANSFORMER);
+	}
+
+	public static final Transformer<PersistenceUnit, Customization> CUSTOMIZATION_TRANSFORMER = new CustomizationTransformer();
+
+	public static class CustomizationTransformer
+		extends AbstractTransformer<PersistenceUnit, Customization>
+	{
+		@Override
+		protected Customization transform_(PersistenceUnit persistenceUnit) {
+			return ((EclipseLinkPersistenceUnit) persistenceUnit).getCustomization();
+		}
 	}
 }

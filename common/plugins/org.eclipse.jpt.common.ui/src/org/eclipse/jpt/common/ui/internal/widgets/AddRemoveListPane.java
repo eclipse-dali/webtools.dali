@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -435,7 +435,7 @@ public class AddRemoveListPane<T extends Model, E extends Object> extends AddRem
 	 * @param table The main widget of this pane
 	 */
 	protected void initializeTable(Table table) {
-		table.setData("column.width", new Integer(0));
+		table.setData("column.width", Integer.valueOf(0));
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 

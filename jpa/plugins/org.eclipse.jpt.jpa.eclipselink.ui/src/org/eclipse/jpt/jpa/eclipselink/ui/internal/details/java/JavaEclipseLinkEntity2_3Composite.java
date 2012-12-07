@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -25,21 +26,15 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * The pane used for an EclipseLink 2.3 Java entity.
- *
- * @version 3.1
- * @since 3.1
- */
 public class JavaEclipseLinkEntity2_3Composite
 	extends AbstractJavaEclipseLinkEntity2_xComposite
 {
 	public JavaEclipseLinkEntity2_3Composite(
-			PropertyValueModel<? extends JavaEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends JavaEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
-import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ReferenceTableComposite;
@@ -21,68 +19,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-/**
- * The layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |            ------------------------------------------------------------   |
- * |   Name:    |                                                        |v|   |
- * |            ------------------------------------------------------------   |
- * |            ------------------------------------------------------------   |
- * |   Schema:  |                                                        |v|   |
- * |            ------------------------------------------------------------   |
- * |            ------------------------------------------------------------   |
- * |   Catalog: |                                                        |v|   |
- * |            ------------------------------------------------------------   |
- * |                                                                           |
- * | - Join Columns ---------------------------------------------------------- |
- * | |                                                                       | |
- * | | x Override Default                                                    | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | JoinColumnsComposite                                              | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see {@link CollectionTable2_0}
- * @see {@link JoinColumnsComposite
- *
- * @version 3.0
- * @since 3.0
- */
 public class CollectionTable2_0Composite
 	extends ReferenceTableComposite<ReadOnlyReferenceTable>
 {
-	/**
-	 * Creates a new <code>CollectionTable2_0Composite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
 	public CollectionTable2_0Composite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyReferenceTable> subjectHolder,
-			Composite parent) {
-
-		super(parentPane, subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>CollectionTable2_0Composite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>CollectionTable2_0</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public CollectionTable2_0Composite(PropertyValueModel<? extends CollectionTable2_0> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends ReadOnlyReferenceTable> tableModel,
+			Composite parentComposite) {
+		super(parentPane, tableModel, parentComposite);
 	}
 
 	@Override

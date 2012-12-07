@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -24,21 +25,19 @@ import org.eclipse.swt.widgets.Composite;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAttributeMappingUiDefinition<T extends AttributeMapping>
-	extends MappingUiDefinition<ReadOnlyPersistentAttribute, T>
+public interface JavaAttributeMappingUiDefinition<M extends AttributeMapping>
+	extends MappingUiDefinition<ReadOnlyPersistentAttribute, M>
 {
 	/**
-	 * Creates <code>JpaComposite</code> that corresponds to this mapping type.
-	 * This will be displayed by the <code>PersistentAttributeDetailsPage</code>
-	 * when the mapping key matches the key given by this provider. The
-	 * composites will be stored in a Map with the mapping key as the key.
-	 *
-	 * @param factory The UI factory responsible to create the right composite
-	 * for any mapping type
-	 * @param mappingModel The model of the mapping being displayed
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the various widgets
-	 * @return The composite displaying the information for a certain mapping
+	 * Create a JPA composite corresponding to the definition's mapping type.
+	 * This will be displayed by the JPA details view
+	 * when the mapping key matches the definition's key.
 	 */
-	JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<T> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory);
+	JpaComposite buildAttributeMappingComposite(
+			JavaUiFactory factory,
+			PropertyValueModel<M> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager);
 }

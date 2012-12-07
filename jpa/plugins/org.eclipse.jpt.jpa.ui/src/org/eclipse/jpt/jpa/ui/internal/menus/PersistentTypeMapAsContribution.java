@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.menus;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -18,42 +17,34 @@ import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.commands.PersistentTypeMapAsHandler;
 
 /**
- * This menu contribution is responsible to populate the Map As menu with the
- * registered mapping types defined in the <code>JptPlatformUi</code> for
- * <code>PersistentType</code> objects.
- *
- * @see JpaPlatform
- * @see JpaPlatformUi
- * @see PersistentType
+ * This menu contribution is responsible for populating the "Map As" menu with
+ * the registered mapping types defined in the {@link JpaPlatformUi} for
+ * {@link PersistentType}s.
  */
 public class PersistentTypeMapAsContribution
 	extends MapAsContribution<PersistentType>
 {
-	/**
-	 * Creates a new <code>PersistentTypeMapAsContribution</code>.
-	 */
 	public PersistentTypeMapAsContribution() {
 		super();
 	}
 	
-	
 	@Override
-	protected String getCommandId() {
+	protected String getCommandID() {
 		return PersistentTypeMapAsHandler.COMMAND_ID;
 	}
 	
 	@Override
-	protected String getCommandParameterId() {
+	protected String getCommandParameterID() {
 		return PersistentTypeMapAsHandler.COMMAND_PARAMETER_ID;
 	}
 	
 	@Override
-	protected Iterable<? extends MappingUiDefinition<PersistentType, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
-		return jpaPlatformUi.getTypeMappingUiDefinitions(resourceType);
+	protected Iterable<? extends MappingUiDefinition<PersistentType, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, JptResourceType resourceType) {
+		return jpaPlatformUI.getTypeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<PersistentType, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUi, PersistentType node) {
-		return jpaPlatformUi.getDefaultTypeMappingUiDefinition(node.getResourceType());
+	protected DefaultMappingUiDefinition<PersistentType, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, PersistentType node) {
+		return jpaPlatformUI.getDefaultTypeMappingUiDefinition(node.getResourceType());
 	}
 }

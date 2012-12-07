@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.ui.internal.JaxbMappingImageHelper;
-import org.eclipse.swt.graphics.Image;
 
 
 public class JaxbPersistentAttributeItemLabelProvider
@@ -24,24 +24,24 @@ public class JaxbPersistentAttributeItemLabelProvider
 	protected final String text;
 	protected final String description;
 	
-	public JaxbPersistentAttributeItemLabelProvider(JaxbPersistentAttribute attribute, ItemLabelProvider.Manager manager) {
+	public JaxbPersistentAttributeItemLabelProvider(JaxbPersistentAttribute attribute, ItemExtendedLabelProvider.Manager manager) {
 		super(attribute, manager);
 		this.text = this.buildText();
 		this.description = this.buildDescription();
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new PropertyAspectAdapter<JaxbPersistentAttribute, Image>(IMAGE_ASPECT_NAMES, this.item) {
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+		return new PropertyAspectAdapter<JaxbPersistentAttribute, ImageDescriptor>(IMAGE_ASPECT_NAMES, this.item) {
 			@Override
-			protected Image buildValue_() {
-				return JaxbPersistentAttributeItemLabelProvider.this.buildImage(this.subject.getMappingKey());
+			protected ImageDescriptor buildValue_() {
+				return JaxbPersistentAttributeItemLabelProvider.this.buildImageDescriptor(this.subject.getMappingKey());
 			}
 		};
 	}
 
-	protected Image buildImage(String mappingKey) {
-		return JaxbMappingImageHelper.imageForAttributeMapping(mappingKey);
+	protected ImageDescriptor buildImageDescriptor(String mappingKey) {
+		return JaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
 	}
 
 	protected static final String[] IMAGE_ASPECT_NAMES = new String[] {

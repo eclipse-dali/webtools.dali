@@ -11,9 +11,8 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.proj;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.proj.model.JaxbProjectCreationDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -38,7 +37,7 @@ public class JaxbProjectWizard
 	
 	@Override
 	protected ImageDescriptor getDefaultPageImageDescriptor() {
-		return JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.JAXB_WIZ_BANNER);
+		return JptJaxbUiImages.JAXB_PROJECT_BANNER;
 	}
 	
 	@Override

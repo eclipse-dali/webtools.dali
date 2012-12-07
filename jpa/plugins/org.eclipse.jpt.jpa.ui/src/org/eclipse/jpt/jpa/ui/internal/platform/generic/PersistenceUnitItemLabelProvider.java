@@ -10,35 +10,27 @@
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public class PersistenceUnitItemLabelProvider
 	extends AbstractItemExtendedLabelProvider<PersistenceUnit>
 {
-	protected final Image image;
-
-	public PersistenceUnitItemLabelProvider(PersistenceUnit persistenceUnit, ItemLabelProvider.Manager manager) {
+	public PersistenceUnitItemLabelProvider(PersistenceUnit persistenceUnit, ItemExtendedLabelProvider.Manager manager) {
 		super(persistenceUnit, manager);
-		this.image = this.buildImage();
 	}
 
 	@Override
-	public Image getImage() {
-		return this.image;
-	}
-
-	protected Image buildImage() {
-		return JptJpaUiPlugin.instance().getImage(JptUiIcons.PERSISTENCE_UNIT);
+	protected ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.PERSISTENCE_UNIT;
 	}
 
 	@Override

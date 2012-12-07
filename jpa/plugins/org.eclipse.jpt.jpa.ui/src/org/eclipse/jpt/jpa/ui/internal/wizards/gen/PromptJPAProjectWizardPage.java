@@ -92,11 +92,16 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 			String projName = item.getText(0);
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 			JpaProject jpaProj = this.getJpaProject(project);
-			((GenerateEntitiesFromSchemaWizard)this.getWizard()).setJpaProject(jpaProj);
+			this.getWizard().setJpaProject(jpaProj);
 			this.validate();
 		}
 	}
 	
+	@Override
+	public GenerateEntitiesFromSchemaWizard getWizard() {
+		return (GenerateEntitiesFromSchemaWizard) super.getWizard();
+	}
+
 	private void fillJpaProjectList() {
 		this.projTableViewer.setInput(this.getSortedJpaProjectsNames());
 	}

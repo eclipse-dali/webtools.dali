@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -20,13 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * This builder is responsible to create a fully initialized
  * <code>NewNameDialog</code> once all the properties have been set.
- *
- * @see NewNameDialog
- *
- * @version 2.0
- * @since 2.0
  */
-@SuppressWarnings("nls")
 public final class NewNameDialogBuilder {
 
 	/**
@@ -64,12 +58,17 @@ public final class NewNameDialogBuilder {
 	 * The collection of names that can't be used or an empty collection if none
 	 * are available.
 	 */
-	private Collection<String> names;
+	private Collection<String> names = Collections.emptyList();
 
 	/**
 	 * The parent shell of the new name dialog.
 	 */
 	private Shell parentShell;
+
+	/**
+	 * The new name dialog's resource manager;
+	 */
+	private ResourceManager resourceManager;
 
 	/**
 	 * Creates a new <code>NewNameDialogBuilder</code>.
@@ -78,7 +77,10 @@ public final class NewNameDialogBuilder {
 	 */
 	public NewNameDialogBuilder(Shell parentShell) {
 		super();
-		initialize(parentShell);
+		if (parentShell == null) {
+			throw new NullPointerException();
+		}
+		this.parentShell = parentShell;
 	}
 
 	/**
@@ -88,28 +90,16 @@ public final class NewNameDialogBuilder {
 	 */
 	public NewNameDialog buildDialog() {
 		return new NewNameDialog(
-			parentShell,
-			dialogTitle,
-			descriptionTitle,
-			descriptionImage,
-			description,
-			labelText,
-			name,
-			names
+			this.parentShell,
+			this.dialogTitle,
+			this.descriptionTitle,
+			this.descriptionImage,
+			this.description,
+			this.labelText,
+			this.name,
+			this.names,
+			this.resourceManager
 		);
-	}
-
-	/**
-	 * Initializes this builder.
-	 *
-	 * @param parentShell The parent shell of the new name dialog
-	 */
-	protected void initialize(Shell parentShell) {
-
-		Assert.isNotNull(parentShell, "The parent shell cannot be null");
-
-		this.parentShell = parentShell;
-		this.names       = Collections.emptyList();
 	}
 
 	/**
@@ -175,5 +165,9 @@ public final class NewNameDialogBuilder {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setResourceManager(ResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
 	}
 }

@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -20,12 +22,11 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.swt.graphics.Image;
 
 public class PersistentAttributeItemLabelProvider
 	extends AbstractItemExtendedLabelProvider<ReadOnlyPersistentAttribute>
 {
-	public PersistentAttributeItemLabelProvider(ReadOnlyPersistentAttribute persistentAttribute, ItemLabelProvider.Manager manager) {
+	public PersistentAttributeItemLabelProvider(ReadOnlyPersistentAttribute persistentAttribute, ItemExtendedLabelProvider.Manager manager) {
 		super(persistentAttribute, manager);
 	}
 
@@ -33,8 +34,8 @@ public class PersistentAttributeItemLabelProvider
 	// ********** image **********
 
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new TransformationPropertyValueModel<AttributeMapping, Image>(this.buildMappingModel(), IMAGE_TRANSFORMER);
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+		return new TransformationPropertyValueModel<AttributeMapping, ImageDescriptor>(this.buildMappingModel(), IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<AttributeMapping> buildMappingModel() {
@@ -53,20 +54,18 @@ public class PersistentAttributeItemLabelProvider
 		}
 	}
 
-	protected static final Transformer<AttributeMapping, Image> IMAGE_TRANSFORMER = new ImageTransformer();
+	protected static final Transformer<AttributeMapping, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
 
 	/**
-	 * Transform an attribute mapping into the appropriate image.
+	 * Transform an attribute mapping into the appropriate image descriptor.
 	 */
-	protected static class ImageTransformer
-		extends TransformerAdapter<AttributeMapping, Image>
+	protected static class ImageDescriptorTransformer
+		extends TransformerAdapter<AttributeMapping, ImageDescriptor>
 	{
 		@Override
-		public Image transform(AttributeMapping attributeMapping) {
+		public ImageDescriptor transform(AttributeMapping attributeMapping) {
 			MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> definition = this.getAttributeMappingUiDefinition(attributeMapping);
-			return attributeMapping.getPersistentAttribute().isVirtual() ?
-					definition.getGhostImage() :
-					definition.getImage();
+			return JptCommonUiImages.gray(definition.getImageDescriptor(), attributeMapping.getPersistentAttribute().isVirtual());
 		}
 
 		private MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {

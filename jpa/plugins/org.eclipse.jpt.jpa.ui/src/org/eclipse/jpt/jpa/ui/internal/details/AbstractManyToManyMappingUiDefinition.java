@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractManyToManyMappingUiDefinition<M, T extends ManyToManyMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -32,7 +33,7 @@ public abstract class AbstractManyToManyMappingUiDefinition<M, T extends ManyToM
 		return JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel;
 	}
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.MANY_TO_MANY;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.MANY_TO_MANY;
 	}
 }

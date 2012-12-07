@@ -35,6 +35,7 @@ import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -97,6 +98,7 @@ public class JaxbSchemasPropertiesPage
 	
 	private static final int SIZING_SELECTION_PANE_WIDTH = 450;
 	
+	private final ResourceManager resourceManager;
 	
 	protected final ModifiablePropertyValueModel<IProject> projectModel;
 	
@@ -109,8 +111,9 @@ public class JaxbSchemasPropertiesPage
 	private final ModifiableCollectionValueModel<Schema> schemasSelectionModel;
 	
 	
-	public JaxbSchemasPropertiesPage() {
+	public JaxbSchemasPropertiesPage(ResourceManager resourceManager) {
 		super();
+		this.resourceManager = resourceManager;
 		this.projectModel = new SimplePropertyValueModel<IProject>();
 		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
 		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
@@ -266,7 +269,8 @@ public class JaxbSchemasPropertiesPage
 				new AddEditSchemaDialog(
 						getShell(),
 						null,
-						this.schemasModel.getAspectValue());
+						this.schemasModel.getAspectValue(),
+						this.resourceManager);
 		
 		// opens the dialog - just returns if the user cancels it
 		if (dialog.open() == Window.CANCEL) {
@@ -296,7 +300,8 @@ public class JaxbSchemasPropertiesPage
 				new AddEditSchemaDialog(
 						getShell(),
 						schema,
-						this.schemasModel.getAspectValue());
+						this.schemasModel.getAspectValue(),
+						this.resourceManager);
 		
 		// opens the dialog - just returns if the user cancels it
 		if (dialog.open() == Window.CANCEL) {
@@ -410,12 +415,6 @@ public class JaxbSchemasPropertiesPage
 	@Override
 	protected void performDefaults() {
 		this.trigger.reset();
-	}
-	
-	@Override
-	public void dispose() {
-		
-		super.dispose();
 	}
 	
 	
@@ -712,7 +711,9 @@ public class JaxbSchemasPropertiesPage
 	static class AddEditSchemaDialog
 			extends TitleAreaDialog {
 		
-		private Schema currentSchema;
+		private final ResourceManager resourceManager;
+		
+		private final Schema currentSchema;
 		
 		private String defaultMessage;
 		
@@ -724,11 +725,12 @@ public class JaxbSchemasPropertiesPage
 		
 		private final Mode mode;
 		
-		private Iterable<Schema> allSchemas;
+		private final Iterable<Schema> allSchemas;
 		
 		
-		public AddEditSchemaDialog(Shell shell, Schema currentSchema, Iterable<Schema> allSchemas) {
+		public AddEditSchemaDialog(Shell shell, Schema currentSchema, Iterable<Schema> allSchemas, ResourceManager resourceManager) {
 			super(shell);
+			this.resourceManager = resourceManager;
 			this.currentSchema = currentSchema;
 			this.allSchemas = allSchemas;
 			this.location = new SimplePropertyValueModel<String>();
@@ -840,7 +842,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private void browseForSchemaLocation() {
-			SchemaLocationDialog dialog = new SchemaLocationDialog(getShell());
+			SchemaLocationDialog dialog = new SchemaLocationDialog(getShell(), this.resourceManager);
 			
 			// opens the dialog - just returns if the user cancels it
 			if (dialog.open() == Window.CANCEL) {
@@ -918,13 +920,16 @@ public class JaxbSchemasPropertiesPage
 	static class SchemaLocationDialog
 			extends TrayDialog {
 		
+		private final ResourceManager resourceManager;
+
 		private SelectFileOrXMLCatalogIdPanel locationPanel;
 		
 		private String location;
 		
 		
-		public SchemaLocationDialog(Shell shell) {
+		public SchemaLocationDialog(Shell shell, ResourceManager resourceManager) {
 			super(shell);
+			this.resourceManager = resourceManager;
 		}
 		
 		
@@ -938,7 +943,7 @@ public class JaxbSchemasPropertiesPage
 		protected Control createDialogArea(Composite parent) {
 			Composite composite = (Composite) super.createDialogArea(parent);
 			
-			this.locationPanel = new SelectFileOrXMLCatalogIdPanel(composite, StructuredSelection.EMPTY);
+			this.locationPanel = new SelectFileOrXMLCatalogIdPanel(composite, StructuredSelection.EMPTY, this.resourceManager);
 			this.locationPanel.setFilterExtensions(new String[] {".xsd"}); //$NON-NLS-1$
 			this.locationPanel.update();
 			this.locationPanel.setVisibleHelper(true);

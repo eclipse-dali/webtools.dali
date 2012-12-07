@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.widgets.Display;
@@ -81,7 +81,7 @@ public class MappingFileWizard extends Wizard
 		super();
 		this.dataModel = dataModel;
 		setWindowTitle(JptUiMessages.MappingFileWizard_title);
-		setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.JPA_FILE_WIZ_BANNER));
+		setDefaultPageImageDescriptor(JptJpaUiImages.JPA_FILE_BANNER);
 	}
 	
 	

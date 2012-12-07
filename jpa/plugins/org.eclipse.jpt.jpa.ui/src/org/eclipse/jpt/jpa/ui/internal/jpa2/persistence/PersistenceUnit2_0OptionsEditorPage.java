@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import java.util.Collection;
-
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -19,6 +18,7 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -53,14 +53,14 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.progress.IProgressService;
 
 public class PersistenceUnit2_0OptionsEditorPage 
-	extends Pane<JpaOptions2_0> {
-
+	extends Pane<JpaOptions2_0>
+{
 	public PersistenceUnit2_0OptionsEditorPage(
 			PropertyValueModel<JpaOptions2_0> subjectModel,
             Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectModel, parent, widgetFactory, resourceManager);
 	}
 
 	@Override

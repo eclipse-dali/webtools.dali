@@ -10,9 +10,12 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -33,13 +36,22 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
  *
  * @see Node
  * @see DialogPane
- *
- * @version 3.3
- * @since 2.0
  */
-@SuppressWarnings("nls")
-public abstract class Dialog<T extends Node> extends TitleAreaDialog
+public abstract class Dialog<T extends Node>
+	extends TitleAreaDialog
 {
+	/**
+	 * Resource manager used to allocate images, colors, and fonts.
+	 * Passed to composite managers.
+	 */
+	protected final ResourceManager resourceManager;
+
+	/**
+	 * Cache the title until the dialog is created and the dialog's shell
+	 * needs to be configured.
+	 */
+	private final String title;
+
 	/**
 	 * The main content pane of this dialog.
 	 */
@@ -50,29 +62,23 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 */
 	private ModifiablePropertyValueModel<T> subjectHolder;
 
-	/**
-	 * Caches the title text until the dialog is created and the dialog's shell
-	 * needs to be configured.
-	 */
-	private String title;
 
 	/**
-	 * Creates a new <code>Dialog</code>.
-	 *
-	 * @param parent The parent shell
+	 * Construct a dialog with the specified resource manager and no title.
 	 */
-	protected Dialog(Shell parent) {
-		this(parent, "");
+	protected Dialog(Shell parentShell, ResourceManager resourceManager) {
+		this(parentShell, resourceManager, StringTools.EMPTY_STRING);
 	}
 
 	/**
-	 * Creates a new <code>Dialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param title The dialog's title
+	 * Construct a dialog with the specified resource manager and title.
 	 */
-	protected Dialog(Shell parent, String title) {
-		super(parent);
+	protected Dialog(Shell parentShell, ResourceManager resourceManager, String title) {
+		super(parentShell);
+		if ((resourceManager == null) || (title == null)) {
+			throw new NullPointerException();
+		}
+		this.resourceManager = new LocalResourceManager(resourceManager);
 		this.title = title;
 		initialize();
 	}
@@ -90,7 +96,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	/**
 	 * Creates the state object (model object) that will be used to keep track
 	 * of the information entered in this dialog. The state object will be stored
-	 * in the subject holder and can be retrieved using {@link #subject()}.
+	 * in the subject holder and can be retrieved using {@link #getSubject()}.
 	 *
 	 * @return A new state object
 	 */
@@ -108,34 +114,23 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 		return Node.NULL_VALIDATOR;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(getTitle());
+		shell.setText(this.title);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void create() {
 		super.create();
-		installSubject();
+		this.installSubject();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Control createContents(Composite parent) {
-		if (hasTitleArea()) {
-			return super.createContents(parent);
-		}
-
-		return createDefaultContent(parent);
+		return this.hasTitleArea() ?
+				super.createContents(parent) :
+				this.createDefaultContent(parent);
 	}
 
 	/**
@@ -147,7 +142,6 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 * @return The
 	 */
 	private Composite createDefaultContent(Composite parent) {
-
 		Composite composite = new Composite(parent, SWT.NULL);
 
 		GridLayout layout      = new GridLayout(1, false);
@@ -159,15 +153,12 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 
 		applyDialogFont(composite);
 		initializeDialogUnits(composite);
-		dialogArea = createDialogArea(composite);
-		buttonBar  = createButtonBar(composite);
+		this.dialogArea = createDialogArea(composite);
+		this.buttonBar  = createButtonBar(composite);
 
 		return composite;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Composite createDialogArea(Composite parent) {
 
@@ -189,7 +180,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 		container.setLayoutData(gridData);
 
 		// Initialize the content pane
-		pane = buildLayout(container);
+		this.pane = buildLayout(container);
 
 		// Initialize the UI part, which requires the widgets being created
 		initializeUI();
@@ -233,6 +224,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 * have been created.
 	 */
 	protected void initializeUI() {
+		// NOP
 	}
 
 	/**
@@ -248,7 +240,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 			subject.setValidator(buildValidator());
 		}
 
-		subjectHolder.setValue(subject);
+		this.subjectHolder.setValue(subject);
 	}
 
 	/**
@@ -257,7 +249,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 * @return The pane showing the custom widgets
 	 */
 	protected DialogPane<?> getPane() {
-		return pane;
+		return this.pane;
 	}
 
 	/**
@@ -267,7 +259,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 * used
 	 */
 	public T getSubject() {
-		return subjectHolder.getValue();
+		return this.subjectHolder.getValue();
 	}
 
 	/**
@@ -277,18 +269,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 * an instance of <code>DialogPane</code>
 	 */
 	protected final PropertyValueModel<T> getSubjectHolder() {
-		return subjectHolder;
-	}
-
-	/**
-	 * Retrieves the dialog's title. The title passed to the constructor will be
-	 * returned by default but if it wasn't specified, this method can be used
-	 * to return it.
-	 *
-	 * @return Either the title passed to the constructor or a different title
-	 */
-	protected String getTitle() {
-		return title;
+		return this.subjectHolder;
 	}
 
 	/**
@@ -309,5 +290,11 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 */
 	public final boolean wasConfirmed() {
 		return getReturnCode() == OK;
+	}
+
+	@Override
+	public boolean close() {
+		this.resourceManager.dispose();
+		return super.close();
 	}
 }

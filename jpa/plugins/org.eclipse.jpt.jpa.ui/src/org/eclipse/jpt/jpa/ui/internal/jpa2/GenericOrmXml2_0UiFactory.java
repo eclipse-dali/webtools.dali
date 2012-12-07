@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.BaseOrmXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmBasicMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEmbeddedIdMapping2_0Composite;
@@ -40,119 +41,130 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmVersionMapping2_0Comp
 import org.eclipse.jpt.jpa.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
-public class GenericOrmXml2_0UiFactory 
-	extends BaseOrmXmlUiFactory
+public class GenericOrmXml2_0UiFactory
+	extends AbstractOrmXmlUiFactory
 	implements OrmXmlUiFactory2_0
 {
-	// **************** orm type mapping composites ****************************
-		
+	// ********** type mappings **********
+
 	@Override
 	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEntity2_0Composite(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<OrmEntity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEntity2_0Composite(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	
-	// **************** orm attribute mapping composites ***********************
-	
+
+	// **************** attribute mappings ***********************
+
 	@Override
 	public JpaComposite createOrmIdMappingComposite(
-			PropertyValueModel<OrmIdMapping> subjectHolder,
+			PropertyValueModel<OrmIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmEmbeddedIdMappingComposite(
-			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEmbeddedIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmBasicMappingComposite(
-			PropertyValueModel<OrmBasicMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmBasicMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmVersionMappingComposite(
-			PropertyValueModel<OrmVersionMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmVersionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmManyToOneMappingComposite(
-			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmManyToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmOneToManyMappingComposite(
-			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmOneToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmOneToOneMappingComposite(
-			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmOneToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmManyToManyMappingComposite(
-			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmManyToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmEmbeddedMappingComposite(
-			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEmbeddedMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmTransientMappingComposite(
-			PropertyValueModel<OrmTransientMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new TransientMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
-	}
-	
-	public JpaComposite createOrmElementCollectionMapping2_0Composite(
-			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmIdMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@Override
+	public JpaComposite createOrmEmbeddedIdMappingComposite(
+			PropertyValueModel<OrmEmbeddedIdMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEmbeddedIdMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmBasicMappingComposite(
+			PropertyValueModel<OrmBasicMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmBasicMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmVersionMappingComposite(
+			PropertyValueModel<OrmVersionMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmVersionMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmManyToOneMappingComposite(
+			PropertyValueModel<OrmManyToOneMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmManyToOneMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmOneToManyMappingComposite(
+			PropertyValueModel<OrmOneToManyMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmOneToManyMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmOneToOneMappingComposite(
+			PropertyValueModel<OrmOneToOneMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmOneToOneMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmManyToManyMappingComposite(
+			PropertyValueModel<OrmManyToManyMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmManyToManyMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmEmbeddedMappingComposite(
+			PropertyValueModel<OrmEmbeddedMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEmbeddedMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public JpaComposite createOrmTransientMappingComposite(
+			PropertyValueModel<OrmTransientMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new TransientMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	public JpaComposite createOrmElementCollectionMapping2_0Composite(
+			PropertyValueModel<OrmElementCollectionMapping2_0> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmElementCollectionMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
 }

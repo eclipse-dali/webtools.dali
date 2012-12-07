@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -21,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * UI definitions for a specific
+ * UI definitions for a specific mapping file
  * {@link org.eclipse.jpt.common.core.JptResourceType resource type}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -36,22 +37,29 @@ public interface MappingResourceUiDefinition
 	// ********** type mappings **********
 
 	/**
-	 * 
+	 * Build a type mapping composite for the specified mapping.
 	 */
-	JpaComposite buildTypeMappingComposite(String mappingKey, PropertyValueModel<TypeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory);
-	
+	JpaComposite buildTypeMappingComposite(
+			String mappingKey,
+			PropertyValueModel<TypeMapping> mappingModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager
+		);
+
 	/**
-	 * 
+	 * Return the resource's type mapping UI definitions.
 	 */
 	Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions();
-	
+
 	/**
-	 * 
+	 * Return the resource's type mapping UI definition for the specified
+	 * mapping.
 	 */
 	MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(String mappingKey);
-	
+
 	/**
-	 * Return a default type mapping ui provider or null
+	 * Return the resource's default type mapping UI definition.
 	 */
 	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition();
 
@@ -59,23 +67,31 @@ public interface MappingResourceUiDefinition
 	// ********** attribute mappings **********
 
 	/**
-	 * 
+	 * Build an attribute mapping composite for the specified mapping.
 	 */
-	JpaComposite buildAttributeMappingComposite(String mappingKey, PropertyValueModel<AttributeMapping> mappingHolder, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory);
-	
+	JpaComposite buildAttributeMappingComposite(
+			String mappingKey,
+			PropertyValueModel<AttributeMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager
+		);
+
 	/**
 	 * Return the resource's attribute mapping UI definitions.
 	 */
 	Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions();
-	
+
 	/**
-	 * Return the resource's attribute mapping UI definitions.
+	 * Return the resource's attribute mapping UI definition for the specified
+	 * mapping.
 	 */
 	MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(String mappingKey);
-	
+
 	/**
-	 * Return a default attribute mapping ui definition for the given key or null
+	 * Return the resource's default attribute mapping UI definition
+	 * for the specified mapping.
 	 */
 	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String mappingKey);
-	
 }

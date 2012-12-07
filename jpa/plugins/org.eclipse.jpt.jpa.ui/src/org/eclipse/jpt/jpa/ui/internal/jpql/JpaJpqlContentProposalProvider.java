@@ -618,7 +618,8 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 				jpqlQuery,
 				0,
 				jpqlQuery.length(),
-				position
+				position,
+				getResourceManager(viewer.getTextWidget())
 			);
 
 			return proposals.toArray(new ICompletionProposal[proposals.size()]);

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -23,7 +24,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * </ul>
  */
 public final class NonNullBooleanTransformer
-	implements Transformer<Boolean, Boolean>
+	implements Transformer<Boolean, Boolean>, Serializable
 {
 	// not null
 	private final Boolean nullValue;
@@ -47,7 +48,7 @@ public final class NonNullBooleanTransformer
 	 * value is <code>null</code>. Throw a {@link NullPointerException} if the
 	 * specified value is <code>null</code>.
 	 */
-	public Transformer<Boolean, Boolean> valueOf(Boolean b) {
+	public static Transformer<Boolean, Boolean> valueOf(Boolean b) {
 		return valueOf(b.booleanValue());
 	}
 
@@ -55,7 +56,7 @@ public final class NonNullBooleanTransformer
 	 * Return a transformer that will return the {@link Boolean} corresponding
 	 * to the specified value if the original value is <code>null</code>.
 	 */
-	public Transformer<Boolean, Boolean> valueOf(boolean b) {
+	public static Transformer<Boolean, Boolean> valueOf(boolean b) {
 		return b ? TRUE : FALSE;
 	}
 
@@ -79,4 +80,9 @@ public final class NonNullBooleanTransformer
 		return ObjectTools.toString(this, this.nullValue);
 	}
 
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the appropriate constant
+		return valueOf(this.nullValue);
+	}
 }

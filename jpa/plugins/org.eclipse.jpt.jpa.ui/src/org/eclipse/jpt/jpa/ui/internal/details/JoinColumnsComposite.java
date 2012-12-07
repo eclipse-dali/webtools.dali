@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ArrayList;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
@@ -38,25 +37,8 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here is the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see JoiningStrategyJoinColumnsComposite - A container of this pane
- * @see JoinTableComposite - A container of this pane
- * @see EntityOverridesComposite - A container of this pane
- *
- * @version 3.0
- * @since 2.0
- */
-public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
+public class JoinColumnsComposite<T extends JpaNode>
+	extends Pane<T>
 {
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
@@ -65,37 +47,13 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 
 	ModifiableCollectionValueModel<JoinColumn> selectedJoinColumnsModel;
 
-	/**
-	 * Creates a new <code>JoinColumnsComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 * @param joinColumnsEditor The editor used to perform the common behaviors
-	 * defined in the list pane
-	 */
-	public JoinColumnsComposite(Pane<? extends T> parentPane,
-	                            Composite parent,
-	                            JoinColumnsEditor<T> joinColumnsEditor,
-	                            PropertyValueModel<Boolean> enabledModel) {
 
-		super(parentPane, parent, enabledModel);
-		this.joinColumnsEditor = joinColumnsEditor;
-		initializeLayout2();
-	}
-
-	/**
-	 * Creates a new <code>JoinColumnsComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JoinColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
-	                            Composite parent,
-	                            WidgetFactory widgetFactory,
-	                            JoinColumnsEditor<T> joinColumnsEditor) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public JoinColumnsComposite(
+			Pane<? extends T> parent,
+			Composite parentComposite,
+			JoinColumnsEditor<T> joinColumnsEditor,
+			PropertyValueModel<Boolean> enabledModel) {
+		super(parent, parentComposite, enabledModel);
 		this.joinColumnsEditor = joinColumnsEditor;
 		initializeLayout2();
 	}

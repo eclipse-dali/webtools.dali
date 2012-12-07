@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
@@ -31,20 +32,13 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 public class OrmManyToManyMapping2_0Composite
 	extends AbstractManyToManyMappingComposite<ManyToManyMapping, ManyToManyRelationship>
 {
-	/**
-	 * Creates a new <code>ManyToManyMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IManyToManyMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	public OrmManyToManyMapping2_0Composite(
-			PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
+			PropertyValueModel<? extends ManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-	        WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	

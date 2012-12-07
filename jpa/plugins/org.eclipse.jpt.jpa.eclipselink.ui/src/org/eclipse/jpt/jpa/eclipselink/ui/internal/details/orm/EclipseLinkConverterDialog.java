@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -16,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
@@ -39,10 +41,13 @@ public class EclipseLinkConverterDialog
 	// ********** constructors **********
 
 	/**
-	 * Use this constructor to edit an existing conversion value
+	 * Use this constructor to edit an <em>existing</em> conversion value.
 	 */
-	public EclipseLinkConverterDialog(Shell parent, EclipseLinkConverterContainer converterContainer) {
-		super(parent);
+	public EclipseLinkConverterDialog(
+			Shell parentShell,
+			ResourceManager resourceManager,
+			EclipseLinkConverterContainer converterContainer) {
+		super(parentShell, resourceManager, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_addConverter);
 		this.converterContainer = converterContainer;
 	}
 
@@ -52,17 +57,6 @@ public class EclipseLinkConverterDialog
 	}
 
 	// ********** open **********
-
-	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(this.getTitle());
-	}
-
-	@Override
-	protected String getTitle() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_addConverter;
-	}
 
 	@Override
 	protected String getDescriptionTitle() {
@@ -76,7 +70,7 @@ public class EclipseLinkConverterDialog
 	
 	@Override
 	protected DialogPane<EclipseLinkConverterStateObject> buildLayout(Composite container) {
-		return new ConversionValueDialogPane(container);
+		return new ConversionValueDialogPane(this.getSubjectHolder(), container, this.resourceManager);
 	}
 	
 	@Override
@@ -106,12 +100,16 @@ public class EclipseLinkConverterDialog
 		return getSubject().getConverterType();
 	}
 	
-	private class ConversionValueDialogPane extends DialogPane<EclipseLinkConverterStateObject> {
-
+	static class ConversionValueDialogPane
+		extends DialogPane<EclipseLinkConverterStateObject>
+	{
 		private Text nameText;
 
-		ConversionValueDialogPane(Composite parent) {
-			super(EclipseLinkConverterDialog.this.getSubjectHolder(), parent);
+		ConversionValueDialogPane(
+				PropertyValueModel<EclipseLinkConverterStateObject> subjectModel,
+				Composite parentComposite,
+				ResourceManager resourceManager) {
+			super(subjectModel, parentComposite, resourceManager);
 		}
 
 		@Override

@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -20,12 +21,11 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.swt.graphics.Image;
 
 public class PersistentTypeItemLabelProvider
 	extends AbstractItemExtendedLabelProvider<PersistentType>
 {
-	public PersistentTypeItemLabelProvider(PersistentType persistentType, ItemLabelProvider.Manager manager) {
+	public PersistentTypeItemLabelProvider(PersistentType persistentType, ItemExtendedLabelProvider.Manager manager) {
 		super(persistentType, manager);
 	}
 	
@@ -33,8 +33,8 @@ public class PersistentTypeItemLabelProvider
 	// ********** image **********
 
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new TransformationPropertyValueModel<TypeMapping, Image>(this.buildMappingModel(), IMAGE_TRANSFORMER);
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+		return new TransformationPropertyValueModel<TypeMapping, ImageDescriptor>(this.buildMappingModel(), IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 	
 	protected PropertyValueModel<TypeMapping> buildMappingModel() {
@@ -53,17 +53,17 @@ public class PersistentTypeItemLabelProvider
 		}
 	}
 
-	protected static final Transformer<TypeMapping, Image> IMAGE_TRANSFORMER = new ImageTransformer();
+	protected static final Transformer<TypeMapping, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
 
 	/**
-	 * Transform a type mapping into the appropriate image.
+	 * Transform a type mapping into the appropriate image descriptor.
 	 */
-	protected static class ImageTransformer
-		extends TransformerAdapter<TypeMapping, Image>
+	protected static class ImageDescriptorTransformer
+		extends TransformerAdapter<TypeMapping, ImageDescriptor>
 	{
 		@Override
-		public Image transform(TypeMapping typeMapping) {
-			return this.getTypeMappingUiDefinition(typeMapping).getImage();
+		public ImageDescriptor transform(TypeMapping typeMapping) {
+			return this.getTypeMappingUiDefinition(typeMapping).getImageDescriptor();
 		}
 
 		private MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition(TypeMapping typeMapping) {

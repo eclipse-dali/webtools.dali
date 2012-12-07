@@ -1,24 +1,25 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import java.util.Collection;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
-import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
@@ -40,10 +41,10 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 {
 	public EclipseLinkPersistenceUnitCaching2_0EditorPage(
 			PropertyValueModel<Caching> subjectModel,
-			Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+			Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -85,8 +86,8 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 		Label flushClearCacheLabel = this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
 		Combo flushClearCacheCombo = this.addFlushClearCacheCombo(client).getControl();
 
-		SWTTools.controlEnabledState(
-			this.buildSharedCacheModeEnablerModel(persistenceUnitModel),
+		this.controlEnabledState(
+			this.buildSharedCacheModeEnabledModel(persistenceUnitModel),
 			cacheTypeLabel,
 			cacheTypeCombo,
 			cacheSizeLabel,
@@ -160,16 +161,8 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 		};
 	}
 
-	@SuppressWarnings("unchecked")
-	private PropertyValueModel<Boolean> buildSharedCacheModeEnablerModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
-		return CompositeBooleanPropertyValueModel.and(
-			this.getEnabledModel(), 
-			new TransformationPropertyValueModel<SharedCacheMode, Boolean>(this.buildSharedCacheModeModel(persistenceUnitModel)) {
-				@Override
-				protected Boolean transform(SharedCacheMode value) {
-					return Boolean.valueOf(value != SharedCacheMode.NONE);
-				}
-			});
+	private PropertyValueModel<Boolean> buildSharedCacheModeEnabledModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<SharedCacheMode, Boolean>(this.buildSharedCacheModeModel(persistenceUnitModel), SHARED_CACHE_MODE_ENABLED_TRANSFORMER);
 	}
 
 	private PropertyValueModel<SharedCacheMode> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
@@ -182,6 +175,16 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 				return this.subject.getSharedCacheMode();
 			}
 		};
+	}
+
+	private static final Transformer<SharedCacheMode, Boolean> SHARED_CACHE_MODE_ENABLED_TRANSFORMER = new SharedCacheModeEnabledTransformer();
+	/* CU private */ static class SharedCacheModeEnabledTransformer
+		extends TransformerAdapter<SharedCacheMode, Boolean>
+	{
+		@Override
+		public Boolean transform(SharedCacheMode mode) {
+			return Boolean.valueOf(mode != SharedCacheMode.NONE);
+		}
 	}
 
 	protected EnumFormComboViewer<Caching, CacheType> buildDefaultCacheTypeCombo(Composite container) {

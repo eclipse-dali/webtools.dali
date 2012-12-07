@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
@@ -19,27 +20,25 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 
 public class JaxbEnumItemLabelProvider
 	extends JaxbTypeItemLabelProvider<JaxbEnum>
 {
 	
-	public JaxbEnumItemLabelProvider(JaxbEnum jaxbEnum, ItemLabelProvider.Manager manager) {
+	public JaxbEnumItemLabelProvider(JaxbEnum jaxbEnum, ItemExtendedLabelProvider.Manager manager) {
 		super(jaxbEnum, manager);
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new JaxbEnumImageModel(this.item);
+	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
+		return new JaxbEnumImageDescriptorModel(this.item);
 	}
 	
 	
-	protected class JaxbEnumImageModel
-			extends AspectPropertyValueModelAdapter<JaxbEnum, Image> {
+	protected class JaxbEnumImageDescriptorModel
+			extends AspectPropertyValueModelAdapter<JaxbEnum, ImageDescriptor> {
 		
 		protected final PropertyValueModel<JaxbEnumMapping> mappingModel;
 		
@@ -48,7 +47,7 @@ public class JaxbEnumItemLabelProvider
 		protected final PropertyChangeListener propertyChangeListener;
 		
 		
-		public JaxbEnumImageModel(JaxbEnum subject) {
+		public JaxbEnumImageDescriptorModel(JaxbEnum subject) {
 			super(new StaticPropertyValueModel<JaxbEnum>(subject));
 			this.mappingModel = buildMappingModel();
 			this.isXmlTransientModel = buildIsXmlTransientModel();
@@ -78,19 +77,17 @@ public class JaxbEnumItemLabelProvider
 			// transform the subject's property change events into VALUE property change events
 			return new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					JaxbEnumImageModel.this.aspectChanged();
+					JaxbEnumImageDescriptorModel.this.aspectChanged();
 				}
 			};
 		}
 		
 		@Override
-		protected Image buildValue_() {
-			if (this.mappingModel.getValue() != null) {
-				if (this.isXmlTransientModel.getValue() == Boolean.TRUE) {
-					return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_TRANSIENT_ENUM);
-				}
+		protected ImageDescriptor buildValue_() {
+			if ((this.mappingModel.getValue() != null) && (this.isXmlTransientModel.getValue() == Boolean.TRUE)) {
+				return JptJaxbUiImages.JAXB_TRANSIENT_ENUM;
 			}
-			return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_ENUM);
+			return JptJaxbUiImages.JAXB_ENUM;
 		}
 		
 		@Override

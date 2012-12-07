@@ -10,52 +10,27 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general;
 
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
- * @see AddRemoveListPane
- *
- * @version 2.0
- * @since 2.0
- */
-public class EclipseLinkPersistenceUnitMappingFilesComposite extends PersistenceUnitMappingFilesComposite
+public class EclipseLinkPersistenceUnitMappingFilesComposite
+	extends PersistenceUnitMappingFilesComposite
 {
-	/**
-	 * Creates a new <code>PersistenceUnitMappingFilesComposite</code>.
-	 *
-	 * @param parentPane The parent pane of this one
-	 * @param parent The parent container
-	 */
-	public EclipseLinkPersistenceUnitMappingFilesComposite(Pane<? extends PersistenceUnit> parentPane,
-	                                            Composite parent) {
-
-		super(parentPane, parent);
+	public EclipseLinkPersistenceUnitMappingFilesComposite(
+			Pane<? extends PersistenceUnit> parent,
+			Composite parentComposite) {
+		super(parent, parentComposite);
 	}
 
 	@Override
@@ -99,9 +74,9 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite extends Persistence
 	private PropertyValueModel<String> buildExcludeEclipselinkOrmStringHolder() {
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeEclipselinkOrmHolder()) {
 			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+			protected String transform(Boolean b) {
+				if (b != null) {
+					String defaultStringValue = b.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrmWithDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrm;

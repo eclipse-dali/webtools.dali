@@ -354,7 +354,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<? extends ReadOnlyTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
 		return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {

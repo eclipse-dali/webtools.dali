@@ -9,24 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
-import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeCombo;
 import org.eclipse.swt.layout.GridData;
@@ -39,73 +38,16 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TemporalTypeComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EnumTypeComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OptionalComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | MutableComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | LobComposite                                                          | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see BasicMapping
- * @see ColumnComposite
- * @see EnumTypeComboViewer
- * @see FetchTypeComboViewer
- * @see LobComposite
- * @see OptionalComposite
- * @see TemporalTypeCombo
- *
- * @version 3.2
- * @since 2.1
- */
-public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends AbstractBasicMappingComposite<T>
+public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping>
+	extends AbstractBasicMappingComposite<T>
 {
-	/**
-	 * Creates a new <code>BasicMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IBasicMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected EclipseLinkBasicMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-								 PropertyValueModel<Boolean> enabledModel,
-	                             Composite parent,
-	                             WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	protected EclipseLinkBasicMappingComposite(
+			PropertyValueModel<? extends T> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	
@@ -136,7 +78,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> e
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
-		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+		new TemporalTypeCombo(this, buildTemporalConverterHolder(converterHolder), container);
 		
 		
 		// Enumerated
@@ -145,7 +87,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> e
 			JptUiDetailsMessages.TypeSection_enumerated, 
 			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
-		registerSubPane(new EnumTypeComboViewer(buildEnumeratedConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);
 
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
@@ -155,13 +97,13 @@ public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> e
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
-		PropertyValueModel<EclipseLinkConvert> convertHolder = buildEclipseLinkConverterHolder(converterHolder);
-		PropertyValueModel<Boolean> convertEnabledModel = CompositeBooleanPropertyValueModel.and(getEnabledModel(), buildEclipseLinkConvertBooleanHolder(convertHolder));
+		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterHolder);
+		PropertyValueModel<Boolean> convertEnabledModel = this.buildNonNullEclipseLinkConvertModel(convertModel);
 		Label convertLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_converterNameLabel, convertEnabledModel);
 		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
 		convertLabel.setLayoutData(gridData);
-		registerSubPane(new EclipseLinkConvertCombo(convertHolder, convertEnabledModel, container, getWidgetFactory()));
+		new EclipseLinkConvertCombo(this, convertModel, convertEnabledModel, container);
 
 		return container;
 	}
@@ -175,22 +117,12 @@ public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> e
 		};
 	}
 	
-	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
-			@Override
-			protected EclipseLinkConvert transform_(Converter converter) {
-				return converter.getType() == EclipseLinkConvert.class ? (EclipseLinkConvert) converter : null;
-			}
-		};
+	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
+		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
 	}
 
-	protected PropertyValueModel<Boolean> buildEclipseLinkConvertBooleanHolder(PropertyValueModel<EclipseLinkConvert> convertHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertHolder) {
-			@Override
-			protected Boolean transform(EclipseLinkConvert value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+	protected PropertyValueModel<Boolean> buildNonNullEclipseLinkConvertModel(PropertyValueModel<EclipseLinkConvert> convertModel) {
+		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertModel, NotNullObjectTransformer.<EclipseLinkConvert>instance());
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {

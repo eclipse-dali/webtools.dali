@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -28,6 +28,8 @@ import org.eclipse.jdt.ui.JavaElementComparator;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
@@ -50,15 +52,17 @@ import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -99,19 +103,15 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public class JpaMakePersistentWizardPage extends WizardPage {
-
-	// sizing constants
-	private final static int TABLE_HEIGHT = 250;
-	private final static int TABLE_WIDTH = 300;
-
-	private static String MAKE_PERSISTENT_PAGE_NAME = "MakePersistent"; //$NON-NLS-1$
+public class JpaMakePersistentWizardPage
+	extends WizardPage
+{
 	private TableViewer classTableViewer;
 	private final String helpContextId;
 
 	private final Type[] selectedTypes;
 
-	private final JpaProject jpaProject;
+	/* CU private */ final JpaProject jpaProject;
 	private JptResourceType jptResourceType;
 	
 	private final ModifiablePropertyValueModel<Boolean> annotateInJavaModel;
@@ -121,11 +121,26 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	
 	private final ModifiablePropertyValueModel<Boolean> listInPersistenceXmlModel;
 
-	protected JpaMakePersistentWizardPage(final JpaProject jpaProject, final List<IType> selectedTypes, final String helpContextId) {
+	/* CU private */ final ResourceManager resourceManager;
+
+	// sizing constants
+	private final static int TABLE_HEIGHT = 250;
+	private final static int TABLE_WIDTH = 300;
+
+	private static String MAKE_PERSISTENT_PAGE_NAME = "MakePersistent"; //$NON-NLS-1$
+
+
+	protected JpaMakePersistentWizardPage(
+			JpaProject jpaProject,
+			Set<IType> selectedJdtTypes,
+			ResourceManager resourceManager,
+			String helpContextId
+	) {
 		super(MAKE_PERSISTENT_PAGE_NAME);
 		this.jpaProject = jpaProject;
 
-		this.selectedTypes = this.buildTypes(selectedTypes);
+		this.selectedTypes = this.buildSelectedTypes(selectedJdtTypes);
+		this.resourceManager = resourceManager;
 		this.jptResourceType = JavaSourceFileDefinition.instance().getResourceType();
 		this.helpContextId = helpContextId;
 		this.annotateInJavaModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
@@ -135,36 +150,49 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		this.setMessage(JptUiMessages.JpaMakePersistentWizardPage_message);
 	}
 
-	protected Type[] buildTypes(final List<IType> selectedTypes) {
-		return ListTools.list(
-			new TransformationIterable<IType, Type>(nonPersistentTypes(selectedTypes)) {
-				@Override
-				protected Type transform(IType jdtType) {
-					return new Type(jdtType);
-				}
-			}).toArray(new Type[] {});
+	protected Type[] buildSelectedTypes(Set<IType> selectedJdtTypes) {
+		return ArrayTools.array(this.buildSelectedTypesIterable(selectedJdtTypes), Type.class);
+	}
+
+	protected Iterable<Type> buildSelectedTypesIterable(Set<IType> selectedJdtTypes) {
+		return new TransformationIterable<IType, Type>(this.selectNonPersistentJdtTypes(selectedJdtTypes), new JdtTypeTransformer());
+	}
+
+	/* CU private */ class JdtTypeTransformer
+		extends TransformerAdapter<IType, Type>
+	{
+		@Override
+		public Type transform(IType jdtType) {
+			return new Type(jdtType);
+		}
 	}
 
 	/**
-	 * Return all ITypes that are not already persistent.
+	 * Return all {@link IType JDT type}s that are not already persistent.
 	 * Any root structure nodes means the type is already annotated, 
-	 * listed in persistence.xml, or listed in a mapping file
+	 * listed in <code>persistence.xml</code>, or listed in a mapping file.
 	 */
-	protected Iterable<IType> nonPersistentTypes(final List<IType> selectedTypes) {
-		return new FilteringIterable<IType>(selectedTypes) {
-			@Override
-			protected boolean accept(IType jdtType) {
-				return getJpaProject().getJpaFile((IFile) jdtType.getResource()).getRootStructureNodesSize() == 0;
-			}
-		};
+	protected Iterable<IType> selectNonPersistentJdtTypes(Set<IType> selectedJdtTypes) {
+		return new FilteringIterable<IType>(selectedJdtTypes, new NonPersistentJdtTypeFilter());
 	}
 
-	protected JpaProject getJpaProject() {
-		return this.jpaProject;
+	/* CU private */ class NonPersistentJdtTypeFilter
+		extends FilterAdapter<IType>
+	{
+		@Override
+		public boolean accept(IType jdtType) {
+			return this.getJpaFile(jdtType).getRootStructureNodesSize() == 0;
+		}
+		private JpaFile getJpaFile(IType jdtType) {
+			return this.getJpaProject().getJpaFile((IFile) jdtType.getResource());
+		}
+		private JpaProject getJpaProject() {
+			return JpaMakePersistentWizardPage.this.jpaProject;
+		}
 	}
 
 	protected JpaPlatformUi getJpaPlatformUi() {
-		return (JpaPlatformUi) this.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		return (JpaPlatformUi) this.jpaProject.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 
 	public void createControl(Composite parent) {
@@ -410,19 +438,32 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected ColumnLabelProvider buildMappingColumnLabelProvider() {
-		return new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				MappingUiDefinition<? extends PersistentType, ?> mappingUiDefinition = getMappingUiDefinition(((Type) element).mappingKey);
-				return mappingUiDefinition.getLabel();
-			}
-			
-			@Override
-			public Image getImage(Object element) {
-				MappingUiDefinition<? extends PersistentType, ?> mappingUiDefinition = getMappingUiDefinition(((Type) element).mappingKey);
-				return mappingUiDefinition.getImage();
-			}
-		};
+		return new MappingColumnLabelProvider();
+	}
+
+	/* CU private */ class MappingColumnLabelProvider
+		extends ColumnLabelProvider
+	{
+		@Override
+		public String getText(Object element) {
+			return this.getMappingUiDefinition(element).getLabel();
+		}
+
+		@Override
+		public Image getImage(Object element) {
+			return this.getResourceManager().createImage(this.getImageDescriptor(element));
+		}
+
+		private ImageDescriptor getImageDescriptor(Object element) {
+			return this.getMappingUiDefinition(element).getImageDescriptor();
+		}
+
+		private MappingUiDefinition<? extends PersistentType, ?> getMappingUiDefinition(Object element) {
+			return JpaMakePersistentWizardPage.this.getMappingUiDefinition(((Type) element).mappingKey);
+		}
+		private ResourceManager getResourceManager() {
+			return JpaMakePersistentWizardPage.this.resourceManager;
+		}
 	}
 
 	protected MappingUiDefinition<? extends PersistentType, ?> getMappingUiDefinition(String mappingKey) {
@@ -448,7 +489,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			if (ormXmlResource == null) {
 				errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
 			}
-			else if (getJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
+			else if (this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
 				errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileNotListedInPersistenceXmlError;
 			}
 		}
@@ -471,7 +512,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	private void performAddToOrmXml() throws InvocationTargetException {
-		this.perform(new AddToOrmXmlRunnable(this.getJpaProject(), this.getOrmXmlResource(), this.selectedTypes));	
+		this.perform(new AddToOrmXmlRunnable(this.jpaProject, this.getOrmXmlResource(), this.selectedTypes));	
 		try {
 			this.openEditor(this.getOrmXmlResource().getFile());
 		}
@@ -481,7 +522,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	private void performAnnotateInJava() {
-		this.perform(new AnnotateInJavaRunnable(this.getJpaProject(), this.selectedTypes, this.isListInPersistenceXml()));
+		this.perform(new AnnotateInJavaRunnable(this.jpaProject, this.selectedTypes, this.isListInPersistenceXml()));
 	}
 
 	private void perform(IRunnableWithProgress runnable) {
@@ -516,7 +557,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected JptXmlResource getOrmXmlResource() {
-		return this.getJpaProject().getMappingFileXmlResource(new Path(this.getMappingFileLocation()));
+		return this.jpaProject.getMappingFileXmlResource(new Path(this.getMappingFileLocation()));
 	}
 	
 	protected boolean isListInPersistenceXml() {
@@ -539,11 +580,12 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		return new File(getMappingFileLocation()).getName();
 	}
 
+
 	private class Type implements AbstractPersistenceUnit.MappedType {
 
 		private final IType jdtType;
 
-		private String mappingKey;
+		/* CU private */ String mappingKey;
 
 		protected Type(IType jdtType) {
 			super();

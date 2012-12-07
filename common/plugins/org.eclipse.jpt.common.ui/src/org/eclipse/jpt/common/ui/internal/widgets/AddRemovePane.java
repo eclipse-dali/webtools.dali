@@ -47,7 +47,6 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 {
 	private Adapter<E> adapter;
 	private Button addButton;
-	private IBaseLabelProvider labelProvider;
 	private ListValueModel<?> listModel;
 	private Button optionalButton;
 	private Button removeButton;
@@ -409,10 +408,6 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 		this.adapter.optionOnSelection(this.selectedItemsModel);
 	}
 
-	protected IBaseLabelProvider getLabelProvider() {
-		return this.labelProvider;
-	}
-
 	protected final ListValueModel<?> getListModel() {
 		return this.listModel;
 	}
@@ -447,7 +442,6 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	                          IBaseLabelProvider labelProvider)
 	{
 		this.listModel          = listModel;
-		this.labelProvider      = labelProvider;
 		this.adapter            = (adapter == null) ? buildAdapter() : adapter;
 		this.selectedItemsModel = selectedItemsModel;
 

@@ -20,8 +20,8 @@ import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface DefaultJavaAttributeMappingUiDefinition<T extends AttributeMapping> 
-	extends JavaAttributeMappingUiDefinition<T>, DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, T>
+public interface DefaultJavaAttributeMappingUiDefinition<M extends AttributeMapping> 
+	extends JavaAttributeMappingUiDefinition<M>, DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, M>
 {
-	
+	// combine interfaces
 }

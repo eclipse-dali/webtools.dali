@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
 import java.util.Collection;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -28,41 +29,15 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | - General --------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | PersistenceUnitConnectionGeneralComposite                             | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - Database -------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | PersistenceUnitConnectionDatabaseComposite                            | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see PersistenceUnit
- *
- * @version 3.3
- * @since 2.0
- */
-
 public class PersistenceUnitConnectionEditorPage
-	extends Pane<PersistenceUnit> {
-
+	extends Pane<PersistenceUnit>
+{
 	public PersistenceUnitConnectionEditorPage(
-			PropertyValueModel<PersistenceUnit> subjectHolder,
-            Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<PersistenceUnit> persistenceUnitModel,
+            Composite parentComposite,
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(persistenceUnitModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

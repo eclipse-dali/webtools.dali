@@ -9,46 +9,37 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * This pane does not have any widgets.
- *
- * @see Embeddable
- * @see JavaUiFactory - The factory creating this pane
- * @see EmbeddableUiProvider
- *
- * @version 2.3
- * @since 2.1
- */
-public abstract class AbstractEmbeddableComposite<T extends Embeddable> 
-	extends Pane<T>
+public abstract class AbstractEmbeddableComposite<E extends Embeddable> 
+	extends Pane<E>
 	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>EmbeddableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected AbstractEmbeddableComposite(PropertyValueModel<? extends T> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	protected AbstractEmbeddableComposite(
+			PropertyValueModel<? extends E> embeddableModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.initializeEmbeddableCollapsibleSection(container);
+	}
+
 	protected void initializeEmbeddableCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container,
 				ExpandableComposite.TITLE_BAR |
@@ -56,10 +47,17 @@ public abstract class AbstractEmbeddableComposite<T extends Embeddable>
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.EmbeddableSection_title);
-		section.setClient(this.initializeEmbeddableSection(section));
+		section.setClient(this.buildEmbeddableSectionClient(section));
 	}
 	
-	protected Control initializeEmbeddableSection(Composite container) {
-		throw new UnsupportedOperationException();
+	protected abstract Control buildEmbeddableSectionClient(Section embeddableSection);
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<E, AccessHolder>(this.getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 }

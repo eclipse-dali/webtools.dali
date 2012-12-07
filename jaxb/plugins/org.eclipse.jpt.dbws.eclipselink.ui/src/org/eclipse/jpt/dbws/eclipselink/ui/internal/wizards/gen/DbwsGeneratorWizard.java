@@ -16,11 +16,14 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiImages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.DbwsGeneratorUi;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiIcons;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.ui.IWorkbench;
@@ -33,6 +36,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 
 	private IJavaProject javaProject;
 	private String builderXmlFile;
+	private ResourceManager resourceManager;
 	private IStructuredSelection selection;
 	
 	private WebDynamicProjectWizardPage projectWizardPage;
@@ -69,12 +73,13 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 
 	// ********** IWorkbenchWizard implementation  **********
 
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+	public void init(IWorkbench workbench, IStructuredSelection sel) {
+		this.resourceManager = new LocalResourceManager(JFaceResources.getResources(workbench.getDisplay()));
+		this.selection = sel;
 
 		this.setWindowTitle(JptDbwsUiMessages.DbwsGeneratorWizard_title);
 
-		this.setDefaultPageImageDescriptor(JptDbwsEclipseLinkUiPlugin.instance().buildImageDescriptor(JptDbwsUiIcons.DBWS_GEN_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptDbwsEclipseLinkUiImages.NEW_WEB_SERVICES_CLIENT_BANNER);
 		this.setNeedsProgressMonitor(true);
 	}
 
@@ -86,15 +91,15 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 
 		if(this.selection != null) {
 			// WebDynamicProjectWizardPage
-			this.javaProject = this.getJavaProjectFromSelection(this.selection);
+			this.javaProject = this.getJavaProjectFromSelection();
 
-			this.projectWizardPage = this.buildWebDynamicProjectPage(this.javaProject);
+			this.projectWizardPage = this.buildWebDynamicProjectPage();
 			this.addPage(this.projectWizardPage);
 
 			// BuilderXmlWizardPage
 			IFile builderXmlSelected = BuilderXmlWizardPage.getBuilderXmlFromSelection(this.selection);
 			if(builderXmlSelected == null) {
-				this.builderXmlWizardPage = this.buildBuilderXmlPage(this.selection);
+				this.builderXmlWizardPage = this.buildBuilderXmlPage();
 				this.addPage(this.builderXmlWizardPage);
 			}
 			else {
@@ -140,27 +145,25 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			if(xmlFile != null) {
 				return this.makeRelativeToProjectPath(xmlFile.getFullPath());
 			}
-			else {
-				return this.builderXmlWizardPage.getSourceURI();
-			}
+			return this.builderXmlWizardPage.getSourceURI();
 		}
 		return this.builderXmlFile;
 	}
 	
 	// ********** internal methods **********
 
-	private WebDynamicProjectWizardPage buildWebDynamicProjectPage(IJavaProject javaProject) {
+	private WebDynamicProjectWizardPage buildWebDynamicProjectPage() {
 		
-		WebDynamicProjectWizardPage projectWizardPage = new WebDynamicProjectWizardPage(javaProject);
-		projectWizardPage.setTitle(JptDbwsUiMessages.WebDynamicProjectWizardPage_title);
-		projectWizardPage.setDescription(JptDbwsUiMessages.WebDynamicProjectWizardPage_desc);
-		projectWizardPage.setDestinationLabel(JptDbwsUiMessages.WebDynamicProjectWizardPage_destinationProject);
+		WebDynamicProjectWizardPage page = new WebDynamicProjectWizardPage(this.javaProject);
+		page.setTitle(JptDbwsUiMessages.WebDynamicProjectWizardPage_title);
+		page.setDescription(JptDbwsUiMessages.WebDynamicProjectWizardPage_desc);
+		page.setDestinationLabel(JptDbwsUiMessages.WebDynamicProjectWizardPage_destinationProject);
 
-		return projectWizardPage;
+		return page;
 	}
 
-	private BuilderXmlWizardPage buildBuilderXmlPage(IStructuredSelection selection) {
-		return new BuilderXmlWizardPage(selection);
+	private BuilderXmlWizardPage buildBuilderXmlPage() {
+		return new BuilderXmlWizardPage(this.selection, this.resourceManager);
 	}
 	
 	private JdbcDriverWizardPage buildJdbcDriversPage() {
@@ -185,11 +188,11 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		generateJob.schedule();
 	}
 
-	private IJavaProject getJavaProjectFromSelection(IStructuredSelection selection) {
-    	if(selection == null) {
+	private IJavaProject getJavaProjectFromSelection() {
+    	if(this.selection == null) {
     		return null;
     	}
-		Object firstElement = selection.getFirstElement();
+		Object firstElement = this.selection.getFirstElement();
 		if(firstElement instanceof IJavaProject) {
 			return (IJavaProject)firstElement;
 		}
@@ -206,4 +209,10 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	private IJavaProject getJavaProjectFrom(IProject project) {
     	return ((IJavaElement) project.getAdapter(IJavaElement.class)).getJavaProject();
     }
+
+	@Override
+	public void dispose() {
+		this.resourceManager.dispose();
+		super.dispose();
+	}
 }

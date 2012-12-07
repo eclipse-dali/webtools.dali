@@ -14,40 +14,37 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
+import org.eclipse.jpt.common.ui.JptCommonUiImages;
+import org.eclipse.jpt.common.ui.internal.jface.OverlayImageDescriptor;
+import org.eclipse.jpt.common.ui.internal.jface.PluggableTextTableLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerTableLabelProvider;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalogEntry;
-
 import com.ibm.icu.text.Collator;
 
-public class XMLCatalogTableViewer extends TableViewer {
-
+public abstract class XMLCatalogTableViewer
+	extends TableViewer
+{
 	protected static String ERROR_STATE_KEY = "errorstatekey"; //$NON-NLS-1$
 
-	protected static Image dtdFileImage = JptJaxbUiPlugin.instance().getImage("full/obj16/dtdfile"); //$NON-NLS-1$
-	protected static Image unknownFileImage = JptJaxbUiPlugin.instance().getImage("full/obj16/text"); //$NON-NLS-1$
-	protected static Image xsdFileImage = JptJaxbUiPlugin.instance().getImage("full/obj16/XSDFile"); //$NON-NLS-1$
-	protected static Image errorImage = JptJaxbUiPlugin.instance().getImage("full/ovr16/error_ovr"); //$NON-NLS-1$
 
-	// ********** constructor **********
-
-	public XMLCatalogTableViewer(Composite parent, String[] columnProperties) {
+	protected XMLCatalogTableViewer(Composite parent, String[] columnProperties, ResourceManager resourceManager) {
 		super(parent, SWT.FULL_SELECTION);
 
 		Table table = getTable();
@@ -68,34 +65,30 @@ public class XMLCatalogTableViewer extends TableViewer {
 		setColumnProperties(columnProperties);
 
 		setContentProvider(new CatalogEntryContentProvider());
-		setLabelProvider(new CatalogEntryLabelProvider());
+		setLabelProvider(this.buildLabelProvider(resourceManager));
 	}
 
-	public Collection getXMLCatalogEntries() {
-		return null;
+	protected IBaseLabelProvider buildLabelProvider(ResourceManager resourceManager) {
+		return new ResourceManagerTableLabelProvider<Object>(
+				CATALOG_ENTRY_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER,
+				CATALOG_ENTRY_LABEL_TEXT_TRANSFORMER,
+				resourceManager
+			);
 	}
 
-	public void menuAboutToShow(IMenuManager menuManager) {
-		Action action = new Action("hello") { //$NON-NLS-1$
-			public void run() {
-				System.out.println("run!"); //$NON-NLS-1$
-			}
-		};
-		menuManager.add(action);
-	}
+	protected abstract Collection getXMLCatalogEntries();
 
 	public void setFilterExtensions(String[] extensions) {
 		resetFilters();
 		addFilter(new XMLCatalogTableViewerFilter(extensions));
 	}
 
-	// ********** inner class **********
 
-	public class CatalogEntryContentProvider implements IStructuredContentProvider {
+	// ********** content provider **********
 
-		public void dispose() {
-		}
-
+	public class CatalogEntryContentProvider
+		implements IStructuredContentProvider
+	{
 		public Object[] getElements(Object element) {
 			Object[] array = getXMLCatalogEntries().toArray();
 			Comparator comparator = new Comparator() {
@@ -114,56 +107,80 @@ public class XMLCatalogTableViewer extends TableViewer {
 		}
 
 		public void inputChanged(Viewer viewer, Object old, Object newobj) {
+			// NOP
 		}
 
 		public boolean isDeleted(Object object) {
 			return false;
 		}
+
+		public void dispose() {
+			// NOP
+		}
 	}
 
-	public class CatalogEntryLabelProvider extends LabelProvider implements ITableLabelProvider {
 
-		public Image getColumnImage(Object object, int columnIndex) {
-			Image result = null;
-			if (columnIndex == 0) {
-				Image base = null;
-				if (object instanceof ICatalogEntry) {
-					ICatalogEntry catalogEntry = (ICatalogEntry) object;
-					String uri = catalogEntry.getURI();
-					if (uri.endsWith("dtd")) { //$NON-NLS-1$
-						base = dtdFileImage;
-					}
-					else if (uri.endsWith("xsd")) { //$NON-NLS-1$
-						base = xsdFileImage;
-					}
-					else {
-						base = unknownFileImage;
-					}
+	// ********** label provider **********
 
-					if (base != null) {
-						if (URIHelper.isReadableURI(uri, false)) {
-							result = base;
-						}
-						else {
-							// TODO... SSE port
-							result = base;// imageFactory.createCompositeImage(base,
-							// errorImage,
-							// ImageFactory.BOTTOM_LEFT);
-						}
-					}
-				}
-			}
-			return result;
+	protected static final PluggableTextTableLabelProvider.TextTransformer<Object> CATALOG_ENTRY_LABEL_TEXT_TRANSFORMER = new CatalogEntryLabelTextTransformer();
+	protected static class CatalogEntryLabelTextTransformer
+		implements PluggableTextTableLabelProvider.TextTransformer<Object>
+	{
+		public String transform(Object element, int columnIndex) {
+			return (element instanceof ICatalogEntry) ? this.transform((ICatalogEntry) element, columnIndex) : null;
 		}
 
-		public String getColumnText(Object object, int columnIndex) {
-			String result = null;
-			if (object instanceof ICatalogEntry) {
-				ICatalogEntry catalogEntry = (ICatalogEntry) object;
-				result = columnIndex == 0 ? catalogEntry.getKey() : catalogEntry.getURI();
-				result = URIHelper.removePlatformResourceProtocol(result);
+		protected String transform(ICatalogEntry catalogEntry, int columnIndex) {
+			return (columnIndex == 0) ?
+					catalogEntry.getKey() :
+					URIHelper.removePlatformResourceProtocol(catalogEntry.getURI());
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	protected static final ResourceManagerTableLabelProvider.ImageDescriptorTransformer<Object> CATALOG_ENTRY_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER = new CatalogEntryLabelImageDescriptorTransformer();
+	protected static class CatalogEntryLabelImageDescriptorTransformer
+		implements ResourceManagerTableLabelProvider.ImageDescriptorTransformer<Object>
+	{
+		public ImageDescriptor transform(Object element, int columnIndex) {
+			return (element instanceof ICatalogEntry) ? this.transform((ICatalogEntry) element, columnIndex) : null;
+		}
+
+		protected ImageDescriptor transform(ICatalogEntry catalogEntry, int columnIndex) {
+			return (columnIndex == 0) ? this.transform(catalogEntry) : null;
+		}
+
+		protected ImageDescriptor transform(ICatalogEntry catalogEntry) {
+			String uri = catalogEntry.getURI();
+			if (uri == null) {
+				return null;
 			}
-			return result != null ? result : ""; //$NON-NLS-1$
+			ImageDescriptor base = this.getBaseColumnImageDescriptor(uri);
+			return URIHelper.isReadableURI(uri, false) ? base : this.buildErrorImageDescriptor(base);
+		}
+
+		protected ImageDescriptor getBaseColumnImageDescriptor(String uri) {
+			uri = uri.toLowerCase();
+			if (uri.endsWith("dtd")) { //$NON-NLS-1$
+				return JptJaxbUiImages.DTD_FILE;
+			}
+			if (uri.endsWith("xsd")) { //$NON-NLS-1$
+				return JptJaxbUiImages.XSD_FILE;
+			}
+			return JptCommonUiImages.FILE;
+		}
+
+		protected ImageDescriptor buildErrorImageDescriptor(ImageDescriptor imageDescriptor) {
+			return new OverlayImageDescriptor(imageDescriptor, JptCommonUiImages.ERROR_OVERLAY, IDecoration.BOTTOM_LEFT);
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
 		}
 	}
 

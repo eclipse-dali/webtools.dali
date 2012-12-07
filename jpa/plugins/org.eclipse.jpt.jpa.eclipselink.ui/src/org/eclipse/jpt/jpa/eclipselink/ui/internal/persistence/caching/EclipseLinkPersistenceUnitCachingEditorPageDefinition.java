@@ -1,19 +1,21 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -45,12 +47,12 @@ public class EclipseLinkPersistenceUnitCachingEditorPageDefinition
 		super();
 	}
 
-	public String getPageText() {
-		return EclipseLinkUiMessages.PersistenceXmlCachingTab_title;
+	public ImageDescriptor getTitleImageDescriptor() {
+		return null;
 	}
 
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
+	public String getTitleText() {
+		return EclipseLinkUiMessages.PersistenceXmlCachingTab_title;
 	}
 
 	public String getHelpID() {
@@ -58,16 +60,22 @@ public class EclipseLinkPersistenceUnitCachingEditorPageDefinition
 	}
 
 	@Override
-	public void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new EclipseLinkPersistenceUnitCachingEditorPage<Caching>(this.buildCachingModel(jpaRootStructureNodeModel), parent, widgetFactory);
+	protected void buildEditorPageContent(Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new EclipseLinkPersistenceUnitCachingEditorPage<Caching>(buildCachingModel(persistenceUnitModel), parentComposite, widgetFactory, resourceManager);
 	}
-	
-	private PropertyValueModel<Caching> buildCachingModel(PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Caching>(this.buildPersistenceUnitModel(jpaRootStructureNodeModel)) {
-			@Override
-			protected Caching transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getCaching();
-			}
-		};
+
+	public static PropertyValueModel<Caching> buildCachingModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Caching>(persistenceUnitModel, CACHING_TRANSFORMER);
+	}
+
+	public static final Transformer<PersistenceUnit, Caching> CACHING_TRANSFORMER = new CachingTransformer();
+
+	public static class CachingTransformer
+		extends AbstractTransformer<PersistenceUnit, Caching>
+	{
+		@Override
+		protected Caching transform_(PersistenceUnit persistenceUnit) {
+			return ((EclipseLinkPersistenceUnit) persistenceUnit).getCaching();
+		}
 	}
 }

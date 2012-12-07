@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
@@ -31,19 +30,11 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * PersistenceXmlSchemaGenerationTab
- */
 public class PersistenceXmlSchemaGenerationComposite
 	extends Pane<SchemaGeneration>
 {
-	// ********** constructors/initialization **********
-	public PersistenceXmlSchemaGenerationComposite(
-				PropertyValueModel<SchemaGeneration> subjectHolder,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public PersistenceXmlSchemaGenerationComposite(Pane<?> parent, PropertyValueModel<SchemaGeneration> schemaGenModel, Composite parentComposite) {
+		super(parent, schemaGenModel, parentComposite);
 	}
 
 	protected String getHelpID() {

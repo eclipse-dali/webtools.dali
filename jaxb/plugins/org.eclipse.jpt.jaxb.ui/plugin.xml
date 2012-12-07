@@ -49,7 +49,7 @@
 			name="%generateSchemaFromClassesName"
  			category="org.eclipse.jpt.jaxb"
  			class="org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen.SchemaGeneratorWizard"
-			icon="icons/full/etool16/NewXSD.gif">
+			icon="$nl$/images/buttons/new-xsd.gif">
 				<description>%generateSchemaFromClassesDesc</description>
 				<selection class="org.eclipse.core.resources.IResource"/> 
 		</wizard>
@@ -59,7 +59,7 @@
 			name="%generateClassesFromSchemaName"
  			category="org.eclipse.jpt.jaxb"
  			class="org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard"
-			icon="icons/full/etool16/newclass_wiz.gif">
+			icon="$nl$/images/buttons/new-class.gif">
 				<description>%generateClassesFromSchemaDesc</description>
 		</wizard>
 
@@ -67,7 +67,7 @@
 		<wizard
 			id="org.eclipse.jpt.jaxb.ui.wizard.newJaxbProject"
 			name="%newJaxbProjectWizardName"
-			icon="icons/full/etool16/new_jaxb_project_wiz.gif"
+			icon="$nl$/images/buttons/new-jaxb-project.gif"
 			category="org.eclipse.jpt.jaxb"
 			project="true">
 			<description>%newJaxbProjectWizardDesc</description>
@@ -84,7 +84,8 @@
 		id="jaxbCompletionProposals"
 		name="%jaxbCompletionProposals">
 		
-		<proposalCategory icon="icons/full/etool16/jaxb_facet.gif">
+		<proposalCategory
+			icon="$nl$/images/jaxb-facet.gif">
 			<enablement>
 				<with variable="project">
 					<adapt type="org.eclipse.core.resources.IProject">
@@ -236,7 +237,7 @@
 			name="%jaxbNavigatorContent"
 			priority="higher"
 			appearsBefore="org.eclipse.jst.servlet.ui.EnhancedJavaRendering"
-			icon="icons/full/obj16/jaxb_content.gif"
+			icon="$nl$/images/objects/jaxb-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorContentProvider"
 			labelProvider="org.eclipse.jpt.common.ui.internal.jface.NavigatorLabelProvider">
@@ -381,7 +382,7 @@
 	<extension
 		point="org.eclipse.wst.common.project.facet.ui.images">
 		
-		<image facet="jpt.jaxb" path="icons/full/etool16/jaxb_facet.gif"/>
+		<image facet="jpt.jaxb" path="$nl$/images/jaxb-facet.gif"/>
 		
 	</extension>
 	

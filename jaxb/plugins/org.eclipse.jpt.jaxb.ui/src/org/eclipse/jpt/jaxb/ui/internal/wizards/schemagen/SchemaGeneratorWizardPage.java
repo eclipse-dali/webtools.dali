@@ -68,7 +68,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	private static final int SIZING_SELECTION_WIDGET_WIDTH = 480;
 	private static final int SIZING_SELECTION_WIDGET_HEIGHT = 150;
 
-	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.wizard_jaxbschema_classes"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.jaxb.ui.wizard_jaxbschema_classes"; //$NON-NLS-1$
 	
 	// ********** constructor **********
 

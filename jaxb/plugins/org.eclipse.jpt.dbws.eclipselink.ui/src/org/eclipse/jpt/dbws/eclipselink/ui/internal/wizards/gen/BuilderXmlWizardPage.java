@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -32,6 +33,7 @@ import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 public class BuilderXmlWizardPage extends WizardPage {
 	
 	private final IStructuredSelection initialSelection;
+	private final ResourceManager resourceManager;
 	private IProject targetProject;
 	
 	protected SelectFileOrXMLCatalogIdPanel selectSourcePanel;
@@ -55,10 +57,11 @@ public class BuilderXmlWizardPage extends WizardPage {
 
 	// ********** constructor **********
     
-	BuilderXmlWizardPage(IStructuredSelection selection) {
+	BuilderXmlWizardPage(IStructuredSelection selection, ResourceManager resourceManager) {
 		super("BuilderXmlWizardPage"); //$NON-NLS-1$
 		
 		this.initialSelection = selection;
+		this.resourceManager = resourceManager;
 	}
 	
 	// ********** IDialogPage implementation  **********
@@ -70,7 +73,7 @@ public class BuilderXmlWizardPage extends WizardPage {
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		this.setControl(composite);
 
-		this.selectSourcePanel = new SelectFileOrXMLCatalogIdPanel(composite, this.initialSelection);
+		this.selectSourcePanel = new SelectFileOrXMLCatalogIdPanel(composite, this.initialSelection, this.resourceManager);
 		this.selectSourcePanel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		SelectFileOrXMLCatalogIdPanel.PanelListener listener = new SelectFileOrXMLCatalogIdPanel.PanelListener() {
@@ -178,7 +181,7 @@ public class BuilderXmlWizardPage extends WizardPage {
 		return errorMessage;
 	}
 
-	private void selectFileOrXMLCatalogIdPanelChanged() {
+	void selectFileOrXMLCatalogIdPanelChanged() {
 		String errorMessage = this.computeErrorMessage();
 		this.setErrorMessage(errorMessage);
 		this.setPageComplete(this.isPageComplete());

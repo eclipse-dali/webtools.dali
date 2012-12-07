@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -52,17 +53,17 @@ public class UnsupportedOrmAttributeMappingUiDefinition
 	public String getLinkLabel() {
 		return JptUiDetailsOrmMessages.UnsupportedOrmMappingUiProvider_linkLabel;
 	}
-	
-	public JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel mappingModel, PropertyValueModel enabledModel, Composite parent, WidgetFactory widgetFactory) {
-		return new NullComposite(mappingModel, parent, widgetFactory);
+
+	public JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel mappingModel, PropertyValueModel enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new NullComposite(mappingModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	public static class NullComposite
 		extends Pane<JavaAttributeMapping>
 		implements JpaComposite
 	{
-		NullComposite(PropertyValueModel<JavaAttributeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
-			super(mappingModel, parent, widgetFactory);
+		NullComposite(PropertyValueModel<JavaAttributeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+			super(mappingModel, parent, widgetFactory, resourceManager);
 		}
 		@Override
 		protected void initializeLayout(Composite container) {

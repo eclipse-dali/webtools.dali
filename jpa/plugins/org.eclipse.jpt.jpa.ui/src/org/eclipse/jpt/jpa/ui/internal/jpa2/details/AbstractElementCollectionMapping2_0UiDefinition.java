@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 
 public abstract class AbstractElementCollectionMapping2_0UiDefinition<M, T extends ElementCollectionMapping2_0>
@@ -34,7 +35,7 @@ public abstract class AbstractElementCollectionMapping2_0UiDefinition<M, T exten
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.ELEMENT_COLLECTION;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.ELEMENT_COLLECTION;
 	}
 }

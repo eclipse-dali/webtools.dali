@@ -9,64 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddableComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class OrmEmbeddableComposite extends AbstractEmbeddableComposite<OrmEmbeddable> implements JpaComposite
+public class OrmEmbeddableComposite
+	extends AbstractOrmEmbeddableComposite
 {
-	public OrmEmbeddableComposite(PropertyValueModel<? extends OrmEmbeddable> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	public OrmEmbeddableComposite(
+			PropertyValueModel<? extends OrmEmbeddable> embeddableModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-		this.initializeEmbeddableCollapsibleSection(container);
-	}
-
-	@Override
-	protected Control initializeEmbeddableSection(Composite container) {
-		container = this.addSubPane(container, 2, 0, 0, 0, 0);
-
-		// Java class widgets
-		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
-
-		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, buildAccessHolder(), container);
-
-		// Metadata complete widgets
-		MetadataCompleteTriStateCheckBox metadataCompleteCheckBox = new MetadataCompleteTriStateCheckBox(this, getSubjectHolder(), container);
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 2;
-		metadataCompleteCheckBox.getControl().setLayoutData(gridData);
-
-		return container;
-	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddable, AccessHolder>(
-			getSubjectHolder())
-		{
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
-	}
-
 }

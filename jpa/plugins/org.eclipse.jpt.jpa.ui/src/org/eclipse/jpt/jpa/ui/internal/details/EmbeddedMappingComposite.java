@@ -9,43 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EmbeddedAttributeOverridesComposite                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EmbeddedMapping
- *
- * @version 2.3
- * @since 1.0
- */
-public class EmbeddedMappingComposite extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
-                                      implements JpaComposite
+public class EmbeddedMappingComposite
+	extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
 {
-	/**
-	 * Creates a new <code>EmbeddedMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>EmbeddedMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public EmbeddedMappingComposite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
-									PropertyValueModel<Boolean> enabledModel,
-									Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public EmbeddedMappingComposite(
+			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.jface;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * Item label provider that contains unchanging image, text, and description.
  */
 public class StaticItemExtendedLabelProvider
-	extends StaticItemLabelProvider
+	extends AbstractStaticItemLabelProvider<ItemExtendedLabelProvider.Manager>
 	implements ItemExtendedLabelProvider
 {
 	protected final String description;
@@ -27,7 +27,7 @@ public class StaticItemExtendedLabelProvider
 	 * description.
 	 */
 	public StaticItemExtendedLabelProvider(String text) {
-		this(null, text);
+		this(null, text, null);
 	}
 
 	/**
@@ -35,16 +35,16 @@ public class StaticItemExtendedLabelProvider
 	 * and text. The provider will also return the specified text as the
 	 * description.
 	 */
-	public StaticItemExtendedLabelProvider(Image image, String text) {
-		this(image, text, text);
+	public StaticItemExtendedLabelProvider(ImageDescriptor imageDescriptor, String text, ItemExtendedLabelProvider.Manager manager) {
+		this(imageDescriptor, text, text, manager);
 	}
 
 	/**
 	 * Construct an item label provider that returns the specified image, text,
 	 * and description.
 	 */
-	public StaticItemExtendedLabelProvider(Image image, String text, String description) {
-		super(image, text);
+	public StaticItemExtendedLabelProvider(ImageDescriptor imageDescriptor, String text, String description, ItemExtendedLabelProvider.Manager manager) {
+		super(imageDescriptor, text, manager);
 		this.description = description;
 	}
 

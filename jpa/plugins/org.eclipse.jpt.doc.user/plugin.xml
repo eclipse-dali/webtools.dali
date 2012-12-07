@@ -1,37 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin name="JPA Documentation Plug-in" id="org.eclipse.jpt.doc.user" version="3.0.2" provider-name="Oracle">
-	<!-- =========== -->
-	<!-- Define TOC  -->
-	<!-- =========== -->
-	<extension point="org.eclipse.help.toc">
+<plugin>
+
+	<!-- ***** TOC ***** -->
+	<extension
+		point="org.eclipse.help.toc">
 		<toc file="toc.xml" primary="true"/>
 	</extension>
-	<!-- =========== -->
-	<!-- Define F1   -->
-	<!-- =========== -->
-	<extension point="org.eclipse.help.contexts">
+
+	<!-- ***** F1 ***** -->
+	<extension
+		point="org.eclipse.help.contexts">
 		<contexts file="contexts.xml" plugin="org.eclipse.jpt.jpa.ui"/>
 	</extension>
-	<!-- ==================== -->
-	<!-- Define Keyword Index -->
-	<!-- ==================== -->
-	<extension point="org.eclipse.help.index">
+
+	<!-- ***** Keyword Index ***** -->
+	<extension
+		point="org.eclipse.help.index">
 		<index file="index.xml"/>
 	</extension>
-	<!-- =========== -->
-	<!-- Cheatsheets -->
-	<!-- =========== -->
-	<extension point="org.eclipse.ui.cheatsheets.cheatSheetContent">
-		<category name="JPA Development" id="com.jpa.category"/>
-		<cheatsheet name="Create a JPA Project" category="com.jpa.category" contentFile="$nl$/cheatsheets/add_persistence.xml" id="org.eclipse.jpa.cheatsheet.createproject1">
+
+	<!-- ***** Cheatsheets ***** -->
+	<extension
+		point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+
+		<category name="JPA Development"
+			id="org.eclipse.jpt.jpa.category"/>
+
+		<cheatsheet name="Create a JPA Project"
+			id="org.eclipse.jpt.jpa.cheatsheet.CreateJpaProject"
+			contentFile="$nl$/cheatsheets/add_persistence.xml"
+			category="org.eclipse.jpt.jpa.category">
 			<description>Learn how to create a JPA project.</description>
 		</cheatsheet>
-		<cheatsheet name="Create a Persistent Entity" category="com.jpa.category" contentFile="$nl$/cheatsheets/create_entity.xml" id="org.eclipse.jpa.cheatsheet.addentity">
+
+		<cheatsheet name="Create a Persistent Entity"
+			id="org.eclipse.jpt.jpa.cheatsheet.AddEntity"
+			contentFile="$nl$/cheatsheets/create_entity.xml"
+			category="org.eclipse.jpt.jpa.category">
 			<description>Learn how to add a persistent entity to a Java project.</description>
 		</cheatsheet>
-		<cheatsheet name="Map a Persistent Entity" category="com.jpa.category" contentFile="$nl$/cheatsheets/map_entity.xml" id="org.eclipse.jpa.cheatsheet.mapentity">
+
+		<cheatsheet name="Map a Persistent Entity"
+			id="org.eclipse.jpt.jpa.cheatsheet.MapEntity"
+			contentFile="$nl$/cheatsheets/map_entity.xml"
+			category="org.eclipse.jpt.jpa.category">
 			<description>Learn how to map a persistent entity to a database.</description>
 		</cheatsheet>
+
 	</extension>
+
 </plugin>

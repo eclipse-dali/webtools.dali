@@ -31,44 +31,20 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see Cascade
  * @see RelationshipMapping
- * @see ManyToManyMappingComposite - A container of this pane
- * @see ManyToOneMappingComposite - A container of this pane
- * @see OneToManyMappingComposite - A container of this pane
- * @see OneToOneMappingComposite - A container of this pane
- *
- * @version 2.0
- * @since 1.0
+ * @see ManyToManyMappingComposite
+ * @see ManyToOneMappingComposite
+ * @see OneToManyMappingComposite
+ * @see OneToOneMappingComposite
  */
-public class CascadeComposite extends Pane<Cascade>
+public class CascadeComposite
+	extends Pane<Cascade>
 {
-	/**
-	 * Creates a new <code>CascadeComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject <code>ICascade</code>
-	 * @param parent The parent container
-	 */
 	public CascadeComposite(
-			Pane<? extends RelationshipMapping> parentPane,
-	        PropertyValueModel<? extends Cascade> subjectHolder,
-	        Composite parent) {
-		
-		super(parentPane, subjectHolder, parent);
-	}
-	
-	/**
-	 * Creates a new <code>ColumnComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>ICascade</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public CascadeComposite(
-			PropertyValueModel<? extends Cascade> subjectHolder,
-			Composite parent,
-		    WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+		Pane<? extends RelationshipMapping> parentPane,
+		PropertyValueModel<? extends Cascade> cascadeModel,
+		Composite parent
+	) {
+		super(parentPane, cascadeModel, parent);
 	}
 
 	@Override

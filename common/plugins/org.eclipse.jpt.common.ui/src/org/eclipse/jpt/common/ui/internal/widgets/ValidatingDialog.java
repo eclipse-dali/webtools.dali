@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.ListIterator;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.osgi.util.NLS;
@@ -20,7 +21,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This dialog is similar to it superclass, <code>Dialog</code>, with
+ * This dialog is similar to its superclass, {@link Dialog}, with
  * the added value of an error message label below the main panel. A subclass
  * can set this error message as needed so that it can inform the user something
  * incorrect has been entered.
@@ -28,41 +29,33 @@ import org.eclipse.swt.widgets.Shell;
  * If there is an error message, it will be shown. If there is a warning
  * message, it will only be shown if there is no error message. Warning messages
  * have a different icon than error messages.
- *
- * @version 2.0
- * @since 2.0
  */
-public abstract class ValidatingDialog<T extends Node> extends Dialog<T> {
-
+public abstract class ValidatingDialog<T extends Node>
+	extends Dialog<T>
+{
 	/**
-	 * Creates a new <code>ValidatingDialog</code>.
-	 *
-	 * @param parent The parent shell
+	 * Construct a dialog with the specified resource manager and no title.
 	 */
-	public ValidatingDialog(Shell parent) {
-		super(parent);
+	public ValidatingDialog(Shell parentShell, ResourceManager resourceManager) {
+		super(parentShell, resourceManager);
 	}
 
 	/**
-	 * Creates a new <code>ValidatingDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param title The dialog's title
+	 * Construct a dialog with the specified resource manager and title.
 	 */
-	public ValidatingDialog(Shell parent, String title) {
-		super(parent, title);
+	public ValidatingDialog(Shell parentShell, ResourceManager resourceManager, String title) {
+		super(parentShell, resourceManager, title);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	final Node.Validator buildValidator() {
 		return new Node.Validator() {
 			public void pause() {
+				// NOP
 			}
 
 			public void resume() {
+				// NOP
 			}
 
 			public void validate() {
@@ -225,7 +218,7 @@ public abstract class ValidatingDialog<T extends Node> extends Dialog<T> {
 	 * pane to show the first error if any exists and update the enablement of
 	 * the OK button.
 	 */
-	private void validate() {
+	/* CU private */ void validate() {
 		getSubject().validateBranch();
 		updateMessage();
 		getButton(OK).setEnabled(!containsErrorMessage());

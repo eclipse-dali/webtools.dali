@@ -9,11 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal;
 
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.platform.InternalJpaPlatformUiManager;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 
 public class InternalJpaWorkbench
@@ -24,6 +29,7 @@ public class InternalJpaWorkbench
 	// NB: the JPA workbench must be synchronized whenever accessing any of this state
 	private InternalJpaPlatformUiManager jpaPlatformUiManager;
 	private JpaSelectionManager jpaSelectionManager;
+	private ResourceManager resourceManager;
 
 
 	/**
@@ -71,6 +77,52 @@ public class InternalJpaWorkbench
 	}
 
 
+	// ********** resource manager **********
+
+	public ResourceManager buildLocalResourceManager() {
+		ResourceManager rm = this.getResourceManager();
+		return (rm == null) ? null : new LocalResourceManager(rm);
+	}
+
+	/**
+	 * The local resource manager is stored in the
+	 * {@link Control#getData(String) control's "custom properties"}
+	 * and will dispose itself when the control is disposed.
+	 */
+	public synchronized ResourceManager getResourceManager(Control control) {
+		ResourceManager controlRM = (ResourceManager) control.getData(RESOURCE_MANAGER_KEY);
+		if (controlRM == null) {
+			ResourceManager rm = this.getResourceManager();
+			if (rm == null) {
+				return null;
+			}
+			controlRM = new LocalResourceManager(rm, control);
+			control.setData(RESOURCE_MANAGER_KEY, controlRM);
+		}
+		return controlRM;
+	}
+	private static final String RESOURCE_MANAGER_KEY = JptJpaUiPlugin.instance().getPluginID() + ".ResourceManager"; //$NON-NLS-1$
+
+	private synchronized ResourceManager getResourceManager() {
+		if ((this.resourceManager == null) && this.isActive()) {
+			this.resourceManager = this.buildResourceManager();
+		}
+		return this.resourceManager;
+	}
+
+	private ResourceManager buildResourceManager() {
+		return new LocalResourceManager(this.getParentResourceManager());
+	}
+
+	private ResourceManager getParentResourceManager() {
+		return JFaceResources.getResources(this.getDisplay());
+	}
+
+	private Display getDisplay() {
+		return this.workbench.getDisplay();
+	}
+
+
 	// ********** misc **********
 
 	private boolean isActive() {
@@ -82,6 +134,10 @@ public class InternalJpaWorkbench
 	 * {@link JptJpaUiPlugin#stop_() Dali plug-in}.
 	 */
 	public synchronized void stop() {
+		if (this.resourceManager != null) {
+			this.resourceManager.dispose();
+			this.resourceManager = null;
+		}
 		if (this.jpaPlatformUiManager != null) {
 			this.jpaPlatformUiManager = null;
 		}

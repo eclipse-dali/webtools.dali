@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.widgets;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,34 +29,135 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * This <code>WidgetFactory</code> is responsible to create the widgets
- * using the <code>FormToolkit</code> in order use the form style (flat-style)
- * look and feel. Clients that create a FormWidgetFactory must call {@link #dispose()} 
+ * This widget factory delegates its behavior to a {@link FormToolkit}.
+ * in order use the <em>form</em> style (i.e. the flat style)
+ * look and feel. Clients must call {@link #dispose()}
  * when they are finished using the widget factory.
-
  *
- * @see FormToolkit
- * @version 3.3
- * @since 2.0
+ * @see DefaultWidgetFactory
  */
-@SuppressWarnings("nls")
-public class FormWidgetFactory implements WidgetFactory {
+public class FormWidgetFactory
+	implements WidgetFactory
+{
+	private final FormToolkit formToolkit;
+
 
 	/**
-	 * The actual factory responsible for creating the new widgets.
-	 */
-	private final FormToolkit widgetFactory;
-
-	/**
-	 * Creates a new <code>FormWidgetFactory</code>.
+	 * Construct a widget factory that delegates to the specified
+	 * <em>form</em> toolkit.
 	 * <p>
-	 * Clients that call this method must call {@link #dispose()}
+	 * Any client that calls this constructor must call {@link #dispose()} when
+	 * it is finished using the resulting widget factory.
 	 */
-	public FormWidgetFactory(FormToolkit widgetFactory) {
+	public FormWidgetFactory(FormToolkit formToolkit) {
 		super();
+		if (formToolkit == null) {
+			throw new NullPointerException();
+		}
+		this.formToolkit = formToolkit;
+	}
 
-		Assert.isNotNull(widgetFactory, "The widget factory cannot be null");
-		this.widgetFactory = widgetFactory;
+	public Button createButton(Composite parent, String text) {
+		return this.createButton(parent, text, SWT.NULL);
+	}
+
+	public Button createCheckBox(Composite parent, String text) {
+		return this.createButton(parent, text, SWT.CHECK);
+	}
+
+	public Combo createCombo(Composite parent) {
+		return this.createCombo(parent, SWT.READ_ONLY);
+	}
+
+	public Composite createComposite(Composite parent) {
+		return this.formToolkit.createComposite(parent);
+	}
+
+	public DateTime createDateTime(Composite parent, int style) {
+		parent = this.createBorderContainer(parent);
+
+		DateTime dateTime = new DateTime(parent, style | SWT.FLAT);
+		dateTime.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		this.formToolkit.adapt(dateTime, true, false);
+
+		return dateTime;
+	}
+
+	public Combo createEditableCombo(Composite parent) {
+		return this.createCombo(parent, SWT.NONE);
+	}
+
+	public Group createGroup(Composite parent, String title) {
+		Group group = new Group(parent, SWT.NULL);
+		group.setText(title);
+		return group;
+	}
+
+	public Hyperlink createHyperlink(Composite parent, String text) {
+		return this.formToolkit.createHyperlink(parent, text, SWT.FLAT);
+	}
+
+	public Label createLabel(Composite container, String labelText) {
+		return this.formToolkit.createLabel(container, labelText, SWT.WRAP);
+	}
+
+	public List createList(Composite container, int style) {
+		List list = new List(container, SWT.FLAT | style);
+		list.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		return list;
+	}
+
+	public Text createMultiLineText(Composite parent) {
+		return this.createText(parent, SWT.MULTI | SWT.V_SCROLL);
+	}
+
+	public Text createPasswordText(Composite parent) {
+		return this.createText(parent, SWT.PASSWORD);
+	}
+
+	public Button createPushButton(Composite parent, String text) {
+		return this.createButton(parent, text, SWT.PUSH);
+	}
+
+	public Button createRadioButton(Composite parent, String text) {
+		return this.createButton(parent, text, SWT.RADIO);
+	}
+
+	public Section createSection(Composite parent, int style) {
+		return this.formToolkit.createSection(parent, SWT.FLAT | style);
+	}
+
+	public ScrolledForm createScrolledForm(Composite parent) {
+		return this.formToolkit.createScrolledForm(parent);
+	}
+
+	public Spinner createSpinner(Composite parent) {
+		parent = this.createBorderContainer(parent);
+
+		Spinner spinner = new Spinner(parent, SWT.FLAT);
+		spinner.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		this.formToolkit.adapt(spinner, true, false);
+
+		return spinner;
+	}
+
+	public Table createTable(Composite parent, int style) {
+		Table table = this.formToolkit.createTable(parent, SWT.BORDER | style);
+		table.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		return table;
+	}
+
+	public Text createText(Composite parent) {
+		return this.createText(parent, SWT.NONE);
+	}
+
+	private Text createText(Composite parent, int style) {
+		return this.formToolkit.createText(parent, null, SWT.BORDER | SWT.FLAT | style);
+	}
+
+	public Button createTriStateCheckBox(Composite parent, String text) {
+		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);
+		return checkBox.getCheckBox();
 	}
 
 	/**
@@ -65,216 +165,36 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * in order to have the widgets' border painted. Except for <code>CCombo</code>,
 	 * the top and bottom margins have to be 2 pixel and the left and right
 	 * margins have to be 1 pixel.
-	 *
-	 * @param container The parent of the sub-pane
-	 * @return A new <code>Composite</code> that has the necessary space to paint
-	 * the border
 	 */
-	protected Composite createBorderContainer(Composite container) {
-		return createBorderContainer(container, 2, 1);
+	private Composite createBorderContainer(Composite parent) {
+		return this.createBorderContainer(parent, 2, 1);
 	}
-	
-	protected Composite createBorderContainer(Composite container, int marginHeight, int marginWidth) {
 
+	private Composite createBorderContainer(Composite parent, int marginHeight, int marginWidth) {
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = marginHeight;
 		layout.marginWidth  = marginWidth;
 
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 
-		container = this.widgetFactory.createComposite(container);
-		container.setLayoutData(gridData);
-		container.setLayout(layout);
+		Composite composite = this.formToolkit.createComposite(parent);
+		composite.setLayoutData(gridData);
+		composite.setLayout(layout);
 
-		return container;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public Button createButton(Composite parent, String text) {
-		return createButton(parent, text, SWT.NULL);
+		return composite;
 	}
 
-	/**
-	 * Creates a new button.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @param style The style to apply to the button, which determines its type:
-	 * toggle, push, check box, radio
-	 * @return The newly created <code>Button</code>
-	 */
-	protected Button createButton(Composite parent, String text, int style) {
-		return this.widgetFactory.createButton(parent, text, SWT.FLAT | style);
+	private Button createButton(Composite parent, String text, int style) {
+		return this.formToolkit.createButton(parent, text, SWT.FLAT | style);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public Button createCheckBox(Composite parent, String text) {
-		return createButton(parent, text, SWT.CHECK);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Combo createCombo(Composite parent) {
-		return new Combo(parent, SWT.READ_ONLY | SWT.FLAT);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Composite createComposite(Composite parent) {
-		return this.widgetFactory.createComposite(parent);
-	}
-	/**
-	 * {@inheritDoc}
-	 */
-	public DateTime createDateTime(Composite parent, int style) {
-		parent = createBorderContainer(parent);
-
-		DateTime dateTime = new DateTime(parent, style | SWT.FLAT);
-		dateTime.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		this.widgetFactory.adapt(dateTime, true, false);
-
-		return dateTime;
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Combo createEditableCombo(Composite parent) {
-		Combo combo = new Combo(parent, SWT.FLAT);
-		return combo;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Group createGroup(Composite parent, String title) {
-		Group group = new Group(parent, SWT.NULL);
-		group.setText(title);
-		return group;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Hyperlink createHyperlink(Composite parent, String text) {
-		return this.widgetFactory.createHyperlink(parent, text, SWT.FLAT);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Label createLabel(Composite container, String labelText) {
-		return this.widgetFactory.createLabel(container, labelText, SWT.WRAP);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List createList(Composite container, int style) {
-		List list = new List(container, SWT.FLAT | style);
-		list.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		return list;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Text createMultiLineText(Composite parent) {
-		return createText(parent, SWT.MULTI | SWT.V_SCROLL);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Text createPasswordText(Composite parent) {
-		return createText(parent, SWT.PASSWORD);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Button createPushButton(Composite parent, String text) {
-		return createButton(parent, text, SWT.PUSH);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Button createRadioButton(Composite parent, String text) {
-		return createButton(parent, text, SWT.RADIO);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Section createSection(Composite parent, int style) {
-		return this.widgetFactory.createSection(parent, SWT.FLAT | style);
-	}
-
-	public ScrolledForm createScrolledForm(Composite parent) {
-		return this.widgetFactory.createScrolledForm(parent);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Spinner createSpinner(Composite parent) {
-		parent = createBorderContainer(parent);
-
-		Spinner spinner = new Spinner(parent, SWT.FLAT);
-		spinner.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		this.widgetFactory.adapt(spinner, true, false);
-
-		return spinner;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Table createTable(Composite parent, int style) {
-		Table table = this.widgetFactory.createTable(parent, SWT.BORDER | style);
-		table.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		return table;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Text createText(Composite parent) {
-		return createText(parent, SWT.NONE);
-	}
-
-	protected Text createText(Composite parent, int style) {
-		return this.widgetFactory.createText(parent, null, SWT.BORDER | SWT.FLAT | style);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Button createTriStateCheckBox(Composite parent, String text) {
-		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);
-		return checkBox.getCheckBox();
-	}
-
-	/**
-	 * Returns the actual factory responsible for creating the new widgets.
-	 *
-	 * @return The factory creating the widgets with the form style (flat-style)
-	 */
-	public FormToolkit getWidgetFactory() {
-		return this.widgetFactory;
+	private Combo createCombo(Composite parent, int style) {
+		return new Combo(parent, style | SWT.FLAT);
 	}
 
 	public void dispose() {
-		this.widgetFactory.dispose();
+		this.formToolkit.dispose();
 	}
 }

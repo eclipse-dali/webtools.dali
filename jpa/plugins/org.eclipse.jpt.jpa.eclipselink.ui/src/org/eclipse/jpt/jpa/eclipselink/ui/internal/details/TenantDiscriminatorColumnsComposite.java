@@ -42,22 +42,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
-/**
- * Here is the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
-
- *
- * @version 3.1
- * @since 3.1
- */
-public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane<T>
+public class TenantDiscriminatorColumnsComposite<T extends JpaNode>
+	extends Pane<T>
 {
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
@@ -68,23 +54,14 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 	private ModifiableCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel;
 	private PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnModel;
 
-	public TenantDiscriminatorColumnsComposite(Pane<? extends T> parentPane,
-	                            Composite parent,
-	                            TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor,
-	                            PropertyValueModel<Boolean> enabledModel) {
 
-		super(parentPane, parent, enabledModel);
-		this.tenantDiscriminatorColumnsEditor = tenantDiscriminatorColumnsEditor;
-		initializeLayout2();
-	}
-
-	public TenantDiscriminatorColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
-								PropertyValueModel<Boolean> enabledModel,
-	                            Composite parent,
-	                            WidgetFactory widgetFactory,
-	                            TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor) {
-
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+	public TenantDiscriminatorColumnsComposite(
+			Pane<?> parent,
+			PropertyValueModel<? extends T> subjectModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor) {
+		super(parent, subjectModel, enabledModel, parentComposite);
 		this.tenantDiscriminatorColumnsEditor = tenantDiscriminatorColumnsEditor;
 		initializeLayout2();
 	}

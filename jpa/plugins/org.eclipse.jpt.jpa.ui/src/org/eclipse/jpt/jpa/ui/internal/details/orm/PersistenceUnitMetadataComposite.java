@@ -57,7 +57,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see PersistenceUnitMetadata
  * @see OrmPersistenceUnitDefaults
- * @see EntityMappingsDetailsPage - The parent container
+ * @see EntityMappingsDetailsPageManager - The parent container
  * @see CatalogCombo
  * @see SchemaCombo
  * @see EnumFormComboViewer

@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractOneToOneMappingUiDefinition<M, T extends OneToOneMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractOneToOneMappingUiDefinition<M, T extends OneToOneM
 	}
 	
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.ONE_TO_ONE;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.ONE_TO_ONE;
 	}
 }

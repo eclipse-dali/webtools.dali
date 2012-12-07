@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -82,36 +83,17 @@ import org.eclipse.ui.forms.widgets.Section;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
- *
- * @see Entity
- * @see InheritanceComposite
- * @see IdClassComposite
- * @see EntityOverridesComposite
- * @see TableComposite
- * @see GenerationComposite
- *
- * TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
- *
- * @version 2.3
- * @since 1.0
  */
 public abstract class AbstractEntityComposite<T extends Entity>
 	extends Pane<T>
     implements JpaComposite
 {
-	/**
-	 * Creates a new <code>AbstractEntityComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	protected AbstractEntityComposite(
-			PropertyValueModel<? extends T> subjectHolder,
-	        Composite parent,
-	        WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<? extends T> entityModel,
+			Composite parentComposite,
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
+		super(entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override

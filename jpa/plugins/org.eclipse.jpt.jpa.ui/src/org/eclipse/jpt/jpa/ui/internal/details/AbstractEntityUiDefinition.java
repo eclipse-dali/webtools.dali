@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
 public abstract class AbstractEntityUiDefinition<M, T extends Entity> 
 	extends AbstractMappingUiDefinition<M, T>
@@ -33,7 +34,7 @@ public abstract class AbstractEntityUiDefinition<M, T extends Entity>
 	}
 
 	@Override
-	protected String getImageKey() {
-		return JptUiIcons.ENTITY;
+	public ImageDescriptor getImageDescriptor() {
+		return JptJpaUiImages.ENTITY;
 	}
 }

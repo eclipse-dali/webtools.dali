@@ -21,13 +21,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 public class EclipseLink2_4ProjectFlagModel<T extends JpaNode>
 	extends TransformationPropertyValueModel<T, Boolean>
 {
-	public EclipseLink2_4ProjectFlagModel(PropertyValueModel<T> jpaProjectModel) { 
+	public EclipseLink2_4ProjectFlagModel(PropertyValueModel<? extends T> jpaProjectModel) { 
 		super(jpaProjectModel);
 	}
 
 	@Override
-	protected Boolean transform_(T value) {
-		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) value.getJpaPlatform().getJpaVersion();
+	protected Boolean transform_(T jpaModel) {
+		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) jpaModel.getJpaPlatform().getJpaVersion();
 		return Boolean.valueOf(jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLink2_4JpaPlatformFactory.VERSION));
 	}
 }

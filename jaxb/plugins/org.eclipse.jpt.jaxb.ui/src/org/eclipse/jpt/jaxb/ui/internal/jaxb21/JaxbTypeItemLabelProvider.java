@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 
 
@@ -20,7 +20,7 @@ public abstract class JaxbTypeItemLabelProvider<I extends JaxbType>
 	protected final String text;
 	protected final String description;
 	
-	protected JaxbTypeItemLabelProvider(I jaxbType, ItemLabelProvider.Manager manager) {
+	protected JaxbTypeItemLabelProvider(I jaxbType, ItemExtendedLabelProvider.Manager manager) {
 		super(jaxbType, manager);
 		this.text = this.buildText();
 		this.description = this.buildDescription();

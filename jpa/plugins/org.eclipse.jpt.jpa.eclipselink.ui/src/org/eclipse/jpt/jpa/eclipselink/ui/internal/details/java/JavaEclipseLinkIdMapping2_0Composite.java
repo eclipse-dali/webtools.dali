@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
@@ -24,12 +25,12 @@ public class JavaEclipseLinkIdMapping2_0Composite
 	extends EclipseLinkIdMappingComposite<JavaIdMapping>
 {
 	public JavaEclipseLinkIdMapping2_0Composite(
-			PropertyValueModel<? extends JavaIdMapping> subjectHolder,
+			PropertyValueModel<? extends JavaIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 

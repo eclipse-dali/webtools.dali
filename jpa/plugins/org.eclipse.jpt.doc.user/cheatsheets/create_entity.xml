@@ -15,7 +15,7 @@ If not, select <b>File->New->Project...</b> and choose <b>JPA->JPA Project</b> i
       </description>
 	</item>
 	<item title="Open the JPA Development Perspective" skip="true" href="/org.eclipse.jpt.doc.user/ref_persistence_perspective.htm">
-		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.jpt.ui.PersistencePerspective"/>
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.jpt.ui.jpaPerspective"/>
 		<description>
 When working with JPA  persistence, you should use the Persistence perspective. If you already have the Persistence perspective active, you may skip this step by clicking the "Click to Skip" button. 
 If not, select <b>Window->Open Perspective->Other</b> in the menubar at the top of the workbench. In the Select Perspectives dialog, select <b>JPA Development</b> and click OK. This step changes the perspective to set up the Eclipse workbench for JPA development.

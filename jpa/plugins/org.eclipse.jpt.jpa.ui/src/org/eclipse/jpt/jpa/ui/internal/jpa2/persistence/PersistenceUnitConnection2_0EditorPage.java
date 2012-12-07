@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import java.util.Collection;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -29,14 +30,14 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class PersistenceUnitConnection2_0EditorPage
-	extends Pane<JpaConnection2_0> {
-
+	extends Pane<JpaConnection2_0>
+{
 	public PersistenceUnitConnection2_0EditorPage(
 			PropertyValueModel<JpaConnection2_0> subjectModel,
             Composite parent,
-            WidgetFactory widgetFactory) {
-
-		super(subjectModel, parent, widgetFactory);
+            WidgetFactory widgetFactory,
+            ResourceManager resourceManager) {
+		super(subjectModel, parent, widgetFactory, resourceManager);
 	}
 	
 	@Override

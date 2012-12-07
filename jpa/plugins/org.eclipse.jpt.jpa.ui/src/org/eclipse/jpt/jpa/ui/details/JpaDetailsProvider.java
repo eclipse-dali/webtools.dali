@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This provider is responsible for creating the {@link JpaDetailsPageManager}
- * responsible for showing the information for a structure node ID.
+ * responsible for showing the information for a JPA structure node.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -36,11 +37,12 @@ public interface JpaDetailsProvider {
 	boolean providesDetails(JpaStructureNode structureNode);
 
 	/**
-	 * Build a new details page manager with the specified parent and widget
-	 * factory.
+	 * Build a new details page manager with the specified parent, widget
+	 * factory, and resource manager.
 	 */
 	// TODO pass in JpaUiFactory so these pages can be built using the factory and overridden?
 	JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(
 			Composite parent,
-			WidgetFactory widgetFactory);
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager);
 }
