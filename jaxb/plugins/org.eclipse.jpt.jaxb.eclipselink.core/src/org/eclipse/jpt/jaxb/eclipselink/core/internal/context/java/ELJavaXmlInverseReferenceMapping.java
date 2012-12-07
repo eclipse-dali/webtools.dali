@@ -189,7 +189,7 @@ public class ELJavaXmlInverseReferenceMapping
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
-							new String[] { mappedBy, referencedClassMapping.getJaxbType().getFullyQualifiedName() },
+							new String[] { mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName() },
 							this,
 							getMappedByTextRange()));
 		}
@@ -201,7 +201,7 @@ public class ELJavaXmlInverseReferenceMapping
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
-							new String[] { mappedBy, referencedClassMapping.getJaxbType().getFullyQualifiedName() },
+							new String[] { mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName() },
 							this,
 							getMappedByTextRange()));
 		}

@@ -11,16 +11,16 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 
 
 public class GenericJavaJaxbEnum
 		extends AbstractJavaType
-		implements JaxbEnum {
+		implements JavaEnum {
 	
 	public GenericJavaJaxbEnum(JaxbContextNode parent, JavaResourceEnum resourceType) {
 		super(parent, resourceType);
@@ -32,21 +32,21 @@ public class GenericJavaJaxbEnum
 		return (JavaResourceEnum) super.getJavaResourceType();
 	}
 	
-	public Kind getKind() {
-		return JaxbType.Kind.ENUM;
+	public TypeKind getKind() {
+		return TypeKind.ENUM;
 	}
 	
 	
 	// ***** mapping *****
 	
 	@Override
-	public JaxbEnumMapping getMapping() {
-		return (JaxbEnumMapping) super.getMapping();
+	public JavaEnumMapping getMapping() {
+		return (JavaEnumMapping) super.getMapping();
 	}
 	
 	@Override
-	protected JaxbEnumMapping buildMapping() {
-		return getFactory().buildJaxbEnumMapping(this);
+	protected JavaEnumMapping buildMapping() {
+		return getFactory().buildJavaEnumMapping(this);
 	}
 	
 	@Override

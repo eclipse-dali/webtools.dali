@@ -112,12 +112,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return (JaxbPersistentAttribute) super.getParent();
 	}
 	
-	protected JaxbClassMapping getJaxbClassMapping() {
-		return getPersistentAttribute().getClassMapping();
-	}
-	
 	protected JaxbPackage getJaxbPackage() {
-		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 
 	public JavaResourceAttribute getJavaResourceAttribute() {

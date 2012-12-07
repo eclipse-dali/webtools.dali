@@ -24,11 +24,9 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -47,6 +45,10 @@ import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaClassMapping;
@@ -122,23 +124,23 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaXmlNs(parent, xmlNsAnnotation);
 	}
 	
-	public JaxbClass buildJaxbClass(JaxbContextRoot parent, JavaResourceType resourceType) {
+	public JavaClass buildJaxbClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		return new GenericJavaJaxbClass(parent, resourceType);
 	}
 	
-	public JaxbEnum buildJaxbEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum) {
+	public JavaEnum buildJaxbEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum) {
 		return new GenericJavaJaxbEnum(parent, resourceEnum);
 	}
 	
-	public JaxbClassMapping buildJaxbClassMapping(JaxbClass parent) {
+	public JavaClassMapping buildJavaClassMapping(JavaClass parent) {
 		return new GenericJavaClassMapping(parent);
 	}
 	
-	public JaxbEnumMapping buildJaxbEnumMapping(JaxbEnum parent) {
+	public JavaEnumMapping buildJavaEnumMapping(JavaEnum parent) {
 		return new GenericJavaEnumMapping(parent);
 	}
 	
-	public XmlRegistry buildXmlRegistry(JaxbClass parent) {
+	public XmlRegistry buildXmlRegistry(JavaClass parent) {
 		return new GenericJavaXmlRegistry(parent);
 	}
 	

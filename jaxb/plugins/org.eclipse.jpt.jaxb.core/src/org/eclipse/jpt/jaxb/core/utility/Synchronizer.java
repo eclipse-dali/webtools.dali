@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.utility;
 
 import java.io.Serializable;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**

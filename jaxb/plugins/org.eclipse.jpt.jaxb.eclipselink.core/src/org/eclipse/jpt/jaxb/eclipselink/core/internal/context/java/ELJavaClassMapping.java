@@ -18,8 +18,8 @@ import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlDiscriminatorNode;
@@ -41,7 +41,7 @@ public class ELJavaClassMapping
 	protected ELJavaXmlDiscriminatorValue xmlDiscriminatorValue;
 	
 	
-	public ELJavaClassMapping(JaxbClass parent) {
+	public ELJavaClassMapping(JavaClass parent) {
 		super(parent);
 		initXmlDiscriminatorNode();
 		initXmlDiscriminatorValue();

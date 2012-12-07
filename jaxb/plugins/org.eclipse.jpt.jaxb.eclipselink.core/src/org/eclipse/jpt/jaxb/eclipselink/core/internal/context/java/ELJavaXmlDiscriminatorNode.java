@@ -45,7 +45,7 @@ public class ELJavaXmlDiscriminatorNode
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJavaType().getJaxbPackage();
 	}
 	
 	

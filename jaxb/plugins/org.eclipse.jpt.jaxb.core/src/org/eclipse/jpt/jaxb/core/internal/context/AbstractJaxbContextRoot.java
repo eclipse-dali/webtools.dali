@@ -31,14 +31,15 @@ import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
-import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -57,8 +58,8 @@ public abstract class AbstractJaxbContextRoot
 	/* The map of package name to JaxbPackage objects */
 	protected final Map<String, JaxbPackage> packages;
 	
-	/* The map of class name to JaxbType objects */
-	protected final Map<String, JaxbType> types;
+	/* The map of class name to JavaType objects */
+	protected final Map<String, JavaType> types;
 	
 	
 	public AbstractJaxbContextRoot(JaxbProject jaxbProject) {
@@ -68,7 +69,7 @@ public abstract class AbstractJaxbContextRoot
 		}
 		this.jaxbProject = jaxbProject;
 		this.packages = new Hashtable<String, JaxbPackage>();
-		this.types = new Hashtable<String, JaxbType>();
+		this.types = new Hashtable<String, JavaType>();
 		initialize();
 	}
 	
@@ -113,7 +114,7 @@ public abstract class AbstractJaxbContextRoot
 		for (JaxbPackage each : getPackages()) {
 			each.synchronizeWithResourceModel();
 		}
-		for (JaxbType each : getTypes()) {
+		for (JavaType each : getJavaTypes()) {
 			each.synchronizeWithResourceModel();
 		}
 	}
@@ -165,7 +166,7 @@ public abstract class AbstractJaxbContextRoot
 			}
 			
 			for (String typeToScan : new SnapshotCloneIterable<String>(typesToScan)) {
-				JaxbType jaxbType = getType(typeToScan);
+				JavaType jaxbType = getJavaType(typeToScan);
 				if (jaxbType != null) {
 					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
 						if (! StringTools.isBlank(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
@@ -229,9 +230,9 @@ public abstract class AbstractJaxbContextRoot
 	protected Set<String> calculatePackageNames(Set<String> typeNames) {
 		Set<String> packageNames = CollectionTools.<String>set();
 		for (String typeName : typeNames) {
-			JaxbType jaxbType = this.types.get(typeName);
+			JavaType jaxbType = this.types.get(typeName);
 			if (jaxbType != null) {
-				packageNames.add(jaxbType.getPackageName());
+				packageNames.add(jaxbType.getTypeName().getPackageName());
 			}
 		}
 		return packageNames;
@@ -287,11 +288,11 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate, boolean defaultMapped) {
-		JaxbType.Kind jaxbTypeKind = calculateJaxbTypeKind(resourceType);
+		TypeKind jaxbTypeKind = calculateJaxbTypeKind(resourceType);
 		String className = resourceType.getTypeBinding().getQualifiedName();
 		
 		if (this.types.containsKey(className)) {
-			JaxbType type = this.types.get(className);
+			JavaType type = this.types.get(className);
 			if (type.getKind() == jaxbTypeKind) {
 				typesToUpdate.add(className);
 				type.setDefaultMapped(defaultMapped);
@@ -302,24 +303,24 @@ public abstract class AbstractJaxbContextRoot
 			}
 		}
 		
-		JaxbType type = buildType(resourceType);
+		JavaType type = buildType(resourceType);
 		type.setDefaultMapped(defaultMapped);
 		this.addType(type);
 	}
 	
-	protected JaxbType.Kind calculateJaxbTypeKind(JavaResourceAbstractType resourceType) {
+	protected TypeKind calculateJaxbTypeKind(JavaResourceAbstractType resourceType) {
 		if (resourceType.getKind() == JavaResourceAbstractType.Kind.ENUM) {
-			return JaxbType.Kind.ENUM;
+			return TypeKind.ENUM;
 		}
 		// else is of kind TYPE
 		else {
-			return JaxbType.Kind.CLASS;
+			return TypeKind.CLASS;
 		}
 	}
 	
-	protected JaxbType buildType(JavaResourceAbstractType resourceType) {
-		JaxbType.Kind kind = calculateJaxbTypeKind(resourceType);
-		if (kind == JaxbType.Kind.ENUM) {
+	protected JavaType buildType(JavaResourceAbstractType resourceType) {
+		TypeKind kind = calculateJaxbTypeKind(resourceType);
+		if (kind == TypeKind.ENUM) {
 			return buildJaxbEnum((JavaResourceEnum) resourceType);
 		}
 		else {
@@ -396,120 +397,120 @@ public abstract class AbstractJaxbContextRoot
 	
 	// ***** types *****
 	
-	public Iterable<JaxbType> getTypes() {
-		return new LiveCloneIterable<JaxbType>(this.types.values());
+	public Iterable<JavaType> getJavaTypes() {
+		return new LiveCloneIterable<JavaType>(this.types.values());
 	}
 	
-	public int getTypesSize() {
+	public int getJavaTypesSize() {
 		return this.types.size();
 	}
 	
-	public JaxbType getType(String typeName) {
+	public JavaType getJavaType(String typeName) {
 		return typeName == null ? null : this.types.get(typeName);
 	}
 	
-	protected void addType_(JaxbType type) {
-		this.types.put(type.getFullyQualifiedName(), type);
+	protected void addType_(JavaType type) {
+		this.types.put(type.getTypeName().getFullyQualifiedName(), type);
 	}
 	
-	protected void addType(JaxbType type) {
-		if (this.types.containsKey(type.getFullyQualifiedName())) {
+	protected void addType(JavaType type) {
+		if (this.types.containsKey(type.getTypeName().getFullyQualifiedName())) {
 			throw new IllegalArgumentException("Type with that name already exists."); //$NON-NLS-1$
 		}
 		addType_(type);
-		fireItemAdded(TYPES_COLLECTION, type);
+		fireItemAdded(JAVA_TYPES_COLLECTION, type);
 	}
 	
-	protected void removeType(JaxbType type) {
-		removeType(type.getFullyQualifiedName());
+	protected void removeType(JavaType type) {
+		removeType(type.getTypeName().getFullyQualifiedName());
 	}
 	
 	protected void removeType(String typeName) {
 		if (! this.types.containsKey(typeName)) {
 			throw new IllegalArgumentException("No type with that name exists."); //$NON-NLS-1$
 		}
-		JaxbType removedType = this.types.remove(typeName);
-		fireItemRemoved(TYPES_COLLECTION, removedType);
+		JavaType removedType = this.types.remove(typeName);
+		fireItemRemoved(JAVA_TYPES_COLLECTION, removedType);
 	}
 	
-	public Iterable<JaxbType> getTypes(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JaxbType>(getTypes()) {
+	public Iterable<JavaType> getJavaTypes(final JaxbPackage jaxbPackage) {
+		return new FilteringIterable<JavaType>(getJavaTypes()) {
 			@Override
-			protected boolean accept(JaxbType o) {
-				return o.getPackageName().equals(jaxbPackage.getName());
+			protected boolean accept(JavaType o) {
+				return o.getTypeName().getPackageName().equals(jaxbPackage.getName());
 			}
 		};
 	}
 	
-	public Iterable<JaxbClass> getClasses() {
-		return new SubIterableWrapper<JaxbType, JaxbClass>(
-				new FilteringIterable<JaxbType>(getTypes()) {
+	public Iterable<JavaClass> getJavaClasses() {
+		return new SubIterableWrapper<JavaType, JavaClass>(
+				new FilteringIterable<JavaType>(getJavaTypes()) {
 					@Override
-					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.CLASS;
+					protected boolean accept(JavaType o) {
+						return o.getKind() == TypeKind.CLASS;
 					}
 				});
 	}
 	
-	public Iterable<JaxbClass> getClasses(JaxbPackage jaxbPackage) {
-		return new SubIterableWrapper<JaxbType, JaxbClass>(
-				new FilteringIterable<JaxbType>(getTypes(jaxbPackage)) {
+	public Iterable<JavaClass> getJavaClasses(JaxbPackage jaxbPackage) {
+		return new SubIterableWrapper<JavaType, JavaClass>(
+				new FilteringIterable<JavaType>(getJavaTypes(jaxbPackage)) {
 					@Override
-					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.CLASS;
+					protected boolean accept(JavaType o) {
+						return o.getKind() == TypeKind.CLASS;
 					}
 				});
 	}
 	
-	public Iterable<JaxbEnum> getEnums() {
-		return new SubIterableWrapper<JaxbType, JaxbEnum>(
-				new FilteringIterable<JaxbType>(getTypes()) {
+	public Iterable<JavaEnum> getJavaEnums() {
+		return new SubIterableWrapper<JavaType, JavaEnum>(
+				new FilteringIterable<JavaType>(getJavaTypes()) {
 					@Override
-					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.ENUM;
+					protected boolean accept(JavaType o) {
+						return o.getKind() == TypeKind.ENUM;
 					}
 				});
 	}
 	
-	public Iterable<JaxbEnum> getEnums(JaxbPackage jaxbPackage) {
-		return new SubIterableWrapper<JaxbType, JaxbEnum>(
-				new FilteringIterable<JaxbType>(getTypes(jaxbPackage)) {
+	public Iterable<JavaEnum> getJavaEnums(JaxbPackage jaxbPackage) {
+		return new SubIterableWrapper<JavaType, JavaEnum>(
+				new FilteringIterable<JavaType>(getJavaTypes(jaxbPackage)) {
 					@Override
-					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.ENUM;
+					protected boolean accept(JavaType o) {
+						return o.getKind() == TypeKind.ENUM;
 					}
 				});
 	}
 	
 	
-	protected JaxbClass buildJaxbClass(JavaResourceType resourceType) {
+	protected JavaClass buildJaxbClass(JavaResourceType resourceType) {
 		return this.getFactory().buildJaxbClass(this, resourceType);
 	}
 	
-	protected JaxbEnum buildJaxbEnum(JavaResourceEnum resourceEnum) {
+	protected JavaEnum buildJaxbEnum(JavaResourceEnum resourceEnum) {
 		return this.getFactory().buildJaxbEnum(this, resourceEnum);
 	}
 	
 	public Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage) {
 		return new FilteringIterable<XmlRegistry>(
-				new TransformationIterable<JaxbClass, XmlRegistry>(getClasses(jaxbPackage)) {
+				new TransformationIterable<JavaClass, XmlRegistry>(getJavaClasses(jaxbPackage)) {
 					@Override
-					protected XmlRegistry transform(JaxbClass o) {
+					protected XmlRegistry transform(JavaClass o) {
 						return o.getXmlRegistry();
 					}
 				},
 				NotNullFilter.INSTANCE);
 	}
 	
-	public JaxbTypeMapping getTypeMapping(String typeName) {
-		JaxbType type = getType(typeName);
+	public JavaTypeMapping getTypeMapping(String typeName) {
+		JavaType type = getJavaType(typeName);
 		return (type == null) ? null : type.getMapping();
 	}
 	
-	public JaxbClassMapping getClassMapping(String typeName) {
-		JaxbType type = getType(typeName);
-		return (type == null || (type.getKind() != JaxbType.Kind.CLASS)) ? 
-				null : ((JaxbClass) type).getMapping();
+	public JavaClassMapping getClassMapping(String typeName) {
+		JavaType type = getJavaType(typeName);
+		return (type == null || (type.getKind() != TypeKind.CLASS)) ? 
+				null : ((JavaClass) type).getMapping();
 	}
 	
 	
@@ -529,7 +530,7 @@ public abstract class AbstractJaxbContextRoot
 		for (JaxbPackage pkg : this.packages.values()) {
 			pkg.validate(messages, reporter);
 		}
-		for (JaxbType type : this.types.values()) {
+		for (JavaType type : this.types.values()) {
 			type.validate(messages, reporter);
 		}
 	}

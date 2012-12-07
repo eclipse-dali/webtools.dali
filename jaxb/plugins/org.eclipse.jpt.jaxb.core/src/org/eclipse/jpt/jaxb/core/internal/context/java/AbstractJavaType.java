@@ -20,9 +20,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
-import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
@@ -34,11 +35,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaType
 		extends AbstractJavaContextNode
-		implements JaxbType {
+		implements JavaType {
 	
 	protected final JavaResourceAbstractType resourceType;
 	
-	protected JaxbTypeMapping mapping;
+	protected JavaTypeMapping mapping;
 	
 	protected boolean defaultMapped = false;
 	
@@ -80,17 +81,17 @@ public abstract class AbstractJavaType
 	
 	// ***** mapping *****
 	
-	public JaxbTypeMapping getMapping() {
+	public JavaTypeMapping getMapping() {
 		return this.mapping;
 	}
 	
-	protected void setMapping_(JaxbTypeMapping newMapping) {
-		JaxbTypeMapping old = this.mapping;
+	protected void setMapping_(JavaTypeMapping newMapping) {
+		JavaTypeMapping old = this.mapping;
 		this.mapping = newMapping;
 		firePropertyChanged(MAPPING_PROPERTY, old, newMapping);
 	}
 	
-	protected abstract JaxbTypeMapping buildMapping();
+	protected abstract JavaTypeMapping buildMapping();
 	
 	protected void initMapping() {
 		if (isDefaultMapped() || isSpecifiedMapped()) {
@@ -225,31 +226,36 @@ public abstract class AbstractJavaType
 	}
 	
 	
-	// ***** JaxbType misc *****
+	// ***** JavaType misc *****
 	
 	public JavaResourceAbstractType getJavaResourceType() {
 		return this.resourceType;
 	}
 	
-	public String getSimpleName() {
-		return this.resourceType.getName();
-	}
-	
-	public String getTypeQualifiedName() {
-		String packageName = getPackageName();
-		return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
-	}
-	
-	public String getFullyQualifiedName() {
-		return this.resourceType.getTypeBinding().getQualifiedName();
-	}
-	
-	public String getPackageName() {
-		return this.resourceType.getTypeBinding().getPackageName();
+	public TypeName getTypeName() {
+		return new TypeName() {
+			
+			public String getSimpleName() {
+				return AbstractJavaType.this.resourceType.getName();
+			}
+			
+			public String getTypeQualifiedName() {
+				String packageName = getPackageName();
+				return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
+			}
+			
+			public String getFullyQualifiedName() {
+				return AbstractJavaType.this.resourceType.getTypeBinding().getQualifiedName();
+			}
+			
+			public String getPackageName() {
+				return AbstractJavaType.this.resourceType.getTypeBinding().getPackageName();
+			}
+		};
 	}
 	
 	public JaxbPackage getJaxbPackage() {
-		return getContextRoot().getPackage(getPackageName());
+		return getContextRoot().getPackage(getTypeName().getPackageName());
 	}
 	
 	public JaxbPackageInfo getJaxbPackageInfo() {

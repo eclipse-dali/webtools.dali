@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.utility;
 
 import java.io.Serializable;
 import java.util.EventListener;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**

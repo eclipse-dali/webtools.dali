@@ -1628,6 +1628,14 @@ public class EXmlAttribute extends EJavaAttribute implements EAccessibleJavaAttr
 	}
 
 
+	// ***** misc *****
+	
+	@Override
+	public String getElementName() {
+		return Oxm.XML_ATTRIBUTE;
+	}
+	
+	
 	// ***** translators *****
 	
 	static class XmlAttributeTranslator

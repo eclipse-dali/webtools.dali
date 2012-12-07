@@ -55,7 +55,7 @@ public class ELJavaXmlJoinNode
 	
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 	
 	
@@ -237,7 +237,7 @@ public class ELJavaXmlJoinNode
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,
-							new String[] { referencedClassMapping.getJaxbType().getFullyQualifiedName(), this.referencedXmlPath },
+							new String[] { referencedClassMapping.getJavaType().getTypeName().getFullyQualifiedName(), this.referencedXmlPath },
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange()));
 		}

@@ -20,10 +20,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -53,7 +55,7 @@ public abstract class AbstractJavaTypeMapping
 	protected XmlSeeAlso xmlSeeAlso;
 	
 	
-	protected AbstractJavaTypeMapping(JaxbType parent) {
+	protected AbstractJavaTypeMapping(JavaType parent) {
 		super(parent);
 		initXmlTransient();
 		this.qName = buildQName(); 
@@ -62,16 +64,24 @@ public abstract class AbstractJavaTypeMapping
 	}
 	
 	
-	public JaxbType getJaxbType() {
-		return (JaxbType) getParent();
+	public JavaType getJavaType() {
+		return (JavaType) getParent();
 	}
 	
 	protected JavaResourceAbstractType getJavaResourceType() {
-		return getJaxbType().getJavaResourceType();
+		return getJavaType().getJavaResourceType();
 	}
 	
-	protected JaxbPackage getJaxbPackage() {
-		return getJaxbType().getJaxbPackage();
+	public TypeKind getTypeKind() {
+		return getJavaType().getKind();
+	}
+	
+	public TypeName getTypeName() {
+		return getJavaType().getTypeName();
+	}
+	
+	public JaxbPackage getJaxbPackage() {
+		return getJavaType().getJaxbPackage();
 	}
 	
 	
@@ -338,7 +348,7 @@ public abstract class AbstractJavaTypeMapping
 	@Override
 	public TextRange getValidationTextRange() {
 		TextRange textRange = getXmlTypeAnnotation().getTextRange();
-		return (textRange != null) ? textRange : getJaxbType().getValidationTextRange();
+		return (textRange != null) ? textRange : getJavaType().getValidationTextRange();
 	}
 	
 	@Override
@@ -396,18 +406,18 @@ public abstract class AbstractJavaTypeMapping
 		
 		@Override
 		protected JaxbPackage getJaxbPackage() {
-			return AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage();
+			return AbstractJavaTypeMapping.this.getJavaType().getJaxbPackage();
 		}
 		
 		@Override
 		public String getDefaultNamespace() {
-			JaxbPackage jaxbPackage = AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage();
+			JaxbPackage jaxbPackage = AbstractJavaTypeMapping.this.getJavaType().getJaxbPackage();
 			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
 		public String getDefaultName() {
-			return Introspector.decapitalize(AbstractJavaTypeMapping.this.getJaxbType().getSimpleName());
+			return Introspector.decapitalize(AbstractJavaTypeMapping.this.getJavaType().getTypeName().getSimpleName());
 		}
 		
 		@Override

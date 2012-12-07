@@ -47,7 +47,7 @@ public class ELJavaXmlPath
 	
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 	
 	

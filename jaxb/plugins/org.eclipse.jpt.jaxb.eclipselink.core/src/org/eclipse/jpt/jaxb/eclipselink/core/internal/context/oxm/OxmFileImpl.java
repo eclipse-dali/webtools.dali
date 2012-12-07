@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -131,11 +131,8 @@ public class OxmFileImpl
 	}
 	
 	protected OxmXmlBindings buildXmlBindings() {
-		// if less than 2.3, then there is no context model support
-		if (this.resourceType.isKindOf(Oxm.RESOURCE_TYPE_2_3)) {
-			return new OxmXmlBindingsImpl(this, (EXmlBindings) this.oxmResource.getRootObject());
-		}
-		return null;
+		EXmlBindings eXmlBindings = (EXmlBindings) this.oxmResource.getRootObject();
+		return (eXmlBindings == null) ? null : new OxmXmlBindingsImpl(this, eXmlBindings);
 	}
 	
 	
@@ -164,12 +161,23 @@ public class OxmFileImpl
 		super.validate(messages, reporter);
 		
 		if (getPackage() == null) {
-			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.OXM_FILE__NO_PACKAGE,
-							this,
-							getPackageNameTextRange()));
+			if (StringTools.isBlank(getPackageName())) {
+				messages.add(
+						ELJaxbValidationMessageBuilder.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								ELJaxbValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED,
+								this,
+								getPackageNameTextRange()));
+			}
+			else {
+				messages.add(
+						ELJaxbValidationMessageBuilder.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								ELJaxbValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
+								new String[] { getPackageName() },
+								this,
+								getPackageNameTextRange()));
+			}
 		}
 		
 		if (this.xmlBindings != null) {

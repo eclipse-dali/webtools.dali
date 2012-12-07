@@ -33,10 +33,10 @@ public class JaxbPackageItemContentProvider
 	@Override
 	protected CollectionValueModel<JaxbContextNode> buildChildrenModel() {
 		return new CollectionAspectAdapter<JaxbContextRoot, JaxbContextNode>(
-				JaxbContextRoot.TYPES_COLLECTION, getParent()) {
+				JaxbContextRoot.JAVA_TYPES_COLLECTION, getParent()) {
 			@Override
 			protected Iterable<JaxbContextNode> getIterable() {
-				return new SuperIterableWrapper(this.subject.getTypes(JaxbPackageItemContentProvider.this.item));
+				return new SuperIterableWrapper(this.subject.getJavaTypes(JaxbPackageItemContentProvider.this.item));
 			}
 		};
 	}

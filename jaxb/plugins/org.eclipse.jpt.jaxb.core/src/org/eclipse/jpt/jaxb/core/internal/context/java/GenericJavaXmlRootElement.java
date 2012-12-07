@@ -17,9 +17,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -51,12 +52,12 @@ public class GenericJavaXmlRootElement
 		return new XmlRootElementQName(this);
 	}
 	
-	public JaxbTypeMapping getTypeMapping() {
-		return (JaxbTypeMapping) getParent();
+	public JavaTypeMapping getTypeMapping() {
+		return (JavaTypeMapping) getParent();
 	}
 	
-	protected JaxbType getJaxbType() {
-		return getTypeMapping().getJaxbType();
+	protected JavaType getJaxbType() {
+		return getTypeMapping().getJavaType();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
@@ -149,7 +150,7 @@ public class GenericJavaXmlRootElement
 		
 		@Override
 		public String getDefaultName() {
-			return Introspector.decapitalize(GenericJavaXmlRootElement.this.getJaxbType().getSimpleName());
+			return Introspector.decapitalize(GenericJavaXmlRootElement.this.getJaxbType().getTypeName().getSimpleName());
 		}
 		
 		@Override

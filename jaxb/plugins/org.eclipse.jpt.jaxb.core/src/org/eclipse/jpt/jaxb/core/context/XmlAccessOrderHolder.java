@@ -20,14 +20,14 @@ package org.eclipse.jpt.jaxb.core.context;
  * @version 3.3
  * @since 3.0
  */
-public interface XmlAccessOrderHolder<A extends XmlAccessOrder>
+public interface XmlAccessOrderHolder
 		extends JaxbContextNode {
 	
 	/**
 	 * Return the access order, whether specified or defaulted.
 	 * This should never return null since at least the default will be set
 	 */
-	A getAccessOrder();
+	XmlAccessOrder getAccessOrder();
 	
 	/**
 	 * String constant associated with changes to the default access order
@@ -37,7 +37,7 @@ public interface XmlAccessOrderHolder<A extends XmlAccessOrder>
 	/**
 	 * Return the default access order, never null
 	 */
-	A getDefaultAccessOrder();
+	XmlAccessOrder getDefaultAccessOrder();
 	
 	/**
 	 * String constant associated with changes to the specified access order
@@ -47,10 +47,10 @@ public interface XmlAccessOrderHolder<A extends XmlAccessOrder>
 	/**
 	 * Return the specified access order;
 	 */
-	A getSpecifiedAccessOrder();
+	XmlAccessOrder getSpecifiedAccessOrder();
 	
 	/**
 	 * Set the specified access order.
 	 */
-	void setSpecifiedAccessOrder(A newSpecifiedAccessOrder);
+	void setSpecifiedAccessOrder(XmlAccessOrder newSpecifiedAccessOrder);
 }

@@ -25,9 +25,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -116,7 +116,7 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 		createClassWithXmlType();
 		createClassWithXmlRegistryAndCreateMethods();
 		
-		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		JavaClass jaxbClass = (JavaClass) getContextRoot().getJavaType("test.ObjectFactory");
 		XmlRegistry contextRegistry = jaxbClass.getXmlRegistry();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		

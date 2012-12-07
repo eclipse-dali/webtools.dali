@@ -9,7 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessOrderHolder;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessTypeHolder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 
 /**
@@ -23,7 +26,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
  * @since 3.3
  */
 public interface OxmJavaType
-		extends JaxbContextNode {
+		extends JaxbContextNode, XmlAccessOrderHolder, XmlAccessTypeHolder {
 	
 	/**
 	 * Resource model element
@@ -36,7 +39,7 @@ public interface OxmJavaType
 	/**
 	 * String associated with changes to the "specifiedName" property
 	 */
-	static final String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
+	String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
 	
 	/**
 	 * Return the name specified in source
@@ -51,7 +54,7 @@ public interface OxmJavaType
 	/**
 	 * String associated with changes to the "specifiedName" property
 	 */
-	static final String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
+	String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
 	
 	/**
 	 * Return
@@ -64,4 +67,13 @@ public interface OxmJavaType
 	 * Return the name with no package qualification
 	 */
 	String getSimpleName();
+	
+	
+	// ***** specified attributes *****
+	
+	String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$
+	
+	ListIterable<OxmJavaAttribute> getSpecifiedAttributes();
+	
+	int getSpecifiedAttributesSize();
 }

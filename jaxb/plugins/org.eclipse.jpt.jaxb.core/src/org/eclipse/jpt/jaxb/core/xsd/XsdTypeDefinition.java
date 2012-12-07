@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 /**
@@ -94,12 +94,12 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	public enum Kind {
 		
 		/**
-		 * An {@link XsdTypeDefinition} of SIMPLE {@link Kind} may safely be cast to an {@link XsdSimpleTypeDefinition}
+		 * An {@link XsdTypeDefinition} of SIMPLE {@link TypeKind} may safely be cast to an {@link XsdSimpleTypeDefinition}
 		 */
 		SIMPLE,
 		
 		/**
-		 * An {@link XsdTypeDefinition} of COMPLEX {@link Kind} may safely be cast to an {@link XsdComplexTypeDefinition}
+		 * An {@link XsdTypeDefinition} of COMPLEX {@link TypeKind} may safely be cast to an {@link XsdComplexTypeDefinition}
 		 */
 		COMPLEX;
 	}

@@ -12,9 +12,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -57,7 +57,7 @@ public class GenericJavaPersistentAttributeTests
 	
 	public void testJavaResourceType() throws Exception {
 		createXmlTypeWithVariousAttributes();
-		JaxbClassMapping classMapping = ((JaxbClass) getContextRoot().getType(PACKAGE_NAME_ + TEST_CLASS_NAME)).getMapping();
+		JavaClassMapping classMapping = ((JavaClass) getContextRoot().getJavaType(PACKAGE_NAME_ + TEST_CLASS_NAME)).getMapping();
 		
 		// String string
 		JaxbPersistentAttribute att = IterableTools.get(classMapping.getAttributes(), 0);

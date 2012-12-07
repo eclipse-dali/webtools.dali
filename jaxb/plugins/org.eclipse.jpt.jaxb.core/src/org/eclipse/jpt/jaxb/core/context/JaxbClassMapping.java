@@ -15,11 +15,6 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 public interface JaxbClassMapping
 		extends JaxbTypeMapping, XmlAccessTypeHolder, XmlAccessOrderHolder {
 	
-	// ***** overrides *****
-	
-	JaxbClass getJaxbType();
-	
-	
 	// ***** XmlType.factoryClass *****
 	
 	String getFactoryClass();
@@ -77,16 +72,12 @@ public interface JaxbClassMapping
 	
 	// ***** attributes *****
 	
-	String ATTRIBUTES_COLLECTION = "attributes"; //$NON-NLS-1$
-	
+	/**
+	 * Return the attributes defined on this class (not its superclass)
+	 */
 	Iterable<JaxbPersistentAttribute> getAttributes();
 	
 	int getAttributesSize();
-	
-	
-	// ***** included attributes *****
-	
-	String INCLUDED_ATTRIBUTES_COLLECTION = "includedAttributes"; //$NON-NLS-1$
 	
 	/**
 	 * <i>Included</i> attributes come from any direct superclasses that are mapped as @XmlTransient.
@@ -117,6 +108,12 @@ public interface JaxbClassMapping
 	
 	
 	// ***** misc *****
+	/**
+	 * Build an included attributes container that process attribute metadata of this class
+	 * with the context of the owning class
+	 */
+	JaxbAttributesContainer buildIncludedAttributesContainer(
+			JaxbClassMapping parent, JaxbAttributesContainer.Context context);
 	
 	/**
 	 * Return the id attribute mapping for this class mapping, if it has one.

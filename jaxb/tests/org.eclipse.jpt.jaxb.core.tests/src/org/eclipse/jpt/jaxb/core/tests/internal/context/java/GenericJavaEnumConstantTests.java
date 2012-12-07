@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -52,7 +52,7 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 	public void testUpdateName() throws Exception {
 		createEnumWithXmlEnum();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JaxbEnumConstant contextEnumConstant = IterableTools.get(enumMapping.getEnumConstants(), 1);
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
@@ -75,7 +75,7 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 	public void testModifyValue() throws Exception {
 		createEnumWithXmlEnum();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JaxbEnumConstant contextEnumConstant = IterableTools.get(enumMapping.getEnumConstants(), 1);
 		JavaResourceEnumConstant resourceEnumConstant = contextEnumConstant.getResourceEnumConstant();
@@ -102,7 +102,7 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 	public void testUpdateValue() throws Exception {
 		createEnumWithXmlEnum();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JaxbEnumConstant contextEnumConstant = IterableTools.get(enumMapping.getEnumConstants(), 1);
 		JavaResourceEnumConstant resourceEnumConstant = contextEnumConstant.getResourceEnumConstant();

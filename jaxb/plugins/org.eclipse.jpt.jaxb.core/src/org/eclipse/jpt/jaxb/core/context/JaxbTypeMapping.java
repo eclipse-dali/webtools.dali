@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.context;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 /**
- * Represents mapping metadata on a JaxbType (specified or implied).
+ * Represents mapping metadata on a JavaType (specified or implied).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,9 +26,19 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 public interface JaxbTypeMapping 
 		extends JaxbContextNode {
 	
-	// ***** JaxbType *****
+	/**
+	 * Return the kind of type represented.
+	 * {@link JaxbTypeMapping}s of {@link TypeKind} CLASS may safely be cast to {@link JaxbClassMapping}
+	 * {@link JaxbTypeMapping}s of {@link TypeKind} ENUM may safely be cast to {@link JaxbEnumMapping}
+	 */
+	TypeKind getTypeKind();
 	
-	JaxbType getJaxbType();
+	/**
+	 * Return the type's name object
+	 */
+	TypeName getTypeName();
+	
+	JaxbPackage getJaxbPackage();
 	
 	
 	// ***** XmlTransient *****

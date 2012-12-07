@@ -22,10 +22,10 @@ import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -43,7 +43,7 @@ public class GenericJavaXmlRegistry
 	protected final ElementFactoryMethodContainer elementFactoryMethodContainer;
 	
 	
-	public GenericJavaXmlRegistry(JaxbClass parent) {
+	public GenericJavaXmlRegistry(JavaClass parent) {
 		super(parent);
 		this.elementFactoryMethodContainer = new ElementFactoryMethodContainer();
 		
@@ -51,8 +51,8 @@ public class GenericJavaXmlRegistry
 	}
 	
 	
-	public JaxbClass getJaxbClass() {
-		return (JaxbClass) getParent();
+	public JavaClass getJaxbClass() {
+		return (JavaClass) getParent();
 	}
 	
 	public JavaResourceType getJavaResourceType() {

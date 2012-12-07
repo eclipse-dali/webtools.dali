@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory;
 
 public class ELJaxbNavigatorTreeItemContentProviderFactory
@@ -38,6 +39,9 @@ public class ELJaxbNavigatorTreeItemContentProviderFactory
 		if (item instanceof OxmFile) {
 			return buildOxmFileContentProvider((OxmFile) item, manager);
 		}
+		else if (item instanceof OxmJavaType) {
+			return buildOxmJavaTypeContentProvider((OxmJavaType) item, manager);
+		}
 		return super.buildProvider(item, manager);
 	}
 	
@@ -48,5 +52,9 @@ public class ELJaxbNavigatorTreeItemContentProviderFactory
 	
 	protected ItemTreeContentProvider buildOxmFileContentProvider(OxmFile item, Manager manager) {
 		return new OxmFileContentProvider(item, manager);
+	}
+	
+	protected ItemTreeContentProvider buildOxmJavaTypeContentProvider(OxmJavaType item, Manager manager) {
+		return new OxmJavaTypeContentProvider(item, manager);
 	}
 }

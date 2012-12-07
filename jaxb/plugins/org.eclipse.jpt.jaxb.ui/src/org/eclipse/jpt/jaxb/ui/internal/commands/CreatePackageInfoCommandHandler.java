@@ -74,7 +74,7 @@ public class CreatePackageInfoCommandHandler
 	
 	private IPackageFragment getJdtPackage(JaxbPackage jaxbPackage) {
 		return (IPackageFragment) IterableTools.get(
-				jaxbPackage.getContextRoot().getTypes(jaxbPackage), 0).
+				jaxbPackage.getContextRoot().getJavaTypes(jaxbPackage), 0).
 					getJavaResourceType().getJavaResourceCompilationUnit().getCompilationUnit().getParent();
 	}
 }

@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrderHolder;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessTypeHolder;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessOrderHolder;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessTypeHolder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
  * @since 3.3
  */
 public interface OxmXmlBindings
-		extends JaxbContextNode, ELXmlAccessTypeHolder, ELXmlAccessOrderHolder {
+		extends JaxbContextNode, XmlAccessTypeHolder, XmlAccessOrderHolder {
 	
 	EXmlBindings getEXmlBindings();
 	

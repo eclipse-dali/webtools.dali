@@ -12,10 +12,10 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 
 /**
  * 
@@ -45,11 +45,11 @@ public class GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory
 		if (item instanceof JaxbPackage) {
 			return this.buildJaxbPackageProvider((JaxbPackage) item, manager);
 		}
-		if (item instanceof JaxbClass) {
-			return this.buildJaxbClassProvider((JaxbClass) item, manager);
+		if (item instanceof JavaClass) {
+			return this.buildJaxbClassProvider((JavaClass) item, manager);
 		}
-		if (item instanceof JaxbEnum) {
-			return this.buildJaxbEnumProvider((JaxbEnum) item, manager);
+		if (item instanceof JavaEnum) {
+			return this.buildJaxbEnumProvider((JavaEnum) item, manager);
 		}
 		return null;
 	}
@@ -62,11 +62,11 @@ public class GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory
 		return new JaxbPackageItemContentProvider(item, manager);
 	}
 
-	protected ItemTreeContentProvider buildJaxbClassProvider(JaxbClass item, Manager manager) {
+	protected ItemTreeContentProvider buildJaxbClassProvider(JavaClass item, Manager manager) {
 		return new JaxbClassItemContentProvider(item, manager);
 	}
 
-	protected ItemTreeContentProvider buildJaxbEnumProvider(JaxbEnum item, Manager manager) {
+	protected ItemTreeContentProvider buildJaxbEnumProvider(JavaEnum item, Manager manager) {
 		return new JaxbEnumItemContentProvider(item, manager);
 	}
 }

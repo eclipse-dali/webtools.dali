@@ -19,10 +19,10 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -57,8 +57,8 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	public void testModifyValue() throws Exception {
 		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
-		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaClass jaxbClass = (JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
@@ -80,8 +80,8 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	public void testUpdateValue() throws Exception {
 		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
-		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaClass jaxbClass = (JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
@@ -108,8 +108,8 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	public void testModifyType() throws Exception {
 		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
-		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaClass jaxbClass = (JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
@@ -135,8 +135,8 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	public void testUpdateType() throws Exception {
 		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
-		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaClass jaxbClass = (JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaClassMapping classMapping = jaxbClass.getMapping();
 		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();

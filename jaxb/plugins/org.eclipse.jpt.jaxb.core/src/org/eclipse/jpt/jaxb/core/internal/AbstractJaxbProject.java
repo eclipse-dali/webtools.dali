@@ -64,7 +64,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.utility.CallbackSynchronousSynchronizer;
@@ -604,16 +604,16 @@ public abstract class AbstractJaxbProject
 		}
 		else if (contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			try {
-				return new FilteringIterable<JaxbType>(
-						new TransformationIterable<IType, JaxbType>(
+				return new FilteringIterable<JavaType>(
+						new TransformationIterable<IType, JavaType>(
 								new ArrayIterable<IType>(cu.getAllTypes())) {
 							@Override
-							protected JaxbType transform(IType o) {
-								JaxbType jaxbType = getContextRoot().getType(o.getFullyQualifiedName('.'));
+							protected JavaType transform(IType o) {
+								JavaType jaxbType = getContextRoot().getJavaType(o.getFullyQualifiedName('.'));
 								return jaxbType;
 							}
 						},
-						NotNullFilter.<JaxbType>instance());
+						NotNullFilter.<JavaType>instance());
 			}
 			catch (JavaModelException jme) {
 				return EmptyIterable.instance();

@@ -86,12 +86,12 @@ public class GenericJavaXmlElementRef
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbClassMapping getJaxbClassMapping() {
+	protected JaxbClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 	
 	public XmlElementRefAnnotation getAnnotation() {

@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-
 /**
  * Holds the attributes represented by a particular JavaResourceType and XmlAccessType.
  * <p>
@@ -20,21 +18,34 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface JaxbAttributesContainer
 		extends JaxbContextNode {
-
-	/**
-	 * Return true if this JaxbAtributesContainer contains attributes for the given JavaResourceType.
-	 */
-	boolean isFor(JavaResourceType javaResourceType);
-
-
-	/********** attributes **********/
-
+	
+	// ***** attributes *****
+	
 	Iterable<JaxbPersistentAttribute> getAttributes();
 	
 	int getAttributesSize();
+	
+	
+	interface Context {
+		
+		/**
+		 * Return the access type of the owner, to be used in determining which attributes to build
+		 */
+		XmlAccessType getAccessType();
+
+		/**
+		 * called after an attribute was added to the container
+		 */
+		void attributeAdded(JaxbPersistentAttribute attribute);
+		
+		/**
+		 * called after an attribute was removed from the container
+		 */
+		void attributeRemoved(JaxbPersistentAttribute attribute);
+	}
 }

@@ -17,11 +17,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -37,14 +37,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaEnumMapping
 		extends AbstractJavaTypeMapping
-		implements JaxbEnumMapping {
+		implements JavaEnumMapping {
 	
 	protected String specifiedXmlEnumValue;
 
 	protected final EnumConstantContainer enumConstantContainer;
 
 	
-	public GenericJavaEnumMapping(JaxbEnum parent) {
+	public GenericJavaEnumMapping(JavaEnum parent) {
 		super(parent);
 		this.enumConstantContainer = new EnumConstantContainer();
 		
@@ -173,7 +173,7 @@ public class GenericJavaEnumMapping
 	protected XsdTypeDefinition getValueXsdTypeDefinition_() {
 		String fqXmlEnumValue = getFullyQualifiedXmlEnumValue();
 		
-		JaxbType jaxbType = getContextRoot().getType(fqXmlEnumValue);
+		JavaType jaxbType = getContextRoot().getJavaType(fqXmlEnumValue);
 		if (jaxbType != null) {
 			JaxbTypeMapping typeMapping = jaxbType.getMapping();
 			if (typeMapping != null) {

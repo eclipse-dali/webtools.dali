@@ -15,16 +15,16 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 
 
 public class JaxbEnumItemContentProvider
-		extends AbstractItemTreeContentProvider<JaxbEnum, JaxbEnumConstant> {
+		extends AbstractItemTreeContentProvider<JavaEnum, JaxbEnumConstant> {
 	
-	public JaxbEnumItemContentProvider(JaxbEnum jaxbEnum, Manager manager) {
+	public JaxbEnumItemContentProvider(JavaEnum jaxbEnum, Manager manager) {
 		super(jaxbEnum, manager);
 	}
 	
@@ -34,7 +34,7 @@ public class JaxbEnumItemContentProvider
 	}
 	
 	protected PropertyValueModel<JaxbEnumMapping> buildMappingModel() {
-		return new PropertyAspectAdapter<JaxbEnum, JaxbEnumMapping>(JaxbType.MAPPING_PROPERTY, this.item) {
+		return new PropertyAspectAdapter<JavaEnum, JaxbEnumMapping>(JavaType.MAPPING_PROPERTY, this.item) {
 			@Override
 			protected JaxbEnumMapping buildValue_() {
 				return this.subject.getMapping();

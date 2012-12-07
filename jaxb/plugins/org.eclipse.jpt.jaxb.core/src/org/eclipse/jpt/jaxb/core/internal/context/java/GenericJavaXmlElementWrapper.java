@@ -71,12 +71,12 @@ public class GenericJavaXmlElementWrapper
 		return getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbClassMapping getJaxbClassMapping() {
+	protected JaxbClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 	
 	protected XmlElementWrapperAnnotation getAnnotation() {
@@ -269,12 +269,12 @@ public class GenericJavaXmlElementWrapper
 		public String getDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage != null && jaxbPackage.getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementWrapper.this.getJaxbClassMapping().getQName().getNamespace() : "";
+					GenericJavaXmlElementWrapper.this.getClassMapping().getQName().getNamespace() : "";
 		}
 		
 		@Override
 		public Iterable<String> getNameProposals() {
-			XsdTypeDefinition xsdType = GenericJavaXmlElementWrapper.this.getJaxbClassMapping().getXsdTypeDefinition();
+			XsdTypeDefinition xsdType = GenericJavaXmlElementWrapper.this.getClassMapping().getXsdTypeDefinition();
 			return (xsdType == null) ? EmptyIterable.instance() : xsdType.getElementNameProposals(getNamespace());
 		}
 		
@@ -291,7 +291,7 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		protected void validateReference(List<IMessage> messages, IReporter reporter) {
-			XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
+			XsdTypeDefinition type = getClassMapping().getXsdTypeDefinition();
 			if (type == null) {
 				return;
 			}

@@ -20,14 +20,14 @@ package org.eclipse.jpt.jaxb.core.context;
  * @version 3.3
  * @since 3.0
  */
-public interface XmlAccessTypeHolder<A extends XmlAccessType>
+public interface XmlAccessTypeHolder
 		extends JaxbContextNode {
 	
 	/**
 	 * Return the access type, whether specified or defaulted.
 	 * This should never return null since at least the default will be set
 	 */
-	A getAccessType();
+	XmlAccessType getAccessType();
 	
 	/**
 	 * String constant associated with changes to the default access type
@@ -37,7 +37,7 @@ public interface XmlAccessTypeHolder<A extends XmlAccessType>
 	/**
 	 * Return the default access type, never null
 	 */
-	A getDefaultAccessType();
+	XmlAccessType getDefaultAccessType();
 	
 	/**
 	 * String constant associated with changes to the specified access type
@@ -47,10 +47,10 @@ public interface XmlAccessTypeHolder<A extends XmlAccessType>
 	/**
 	 * Return the specified access type;
 	 */
-	A getSpecifiedAccessType();
+	XmlAccessType getSpecifiedAccessType();
 	
 	/**
 	 * Set the specified access type.
 	 */
-	void setSpecifiedAccessType(A newSpecifiedAccessType);
+	void setSpecifiedAccessType(XmlAccessType newSpecifiedAccessType);
 }

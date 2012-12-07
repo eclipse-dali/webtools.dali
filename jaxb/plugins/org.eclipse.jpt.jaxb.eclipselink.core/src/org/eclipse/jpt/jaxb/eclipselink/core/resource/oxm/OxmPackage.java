@@ -16,11 +16,9 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.util.OxmValidator;
 
 /**
  * <!-- begin-user-doc -->
@@ -3703,17 +3701,6 @@ public class OxmPackage extends EPackageImpl
 
 		// Initialize created meta-data
 		theOxmPackage.initializePackageContents();
-
-		// Register package validator
-		EValidator.Registry.INSTANCE.put
-			(theOxmPackage, 
-			 new EValidator.Descriptor()
-			 {
-				 public EValidator getEValidator()
-				 {
-					 return OxmValidator.INSTANCE;
-				 }
-			 });
 
 		// Mark meta-data to indicate it can't be changed
 		theOxmPackage.freeze();

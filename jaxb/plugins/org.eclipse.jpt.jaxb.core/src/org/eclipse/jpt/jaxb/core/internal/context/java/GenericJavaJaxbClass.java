@@ -11,11 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaJaxbClass
 		extends AbstractJavaType 
-		implements JaxbClass {
+		implements JavaClass {
 	
 	protected XmlRegistry xmlRegistry;
 	
@@ -39,8 +39,8 @@ public class GenericJavaJaxbClass
 		return (JavaResourceType) super.getJavaResourceType();
 	}
 	
-	public Kind getKind() {
-		return JaxbType.Kind.CLASS;
+	public TypeKind getKind() {
+		return TypeKind.CLASS;
 	}
 	
 	
@@ -62,13 +62,13 @@ public class GenericJavaJaxbClass
 	// ***** mapping *****
 	
 	@Override
-	public JaxbClassMapping getMapping() {
-		return (JaxbClassMapping) super.getMapping();
+	public JavaClassMapping getMapping() {
+		return (JavaClassMapping) super.getMapping();
 	}
 	
 	@Override
-	protected JaxbClassMapping buildMapping() {
-		return getFactory().buildJaxbClassMapping(this);
+	protected JavaClassMapping buildMapping() {
+		return getFactory().buildJavaClassMapping(this);
 	}
 	
 	@Override

@@ -102,12 +102,12 @@ public class GenericJavaXmlElement
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbClassMapping getJaxbClassMapping() {
+	protected JaxbClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 	
 	public XmlElementAnnotation getAnnotation(boolean createIfNull) {
@@ -277,7 +277,7 @@ public class GenericJavaXmlElement
 	}
 	
 	public XsdElementDeclaration getXsdElement() {
-		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 		return (xsdType == null) ? null : xsdType.getElement(this.qName.getNamespace(), this.qName.getName());
 	}
 	

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 
 /**
  * Oxm extensions to JaxbClassMapping
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
  * @since 3.2
  */
 public interface ELClassMapping
-		extends JaxbClassMapping {
+		extends JavaClassMapping {
 	
 	// ***** XmlDiscriminatorNode *****
 	

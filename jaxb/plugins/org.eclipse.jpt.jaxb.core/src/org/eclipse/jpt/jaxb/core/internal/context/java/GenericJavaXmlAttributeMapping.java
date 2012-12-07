@@ -136,7 +136,7 @@ public class GenericJavaXmlAttributeMapping
 	// ***** misc *****
 	
 	public XsdFeature getXsdFeature() {
-		XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
+		XsdTypeDefinition type = getClassMapping().getXsdTypeDefinition();
 		if (type != null) {
 			XsdAttributeUse attributeUse = type.getAttribute(this.qName.getNamespace(), this.qName.getName());
 			return (attributeUse == null) ? null : attributeUse.getAttributeDeclaration();
@@ -248,7 +248,7 @@ public class GenericJavaXmlAttributeMapping
 		
 		@Override
 		public Iterable<String> getNameProposals() {
-			XsdTypeDefinition xsdType = GenericJavaXmlAttributeMapping.this.getJaxbClassMapping().getXsdTypeDefinition();
+			XsdTypeDefinition xsdType = GenericJavaXmlAttributeMapping.this.getClassMapping().getXsdTypeDefinition();
 			return (xsdType == null) ? EmptyIterable.<String>instance() : xsdType.getAttributeNameProposals(getNamespace());
 		}
 		
@@ -256,7 +256,7 @@ public class GenericJavaXmlAttributeMapping
 		public String getDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage != null && jaxbPackage.getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlAttributeMapping.this.getJaxbClassMapping().getQName().getNamespace() : "";
+					GenericJavaXmlAttributeMapping.this.getClassMapping().getQName().getNamespace() : "";
 		}
 		
 		@Override
@@ -267,7 +267,7 @@ public class GenericJavaXmlAttributeMapping
 		
 		@Override
 		protected void validateReference(List<IMessage> messages, IReporter reporter) {
-			XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
+			XsdTypeDefinition type = getClassMapping().getXsdTypeDefinition();
 			if (type != null) {
 				if (type.getAttribute(getNamespace(), getName()) == null) {
 					messages.add(getUnresolveSchemaComponentMessage());

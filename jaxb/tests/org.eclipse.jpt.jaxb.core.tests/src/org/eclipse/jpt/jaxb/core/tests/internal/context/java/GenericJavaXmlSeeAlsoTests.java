@@ -19,9 +19,9 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -51,7 +51,7 @@ public class GenericJavaXmlSeeAlsoTests
 	
 	public void testModifyClasses() throws Exception {
 		createAnnotatedPersistentClassWithXmlSeeAlso();
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlSeeAlso contextXmlSeeAlso = classMapping.getXmlSeeAlso();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
@@ -89,7 +89,7 @@ public class GenericJavaXmlSeeAlsoTests
 	
 	public void testUpdateClasses() throws Exception {
 		createAnnotatedPersistentClassWithXmlSeeAlso();
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlSeeAlso contextXmlSeeAlso = classMapping.getXmlSeeAlso();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();

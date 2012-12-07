@@ -42,6 +42,7 @@ public interface Oxm {
 	
 	
 	// Oxm specific nodes
+	String JAVA_ATTRIBUTE = "java-attribute"; //$NON-NLS-1$
 	String JAVA_ATTRIBUTES = "java-attributes"; //$NON-NLS-1$
 	String JAVA_TYPE = "java-type"; //$NON-NLS-1$
 	String JAVA_TYPES = "java-types"; //$NON-NLS-1$

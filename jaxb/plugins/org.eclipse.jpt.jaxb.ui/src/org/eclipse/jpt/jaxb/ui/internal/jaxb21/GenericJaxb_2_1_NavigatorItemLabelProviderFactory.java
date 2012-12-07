@@ -12,12 +12,12 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 
@@ -49,11 +49,11 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		else if (item instanceof JaxbPackage) {
 			return this.buildJaxbPackageProvider((JaxbPackage) item, manager);
 		}
-		else if (item instanceof JaxbClass) {
-			return new JaxbClassItemLabelProvider((JaxbClass) item, manager);
+		else if (item instanceof JavaClass) {
+			return new JaxbClassItemLabelProvider((JavaClass) item, manager);
 		}
-		else if (item instanceof JaxbEnum) {
-			return new JaxbEnumItemLabelProvider((JaxbEnum) item, manager);
+		else if (item instanceof JavaEnum) {
+			return new JaxbEnumItemLabelProvider((JavaEnum) item, manager);
 		}
 		else if (item instanceof JaxbPersistentAttribute) {
 			return new JaxbPersistentAttributeItemLabelProvider((JaxbPersistentAttribute) item, manager);

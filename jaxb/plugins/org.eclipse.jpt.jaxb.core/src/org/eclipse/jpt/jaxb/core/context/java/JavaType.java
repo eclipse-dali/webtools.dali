@@ -7,10 +7,17 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.context;
+package org.eclipse.jpt.jaxb.core.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
+import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -23,15 +30,20 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.3
  * @since 3.1
  */
-public interface JaxbType
+public interface JavaType
 		extends JaxbContextNode, XmlAdaptable {
 	
 	// ***** kind *****
 	
-	Kind getKind();
+	/**
+	 * Return the kind of type represented.
+	 * {@link JavaType}s of {@link TypeKind} CLASS may safely be cast to {@link JavaClass}
+	 * {@link JavaType}s of {@link TypeKind} ENUM may safely be cast to {@link JavaEnum}
+	 */
+	TypeKind getKind();
 	
 	
 	// ***** type mapping *****
@@ -44,7 +56,7 @@ public interface JaxbType
 	 * Will <b>not</b> be null if this type has an XmlType annotation (or other mapping annotation)
 	 * or if this type is default mapped.
 	 */
-	JaxbTypeMapping getMapping();
+	JavaTypeMapping getMapping();
 	
 	
 	// ***** default mapped *****
@@ -70,26 +82,9 @@ public interface JaxbType
 	JavaResourceAbstractType getJavaResourceType();
 	
 	/**
-	 * Return the name of the type without any package or type qualifiers
+	 * Return the type's name object
 	 */
-	String getSimpleName();
-	
-	/**
-	 * Returns the type-qualified name of this type, including qualification for any 
-	 * enclosing types, but not including package qualification.
-	 */
-	String getTypeQualifiedName();
-	
-	/**
-	 * Returns the fully qualified name of this type, including qualification for any 
-	 * enclosing types and packages.
-	 */
-	String getFullyQualifiedName();
-	
-	/**
-	 * Return the name of the type's package.  Empty string if none.
-	 */
-	String getPackageName();
+	TypeName getTypeName();
 	
 	/**
 	 * Return the {@link JaxbPackage} associated with this type
@@ -115,18 +110,4 @@ public interface JaxbType
 	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
-	
-	
-	public enum Kind {
-		
-		/**
-		 * {@link JaxbType}s of {@link Kind} CLASS may safely be cast as {@link JaxbClass}
-		 */
-		CLASS,
-		
-		/**
-		 * {@link JaxbType}s of {@link Kind} ENUM may safely be cast as {@link JaxbEnum}
-		 */
-		ENUM;
-	}
 }

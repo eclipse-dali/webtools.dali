@@ -272,6 +272,12 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 	}
 	
 	
+	// ***** misc *****
+	
+	/** return the xml element name associated with this java attribute (e.g. "xml-transformation") */
+	public abstract String getElementName();
+	
+	
 	// ***** translators *****
 	
 	static class JavaAttributesTranslator
@@ -413,6 +419,20 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 		protected AbstractJavaAttributeTranslator(
 				String domPathAndName, EStructuralFeature eStructuralFeature, Translator[] translatorChildren) {
 			super(Oxm.JAVA_ATTRIBUTES + "/" + domPathAndName, eStructuralFeature, translatorChildren);
+		}
+		
+		protected static Translator buildJavaAttributeTranslator() {
+			return new Translator(
+					Oxm.JAVA_ATTRIBUTE,
+					OxmPackage.eINSTANCE.getEJavaAttribute_JavaAttribute(), 
+					Translator.DOM_ATTRIBUTE);
+		}
+		
+		protected static Translator buildXmlAccessorTypeTranslator() {
+			return new Translator(
+					Oxm.XML_ACCESSOR_TYPE,
+					OxmPackage.eINSTANCE.getEJavaAttribute_XmlAccessorType(), 
+					Translator.DOM_ATTRIBUTE);
 		}
 	}
 }

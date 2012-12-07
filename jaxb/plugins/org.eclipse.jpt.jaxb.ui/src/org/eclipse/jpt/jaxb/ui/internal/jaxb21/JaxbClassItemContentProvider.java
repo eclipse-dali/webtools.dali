@@ -15,17 +15,17 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionVa
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 
 
 public class JaxbClassItemContentProvider
-	extends AbstractItemTreeContentProvider<JaxbClass, JaxbPersistentAttribute>
+	extends AbstractItemTreeContentProvider<JavaClass, JaxbPersistentAttribute>
 {
 	
-	public JaxbClassItemContentProvider(JaxbClass jaxbClass, Manager manager) {
+	public JaxbClassItemContentProvider(JavaClass jaxbClass, Manager manager) {
 		super(jaxbClass, manager);
 	}
 	
@@ -36,25 +36,25 @@ public class JaxbClassItemContentProvider
 	
 	@Override
 	protected CollectionValueModel<JaxbPersistentAttribute> buildChildrenModel() {
-		PropertyValueModel<JaxbClassMapping> mappingModel = buildMappingModel();
+		PropertyValueModel<JavaClassMapping> mappingModel = buildMappingModel();
 		return CompositeCollectionValueModel.forModels(
 				buildAttributesModel(mappingModel),
 				buildIncludedAttributesModel(mappingModel));
 	}
 	
-	protected PropertyValueModel<JaxbClassMapping> buildMappingModel() {
-		return new PropertyAspectAdapter<JaxbClass, JaxbClassMapping>(JaxbClass.MAPPING_PROPERTY, this.item) {
+	protected PropertyValueModel<JavaClassMapping> buildMappingModel() {
+		return new PropertyAspectAdapter<JavaClass, JavaClassMapping>(JavaClass.MAPPING_PROPERTY, this.item) {
 			@Override
-			protected JaxbClassMapping buildValue_() {
+			protected JavaClassMapping buildValue_() {
 				return this.subject.getMapping();
 			}
 		};
 	}
 	
 	protected CollectionValueModel<JaxbPersistentAttribute> buildAttributesModel(
-			PropertyValueModel<JaxbClassMapping> mappingModel) {
-		return new CollectionAspectAdapter<JaxbClassMapping, JaxbPersistentAttribute>(
-				mappingModel, JaxbClassMapping.ATTRIBUTES_COLLECTION) {
+			PropertyValueModel<JavaClassMapping> mappingModel) {
+		return new CollectionAspectAdapter<JavaClassMapping, JaxbPersistentAttribute>(
+				mappingModel, JavaClassMapping.ATTRIBUTES_COLLECTION) {
 			@Override
 			protected Iterable<JaxbPersistentAttribute> getIterable() {
 				return this.subject.getAttributes();
@@ -63,9 +63,9 @@ public class JaxbClassItemContentProvider
 	}
 
 	protected CollectionValueModel<JaxbPersistentAttribute> buildIncludedAttributesModel(
-			PropertyValueModel<JaxbClassMapping> mappingModel) {
-		return new CollectionAspectAdapter<JaxbClassMapping, JaxbPersistentAttribute>(
-				mappingModel, JaxbClassMapping.INCLUDED_ATTRIBUTES_COLLECTION) {
+			PropertyValueModel<JavaClassMapping> mappingModel) {
+		return new CollectionAspectAdapter<JavaClassMapping, JaxbPersistentAttribute>(
+				mappingModel, JavaClassMapping.INCLUDED_ATTRIBUTES_COLLECTION) {
 			@Override
 			protected Iterable<JaxbPersistentAttribute> getIterable() {
 				return this.subject.getIncludedAttributes();

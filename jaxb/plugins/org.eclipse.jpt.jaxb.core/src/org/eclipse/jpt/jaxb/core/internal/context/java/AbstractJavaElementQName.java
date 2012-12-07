@@ -40,13 +40,13 @@ public abstract class AbstractJavaElementQName
 	
 	protected abstract JaxbPersistentAttribute getPersistentAttribute();
 	
-	protected JaxbClassMapping getJaxbClassMapping() {
+	protected JaxbClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();
 	}
 	
 	@Override
 	protected JaxbPackage getJaxbPackage() {
-		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		return getClassMapping().getJaxbPackage();
 	}
 	
 	protected abstract XmlElementWrapper getElementWrapper();
@@ -58,7 +58,7 @@ public abstract class AbstractJavaElementQName
 	
 	@Override
 	public Iterable<String> getNameProposals() {
-		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 		if (xsdType == null) {
 			return EmptyIterable.instance();
 		}
@@ -82,7 +82,7 @@ public abstract class AbstractJavaElementQName
 	public String getDefaultNamespace() {
 		JaxbPackage jaxbPackage = this.getJaxbPackage();
 		return (jaxbPackage != null && jaxbPackage.getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-				getJaxbClassMapping().getQName().getNamespace() : "";
+				getClassMapping().getQName().getNamespace() : "";
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public abstract class AbstractJavaElementQName
 
 	@Override
 	protected void validateReference(List<IMessage> messages, IReporter reporter) {
-		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 		if (xsdType == null) {
 			return;
 		}

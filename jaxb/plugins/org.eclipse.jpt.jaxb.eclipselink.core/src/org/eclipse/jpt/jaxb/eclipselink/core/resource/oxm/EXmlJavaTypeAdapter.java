@@ -327,6 +327,14 @@ public class EXmlJavaTypeAdapter extends EJavaAttribute
 	}
 
 
+	// ***** misc *****
+	
+	@Override
+	public String getElementName() {
+		return Oxm.XML_JAVA_TYPE_ADAPTER;
+	}
+	
+	
 	// ***** translators *****
 	
 	static class XmlJavaTypeAdapterTranslator

@@ -7,12 +7,13 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.context;
+package org.eclipse.jpt.jaxb.core.context.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 
 /**
- * Represents an <i>enum</i> in a JAXB context.
+ * Represents a java class with JAXB metadata (specified or implied).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,15 +21,22 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
- * @since 3.1
+ * @version 3.3
+ * @since 3.0
  */
-public interface JaxbEnum
-		extends JaxbType {
+public interface JavaClass
+		extends JavaType {
 	
-	// ***** covariant overrides *****
+	// ***** overrides *****
 	
-	JavaResourceEnum getJavaResourceType();
+	JavaResourceType getJavaResourceType();
 	
-	public JaxbEnumMapping getMapping();
+	public JavaClassMapping getMapping();
+	
+	
+	// ***** XmlRegistry *****
+	
+	String XML_REGISTRY_PROPERTY = "xmlRegistry";  //$NON-NLS-1$
+	
+	XmlRegistry getXmlRegistry();
 }

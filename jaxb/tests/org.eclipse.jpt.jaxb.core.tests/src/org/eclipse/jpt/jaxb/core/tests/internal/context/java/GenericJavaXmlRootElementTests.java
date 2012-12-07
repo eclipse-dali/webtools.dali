@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -53,7 +53,7 @@ public class GenericJavaXmlRootElementTests
 	
 	public void testModifyNamespace() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
@@ -77,7 +77,7 @@ public class GenericJavaXmlRootElementTests
 	
 	public void testUpdateNamespace() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
@@ -106,7 +106,7 @@ public class GenericJavaXmlRootElementTests
 
 	public void testModifyName() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
@@ -131,7 +131,7 @@ public class GenericJavaXmlRootElementTests
 	
 	public void testUpdateName() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();

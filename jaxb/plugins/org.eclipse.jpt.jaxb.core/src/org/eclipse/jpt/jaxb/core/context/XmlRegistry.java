@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+
 
 
 /**
@@ -38,5 +40,5 @@ public interface XmlRegistry
 	
 	// ***** misc *****
 	
-	JaxbClass getJaxbClass();
+	JavaClass getJaxbClass();
 }

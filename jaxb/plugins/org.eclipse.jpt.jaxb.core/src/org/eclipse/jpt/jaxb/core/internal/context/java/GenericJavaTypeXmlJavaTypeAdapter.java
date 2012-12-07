@@ -9,20 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 
 public class GenericJavaTypeXmlJavaTypeAdapter
 	extends AbstractJavaXmlJavaTypeAdapter
 {
 
-	public GenericJavaTypeXmlJavaTypeAdapter(JaxbType parent, XmlJavaTypeAdapterAnnotation resource) {
+	public GenericJavaTypeXmlJavaTypeAdapter(JavaType parent, XmlJavaTypeAdapterAnnotation resource) {
 		super(parent, resource);
 	}
 
 	@Override
-	public JaxbType getParent() {
-		return (JaxbType) super.getParent();
+	public JavaType getParent() {
+		return (JavaType) super.getParent();
 	}
 
 	// ********** type **********

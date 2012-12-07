@@ -92,7 +92,7 @@ public class GenericJavaPersistentAttribute
 	}
 	
 	public boolean isInherited() {
-		return getDeclaringJavaResourceType() != getClassMapping().getJaxbType().getJavaResourceType();
+		return ObjectTools.notEquals(getDeclaringJavaResourceType().getTypeBinding().getQualifiedName(), getClassMapping().getTypeName().getFullyQualifiedName());
 	}
 	
 	

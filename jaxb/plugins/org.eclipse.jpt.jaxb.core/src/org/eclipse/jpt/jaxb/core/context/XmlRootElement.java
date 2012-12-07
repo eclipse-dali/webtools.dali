@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
+
 
 /**
  * Represents a JAXB xml root element.  
@@ -26,7 +28,7 @@ package org.eclipse.jpt.jaxb.core.context;
 public interface XmlRootElement
 		extends JaxbContextNode {
 	
-	JaxbTypeMapping getTypeMapping();
+	JavaTypeMapping getTypeMapping();
 	
 	JaxbQName getQName();
 }

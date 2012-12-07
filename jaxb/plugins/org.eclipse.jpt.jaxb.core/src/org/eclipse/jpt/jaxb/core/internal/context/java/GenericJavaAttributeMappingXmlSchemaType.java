@@ -40,13 +40,13 @@ public class GenericJavaAttributeMappingXmlSchemaType
 		return getAttributeMapping().getPersistentAttribute();
 	}
 
-	protected JaxbClassMapping getJaxbClassMapping() {
+	protected JaxbClassMapping getClassMapping() {
 		return getPersistentAttribute().getClassMapping();
 	}
 
 	@Override
 	protected JaxbPackage getJaxbPackage() {
-		return this.getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		return this.getClassMapping().getJaxbPackage();
 	}
 	
 	

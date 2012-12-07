@@ -35,15 +35,17 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer.Context;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -56,7 +58,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 
 public class GenericJavaClassMapping
 		extends AbstractJavaTypeMapping
-		implements JaxbClassMapping {
+		implements JavaClassMapping {
 	
 	protected String specifiedFactoryClass;
 	
@@ -79,7 +81,7 @@ public class GenericJavaClassMapping
 	
 	protected final Map<JaxbClassMapping, JaxbAttributesContainer> includedAttributesContainers;
 	
-	public GenericJavaClassMapping(JaxbClass parent) {
+	public GenericJavaClassMapping(JavaClass parent) {
 		super(parent);
 		this.includedAttributesContainers = new Hashtable<JaxbClassMapping, JaxbAttributesContainer>();
 		this.propOrderContainer = new PropOrderContainer();
@@ -102,8 +104,8 @@ public class GenericJavaClassMapping
 	}
 	
 	@Override
-	public JaxbClass getJaxbType() {
-		return (JaxbClass) super.getJaxbType();
+	public JavaClass getJavaType() {
+		return (JavaClass) super.getJavaType();
 	}
 	
 	public JaxbPackageInfo getPackageInfo() {
@@ -446,17 +448,11 @@ public class GenericJavaClassMapping
 	protected JaxbClassMapping findSuperclass() {
 		JavaResourceType resourceType = getSuperclass(getJavaResourceType());
 		while (resourceType != null && resourceType != this) {
-			JaxbType jaxbType = getJaxbProject().getContextRoot().getType(resourceType.getTypeBinding().getQualifiedName());
+			JaxbClassMapping classMapping = getJaxbProject().getContextRoot().getClassMapping(resourceType.getTypeBinding().getQualifiedName());
 			
-			// if the superclass is not a class, return null
-			if (jaxbType == null || jaxbType.getKind() != JaxbType.Kind.CLASS) {
-				return null;
-			}
-			
-			JaxbClassMapping jaxbClassMapping = ((JaxbClass) jaxbType).getMapping();
 			// rare for a non-null superclass to not be mapped, but potentially possible mid-update
-			if (jaxbClassMapping != null) {  
-				return jaxbClassMapping;
+			if (classMapping != null) {  
+				return classMapping;
 			}
 			else {
 				resourceType = getSuperclass(resourceType);
@@ -486,17 +482,17 @@ public class GenericJavaClassMapping
 		return this.attributesContainer.getAttributesSize();
 	}
 	
-	protected GenericJavaAttributesContainer.Owner buildAttributesContainerOwner() {
-		return new GenericJavaAttributesContainer.Owner() {
+	protected GenericJavaAttributesContainer.Context buildAttributesContainerOwner() {
+		return new GenericJavaAttributesContainer.Context() {
 			public XmlAccessType getAccessType() {
 				return GenericJavaClassMapping.this.getAccessType();
 			}
 			
-			public void fireAttributeAdded(JaxbPersistentAttribute attribute) {
+			public void attributeAdded(JaxbPersistentAttribute attribute) {
 				GenericJavaClassMapping.this.fireItemAdded(ATTRIBUTES_COLLECTION, attribute);
 			}
 			
-			public void fireAttributeRemoved(JaxbPersistentAttribute attribute) {
+			public void attributeRemoved(JaxbPersistentAttribute attribute) {
 				GenericJavaClassMapping.this.fireItemRemoved(ATTRIBUTES_COLLECTION, attribute);
 			}
 		};
@@ -580,24 +576,28 @@ public class GenericJavaClassMapping
 		}
 	}
 	
-	protected JaxbAttributesContainer buildIncludedAttributesContainer(JaxbClassMapping jaxbClassMapping) {
-		return new GenericJavaAttributesContainer(this, buildIncludedAttributesContainerOwner(), jaxbClassMapping.getJaxbType().getJavaResourceType());
+	protected JaxbAttributesContainer buildIncludedAttributesContainer(JaxbClassMapping classMapping) {
+		return classMapping.buildIncludedAttributesContainer(this, buildIncludedAttributesContainerOwner());
 	}
 	
-	protected GenericJavaAttributesContainer.Owner buildIncludedAttributesContainerOwner() {
-		return new GenericJavaAttributesContainer.Owner() {
+	protected JaxbAttributesContainer.Context buildIncludedAttributesContainerOwner() {
+		return new GenericJavaAttributesContainer.Context() {
 			public XmlAccessType getAccessType() {
 				return GenericJavaClassMapping.this.getAccessType();
 			}
 			
-			public void fireAttributeAdded(JaxbPersistentAttribute attribute) {
+			public void attributeAdded(JaxbPersistentAttribute attribute) {
 				GenericJavaClassMapping.this.fireItemAdded(INCLUDED_ATTRIBUTES_COLLECTION, attribute);
 			}
 			
-			public void fireAttributeRemoved(JaxbPersistentAttribute attribute) {
+			public void attributeRemoved(JaxbPersistentAttribute attribute) {
 				GenericJavaClassMapping.this.fireItemRemoved(INCLUDED_ATTRIBUTES_COLLECTION, attribute);
 			}
 		};
+	}
+	
+	public JaxbAttributesContainer buildIncludedAttributesContainer(JaxbClassMapping parent, Context context) {
+		return new GenericJavaAttributesContainer(parent, context, getJavaResourceType());
 	}
 	
 	
@@ -658,13 +658,13 @@ public class GenericJavaClassMapping
 			return true;
 		}
 		
-		for (JaxbType jaxbType : getJaxbProject().getContextRoot().getTypes()) {
+		for (JavaType jaxbType : getJaxbProject().getContextRoot().getJavaTypes()) {
 			if (jaxbType.getMapping() != null 
 					&& ! jaxbType.getMapping().isXmlTransient() 
 					&& jaxbType.getMapping().getXmlRootElement() != null
 					&& JDTTools.typeIsSubType(
 							getJaxbProject().getJavaProject(),
-							jaxbType.getFullyQualifiedName(), getJaxbType().getFullyQualifiedName())) {
+							jaxbType.getTypeName().getFullyQualifiedName(), getJavaType().getTypeName().getFullyQualifiedName())) {
 				return true;
 			}
 		}
@@ -802,7 +802,7 @@ public class GenericJavaClassMapping
 		}
 		else {
 			if (getFactoryMethod() == null
-					&& getJaxbType().getXmlJavaTypeAdapter() == null
+					&& getJavaType().getXmlJavaTypeAdapter() == null
 					&& ! getJavaResourceType().hasPublicOrProtectedNoArgConstructor()) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(

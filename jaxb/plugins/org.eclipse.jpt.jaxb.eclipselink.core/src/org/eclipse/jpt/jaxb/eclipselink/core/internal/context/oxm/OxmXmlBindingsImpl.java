@@ -17,9 +17,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrder;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
@@ -35,9 +35,9 @@ public class OxmXmlBindingsImpl
 	
 	protected EXmlBindings eXmlBindings;
 	
-	protected ELXmlAccessType specifiedAccessType;
+	protected XmlAccessType specifiedAccessType;
 	
-	protected ELXmlAccessOrder specifiedAccessOrder;
+	protected XmlAccessOrder specifiedAccessOrder;
 	
 	protected boolean xmlMappingMetadataComplete;
 	
@@ -85,60 +85,60 @@ public class OxmXmlBindingsImpl
 	
 	// ***** xml access type *****
 	
-	public ELXmlAccessType getAccessType() {
+	public XmlAccessType getAccessType() {
 		return (this.specifiedAccessType != null) ? this.specifiedAccessType : getDefaultAccessType();
 	}
 	
-	public ELXmlAccessType getDefaultAccessType() {
-		return ELXmlAccessType.PUBLIC_MEMBER;
+	public XmlAccessType getDefaultAccessType() {
+		return XmlAccessType.PUBLIC_MEMBER;
 	}
 	
-	public ELXmlAccessType getSpecifiedAccessType() {
+	public XmlAccessType getSpecifiedAccessType() {
 		return this.specifiedAccessType;
 	}
 	
-	public void setSpecifiedAccessType(ELXmlAccessType newAccessType) {
+	public void setSpecifiedAccessType(XmlAccessType newAccessType) {
 		this.eXmlBindings.setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(newAccessType));
 		setSpecifiedAccessType_(newAccessType);
 	}
 	
-	protected void setSpecifiedAccessType_(ELXmlAccessType newAccessType) {
-		ELXmlAccessType oldAccessType = this.specifiedAccessType;
+	protected void setSpecifiedAccessType_(XmlAccessType newAccessType) {
+		XmlAccessType oldAccessType = this.specifiedAccessType;
 		this.specifiedAccessType = newAccessType;
 		firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, oldAccessType, newAccessType);
 	}
 	
-	protected ELXmlAccessType buildSpecifiedAccessType() {
+	protected XmlAccessType buildSpecifiedAccessType() {
 		return ELXmlAccessType.fromOxmResourceModel(this.eXmlBindings.getXmlAccessorType());
 	}
 	
 	
 	// ***** xml access order *****
 	
-	public ELXmlAccessOrder getAccessOrder() {
+	public XmlAccessOrder getAccessOrder() {
 		return (this.specifiedAccessOrder != null) ? this.specifiedAccessOrder : getDefaultAccessOrder();
 	}
 	
-	public ELXmlAccessOrder getDefaultAccessOrder() {
-		return ELXmlAccessOrder.UNDEFINED;
+	public XmlAccessOrder getDefaultAccessOrder() {
+		return XmlAccessOrder.UNDEFINED;
 	}
 	
-	public ELXmlAccessOrder getSpecifiedAccessOrder() {
+	public XmlAccessOrder getSpecifiedAccessOrder() {
 		return this.specifiedAccessOrder;
 	}
 	
-	public void setSpecifiedAccessOrder(ELXmlAccessOrder newAccessOrder) {
+	public void setSpecifiedAccessOrder(XmlAccessOrder newAccessOrder) {
 		this.eXmlBindings.setXmlAccessorOrder(ELXmlAccessOrder.toOxmResourceModel(newAccessOrder));
 		setSpecifiedAccessOrder_(newAccessOrder);
 	}
 	
-	protected void setSpecifiedAccessOrder_(ELXmlAccessOrder newAccessOrder) {
-		ELXmlAccessOrder oldAccessOrder = this.specifiedAccessOrder;
+	protected void setSpecifiedAccessOrder_(XmlAccessOrder newAccessOrder) {
+		XmlAccessOrder oldAccessOrder = this.specifiedAccessOrder;
 		this.specifiedAccessOrder = newAccessOrder;
 		firePropertyChanged(SPECIFIED_ACCESS_ORDER_PROPERTY, oldAccessOrder, newAccessOrder);
 	}
 	
-	protected ELXmlAccessOrder buildSpecifiedAccessOrder() {
+	protected XmlAccessOrder buildSpecifiedAccessOrder() {
 		return ELXmlAccessOrder.fromOxmResourceModel(this.eXmlBindings.getXmlAccessorOrder());
 	}
 	

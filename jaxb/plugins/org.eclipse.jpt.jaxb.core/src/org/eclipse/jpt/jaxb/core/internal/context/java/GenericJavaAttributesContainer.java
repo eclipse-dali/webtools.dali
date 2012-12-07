@@ -38,11 +38,12 @@ public class GenericJavaAttributesContainer
 
 	protected JavaResourceType javaResourceType;
 
-	protected Owner owner;
+	protected JaxbAttributesContainer.Context owner;
 
 	protected final Vector<JaxbPersistentAttribute> attributes = new Vector<JaxbPersistentAttribute>();
 
-	public GenericJavaAttributesContainer(JaxbClassMapping parent, Owner owner, JavaResourceType resourceType) {
+	public GenericJavaAttributesContainer(
+			JaxbClassMapping parent, JaxbAttributesContainer.Context owner, JavaResourceType resourceType) {
 		super(parent);
 		this.javaResourceType = resourceType;
 		this.owner = owner;
@@ -50,7 +51,7 @@ public class GenericJavaAttributesContainer
 	}
 	
 	
-	public JaxbClassMapping getJaxbClassMapping() {
+	public JaxbClassMapping getClassMapping() {
 		return (JaxbClassMapping) getParent();
 	}
 	
@@ -92,26 +93,26 @@ public class GenericJavaAttributesContainer
 
 	protected void addAttribute(JaxbPersistentAttribute attribute) {
 		if (this.attributes.add(attribute)) {
-			this.owner.fireAttributeAdded(attribute);
+			this.owner.attributeAdded(attribute);
 		}
 	}
 
 	protected void removeAttribute(JaxbPersistentAttribute attribute) {
 		if (this.attributes.remove(attribute)) {
-			this.owner.fireAttributeRemoved(attribute);
+			this.owner.attributeRemoved(attribute);
 		}
 	}
 
 	protected JaxbPersistentAttribute buildField(JavaResourceField resourceField) {
-		return getFactory().buildJavaPersistentField(getJaxbClassMapping(), resourceField);
+		return getFactory().buildJavaPersistentField(getClassMapping(), resourceField);
 	}
 
 	protected JaxbPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
-		return getFactory().buildJavaPersistentProperty(getJaxbClassMapping(), resourceGetter, resourceSetter);
+		return getFactory().buildJavaPersistentProperty(getClassMapping(), resourceGetter, resourceSetter);
 	}
 
 	protected void initializeAttributes() {
-		if (getJaxbClassMapping().isXmlTransient()) {
+		if (getClassMapping().isXmlTransient()) {
 			return;
 		}
 		if (getAccessType() == XmlAccessType.PUBLIC_MEMBER) {
@@ -319,7 +320,7 @@ public class GenericJavaAttributesContainer
 	 * which can be controlled in a number of different places....
 	 */
 	protected void updateAttributes() {
-		if (getJaxbClassMapping().isXmlTransient()) {
+		if (getClassMapping().isXmlTransient()) {
 			for (JaxbPersistentAttribute contextAttribute : getAttributes()) {
 				this.removeAttribute(contextAttribute);
 			}
@@ -651,25 +652,6 @@ public class GenericJavaAttributesContainer
 
 	@Override
 	public TextRange getValidationTextRange() {
-		return getJaxbClassMapping().getValidationTextRange();
-	}
-	
-	
-	interface Owner {
-		
-		/**
-		 * Return the access type of the owner, to be used in determining which attributes to build
-		 */
-		XmlAccessType getAccessType();
-
-		/**
-		 * fire property change event for the added attribute
-		 */
-		void fireAttributeAdded(JaxbPersistentAttribute attribute);
-		
-		/**
-		 * fire property change event for the removed attribute
-		 */
-		void fireAttributeRemoved(JaxbPersistentAttribute attribute);
+		return getClassMapping().getValidationTextRange();
 	}
 }

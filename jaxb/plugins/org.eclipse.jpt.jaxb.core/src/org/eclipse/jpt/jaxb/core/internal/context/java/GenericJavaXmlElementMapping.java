@@ -180,7 +180,7 @@ public class GenericJavaXmlElementMapping
 	}
 	
 	public XsdFeature getXsdFeature() {
-		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 		if (xsdType != null) {
 			XmlElementWrapper elementWrapper = this.xmlElementWrapper;
 			

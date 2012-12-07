@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptableMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -135,7 +135,7 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 		String boundTypeName = getBoundTypeName();
 		
 		// see if there is an xml adapter specified on the type
-		JaxbType boundType = getContextRoot().getType(boundTypeName);
+		JavaType boundType = getContextRoot().getJavaType(boundTypeName);
 		if (boundType != null) {
 			XmlJavaTypeAdapter xmlJavaTypeAdapter = boundType.getXmlJavaTypeAdapter();
 			if (xmlJavaTypeAdapter != null) {
@@ -144,7 +144,7 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 		}
 		
 		// see if there is an xml adapter on the package
-		JaxbPackage pkg = getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		JaxbPackage pkg = getClassMapping().getJaxbPackage();
 		JaxbPackageInfo pkgInfo = (pkg == null) ? null : pkg.getPackageInfo();
 		if (pkgInfo != null) {
 			XmlJavaTypeAdapter xmlJavaTypeAdapter = pkgInfo.getXmlJavaTypeAdapter(boundTypeName);

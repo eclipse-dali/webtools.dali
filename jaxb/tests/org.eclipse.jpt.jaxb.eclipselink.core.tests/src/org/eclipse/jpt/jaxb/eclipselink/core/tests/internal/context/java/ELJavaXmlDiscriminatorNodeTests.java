@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
@@ -61,7 +61,7 @@ public class ELJavaXmlDiscriminatorNodeTests
 	public void testModifyValue() throws Exception {
 		createTypeWithXmlDiscriminatorNode();
 		
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
 		ELXmlDiscriminatorNode discNode = classMapping.getXmlDiscriminatorNode();
@@ -90,7 +90,7 @@ public class ELJavaXmlDiscriminatorNodeTests
 	public void testUpdateValue() throws Exception {
 		createTypeWithXmlDiscriminatorNode();
 		
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
 		ELXmlDiscriminatorNode discNode = classMapping.getXmlDiscriminatorNode();

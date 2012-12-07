@@ -17,19 +17,19 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 
 public class JaxbClassItemLabelProvider
-	extends JaxbTypeItemLabelProvider<JaxbClass>
+	extends JaxbTypeItemLabelProvider<JavaClass>
 {
 	
-	public JaxbClassItemLabelProvider(JaxbClass jaxbPersistentClass, ItemExtendedLabelProvider.Manager manager) {
-		super(jaxbPersistentClass, manager);
+	public JaxbClassItemLabelProvider(JavaClass jaxbClass, ItemExtendedLabelProvider.Manager manager) {
+		super(jaxbClass, manager);
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class JaxbClassItemLabelProvider
 	
 	
 	protected class JaxbClassImageDescriptorModel
-			extends AspectPropertyValueModelAdapter<JaxbClass, ImageDescriptor> {
+			extends AspectPropertyValueModelAdapter<JavaClass, ImageDescriptor> {
 		
 		protected final PropertyValueModel<Boolean> isXmlRegistryModel;
 			
@@ -50,8 +50,8 @@ public class JaxbClassItemLabelProvider
 		protected final PropertyChangeListener propertyChangeListener;
 		
 		
-		public JaxbClassImageDescriptorModel(JaxbClass subject) {
-			super(new StaticPropertyValueModel<JaxbClass>(subject));
+		public JaxbClassImageDescriptorModel(JavaClass subject) {
+			super(new StaticPropertyValueModel<JavaClass>(subject));
 			this.isXmlRegistryModel = buildIsXmlRegistryModel();
 			this.mappingModel = buildMappingModel();
 			this.isXmlTransientModel = buildIsXmlTransientModel();
@@ -60,7 +60,7 @@ public class JaxbClassItemLabelProvider
 		
 		
 		protected PropertyValueModel<Boolean> buildIsXmlRegistryModel() {
-			return new PropertyAspectAdapter<JaxbClass, Boolean>(JaxbClass.XML_REGISTRY_PROPERTY, JaxbClassItemLabelProvider.this.item) {
+			return new PropertyAspectAdapter<JavaClass, Boolean>(JavaClass.XML_REGISTRY_PROPERTY, JaxbClassItemLabelProvider.this.item) {
 				@Override
 				protected Boolean buildValue_() {
 					return Boolean.valueOf(this.subject.getXmlRegistry() != null);
@@ -69,7 +69,7 @@ public class JaxbClassItemLabelProvider
 		}
 		
 		protected PropertyValueModel<JaxbClassMapping> buildMappingModel() {
-			return new PropertyAspectAdapter<JaxbClass, JaxbClassMapping> (JaxbType.MAPPING_PROPERTY, JaxbClassItemLabelProvider.this.item) {
+			return new PropertyAspectAdapter<JavaClass, JaxbClassMapping> (JavaType.MAPPING_PROPERTY, JaxbClassItemLabelProvider.this.item) {
 				@Override
 				protected JaxbClassMapping buildValue_() {
 					return this.subject.getMapping();

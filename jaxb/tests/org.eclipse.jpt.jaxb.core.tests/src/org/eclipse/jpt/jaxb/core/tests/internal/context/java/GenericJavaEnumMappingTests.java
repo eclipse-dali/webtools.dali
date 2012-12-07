@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
@@ -68,7 +68,7 @@ public class GenericJavaEnumMappingTests
 	public void testModifySchemaTypeName() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
@@ -102,7 +102,7 @@ public class GenericJavaEnumMappingTests
 	public void testUpdateSchemaTypeName() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
@@ -136,7 +136,7 @@ public class GenericJavaEnumMappingTests
 	public void testModifyNamespace() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
@@ -169,7 +169,7 @@ public class GenericJavaEnumMappingTests
 	public void testUpdateNamespace() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
@@ -202,7 +202,7 @@ public class GenericJavaEnumMappingTests
 	public void testModifyXmlRootElement() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
@@ -222,7 +222,7 @@ public class GenericJavaEnumMappingTests
 	public void testUpdateXmlRootElement() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
@@ -250,7 +250,7 @@ public class GenericJavaEnumMappingTests
 	public void testModifyXmlEnumValue() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
@@ -270,7 +270,7 @@ public class GenericJavaEnumMappingTests
 		
 		resourceEnum.addAnnotation(JAXB.XML_TYPE);
 		resourceEnum.removeAnnotation(JAXB.XML_ENUM);
-		enumMapping = ((JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0)).getMapping();
+		enumMapping = ((JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0)).getMapping();
 		assertNull(enumMapping.getSpecifiedXmlEnumValue());
 		assertEquals(JaxbEnumMapping.DEFAULT_XML_ENUM_VALUE, enumMapping.getXmlEnumValue());
 	}
@@ -278,7 +278,7 @@ public class GenericJavaEnumMappingTests
 	public void testUpdateXmlEnumValue() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
@@ -310,7 +310,7 @@ public class GenericJavaEnumMappingTests
 	public void testUpdateEnumConstants() throws Exception {
 		createEnumWithXmlType();
 		
-		JaxbEnum jaxbEnum = (JaxbEnum) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		

@@ -11,12 +11,12 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 
 
-public abstract class JaxbTypeItemLabelProvider<I extends JaxbType>
-	extends AbstractItemExtendedLabelProvider<I>
-{
+public abstract class JaxbTypeItemLabelProvider<I extends JavaType>
+		extends AbstractItemExtendedLabelProvider<I> {
+	
 	protected final String text;
 	protected final String description;
 	
@@ -32,7 +32,7 @@ public abstract class JaxbTypeItemLabelProvider<I extends JaxbType>
 	}
 
 	protected String buildText() {
-		return this.item.getTypeQualifiedName();
+		return this.item.getTypeName().getTypeQualifiedName();
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public abstract class JaxbTypeItemLabelProvider<I extends JaxbType>
 	
 	protected String buildDescription() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.item.getFullyQualifiedName());
+		sb.append(this.item.getTypeName().getFullyQualifiedName());
 		sb.append(" - ");  //$NON-NLS-1$
 		sb.append(this.item.getResource().getFullPath().makeRelative());
 		return sb.toString();

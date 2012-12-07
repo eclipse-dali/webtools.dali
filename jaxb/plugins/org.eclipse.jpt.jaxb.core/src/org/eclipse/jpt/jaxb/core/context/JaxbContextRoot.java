@@ -9,6 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+
 /**
  * Root of the JAXB context model.
  * <p>
@@ -41,46 +45,46 @@ public interface JaxbContextRoot
 	int getPackagesSize();
 	
 	
-	// ***** jaxb types *****
+	// ***** java types *****
 	
-	public final static String TYPES_COLLECTION = "types"; //$NON-NLS-1$
-	
-	/**
-	 * Return the set of all JAXB types within this context root.
-	 */
-	Iterable<JaxbType> getTypes();
+	public final static String JAVA_TYPES_COLLECTION = "javaTypes"; //$NON-NLS-1$
 	
 	/**
-	 * Return the type with the given (fully qualified) type name
+	 * Return the set of all java types within this context root.
 	 */
-	JaxbType getType(String typeName);
-	
-	int getTypesSize();
+	Iterable<JavaType> getJavaTypes();
 	
 	/**
-	 * Return the set of types that are in the given package
+	 * Return the java type with the given (fully qualified) name
 	 */
-	Iterable<JaxbType> getTypes(JaxbPackage jaxbPackage);
+	JavaType getJavaType(String typeName);
+	
+	int getJavaTypesSize();
 	
 	/**
-	 * The set of jaxb classes.  These may be explicitly or implicitly included.
+	 * Return the set of java types that are in the given package
 	 */
-	Iterable<JaxbClass> getClasses();
+	Iterable<JavaType> getJavaTypes(JaxbPackage jaxbPackage);
 	
 	/**
-	 * Return the set of jaxb classes that are in the given package
+	 * The set of java classes.  These may be explicitly or implicitly included.
 	 */
-	Iterable<JaxbClass> getClasses(JaxbPackage jaxbPackage);
+	Iterable<JavaClass> getJavaClasses();
 	
 	/**
-	 * The set of jaxb enums.  These may be explicitly or implicitly included.
+	 * Return the set of java classes that are in the given package
 	 */
-	Iterable<JaxbEnum> getEnums();
+	Iterable<JavaClass> getJavaClasses(JaxbPackage jaxbPackage);
+	
+	/**
+	 * The set of java enums.  These may be explicitly or implicitly included.
+	 */
+	Iterable<JavaEnum> getJavaEnums();
 	
 	/**
 	 * Return the set of jaxb enums that are in the given package
 	 */
-	Iterable<JaxbEnum> getEnums(JaxbPackage jaxbPackage);
+	Iterable<JavaEnum> getJavaEnums(JaxbPackage jaxbPackage);
 	
 	/**
 	 * Return the set of {@link XmlRegistry}(ie)s that are in the given package
@@ -96,8 +100,4 @@ public interface JaxbContextRoot
 	 * Return the {@link JaxbClassMapping} for the given (fully qualified) type name
 	 */
 	JaxbClassMapping getClassMapping(String typeName);
-	
-	
-	// ***** misc *****
-	
 }

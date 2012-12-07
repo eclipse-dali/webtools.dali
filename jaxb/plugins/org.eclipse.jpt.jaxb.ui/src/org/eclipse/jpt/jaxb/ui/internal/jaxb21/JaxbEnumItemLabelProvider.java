@@ -17,17 +17,16 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 
 public class JaxbEnumItemLabelProvider
-	extends JaxbTypeItemLabelProvider<JaxbEnum>
-{
+		extends JaxbTypeItemLabelProvider<JavaEnum> {
 	
-	public JaxbEnumItemLabelProvider(JaxbEnum jaxbEnum, ItemExtendedLabelProvider.Manager manager) {
+	public JaxbEnumItemLabelProvider(JavaEnum jaxbEnum, ItemExtendedLabelProvider.Manager manager) {
 		super(jaxbEnum, manager);
 	}
 	
@@ -38,7 +37,7 @@ public class JaxbEnumItemLabelProvider
 	
 	
 	protected class JaxbEnumImageDescriptorModel
-			extends AspectPropertyValueModelAdapter<JaxbEnum, ImageDescriptor> {
+			extends AspectPropertyValueModelAdapter<JavaEnum, ImageDescriptor> {
 		
 		protected final PropertyValueModel<JaxbEnumMapping> mappingModel;
 		
@@ -47,8 +46,8 @@ public class JaxbEnumItemLabelProvider
 		protected final PropertyChangeListener propertyChangeListener;
 		
 		
-		public JaxbEnumImageDescriptorModel(JaxbEnum subject) {
-			super(new StaticPropertyValueModel<JaxbEnum>(subject));
+		public JaxbEnumImageDescriptorModel(JavaEnum subject) {
+			super(new StaticPropertyValueModel<JavaEnum>(subject));
 			this.mappingModel = buildMappingModel();
 			this.isXmlTransientModel = buildIsXmlTransientModel();
 			this.propertyChangeListener = buildPropertyChangeListener();
@@ -56,7 +55,7 @@ public class JaxbEnumItemLabelProvider
 		
 		
 		protected PropertyValueModel<JaxbEnumMapping> buildMappingModel() {
-			return new PropertyAspectAdapter<JaxbEnum, JaxbEnumMapping> (JaxbType.MAPPING_PROPERTY, JaxbEnumItemLabelProvider.this.item) {
+			return new PropertyAspectAdapter<JavaEnum, JaxbEnumMapping> (JavaType.MAPPING_PROPERTY, JaxbEnumItemLabelProvider.this.item) {
 				@Override
 				protected JaxbEnumMapping buildValue_() {
 					return this.subject.getMapping();

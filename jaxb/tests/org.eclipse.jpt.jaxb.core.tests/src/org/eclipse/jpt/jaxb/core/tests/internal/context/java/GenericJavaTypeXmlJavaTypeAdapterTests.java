@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -50,7 +50,7 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	public void testModifyValue() throws Exception {
 		createTypeWithXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 
@@ -71,7 +71,7 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	public void testUpdateValue() throws Exception {
 		createTypeWithXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -97,7 +97,7 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	public void testModifyType() throws Exception {
 		createTypeWithXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 
@@ -122,7 +122,7 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	public void testUpdateType() throws Exception {
 		createTypeWithXmlJavaTypeAdapter();
 		
-		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
+		JavaClass jaxbClass = (JavaClass) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 
