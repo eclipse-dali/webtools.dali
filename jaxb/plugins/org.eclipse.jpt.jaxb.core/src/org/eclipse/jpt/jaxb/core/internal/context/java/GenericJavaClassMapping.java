@@ -66,6 +66,8 @@ public class GenericJavaClassMapping
 	
 	protected final PropOrderContainer propOrderContainer;
 	
+	protected String superclassName; // used internally only
+	protected static final String SUPERCLASSNAME_PROPERTY = "superclassName"; //$NON-NLS-1$ - used only to trigger update
 	protected JaxbClassMapping superclass;
 	
 	protected XmlAccessType defaultAccessType;
@@ -93,8 +95,8 @@ public class GenericJavaClassMapping
 		initDefaultAccessType();
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
+		initSuperclassName();
 		this.attributesContainer = new GenericJavaAttributesContainer(this, buildAttributesContainerOwner(), getJavaResourceType());
-		initIncludedAttributes();
 	}
 	
 	
@@ -125,6 +127,7 @@ public class GenericJavaClassMapping
 		syncPropOrder();
 		syncSpecifiedAccessType();
 		syncSpecifiedAccessOrder();
+		syncSuperclassName();
 		this.attributesContainer.synchronizeWithResourceModel();
 		syncIncludedAttributes();
 	}
@@ -132,7 +135,7 @@ public class GenericJavaClassMapping
 	@Override
 	public void update() {
 		super.update();
-		updateSuperclass();
+		updateSuperclass(); // done first because much depends on it
 		updateDefaultAccessType();
 		updateDefaultAccessOrder();
 		this.hasRootElementInHierarchy_loaded = false; // triggers that the value must be recalculated on next request
@@ -431,6 +434,20 @@ public class GenericJavaClassMapping
 	
 	// ********** super class **********
 	
+	protected void initSuperclassName() {
+		this.superclassName = getResourceSuperclassName();
+	}
+	
+	protected void syncSuperclassName() {
+		String old = this.superclassName;
+		this.superclassName = getResourceSuperclassName();
+		firePropertyChanged(SUPERCLASSNAME_PROPERTY, old, this.superclassName);
+	}
+	
+	protected String getResourceSuperclassName() {
+		return getJavaResourceType().getSuperclassQualifiedName();
+	}
+	
 	public JaxbClassMapping getSuperclass() {
 		return this.superclass;
 	}
@@ -446,29 +463,10 @@ public class GenericJavaClassMapping
 	}
 	
 	protected JaxbClassMapping findSuperclass() {
-		JavaResourceType resourceType = getSuperclass(getJavaResourceType());
-		while (resourceType != null && resourceType != this) {
-			JaxbClassMapping classMapping = getJaxbProject().getContextRoot().getClassMapping(resourceType.getTypeBinding().getQualifiedName());
-			
-			// rare for a non-null superclass to not be mapped, but potentially possible mid-update
-			if (classMapping != null) {  
-				return classMapping;
-			}
-			else {
-				resourceType = getSuperclass(resourceType);
-			}
+		if (this.superclassName != null) {
+			return getJaxbProject().getContextRoot().getClassMapping(this.superclassName);
 		}
 		return null;
-	}
-	
-	protected JavaResourceType getSuperclass(JavaResourceType resourceType) {
-		String superclassName = resourceType.getSuperclassQualifiedName();
-		if (superclassName == null) {
-			return null;
-		}
-		
-		return (JavaResourceType) getJaxbProject().getJavaResourceType(
-				superclassName, JavaResourceType.AstNodeType.TYPE);
 	}
 	
 	
@@ -525,19 +523,6 @@ public class GenericJavaClassMapping
 			size += attributesContainer.getAttributesSize();
 		}
 		return size;
-	}
-	
-	protected void initIncludedAttributes() {
-		// xml transient classes have no included attributes
-		if (isXmlTransient()) {
-			return;
-		}
-		JaxbClassMapping superclass = this.superclass;
-		// only add inherited attributes for superclasses up until a mapped class is encountered
-		while (superclass != null && superclass.isXmlTransient()) {
-			this.includedAttributesContainers.put(superclass, buildIncludedAttributesContainer(superclass));
-			superclass = superclass.getSuperclass();
-		}
 	}
 	
 	protected void syncIncludedAttributes() {
@@ -686,7 +671,7 @@ public class GenericJavaClassMapping
 	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
 		return new CompositeIterable<String>(
 				super.getNonTransientReferencedXmlTypeNames(),
-				new SingleElementIterable(getJavaResourceType().getSuperclassQualifiedName()),
+				new SingleElementIterable(this.superclassName),
 				new CompositeIterable<String>(
 						new TransformationIterable<JaxbPersistentAttribute, Iterable<String>>(getAttributes()) {
 							@Override
