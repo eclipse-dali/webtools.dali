@@ -151,7 +151,7 @@ public class Main
         File builderFile = new File(builderFileName);
         if( ! (builderFile.exists() && builderFile.isFile())) {
         	this.logMessage(SEVERE, 
-        		JptDbwsCoreMessages.UNABLE_TO_LOCATE_BUILDER_XML, builderFileName); //$NON-NLS-1$
+        		JptDbwsCoreMessages.UNABLE_TO_LOCATE_BUILDER_XML, builderFileName);
         	return null;
         }
         return builderFile;

@@ -35,19 +35,23 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 			createRelation(fp, embeddingEntity);
 	}
 
+	@Override
 	public JavaPersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
+	@Override
 	public void setOwnerAnnotatedAttribute(
 			JavaPersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
+	@Override
 	public JavaPersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
+	@Override
 	public void setInverseAnnotatedAttribute(
 			JavaPersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
@@ -64,6 +68,7 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute);		
 	} 	
 		
+	@Override
 	public RelDir getRelDir() {
 		return RelDir.BI;
 	}

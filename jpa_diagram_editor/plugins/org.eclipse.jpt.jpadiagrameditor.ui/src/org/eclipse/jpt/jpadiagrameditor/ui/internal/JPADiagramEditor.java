@@ -140,6 +140,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		final Wrp wrp = new Wrp();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(d);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d.getName()));
 				List<Shape> children = d.getChildren();
@@ -178,6 +179,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 			return;
 		}
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d.getName()));
 				List<Shape> children = d.getChildren();
@@ -266,6 +268,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 		}
 	}
 
+	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {		
 		IFile entityFile = (IFile) input.getAdapter(IFile.class);
 		

@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPASolver;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "nls"})
 public class JPASolverTest {
 
 	private IEclipseFacade eclipseFacade;

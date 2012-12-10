@@ -86,7 +86,7 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 	private IStatus checkDuplicateAttribute(String value, IDirectEditingContext context) {
 		PictogramElement pe = context.getPictogramElement();
 		JavaPersistentAttribute oldAt = (JavaPersistentAttribute) getBusinessObjectForPictogramElement(pe);
-		JavaPersistentAttribute newAl = (JavaPersistentAttribute)((JavaPersistentType)oldAt.getParent()).getAttributeNamed(value);
+		JavaPersistentAttribute newAl = ((JavaPersistentType)oldAt.getParent()).getAttributeNamed(value);
 		if (newAl != null && !newAl.equals(oldAt)) {
 			String message = MessageFormat.format(JPAEditorMessages.DirectEditAttributeFeature_attributeExists, value);
 			return new Status(IStatus.ERROR, JPADiagramEditorPlugin.PLUGIN_ID, message);
@@ -94,10 +94,12 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 		return Status.OK_STATUS;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
 
+	@Override
 	public void setValue(String value, IDirectEditingContext context) {
 		if (isMethodAnnotated)
 			value = JPAEditorUtil.produceValidAttributeName(value);
@@ -123,6 +125,7 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(alg);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				((Text) alg).setValue(newValue);
 			}

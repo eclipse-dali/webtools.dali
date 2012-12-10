@@ -33,6 +33,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * The JPA project's settings (platform, database connection, etc.) can be
  * controlled by building a data model and passing it into the constructor.
  */
+@SuppressWarnings("nls")
 public class TestJaxbProject
 		extends TestJavaProject {
 	

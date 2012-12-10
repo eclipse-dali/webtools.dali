@@ -30,7 +30,7 @@ public class JPAEditorConstants {
 		Entity,
 		MappedSupeclass,
 		Embeddable
-	};
+	}
 	
 	public static final String IS_A_RELATION_ID_PREFIX = "is_a_relation:"; 	//$NON-NLS-1$
 	
@@ -95,11 +95,11 @@ public class JPAEditorConstants {
 	
 	public final static String TRUE_STRING = Boolean.toString(true);
 	
-	public final static int CONNECTION_LINE_WIDTH = 2;
-	public final static int IS_A_CONNECTION_LINE_WIDTH = 2;
-	public final static int EMBEDDED_CONNECTION_LINE_WIDTH = 2;
+	public final static Integer CONNECTION_LINE_WIDTH = Integer.valueOf(2);
+	public final static Integer IS_A_CONNECTION_LINE_WIDTH = Integer.valueOf(2);
+	public final static Integer EMBEDDED_CONNECTION_LINE_WIDTH =Integer.valueOf(2);
 
-	public final static int ENTITY_BORDER_WIDTH = 2;
+	public final static Integer ENTITY_BORDER_WIDTH = Integer.valueOf(2);
 	
 	public final static int ENTITY_CORNER_WIDTH = 6;
 	public final static int ENTITY_CORNER_HEIGHT = 6;
@@ -174,7 +174,7 @@ public class JPAEditorConstants {
 	public static String CARDINALITY_ONE = "1"; //$NON-NLS-1$
 	public static String CARDINALITY_ZERO_N = "0..N"; //$NON-NLS-1$
 	
-	public static enum ShapeType {ICON, HEADER, ATTRIBUTE, COMPARTMENT};
+	public static enum ShapeType {ICON, HEADER, ATTRIBUTE, COMPARTMENT}
 	
 	static {
 		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_BASIC, MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);

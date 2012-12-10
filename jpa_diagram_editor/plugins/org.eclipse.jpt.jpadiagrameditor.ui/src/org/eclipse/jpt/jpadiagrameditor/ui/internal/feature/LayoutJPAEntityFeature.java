@@ -87,6 +87,7 @@ public class LayoutJPAEntityFeature extends AbstractLayoutFeature {
 		return anythingChanged;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

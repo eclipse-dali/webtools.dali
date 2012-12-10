@@ -258,8 +258,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	private Rectangle addCompartmentRectangle(int y, int width,
 			ContainerShape containerShape) {
 		Rectangle rect = Graphiti.getGaService().createRectangle(containerShape);
-		rect.setFilled(false);
-		rect.setLineVisible(false);
+		rect.setFilled(Boolean.FALSE);
+		rect.setLineVisible(Boolean.FALSE);
 		rect.setHeight(0);
 		rect.setWidth(width);
 		rect.setX(0);
@@ -370,8 +370,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		ContainerShape headerIconShape = Graphiti.getPeService().createContainerShape(
 				entityShape, false);
 		Rectangle iconRect = Graphiti.getGaService().createRectangle(headerIconShape);
-		iconRect.setFilled(false);
-		iconRect.setLineVisible(false);
+		iconRect.setFilled(Boolean.FALSE);
+		iconRect.setLineVisible(Boolean.FALSE);
 		iconRect.setHeight(JPAEditorConstants.ICON_RECT_HEIGHT);
 		iconRect.setX(0);
 		iconRect.setWidth(JPAEditorConstants.HEADER_ICON_RECT_WIDTH);
@@ -393,8 +393,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 						JPAEditorConstants.PROP_SHAPE_TYPE, ShapeType.HEADER
 								.toString());
 		Rectangle headerRect = Graphiti.getGaService().createRectangle(entityHeaderTextShape);
-		headerRect.setFilled(false);
-		headerRect.setLineVisible(false);
+		headerRect.setFilled(Boolean.FALSE);
+		headerRect.setLineVisible(Boolean.FALSE);
 		headerRect.setWidth(width - JPAEditorConstants.HEADER_TEXT_RECT_WIDTH_REDUCER);
 		headerRect.setHeight(JPAEditorConstants.HEADER_TEXT_RECT_HEIGHT);
 		headerRect.setY(2);

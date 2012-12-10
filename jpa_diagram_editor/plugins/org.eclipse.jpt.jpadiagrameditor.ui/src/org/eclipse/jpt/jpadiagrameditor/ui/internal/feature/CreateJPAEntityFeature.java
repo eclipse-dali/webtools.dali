@@ -136,7 +136,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			if (mappedSuperclass != null) {
 				this.getFeatureProvider().
 				getJPAEditorUtil().
-					createEntityInProject(targetProject, entityName, mappedSuperclass);	//$NON-NLS-1$								
+					createEntityInProject(targetProject, entityName, mappedSuperclass);								
 			} else {
 				this.getFeatureProvider().
 				getJPAEditorUtil().
@@ -176,9 +176,8 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 	        ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
 	        getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);			
 			return new Object[] { jpt };
-		} else {
-			JPADiagramEditorPlugin.logError("The JPA entity " + entityName + " could not be created", new Exception());  //$NON-NLS-1$	//$NON-NLS-2$	 
-		}		
+		} 
+		JPADiagramEditorPlugin.logError("The JPA entity " + entityName + " could not be created", new Exception());  //$NON-NLS-1$	//$NON-NLS-2$	 	
 		return new Object[] {};
     }
         

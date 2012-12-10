@@ -104,7 +104,8 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	    return true;
 	}
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_EMBEDDED;
     }	
     
@@ -119,6 +120,7 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	    return null;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider(); 
 	}

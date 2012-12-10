@@ -187,6 +187,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		return JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

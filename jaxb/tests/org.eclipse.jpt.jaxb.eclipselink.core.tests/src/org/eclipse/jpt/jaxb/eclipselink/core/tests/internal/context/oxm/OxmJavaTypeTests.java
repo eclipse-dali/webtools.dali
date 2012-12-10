@@ -17,6 +17,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 
+@SuppressWarnings("nls")
 public class OxmJavaTypeTests
 		extends OxmContextModelTestCase {
 	

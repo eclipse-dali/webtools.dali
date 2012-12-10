@@ -174,6 +174,7 @@ public class GraphicsUpdater {
 		if (!txt.getValue().equals(newHeader)) {
 			TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(txt);
 			RecordingCommand rc = new RecordingCommand(ted) {
+				@Override
 				protected void doExecute() {
 					txt.setValue(newHeader);		
 				}		
@@ -187,7 +188,7 @@ public class GraphicsUpdater {
 			return null;		
 		List<Shape> shapes = entityShape.getChildren();
 		Iterator<Shape> shIt = shapes.iterator();
-		Shape headerShape = null;;
+		Shape headerShape = null;
 		while (shIt.hasNext()) {
 			headerShape = shIt.next();
 			String shapeType = Graphiti.getPeService().getPropertyValue(headerShape, JPAEditorConstants.PROP_SHAPE_TYPE);

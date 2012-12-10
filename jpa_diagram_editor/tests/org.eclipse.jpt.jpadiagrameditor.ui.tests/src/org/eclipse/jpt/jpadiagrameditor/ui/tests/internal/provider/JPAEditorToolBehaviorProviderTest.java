@@ -44,6 +44,7 @@ import org.eclipse.ui.PartInitException;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class JPAEditorToolBehaviorProviderTest {
 
 	/**

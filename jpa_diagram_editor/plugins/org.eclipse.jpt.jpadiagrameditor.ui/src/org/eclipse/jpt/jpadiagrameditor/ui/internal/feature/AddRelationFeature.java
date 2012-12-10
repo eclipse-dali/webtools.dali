@@ -81,6 +81,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		final Wrp wrp = new Wrp();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		RecordingCommand rc = new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				FreeFormConnection connection = createConnection(addConContext, relation, diagram);
 				imageCreator.createConnectionLine(diagram, connection);
@@ -262,6 +263,7 @@ public class AddRelationFeature extends AbstractAddFeature {
         return false;
     }
     
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

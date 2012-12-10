@@ -48,6 +48,7 @@ public class CollapseEntityFeature extends AbstractCustomFeature implements ICus
         
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(algo);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				algo.setHeight(JPAEditorConstants.ENTITY_MIN_HEIGHT);
 				Graphiti.getPeService().setPropertyValue(el, JPAEditorConstants.COLLAPSE_FEATURES, String.valueOf(JPAEditorConstants.ENTITY_MIN_HEIGHT));
@@ -61,6 +62,7 @@ public class CollapseEntityFeature extends AbstractCustomFeature implements ICus
 		return true;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

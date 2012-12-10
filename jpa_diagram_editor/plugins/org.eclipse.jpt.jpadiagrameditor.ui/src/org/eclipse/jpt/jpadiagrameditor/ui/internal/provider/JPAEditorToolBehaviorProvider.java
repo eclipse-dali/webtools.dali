@@ -293,7 +293,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 			List<IPaletteCompartmentEntry> ret,
 			IPaletteCompartmentEntry[] superCompartments) {
 		PaletteCompartmentEntry ent = new PaletteCompartmentEntry(JPAEditorMessages.JPAEditorToolBehaviorProvider_InheritanceCompartmentTitle, superCompartments[1].getIconId());     
-    	CreateInheritedEntityFeature ft = new CreateInheritedEntityFeature((IJPAEditorFeatureProvider) this.getFeatureProvider());
+    	CreateInheritedEntityFeature ft = new CreateInheritedEntityFeature(this.getFeatureProvider());
     	ConnectionCreationToolEntry isARelToolEntry = new ConnectionCreationToolEntry(ft.getCreateName(),
 				ft.getCreateDescription(), ft.getCreateImageId(), ft.getCreateLargeImageId());
     	isARelToolEntry.addCreateConnectionFeature(ft);
@@ -301,7 +301,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		ent.addToolEntry(isARelToolEntry);
 		
 		
-		CreateIsARelationFeature ft1 = new CreateIsARelationFeature((IJPAEditorFeatureProvider) this.getFeatureProvider());
+		CreateIsARelationFeature ft1 = new CreateIsARelationFeature(this.getFeatureProvider());
     	ConnectionCreationToolEntry isARelToolEntry1 = new ConnectionCreationToolEntry(ft1.getCreateName(),
 				ft1.getCreateDescription(), ft1.getCreateImageId(), ft1.getCreateLargeImageId());
     	isARelToolEntry1.addCreateConnectionFeature(ft1);
@@ -370,7 +370,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 			Integer severity = (Integer) marker.getAttribute(IMarker.SEVERITY);
 			String decoratorType = IPlatformImageConstants.IMG_ECLIPSE_INFORMATION_TSK;
 			if (severity != null) {
-				switch (severity) {
+				switch (severity.intValue()) {
 				case 0:
 					decoratorType = IPlatformImageConstants.IMG_ECLIPSE_INFORMATION_TSK;
 				case 1:
@@ -391,7 +391,8 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		}
 	}
 	
-    public String getToolTip(GraphicsAlgorithm ga) {
+    @Override
+	public String getToolTip(GraphicsAlgorithm ga) {
     	PictogramElement pe = ga.getPictogramElement();
         if (!(ga instanceof Rectangle)) 
         	return null;
@@ -455,7 +456,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 	
     @Override
     public IContextMenuEntry[] getContextMenu(ICustomContext context) {
-    	ICustomContext customContext = (ICustomContext)context;
+    	ICustomContext customContext = context;
     	PictogramElement[] pictEls = customContext.getPictogramElements();
     	
     	ICustomFeature saveEntityFeature = new SaveEntityFeature(getFeatureProvider());

@@ -78,12 +78,12 @@ public class RenameAttributeCommand implements Command {
 			attributeField = javaType.getField(oldName);
 		}
 		String getterPrefix = "get";	//$NON-NLS-1$
-		String methodName = getterPrefix + JPAEditorUtil.capitalizeFirstLetter(oldName); 	//$NON-NLS-1$
+		String methodName = getterPrefix + JPAEditorUtil.capitalizeFirstLetter(oldName);
 		IMethod getter = javaType.getMethod(methodName, new String[0]);
 		if (!getter.exists()) {
 			getterPrefix = "is";	//$NON-NLS-1$
 		}
-		methodName = getterPrefix + JPAEditorUtil.capitalizeFirstLetter(oldName); 	//$NON-NLS-1$
+		methodName = getterPrefix + JPAEditorUtil.capitalizeFirstLetter(oldName);
 		getter = javaType.getMethod(methodName, new String[0]);		
 		
 		if (isMethodAnnotated) {

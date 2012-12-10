@@ -45,6 +45,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
 import org.junit.Test;
+@SuppressWarnings("nls")
 
 public class CreateRelationsInFieldAnnotatedEntitiesTest {
 

@@ -113,7 +113,8 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	    return true;
 	}
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_ELEMENT_COLLECTION;
     }   
     
@@ -179,6 +180,7 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 		return notAllowed;		
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider(); 
 	}

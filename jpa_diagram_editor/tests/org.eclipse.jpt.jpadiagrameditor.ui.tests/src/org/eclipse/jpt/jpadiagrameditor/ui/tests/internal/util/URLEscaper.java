@@ -1,5 +1,6 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util;
 
+@SuppressWarnings("nls")
 public class URLEscaper {
 	private static final String specialChars = " <>#%{}|^~[]`;?@=&$";
 	private static final String escapeCodes  = "%20%3C%3E%23%25%7B%7D%7C%5E%7E%5B%5D%60%3B%3F%40%3D%26%24";

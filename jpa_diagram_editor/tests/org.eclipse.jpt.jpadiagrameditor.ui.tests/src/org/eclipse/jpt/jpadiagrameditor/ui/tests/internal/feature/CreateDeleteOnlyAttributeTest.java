@@ -52,6 +52,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class CreateDeleteOnlyAttributeTest {
 
 	private IJPAEditorFeatureProvider featureProvider;
@@ -203,7 +204,7 @@ public class CreateDeleteOnlyAttributeTest {
 
 		public void listCleared(ListClearEvent arg0) {
 		}
-	};
+	}
 	
 	@After	
 	public void tearDown() throws Exception {		

@@ -48,6 +48,7 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getName();
 	}
 	
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(EObject.class)) {

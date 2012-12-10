@@ -27,17 +27,20 @@ public class ResizeAttributeFeature  extends DefaultResizeShapeFeature {
 		super(fp);
 	}
 	
-    public boolean canResizeShape(IResizeShapeContext context) {
+    @Override
+	public boolean canResizeShape(IResizeShapeContext context) {
         return false;
     }
     
     
-    public boolean canExecute(IContext context) {
+    @Override
+	public boolean canExecute(IContext context) {
         return false;
     }
 
     
-    public boolean isAvailable(IContext context) {
+    @Override
+	public boolean isAvailable(IContext context) {
     	return false;
     }
 

@@ -36,9 +36,11 @@ public class MoveEntityShapeFeature extends DefaultMoveShapeFeature {
 		super(fp);
 	}
 	
+	@Override
 	protected void moveAllBendpoints(IMoveShapeContext context) {
 	}
 	
+	@Override
 	protected void postMoveShape(IMoveShapeContext context) {
 		ContainerShape cs = (ContainerShape)context.getShape();
 		JPAEditorUtil.rearrangeAllConnections(cs, getFeatureProvider(), false);
@@ -55,7 +57,8 @@ public class MoveEntityShapeFeature extends DefaultMoveShapeFeature {
 	 		PictogramElement el = context.getPictogramElement();
 	 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(el);
 	 		ted.getCommandStack().execute(new RecordingCommand(ted) {
-	 			protected void doExecute() {
+	 			@Override
+				protected void doExecute() {
 	 			   move(context);
 	 			}
 	 		});
@@ -65,6 +68,7 @@ public class MoveEntityShapeFeature extends DefaultMoveShapeFeature {
 	 		super.internalMove(context);
 	 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

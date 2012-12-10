@@ -52,6 +52,7 @@ public class ManyToManyUniDirRelation extends ManyToManyRelation implements IUni
 		
 	} 
 	
+	@Override
 	public RelDir getRelDir() {
 		return RelDir.UNI;
 	}

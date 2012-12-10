@@ -35,7 +35,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleListener;
 
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "nls"})
 public class ModelIntegrationUtilTest {
 	
 	@Test

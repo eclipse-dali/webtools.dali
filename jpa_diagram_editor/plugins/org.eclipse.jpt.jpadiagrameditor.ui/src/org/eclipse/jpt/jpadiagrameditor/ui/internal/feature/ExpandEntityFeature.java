@@ -49,6 +49,7 @@ public class ExpandEntityFeature extends AbstractCustomFeature{
 	
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(containerShape);
 			ted.getCommandStack().execute(new RecordingCommand(ted) {
+				@Override
 				protected void doExecute() {
 
 					GraphicsUpdater.updateEntityShape(containerShape);
@@ -95,6 +96,7 @@ public class ExpandEntityFeature extends AbstractCustomFeature{
 		return ret;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

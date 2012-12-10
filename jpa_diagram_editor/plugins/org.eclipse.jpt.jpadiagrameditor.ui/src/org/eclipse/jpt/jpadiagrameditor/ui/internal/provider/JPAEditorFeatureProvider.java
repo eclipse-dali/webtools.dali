@@ -65,6 +65,7 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 import org.eclipse.graphiti.util.IColorConstant;
+import org.eclipse.graphiti.util.IPredefinedRenderingStyle;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
@@ -127,7 +128,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdaterImpl;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IGraphicsUpdater;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorPredefinedRenderingStyle;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJpaSolver;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IPeServiceUtil;
@@ -216,7 +216,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 					redundantConnections.add(conn);
 					continue;
 				}
-				if (rel != null && !rel.getSuperclass().getName().equals(getFirstSuperclassBelongingToTheDiagram(rel.getSubclass()).getName())) {
+				if (!rel.getSuperclass().getName().equals(getFirstSuperclassBelongingToTheDiagram(rel.getSubclass()).getName())) {
 					redundantConnections.add(conn);
 				}
 			}
@@ -238,7 +238,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 				} catch (NullPointerException e) {
 					return true;
 				}
-				if (rel != null && !rel.getSuperclass().equals(getFirstSuperclassBelongingToTheDiagram(rel.getSubclass()))) {
+				if (!rel.getSuperclass().equals(getFirstSuperclassBelongingToTheDiagram(rel.getSubclass()))) {
 					return true;
 				}
 			}
@@ -300,9 +300,8 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         } else if (newObj instanceof PersistentAttribute) { 
         	if (Diagram.class.isInstance(context.getTargetContainer())) {     			
         		return null;
-        	} else {
-        		return new AddAttributeFeature(this);
         	}
+        	return new AddAttributeFeature(this);
         } else if (newObj instanceof CompilationUnit) {
         	CompilationUnit cu = (CompilationUnit)newObj;
         	JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
@@ -605,6 +604,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	}
     	TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
     	ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 		    	JPASolver solver = (JPASolver)getIndependenceSolver(); 
 		    	solver.remove(solver.getKeyForBusinessObject(oldAt));
@@ -694,6 +694,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 	}
 	*/
 
+	@Override
 	public void dispose() {
 		stopThread();
 		((JPASolver)getIndependenceSolver()).dispose();
@@ -725,6 +726,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		return TransactionUtil.getEditingDomain(diagram);
 	}
 	
+	@Override
 	public PictogramElement getPictogramElementForBusinessObject(Object businessObject) {
 		PictogramElement pe = super.getPictogramElementForBusinessObject(businessObject);
 		/*
@@ -766,7 +768,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 			@Override
 			protected void doExecute() {
 				Graphiti.getGaService().setRenderingStyle(pe.getGraphicsAlgorithm(), 
-						JPAEditorPredefinedColoredAreas.getAdaptedGradientColoredAreas(IJPAEditorPredefinedRenderingStyle.SILVER_WHITE_GLOSS_ID));
+						JPAEditorPredefinedColoredAreas.getAdaptedGradientColoredAreas(IPredefinedRenderingStyle.SILVER_WHITE_GLOSS_ID));
 				pe.getGraphicsAlgorithm().setForeground(Graphiti.getGaService().manageColor(getDiagram(),JPAEditorConstants.ENTITY_DISABLED_COLOR));
 			}
 			

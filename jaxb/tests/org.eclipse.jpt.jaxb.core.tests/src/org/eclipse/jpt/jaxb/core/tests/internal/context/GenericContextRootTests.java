@@ -36,7 +36,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
-import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
@@ -234,12 +233,12 @@ public class GenericContextRootTests
 	public void testGetTypes() throws Exception {
 		createClassWithXmlType();
 		assertEquals(1, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
 		
 		//add an unannotated class and make sure it's not added to the context root
 		createUnannotatedClassNamed("Foo");
 		assertEquals(1, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
 		
 		//annotate the class with @XmlType and test it's added to the context root
 		JavaResourceAbstractType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
@@ -252,8 +251,8 @@ public class GenericContextRootTests
 				});
 		
 		assertEquals(2, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType("test.Foo")));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNotNull((getContextRoot().getJavaType("test.Foo")));
 		
 		//remove the annotation from the class and test it's removed from the root context node
 		annotatedElement.edit(
@@ -264,20 +263,20 @@ public class GenericContextRootTests
 				});
 		
 		assertEquals(1, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNull(((JavaClass) getContextRoot().getJavaType("test.Foo")));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNull((getContextRoot().getJavaType("test.Foo")));
 	}
 	
 	public void testGetTypes2() throws Exception {
 		createEnumWithXmlType();
 		assertEquals(1, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaEnum) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
 		
 		//add an unannotated class and make sure it's not added to the context root
 		createUnannotatedEnumNamed("Foo");
 		assertEquals(1, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaEnum) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNull(((JavaEnum) getContextRoot().getJavaType("test.Foo")));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNull((getContextRoot().getJavaType("test.Foo")));
 		
 		//annotate the class with @XmlEnum and test it's added to the context root
 		JavaResourceEnum fooResourceType = (JavaResourceEnum) getJaxbProject().getJavaResourceType("test.Foo", JavaResourceAbstractType.AstNodeType.ENUM);
@@ -290,8 +289,8 @@ public class GenericContextRootTests
 				});
 		
 		assertEquals(2, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaEnum) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNotNull(((JavaEnum) getContextRoot().getJavaType("test.Foo")));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNotNull((getContextRoot().getJavaType("test.Foo")));
 		
 		//remove the annotation from the class and test it's removed from the root context node
 		annotatedElement.edit(
@@ -302,8 +301,8 @@ public class GenericContextRootTests
 				});
 		
 		assertEquals(1, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaEnum) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNull(((JavaEnum) getContextRoot().getJavaType("test.Foo")));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNull((getContextRoot().getJavaType("test.Foo")));
 	}
 	
 	public void testDirectReferencedSuperclass() throws Exception {
@@ -317,16 +316,16 @@ public class GenericContextRootTests
 		createClassWithXmlTypeAndSuperclassNamed(superclassName);
 		
 		assertEquals(2, IterableTools.size(getContextRoot().getJavaTypes()));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNotNull(((JavaClass) getContextRoot().getJavaType(fqSuperclassName)));
+		assertNotNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNotNull((getContextRoot().getJavaType(fqSuperclassName)));
 		
 		// remove annotated class - both classes removed from context
 		IFile file = (IFile) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME).getResource();
 		file.delete(true, null);
 		
 		assertTrue(IterableTools.isEmpty(getContextRoot().getJavaTypes()));
-		assertNull(((JavaClass) getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
-		assertNull(((JavaClass) getContextRoot().getJavaType(fqSuperclassName)));
+		assertNull((getContextRoot().getJavaType(FULLY_QUALIFIED_TYPE_NAME)));
+		assertNull((getContextRoot().getJavaType(fqSuperclassName)));
 	}
 	
 	public void testDirectReferencedAttribute() throws Exception {

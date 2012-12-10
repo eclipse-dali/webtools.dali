@@ -38,18 +38,22 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		
 	}	
 
+	@Override
 	public JavaPersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
+	@Override
 	public void setOwnerAnnotatedAttribute(	JavaPersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
+	@Override
 	public JavaPersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
+	@Override
 	public void setInverseAnnotatedAttribute(JavaPersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
@@ -68,6 +72,7 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 	} 	
 		
+	@Override
 	public RelDir getRelDir() {
 		return RelDir.BI;
 	}

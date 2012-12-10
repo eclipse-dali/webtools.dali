@@ -30,6 +30,7 @@ public class SaveEntityFeature extends AbstractCustomFeature {
 		super(fp);
 	}
 	
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}	
@@ -39,6 +40,7 @@ public class SaveEntityFeature extends AbstractCustomFeature {
 		JpaArtifactFactory.instance().forceSaveEntityClass(jpt, getFeatureProvider());
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}	

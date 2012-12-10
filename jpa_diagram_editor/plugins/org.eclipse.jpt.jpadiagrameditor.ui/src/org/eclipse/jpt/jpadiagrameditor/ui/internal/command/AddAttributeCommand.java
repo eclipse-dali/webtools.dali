@@ -188,7 +188,7 @@ public class AddAttributeCommand implements Command {
 			contents = attrFieldContent;
 		}
 		
-		type.createField(contents, null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		type.createField(contents, null, false, new NullProgressMonitor());
 		
 		type.createMethod(
 				genGetterContents(attributeName, attributeType, actName, attrTypeElementNames, annotationContents), null,
@@ -317,7 +317,7 @@ public class AddAttributeCommand implements Command {
 				+ actName.substring(1);
 		String contents = "    public " + JPAEditorUtil.returnSimpleName(type) + //$NON-NLS-1$
 				"<" //$NON-NLS-1$
-				+ ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				+ ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"get" + attrNameWithCapitalA + "() {\n" + //$NON-NLS-1$ //$NON-NLS-2$
 				"        return " //$NON-NLS-1$
 				+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$
@@ -348,11 +348,11 @@ public class AddAttributeCommand implements Command {
 		String contents = "    public void set" + attrNameWithCapitalA + //$NON-NLS-1$
 				"(" //$NON-NLS-1$
 				+ JPAEditorUtil.returnSimpleName(type)
-				+ //$NON-NLS-1$
+				+ 
 				"<" //$NON-NLS-1$
-				+ ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> param) " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				+ ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> param) " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"{\n" //$NON-NLS-1$
-				+ //$NON-NLS-1$
+				+ 
 				"        this." //$NON-NLS-1$
 				+ JPAEditorUtil.decapitalizeFirstLetter(actName)
 				+ " = param;\n" + //$NON-NLS-1$

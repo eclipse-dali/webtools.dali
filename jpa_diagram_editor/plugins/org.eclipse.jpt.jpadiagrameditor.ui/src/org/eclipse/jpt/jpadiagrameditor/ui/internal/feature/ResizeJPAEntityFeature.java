@@ -56,10 +56,12 @@ public class ResizeJPAEntityFeature extends DefaultResizeShapeFeature {
 		super.resizeShape(context);
 	}
 
+	@Override
 	public void resizeShape(final IResizeShapeContext context) {
 		final ContainerShape entityShape = (ContainerShape) context.getShape();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(entityShape);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				resizeContainerShape(context);
 				JPAEditorUtil.rearrangeAllConnections(entityShape,
@@ -68,6 +70,7 @@ public class ResizeJPAEntityFeature extends DefaultResizeShapeFeature {
 		});
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

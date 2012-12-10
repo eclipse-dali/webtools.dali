@@ -52,6 +52,7 @@ public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 		final Wrp wrp = new Wrp();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(entityShape);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				JavaPersistentAttribute newAttr = (JavaPersistentAttribute) context.getNewObject();
 				String txt = JPAEditorUtil.getText(newAttr);
@@ -133,6 +134,7 @@ public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 		return textShape;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

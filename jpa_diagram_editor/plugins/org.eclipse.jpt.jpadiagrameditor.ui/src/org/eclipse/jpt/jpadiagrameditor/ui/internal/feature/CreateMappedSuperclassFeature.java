@@ -105,11 +105,13 @@ public class CreateMappedSuperclassFeature extends
 		return new Object[] {};
 	}
 
+	@Override
 	public String getCreateImageId() {
 		return JPAEditorImageProvider.ADD_MAPPED_SUPERCLASS;
 	}
 
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

@@ -53,7 +53,8 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
     	this.shouldRearrangeIsARelations = shouldRearrangeIsARelations;
     }
     
-    public void preRemove(IRemoveContext context) {
+    @Override
+	public void preRemove(IRemoveContext context) {
     	PictogramElement pe = context.getPictogramElement();
     	final Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	Set<Shape> shapesForDeletion = new HashSet<Shape>();
@@ -80,11 +81,13 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
     	} 			
     }
     
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}
 
 	
+	@Override
 	public void execute(IContext ctx) {
 		if (!IRemoveContext.class.isInstance(ctx)) 
 			return;
@@ -100,6 +103,7 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 			MessageDialog dialog = new MessageDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 					JPAEditorMessages.JPASolver_closeEditors, null, message,
 			MessageDialog.WARNING, new String[]{JPAEditorMessages.BTN_OK, JPAEditorMessages.BTN_CANCEL}, 0) {
+				@Override
 				protected int getShellStyle() {
 					return SWT.CLOSE 
 					| SWT.TITLE | SWT.BORDER
@@ -107,9 +111,10 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 					| getDefaultOrientation();}};
 			if (dialog.open() != 0)	
 				return;    			
-		}		
+		}
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
     	ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				removeEntityFromDiagram(context);
 			}
@@ -121,7 +126,8 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 	    	super.execute(context);
 	    }
 	
-    public void postRemove(IRemoveContext context) {
+    @Override
+	public void postRemove(IRemoveContext context) {
     	if (shouldRearrangeIsARelations)
     		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
     }

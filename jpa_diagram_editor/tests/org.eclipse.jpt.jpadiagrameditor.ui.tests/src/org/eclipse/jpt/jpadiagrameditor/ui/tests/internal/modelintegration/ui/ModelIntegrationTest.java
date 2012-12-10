@@ -50,6 +50,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class ModelIntegrationTest {
 	
 	private static final String CODE_GENERATED = "CODE_GENERATED";

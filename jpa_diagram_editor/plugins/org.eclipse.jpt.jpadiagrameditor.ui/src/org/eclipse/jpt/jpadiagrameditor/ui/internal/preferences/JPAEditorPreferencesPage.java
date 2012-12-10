@@ -118,6 +118,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 		fDefaultDiagramFolderField = new CustomStringFieldEditor(
 				JPAEditorPreferenceInitializer.PROPERTY_DIAGRAM_FOLDER,
 				JPAEditorMessages.JPAEditorPreferencesPage_defaultFolderControlLabel, getFieldEditorParent()) {
+					@Override
 					protected IStatus validateValue() {
 						return validateDefaultFolder(IPath.SEPARATOR + FICTIVE_PROJECT_NAME + IPath.SEPARATOR
 													 + fDefaultDiagramFolderField.getStringValue().trim(), FICTIVE_PROJECT_NAME);
@@ -138,6 +139,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 		fDefaultEntityPackageField = new CustomStringFieldEditor(
 				JPAEditorPreferenceInitializer.PROPERTY_ENTITY_PACKAGE,
 				JPAEditorMessages.JPAEditorPreferencesPage_DefaultPackageToUse, getFieldEditorParent()) {
+					@Override
 					protected IStatus validateValue() {
 						return validateDefaultPackage(fDefaultEntityPackageField.getStringValue().trim());
 					}	
@@ -160,6 +162,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 		fDefaultTableNamePrefix = new CustomStringFieldEditor(
 				JPAEditorPreferenceInitializer.PROPERTY_TABLE_NAME_PREFIX,
 				JPAEditorMessages.JPAEditorPreferencesPage_DefaultTableNameLabel, getFieldEditorParent()) {
+					@Override
 					protected IStatus validateValue() {
 						return validateTableNamePrefix(fDefaultTableNamePrefix.getStringValue().trim());
 					}
@@ -239,6 +242,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 		String msg;
 		String prefixMsg;
 		
+		@Override
 		protected boolean checkState() {
 			IStatus stat = validateValue();
 			if (stat.getSeverity() == IStatus.ERROR) {
@@ -250,6 +254,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 			return true;			
 		}
 		
+		@Override
 		protected boolean doCheckState() {
 			return true;
 		}	

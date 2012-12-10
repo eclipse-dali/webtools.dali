@@ -52,7 +52,8 @@ public class CreateManyToManyUniDirRelationFeature extends CreateManyToManyRelat
 		return relation;		
 	}
 
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_MANY_TO_MANY_1_DIR;
     }
     

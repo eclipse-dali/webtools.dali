@@ -89,12 +89,14 @@ public class IsARelation {
 				startJpt.getName() + SEPARATOR + endJpt.getName();
 	}
 	
+	@Override
 	public boolean equals(Object otherRel) {
 		if (!IsARelation.class.isInstance(otherRel))
 			return false;
 		return getId().equals(((IsARelation)otherRel).getId());
 	}
 	
+	@Override
 	public int hashCode() {
 		return getId().hashCode();
 	}

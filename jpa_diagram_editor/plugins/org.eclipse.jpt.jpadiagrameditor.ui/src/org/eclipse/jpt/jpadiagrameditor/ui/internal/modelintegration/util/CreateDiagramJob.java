@@ -45,6 +45,7 @@ public class CreateDiagramJob extends Job {
 		this.snap = snap;
 	}
 
+	@Override
 	public IStatus run(IProgressMonitor monitor) {
 		try{
 			monitor.beginTask(JPAEditorMessages.CreateDiagramJob_getJPADiagramMonitorTaskName, 3); 

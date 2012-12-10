@@ -199,7 +199,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				cont.setWidth(width);
 				cont.setHeight(height);
 				RoundedRectangle rect = AddJPAEntityFeature.createEntityRectangle(cont, cs, dot, fp.getDiagramTypeProvider().getDiagram()); 	
-				rect.setFilled(true);
+				rect.setFilled(Boolean.TRUE);
 				
 				IRemoveContext ctx = new RemoveContext(pict); 
 				RemoveJPAEntityFeature ft = new RemoveJPAEntityFeature(fp, true);
@@ -357,6 +357,6 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			return newJptName;
 		}
 
-	};
+	}
 
 }

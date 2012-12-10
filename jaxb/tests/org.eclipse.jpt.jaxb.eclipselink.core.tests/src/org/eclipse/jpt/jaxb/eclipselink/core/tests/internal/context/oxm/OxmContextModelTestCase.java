@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class OxmContextModelTestCase
 		extends ELJaxbContextModelTestCase {
 	

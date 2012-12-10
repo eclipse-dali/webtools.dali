@@ -34,10 +34,12 @@ public class DiscardAndRemoveAllEntitiesFeature extends RemoveAllEntitiesFeature
 		super(fp);
 	}
 	
+	@Override
 	public String getConfirmationText() {
 		return JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAndDiscardAllEntitiesConfirmation;
 	}
 	
+	@Override
 	public void execute(ICustomContext context) {
 		MessageDialog dlg = new MessageDialog(Display.getCurrent().getShells()[0], 
 												JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAllEntitiesMenu, 

@@ -72,8 +72,9 @@ public class DeleteAttributeCommand implements Command {
 							new String[0]);
 				}		
 				try {
-					if ((getAttributeMethod != null) && getAttributeMethod.exists());
+					if ((getAttributeMethod != null) && getAttributeMethod.exists()) {
 						typeSignature = getAttributeMethod.getReturnType();
+					}
 				} catch (JavaModelException e1) {
 					JPADiagramEditorPlugin.logError("Cannot obtain the type of the getter with name " + methodName + "()", e1); 	//$NON-NLS-1$	//$NON-NLS-2$
 				}			
@@ -95,7 +96,7 @@ public class DeleteAttributeCommand implements Command {
 					JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
 				} 
 				try {
-					methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
+					methodName = getterPrefix + attrNameWithCapitalLetter;
 					if (getAttributeMethod != null) {
 						typeSignature = getAttributeMethod.getReturnType();
 						if (getAttributeMethod.exists())
@@ -106,7 +107,7 @@ public class DeleteAttributeCommand implements Command {
 				} 	
 			} else {
 				try {
-					methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
+					methodName = getterPrefix + attrNameWithCapitalLetter;
 					if (getAttributeMethod.exists()) {
 						typeSignature = getAttributeMethod.getReturnType();
 						getAttributeMethod.delete(true, new NullProgressMonitor());

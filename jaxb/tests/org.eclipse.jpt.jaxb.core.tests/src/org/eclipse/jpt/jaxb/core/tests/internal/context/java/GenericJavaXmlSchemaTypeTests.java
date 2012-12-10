@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
-import org.eclipse.xsd.util.XSDUtil;
+import org.eclipse.xsd.util.XSDConstants;
 
 
 @SuppressWarnings("nls")
@@ -92,8 +92,8 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
 		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getDefaultNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
+		assertEquals(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getDefaultNamespace());
+		assertEquals(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 		
 		contextXmlSchemaType.getQName().setSpecifiedNamespace("foo");
 		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
@@ -106,7 +106,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertNull(schemaTypeAnnotation.getNamespace());
 		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
+		assertEquals(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -116,8 +116,8 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getDefaultNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
+		assertEquals(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getDefaultNamespace());
+		assertEquals(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);

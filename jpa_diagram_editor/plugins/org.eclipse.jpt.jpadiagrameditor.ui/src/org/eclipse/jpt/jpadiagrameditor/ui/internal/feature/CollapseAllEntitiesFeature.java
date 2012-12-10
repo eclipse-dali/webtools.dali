@@ -47,6 +47,7 @@ public class CollapseAllEntitiesFeature extends AbstractCustomFeature implements
 		final EList<Shape> entShapes = diagram.getChildren();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				for (final PictogramElement el : entShapes) {
 					String collapseFeatures = Graphiti.getPeService().getPropertyValue(el, JPAEditorConstants.COLLAPSE_FEATURES);
@@ -67,6 +68,7 @@ public class CollapseAllEntitiesFeature extends AbstractCustomFeature implements
 		return true;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

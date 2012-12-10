@@ -43,7 +43,8 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 		super(fp);		
 	}
 	
-    public void delete(final IDeleteContext context) {
+    @Override
+	public void delete(final IDeleteContext context) {
     	PictogramElement pe = context.getPictogramElement();
     	
     	JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(pe);
@@ -51,6 +52,7 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
     	entityName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
     	TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
     	ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				deleteEl(context);
 			}
@@ -62,7 +64,8 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
     	super.delete(context);
     }
 	
-    protected void deleteBusinessObject(Object bo) {
+    @Override
+	protected void deleteBusinessObject(Object bo) {
     	JavaPersistentType jpt = null;
 		if (bo instanceof JavaPersistentType) {
 			jpt = (JavaPersistentType) bo;
@@ -81,10 +84,12 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 		} 	
     }
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}		    
 	
+	@Override
 	protected boolean getUserDecision(IDeleteContext context) {
 		String msg = "";  //$NON-NLS-1$
 		IMultiDeleteInfo multiDeleteInfo = context.getMultiDeleteInfo();

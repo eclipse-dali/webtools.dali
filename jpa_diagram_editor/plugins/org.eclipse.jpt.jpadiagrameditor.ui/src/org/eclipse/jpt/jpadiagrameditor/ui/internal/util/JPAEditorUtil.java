@@ -657,7 +657,7 @@ public class JPAEditorUtil {
 		}
 		
 		if (Math.abs(y - startCenterY) + 0.1 > startHalfHeight) {
-			startHorizontal = false;;
+			startHorizontal = false;
 			x = startCenterX + Math.round(Math.abs(startHalfHeight / yDelta) * xDelta);			
 			y = startCenterY + Math.round(startHalfHeight * Math.signum(yDelta));
 		}

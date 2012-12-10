@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class CreateDiagramTest {
 	
 	@Test
@@ -49,6 +50,7 @@ public class CreateDiagramTest {
 		createDiagramRunnable.setRule(ResourcesPlugin.getWorkspace().getRoot());
 		final Semaphore s = new Semaphore(0); 
 		createDiagramRunnable.addJobChangeListener(new JobChangeAdapter(){
+			@Override
 			public void done(IJobChangeEvent event) {
 				s.release();
 			}

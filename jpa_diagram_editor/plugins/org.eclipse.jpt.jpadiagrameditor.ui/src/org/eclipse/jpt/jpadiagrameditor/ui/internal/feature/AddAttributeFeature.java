@@ -67,6 +67,7 @@ public class AddAttributeFeature extends AbstractAddShapeFeature {
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(context.getTargetContainer());
 		final Wrp wrp = new Wrp();
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				ContainerShape textShape = graphicalAdd(context.getTargetContainer(), newAttr);
 				expand(newAttr);
@@ -104,6 +105,7 @@ public class AddAttributeFeature extends AbstractAddShapeFeature {
 		}
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

@@ -39,7 +39,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleListener;
 
-@SuppressWarnings("restriction")
+@SuppressWarnings({"restriction", "nls"})
 public class EditorTest {
 
 	@Test
@@ -121,6 +121,7 @@ public class EditorTest {
 				return provider;
 			}
 
+			@Override
 			public IWorkbenchPartSite getSite() {
 				return site;
 			}

@@ -47,6 +47,7 @@ public class ExpandAllEntitiesFeature extends AbstractCustomFeature{
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				EList<Shape> shapes = diagram.getChildren();
 				for (PictogramElement el : shapes) {			
@@ -77,6 +78,7 @@ public class ExpandAllEntitiesFeature extends AbstractCustomFeature{
 		return true;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

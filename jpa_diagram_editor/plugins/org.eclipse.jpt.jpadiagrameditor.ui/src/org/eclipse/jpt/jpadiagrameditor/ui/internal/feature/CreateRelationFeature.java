@@ -138,6 +138,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	abstract protected AbstractRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
 															   PictogramElement target, JavaPersistentType type);
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider(); 
 	}

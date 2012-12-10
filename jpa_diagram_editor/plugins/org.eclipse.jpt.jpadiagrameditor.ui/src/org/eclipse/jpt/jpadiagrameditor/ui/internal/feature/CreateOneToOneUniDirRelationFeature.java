@@ -54,7 +54,8 @@ public class CreateOneToOneUniDirRelationFeature extends CreateOneToOneRelationF
 		return res;
 	}
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_ONE_TO_ONE_1_DIR;
     }
     

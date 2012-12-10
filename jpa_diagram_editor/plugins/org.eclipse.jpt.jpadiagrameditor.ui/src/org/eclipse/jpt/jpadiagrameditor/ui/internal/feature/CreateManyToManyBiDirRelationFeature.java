@@ -60,7 +60,8 @@ public class CreateManyToManyBiDirRelationFeature extends CreateManyToManyRelati
 
 	}	
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_MANY_TO_MANY_2_DIR;
     }
     

@@ -44,7 +44,8 @@ public class RemoveAndSaveEntityFeature extends DefaultRemoveFeature {
     	super(fp);
     }
     
-    public void preRemove(IRemoveContext context) {
+    @Override
+	public void preRemove(IRemoveContext context) {
     	PictogramElement pe = context.getPictogramElement();
     	Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	Set<Shape> shapesForDeletion = new HashSet<Shape>();
@@ -68,13 +69,15 @@ public class RemoveAndSaveEntityFeature extends DefaultRemoveFeature {
     	} 			
     }
     
-    public void execute(IContext context) {
+    @Override
+	public void execute(IContext context) {
     	if (!IRemoveContext.class.isInstance(context)) 
 			return;
     	final IRemoveContext removeContext = (IRemoveContext)context; 
     	PictogramElement pe = removeContext.getPictogramElement();
     	TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
     	ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				removeEntityFromDiagram(removeContext);
 			}
@@ -85,11 +88,13 @@ public class RemoveAndSaveEntityFeature extends DefaultRemoveFeature {
     	super.remove(context);
     }
     
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}
 
-    public void postRemove(IRemoveContext context) {
+    @Override
+	public void postRemove(IRemoveContext context) {
     	JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());    	
     }
 	

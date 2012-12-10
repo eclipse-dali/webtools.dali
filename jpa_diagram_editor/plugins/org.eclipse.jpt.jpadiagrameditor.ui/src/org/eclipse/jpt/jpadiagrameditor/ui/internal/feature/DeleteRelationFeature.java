@@ -49,14 +49,17 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 		ut = fp.getJPAEditorUtil();
 	}
 	
+	@Override
 	public boolean canDelete(IDeleteContext context) {
 		return true;
 	}
 	
+	@Override
 	public boolean isAvailable(IContext context) {
 		return true;
 	}
 	
+	@Override
 	public boolean canExecute(IContext context) {
 		return true;
 	}	
@@ -65,7 +68,8 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
     	return JPAEditorMessages.DeleteRelationFeature_deleteRelationQuestion;
     }
 	
-    public void delete(IDeleteContext context) {
+    @Override
+	public void delete(IDeleteContext context) {
         PictogramElement pe = context.getPictogramElement();
         Object businessObjectForPictogramElement = getBusinessObjectForPictogramElement(pe);
         if (businessObjectForPictogramElement != null) {
@@ -144,6 +148,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
     	}
 	}	
     
+	@Override
 	public void postDelete(IDeleteContext context) {
         PictogramElement pe = context.getPictogramElement();
         Object businessObjectForPictogramElement = getBusinessObjectForPictogramElement(pe);
@@ -168,10 +173,12 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 	}
     
     
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}    
 	
+	@Override
 	protected boolean getUserDecision(IDeleteContext context) {
 		return MessageDialog.openQuestion(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 				JPAEditorMessages.DeleteFeature_deleteConfirm, JPAEditorMessages.DeleteRelationFeature_deleteRelationQuestion);

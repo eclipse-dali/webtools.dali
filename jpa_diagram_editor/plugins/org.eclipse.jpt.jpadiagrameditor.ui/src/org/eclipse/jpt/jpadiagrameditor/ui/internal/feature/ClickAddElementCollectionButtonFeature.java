@@ -38,10 +38,12 @@ public class ClickAddElementCollectionButtonFeature extends AbstractCreateFeatur
 		super(provider, "", "");	//$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+	@Override
 	public boolean canExecute(IContext context) {
 		return true;
 	}
 
+	@Override
 	public boolean canUndo(IContext context) {
 		return false;
 	}
@@ -70,18 +72,22 @@ public class ClickAddElementCollectionButtonFeature extends AbstractCreateFeatur
 		return new Object[] {newAttr};
 	}
 
+	@Override
 	public boolean isAvailable(IContext context) {
 		return true;
 	}
 
+	@Override
 	public String getName() {
 		return JPAEditorMessages.ClickAddElementCollectionButtonFeature_CreateElementCollectionAttributeFeatureName;  			
 	}
 
+	@Override
 	public String getDescription() {
 		return JPAEditorMessages.ClickAddElementCollectionButtonFeature_CreateElementCollectionAttributeFeatureDescription;  
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

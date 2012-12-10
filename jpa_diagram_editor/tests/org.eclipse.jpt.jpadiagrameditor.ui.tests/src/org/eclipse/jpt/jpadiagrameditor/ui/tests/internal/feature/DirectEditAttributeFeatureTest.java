@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeaturePr
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class DirectEditAttributeFeatureTest {
 
 	/**

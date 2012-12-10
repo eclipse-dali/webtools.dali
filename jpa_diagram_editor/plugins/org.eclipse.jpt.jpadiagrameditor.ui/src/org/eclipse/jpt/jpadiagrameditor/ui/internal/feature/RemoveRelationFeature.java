@@ -49,7 +49,8 @@ public class RemoveRelationFeature extends AbstractFeature implements IRemoveFea
 		super(fp);
 	}
 	
-    public boolean isAvailable(IContext context) {
+    @Override
+	public boolean isAvailable(IContext context) {
         return true;
     }	
 
@@ -86,6 +87,7 @@ public class RemoveRelationFeature extends AbstractFeature implements IRemoveFea
 			return;
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
 		RecordingCommand rc = new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				if (pe instanceof Shape) {
 					Shape shape = (Shape) pe;
@@ -130,6 +132,7 @@ public class RemoveRelationFeature extends AbstractFeature implements IRemoveFea
 	}
 		
     
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}    

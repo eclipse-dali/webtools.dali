@@ -31,6 +31,7 @@ public class OpenJPADetailsViewFeature extends AbstractCustomFeature {
 		super(fp);
 	}
 
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}	

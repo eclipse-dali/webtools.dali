@@ -162,6 +162,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		final CreateDiagramJob createDiagramRunnable = new CreateDiagramJob(persistenceUnit, 10, true);
 		createDiagramRunnable.setRule(ResourcesPlugin.getWorkspace().getRoot());
 		createDiagramRunnable.addJobChangeListener(new JobChangeAdapter(){
+			@Override
 			public void done(IJobChangeEvent event) {
 				shell.getDisplay().syncExec(new OpenEditorRunnable(createDiagramRunnable.getDiagram()));
 			}
@@ -201,7 +202,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		
 
 	private void handleException(Exception e) {
-		JPADiagramEditorPlugin.logError(ERROR_OPENING_DIAGRAM, e);;
+		JPADiagramEditorPlugin.logError(ERROR_OPENING_DIAGRAM, e);
 		IStatus status = new ErrStatus(IStatus.ERROR, JPADiagramEditor.ID, e.toString(), e);
 		ErrorDialog.openError(shell, JPAEditorMessages.OpenJpaDiagramActionDelegate_openJPADiagramErrorMsgTitle, 
 				ERROR_OPENING_DIAGRAM, status);
@@ -213,6 +214,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 			super(severity, message, message, exception);
 		}
 		
+		@Override
 		public IStatus[] getChildren() {
 			StackTraceElement[] st = getException().getStackTrace();
 			IStatus[] res = new IStatus[st == null ? 0 : st.length];

@@ -24,6 +24,7 @@ abstract public class OneToOneRelation extends AbstractRelation {
 		super(owner, inverse);
 	}
 	
+	@Override
 	public RelType getRelType() {
 		return RelType.ONE_TO_ONE;
 	}

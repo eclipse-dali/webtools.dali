@@ -51,6 +51,7 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidi
 		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute, isMap);
 	} 
 	
+	@Override
 	public RelDir getRelDir() {
 		return RelDir.UNI;
 	}

@@ -644,7 +644,6 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
 		AttributeJoiningStrategyPropertyChangeListener lsnr = null;
 		lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
-		lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
@@ -670,7 +669,6 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		WeakReference<AttributeRelationshipReferencePropertyChangeListener> lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
 		AttributeRelationshipReferencePropertyChangeListener lsnr = null;
 		lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
-		lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
@@ -766,7 +764,6 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
-		lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr != null) {
@@ -793,7 +790,6 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		WeakReference<AttributeMappingOptionalityChangeListener> lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
-		lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr != null) {
@@ -814,7 +810,6 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		WeakReference<AttributeRelationshipReferencePropertyChangeListener> lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
-		lsnr = null;
 		if (lsnrRef != null)
 			lsnr = lsnrRef.get();
 		if (lsnr != null) {

@@ -117,7 +117,7 @@ public class ModelIntegrationUtil {
 	    for(IResource res : resources){
 	    	if(res instanceof IFolder) {
 	    		folderPath = ((IFolder)res).getFullPath();
-				IFile existingXMIFile =((IFolder)res).getFile(xmiFileName); //$NON-NLS-1$
+				IFile existingXMIFile =((IFolder)res).getFile(xmiFileName);
 	    		if(existingXMIFile != null && existingXMIFile.exists()){
 		    		IFileStore folder = EFS.getLocalFileSystem().getStore(existingXMIFile.getLocationURI());
 	    			folder.copy(newXMIFile, EFS.OVERWRITE, null);
@@ -260,7 +260,7 @@ public class ModelIntegrationUtil {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(diagramName);
 		Iterator<JpaProject> iter = getJpaProjectManager().getJpaProjects().iterator();
 		while (iter.hasNext()) {
-			JpaProject jpaProject = (JpaProject) iter.next();
+			JpaProject jpaProject = iter.next();
 			if(jpaProject.getName().equalsIgnoreCase(diagramName)){
 				return jpaProject;
 			}

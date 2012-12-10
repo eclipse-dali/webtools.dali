@@ -70,7 +70,7 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		Polygon arrow = Graphiti.getGaService().createPolygon(cd, new int[] { 11, 3, 0, 0, 11, -3, 11, 3 });
 		arrow.setForeground(Graphiti.getGaService().manageColor(connection.getParent(), JPAEditorConstants.CONNECTION_LINE_COLOR));
 		arrow.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
-		arrow.setFilled(true);
+		arrow.setFilled(Boolean.TRUE);
 		return cd;
 	}
 	
@@ -80,7 +80,7 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		arrow.setForeground(Graphiti.getGaService().manageColor(connection.getParent(), JPAEditorConstants.IS_A_CONNECTION_LINE_COLOR));
 		arrow.setBackground(Graphiti.getGaService().manageColor(connection.getParent(), JPAEditorConstants.IS_A_ARROW_COLOR));
 		arrow.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
-		arrow.setFilled(true);
+		arrow.setFilled(Boolean.TRUE);
 		return cd;
 	}
 	
@@ -90,7 +90,7 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		arrow.setForeground(Graphiti.getGaService().manageColor(connection.getParent(), JPAEditorConstants.EMBEDDED_CONNECTION_LINE_COLOR));
 		arrow.setBackground(Graphiti.getGaService().manageColor(connection.getParent(), JPAEditorConstants.EMBEDDED_CONNECTION_LINE_COLOR));
 		arrow.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
-		arrow.setFilled(true);
+		arrow.setFilled(Boolean.TRUE);
 
 		return cd;
 	}
@@ -101,7 +101,7 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		arrow.setForeground(Graphiti.getGaService().manageColor(connection.getParent(),	JPAEditorConstants.CONNECTION_LINE_COLOR));
 		arrow.setBackground(Graphiti.getGaService().manageColor(connection.getParent(),	JPAEditorConstants.CONNECTION_LINE_COLOR));
 		arrow.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
-		arrow.setFilled(true);
+		arrow.setFilled(Boolean.TRUE);
 		return cd;
 	}
 

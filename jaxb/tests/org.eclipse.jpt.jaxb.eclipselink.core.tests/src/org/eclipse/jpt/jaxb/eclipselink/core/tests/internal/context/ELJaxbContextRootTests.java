@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 
+@SuppressWarnings("nls")
 public class ELJaxbContextRootTests
 		extends ELJaxbContextModelTestCase {
 	

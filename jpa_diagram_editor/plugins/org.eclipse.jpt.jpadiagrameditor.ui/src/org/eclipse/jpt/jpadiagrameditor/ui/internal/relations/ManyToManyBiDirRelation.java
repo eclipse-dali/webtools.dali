@@ -41,10 +41,12 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 	/* (non-Javadoc)
 	 * @see org.eclipse.jpt.jpadiagrameditor.ui.relations.BidirectionalRelation#getOwnerAnnotatedAttribute()
 	 */
+	@Override
 	public JavaPersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
+	@Override
 	public void setOwnerAnnotatedAttribute(
 			JavaPersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
@@ -53,10 +55,12 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 	/* (non-Javadoc)
 	 * @see org.eclipse.jpt.jpadiagrameditor.ui.relations.BidirectionalRelation#getInverseAnnotatedAttribute()
 	 */
+	@Override
 	public JavaPersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 
+	@Override
 	public void setInverseAnnotatedAttribute(
 			JavaPersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
@@ -78,6 +82,7 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 	} 	
 	
+	@Override
 	public RelDir getRelDir() {
 		return RelDir.BI;
 	}

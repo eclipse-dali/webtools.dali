@@ -65,7 +65,7 @@ public final class Tools
 	 * Return a file representing the current working directory.
 	 */
 	public static File currentWorkingDirectory() {
-		return new File(USER_DIRECTORY); //$NON-NLS-1$
+		return new File(USER_DIRECTORY);
 	}
 	
 	/**

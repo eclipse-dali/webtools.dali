@@ -48,11 +48,13 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 	/**
 	 * @deprecated use the {@link GraphicalRemoveAttributeFeature}
 	 */
+	@Deprecated
 	public void execute(ICustomContext context) {
 		GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(getFeatureProvider());
 		remove.execute(context);
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
@@ -70,8 +72,8 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 
 	public static Rectangle addRectangleForText(ContainerShape cs, int attribIndex, int width) {
 		Rectangle rect = Graphiti.getGaService().createRectangle(cs);
-		rect.setFilled(false);
-		rect.setLineVisible(false);
+		rect.setFilled(Boolean.FALSE);
+		rect.setLineVisible(Boolean.FALSE);
 		rect.setHeight(JPAEditorConstants.ATTRIBUTE_RECT_HEIGHT);
 		rect.setWidth(width - JPAEditorConstants.ATTRIBUTE_TEXT_RECT_WIDTH_REDUCER);
 		rect.setX(JPAEditorConstants.ATTRIBUTE_TEXT_RECT_X);
@@ -83,8 +85,8 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 
 	public static Rectangle addRectangleForIcon(ContainerShape cs, int attribIndex) {
 		Rectangle rect = Graphiti.getGaService().createRectangle(cs);
-		rect.setFilled(false);
-		rect.setLineVisible(false);
+		rect.setFilled(Boolean.FALSE);
+		rect.setLineVisible(Boolean.FALSE);
 		rect.setHeight(JPAEditorConstants.ICON_RECT_HEIGHT);
 		rect.setX(JPAEditorConstants.ICON_RECT_LEFT_OFFSET);
 		rect.setWidth(JPAEditorConstants.ICON_RECT_WIDTH);
@@ -109,7 +111,7 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 		IColorConstant background = JpaArtifactFactory.instance().getBackground(dot);
 		rectangle.setForeground(manageColor(background));
 		rectangle.setBackground(manageColor(foreground));
-		rectangle.setLineVisible(false);
+		rectangle.setLineVisible(Boolean.FALSE);
 		Graphiti.getGaService().setSize(rectangle, width, JPAEditorConstants.SEPARATOR_HEIGHT);
 		Graphiti.getGaService().setLocationAndSize(rectangle, 0, y, width, JPAEditorConstants.SEPARATOR_HEIGHT);
 		return shape;

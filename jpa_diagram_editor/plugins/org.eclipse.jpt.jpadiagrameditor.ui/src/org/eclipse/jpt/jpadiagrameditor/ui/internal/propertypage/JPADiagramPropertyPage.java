@@ -58,7 +58,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	public static final String PROJECT_SETTINGS_PATH = "/.settings/org.eclipse.jpt.jpadiagrameditor.ui";	//$NON-NLS-1$;
 	protected IProject project = null;
-	protected boolean isJPA10Project = false;				//$NON-NLS-1$;
+	protected boolean isJPA10Project = false;
 
 	private Properties editorProps;
 

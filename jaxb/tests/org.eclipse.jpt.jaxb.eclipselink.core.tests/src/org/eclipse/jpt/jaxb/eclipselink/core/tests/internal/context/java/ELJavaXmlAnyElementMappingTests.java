@@ -25,7 +25,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyE
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbContextModelTestCase;
 
-
+@SuppressWarnings("nls")
 public class ELJavaXmlAnyElementMappingTests
 		extends ELJaxbContextModelTestCase {
 	

@@ -44,7 +44,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
+@SuppressWarnings("nls")
 public class JPAProjectListenerTest {
 	private IJPAEditorFeatureProvider featureProvider;
 	final String TEST_PROJECT = "Test";

@@ -45,6 +45,7 @@ import org.eclipse.graphiti.platform.IDiagramEditor;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -189,28 +190,26 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 				if (dialog.open() == 1) {
 					closeEditor();		
 					return true;
-				} else {
-					IStatus stat = ResourcesPlugin.getWorkspace().validateEdit(new IFile[]{f}, null);
-					if (!stat.isOK()) {
-						message = NLS.bind(JPAEditorMessages.JPAEditorDiagramTypeProvider_cantMakeDiagramWritableMsg, 
-								stat.getMessage());;
-						dialog = new MessageDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-								JPAEditorMessages.JPAEditorDiagramTypeProvider_cantMakeDiagramWritableTitle, null, message,
-								MessageDialog.CANCEL, new String[] {JPAEditorMessages.BTN_OK}, 0) {
-							@Override
-							protected int getShellStyle() {
-								return SWT.CLOSE | SWT.TITLE | SWT.BORDER
-									| SWT.APPLICATION_MODAL
-									| getDefaultOrientation();
-							}
-						};
-						dialog.open();
-						closeEditor();						
-						return true;
-					} else {
-						readOnly = false;
-					}
 				}
+				IStatus stat = ResourcesPlugin.getWorkspace().validateEdit(new IFile[]{f}, null);
+				if (!stat.isOK()) {
+					message = NLS.bind(JPAEditorMessages.JPAEditorDiagramTypeProvider_cantMakeDiagramWritableMsg, 
+							stat.getMessage());
+					dialog = new MessageDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+							JPAEditorMessages.JPAEditorDiagramTypeProvider_cantMakeDiagramWritableTitle, null, message,
+							Window.CANCEL, new String[] {JPAEditorMessages.BTN_OK}, 0) {
+						@Override
+						protected int getShellStyle() {
+							return SWT.CLOSE | SWT.TITLE | SWT.BORDER
+								| SWT.APPLICATION_MODAL
+								| getDefaultOrientation();
+						}
+					};
+					dialog.open();
+					closeEditor();						
+					return true;
+				}
+				readOnly = false;
 			} else {
 				return readOnly;
 			}

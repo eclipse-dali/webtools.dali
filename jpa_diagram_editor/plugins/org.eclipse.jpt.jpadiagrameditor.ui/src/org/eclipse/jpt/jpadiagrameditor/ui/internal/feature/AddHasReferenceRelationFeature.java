@@ -71,6 +71,7 @@ public class AddHasReferenceRelationFeature extends AbstractAddFeature {
 		
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		RecordingCommand rc = new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				FreeFormConnection connection = createConnection(addConContext, relation, diagram);
 				imageCreator.createHasReferenceConnectionLine(diagram, connection);
@@ -109,6 +110,7 @@ public class AddHasReferenceRelationFeature extends AbstractAddFeature {
 		return connection;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

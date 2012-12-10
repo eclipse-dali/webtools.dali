@@ -46,6 +46,7 @@ public class CollapseCompartmentShapeFeature extends AbstractCustomFeature{
 		final GraphicsAlgorithm algo = el.getGraphicsAlgorithm();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(algo);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 			    algo.setHeight(JPAEditorConstants.COMPARTMENT_MIN_HEIGHT);
 				GraphicsUpdater.updateEntityShape(entityShape);
@@ -60,6 +61,7 @@ public class CollapseCompartmentShapeFeature extends AbstractCustomFeature{
 		return true;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

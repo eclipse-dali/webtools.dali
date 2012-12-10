@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
 
+@SuppressWarnings("nls")
 public class GenericJavaXmlSeeAlsoTests
 		extends JaxbContextModelTestCase {
 	

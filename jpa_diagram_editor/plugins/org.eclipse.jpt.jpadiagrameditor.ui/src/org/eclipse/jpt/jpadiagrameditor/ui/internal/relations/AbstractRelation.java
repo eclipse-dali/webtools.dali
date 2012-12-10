@@ -99,10 +99,12 @@ abstract public class AbstractRelation implements IRelation {
 		return inverseAttributeName;
 	}
 	
+	@Override
 	public int hashCode() {
 		return getId().hashCode();
 	}
 	
+	@Override
 	public boolean equals(Object otherRel) {
 		if (!IRelation.class.isInstance(otherRel))
 			return false;

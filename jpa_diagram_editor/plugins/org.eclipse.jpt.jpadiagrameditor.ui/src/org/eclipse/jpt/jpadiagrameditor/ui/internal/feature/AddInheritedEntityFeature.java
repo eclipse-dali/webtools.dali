@@ -70,6 +70,7 @@ public class AddInheritedEntityFeature extends AbstractAddFeature {
 		
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		RecordingCommand rc = new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				FreeFormConnection connection = createConnection(addConContext, diagram);
 				imageCreator.createIsAConnectionLine(diagram, connection);
@@ -107,6 +108,7 @@ public class AddInheritedEntityFeature extends AbstractAddFeature {
 		return connection;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

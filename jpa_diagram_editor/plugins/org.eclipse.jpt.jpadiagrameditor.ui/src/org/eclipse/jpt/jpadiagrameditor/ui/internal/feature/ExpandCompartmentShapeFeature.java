@@ -53,6 +53,7 @@ public class ExpandCompartmentShapeFeature extends AbstractCustomFeature{
         final ContainerShape entityShape = containerShape.getContainer();
         TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(algo);
         ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 		        algo.setHeight(pictHeight);
 		        int height = GraphicsUpdater.getPrimaryShape(entityShape).getGraphicsAlgorithm().getHeight() +
@@ -106,6 +107,7 @@ public class ExpandCompartmentShapeFeature extends AbstractCustomFeature{
 		return ret;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

@@ -89,7 +89,8 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	    return true;
 	}
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ADD_INHERITED_ENTITY;
     }	
     
@@ -104,6 +105,7 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	    return null;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider(); 
 	}

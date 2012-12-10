@@ -45,6 +45,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
     }
 	
 	
+	@Override
 	public boolean canUndo(IContext context) {
 		return false;
 	}
@@ -61,7 +62,8 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 		JpaArtifactFactory.instance().deleteAttribute(jpt, attrName, getFeatureProvider());
 	}	
 	
-    public void delete(IDeleteContext context) {
+    @Override
+	public void delete(IDeleteContext context) {
     	delete(context, true);
     }
     
@@ -91,7 +93,8 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
     }
 
     
-    protected void deleteBusinessObjects(Object[] businessObjects) {
+    @Override
+	protected void deleteBusinessObjects(Object[] businessObjects) {
         if (businessObjects != null) {
             for (Object bo : businessObjects) {
                 deleteBusinessObject(bo);
@@ -99,18 +102,22 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
         }
     }    
 		
+	@Override
 	public boolean isAvailable(IContext context) {
 		return true;
 	}
 
+	@Override
 	public String getName() {
 		return JPAEditorMessages.ClickRemoveAttributeButtonFeature_createAttributeButtonlabel; 
 	}
 
+	@Override
 	public String getDescription() {
 		return JPAEditorMessages.ClickRemoveAttributeButtonFeature_createAttributeButtonDescription; 
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

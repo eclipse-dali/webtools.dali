@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDe
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlKeyAnnotation;
 
-
+@SuppressWarnings("nls")
 public class XmlKeyAnnotationTests
 		extends ELJaxbJavaResourceModelTestCase {
 	

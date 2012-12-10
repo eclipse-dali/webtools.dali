@@ -35,6 +35,7 @@ public class RestoreEntityFeature extends AbstractCustomFeature {
 		super(fp);
 	}
 	
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}
@@ -52,6 +53,7 @@ public class RestoreEntityFeature extends AbstractCustomFeature {
 					JPAEditorMessages.JPASolver_closeEditors, null, message,
 					MessageDialog.WARNING,
 					new String[] { JPAEditorMessages.BTN_OK }, 0) {
+				@Override
 				protected int getShellStyle() {
 					return SWT.CLOSE | SWT.TITLE | SWT.BORDER
 							| SWT.APPLICATION_MODAL | getDefaultOrientation();
@@ -63,6 +65,7 @@ public class RestoreEntityFeature extends AbstractCustomFeature {
 		JpaArtifactFactory.instance().restoreEntityClass(jpt, getFeatureProvider());		
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}	

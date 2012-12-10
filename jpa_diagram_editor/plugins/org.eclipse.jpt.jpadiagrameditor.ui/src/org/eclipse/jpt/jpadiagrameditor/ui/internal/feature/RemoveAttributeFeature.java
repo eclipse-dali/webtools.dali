@@ -62,18 +62,22 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 	public void setKey(String key) {
 	}
 
+	@Override
 	public boolean isAvailable(IContext context) {
 		return false;
 	}
 
+	@Override
 	public boolean canExecute(IContext context) {
 		return false;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
 
+	@Override
 	public void preRemove(IRemoveContext context) {
 		final PictogramElement pe = context.getPictogramElement();
 		if (pe == null) {
@@ -137,6 +141,7 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 		ft.remove(ctx);
 	}
 
+	@Override
 	public void postRemove(IRemoveContext context) {
 		if (skipCreateRelations)
 			return;

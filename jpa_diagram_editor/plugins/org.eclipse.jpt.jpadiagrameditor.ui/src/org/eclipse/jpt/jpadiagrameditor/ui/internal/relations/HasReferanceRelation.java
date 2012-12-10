@@ -82,12 +82,14 @@ public abstract class HasReferanceRelation {
 				startJpt.getName() + SEPARATOR + relTypeToIdPart.get(relType) + endJpt.getName()+ "-" + embeddedAttributeName; //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean equals(Object otherRel) {
 		if (!HasReferanceRelation.class.isInstance(otherRel))
 			return false;
 		return getId().equals(((HasReferanceRelation)otherRel).getId());
 	}
 	
+	@Override
 	public int hashCode() {
 		return getId().hashCode();
 	}

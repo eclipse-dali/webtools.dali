@@ -33,6 +33,7 @@ public class JPAEditorContextMenuProvider extends DiagramEditorContextMenuProvid
 	protected void addDefaultMenuGroupEdit(IMenuManager manager, Point menuLocation) {
 	}
 	
+	@Override
 	protected void addActionToMenuIfAvailable(IMenuManager manager, String actionId, String menuGroup) {
 		if (actionId.equals("predefined remove action") ||	//$NON-NLS-1$
 			actionId.equals("predefined update action")) 	//$NON-NLS-1$

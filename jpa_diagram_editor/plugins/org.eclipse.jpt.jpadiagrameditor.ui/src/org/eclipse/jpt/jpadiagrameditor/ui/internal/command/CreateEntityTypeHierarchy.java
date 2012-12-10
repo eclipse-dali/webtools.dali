@@ -74,11 +74,9 @@ public class CreateEntityTypeHierarchy implements Command {
 				edit.addChild(new DeleteEdit(offset, length));
 			}
 
-			if (edit != null) {
-				TextEditCopier copier = new TextEditCopier(edit);
-				TextEdit copy = copier.perform();
-				subCU.applyTextEdit(copy, new NullProgressMonitor());
-			}
+			TextEditCopier copier = new TextEditCopier(edit);
+			TextEdit copy = copier.perform();
+			subCU.applyTextEdit(copy, new NullProgressMonitor());
 
 		} catch (CoreException exception) {
 			JPADiagramEditorPlugin.logError(exception);

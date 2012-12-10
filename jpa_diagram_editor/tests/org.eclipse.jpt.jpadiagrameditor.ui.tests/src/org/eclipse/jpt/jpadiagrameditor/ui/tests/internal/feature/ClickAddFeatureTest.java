@@ -39,6 +39,7 @@ import org.eclipse.ui.IWorkbenchPartSite;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class ClickAddFeatureTest {
 	
 	private IJPAEditorFeatureProvider featureProvider;

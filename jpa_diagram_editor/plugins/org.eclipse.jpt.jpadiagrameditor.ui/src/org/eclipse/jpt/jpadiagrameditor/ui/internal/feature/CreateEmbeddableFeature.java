@@ -113,10 +113,12 @@ public class CreateEmbeddableFeature extends AbstractCreateFeature {
 		return new Object[] {};
 	}
 
+	@Override
 	public String getCreateImageId() {
 		return JPAEditorImageProvider.ADD_EMBEDDABLE;
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

@@ -29,6 +29,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbContextModelTestCase;
 
+@SuppressWarnings("nls")
 
 public class ELJavaXmlElementMappingTests
 		extends ELJaxbContextModelTestCase {

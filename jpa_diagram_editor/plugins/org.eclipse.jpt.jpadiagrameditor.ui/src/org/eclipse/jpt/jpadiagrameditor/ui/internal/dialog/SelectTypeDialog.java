@@ -86,19 +86,22 @@ public class SelectTypeDialog extends TitleAreaDialog {
 		this.type = initialType;
 	}
 	
-    protected Control createContents(Composite parent) {
+    @Override
+	protected Control createContents(Composite parent) {
         Control contents = super.createContents(parent);
         initializeControls();
         validatePage();
         return contents;
     }
     
-    protected void configureShell(Shell shell) {
+    @Override
+	protected void configureShell(Shell shell) {
         super.configureShell(shell);
         shell.setText(JPAEditorMessages.SelectTypeDialog_chooseAttributeTypeDialogWindowTitle);
     }
     
     
+	@Override
 	protected Point getInitialSize() {
 		return new Point(convertHorizontalDLUsToPixels(320),
 						 convertVerticalDLUsToPixels(120));
@@ -108,11 +111,13 @@ public class SelectTypeDialog extends TitleAreaDialog {
 		return type;
 	}
 	
+	@Override
 	protected void buttonPressed(int buttonId) {
 		type = text.getText().trim();
 		super.buttonPressed(buttonId);
 	}		
 	
+	@Override
 	protected boolean isResizable() {
 		return true;
 	}	

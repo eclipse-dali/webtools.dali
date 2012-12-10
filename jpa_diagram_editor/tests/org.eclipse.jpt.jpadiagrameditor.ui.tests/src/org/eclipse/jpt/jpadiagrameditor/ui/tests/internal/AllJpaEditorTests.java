@@ -70,7 +70,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				DeleteRelationFeatureTest.class,
 //				CreateRelationsTest.class
 				})
-
+@SuppressWarnings("nls")
 public class AllJpaEditorTests {
 	
 	/**

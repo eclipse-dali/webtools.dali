@@ -23,6 +23,7 @@ abstract public class ManyToOneRelation extends AbstractRelation{
 		super(owner, inverse);
 	}
 	
+	@Override
 	public RelType getRelType() {
 		return RelType.MANY_TO_ONE;
 	}

@@ -36,10 +36,12 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 		super(provider, "", "");	//$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+	@Override
 	public boolean canExecute(IContext context) {
 		return true;
 	}
 
+	@Override
 	public boolean canUndo(IContext context) {
 		return false;
 	}
@@ -66,18 +68,22 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 		return new Object[] {newAttr};
 	}
 
+	@Override
 	public boolean isAvailable(IContext context) {
 		return true;
 	}
 
+	@Override
 	public String getName() {
 		return JPAEditorMessages.ClickAddAttributeButtonFeature_createAttributeButtonLabel;  			
 	}
 
+	@Override
 	public String getDescription() {
 		return JPAEditorMessages.ClickAddAttributeButtonFeature_createAttributeButtonDescription;  
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}

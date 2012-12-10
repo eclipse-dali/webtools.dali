@@ -40,6 +40,7 @@ public abstract class RemoveAllEntitiesFeature extends AbstractCustomFeature {
 	
 	public abstract String getConfirmationText();
 
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}
@@ -60,6 +61,7 @@ public abstract class RemoveAllEntitiesFeature extends AbstractCustomFeature {
 		}
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

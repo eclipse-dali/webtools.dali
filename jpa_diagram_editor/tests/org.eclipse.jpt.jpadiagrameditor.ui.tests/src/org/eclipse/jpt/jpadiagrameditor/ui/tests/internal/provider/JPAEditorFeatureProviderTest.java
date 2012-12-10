@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJpaSolver;
 import org.junit.Before;
 import org.junit.Test;
 
-
+@SuppressWarnings("nls")
 public class JPAEditorFeatureProviderTest {
 	
 

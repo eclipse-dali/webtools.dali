@@ -33,17 +33,20 @@ public class MoveAttributeFeature extends DefaultMoveShapeFeature {
 		super(fp);
 	}
 
-    public boolean canMoveShape(IMoveShapeContext context) {
+    @Override
+	public boolean canMoveShape(IMoveShapeContext context) {
         return false;
     }
     
     
-    public boolean canExecute(IContext context) {
+    @Override
+	public boolean canExecute(IContext context) {
         return false;
     }
 
     
-    public boolean isAvailable(IContext context) {
+    @Override
+	public boolean isAvailable(IContext context) {
     	return false;
     }	
 	

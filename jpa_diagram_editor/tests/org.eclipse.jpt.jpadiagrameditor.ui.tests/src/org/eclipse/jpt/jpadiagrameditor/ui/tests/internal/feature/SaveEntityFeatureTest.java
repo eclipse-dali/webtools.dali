@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class SaveEntityFeatureTest {
 	final String TEST_PROJECT = "Test";
 	private JpaProject jpaProject = null;

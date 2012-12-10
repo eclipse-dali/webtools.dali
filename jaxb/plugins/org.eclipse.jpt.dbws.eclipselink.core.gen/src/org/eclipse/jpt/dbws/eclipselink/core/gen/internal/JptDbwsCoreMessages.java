@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Localized messages used by Dali DBWS generation core.
  */
+@SuppressWarnings("nls")
 public class JptDbwsCoreMessages
 {
 	

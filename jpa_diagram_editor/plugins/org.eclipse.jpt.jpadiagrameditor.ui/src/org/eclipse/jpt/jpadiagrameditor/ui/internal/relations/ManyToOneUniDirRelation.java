@@ -48,6 +48,7 @@ public class ManyToOneUniDirRelation extends ManyToOneRelation implements IUnidi
 		
 	}
 	
+	@Override
 	public RelDir getRelDir() {
 		return RelDir.UNI;
 	}		

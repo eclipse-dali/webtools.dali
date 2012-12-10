@@ -108,7 +108,8 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 	    return true;
 	}
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_DERIVE_JPT;
     }	
     
@@ -123,6 +124,7 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 	    return null;
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider(); 
 	}

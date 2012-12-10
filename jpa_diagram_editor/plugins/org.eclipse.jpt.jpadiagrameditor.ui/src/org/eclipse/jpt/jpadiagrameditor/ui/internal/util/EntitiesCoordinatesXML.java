@@ -70,7 +70,7 @@ public class EntitiesCoordinatesXML {
 	public EntitiesCoordinatesXML(String projectName){
 		Iterator<JpaProject> iter = getJpaProjectManager().getJpaProjects().iterator();
 		while (iter.hasNext()) {
-			JpaProject jpaProject = (JpaProject) iter.next();
+			JpaProject jpaProject = iter.next();
 			if(jpaProject.getName().equalsIgnoreCase(projectName)){
 				this.projectName = jpaProject.getName();
 			}

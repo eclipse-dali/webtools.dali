@@ -22,8 +22,8 @@ import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.swt.widgets.Display;
 
@@ -34,17 +34,19 @@ public class SaveAndRemoveAllEntitiesFeature extends RemoveAllEntitiesFeature {
 		super(fp);
 	}
 	
+	@Override
 	public String getConfirmationText() {
 		return JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAndSaveAllEntitiesConfirmation;
 	}
 	
 
+	@Override
 	public void execute(ICustomContext context) {
 		MessageDialog dlg = new MessageDialog(Display.getCurrent().getShells()[0], 
 				JPAEditorMessages.JPAEditorToolBehaviorProvider_removeAllEntitiesMenu, 
 				null, getConfirmationText(), 0, 
-				new String[] {JPAEditorMessages.BTN_OK, JPAEditorMessages.BTN_CANCEL}, Dialog.CANCEL);
-		if (dlg.open() != Dialog.OK)
+				new String[] {JPAEditorMessages.BTN_OK, JPAEditorMessages.BTN_CANCEL}, Window.CANCEL);
+		if (dlg.open() != Window.OK)
 			return;
 		Iterator<Shape> it = this.getDiagram().getChildren().iterator();
 		while (it.hasNext()) {

@@ -23,7 +23,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
-
+@SuppressWarnings("nls")
 public class OxmXmlBindingsTests
 		extends OxmContextModelTestCase {
 	

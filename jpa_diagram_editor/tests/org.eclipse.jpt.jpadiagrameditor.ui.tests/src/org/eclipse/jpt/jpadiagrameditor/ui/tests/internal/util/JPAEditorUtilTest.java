@@ -49,6 +49,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.eclipse.swt.graphics.Point;
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class JPAEditorUtilTest {
 	@Test
 	public void testCapitalizeFirstLetter() {

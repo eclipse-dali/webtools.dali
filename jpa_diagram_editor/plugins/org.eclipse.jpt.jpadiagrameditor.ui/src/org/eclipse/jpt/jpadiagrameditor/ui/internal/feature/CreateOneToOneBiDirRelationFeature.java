@@ -60,7 +60,8 @@ public class CreateOneToOneBiDirRelationFeature extends CreateOneToOneRelationFe
 		return rel;		
 	}
 	
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_ONE_TO_ONE_2_DIR;
     }
     
