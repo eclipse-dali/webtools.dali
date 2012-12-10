@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -54,7 +54,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -82,7 +82,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -108,7 +108,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -136,7 +136,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -162,7 +162,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -190,7 +190,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -216,7 +216,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -244,7 +244,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -270,7 +270,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
@@ -298,7 +298,7 @@ public class JavaCascadeTests
 		createTestEntityWithOneToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		

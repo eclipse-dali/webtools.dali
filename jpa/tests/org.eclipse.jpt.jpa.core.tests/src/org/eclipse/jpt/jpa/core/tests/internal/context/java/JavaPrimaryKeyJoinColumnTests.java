@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -78,7 +78,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals(PRIMARY_KEY_JOIN_COLUMN_NAME, specifiedPkJoinColumn.getSpecifiedName());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		pkJoinColumnResource.setName("FOO");
@@ -128,7 +128,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		specifiedPkJoinColumn.setSpecifiedName("foo");
 		assertEquals("foo", specifiedPkJoinColumn.getSpecifiedName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation columnAnnotation = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		assertEquals("foo", columnAnnotation.getName());
@@ -146,7 +146,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
 		assertNull(specifiedPkJoinColumn.getColumnDefinition());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation column = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		column.setColumnDefinition(COLUMN_DEFINITION);
 		getJpaProject().synchronizeContextModel();
@@ -171,7 +171,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
 		specifiedPkJoinColumn.setColumnDefinition("foo");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation column = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		assertEquals("foo", column.getColumnDefinition());
@@ -188,7 +188,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
 		assertNull(specifiedPkJoinColumn.getSpecifiedReferencedColumnName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		pkJoinColumnResource.setReferencedColumnName("FOO");
@@ -226,7 +226,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithPrimaryKeyJoinColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		pkJoinColumnResource.setReferencedColumnName("FOO");
@@ -245,7 +245,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		specifiedPkJoinColumn.setSpecifiedReferencedColumnName("foo");
 		assertEquals("foo", specifiedPkJoinColumn.getSpecifiedReferencedColumnName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		PrimaryKeyJoinColumnAnnotation columnAnnotation = (PrimaryKeyJoinColumnAnnotation) resourceType.getAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		assertEquals("foo", columnAnnotation.getReferencedColumnName());

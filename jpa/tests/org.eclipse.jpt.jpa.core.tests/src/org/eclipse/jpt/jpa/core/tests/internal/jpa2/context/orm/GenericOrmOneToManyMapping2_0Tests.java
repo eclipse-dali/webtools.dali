@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.orm;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -1093,7 +1093,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
 		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTableName());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		column.setName("foo");

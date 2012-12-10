@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
@@ -59,7 +59,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 
 		//change resource model sequenceGenerator name, verify the context model is updated
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		
@@ -80,7 +80,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertEquals("foo", idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		
@@ -94,7 +94,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getGeneratorContainer().getSequenceGenerator().getInitialValue());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
@@ -126,7 +126,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation generatorAnnotation = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
@@ -141,7 +141,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getAllocationSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
@@ -173,7 +173,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation generatorAnnotation = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
@@ -189,7 +189,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator().getSequenceName());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
@@ -221,7 +221,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedSequenceName("mySequenceName");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		SequenceGeneratorAnnotation generatorAnnotation = (SequenceGeneratorAnnotation) resourceField.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		

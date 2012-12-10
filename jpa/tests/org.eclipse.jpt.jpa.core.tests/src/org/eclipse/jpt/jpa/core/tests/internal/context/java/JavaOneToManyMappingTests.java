@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -311,7 +311,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
@@ -332,7 +332,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
@@ -353,7 +353,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
@@ -375,7 +375,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
@@ -397,7 +397,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
@@ -419,7 +419,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
@@ -441,7 +441,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
@@ -463,7 +463,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
@@ -485,7 +485,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
@@ -507,7 +507,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
@@ -523,7 +523,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation oneToManyAnnotation = (OneToManyAnnotation) resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		
@@ -550,7 +550,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		
@@ -575,7 +575,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		
@@ -608,7 +608,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		
@@ -637,7 +637,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		
@@ -664,7 +664,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		
@@ -726,7 +726,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
@@ -755,7 +755,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
@@ -906,7 +906,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
@@ -944,7 +944,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
@@ -1015,7 +1015,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getOrderable().getSpecifiedOrderBy());
@@ -1043,7 +1043,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getOrderable().getSpecifiedOrderBy());
@@ -1068,7 +1068,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertTrue(oneToManyMapping.getOrderable().isNoOrdering());
@@ -1098,7 +1098,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertFalse(oneToManyMapping.getOrderable().isPkOrdering());
@@ -1128,7 +1128,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertFalse(oneToManyMapping.getOrderable().isCustomOrdering());

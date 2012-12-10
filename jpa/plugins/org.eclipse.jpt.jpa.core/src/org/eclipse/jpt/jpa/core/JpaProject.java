@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -244,10 +245,10 @@ public interface JpaProject
 	JavaResourceAbstractType getJavaResourceType(String typeName);
 
 	/**
-	 * Return the {@link JavaResourceAbstractType} with the fully qualified type name and kind.
-	 * Return null if invalid or absent or if the kind does not match.
+	 * Return the {@link JavaResourceAbstractType} with the fully qualified type name and astNodeType.
+	 * Return null if invalid or absent or if the astNodeType does not match.
 	 */
-	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);
+	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAnnotatedElement.AstNodeType astNodeType);
 
 	/**
 	 * Return the Java resource package for the specified package.

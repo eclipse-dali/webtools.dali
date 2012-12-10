@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -93,7 +93,7 @@ public class GenericClassRef
 
 	protected void initializeJavaPersistentType(JavaResourceAbstractType resourceType) {
 		this.resourceType = resourceType;
-		if (this.resourceType != null && this.resourceType.getKind() == Kind.TYPE) {
+		if (this.resourceType != null && this.resourceType.getAstNodeType() == AstNodeType.TYPE) {
 			this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) this.resourceType);
 		}
 	}
@@ -175,7 +175,7 @@ public class GenericClassRef
 
 	protected void updateJavaPersistentType() {
 		this.resourceType = this.resolveJavaResourceType();
-		if (this.resourceType == null || this.resourceType.getKind() != Kind.TYPE) {
+		if (this.resourceType == null || this.resourceType.getAstNodeType() != AstNodeType.TYPE) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
@@ -371,7 +371,7 @@ public class GenericClassRef
 		}
 
 		if (this.isNotVirtual()) {
-			if (this.resourceType.getKind() == Kind.ENUM) {
+			if (this.resourceType.getAstNodeType() == AstNodeType.ENUM) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -384,7 +384,7 @@ public class GenericClassRef
 				return;
 			}
 	
-			if (this.resourceType.getKind() == Kind.TYPE && this.resourceType.getTypeBinding().isInterface()) {
+			if (this.resourceType.getAstNodeType() == AstNodeType.TYPE && this.resourceType.getTypeBinding().isInterface()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

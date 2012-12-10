@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -85,7 +85,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -118,7 +118,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -150,7 +150,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -180,7 +180,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -208,7 +208,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -236,7 +236,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -264,7 +264,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -296,7 +296,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -326,7 +326,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -358,7 +358,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
@@ -389,7 +389,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");

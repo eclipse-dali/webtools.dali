@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -78,7 +78,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -119,7 +119,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation resourceCollectionTable3 = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -149,7 +149,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		assertEquals(TYPE_NAME + "_projects", collectionTable.getDefaultName());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 
@@ -170,7 +170,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -211,7 +211,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -238,7 +238,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -279,7 +279,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -306,7 +306,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		
@@ -348,7 +348,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		collectionTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
@@ -378,7 +378,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		collectionTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
@@ -418,7 +418,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -502,7 +502,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -525,7 +525,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		assertEquals(0,  collectionTable.getUniqueConstraintsSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -546,7 +546,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
@@ -567,7 +567,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
@@ -588,7 +588,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
@@ -634,7 +634,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
@@ -671,7 +671,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 	

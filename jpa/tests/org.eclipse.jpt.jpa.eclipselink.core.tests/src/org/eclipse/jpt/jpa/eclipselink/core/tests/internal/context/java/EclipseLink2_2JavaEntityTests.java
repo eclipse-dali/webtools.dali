@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -74,7 +74,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceType.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -131,7 +131,7 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceType.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);

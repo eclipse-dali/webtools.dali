@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -49,7 +49,7 @@ public class EclipseLink2_1JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNull(getJavaMappedSuperclass().getGeneratorContainer().getSequenceGenerator());
 		assertEquals(0, getPersistenceUnit().getGeneratorsSize());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		getJpaProject().synchronizeContextModel();
 		
@@ -69,7 +69,7 @@ public class EclipseLink2_1JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		
 		getJavaMappedSuperclass().getGeneratorContainer().addSequenceGenerator();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 	
 		assertNotNull(resourceType.getAnnotation(JPA.SEQUENCE_GENERATOR));
 		assertNotNull(getJavaMappedSuperclass().getGeneratorContainer().getSequenceGenerator());
@@ -87,7 +87,7 @@ public class EclipseLink2_1JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		getJpaProject().synchronizeContextModel();
 		
@@ -112,7 +112,7 @@ public class EclipseLink2_1JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		assertNull(getJavaMappedSuperclass().getGeneratorContainer().getTableGenerator());
 		assertEquals(0, getPersistenceUnit().getGeneratorsSize());
 	
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.addAnnotation(JPA.TABLE_GENERATOR);
 		getJpaProject().synchronizeContextModel();
 		
@@ -132,7 +132,7 @@ public class EclipseLink2_1JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		
 		getJavaMappedSuperclass().getGeneratorContainer().addTableGenerator();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 	
 		assertNotNull(resourceType.getAnnotation(JPA.TABLE_GENERATOR));
 		assertNotNull(getJavaMappedSuperclass().getGeneratorContainer().getTableGenerator());
@@ -150,7 +150,7 @@ public class EclipseLink2_1JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.addAnnotation(JPA.TABLE_GENERATOR);
 		getJpaProject().synchronizeContextModel();
 		

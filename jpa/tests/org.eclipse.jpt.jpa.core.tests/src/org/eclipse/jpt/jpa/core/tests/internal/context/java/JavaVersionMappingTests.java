@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -104,7 +104,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
@@ -128,7 +128,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
@@ -151,7 +151,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((IdMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((IdMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
@@ -174,7 +174,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
@@ -197,7 +197,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
@@ -220,7 +220,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
@@ -243,7 +243,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
@@ -266,7 +266,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
@@ -289,7 +289,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
@@ -312,7 +312,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
@@ -342,7 +342,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		versionMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
@@ -362,7 +362,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertNull(versionMapping.getConverter().getType());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.DATE);
@@ -388,7 +388,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertNull(versionMapping.getColumn().getSpecifiedName());
 		assertEquals("id", versionMapping.getColumn().getName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		column.setName("foo");

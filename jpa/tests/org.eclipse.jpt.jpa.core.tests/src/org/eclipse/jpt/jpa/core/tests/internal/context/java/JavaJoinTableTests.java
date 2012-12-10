@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -139,7 +139,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation javaJoinTable = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -180,7 +180,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -217,7 +217,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".Project");
 		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	
@@ -280,7 +280,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
 		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	
@@ -345,7 +345,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
 		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	
@@ -379,7 +379,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation javaJoinTable = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -420,7 +420,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -448,7 +448,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation javaJoinTable = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -489,7 +489,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -517,7 +517,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		
@@ -559,7 +559,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		joinTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
@@ -589,7 +589,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		joinTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
@@ -629,7 +629,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation joinTableResource = (JoinTableAnnotation) resourceField.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -739,7 +739,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		
@@ -781,7 +781,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		joinTable.addSpecifiedInverseJoinColumn(0).setSpecifiedName("FOO");
@@ -811,7 +811,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		joinTable.addSpecifiedInverseJoinColumn(0).setSpecifiedName("FOO");
@@ -851,7 +851,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinTableAnnotation joinTableResource = (JoinTableAnnotation) resourceField.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -959,7 +959,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = joinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -982,7 +982,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		assertEquals(0,  joinTable.getUniqueConstraintsSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -1002,7 +1002,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTable.addUniqueConstraint(0).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
@@ -1023,7 +1023,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
@@ -1044,7 +1044,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		
@@ -1090,7 +1090,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		
@@ -1127,7 +1127,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceField.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	

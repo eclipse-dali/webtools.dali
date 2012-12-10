@@ -37,8 +37,8 @@ final class BinaryField
 	}
 	
 	
-	public Kind getKind() {
-		return Kind.FIELD;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.FIELD;
 	}
 	
 	public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {

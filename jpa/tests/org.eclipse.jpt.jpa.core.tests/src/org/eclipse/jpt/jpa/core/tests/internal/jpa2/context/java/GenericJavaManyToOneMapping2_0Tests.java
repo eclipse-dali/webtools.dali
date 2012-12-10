@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -138,7 +138,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -161,7 +161,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -182,7 +182,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -205,7 +205,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -228,7 +228,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -251,7 +251,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -274,7 +274,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -297,7 +297,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -320,7 +320,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -343,7 +343,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -366,7 +366,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
@@ -386,7 +386,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testUpdateId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -408,7 +408,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testSetId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -428,7 +428,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testUpdateMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -457,7 +457,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testSetMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -484,7 +484,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testUpdatePredominantDerivedIdentityStrategy() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -524,7 +524,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testSetPredominantDerivedIdentityStrategy() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -561,7 +561,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 	public void testMorphMapping() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		
@@ -608,7 +608,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		createTestEntityWithManyToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
@@ -641,7 +641,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		createTestEntityWithManyToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();

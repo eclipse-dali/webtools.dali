@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -154,7 +154,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceAttribute resourceAttribute = resourceType.getFields().iterator().next();
 		assertNotNull(resourceAttribute.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		
@@ -171,7 +171,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceAttribute resourceAttribute = resourceType.getFields().iterator().next();
 		assertNotNull(resourceAttribute.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		
@@ -188,7 +188,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceAttribute resourceAttribute = resourceType.getFields().iterator().next();
 		assertNull(resourceAttribute.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		
@@ -202,7 +202,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceAttribute resourceAttribute = resourceType.getFields().iterator().next();
 		resourceAttribute.setPrimaryAnnotation(EmbeddedAnnotation.ANNOTATION_NAME, EmptyIterable.<String>instance());
 		this.getJpaProject().synchronizeContextModel();
@@ -216,7 +216,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceAttribute resourceAttribute = resourceType.getFields().iterator().next();
 		resourceAttribute.setPrimaryAnnotation(BasicAnnotation.ANNOTATION_NAME, EmptyIterable.<String>instance());
 				

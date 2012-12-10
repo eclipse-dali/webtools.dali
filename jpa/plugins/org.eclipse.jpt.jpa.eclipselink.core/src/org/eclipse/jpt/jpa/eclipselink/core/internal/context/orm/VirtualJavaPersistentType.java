@@ -196,7 +196,7 @@ public class VirtualJavaPersistentType
 	}
 
 	protected JavaResourceType resolveJavaResourceType(String typeName) {
-		return (JavaResourceType) this.getEntityMappings().resolveJavaResourceType(typeName, JavaResourceAnnotatedElement.Kind.TYPE);
+		return (JavaResourceType) this.getEntityMappings().resolveJavaResourceType(typeName, JavaResourceAnnotatedElement.AstNodeType.TYPE);
 	}
 
 

@@ -252,12 +252,12 @@ public abstract class AbstractJaxbContextRoot
 						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
 					protected boolean accept(JavaResourceAbstractType o) {
-						if (o.getKind() == JavaResourceAbstractType.Kind.TYPE) {
+						if (o.getAstNodeType() == JavaResourceAbstractType.AstNodeType.TYPE) {
 							if (o.getAnnotation(JAXB.XML_REGISTRY) != null) {
 								return true;
 							}
 						}
-						if (o.getKind() == JavaResourceAbstractType.Kind.ENUM) {
+						if (o.getAstNodeType() == JavaResourceAbstractType.AstNodeType.ENUM) {
 							if (o.getAnnotation(JAXB.XML_ENUM) != null) {
 								return true;
 							}
@@ -298,9 +298,7 @@ public abstract class AbstractJaxbContextRoot
 				type.setDefaultMapped(defaultMapped);
 				return;
 			}
-			else {
-				this.removeType(className); // this will remove a type of another kind
-			}
+			this.removeType(className); // this will remove a type of another kind
 		}
 		
 		JavaType type = buildType(resourceType);
@@ -309,13 +307,11 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	protected TypeKind calculateJaxbTypeKind(JavaResourceAbstractType resourceType) {
-		if (resourceType.getKind() == JavaResourceAbstractType.Kind.ENUM) {
+		if (resourceType.getAstNodeType() == JavaResourceAbstractType.AstNodeType.ENUM) {
 			return TypeKind.ENUM;
 		}
-		// else is of kind TYPE
-		else {
-			return TypeKind.CLASS;
-		}
+		// else is of kind CLASS
+		return TypeKind.CLASS;
 	}
 	
 	protected JavaType buildType(JavaResourceAbstractType resourceType) {

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.orm;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
@@ -346,7 +346,7 @@ public class GenericOrmPersistentAttribute2_0Tests
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		JavaResourceAttribute javaResourceAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute();
-		assertTrue(javaResourceAttribute.getKind() == Kind.FIELD);
+		assertTrue(javaResourceAttribute.getAstNodeType() == AstNodeType.FIELD);
 		assertEquals("id", javaResourceAttribute.getName());
 		assertEquals(javaPersistentType.getJavaResourceType().getFields().iterator().next(), javaResourceAttribute);
 		
@@ -424,16 +424,16 @@ public class GenericOrmPersistentAttribute2_0Tests
 		assertFalse(ormPropertyAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPropertyAttribute.getAccess());
 		assertNotSame(javaPersistentAttribute, ormPropertyAttribute.getJavaPersistentAttribute());
-		assertTrue(ormPropertyAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.METHOD);
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(ormPropertyAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		
 		((OrmPersistentAttribute) ormPropertyAttribute).setSpecifiedAccess(AccessType.FIELD);
 		ormPropertyAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPropertyAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, ormPropertyAttribute.getAccess());
 		assertEquals(javaPersistentAttribute, ormPropertyAttribute.getJavaPersistentAttribute());
-		assertTrue(ormPropertyAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.FIELD);
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(ormPropertyAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 	}
 	
 	public void testGetAccess() throws Exception {
@@ -446,18 +446,18 @@ public class GenericOrmPersistentAttribute2_0Tests
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		
 		
 		ormPersistentAttribute.addToXml();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -466,7 +466,7 @@ public class GenericOrmPersistentAttribute2_0Tests
 		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 	}
 	
 	public void testGetAccessPropertyInJava() throws Exception {
@@ -479,18 +479,18 @@ public class GenericOrmPersistentAttribute2_0Tests
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		
 		
 		ormPersistentAttribute.addToXml();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -499,7 +499,7 @@ public class GenericOrmPersistentAttribute2_0Tests
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 	}
 
 	public void testGetAccessPropertyInJava2() throws Exception {
@@ -512,9 +512,9 @@ public class GenericOrmPersistentAttribute2_0Tests
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 
 		
 		OrmReadOnlyPersistentAttribute nameOrmPersistentAttribute = ormPersistentType.getAttributeNamed("name");
@@ -522,27 +522,27 @@ public class GenericOrmPersistentAttribute2_0Tests
 		
 		assertTrue(nameOrmPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getAccess());
-		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		assertEquals(AccessType.FIELD, nameJavaPersistentAttribute.getAccess());
-		assertTrue(nameJavaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(nameJavaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 
 			
 		ormPersistentAttribute.addToXml();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 		
 		nameOrmPersistentAttribute.addToXml();
 		nameOrmPersistentAttribute = ormPersistentType.getAttributeNamed("name");
 		assertFalse(nameOrmPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getAccess());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getJavaPersistentAttribute().getAccess());
-		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		assertEquals(AccessType.FIELD, nameJavaPersistentAttribute.getAccess());
-		assertTrue(nameJavaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(nameJavaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 		assertEquals(nameJavaPersistentAttribute, nameOrmPersistentAttribute.getJavaPersistentAttribute());
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -551,14 +551,14 @@ public class GenericOrmPersistentAttribute2_0Tests
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourceAttribute().getKind() == Kind.METHOD);
+		assertTrue(javaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD);
 
 		assertFalse(nameOrmPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getAccess());
 		assertNotSame(javaPersistentAttribute, nameOrmPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.FIELD, nameJavaPersistentAttribute.getAccess());
-		assertTrue(nameJavaPersistentAttribute.getResourceAttribute().getKind() == Kind.FIELD);
+		assertTrue(nameJavaPersistentAttribute.getResourceAttribute().getAstNodeType() == AstNodeType.FIELD);
 
 	}
 

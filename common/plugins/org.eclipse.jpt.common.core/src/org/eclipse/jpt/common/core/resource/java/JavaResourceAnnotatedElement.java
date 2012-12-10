@@ -184,9 +184,9 @@ public interface JavaResourceAnnotatedElement
 	boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames);
 
 	/**
-	 * Return the element kind
+	 * Return the element's ASTNode type
 	 */
-	Kind getKind();
+	AstNodeType getAstNodeType();
 	
 	/**
 	 * Return the text range for the member's name.
@@ -205,48 +205,49 @@ public interface JavaResourceAnnotatedElement
 	TextRange getTextRange(String nestableAnnotationName);
 	
 	/**
-	 * The kind of java element.
+	 * The java element's ASTNode type. These are the only ASTNode types that
+	 * our resource model supports
 	 */
-	public enum Kind {
+	public enum AstNodeType {
 		
 		/**
 		 * Represents an annotatable package.
-		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} PACKAGE may safely be cast as a 
+		 * An {@link JavaResourceAnnotatedElement} of {@link AstNodeType} PACKAGE may safely be cast as a 
 		 * {@link JavaResourcePackage}
 		 */
 		PACKAGE(ASTNode.PACKAGE_DECLARATION),
 		
 		/**
 		 * Represents a class or interface.
-		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} TYPE may safely be cast as a 
+		 * An {@link JavaResourceAnnotatedElement} of {@link AstNodeType} TYPE may safely be cast as a 
 		 * {@link JavaResourceType}
 		 */
 		TYPE(ASTNode.TYPE_DECLARATION),
 		
 		/**
 		 * Represents an enum.
-		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} ENUM may safely be cast as a 
+		 * An {@link JavaResourceAnnotatedElement} of {@link AstNodeType} ENUM may safely be cast as a 
 		 * {@link JavaResourceEnum}
 		 */
 		ENUM(ASTNode.ENUM_DECLARATION),
 		
 		/**
 		 * Represents a method.
-		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} METHOD may safely be cast as a 
+		 * An {@link JavaResourceAnnotatedElement} of {@link AstNodeType} METHOD may safely be cast as a 
 		 * {@link JavaResourceMethod}
 		 */
 		METHOD(ASTNode.METHOD_DECLARATION),
 		
 		/**
 		 * Represents a type field.
-		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} FIELD may safely be cast as a 
+		 * An {@link JavaResourceAnnotatedElement} of {@link AstNodeType} FIELD may safely be cast as a 
 		 * {@link JavaResourceField}
 		 */
 		FIELD(ASTNode.FIELD_DECLARATION),
 		
 		/**
 		 * Represents an enum constant.
-		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} ENUM_CONSTANT may safely be cast as a 
+		 * An {@link JavaResourceAnnotatedElement} of {@link AstNodeType} ENUM_CONSTANT may safely be cast as a 
 		 * {@link JavaResourceEnumConstant}
 		 */
 		ENUM_CONSTANT(ASTNode.ENUM_CONSTANT_DECLARATION);
@@ -254,12 +255,15 @@ public interface JavaResourceAnnotatedElement
 
 		private int astNodeType;
 
-		Kind(int astNodeType) {
+		AstNodeType(int astNodeType) {
 			this.astNodeType = astNodeType;
 		}
 
-		public int getAstNodeType() {
-			return this.astNodeType;
+		/**
+		 * Return whether the given astNodeType matches this type
+		 */
+		public boolean matches(int astNodeType) {
+			return this.astNodeType == astNodeType;
 		}
 	}
 }

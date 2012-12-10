@@ -84,7 +84,7 @@ public class GenericJavaXmlAdapter
 		String superResourceTypeName = resourceType.getSuperclassQualifiedName();
 		if (! StringTools.isBlank(superResourceTypeName)) {
 			JavaResourceType superResourceType 
-					= (JavaResourceType) getJaxbProject().getJavaResourceType(superResourceTypeName, JavaResourceAbstractType.Kind.TYPE);
+					= (JavaResourceType) getJaxbProject().getJavaResourceType(superResourceTypeName, JavaResourceAbstractType.AstNodeType.TYPE);
 			if (superResourceType != null) {
 				return findBoundAndValueTypes(superResourceType);
 			}

@@ -64,8 +64,8 @@ public final class SourcePackage
 
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
-	public Kind getKind() {
-		return Kind.PACKAGE;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.PACKAGE;
 	}
 
 

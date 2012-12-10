@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -249,7 +249,7 @@ public class GenericOrmIdClassReference
 		if (this.fullyQualifiedIdClassName == null) {
 			return null;
 		}
-		JavaResourceType jrt = (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, Kind.TYPE);
+		JavaResourceType jrt = (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, AstNodeType.TYPE);
 		return jrt == null || jrt.isAnnotatedWithAnyOf(getJpaProject().getTypeMappingAnnotationNames()) ? null : jrt;
 	}
 
@@ -433,7 +433,7 @@ public class GenericOrmIdClassReference
 	}
 
 	protected JavaResourceType getIdClassJavaResourceType() {
-		return (JavaResourceType) getEntityMappings().resolveJavaResourceType(this.getIdClassName(), Kind.TYPE);
+		return (JavaResourceType) getEntityMappings().resolveJavaResourceType(this.getIdClassName(), AstNodeType.TYPE);
 	}
 
 	public TextRange getValidationTextRange() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -280,7 +280,7 @@ public class GenericContextRootTests
 		assertNull(((JavaEnum) getContextRoot().getJavaType("test.Foo")));
 		
 		//annotate the class with @XmlEnum and test it's added to the context root
-		JavaResourceEnum fooResourceType = (JavaResourceEnum) getJaxbProject().getJavaResourceType("test.Foo", JavaResourceAbstractType.Kind.ENUM);
+		JavaResourceEnum fooResourceType = (JavaResourceEnum) getJaxbProject().getJavaResourceType("test.Foo", JavaResourceAbstractType.AstNodeType.ENUM);
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -354,7 +354,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaEntity entity = this.getJavaEntity();		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(0);
 			namedQuery1.setName("FOO");
@@ -404,7 +404,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEntity entity = getJavaEntity();		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
@@ -448,7 +448,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEntity entity = getJavaEntity();		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
@@ -497,7 +497,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEntity entity = getJavaEntity();		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		
 		assertEquals(0, entity.getPersistenceUnit().getQueriesSize());
 		
@@ -564,7 +564,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEntity entity = getJavaEntity();		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 	
 		assertEquals(0, entity.getQueryContainer().getNamedQueriesSize());
 
@@ -722,7 +722,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) resourceType.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
@@ -791,7 +791,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 		AttributeOverrideContainer overrideContainer = javaEntity.getAttributeOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
 		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
@@ -843,7 +843,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 		AttributeOverrideContainer overrideContainer = javaEntity.getAttributeOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
 		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
@@ -890,7 +890,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		assertEquals(0, overrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) resourceType.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
@@ -939,7 +939,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(3, overrideContainer.getOverridesSize());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) resourceType.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		annotation.setName("bar");
 		getJpaProject().synchronizeContextModel();
@@ -957,7 +957,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		Iterator<NestableAnnotation> attributeOverrides = resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
 		assertEquals("id", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
@@ -978,7 +978,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		virtualAttributeOverrides.next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		Iterator<NestableAnnotation> attributeOverrides = resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
 		assertEquals("name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
@@ -998,7 +998,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		assertEquals(3, IteratorTools.size(resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator()));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
@@ -1045,7 +1045,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		
 		Iterator<NestableAnnotation> javaAttributeOverrides = resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		assertEquals(3, IteratorTools.size(javaAttributeOverrides));
@@ -1080,7 +1080,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 	
 		((AttributeOverrideAnnotation) resourceType.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE)).setName("FOO");
 		((AttributeOverrideAnnotation) resourceType.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE)).setName("BAR");
@@ -1220,7 +1220,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) resourceType.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -1289,7 +1289,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 		AssociationOverrideContainer overrideContainer = javaEntity.getAssociationOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
 		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
@@ -1370,7 +1370,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		assertEquals(0, overrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) resourceType.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -1423,7 +1423,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(4, overrideContainer.getOverridesSize());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		AssociationOverrideAnnotation annotation = (AssociationOverrideAnnotation) resourceType.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		annotation.setName("bar");
 		getJpaProject().synchronizeContextModel();
@@ -1441,7 +1441,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		Iterator<NestableAnnotation> associationOverrides = resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
 		
 		assertEquals("address", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
@@ -1462,7 +1462,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		virtualAssociationOverrides.next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		Iterator<NestableAnnotation> associationOverrides = resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
 		
 		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
@@ -1481,7 +1481,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		assertEquals(2, IteratorTools.size(resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator()));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
@@ -1515,7 +1515,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, AstNodeType.TYPE);
 		
 		Iterator<NestableAnnotation> javaAssociationOverrides = resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
 		assertEquals(2, IteratorTools.size(javaAssociationOverrides));
@@ -1546,7 +1546,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 	
 		((AssociationOverrideAnnotation) resourceType.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE)).setName("FOO");
 		((AssociationOverrideAnnotation) resourceType.addAnnotation(1, JPA.ASSOCIATION_OVERRIDE)).setName("BAR");

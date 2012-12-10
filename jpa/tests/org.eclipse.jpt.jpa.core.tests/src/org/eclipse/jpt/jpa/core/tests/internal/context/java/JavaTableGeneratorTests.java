@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
@@ -69,7 +69,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		assertEquals(TABLE_GENERATOR_NAME, idMapping.getGeneratorContainer().getTableGenerator().getName());
 
 		//change resource model tableGenerator name, verify the context model is updated
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);
 		
@@ -90,7 +90,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		assertEquals("foo", idMapping.getGeneratorContainer().getTableGenerator().getName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);
 		
@@ -104,7 +104,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getGeneratorContainer().getTableGenerator().getCatalog());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -136,7 +136,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedCatalog("myCatalog");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -150,7 +150,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getGeneratorContainer().getTableGenerator().getSchema());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -210,7 +210,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedSchema("mySchema");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -224,7 +224,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getGeneratorContainer().getTableGenerator().getPkColumnName());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -256,7 +256,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedPkColumnName("myPkColumnName");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -270,7 +270,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getGeneratorContainer().getTableGenerator().getValueColumnName());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -302,7 +302,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedValueColumnName("myValueColumnName");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -316,7 +316,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getGeneratorContainer().getTableGenerator().getPkColumnValue());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -348,7 +348,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedPkColumnValue("myPkColumnValue");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -362,7 +362,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertEquals(TableGenerator.DEFAULT_INITIAL_VALUE, idMapping.getGeneratorContainer().getTableGenerator().getInitialValue());
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -394,7 +394,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -409,7 +409,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getAllocationSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -441,7 +441,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation generatorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -458,7 +458,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		Iterator<JavaUniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -480,7 +480,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 
 		assertEquals(0,  tableGenerator.getUniqueConstraintsSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -499,7 +499,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableGeneratorAnnotation.getUniqueConstraints().iterator();
@@ -519,7 +519,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableGeneratorAnnotation.getUniqueConstraints().iterator();
@@ -539,7 +539,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -584,7 +584,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -620,7 +620,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		TableGenerator tableGenerator = ((IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping()).getGeneratorContainer().getTableGenerator();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) resourceField.getAnnotation(JPA.TABLE_GENERATOR);	
 	

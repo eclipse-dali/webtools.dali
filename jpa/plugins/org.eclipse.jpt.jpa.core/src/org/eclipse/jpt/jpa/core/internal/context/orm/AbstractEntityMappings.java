@@ -24,6 +24,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -510,9 +511,9 @@ public abstract class AbstractEntityMappings
 		return (JavaResourceAbstractType) this.resolveType(RESOURCE_TYPE_LOOKUP_ADAPTER, className);
 	}
 
-	public JavaResourceAbstractType resolveJavaResourceType(String className, JavaResourceAbstractType.Kind kind) {
+	public JavaResourceAbstractType resolveJavaResourceType(String className, JavaResourceAnnotatedElement.AstNodeType astNodeType) {
 		JavaResourceAbstractType resourceType = this.resolveJavaResourceType(className);
-		if (resourceType == null || resourceType.getKind() != kind) {
+		if (resourceType == null || resourceType.getAstNodeType() != astNodeType) {
 			return null;
 		}
 		return resourceType;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
@@ -164,7 +164,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		assertEquals("foo", getJavaEntity().getDiscriminatorColumn().getSpecifiedName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals("foo", discriminatorColumn.getName());
@@ -178,7 +178,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 	
 		assertNull(discriminatorColumn);
@@ -217,7 +217,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		discriminatorColumn.setDiscriminatorType(org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType.CHAR);
 		getJpaProject().synchronizeContextModel();
@@ -233,7 +233,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.CHAR);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType.CHAR, discriminatorColumn.getDiscriminatorType());
@@ -249,7 +249,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		column.setDiscriminatorType(org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType.INTEGER);
@@ -302,7 +302,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		discriminatorColumn.setLength(Integer.valueOf(66));
 		getJpaProject().synchronizeContextModel();
@@ -324,7 +324,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(100));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals(Integer.valueOf(100), discriminatorColumn.getLength());
@@ -340,7 +340,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		column.setLength(Integer.valueOf(78));
@@ -365,7 +365,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		assertNull(getJavaEntity().getDiscriminatorColumn().getColumnDefinition());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		column.setColumnDefinition(COLUMN_DEFINITION);
 		getJpaProject().synchronizeContextModel();
@@ -386,7 +386,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		getJavaEntity().getDiscriminatorColumn().setColumnDefinition("foo");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals("foo", column.getColumnDefinition());

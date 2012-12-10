@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -78,7 +78,7 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof Entity);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		assertNull(resourceType.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkConverterAnnotation.ANNOTATION_NAME));
@@ -114,7 +114,7 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		getJavaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof Embeddable);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		assertNull(resourceType.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkConverterAnnotation.ANNOTATION_NAME));
@@ -148,7 +148,7 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		assertNull(resourceType.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkConverterAnnotation.ANNOTATION_NAME));

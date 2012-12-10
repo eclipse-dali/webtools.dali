@@ -19,7 +19,7 @@ import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -290,7 +290,7 @@ public abstract class SpecifiedOrmPersistentType
 		if (this.name == null) {
 			return null;
 		}
-		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.name, Kind.TYPE);
+		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.name, AstNodeType.TYPE);
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
@@ -527,7 +527,7 @@ public abstract class SpecifiedOrmPersistentType
 		// instead, use its resource Java attribute (which will match both name and access type,
 		// but we still need to check its parent type)
 		if (specifiedAttribute.getJavaResourceAttribute() != null) {
-			if (specifiedAttribute.getJavaResourceAttribute().getKind() == Kind.FIELD) {
+			if (specifiedAttribute.getJavaResourceAttribute().getAstNodeType() == AstNodeType.FIELD) {
 				JavaResourceField javaResourceField = (JavaResourceField) specifiedAttribute.getJavaResourceAttribute();
 				if (this.javaResourceFieldWillBeDefault(javaResourceField, specifiedAttribute)) {
 					defaultAttribute = this.buildDefaultAttribute(javaResourceField);

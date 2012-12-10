@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -111,7 +111,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -135,7 +135,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -175,7 +175,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -197,7 +197,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -219,7 +219,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -241,7 +241,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -263,7 +263,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -285,7 +285,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -307,7 +307,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -329,7 +329,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
@@ -351,7 +351,7 @@ public class GenericJavaEmbeddedIdMapping2_0Tests extends Generic2_0ContextModel
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);

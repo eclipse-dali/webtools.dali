@@ -468,7 +468,7 @@ public class GenericJavaClassMapping
 		}
 		
 		return (JavaResourceType) getJaxbProject().getJavaResourceType(
-				superclassName, JavaResourceType.Kind.TYPE);
+				superclassName, JavaResourceType.AstNodeType.TYPE);
 	}
 	
 	

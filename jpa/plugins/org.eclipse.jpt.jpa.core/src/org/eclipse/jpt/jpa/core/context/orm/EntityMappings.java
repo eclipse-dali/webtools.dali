@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -166,15 +167,15 @@ public interface EntityMappings
 	JavaResourceAbstractType resolveJavaResourceType(String className);
 
 	/**
-	 * Return the Java resource type for the specified class name and kind
+	 * Return the Java resource type for the specified class name and astNodeType
 	 * found in the JPA project. Prepend the default package name
 	 * if the class name is not fully qualified (i.e. it does not contain a
 	 * <code>'.'</code>).
-	 * Return <code>null</code> if invalid or absent or if the kind does not match.
+	 * Return <code>null</code> if invalid or absent or if the astNodeType does not match.
 	 * 
 	 * @see #getPackage()
 	 */
-	JavaResourceAbstractType resolveJavaResourceType(String className, JavaResourceAbstractType.Kind kind);
+	JavaResourceAbstractType resolveJavaResourceType(String className, JavaResourceAnnotatedElement.AstNodeType astNodeType);
 
 	/**
 	 * Return the persistent type for the specified class name

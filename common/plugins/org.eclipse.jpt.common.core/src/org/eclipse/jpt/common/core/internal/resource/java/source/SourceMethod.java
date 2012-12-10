@@ -86,8 +86,8 @@ final class SourceMethod
 	
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
-	public Kind getKind() {
-		return Kind.METHOD;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.METHOD;
 	}
 	
 	

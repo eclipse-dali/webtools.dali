@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -269,7 +269,7 @@ public class EclipseLinkOrmPersistentAttributeTests
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		JavaResourceAttribute javaResourceAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute();
-		assertTrue(javaResourceAttribute.getKind() == Kind.FIELD);
+		assertTrue(javaResourceAttribute.getAstNodeType() == AstNodeType.FIELD);
 		assertEquals("id", javaResourceAttribute.getName());
 		assertEquals(javaPersistentType.getJavaResourceType().getFields().iterator().next(), javaResourceAttribute);
 		

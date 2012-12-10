@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -79,7 +79,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -108,7 +108,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
 		versionMapping.setConverter(BaseTemporalConverter.class);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -130,7 +130,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -156,7 +156,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -181,7 +181,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -206,7 +206,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -231,7 +231,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -256,7 +256,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -281,7 +281,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -306,7 +306,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -331,7 +331,7 @@ public class GenericJavaVersionMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");

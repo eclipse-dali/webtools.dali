@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -271,7 +271,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -297,7 +297,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -410,7 +410,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -434,7 +434,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -457,7 +457,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -481,7 +481,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -505,7 +505,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -529,7 +529,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -552,7 +552,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -576,7 +576,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -600,7 +600,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -630,7 +630,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
@@ -697,7 +697,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("myEmbedded", resourceField.getName());
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -789,7 +789,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(0, attributeOverrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -812,7 +812,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(2, attributeOverrideContainer.getOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -840,7 +840,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(2, attributeOverrideContainer.getVirtualOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -872,7 +872,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
@@ -911,7 +911,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualAttributeOverrides.next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
@@ -931,7 +931,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		resourceField.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDE);
@@ -957,7 +957,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -1024,7 +1024,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
@@ -1094,7 +1094,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		
 		assertEquals(0, overrideContainer.getSpecifiedOverridesSize());
 
@@ -1146,7 +1146,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(2, overrideContainer.getOverridesSize());
 		
 		
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		AssociationOverrideAnnotation annotation = (AssociationOverrideAnnotation) resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		annotation.setName("bar");
 		getJpaProject().synchronizeContextModel();
@@ -1166,7 +1166,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		Iterator<NestableAnnotation> associationOverrides = resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
 		
 		assertEquals("address", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
@@ -1189,7 +1189,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualAssociationOverrides.next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		Iterator<NestableAnnotation> associationOverrides = resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
 		
 		assertEquals("addresses", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
@@ -1210,7 +1210,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		assertEquals(2, IteratorTools.size(resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator()));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
@@ -1246,7 +1246,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 
 		
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		
 		Iterator<NestableAnnotation> javaAssociationOverrides = resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
 		assertEquals(2, IteratorTools.size(javaAssociationOverrides));
@@ -1282,7 +1282,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 	
 		((AssociationOverrideAnnotation) resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE)).setName("FOO");
 		((AssociationOverrideAnnotation) resourceField.addAnnotation(1, JPA.ASSOCIATION_OVERRIDE)).setName("BAR");
@@ -1373,7 +1373,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
-		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
+		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());

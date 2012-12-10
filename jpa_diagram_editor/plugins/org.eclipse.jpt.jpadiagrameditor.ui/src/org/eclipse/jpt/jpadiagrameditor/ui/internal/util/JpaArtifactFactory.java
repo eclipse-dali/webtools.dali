@@ -52,7 +52,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -1527,7 +1527,7 @@ public class JpaArtifactFactory {
 	public JavaResourceType convertJPTToJRT(JavaPersistentType jpt) {
 		if (jpt == null) 
 			return null;
-		return (JavaResourceType) jpt.getJpaProject().getJavaResourceType(jpt.getName(), Kind.TYPE);
+		return (JavaResourceType) jpt.getJpaProject().getJavaResourceType(jpt.getName(), AstNodeType.TYPE);
 	}
 	
 	public PersistenceUnit getPersistenceUnit(JpaFile jpaFile) {
@@ -1549,7 +1549,7 @@ public class JpaArtifactFactory {
 	}
 	
 	public boolean isMethodAnnotated(JavaPersistentAttribute attr) {
-		return attr.getResourceAttribute().getKind() == Kind.METHOD;
+		return attr.getResourceAttribute().getAstNodeType() == AstNodeType.METHOD;
 	}
 	
 	public boolean isMethodAnnotated(JavaPersistentType jpt) {

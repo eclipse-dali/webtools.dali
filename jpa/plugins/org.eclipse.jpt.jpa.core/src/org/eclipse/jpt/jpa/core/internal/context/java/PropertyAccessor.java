@@ -123,8 +123,8 @@ public class PropertyAccessor
 			super(method);
 		}
 
-		public Kind getKind() {
-			return Kind.METHOD;
+		public AstNodeType getAstNodeType() {
+			return AstNodeType.METHOD;
 		}
 
 		public String getMethodName() {

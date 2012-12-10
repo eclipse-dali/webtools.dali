@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -213,7 +213,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
@@ -228,7 +228,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -313,7 +313,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -333,7 +333,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -353,7 +353,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -373,7 +373,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -393,7 +393,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -413,7 +413,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -433,7 +433,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -453,7 +453,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		assertFalse(embeddedMapping.isDefault());
@@ -479,7 +479,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
@@ -546,7 +546,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		AttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("myEmbedded", resourceField.getName());
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -638,7 +638,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		AttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(0, attributeOverrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -661,7 +661,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		AttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(2, attributeOverrideContainer.getOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -689,7 +689,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		AttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(2, attributeOverrideContainer.getVirtualOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -721,7 +721,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
 		
@@ -760,7 +760,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		virtualAttributeOverrides.next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
 		
@@ -780,7 +780,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		resourceField.moveAnnotation(1, 0, AttributeOverrideAnnotation.ANNOTATION_NAME);

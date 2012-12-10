@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -284,7 +284,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 		if (superclassName == null) {
 			return null;
 		}
-		JavaResourceType superclass = (JavaResourceType) this.getJpaProject().getJavaResourceType(superclassName, Kind.TYPE);
+		JavaResourceType superclass = (JavaResourceType) this.getJpaProject().getJavaResourceType(superclassName, AstNodeType.TYPE);
 		if (superclass == null) {
 			return null;
 		}
@@ -317,7 +317,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 		if (superclassName == null) {
 			return null;
 		}
-		JavaResourceType superclass = (JavaResourceType) this.getJpaProject().getJavaResourceType(superclassName, Kind.TYPE);
+		JavaResourceType superclass = (JavaResourceType) this.getJpaProject().getJavaResourceType(superclassName, AstNodeType.TYPE);
 		if (superclass == null) {
 			return null;
 		}

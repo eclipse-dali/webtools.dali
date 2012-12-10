@@ -87,8 +87,8 @@ final class BinaryType
 	}
 	
 	
-	public Kind getKind() {
-		return JavaResourceAnnotatedElement.Kind.TYPE;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.TYPE;
 	}
 	
 	
@@ -405,12 +405,11 @@ final class BinaryType
 			return attribute.getTypeBinding();
 		}
 		InheritedAttributeKey key = new InheritedAttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
-		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
+		if (attribute.getAstNodeType() == JavaResourceAnnotatedElement.AstNodeType.FIELD) {
 			return this.inheritedFieldTypes.get(key);
 		}
-		else /* attribute.getKind() == JavaResourceAnnotatedElement.Kind.METHOD */ {
-			return this.inheritedMethodTypes.get(key);
-		}
+		/* else attribute.getAstNodeType() == JavaResourceAnnotatedElement.AstNodeType.METHOD */
+		return this.inheritedMethodTypes.get(key);
 	}
 	
 	

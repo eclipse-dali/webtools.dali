@@ -41,8 +41,8 @@ final class BinaryEnumConstant
 	
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
-	public Kind getKind() {
-		return Kind.ENUM_CONSTANT;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.ENUM_CONSTANT;
 	}
 	
 	

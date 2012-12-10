@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -409,7 +409,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -433,7 +433,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -455,7 +455,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -479,7 +479,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -503,7 +503,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -527,7 +527,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -551,7 +551,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -575,7 +575,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -599,7 +599,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -623,7 +623,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
@@ -649,7 +649,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ElementCollection2_0Annotation elementCollectionAnnotation = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
 		
@@ -676,7 +676,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
 		
@@ -842,7 +842,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
 		
@@ -874,7 +874,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
 		
@@ -939,7 +939,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(elementCollectionMapping.getSpecifiedMapKey());
@@ -978,7 +978,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(elementCollectionMapping.getSpecifiedMapKey());
@@ -1055,7 +1055,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
@@ -1096,7 +1096,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
@@ -1191,7 +1191,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals("id", elementCollectionMapping.getValueColumn().getName());
 		assertEquals(TYPE_NAME + "_id", elementCollectionMapping.getValueColumn().getTableName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		column.setName("foo");
@@ -1218,7 +1218,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
@@ -1288,7 +1288,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("addresses", resourceField.getName());
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -1383,7 +1383,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 		assertEquals(0, attributeOverrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -1409,7 +1409,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -1440,7 +1440,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getVirtualOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -1475,7 +1475,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
@@ -1519,7 +1519,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		virtualAttributeOverrides.next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
@@ -1542,7 +1542,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		attributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		resourceField.moveAnnotation(1, 0, AttributeOverrideAnnotation.ANNOTATION_NAME);
@@ -1633,7 +1633,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		elementCollectionMapping.getCollectionTable().setSpecifiedName("MY_COLLECTION_TABLE");
 		assertEquals("MY_COLLECTION_TABLE", elementCollectionMapping.getMapKeyColumn().getTableName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		column.setName("foo");
@@ -1661,7 +1661,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
@@ -1767,7 +1767,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("parcels", resourceField.getName());
 		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -1941,7 +1941,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(0, valueAttributeOverrideContainer.getSpecifiedOverridesSize());
 		assertEquals(0, mapKeyAttributeOverrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -1974,7 +1974,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(4, mapKeyAttributeOverrideContainer.getOverridesSize());
 		assertEquals(3, valueAttributeOverrideContainer.getOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -2013,7 +2013,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		assertEquals(3, valueAttributeOverrideContainer.getVirtualOverridesSize());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -2063,7 +2063,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		valueOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		mapKeyOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> overrideAnnotations = resourceField.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		
@@ -2134,7 +2134,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals("state.name", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		resourceField.moveAnnotation(1, 0, AttributeOverrideAnnotation.ANNOTATION_NAME);
@@ -2202,7 +2202,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		elementCollectionMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);
 		
@@ -2230,7 +2230,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.addAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);
 		enumerated.setValue(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING);
@@ -2256,7 +2256,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		elementCollectionMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
 		
@@ -2280,7 +2280,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.addAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME);
@@ -2307,7 +2307,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 
 		assertFalse(specifiedMapKeyJoinColumns.hasNext());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -2414,7 +2414,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("BAR");
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> joinColumnsIterator = 
 			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
@@ -2436,7 +2436,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		Iterator<NestableAnnotation> joinColumnsIterator = 
 			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
@@ -2458,7 +2458,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		assertEquals(3, resourceField.getAnnotationsSize(JPA2_0.MAP_KEY_JOIN_COLUMN));
@@ -2505,7 +2505,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		Iterator<NestableAnnotation> javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
@@ -2542,7 +2542,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("FOO");

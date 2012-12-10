@@ -16,7 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -150,7 +150,7 @@ public class GenericJarFile
 			new FilteringIterable<JavaResourceAbstractType>(this.getJavaResourceAbstractTypes()) {
 				@Override
 				protected boolean accept(JavaResourceAbstractType o) {
-					return o.getKind() == Kind.TYPE;
+					return o.getAstNodeType() == AstNodeType.TYPE;
 				}
 			});
 	}

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -200,7 +200,7 @@ public class GenericJavaIdClassReference
 		if (this.fullyQualifiedIdClassName == null) {
 			return null;
 		}
-		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, Kind.TYPE);
+		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, AstNodeType.TYPE);
 	}
 
 	protected JavaPersistentType buildIdClass(JavaResourceType resourceClass) {

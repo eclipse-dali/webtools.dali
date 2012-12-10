@@ -212,8 +212,8 @@ final class SourceType
 
 	// ******** JavaResourceType implementation ********
 	
-	public Kind getKind() {
-		return Kind.TYPE;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.TYPE;
 	}
 	
 	// ***** superclass qualified name
@@ -796,12 +796,11 @@ final class SourceType
 		}
 		InheritedAttributeKey key = 
 				new InheritedAttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
-		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
+		if (attribute.getAstNodeType() == JavaResourceAnnotatedElement.AstNodeType.FIELD) {
 			return this.inheritedFieldTypes.get(key);
 		}
-		else /* attribute.getKind() == JavaResourceAnnotatedElement.Kind.METHOD */ {
-			return this.inheritedMethodTypes.get(key);
-		}
+		/* attribute.getAstNodeType() == JavaResourceAnnotatedElement.AstNodeType.METHOD */
+		return this.inheritedMethodTypes.get(key);
 	}
 	
 	

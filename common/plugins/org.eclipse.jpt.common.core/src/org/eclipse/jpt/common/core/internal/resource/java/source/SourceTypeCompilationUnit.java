@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
@@ -96,7 +97,7 @@ public final class SourceTypeCompilationUnit
 	public void resolveTypes() {
 		if (this.primaryType != null) {
 			AbstractTypeDeclaration td = this.getPrimaryTypeOrEnumDeclaration(this.buildASTRoot());
-			if (this.primaryType.getKind().getAstNodeType() == ASTNode.TYPE_DECLARATION) {
+			if (this.primaryType.getAstNodeType() == AstNodeType.TYPE) {
 				((JavaResourceType) this.primaryType).resolveTypes((TypeDeclaration) td);
 			}
 			else {
@@ -126,7 +127,7 @@ public final class SourceTypeCompilationUnit
 			if (this.primaryType == null || (!typeMatchesASTNodeType(this.primaryType, td))) {
 				this.syncPrimaryType_(this.buildPrimaryType(td));
 			} else {
-				if (this.primaryType.getKind().getAstNodeType() == ASTNode.TYPE_DECLARATION) {
+				if (this.primaryType.getAstNodeType() == AstNodeType.TYPE) {
 					((JavaResourceType) this.primaryType).synchronizeWith((TypeDeclaration) td);
 				}
 				else {
@@ -140,7 +141,7 @@ public final class SourceTypeCompilationUnit
 	 * Must be non-null JavaResourceAbstractType and AbstractTypeDeclaration
 	 */
 	protected static boolean typeMatchesASTNodeType(JavaResourceAbstractType type, AbstractTypeDeclaration astType) {
-		return type.getKind().getAstNodeType() == astType.getNodeType();
+		return type.getAstNodeType().matches(astType.getNodeType());
 	}
 
 	private void syncPrimaryType_(JavaResourceAbstractType astType) {

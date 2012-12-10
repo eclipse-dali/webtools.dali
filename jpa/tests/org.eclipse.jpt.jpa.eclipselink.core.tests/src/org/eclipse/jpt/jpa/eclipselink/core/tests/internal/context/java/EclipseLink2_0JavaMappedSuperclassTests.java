@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
@@ -155,7 +155,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		assertNull(resourceType.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
@@ -177,7 +177,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		resourceType.removeAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
@@ -208,7 +208,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
@@ -233,7 +233,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) resourceType.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		getJpaProject().synchronizeContextModel();
@@ -258,7 +258,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
@@ -335,7 +335,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) resourceType.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value

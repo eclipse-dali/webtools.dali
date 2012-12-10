@@ -105,7 +105,7 @@ public abstract class AbstractJavaXmlJavaTypeAdapter
 	
 	protected JavaResourceType getXmlAdapterResourceType() {
 		String xmlAdapterName = getFullyQualifiedValue();
-		return (JavaResourceType) getJaxbProject().getJavaResourceType(xmlAdapterName, JavaResourceAbstractType.Kind.TYPE);
+		return (JavaResourceType) getJaxbProject().getJavaResourceType(xmlAdapterName, JavaResourceAbstractType.AstNodeType.TYPE);
 	}
 	
 	protected XmlAdapter buildXmlAdapter(JavaResourceType xmlAdapterResourceType) {

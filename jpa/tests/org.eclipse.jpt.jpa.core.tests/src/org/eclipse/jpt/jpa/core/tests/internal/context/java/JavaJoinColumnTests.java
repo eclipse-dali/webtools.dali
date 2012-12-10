@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -97,7 +97,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) resourceField.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
@@ -128,7 +128,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
@@ -198,7 +198,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
@@ -229,7 +229,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
@@ -259,7 +259,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
@@ -290,7 +290,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
@@ -321,7 +321,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
@@ -352,7 +352,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
@@ -378,7 +378,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
@@ -410,7 +410,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
@@ -436,7 +436,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
@@ -468,7 +468,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		
@@ -494,7 +494,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
@@ -524,7 +524,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		

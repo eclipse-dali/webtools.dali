@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
@@ -59,7 +59,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		assertEquals(GENERATOR, idMapping.getGeneratedValue().getGenerator());
 
 		//change resource model sequenceGenerator name, verify the context model is updated
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		
@@ -80,7 +80,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		
 		assertEquals("foo", idMapping.getGeneratedValue().getGenerator());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		
@@ -98,7 +98,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		
 		assertNotNull(idMapping.getGeneratedValue());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		
@@ -113,7 +113,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
 
 		//change resource model sequenceGenerator name, verify the context model is updated
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		
@@ -135,7 +135,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		
 		assertEquals(GenerationType.IDENTITY, idMapping.getGeneratedValue().getStrategy());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		

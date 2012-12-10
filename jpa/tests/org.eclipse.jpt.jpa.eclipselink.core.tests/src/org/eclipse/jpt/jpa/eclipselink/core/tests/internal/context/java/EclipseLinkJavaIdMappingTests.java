@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -121,7 +121,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
@@ -154,7 +154,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		idMapping.setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) resourceField.getAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
@@ -174,7 +174,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		assertNull(idMapping.getConverter().getType());
 		
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) resourceField.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
@@ -200,7 +200,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		EclipseLinkMutable mutable = idMapping.getMutable();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		mutableAnnotation.setValue(Boolean.TRUE);
@@ -234,7 +234,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		EclipseLinkMutable mutable = idMapping.getMutable();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutableAnnotation.getValue());
@@ -263,7 +263,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		EclipseLinkMutable mutable = idMapping.getMutable();
 		assertTrue(mutable.isDefaultMutable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isDefaultMutable());
@@ -285,7 +285,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		EclipseLinkMutable mutable = idMapping.getMutable();
 		assertFalse(mutable.isDefaultMutable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertFalse(mutable.isDefaultMutable());
@@ -313,7 +313,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		EclipseLinkMutable mutable = idMapping.getMutable();
 		assertTrue(mutable.isMutable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isMutable());

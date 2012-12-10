@@ -109,8 +109,8 @@ final class SourceEnum
 
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
-	public Kind getKind() {
-		return Kind.ENUM;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.ENUM;
 	}
 	
 	

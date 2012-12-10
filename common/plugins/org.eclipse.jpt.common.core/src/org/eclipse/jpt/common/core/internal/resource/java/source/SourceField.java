@@ -90,7 +90,7 @@ final class SourceField
 	
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
-	public Kind getKind() {
-		return Kind.FIELD;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.FIELD;
 	}
 }

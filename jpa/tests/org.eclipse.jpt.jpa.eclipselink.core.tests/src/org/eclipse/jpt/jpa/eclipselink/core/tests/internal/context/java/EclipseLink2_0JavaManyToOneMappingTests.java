@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -113,7 +113,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 	public void testUpdateDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
@@ -136,7 +136,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 	public void testSetDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
@@ -157,7 +157,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 	public void testUpdateMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
@@ -184,7 +184,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 	public void testSetMapsId() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("address");
@@ -212,7 +212,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 	public void testMorphMapping() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
@@ -249,7 +249,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
@@ -283,7 +283,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();

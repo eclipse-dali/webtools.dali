@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -199,10 +200,10 @@ public interface JaxbProject
 	JavaResourceAbstractType getJavaResourceType(String typeName);
 	
 	/**
-	 * Return the {@link JavaResourceAbstractType} with the specified type name and kind.
-	 * Return null if invalid or absent or if the kind does not match.
+	 * Return the {@link JavaResourceAbstractType} with the specified type name and astNodeType.
+	 * Return null if invalid or absent or if the astNodeType does not match.
 	 */
-	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);
+	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAnnotatedElement.AstNodeType astNodeType);
 	
 	
 	// **************** jaxb.index resources **********************************

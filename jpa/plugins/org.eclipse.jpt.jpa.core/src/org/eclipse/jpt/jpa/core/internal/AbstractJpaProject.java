@@ -51,6 +51,7 @@ import org.eclipse.jpt.common.core.internal.utility.command.NotifyingRepeatingJo
 import org.eclipse.jpt.common.core.internal.utility.command.RepeatingJobCommandWrapper;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
@@ -931,9 +932,9 @@ public abstract class AbstractJpaProject
 		return this.buildExternalJavaResourceType(typeName);
 	}
 
-	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind) {
+	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAnnotatedElement.AstNodeType astNodeType) {
 		JavaResourceAbstractType resourceType = this.getJavaResourceType(typeName);
-		if ((resourceType == null) || (resourceType.getKind() != kind)) {
+		if ((resourceType == null) || (resourceType.getAstNodeType() != astNodeType)) {
 			return null;
 		}
 		return resourceType;

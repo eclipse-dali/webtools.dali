@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -180,7 +180,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		assertEquals(null, getJavaMultitenancy().getSpecifiedType());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
 
 		multitenant.setValue(MultitenantType2_3.SINGLE_TABLE);
@@ -213,7 +213,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		assertEquals(EclipseLinkMultitenantType2_3.SINGLE_TABLE, getJavaMultitenancy().getSpecifiedType());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
 		assertEquals(MultitenantType2_3.SINGLE_TABLE, multitenant.getValue());
 
@@ -245,7 +245,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
 		multitenant.setIncludeCriteria(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
@@ -271,7 +271,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
 
 		assertNull(multitenant.getIncludeCriteria());
@@ -301,7 +301,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		assertEquals(0, javaMultitenancy.getSpecifiedTenantDiscriminatorColumnsSize());
 
@@ -333,7 +333,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		getJavaMultitenancy().addSpecifiedTenantDiscriminatorColumn(0).setSpecifiedName("BAR");
 		getJavaMultitenancy().addSpecifiedTenantDiscriminatorColumn(0).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		Iterator<NestableAnnotation> tenantDiscriminatorColumns = resourceType.getAnnotations(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME).iterator();
 
 		assertEquals("BAZ", ((EclipseLinkTenantDiscriminatorColumnAnnotation2_3) tenantDiscriminatorColumns.next()).getName());
@@ -350,7 +350,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		getJavaMultitenancy().addSpecifiedTenantDiscriminatorColumn(1).setSpecifiedName("BAR");
 		getJavaMultitenancy().addSpecifiedTenantDiscriminatorColumn(0).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		Iterator<NestableAnnotation> tenantDiscriminatorColumns = resourceType.getAnnotations(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME).iterator();
 
 		assertEquals("BAZ", ((EclipseLinkTenantDiscriminatorColumnAnnotation2_3) tenantDiscriminatorColumns.next()).getName());
@@ -367,7 +367,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		getJavaMultitenancy().addSpecifiedTenantDiscriminatorColumn(1).setSpecifiedName("BAR");
 		getJavaMultitenancy().addSpecifiedTenantDiscriminatorColumn(2).setSpecifiedName("BAZ");
 
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		assertEquals(3, resourceType.getAnnotationsSize(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME));
 
@@ -408,7 +408,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();	
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		javaMultitenancy.addSpecifiedTenantDiscriminatorColumn(0).setSpecifiedName("FOO");
 		javaMultitenancy.addSpecifiedTenantDiscriminatorColumn(1).setSpecifiedName("BAR");
@@ -447,7 +447,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = getJavaMultitenancy();	
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 
 		((EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.addAnnotation(0, EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)).setName("FOO");
 		((EclipseLinkTenantDiscriminatorColumnAnnotation2_3) resourceType.addAnnotation(1, EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)).setName("BAR");

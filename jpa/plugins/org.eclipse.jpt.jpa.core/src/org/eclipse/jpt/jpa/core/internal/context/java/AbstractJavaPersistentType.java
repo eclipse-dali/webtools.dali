@@ -178,7 +178,7 @@ public abstract class AbstractJavaPersistentType
 		if (typeName == null) {
 			return null;
 		}
-		JavaResourceType rType = (JavaResourceType) this.getJpaProject().getJavaResourceType(typeName, JavaResourceAnnotatedElement.Kind.TYPE);
+		JavaResourceType rType = (JavaResourceType) this.getJpaProject().getJavaResourceType(typeName, JavaResourceAnnotatedElement.AstNodeType.TYPE);
 		if ((rType == null) || visited.contains(rType)) {
 			return null;
 		}
@@ -902,7 +902,7 @@ public abstract class AbstractJavaPersistentType
 				JavaResourceType nextLink = (JavaResourceType)
 						AbstractJavaPersistentType.this.getJpaProject().getJavaResourceType(
 								superclassName,
-								JavaResourceAbstractType.Kind.TYPE);
+								JavaResourceAbstractType.AstNodeType.TYPE);
 				if ((nextLink == null) || visitedResourceTypes.contains(nextLink)) {
 					return null;
 				}

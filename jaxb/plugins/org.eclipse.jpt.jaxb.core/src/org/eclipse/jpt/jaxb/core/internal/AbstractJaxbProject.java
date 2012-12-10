@@ -780,9 +780,9 @@ public abstract class AbstractJaxbProject
 //		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
 	}
 	
-	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind) {
+	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.AstNodeType astNodeType) {
 		JavaResourceAbstractType resourceType = getJavaResourceType(typeName);
-		if (resourceType == null || resourceType.getKind() != kind) {
+		if (resourceType == null || resourceType.getAstNodeType() != astNodeType) {
 			return null;
 		}
 		return resourceType;

@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -48,8 +47,8 @@ final class BinaryEnum
 	}
 	
 	
-	public Kind getKind() {
-		return JavaResourceAnnotatedElement.Kind.ENUM;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.ENUM;
 	}
 	
 	public void synchronizeWith(EnumDeclaration enumDeclaration) {

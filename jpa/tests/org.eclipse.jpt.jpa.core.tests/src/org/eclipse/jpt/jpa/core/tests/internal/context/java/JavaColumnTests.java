@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -167,7 +167,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertEquals("foo", basicMapping.getColumn().getSpecifiedName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -184,7 +184,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(JPA.COLUMN));
 	}
@@ -196,7 +196,7 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 
@@ -265,7 +265,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertEquals("foo", basicMapping.getColumn().getSpecifiedTableName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -282,7 +282,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedTableName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(JPA.COLUMN));
 	}
@@ -294,7 +294,7 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		assertNull(basicMapping.getColumn().getSpecifiedTableName());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 
@@ -323,7 +323,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setColumnDefinition("foo");
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -340,7 +340,7 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		assertNull(basicMapping.getColumn().getColumnDefinition());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 
@@ -384,7 +384,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedLength());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setLength(Integer.valueOf(66));
@@ -409,7 +409,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(100));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -452,7 +452,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedPrecision());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setPrecision(Integer.valueOf(66));
@@ -477,7 +477,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(100));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -520,7 +520,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedScale());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setScale(Integer.valueOf(66));
@@ -545,7 +545,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(100));
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -588,7 +588,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedUnique());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setUnique(Boolean.TRUE);
@@ -613,7 +613,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.FALSE);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -656,7 +656,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedInsertable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setInsertable(Boolean.TRUE);
@@ -681,7 +681,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -724,7 +724,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedNullable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setNullable(Boolean.TRUE);
@@ -749,7 +749,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		
@@ -792,7 +792,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		assertNull(basicMapping.getColumn().getSpecifiedUpdatable());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.addAnnotation(JPA.COLUMN);
 		columnAnnotation.setUpdatable(Boolean.TRUE);
@@ -817,7 +817,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		ColumnAnnotation columnAnnotation = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		

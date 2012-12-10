@@ -55,8 +55,8 @@ final class BinaryMethod
 	}
 	
 	
-	public Kind getKind() {
-		return JavaResourceAnnotatedElement.Kind.METHOD;
+	public AstNodeType getAstNodeType() {
+		return AstNodeType.METHOD;
 	}
 	
 	public void synchronizeWith(MethodDeclaration methodDeclaration) {
