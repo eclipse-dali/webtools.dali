@@ -134,7 +134,7 @@ public abstract class AbstractJaxbContextRoot
 		// keep a master list of all types that we've processed so we don't process them again
 		final Set<String> totalTypes = CollectionTools.<String>set();
 		
-		// keep an running list of types that we need to scan for further referenced types
+		// keep a running list of types that we need to scan for further referenced types
 		final Set<String> typesToScan = CollectionTools.<String>set();
 		
 		// process packages with annotations first
