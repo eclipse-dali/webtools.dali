@@ -112,7 +112,12 @@ public abstract class AbstractJavaTypeMapping
 	}
 	
 	public void setXmlTransient(boolean newValue) {
-		getJavaResourceType().addAnnotation(JAXB.XML_TRANSIENT);
+		if (newValue) {
+			getJavaResourceType().addAnnotation(JAXB.XML_TRANSIENT);
+		}
+		else {
+			getJavaResourceType().removeAnnotation(JAXB.XML_TRANSIENT);
+		}
 		setXmlTransient_(newValue);
 	}
 	
