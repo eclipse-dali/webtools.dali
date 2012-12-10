@@ -14,31 +14,31 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>EXml Inverse Reference</b></em>'.
+ * A representation of the model object '<em><b>EXml Any Attribute</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlInverseReference#getMappedBy <em>Mapped By</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAnyAttribute#getXmlPath <em>Xml Path</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlInverseReference()
+ * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlAnyAttribute()
  * @model kind="class"
  * @generated
  */
-public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJavaAttribute, EContainerJavaAttribute, ETypedJavaAttribute, EPropertyHolder
+public class EXmlAnyAttribute extends EJavaAttribute implements EAccessibleJavaAttribute, EContainerJavaAttribute, EReadWriteJavaAttribute, EPropertyHolder
 {
 	/**
 	 * The cached value of the '{@link #getXmlAccessMethods() <em>Xml Access Methods</em>}' containment reference.
@@ -68,23 +68,41 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	 */
 	protected String containerType = CONTAINER_TYPE_EDEFAULT;
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * The default value of the '{@link #isReadOnly() <em>Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #isReadOnly()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String TYPE_EDEFAULT = null;
+	protected static final boolean READ_ONLY_EDEFAULT = false;
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * The cached value of the '{@link #isReadOnly() <em>Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #isReadOnly()
 	 * @generated
 	 * @ordered
 	 */
-	protected String type = TYPE_EDEFAULT;
+	protected boolean readOnly = READ_ONLY_EDEFAULT;
+	/**
+	 * The default value of the '{@link #isWriteOnly() <em>Write Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWriteOnly()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean WRITE_ONLY_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #isWriteOnly() <em>Write Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWriteOnly()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean writeOnly = WRITE_ONLY_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getXmlProperties() <em>Xml Properties</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -95,23 +113,23 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	 */
 	protected EList<EXmlProperty> xmlProperties;
 	/**
-	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
+	 * The default value of the '{@link #getXmlPath() <em>Xml Path</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMappedBy()
+	 * @see #getXmlPath()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String MAPPED_BY_EDEFAULT = null;
+	protected static final String XML_PATH_EDEFAULT = null;
 	/**
-	 * The cached value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
+	 * The cached value of the '{@link #getXmlPath() <em>Xml Path</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMappedBy()
+	 * @see #getXmlPath()
 	 * @generated
 	 * @ordered
 	 */
-	protected String mappedBy = MAPPED_BY_EDEFAULT;
+	protected String xmlPath = XML_PATH_EDEFAULT;
 
 
 	/**
@@ -119,7 +137,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EXmlInverseReference()
+	protected EXmlAnyAttribute()
 	{
 		super();
 	}
@@ -132,7 +150,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OxmPackage.Literals.EXML_INVERSE_REFERENCE;
+		return OxmPackage.Literals.EXML_ANY_ATTRIBUTE;
 	}
 	
 	
@@ -166,14 +184,14 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		xmlAccessMethods = newXmlAccessMethods;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS, oldXmlAccessMethods, newXmlAccessMethods);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS, oldXmlAccessMethods, newXmlAccessMethods);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlInverseReference#getXmlAccessMethods <em>Xml Access Methods</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAnyAttribute#getXmlAccessMethods <em>Xml Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Xml Access Methods</em>' containment reference.
@@ -186,14 +204,14 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			NotificationChain msgs = null;
 			if (xmlAccessMethods != null)
-				msgs = ((InternalEObject)xmlAccessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS, null, msgs);
+				msgs = ((InternalEObject)xmlAccessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS, null, msgs);
 			if (newXmlAccessMethods != null)
-				msgs = ((InternalEObject)newXmlAccessMethods).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS, null, msgs);
+				msgs = ((InternalEObject)newXmlAccessMethods).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS, null, msgs);
 			msgs = basicSetXmlAccessMethods(newXmlAccessMethods, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS, newXmlAccessMethods, newXmlAccessMethods));
+			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS, newXmlAccessMethods, newXmlAccessMethods));
 	}
 
 	/**
@@ -216,7 +234,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlInverseReference#getContainerType <em>Container Type</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAnyAttribute#getContainerType <em>Container Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Container Type</em>' attribute.
@@ -228,42 +246,77 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		String oldContainerType = containerType;
 		containerType = newContainerType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE, oldContainerType, containerType));
+			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE, oldContainerType, containerType));
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Type</b></em>' attribute.
+	 * Returns the value of the '<em><b>Read Only</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Read Only</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type</em>' attribute.
-	 * @see #setType(String)
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getETypedJavaAttribute_Type()
+	 * @return the value of the '<em>Read Only</em>' attribute.
+	 * @see #setReadOnly(boolean)
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEReadWriteJavaAttribute_ReadOnly()
 	 * @model
 	 * @generated
 	 */
-	public String getType()
+	public boolean isReadOnly()
 	{
-		return type;
+		return readOnly;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlInverseReference#getType <em>Type</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAnyAttribute#isReadOnly <em>Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type</em>' attribute.
-	 * @see #getType()
+	 * @param value the new value of the '<em>Read Only</em>' attribute.
+	 * @see #isReadOnly()
 	 * @generated
 	 */
-	public void setType(String newType)
+	public void setReadOnly(boolean newReadOnly)
 	{
-		String oldType = type;
-		type = newType;
+		boolean oldReadOnly = readOnly;
+		readOnly = newReadOnly;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_INVERSE_REFERENCE__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY, oldReadOnly, readOnly));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Write Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Write Only</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Write Only</em>' attribute.
+	 * @see #setWriteOnly(boolean)
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEReadWriteJavaAttribute_WriteOnly()
+	 * @model
+	 * @generated
+	 */
+	public boolean isWriteOnly()
+	{
+		return writeOnly;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAnyAttribute#isWriteOnly <em>Write Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Write Only</em>' attribute.
+	 * @see #isWriteOnly()
+	 * @generated
+	 */
+	public void setWriteOnly(boolean newWriteOnly)
+	{
+		boolean oldWriteOnly = writeOnly;
+		writeOnly = newWriteOnly;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY, oldWriteOnly, writeOnly));
 	}
 
 	/**
@@ -284,44 +337,44 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	{
 		if (xmlProperties == null)
 		{
-			xmlProperties = new EObjectContainmentEList<EXmlProperty>(EXmlProperty.class, this, OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES);
+			xmlProperties = new EObjectContainmentEList<EXmlProperty>(EXmlProperty.class, this, OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES);
 		}
 		return xmlProperties;
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Mapped By</b></em>' attribute.
+	 * Returns the value of the '<em><b>Xml Path</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Mapped By</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Xml Path</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapped By</em>' attribute.
-	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlInverseReference_MappedBy()
+	 * @return the value of the '<em>Xml Path</em>' attribute.
+	 * @see #setXmlPath(String)
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlAnyAttribute_XmlPath()
 	 * @model
 	 * @generated
 	 */
-	public String getMappedBy()
+	public String getXmlPath()
 	{
-		return mappedBy;
+		return xmlPath;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlInverseReference#getMappedBy <em>Mapped By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAnyAttribute#getXmlPath <em>Xml Path</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Mapped By</em>' attribute.
-	 * @see #getMappedBy()
+	 * @param value the new value of the '<em>Xml Path</em>' attribute.
+	 * @see #getXmlPath()
 	 * @generated
 	 */
-	public void setMappedBy(String newMappedBy)
+	public void setXmlPath(String newXmlPath)
 	{
-		String oldMappedBy = mappedBy;
-		mappedBy = newMappedBy;
+		String oldXmlPath = xmlPath;
+		xmlPath = newXmlPath;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_INVERSE_REFERENCE__MAPPED_BY, oldMappedBy, mappedBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_ANY_ATTRIBUTE__XML_PATH, oldXmlPath, xmlPath));
 	}
 
 	/**
@@ -334,9 +387,9 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS:
 				return basicSetXmlAccessMethods(null, msgs);
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES:
 				return ((InternalEList<?>)getXmlProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -352,16 +405,18 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS:
 				return getXmlAccessMethods();
-			case OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE:
 				return getContainerType();
-			case OxmPackage.EXML_INVERSE_REFERENCE__TYPE:
-				return getType();
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY:
+				return isReadOnly();
+			case OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY:
+				return isWriteOnly();
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES:
 				return getXmlProperties();
-			case OxmPackage.EXML_INVERSE_REFERENCE__MAPPED_BY:
-				return getMappedBy();
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PATH:
+				return getXmlPath();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -377,21 +432,24 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS:
 				setXmlAccessMethods((EXmlAccessMethods)newValue);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE:
 				setContainerType((String)newValue);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__TYPE:
-				setType((String)newValue);
+			case OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY:
+				setReadOnly((Boolean)newValue);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY:
+				setWriteOnly((Boolean)newValue);
+				return;
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES:
 				getXmlProperties().clear();
 				getXmlProperties().addAll((Collection<? extends EXmlProperty>)newValue);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__MAPPED_BY:
-				setMappedBy((String)newValue);
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PATH:
+				setXmlPath((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -407,20 +465,23 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS:
 				setXmlAccessMethods((EXmlAccessMethods)null);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE:
 				setContainerType(CONTAINER_TYPE_EDEFAULT);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__TYPE:
-				setType(TYPE_EDEFAULT);
+			case OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY:
+				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY:
+				setWriteOnly(WRITE_ONLY_EDEFAULT);
+				return;
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES:
 				getXmlProperties().clear();
 				return;
-			case OxmPackage.EXML_INVERSE_REFERENCE__MAPPED_BY:
-				setMappedBy(MAPPED_BY_EDEFAULT);
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PATH:
+				setXmlPath(XML_PATH_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -436,16 +497,18 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS:
 				return xmlAccessMethods != null;
-			case OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE:
 				return CONTAINER_TYPE_EDEFAULT == null ? containerType != null : !CONTAINER_TYPE_EDEFAULT.equals(containerType);
-			case OxmPackage.EXML_INVERSE_REFERENCE__TYPE:
-				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
-			case OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES:
+			case OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY:
+				return readOnly != READ_ONLY_EDEFAULT;
+			case OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY:
+				return writeOnly != WRITE_ONLY_EDEFAULT;
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES:
 				return xmlProperties != null && !xmlProperties.isEmpty();
-			case OxmPackage.EXML_INVERSE_REFERENCE__MAPPED_BY:
-				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
+			case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PATH:
+				return XML_PATH_EDEFAULT == null ? xmlPath != null : !XML_PATH_EDEFAULT.equals(xmlPath);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -462,7 +525,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			switch (derivedFeatureID)
 			{
-				case OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS: return OxmPackage.EACCESSIBLE_JAVA_ATTRIBUTE__XML_ACCESS_METHODS;
+				case OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS: return OxmPackage.EACCESSIBLE_JAVA_ATTRIBUTE__XML_ACCESS_METHODS;
 				default: return -1;
 			}
 		}
@@ -470,15 +533,16 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			switch (derivedFeatureID)
 			{
-				case OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE: return OxmPackage.ECONTAINER_JAVA_ATTRIBUTE__CONTAINER_TYPE;
+				case OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE: return OxmPackage.ECONTAINER_JAVA_ATTRIBUTE__CONTAINER_TYPE;
 				default: return -1;
 			}
 		}
-		if (baseClass == ETypedJavaAttribute.class)
+		if (baseClass == EReadWriteJavaAttribute.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OxmPackage.EXML_INVERSE_REFERENCE__TYPE: return OxmPackage.ETYPED_JAVA_ATTRIBUTE__TYPE;
+				case OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY: return OxmPackage.EREAD_WRITE_JAVA_ATTRIBUTE__READ_ONLY;
+				case OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY: return OxmPackage.EREAD_WRITE_JAVA_ATTRIBUTE__WRITE_ONLY;
 				default: return -1;
 			}
 		}
@@ -486,7 +550,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			switch (derivedFeatureID)
 			{
-				case OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES: return OxmPackage.EPROPERTY_HOLDER__XML_PROPERTIES;
+				case OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES: return OxmPackage.EPROPERTY_HOLDER__XML_PROPERTIES;
 				default: return -1;
 			}
 		}
@@ -505,7 +569,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			switch (baseFeatureID)
 			{
-				case OxmPackage.EACCESSIBLE_JAVA_ATTRIBUTE__XML_ACCESS_METHODS: return OxmPackage.EXML_INVERSE_REFERENCE__XML_ACCESS_METHODS;
+				case OxmPackage.EACCESSIBLE_JAVA_ATTRIBUTE__XML_ACCESS_METHODS: return OxmPackage.EXML_ANY_ATTRIBUTE__XML_ACCESS_METHODS;
 				default: return -1;
 			}
 		}
@@ -513,15 +577,16 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			switch (baseFeatureID)
 			{
-				case OxmPackage.ECONTAINER_JAVA_ATTRIBUTE__CONTAINER_TYPE: return OxmPackage.EXML_INVERSE_REFERENCE__CONTAINER_TYPE;
+				case OxmPackage.ECONTAINER_JAVA_ATTRIBUTE__CONTAINER_TYPE: return OxmPackage.EXML_ANY_ATTRIBUTE__CONTAINER_TYPE;
 				default: return -1;
 			}
 		}
-		if (baseClass == ETypedJavaAttribute.class)
+		if (baseClass == EReadWriteJavaAttribute.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OxmPackage.ETYPED_JAVA_ATTRIBUTE__TYPE: return OxmPackage.EXML_INVERSE_REFERENCE__TYPE;
+				case OxmPackage.EREAD_WRITE_JAVA_ATTRIBUTE__READ_ONLY: return OxmPackage.EXML_ANY_ATTRIBUTE__READ_ONLY;
+				case OxmPackage.EREAD_WRITE_JAVA_ATTRIBUTE__WRITE_ONLY: return OxmPackage.EXML_ANY_ATTRIBUTE__WRITE_ONLY;
 				default: return -1;
 			}
 		}
@@ -529,7 +594,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		{
 			switch (baseFeatureID)
 			{
-				case OxmPackage.EPROPERTY_HOLDER__XML_PROPERTIES: return OxmPackage.EXML_INVERSE_REFERENCE__XML_PROPERTIES;
+				case OxmPackage.EPROPERTY_HOLDER__XML_PROPERTIES: return OxmPackage.EXML_ANY_ATTRIBUTE__XML_PROPERTIES;
 				default: return -1;
 			}
 		}
@@ -549,29 +614,31 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (containerType: ");
 		result.append(containerType);
-		result.append(", type: ");
-		result.append(type);
-		result.append(", mappedBy: ");
-		result.append(mappedBy);
+		result.append(", readOnly: ");
+		result.append(readOnly);
+		result.append(", writeOnly: ");
+		result.append(writeOnly);
+		result.append(", xmlPath: ");
+		result.append(xmlPath);
 		result.append(')');
 		return result.toString();
 	}
-
-
+	
+	
 	// ***** misc *****
 	
 	@Override
 	public String getElementName() {
-		return Oxm.XML_INVERSE_REFERENCE;
+		return Oxm.XML_ANY_ATTRIBUTE;
 	}
 	
 	
 	// ***** translators *****
 	
-	static class XmlInverseReferenceTranslator
+	static class XmlAnyAttributeTranslator
 			extends AbstractJavaAttributeTranslator {
 		
-		XmlInverseReferenceTranslator(String domPathAndName, EStructuralFeature eStructuralFeature) {
+		XmlAnyAttributeTranslator(String domPathAndName, EStructuralFeature eStructuralFeature) {
 			super(domPathAndName, eStructuralFeature, buildTranslatorChildren());
 		}
 		
@@ -582,7 +649,7 @@ public class EXmlInverseReference extends EJavaAttribute implements EAccessibleJ
 		
 		@Override
 		public EObject createEMFObject(String nodeName, String readAheadName) {
-			return OxmFactory.eINSTANCE.createEXmlInverseReference();
+			return OxmFactory.eINSTANCE.createEXmlAnyAttribute();
 		}
 	}
 }

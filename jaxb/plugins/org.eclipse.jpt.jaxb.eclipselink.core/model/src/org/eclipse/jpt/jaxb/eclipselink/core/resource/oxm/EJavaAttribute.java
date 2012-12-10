@@ -420,19 +420,20 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 				String domPathAndName, EStructuralFeature eStructuralFeature, Translator[] translatorChildren) {
 			super(Oxm.JAVA_ATTRIBUTES + "/" + domPathAndName, eStructuralFeature, translatorChildren);
 		}
-		
-		protected static Translator buildJavaAttributeTranslator() {
-			return new Translator(
-					Oxm.JAVA_ATTRIBUTE,
-					OxmPackage.eINSTANCE.getEJavaAttribute_JavaAttribute(), 
-					Translator.DOM_ATTRIBUTE);
-		}
-		
-		protected static Translator buildXmlAccessorTypeTranslator() {
-			return new Translator(
-					Oxm.XML_ACCESSOR_TYPE,
-					OxmPackage.eINSTANCE.getEJavaAttribute_XmlAccessorType(), 
-					Translator.DOM_ATTRIBUTE);
-		}
 	}
+	
+	protected static Translator buildJavaAttributeTranslator() {
+		return new Translator(
+				Oxm.JAVA_ATTRIBUTE,
+				OxmPackage.eINSTANCE.getEJavaAttribute_JavaAttribute(), 
+				Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildXmlAccessorTypeTranslator() {
+		return new Translator(
+				Oxm.XML_ACCESSOR_TYPE,
+				OxmPackage.eINSTANCE.getEJavaAttribute_XmlAccessorType(), 
+				Translator.DOM_ATTRIBUTE);
+	}
+
 }
