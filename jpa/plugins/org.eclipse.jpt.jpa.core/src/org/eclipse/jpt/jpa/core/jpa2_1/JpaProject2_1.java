@@ -7,8 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.jpa2;
+package org.eclipse.jpt.jpa.core.jpa2_1;
 
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**

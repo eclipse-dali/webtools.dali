@@ -17,9 +17,8 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaFactory2_0;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_1;
 
 /**
@@ -43,7 +42,7 @@ public class Generic2_1JpaPlatformFactory
 			id,
 			this.buildJpaVersion(),
 			new GenericJpaFactory2_0(),
-			new JpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
+			new JpaAnnotationProvider(Generic2_1JpaAnnotationDefinitionProvider.instance()),
 			Generic2_1JpaPlatformProvider.instance(),
 			this.buildJpaPlatformVariation(),
 			JPQLGrammar2_1.instance());

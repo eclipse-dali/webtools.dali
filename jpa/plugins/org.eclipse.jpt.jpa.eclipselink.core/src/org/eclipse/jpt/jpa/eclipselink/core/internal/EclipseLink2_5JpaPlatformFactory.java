@@ -17,8 +17,8 @@ import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_5;
@@ -44,7 +44,7 @@ public class EclipseLink2_5JpaPlatformFactory
 			buildJpaVersion(),
 			new EclipseLink2_4JpaFactory(),
 			buildAnnotationProvider(),
-			EclipseLink2_5JpaPlatformProvider.instance(),
+			EclipseLink2_4JpaPlatformProvider.instance(),
 			buildJpaVariation(),
 			EclipseLinkJPQLGrammar2_5.instance());
 	}
@@ -55,7 +55,7 @@ public class EclipseLink2_5JpaPlatformFactory
 
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
-				Generic2_0JpaAnnotationDefinitionProvider.instance(),
+				Generic2_1JpaAnnotationDefinitionProvider.instance(),
 				EclipseLink2_4JpaAnnotationDefinitionProvider.instance());
 	}
 

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationCon
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
 public class GenericEclipseLinkBundlesLibraryValidator 
