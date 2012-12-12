@@ -297,7 +297,7 @@ public class GenericJavaClassMapping
 	
 	/**
 	 * Default access type is determined by the following, in order of precedence:
-	 * - @XmlAccessorType annotation on a mapped super class
+	 * - @XmlAccessorType annotation on a mapped (or transient, apparently) super class
 	 * - @XmlAccessorType annotation on the package
 	 * - default access type of {@link PUBLIC_MEMBER}
 	 */
@@ -314,7 +314,15 @@ public class GenericJavaClassMapping
 	}
 	
 	protected XmlAccessType getSuperclassAccessType() {
-		return this.superclass == null ? null : this.superclass.getSpecifiedAccessType();
+		JaxbClassMapping superclass = this.superclass;
+		while (superclass != null) {
+			XmlAccessType accessType = superclass.getSpecifiedAccessType();
+			if (accessType != null) {
+				return accessType;
+			}
+			superclass = superclass.getSuperclass();
+		}
+		return null;
 	}
 	
 	protected XmlAccessType getPackageAccessType() {
@@ -380,7 +388,7 @@ public class GenericJavaClassMapping
 	
 	/**
 	 * Default access order is determined by the following, in order of precedence:
-	 * - @XmlAccessorOrder annotation on a mapped super class
+	 * - @XmlAccessorOrder annotation on a mapped (or transient, apparently) super class
 	 * - @XmlAccessorOrder annotation on the package
 	 * - default access order of {@link UNDEFINED}
 	 */
