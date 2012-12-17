@@ -44,6 +44,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDef
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_1Definition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -81,7 +82,7 @@ public class Generic2_1JpaPlatformProvider
 	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
 		JavaSourceFileDefinition.instance().getResourceType(),
 		JarDefinition.instance().getResourceType(),
-		GenericPersistenceXml2_0Definition.instance().getResourceType(),
+		GenericPersistenceXml2_1Definition.instance().getResourceType(),
 		GenericOrmXml2_1Definition.instance().getResourceType()
 	};
 
@@ -160,6 +161,7 @@ public class Generic2_1JpaPlatformProvider
 		JarDefinition.instance(),
 		GenericPersistenceXmlDefinition.instance(),
 		GenericPersistenceXml2_0Definition.instance(),
+		GenericPersistenceXml2_1Definition.instance(),
 		GenericOrmXmlDefinition.instance(),
 		GenericOrmXml2_0Definition.instance(),
 		GenericOrmXml2_1Definition.instance()

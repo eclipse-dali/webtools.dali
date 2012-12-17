@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefini
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaArrayMappingDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition2_0;
@@ -59,6 +59,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmX
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_5Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_4PersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_5PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
 /**
@@ -96,7 +97,7 @@ public class EclipseLink2_5JpaPlatformProvider
 	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
 		JavaSourceFileDefinition.instance().getResourceType(),
 		JarDefinition.instance().getResourceType(),
-		GenericPersistenceXml2_0Definition.instance().getResourceType(),
+		GenericPersistenceXml2_1Definition.instance().getResourceType(),
 		GenericOrmXml2_1Definition.instance().getResourceType(),
 		EclipseLinkOrmXml2_5Definition.instance().getResourceType()
 	};
@@ -128,6 +129,7 @@ public class EclipseLink2_5JpaPlatformProvider
 		JarDefinition.instance(),
 		EclipseLinkPersistenceXmlDefinition.instance(),
 		EclipseLink2_4PersistenceXmlDefinition.instance(),
+		EclipseLink2_5PersistenceXmlDefinition.instance(),
 		GenericOrmXmlDefinition.instance(),
 		GenericOrmXml2_0Definition.instance(),
 		GenericOrmXml2_1Definition.instance(),

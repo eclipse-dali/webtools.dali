@@ -177,6 +177,11 @@
 			id="org.eclipse.jpt.jpa.core.resource.persistence_2_0"
 			content-type="org.eclipse.jpt.jpa.core.content.persistence"
 			version="2.0"/>
+  <resource-type
+        content-type="org.eclipse.jpt.jpa.core.content.persistence"
+        id="org.eclipse.jpt.jpa.core.resource.persistence_2_1"
+        version="2.1">
+  </resource-type>
 
 		<resource-type
 			id="org.eclipse.jpt.jpa.core.resource.orm_1_0"
