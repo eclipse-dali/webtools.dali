@@ -25,6 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlAdaptableMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
@@ -374,19 +375,27 @@ public class GenericJavaXmlElement
 							this,
 							getTypeTextRange(astRoot)));
 		}
-		else if (! StringTools.stringIsEmpty(this.specifiedType)
+		else {
+			//TODO - the following check can be removed once proper binary support is added to JAXB projects
+			//verify that a binary XmlAdapter is not being used before continuing with validation (to avoid invalid errors) - see bug 394063
+			XmlAdaptableMapping mapping = (XmlAdaptableMapping) getAttributeMapping();
+			if (mapping.getXmlJavaTypeAdapter() != null && mapping.getXmlAdapter() == null) { // XmlAdapter is either binary or invalid (which results in other validation errors)
+				return;
+			}
+			if (! StringTools.stringIsEmpty(this.specifiedType)
 				// verify that type actually exists before validating
 				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
-			String attributeBaseType = getAttributeMapping().getValueTypeName();
-			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
-				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
-								new String[] { attributeBaseType },
-								this,
-								getTypeTextRange(astRoot)));
-								
+				String attributeBaseType = getAttributeMapping().getValueTypeName();
+				if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
+					messages.add(
+							DefaultValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
+									new String[] { attributeBaseType },
+									this,
+									getTypeTextRange(astRoot)));
+									
+				}
 			}
 		}
 	}
