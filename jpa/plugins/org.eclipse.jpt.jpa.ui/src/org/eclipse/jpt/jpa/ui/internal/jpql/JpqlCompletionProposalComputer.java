@@ -13,16 +13,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.BASIC;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ELEMENT_COLLECTION;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED_ID;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ID;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_MANY;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_ONE;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_MANY;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_ONE;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.VERSION;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,22 +20,27 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.utility.internal.CharacterTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
+import org.eclipse.persistence.jpa.jpql.ContentAssistProposals.ClassType;
+import org.eclipse.persistence.jpa.jpql.ContentAssistProposals.EnumProposals;
 import org.eclipse.persistence.jpa.jpql.WordParser;
 import org.eclipse.persistence.jpa.jpql.parser.Expression;
 import org.eclipse.persistence.jpa.jpql.parser.IdentifierRole;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 
 /**
  * The abstract definition of JPQL content assist support.
@@ -111,37 +106,45 @@ abstract class JpqlCompletionProposalComputer<T> {
 	/**
 	 * Creates a new <code>JpqlCompletionProposalComputer</code>.
 	 */
-	JpqlCompletionProposalComputer() {
+	public JpqlCompletionProposalComputer() {
 		super();
 	}
 
-	/**
-	 * Adds completion proposals for the abstract schema names that are possible proposals.
-	 *
-	 * @param proposals The list used to store the new completion proposals
-	 */
-	private void addAbstractSchemaNames(List<T> proposals, ResourceManager resourceManager) {
-		for (IEntity abstractSchemaType : sortByNames(contentAssistProposals.abstractSchemaTypes())) {
-			proposals.add(buildAbstractSchemaNameProposal(abstractSchemaType, resourceManager));
+	private void addClassNames(List<T> proposals, ResourceManager resourceManager) {
+
+		ClassType classType = contentAssistProposals.getClassType();
+
+		for (String className : sort(contentAssistProposals.classNames())) {
+			proposals.add(buildClassNameProposal(className, classType, resourceManager));
 		}
 	}
 
-	/**
-	 * Adds completion proposals for the identification variables that are possible proposals.
-	 *
-	 * @param proposals The list used to store the new completion proposals
-	 */
+	private void addColumnNames(List<T> proposals, ResourceManager resourceManager) {
+		for (String columnName : sort(contentAssistProposals.columnNames())) {
+			proposals.add(buildColumnNameProposal(columnName, resourceManager));
+		}
+	}
+
+	private void addEntityNames(List<T> proposals, ResourceManager resourceManager) {
+		for (IEntity entity : sortByNames(contentAssistProposals.abstractSchemaTypes())) {
+			proposals.add(buildEntityNameProposal(entity, resourceManager));
+		}
+	}
+
+	private void addEnumConstantNames(List<T> proposals, ResourceManager resourceManager) {
+		for (EnumProposals enumProposal : contentAssistProposals.enumConstant()) {
+			IType enumType = enumProposal.enumType();
+			for (String enumConstant : sort(enumProposal.enumConstants()))
+			proposals.add(buildEnumConstantNameProposal(enumType, enumConstant, resourceManager));
+		}
+	}
+
 	private void addIdentificationVariables(List<T> proposals, ResourceManager resourceManager) {
 		for (String variable : sort(contentAssistProposals.identificationVariables())) {
 			proposals.add(buildIdentificationVariableProposal(variable, resourceManager));
 		}
 	}
 
-	/**
-	 * Adds completion proposals for the JPQL identifiers that are possible proposals.
-	 *
-	 * @param proposals The list used to store the new completion proposals
-	 */
 	private void addIdentifiers(List<T> proposals, ResourceManager resourceManager) {
 		for (String identifier : sort(contentAssistProposals.identifiers())) {
 			proposals.add(buildIdentifierProposal(identifier, resourceManager));
@@ -152,20 +155,49 @@ abstract class JpqlCompletionProposalComputer<T> {
 		return JpqlIdentifierMessages.localizedMessage(proposal);
 	}
 
-	/**
-	 * Adds completion proposals for the state fields and association fields that are possible proposals.
-	 *
-	 * @param proposals The list used to store the new completion proposals
-	 */
 	private void addMappings(List<T> proposals, ResourceManager resourceManager) {
 		for (IMapping mapping : sort(contentAssistProposals.mappings())) {
 			proposals.add(buildMappingProposal(mapping, resourceManager));
 		}
 	}
 
-	private T buildAbstractSchemaNameProposal(IEntity abstractSchemaType, ResourceManager resourceManager) {
-		String proposal = abstractSchemaType.getName();
-		return buildProposal(proposal, proposal, resourceManager.createImage(JptJpaUiImages.ENTITY));
+	private void addTableNames(List<T> proposals, ResourceManager resourceManager) {
+		for (String tableName : sort(contentAssistProposals.tableNames())) {
+			proposals.add(buildTableNameProposal(tableName, resourceManager));
+		}
+	}
+
+	private T buildClassNameProposal(String className, ClassType type, ResourceManager resourceManager) {
+
+		String displayString = className;
+		int dotIndex = className.lastIndexOf('.');
+
+		if (dotIndex > -1) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(className.substring(dotIndex + 1));
+			sb.append(" - ");
+			sb.append(className.substring(0, dotIndex));
+			displayString = sb.toString();
+		}
+
+		Image image;
+
+		if (type == ClassType.INSTANTIABLE) {
+			image = resourceManager.createImage(JptJpaUiImages.CLASS_REF);
+		}
+		else {
+			image = resourceManager.createImage(JptJpaUiImages.ENUM);
+		}
+
+		return buildProposal(className, displayString, image);
+	}
+
+	private T buildColumnNameProposal(String columnName, ResourceManager resourceManager) {
+		return buildProposal(
+			columnName,
+			columnName,
+			resourceManager.createImage(JptJpaUiImages.COLUMN)
+		);
 	}
 
 	private Comparator<IEntity> buildEntityNameComparator() {
@@ -176,15 +208,36 @@ abstract class JpqlCompletionProposalComputer<T> {
 		};
 	}
 
+	private T buildEntityNameProposal(IEntity entity, ResourceManager resourceManager) {
+		String proposal = entity.getName();
+		return buildProposal(proposal, proposal, resourceManager.createImage(JptJpaUiImages.ENTITY));
+	}
+
+	private T buildEnumConstantNameProposal(IType enumType,
+	                                        String enumConstant,
+	                                        ResourceManager resourceManager) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(enumConstant);
+		sb.append(" : ");
+		sb.append(enumType.getName());
+
+		return buildProposal(
+			enumConstant,
+			sb.toString(),
+			resourceManager.createImage(JptJpaUiImages.ENUM)
+		);
+	}
+
 	private String buildIdentificationVariableDisplayString(String identificationVariable) {
 
-		IEntity abstractSchemaType = contentAssistProposals.getAbstractSchemaType(identificationVariable);
+		IEntity entity = contentAssistProposals.getAbstractSchemaType(identificationVariable);
 
-		if (abstractSchemaType != null) {
+		if (entity != null) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(identificationVariable);
 			sb.append(" : ");
-			sb.append(abstractSchemaType.getName());
+			sb.append(entity.getName());
 			identificationVariable = sb.toString();
 		}
 
@@ -226,6 +279,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 		}
 
 		Image image = resourceManager.createImage(realFunction ? JptJpaUiImages.JPQL_FUNCTION : JptJpaUiImages.JPQL_IDENTIFIER);
+
 		return buildProposal(
 			proposal,
 			proposal,
@@ -271,9 +325,11 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 * @param namedQuery The model object used to access the application metadata information
 	 * @param actualQuery The string representation of the JPQL query that is coming from the
 	 * document itself (Java source or XML)
-	 * @param offset The beginning of the string within the document
-	 * @param position The position of the cursor within the query, which starts at the beginning of
+	 * @param tokenStart The beginning of the string within the document
+	 * @param tokenEnd The position of the cursor within the query, which starts at the beginning of
 	 * that query and not the document
+	 * @param position
+	 * @param resourceManager The manager of resources, such as images
 	 * @return The list of completion proposals
 	 */
 	final List<T> buildProposals(NamedQuery namedQuery,
@@ -307,10 +363,14 @@ abstract class JpqlCompletionProposalComputer<T> {
 
 			// Create the proposals for those proposals
 			List<T> proposals = new ArrayList<T>();
-			addAbstractSchemaNames    (proposals, resourceManager);
-			addIdentificationVariables(proposals, resourceManager);
-			addIdentifiers            (proposals, resourceManager);
 			addMappings               (proposals, resourceManager);
+			addIdentificationVariables(proposals, resourceManager);
+			addEntityNames            (proposals, resourceManager);
+			addTableNames             (proposals, resourceManager);
+			addColumnNames            (proposals, resourceManager);
+			addClassNames             (proposals, resourceManager);
+			addEnumConstantNames      (proposals, resourceManager);
+			addIdentifiers            (proposals, resourceManager);
 
 			return proposals;
 		}
@@ -320,6 +380,11 @@ abstract class JpqlCompletionProposalComputer<T> {
 			}
 			clearInformation();
 		}
+	}
+
+	private T buildTableNameProposal(String tableName, ResourceManager resourceManager) {
+		String proposal = StringTools.delimit(tableName, CharacterTools.SINGLE_QUOTE);
+		return buildProposal(proposal, proposal, resourceManager.createImage(JptJpaUiImages.TABLE));
 	}
 
 	final void checkCanceled(IProgressMonitor monitor) throws InterruptedException {
@@ -352,12 +417,12 @@ abstract class JpqlCompletionProposalComputer<T> {
 		return null;
 	}
 
-	ResourceManager getResourceManager(Control control) {
-		return this.getJpaWorkbench().getResourceManager(control);
-	}
-
 	JpaWorkbench getJpaWorkbench() {
 		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+	}
+
+	ResourceManager getResourceManager(Control control) {
+		return this.getJpaWorkbench().getResourceManager(control);
 	}
 
 	private boolean isRealFunction(String identifier) {

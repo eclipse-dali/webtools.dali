@@ -13,15 +13,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
-import java.lang.reflect.Method;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.jpql.XmlEscapeCharacterConverter;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
-import org.eclipse.persistence.jpa.jpql.DefaultContentAssistProposals;
-import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.ResultQuery;
-import org.eclipse.persistence.jpa.jpql.WordParser;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -83,58 +77,11 @@ final class JpqlSseCompletionProposal extends JpqlCompletionProposal {
 			);
 		}
 
-		// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
-		return /*proposals.*/buildXmlQuery(
+		return proposals.buildXmlQuery(
 			actualJpqlQuery,
 			proposal,
 			actualPosition,
 			isCompletionInserts() ^ toggleCompletion
 		);
-	}
-
-	/**
-	 * TODO: TO DELETE ONCE USING THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE
-	 */
-	@SuppressWarnings("nls")
-	private ResultQuery buildXmlQuery(String jpqlQuery, String proposal, int position, boolean insert) {
-
-		// Nothing to replace
-		if (ExpressionTools.stringIsEmpty(proposal)) {
-			return proposals.buildQuery(jpqlQuery, StringTools.EMPTY_STRING, position, false);
-		}
-
-		int[] positions = { position };
-
-		// First convert the escape characters into their unicode characters
-		String query = XmlEscapeCharacterConverter.unescape(jpqlQuery, positions);
-
-		// Calculate the start and end positions
-		WordParser wordParser = new WordParser(query);
-		wordParser.setPosition(positions[0]);
-
-		// int[] proposalPositions = buildPositions(wordParser, proposal, insert);
-		int[] proposalPositions;
-		try {
-			Method buildPositionsMethod = DefaultContentAssistProposals.class.getDeclaredMethod("buildPositions", WordParser.class, String.class, boolean.class);
-			buildPositionsMethod.setAccessible(true);
-			proposalPositions = (int[]) buildPositionsMethod.invoke(proposals, wordParser, proposal, insert);
-		}
-		catch (Exception e) {
-			// This is temporary
-			proposalPositions = new int[2];
-		}
-
-		// Escape the proposal
-		proposal = XmlEscapeCharacterConverter.escape(proposal, new int[1]);
-
-		// Adjust the positions so it's in the original JPQL query, which may contain escaped characters
-		XmlEscapeCharacterConverter.reposition(jpqlQuery, proposalPositions);
-
-		// Create the new JPQL query
-		StringBuilder sb = new StringBuilder(jpqlQuery);
-		sb.replace(proposalPositions[0], proposalPositions[1], proposal);
-
-		// And simply create a new ResultQuery object
-		return proposals.buildQuery(sb.toString(), StringTools.EMPTY_STRING, proposalPositions[0] + proposal.length(), false);
 	}
 }

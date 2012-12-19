@@ -37,9 +37,9 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.jpa.core.jpql.XmlEscapeCharacterConverter;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.persistence.jpa.jpql.util.XmlEscapeCharacterConverter;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.contentassist.ICompletionProposalComputer;
@@ -226,7 +226,6 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 		// The JPQL query is not encapsulated by a CDATA section,
 		// converts any escape characters like &lt; into '<'
 		if (!cDATASection) {
-			// TODO: UPDATE TO USE ECLIPSELINK HERMES 2.5 M2 ONCE IT IS AVAILABLE
 			jpqlQuery = XmlEscapeCharacterConverter.unescape(jpqlQuery, position);
 		}
 

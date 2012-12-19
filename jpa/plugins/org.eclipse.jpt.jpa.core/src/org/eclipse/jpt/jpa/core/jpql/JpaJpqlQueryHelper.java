@@ -29,12 +29,15 @@ import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
 import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
+import org.eclipse.persistence.jpa.jpql.ContentAssistExtension;
+import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IQuery;
+import org.eclipse.persistence.jpa.jpql.util.XmlEscapeCharacterConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -56,12 +59,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
 @SuppressWarnings("nls")
 public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
+
+	private JpaProject jpaProject;
 
 	/**
 	 * Caches the provider in order to prevent recreating the SPI representation of the JPA artifacts
@@ -79,41 +84,20 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	/**
-	 * TODO: TO REMOVE ONCE THE NEXT ECLIPSE HERMES MILESTONE IS AVAILABLE.
+	 * {@inheritDoc}
 	 */
-	private static void repositionJava(String query, int[] positions) {
+	@Override
+	public ContentAssistProposals buildContentAssistProposals(int position) {
+		return super.buildContentAssistProposals(position, buildContentAssistProposalsHelper());
+	}
 
-		if ((query == null) || (query.length() == 0)) {
-			return;
-		}
-
-		StringBuilder sb = new StringBuilder(query);
-
-		for (int index = 0, count = sb.length(); index < count; index++) {
-
-			char character = sb.charAt(index);
-
-			switch (character) {
-				case '\b': case '\t': case '\n':
-				case '\f': case '\r': case '\"':
-				case '\\': case '\0': case '\1':
-				case '\2': case '\3': case '\4':
-				case '\5': case '\6': case '\7': {
-
-					// Translate both positions because the special
-					// character is written with its escape character
-					if (index < positions[0]) {
-						positions[0]++;
-						positions[1]++;
-					}
-					// Only translate the end position because the start
-					// position is before the current index
-					else if (index < positions[1]) {
-						positions[1]++;
-					}
-				}
-			}
-		}
+	/**
+	 * Creates the helper that will be used to extend the support for JPQL content assist.
+	 *
+	 * @return A new instance of {@link GenericContentAssistProposalHelper}
+	 */
+	protected ContentAssistExtension buildContentAssistProposalsHelper() {
+		return new DefaultContentAssistExtension(jpaProject);
 	}
 
 	/**
@@ -164,10 +148,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 		}
 
 		// Reposition the cursor so it's correctly positioned in the non-escaped JPQL query
-		// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
-		// ExpressionTools.reposition(parsedJpqlQuery, positions, jpqlQuery);
-		positions[0] = ExpressionTools.repositionCursor(parsedJpqlQuery, positions[0], jpqlQuery);
-		positions[1] = ExpressionTools.repositionCursor(parsedJpqlQuery, positions[1], jpqlQuery);
+		ExpressionTools.reposition(parsedJpqlQuery, positions, jpqlQuery);
 
 		// Now add the leading offset
 		positions[0] += offset;
@@ -176,13 +157,9 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 		// Now convert the adjusted positions once again to be in the actual JPQL query that is
 		// found in the document, i.e. that may contain escape characters
 		if (escapeType == EscapeType.JAVA) {
-
-			// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
-			// ExpressionTools.repositionJava(actualJpqlQuery, positions);
-			repositionJava(actualJpqlQuery, positions);
+			ExpressionTools.repositionJava(actualJpqlQuery, positions);
 		}
 		else if (escapeType == EscapeType.XML) {
-			// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
 			XmlEscapeCharacterConverter.reposition(actualJpqlQuery, positions);
 		}
 
@@ -192,8 +169,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	/**
 	 * Creates a new {@link IMessage} for the given {@link JPQLQueryProblem}.
 	 *
-	 * @param namedQuery The model object for which a new {@link IMessage} is creating describing the
-	 * problem
+	 * @param namedQuery The model object for which a new {@link IMessage} is creating describing the problem
 	 * @param problem The {@link JPQLQueryProblem problem} that was found in the JPQL query, which is
 	 * either a grammatical or semantic problem
 	 * @param textRanges The list of {@link TextRange} objects that represents the JPQL query string
@@ -316,8 +292,10 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 */
 	public void setQuery(NamedQuery namedQuery, String actualQuery) {
 
+		jpaProject = namedQuery.getJpaProject();
+
 		if (managedTypeProvider == null) {
-			managedTypeProvider = buildProvider(namedQuery.getJpaProject(), namedQuery.getPersistenceUnit());
+			managedTypeProvider = buildProvider(jpaProject, namedQuery.getPersistenceUnit());
 		}
 
 		IQuery query = new JpaQuery(managedTypeProvider, namedQuery, actualQuery);
@@ -326,8 +304,9 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 	protected boolean shouldValidate(NamedQuery namedQuery) {
 		return ObjectTools.notEquals(
-				getValidationPreference(namedQuery), 
-				JpaPreferences.PROBLEM_IGNORE);
+			getValidationPreference(namedQuery),
+			JpaPreferences.PROBLEM_IGNORE
+		);
 	}
 
 	/**

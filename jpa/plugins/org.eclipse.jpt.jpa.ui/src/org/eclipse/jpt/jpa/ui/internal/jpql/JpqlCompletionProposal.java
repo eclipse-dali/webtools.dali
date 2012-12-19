@@ -147,4 +147,12 @@ abstract class JpqlCompletionProposal implements ICompletionProposal {
 		String value = PreferenceConstants.getPreference(PreferenceConstants.CODEASSIST_INSERT_COMPLETION, javaProject);
 		return Boolean.valueOf(value);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return proposal;
+	}
 }

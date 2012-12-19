@@ -92,7 +92,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 			namedQuery,
 			jpqlQuery,
 			tokenStart + 1, // +1 is to skip the opening "
-			tokenEnd - 1, // -1 is to skip the closing "
+			tokenEnd, // Don't do -1 to skip the closing ", the length is right since it's tokenEnd - tokenStart
 			position,
 			cursorOffset
 		);
@@ -345,7 +345,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 					// because content assist will only replace one string literal and right now we
 					// only support replacing the entire string
 					tokenStart[0] = child.getStartPosition();
-					tokenEnd[0] = child.getStartPosition() + child.getLength();
+					tokenEnd[0] = child.getStartPosition() + child.getLength() - 1;
 
 					return sb.toString();
 				}

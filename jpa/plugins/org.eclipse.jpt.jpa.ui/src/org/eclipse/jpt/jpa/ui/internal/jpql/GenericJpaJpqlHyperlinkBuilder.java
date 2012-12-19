@@ -19,25 +19,20 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.persistence.jpa.jpql.BaseDeclarationIdentificationVariableFinder;
 import org.eclipse.persistence.jpa.jpql.Resolver;
 import org.eclipse.persistence.jpa.jpql.StateFieldResolver;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractPathExpression;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractSchemaName;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractTraverseParentVisitor;
-import org.eclipse.persistence.jpa.jpql.parser.CollectionExpression;
 import org.eclipse.persistence.jpa.jpql.parser.CollectionValuedPathExpression;
 import org.eclipse.persistence.jpa.jpql.parser.ConstructorExpression;
-import org.eclipse.persistence.jpa.jpql.parser.DeleteClause;
-import org.eclipse.persistence.jpa.jpql.parser.DeleteStatement;
 import org.eclipse.persistence.jpa.jpql.parser.EntityTypeLiteral;
 import org.eclipse.persistence.jpa.jpql.parser.Expression;
 import org.eclipse.persistence.jpa.jpql.parser.IdentificationVariable;
-import org.eclipse.persistence.jpa.jpql.parser.NullExpression;
 import org.eclipse.persistence.jpa.jpql.parser.QueryPosition;
 import org.eclipse.persistence.jpa.jpql.parser.RangeVariableDeclaration;
 import org.eclipse.persistence.jpa.jpql.parser.StateFieldPathExpression;
-import org.eclipse.persistence.jpa.jpql.parser.UpdateClause;
-import org.eclipse.persistence.jpa.jpql.parser.UpdateStatement;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 
@@ -79,7 +74,7 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 	}
 
 	protected final IdentificationVariable findVirtualIdentificationVariable(AbstractSchemaName expression) {
-		VirtualIdentificationVariableFinder visitor = new VirtualIdentificationVariableFinder();
+		BaseDeclarationIdentificationVariableFinder visitor = new BaseDeclarationIdentificationVariableFinder();
 		expression.accept(visitor);
 		return visitor.expression;
 	}
@@ -420,114 +415,6 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 		@Override
 		public void visit(RangeVariableDeclaration expression) {
 			rangeVariableDeclaration = true;
-		}
-	}
-
-	/**
-	 * This visitor traverses the parsed tree and retrieves the {@link IdentificationVariable}
-	 * defined for a range variable declaration.
-	 * <p>
-	 * TODO: REMOVE AND USE BaseDeclarationIdentificationVariableFinder ONE AVAILABLE IN ECLIPSELINK HERMES.
-	 */
-	protected static class VirtualIdentificationVariableFinder extends AbstractTraverseParentVisitor {
-
-		/**
-		 * The {@link IdentificationVariable} used to define the abstract schema name from either the
-		 * <b>UPDATE</b> or <b>DELETE</b> clause.
-		 */
-		protected IdentificationVariable expression;
-
-		/**
-		 * Determines if the {@link RangeVariableDeclaration} should traverse its identification
-		 * variable expression or simply visit the parent hierarchy.
-		 */
-		protected boolean traverse;
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(CollectionExpression expression) {
-			if (traverse) {
-				// Invalid query, scan the first expression only
-				expression.getChild(0).accept(this);
-			}
-			else {
-				super.visit(expression);
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(DeleteClause expression) {
-			try {
-				traverse = true;
-				expression.getRangeVariableDeclaration().accept(this);
-			}
-			finally {
-				traverse = false;
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(DeleteStatement expression) {
-			expression.getDeleteClause().accept(this);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(IdentificationVariable expression) {
-			this.expression = expression;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(NullExpression expression) {
-			// Incomplete/invalid query, stop here
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(RangeVariableDeclaration expression) {
-			if (traverse) {
-				expression.getIdentificationVariable().accept(this);
-			}
-			else {
-				super.visit(expression);
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(UpdateClause expression) {
-			try {
-				traverse = true;
-				expression.getRangeVariableDeclaration().accept(this);
-			}
-			finally {
-				traverse = false;
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visit(UpdateStatement expression) {
-			expression.getUpdateClause().accept(this);
 		}
 	}
 }
