@@ -13,12 +13,8 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -41,12 +37,11 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-
-public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
-	extends AbstractMappedSuperclassComposite<OrmMappedSuperclass> 
+public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass>
+	extends AbstractMappedSuperclassComposite<T> 
 {
 	protected AbstractOrmEclipseLinkMappedSuperclassComposite(
-			PropertyValueModel<? extends OrmMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends T> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -72,11 +67,11 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Metadata complete widgets
 		MetadataCompleteTriStateCheckBox metadataCompleteComposite = new MetadataCompleteTriStateCheckBox(this, getSubjectHolder(), container);
@@ -103,23 +98,14 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCachingComposite(this, buildCachingHolder(), container).getControl();
+		return new OrmEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
-	}
-	
-	protected PropertyAspectAdapter<OrmMappedSuperclass, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, EclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkCaching buildValue_() {
-				return ((OrmEclipseLinkMappedSuperclass) this.subject).getCaching();
+				return this.subject.getCaching();
 			}
 		};
 	}
@@ -144,10 +130,10 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 	}
 
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkConverterContainer buildValue_() {
-				return ((OrmEclipseLinkMappedSuperclass) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}
 		};
 	}
@@ -187,14 +173,14 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 	}
 
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerHolder(), container).getControl();
+		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, GeneratorContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
+		return new PropertyAspectAdapter<T, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
-				return ((EclipseLinkMappedSuperclass) this.subject).getGeneratorContainer();
+				return this.subject.getGeneratorContainer();
 			}
 		};
 	}

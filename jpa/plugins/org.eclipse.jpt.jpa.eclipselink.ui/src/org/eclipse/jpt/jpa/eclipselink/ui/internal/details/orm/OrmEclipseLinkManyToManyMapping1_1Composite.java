@@ -12,13 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.Cascade;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
@@ -30,10 +31,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkManyToManyMapping1_1Composite
-	extends EclipseLinkManyToManyMappingComposite<OrmManyToManyMapping>
+	extends AbstractEclipseLinkManyToManyMappingComposite<EclipseLinkManyToManyMapping, Cascade>
 {
 	public OrmEclipseLinkManyToManyMapping1_1Composite(
-			PropertyValueModel<? extends OrmManyToManyMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -59,7 +60,7 @@ public class OrmEclipseLinkManyToManyMapping1_1Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
 		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
@@ -67,10 +68,10 @@ public class OrmEclipseLinkManyToManyMapping1_1Composite
 
 		// Join fetch widgets
 		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
-		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Cascade widgets
-		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadeComposite = new CascadePane(this, buildCascadeModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadeComposite.getControl().setLayoutData(gridData);

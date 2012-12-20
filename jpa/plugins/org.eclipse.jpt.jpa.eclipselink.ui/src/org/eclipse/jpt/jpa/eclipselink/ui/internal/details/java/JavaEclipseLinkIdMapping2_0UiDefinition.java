@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.ui.details.java.JavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
 
 public class JavaEclipseLinkIdMapping2_0UiDefinition
-	extends JavaIdMappingUiDefinition
+	extends IdMappingUiDefinition
 {
 	// singleton
 	private static final JavaEclipseLinkIdMapping2_0UiDefinition INSTANCE = 
@@ -27,7 +27,7 @@ public class JavaEclipseLinkIdMapping2_0UiDefinition
 	/**
 	 * Return the singleton
 	 */
-	public static JavaAttributeMappingUiDefinition<JavaIdMapping> instance() {
+	public static MappingUiDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -41,11 +41,11 @@ public class JavaEclipseLinkIdMapping2_0UiDefinition
 	
 	
 	@Override
-	public boolean isEnabledFor(ReadOnlyPersistentAttribute mappableObject) {
+	public boolean isEnabledFor(JpaContextNode node) {
 		// a default eclipselink 1-1 mapping can not be mapped as an id, as mapping it
 		// that way will actually result in a default 1-1 with an id derived identity
 		return ObjectTools.notEquals(
-				mappableObject.getDefaultMappingKey(), 
+				((ReadOnlyPersistentAttribute) node).getDefaultMappingKey(), 
 				MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 }

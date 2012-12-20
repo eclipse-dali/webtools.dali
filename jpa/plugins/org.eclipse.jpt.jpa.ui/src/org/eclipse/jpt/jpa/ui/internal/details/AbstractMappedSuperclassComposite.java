@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -55,16 +56,25 @@ public abstract class AbstractMappedSuperclassComposite<T extends MappedSupercla
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
 	}
 
-	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
+	protected PropertyValueModel<IdClassReference> buildIdClassReferenceModel() {
 		return new PropertyAspectAdapter<T, IdClassReference>(getSubjectHolder()) {
 			@Override
 			protected IdClassReference buildValue_() {
 				return this.subject.getIdClassReference();
+			}
+		};
+	}
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(this.getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
 			}
 		};
 	}

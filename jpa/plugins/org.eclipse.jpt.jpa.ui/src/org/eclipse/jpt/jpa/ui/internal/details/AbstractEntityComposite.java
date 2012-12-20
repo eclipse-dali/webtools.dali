@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
@@ -131,13 +132,13 @@ public abstract class AbstractEntityComposite<T extends Entity>
 
 		//Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
 	}
 	
-	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
-		return new PropertyAspectAdapter<Entity, IdClassReference>(getSubjectHolder()) {
+	protected PropertyValueModel<IdClassReference> buildIdClassReferenceModel() {
+		return new PropertyAspectAdapter<T, IdClassReference>(getSubjectHolder()) {
 			@Override
 			protected IdClassReference buildValue_() {
 				return this.subject.getIdClassReference();
@@ -161,11 +162,11 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 
 	protected Control initializeQueriesSection(Composite container) {
-		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 	
-	protected PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
-		return new PropertyAspectAdapter<Entity, QueryContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
+		return new PropertyAspectAdapter<T, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
 				return this.subject.getQueryContainer();
@@ -225,11 +226,11 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new GenerationComposite(this, this.buildGeneratorContainerHolder(), container).getControl();
+		return new GenerationComposite(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 	
-	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerHolder() {
-		return new PropertyAspectAdapter<Entity, GeneratorContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
+		return new PropertyAspectAdapter<T, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
 				return this.subject.getGeneratorContainer();
@@ -253,5 +254,15 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 
 	protected abstract Control initializeSecondaryTablesSection(Composite container);
+
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
+	}
 
 }

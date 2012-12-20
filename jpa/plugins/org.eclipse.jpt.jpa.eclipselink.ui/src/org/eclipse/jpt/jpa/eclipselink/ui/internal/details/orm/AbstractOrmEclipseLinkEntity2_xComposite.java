@@ -12,18 +12,18 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public abstract class AbstractOrmEclipseLinkEntity2_xComposite
-	extends AbstractOrmEclipseLinkEntityComposite
+public abstract class AbstractOrmEclipseLinkEntity2_xComposite<T extends OrmEclipseLinkEntity>
+	extends AbstractOrmEclipseLinkEntityComposite<T>
 {
 	protected AbstractOrmEclipseLinkEntity2_xComposite(
-			PropertyValueModel<? extends OrmEntity> entityModel,
+			PropertyValueModel<? extends T> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -37,17 +37,17 @@ public abstract class AbstractOrmEclipseLinkEntity2_xComposite
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerHolder(), container).getControl();
+		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
+		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new Queries2_0Composite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 
 }

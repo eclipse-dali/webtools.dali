@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.Orderable;
+import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -48,15 +48,15 @@ import org.eclipse.swt.widgets.Text;
  * @see OrmOneToManyMappingComposite
  */
 public class Ordering2_0Composite
-	extends AbstractOrderingComposite
+	extends AbstractOrderingComposite<Orderable2_0>
 {
-	public Ordering2_0Composite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
+	public Ordering2_0Composite(Pane<? extends CollectionMapping2_0> parentPane, Composite parentComposite) {
 		super(parentPane, parentComposite);
 	}
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Orderable> orderableHolder = buildOrderableHolder();
+		PropertyValueModel<Orderable2_0> orderableHolder = buildOrderableModel();
 
 		// No Ordering radio button
 		addRadioButton(
@@ -113,29 +113,29 @@ public class Ordering2_0Composite
 
 	}
 	
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(PropertyValueModel<Orderable> orderableHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
 		return buildOrderColumnOrderingHolder(orderableHolder);
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildOrderColumnOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable2_0.ORDER_COLUMN_ORDERING_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildOrderColumnOrderingHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable2_0, Boolean>(orderableHolder, Orderable2_0.ORDER_COLUMN_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(((Orderable2_0) this.subject).isOrderColumnOrdering());
+				return Boolean.valueOf(this.subject.isOrderColumnOrdering());
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				((Orderable2_0) this.subject).setOrderColumnOrdering(value.booleanValue());
+				this.subject.setOrderColumnOrdering(value.booleanValue());
 			}
 		};
 	}
 	
-	protected PropertyValueModel<OrderColumn2_0> buildOrderColumnHolder(PropertyValueModel<Orderable> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable, OrderColumn2_0>(orderableHolder) {
+	protected PropertyValueModel<OrderColumn2_0> buildOrderColumnHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable2_0, OrderColumn2_0>(orderableHolder) {
 			@Override
 			protected OrderColumn2_0 buildValue_() {
-				return ((Orderable2_0) this.subject).getOrderColumn();
+				return this.subject.getOrderColumn();
 			}
 		};
 	}

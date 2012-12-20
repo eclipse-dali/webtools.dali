@@ -13,8 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -42,6 +40,7 @@ public interface MappingResourceUiDefinition
 	JpaComposite buildTypeMappingComposite(
 			String mappingKey,
 			PropertyValueModel<TypeMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager
@@ -50,18 +49,18 @@ public interface MappingResourceUiDefinition
 	/**
 	 * Return the resource's type mapping UI definitions.
 	 */
-	Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions();
+	Iterable<MappingUiDefinition> getTypeMappingUiDefinitions();
 
 	/**
 	 * Return the resource's type mapping UI definition for the specified
 	 * mapping.
 	 */
-	MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(String mappingKey);
+	MappingUiDefinition getTypeMappingUiDefinition(String mappingKey);
 
 	/**
 	 * Return the resource's default type mapping UI definition.
 	 */
-	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition();
+	DefaultMappingUiDefinition getDefaultTypeMappingUiDefinition();
 
 
 	// ********** attribute mappings **********
@@ -81,17 +80,17 @@ public interface MappingResourceUiDefinition
 	/**
 	 * Return the resource's attribute mapping UI definitions.
 	 */
-	Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions();
+	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions();
 
 	/**
 	 * Return the resource's attribute mapping UI definition for the specified
 	 * mapping.
 	 */
-	MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(String mappingKey);
+	MappingUiDefinition getAttributeMappingUiDefinition(String mappingKey);
 
 	/**
 	 * Return the resource's default attribute mapping UI definition
 	 * for the specified mapping.
 	 */
-	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String mappingKey);
+	DefaultMappingUiDefinition getDefaultAttributeMappingUiDefinition(String mappingKey);
 }

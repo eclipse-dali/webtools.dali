@@ -11,13 +11,11 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
@@ -36,10 +34,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmOneToOneMapping2_0Composite
-	extends AbstractOneToOneMapping2_0Composite<OneToOneMapping, OneToOneRelationship2_0>
+	extends AbstractOneToOneMapping2_0Composite<OneToOneMapping2_0, OneToOneRelationship2_0, OrmCascade2_0>
 {
 	public OrmOneToOneMapping2_0Composite(
-			PropertyValueModel<? extends OneToOneMapping> mappingModel,
+			PropertyValueModel<? extends OneToOneMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -62,7 +60,7 @@ public class OrmOneToOneMapping2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
 		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
@@ -75,11 +73,11 @@ public class OrmOneToOneMapping2_0Composite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Orphan removal widgets
-		PropertyValueModel<OrphanRemovable2_0> orphanRemovableHolder = buildOrphanRemovableHolder();
+		PropertyValueModel<OrphanRemovable2_0> orphanRemovableHolder = buildOrphanRemovableModel();
 		new OrphanRemoval2_0TriStateCheckBox(this, orphanRemovableHolder, container);
 
 		// Cascade widgets
-		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeHolder(), container);
+		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadePane.getControl().setLayoutData(gridData);
@@ -89,24 +87,6 @@ public class OrmOneToOneMapping2_0Composite
 
 	@Override
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new OneToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
-	}
-
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, OrphanRemovable2_0>(getSubjectHolder()) {
-			@Override
-			protected OrphanRemovable2_0 buildValue_() {
-				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();
-			}
-		};
+		new OneToOneJoiningStrategy2_0Pane(this, buildRelationshipModel(), container);
 	}
 }

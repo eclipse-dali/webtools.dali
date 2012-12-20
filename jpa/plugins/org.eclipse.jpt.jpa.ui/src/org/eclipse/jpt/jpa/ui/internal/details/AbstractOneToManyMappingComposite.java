@@ -12,8 +12,10 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
@@ -26,7 +28,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMapping, R extends OneToManyRelationship> 
+public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMapping, R extends OneToManyRelationship, C extends Cascade> 
 	extends Pane<T>
 	implements JpaComposite
 {
@@ -59,7 +61,7 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 	protected abstract Control initializeOneToManySection(Composite container);
 
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new OneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new OneToManyJoiningStrategyPane(this, buildRelationshipModel(), container);
 	}
 	
 	protected void initializeOrderingCollapsibleSection(Composite container) {
@@ -81,7 +83,7 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 		return new OrderingComposite(this, container).getControl();
 	}
 
-	protected PropertyValueModel<R> buildJoiningHolder() {
+	protected PropertyValueModel<R> buildRelationshipModel() {
 		return new TransformationPropertyValueModel<T, R>(getSubjectHolder()) {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -91,11 +93,21 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 		};
 	}	
 	
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
+	protected PropertyValueModel<C> buildCascadeModel() {
+		return new TransformationPropertyValueModel<T, C>(getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
 			@Override
-			protected Cascade transform_(T mapping) {
-				return mapping.getCascade();
+			protected C transform_(T mapping) {
+				return (C) mapping.getCascade();
+			}
+		};
+	}
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}

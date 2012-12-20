@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmCascade;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
@@ -37,6 +36,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -47,7 +48,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelationshipMapping>
 	extends AbstractOrmAttributeMapping<X>
-	implements OrmRelationshipMapping
+	implements OrmRelationshipMapping, RelationshipMapping2_0
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
@@ -55,7 +56,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected final OrmMappingRelationship relationship;
 
-	protected final OrmCascade cascade;
+	protected final OrmCascade2_0 cascade;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
@@ -185,11 +186,11 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	// ********** cascade **********
 
-	public OrmCascade getCascade() {
+	public OrmCascade2_0 getCascade() {
 		return this.cascade;
 	}
 
-	protected OrmCascade buildCascade() {
+	protected OrmCascade2_0 buildCascade() {
 		// NB: we don't use the platform
 		return new GenericOrmCascade(this);
 	}

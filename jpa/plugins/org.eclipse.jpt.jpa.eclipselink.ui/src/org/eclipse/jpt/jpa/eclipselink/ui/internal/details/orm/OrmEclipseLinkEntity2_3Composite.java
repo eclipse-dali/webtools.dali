@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -27,10 +26,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkEntity2_3Composite
-	extends AbstractOrmEclipseLinkEntity2_xComposite
+	extends AbstractOrmEclipseLinkEntity2_xComposite<OrmEclipseLinkEntity>
 {
 	public OrmEclipseLinkEntity2_3Composite(
-			PropertyValueModel<? extends OrmEntity> entityModel,
+			PropertyValueModel<? extends OrmEclipseLinkEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -67,14 +66,14 @@ public class OrmEclipseLinkEntity2_3Composite
 	}
 
 	protected Control initializeMultitenancySection(Composite container) {
-		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyHolder(), container).getControl();
+		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<OrmEntity, OrmEclipseLinkMultitenancy2_3> buildMultitenancyHolder() {
-		return new PropertyAspectAdapter<OrmEntity, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<OrmEclipseLinkEntity, OrmEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<OrmEclipseLinkEntity, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkMultitenancy2_3 buildValue_() {
-				return ((OrmEclipseLinkEntity) this.subject).getMultitenancy();
+				return this.subject.getMultitenancy();
 			}
 		};
 	}

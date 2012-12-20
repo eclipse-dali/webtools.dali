@@ -12,15 +12,22 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.VersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -29,19 +36,20 @@ public class EclipseLinkOrmXml1_1UiFactory
 {
 	// ********** attribute mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmIdMappingComposite(
-			PropertyValueModel<OrmIdMapping> mappingModel,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkIdMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkIdMapping1_1Composite((PropertyValueModel<? extends EclipseLinkIdMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
-	public JpaComposite createOrmEmbeddedIdMappingComposite(
-			PropertyValueModel<OrmEmbeddedIdMapping> mappingModel,
+	public JpaComposite createEmbeddedIdMappingComposite(
+			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -49,73 +57,79 @@ public class EclipseLinkOrmXml1_1UiFactory
 		return new OrmEclipseLinkEmbeddedIdMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmBasicMappingComposite(
-			PropertyValueModel<OrmBasicMapping> mappingModel,
+	public JpaComposite createBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkBasicMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkBasicMapping1_1Composite((PropertyValueModel<? extends EclipseLinkBasicMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createVersionMappingComposite(
+			PropertyValueModel<? extends VersionMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkVersionMapping1_1Composite((PropertyValueModel<? extends EclipseLinkVersionMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createManyToOneMappingComposite(
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkManyToOneMapping1_1Composite((PropertyValueModel<? extends EclipseLinkManyToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createOneToManyMappingComposite(
+			PropertyValueModel<? extends OneToManyMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkOneToManyMapping1_1Composite((PropertyValueModel<? extends EclipseLinkOneToManyMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createOneToOneMappingComposite(
+			PropertyValueModel<? extends OneToOneMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkOneToOneMapping1_1Composite((PropertyValueModel<? extends EclipseLinkOneToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createManyToManyMappingComposite(
+			PropertyValueModel<? extends ManyToManyMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new OrmEclipseLinkManyToManyMapping1_1Composite((PropertyValueModel<? extends EclipseLinkManyToManyMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 	@Override
-	public JpaComposite createOrmVersionMappingComposite(
-			PropertyValueModel<OrmVersionMapping> mappingModel,
+	public JpaComposite createEmbeddedMappingComposite(
+			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkVersionMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@Override
-	public JpaComposite createOrmManyToOneMappingComposite(
-			PropertyValueModel<OrmManyToOneMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new OrmEclipseLinkManyToOneMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@Override
-	public JpaComposite createOrmOneToManyMappingComposite(
-			PropertyValueModel<OrmOneToManyMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new OrmEclipseLinkOneToManyMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@Override
-	public JpaComposite createOrmOneToOneMappingComposite(
-			PropertyValueModel<OrmOneToOneMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new OrmEclipseLinkOneToOneMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@Override
-	public JpaComposite createOrmManyToManyMappingComposite(
-			PropertyValueModel<OrmManyToManyMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new OrmEclipseLinkManyToManyMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@Override
-	public JpaComposite createOrmEmbeddedMappingComposite(
-			PropertyValueModel<OrmEmbeddedMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new OrmEclipseLinkEmbeddedMapping1_1Composite(mappingModel, enabledModel,parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkEmbeddedMapping1_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

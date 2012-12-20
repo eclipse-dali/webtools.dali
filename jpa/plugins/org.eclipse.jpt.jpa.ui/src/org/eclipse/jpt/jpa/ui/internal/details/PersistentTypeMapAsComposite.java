@@ -58,7 +58,7 @@ public class PersistentTypeMapAsComposite
 			return getSubject().getSimpleName();
 		}
 
-		public Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> getMappingUiDefinitions() {
+		public Iterable<MappingUiDefinition> getMappingUiDefinitions() {
 			return getTypeMappingUiDefinitions();
 		}
 
@@ -72,11 +72,11 @@ public class PersistentTypeMapAsComposite
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> getTypeMappingUiDefinitions() {
-		return getJpaPlatformUi().getTypeMappingUiDefinitions(getSubject().getResourceType());
+	protected Iterable<MappingUiDefinition> getTypeMappingUiDefinitions() {
+		return getJpaPlatformUi().getTypeMappingUiDefinitions(getSubject());
 	}
 	
-	protected MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition() {
+	protected MappingUiDefinition getTypeMappingUiDefinition() {
 		return getJpaPlatformUi().getTypeMappingUiDefinition(getSubject().getResourceType(), getMappingKey());
 	}
 	

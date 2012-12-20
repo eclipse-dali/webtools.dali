@@ -24,17 +24,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 
-public class EmbeddedIdMapping2_0MappedByRelationshipPane<T extends EmbeddedIdMapping2_0>
-	extends Pane<T>
+public class EmbeddedIdMapping2_0MappedByRelationshipPane
+	extends Pane<EmbeddedIdMapping2_0>
 {
 	Label mappedByRelationshipLabel;
 
 	public EmbeddedIdMapping2_0MappedByRelationshipPane(
 			Pane<?> parentPane,
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends EmbeddedIdMapping2_0> subjectModel,
 			Composite parent) {
 		
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectModel, parent);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class EmbeddedIdMapping2_0MappedByRelationshipPane<T extends EmbeddedIdMa
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildDerivedModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), DerivableIdMapping2_0.DERIVED_PROPERTY) {
+		return new PropertyAspectAdapter<EmbeddedIdMapping2_0, Boolean>(getSubjectHolder(), DerivableIdMapping2_0.DERIVED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isDerived());

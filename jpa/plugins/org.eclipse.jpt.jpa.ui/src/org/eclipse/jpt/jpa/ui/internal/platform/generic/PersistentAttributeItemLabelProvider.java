@@ -64,11 +64,11 @@ public class PersistentAttributeItemLabelProvider
 	{
 		@Override
 		public ImageDescriptor transform(AttributeMapping attributeMapping) {
-			MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> definition = this.getAttributeMappingUiDefinition(attributeMapping);
+			MappingUiDefinition definition = this.getAttributeMappingUiDefinition(attributeMapping);
 			return JptCommonUiImages.gray(definition.getImageDescriptor(), attributeMapping.getPersistentAttribute().isVirtual());
 		}
 
-		private MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
+		private MappingUiDefinition getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
 			return this.getJpaPlatformUi(attributeMapping).getAttributeMappingUiDefinition(attributeMapping.getResourceType(), attributeMapping.getKey());
 		}
 

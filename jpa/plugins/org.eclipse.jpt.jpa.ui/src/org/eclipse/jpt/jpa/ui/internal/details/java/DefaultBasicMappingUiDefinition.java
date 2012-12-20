@@ -9,22 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
-import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.swt.widgets.Composite;
 
 public class DefaultBasicMappingUiDefinition
-	extends AbstractBasicMappingUiDefinition<ReadOnlyPersistentAttribute, JavaBasicMapping>
-	implements DefaultJavaAttributeMappingUiDefinition<JavaBasicMapping>
+	extends AbstractBasicMappingUiDefinition
+	implements DefaultMappingUiDefinition
 {
 	// singleton
 	private static final DefaultBasicMappingUiDefinition INSTANCE = new DefaultBasicMappingUiDefinition();
@@ -33,7 +25,7 @@ public class DefaultBasicMappingUiDefinition
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingUiDefinition<JavaBasicMapping> instance() {
+	public static DefaultMappingUiDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -46,7 +38,6 @@ public class DefaultBasicMappingUiDefinition
 	}
 
 
-	@Override
 	public String getKey() {
 		return null;
 	}
@@ -55,17 +46,11 @@ public class DefaultBasicMappingUiDefinition
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
 	public String getLabel() {
 		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_label;
 	}
 
-	@Override
 	public String getLinkLabel() {
 		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_linkLabel;
-	}
-
-	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaBasicMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		return factory.createJavaBasicMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

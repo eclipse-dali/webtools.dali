@@ -12,8 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,25 +24,27 @@ public class EclipseLinkOrmXml2_1UiFactory
 {
 	// ********** type mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmMappedSuperclassComposite(
-			PropertyValueModel<OrmMappedSuperclass> mappedSuperclassModel,
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkMappedSuperclass2_1Composite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkMappedSuperclass2_1Composite((PropertyValueModel<OrmEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 
 	// ********** attribute mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmElementCollectionMapping2_0Composite(
-			PropertyValueModel<OrmElementCollectionMapping2_0> mappingModel,
+	public JpaComposite createElementCollectionMapping2_0Composite(
+			PropertyValueModel<? extends ElementCollectionMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkElementCollectionMapping2_1Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkElementCollectionMapping2_1Composite((PropertyValueModel<? extends EclipseLinkElementCollectionMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

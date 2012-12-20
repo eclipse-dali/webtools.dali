@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
@@ -27,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
  */
 public abstract class AbstractOrmOneToOneMapping<X extends XmlOneToOne>
 	extends AbstractOrmSingleRelationshipMapping<X>
-	implements OneToOneMapping2_0, OrmOneToOneMapping, OrphanRemovalHolder2_0
+	implements OneToOneMapping2_0, OrmOneToOneMapping
 {
 	protected final OrphanRemovable2_0 orphanRemoval;
 

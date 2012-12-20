@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -31,7 +30,9 @@ import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -41,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMappingAnnotation>
 	extends AbstractJavaAttributeMapping<A>
-	implements JavaRelationshipMapping
+	implements JavaRelationshipMapping, RelationshipMapping2_0
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
@@ -49,7 +50,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected final JavaMappingRelationship relationship;
 
-	protected final Cascade cascade;
+	protected final Cascade2_0 cascade;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
@@ -167,11 +168,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	// ********** cascade **********
 
-	public Cascade getCascade() {
+	public Cascade2_0 getCascade() {
 		return this.cascade;
 	}
 
-	protected Cascade buildCascade() {
+	protected Cascade2_0 buildCascade() {
 		// NB: we don't use the platform
 		return new GenericJavaCascade(this);
 	}

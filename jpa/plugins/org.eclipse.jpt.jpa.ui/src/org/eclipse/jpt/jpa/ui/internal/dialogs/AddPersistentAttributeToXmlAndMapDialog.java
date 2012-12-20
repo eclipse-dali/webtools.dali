@@ -20,9 +20,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
@@ -82,14 +80,8 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 				public Object[] getElements(Object inputElement) {
 					return ArrayTools.array(
-						IteratorTools.sort(
-							new FilteringIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ?>>(
-									((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType())) {
-								@Override
-								protected boolean accept(MappingUiDefinition<ReadOnlyPersistentAttribute, ?> o) {
-									return o.isEnabledFor(AddPersistentAttributeToXmlAndMapDialog.this.unmappedPersistentAttribute);
-								}
-							},
+						IterableTools.sort(
+							((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(unmappedPersistentAttribute), 
 							getProvidersComparator()));
 				}
 				

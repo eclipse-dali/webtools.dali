@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -30,10 +29,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkMappedSuperclass2_3Composite
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<OrmEclipseLinkMappedSuperclass>
 {
 	public OrmEclipseLinkMappedSuperclass2_3Composite(
-			PropertyValueModel<? extends OrmMappedSuperclass> mappedSuperclassModel, 
+			PropertyValueModel<? extends OrmEclipseLinkMappedSuperclass> mappedSuperclassModel, 
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -53,7 +52,7 @@ public class OrmEclipseLinkMappedSuperclass2_3Composite
 
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
+		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
 	}
 	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
@@ -72,15 +71,15 @@ public class OrmEclipseLinkMappedSuperclass2_3Composite
 	}
 
 	protected Control initializeQueriesSection(Composite container) {
-		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 
-	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, QueryContainer>(
+	private PropertyValueModel<QueryContainer> buildQueryContainerModel() {
+		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, QueryContainer>(
 				getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
-				return ((OrmEclipseLinkMappedSuperclass) this.subject).getQueryContainer();
+				return this.subject.getQueryContainer();
 			}
 		};
 	}
@@ -101,14 +100,14 @@ public class OrmEclipseLinkMappedSuperclass2_3Composite
 	}
 
 	protected Control initializeMultitenancySection(Composite container) {
-		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyHolder(), container).getControl();
+		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkMultitenancy2_3> buildMultitenancyHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, OrmEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkMultitenancy2_3 buildValue_() {
-				return ((OrmEclipseLinkMappedSuperclass) this.subject).getMultitenancy();
+				return this.subject.getMultitenancy();
 			}
 		};
 	}

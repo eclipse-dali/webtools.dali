@@ -33,7 +33,7 @@ public class IdMappingComposite
 	protected Control initializeIdSection(Composite container) {
 		container = this.addSubPane(container);
 
-		new ColumnComposite(this, buildColumnHolder(), container);
+		new ColumnComposite(this, buildColumnModel(), container);
 
 		return container;
 	}

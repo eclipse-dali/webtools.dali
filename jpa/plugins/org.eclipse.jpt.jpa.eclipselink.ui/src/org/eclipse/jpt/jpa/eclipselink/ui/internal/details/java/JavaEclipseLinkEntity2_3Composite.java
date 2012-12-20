@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -27,10 +26,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkEntity2_3Composite
-	extends AbstractJavaEclipseLinkEntity2_xComposite
+	extends AbstractJavaEclipseLinkEntity2_xComposite<JavaEclipseLinkEntity>
 {
 	public JavaEclipseLinkEntity2_3Composite(
-			PropertyValueModel<? extends JavaEntity> entityModel,
+			PropertyValueModel<? extends JavaEclipseLinkEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -67,14 +66,14 @@ public class JavaEclipseLinkEntity2_3Composite
 	}
 
 	protected Control initializeMultitenancySection(Composite container) {
-		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyHolder(), container).getControl();
+		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<JavaEntity, JavaEclipseLinkMultitenancy2_3> buildMultitenancyHolder() {
-		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<JavaEclipseLinkEntity, JavaEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<JavaEclipseLinkEntity, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkMultitenancy2_3 buildValue_() {
-				return ((JavaEclipseLinkEntity) this.subject).getMultitenancy();
+				return this.subject.getMultitenancy();
 			}
 		};
 	}

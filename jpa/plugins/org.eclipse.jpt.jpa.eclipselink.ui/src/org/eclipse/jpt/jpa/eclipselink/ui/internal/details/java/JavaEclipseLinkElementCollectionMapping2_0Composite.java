@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
@@ -30,10 +29,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEclipseLinkElementCollectionMapping2_0Composite
-	extends EclipseLinkElementCollectionMapping2_0Composite<JavaElementCollectionMapping2_0>
+	extends EclipseLinkElementCollectionMapping2_0Composite<EclipseLinkElementCollectionMapping2_0>
 {
 	public JavaEclipseLinkElementCollectionMapping2_0Composite(
-			PropertyValueModel<? extends JavaElementCollectionMapping2_0> mappingModel,
+			PropertyValueModel<? extends EclipseLinkElementCollectionMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -55,10 +54,10 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 
 		// Join fetch widgets
 		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
-		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchHolder(), container);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Collection table widgets
-		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		collectionTableComposite.getControl().setLayoutData(gridData);
@@ -66,11 +65,11 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 		return container;
 	}
 
-	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchHolder() {
-		return new PropertyAspectAdapter<JavaElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
+		return new PropertyAspectAdapter<EclipseLinkElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return ((EclipseLinkElementCollectionMapping2_0) this.subject).getJoinFetch();
+				return this.subject.getJoinFetch();
 			}
 		};
 	}

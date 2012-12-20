@@ -72,7 +72,7 @@ public class JpaDetailsView
 	 * The current JPA details page manager that was built based on the
 	 * current JPA selection.
 	 */
-	private volatile JpaDetailsPageManager<? extends JpaStructureNode> currentPageManager;
+	private volatile JpaDetailsPageManager currentPageManager;
 
 	/**
 	 * The resource manager is created when the view's control is
@@ -109,8 +109,8 @@ public class JpaDetailsView
 	 * Cache of JPA details page managers
 	 * keyed by JPA structure node context type.
 	 */
-	private final HashMap<JpaStructureNode.ContextType, JpaDetailsPageManager<? extends JpaStructureNode>> pageManagers =
-			new HashMap<JpaStructureNode.ContextType, JpaDetailsPageManager<? extends JpaStructureNode>>();
+	private final HashMap<JpaStructureNode.ContextType, JpaDetailsPageManager> pageManagers =
+			new HashMap<JpaStructureNode.ContextType, JpaDetailsPageManager>();
 
 
 	public JpaDetailsView() {
@@ -208,7 +208,7 @@ public class JpaDetailsView
 					}
 				}
 			} else {  // node => node
-				JpaDetailsPageManager<? extends JpaStructureNode> pageManager = this.getPageManager(node);
+				JpaDetailsPageManager pageManager = this.getPageManager(node);
 				if (pageManager != this.currentPageManager) {
 					try {
 						this.currentPageManager.setSubject(null);
@@ -246,9 +246,9 @@ public class JpaDetailsView
 	/**
 	 * @see org.eclipse.jpt.jpa.core.JpaStructureNode.ContextType
 	 */
-	private JpaDetailsPageManager<? extends JpaStructureNode> getPageManager(JpaStructureNode node) {
+	private JpaDetailsPageManager getPageManager(JpaStructureNode node) {
 		JpaStructureNode.ContextType nodeType = node.getContextType();
-		JpaDetailsPageManager<? extends JpaStructureNode> pageManager = this.pageManagers.get(nodeType);
+		JpaDetailsPageManager pageManager = this.pageManagers.get(nodeType);
 		if (pageManager == null) {
 			pageManager = this.buildPageManager(node);
 			if (pageManager != null) {
@@ -258,7 +258,7 @@ public class JpaDetailsView
 		return pageManager;
 	}
 
-	private JpaDetailsPageManager<? extends JpaStructureNode> buildPageManager(JpaStructureNode node) {
+	private JpaDetailsPageManager buildPageManager(JpaStructureNode node) {
 		return this.getJpaDetailsPageManagerFactory(node).buildPageManager(this.pageBook, this.widgetFactory, this.resourceManager);
 	}
 

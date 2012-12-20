@@ -12,20 +12,20 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
-	extends AbstractMappingUiDefinition<ReadOnlyPersistentAttribute, EclipseLinkVariableOneToOneMapping>
-	implements DefaultJavaAttributeMappingUiDefinition<EclipseLinkVariableOneToOneMapping>
+	extends AbstractMappingUiDefinition
+	implements DefaultMappingUiDefinition
 {
 	// singleton
 	private static final DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition();
@@ -33,7 +33,7 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingUiDefinition<EclipseLinkVariableOneToOneMapping> instance() {
+	public static DefaultMappingUiDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -61,7 +61,8 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
 	}
 
-	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<EclipseLinkVariableOneToOneMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		return new EclipseLinkVariableOneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+	@SuppressWarnings("unchecked")
+	public JpaComposite buildMappingComposite(JpaUiFactory factory, PropertyValueModel<? extends JpaContextNode> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return new EclipseLinkVariableOneToOneMappingComposite((PropertyValueModel<EclipseLinkVariableOneToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}	
 }

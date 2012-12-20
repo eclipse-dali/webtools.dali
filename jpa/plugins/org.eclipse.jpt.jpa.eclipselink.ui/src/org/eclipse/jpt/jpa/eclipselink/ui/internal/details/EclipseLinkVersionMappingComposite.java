@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
-import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
@@ -58,7 +57,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  */
-public abstract class EclipseLinkVersionMappingComposite<T extends VersionMapping>
+public abstract class EclipseLinkVersionMappingComposite<T extends EclipseLinkVersionMapping>
 	extends AbstractVersionMappingComposite<T>
 {
 	protected EclipseLinkVersionMappingComposite(
@@ -74,8 +73,8 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 	protected Control initializeVersionSection(Composite container) {
 		container = this.addSubPane(container);
 
-		new ColumnComposite(this, buildColumnHolder(), container);
-		new EclipseLinkMutableTriStateCheckBox(this, buildMutableHolder(), container);
+		new ColumnComposite(this, buildColumnModel(), container);
+		new EclipseLinkMutableTriStateCheckBox(this, buildMutableModel(), container);
 
 		return container;
 	}
@@ -146,11 +145,11 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 		};
 	}
 	
-	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
+	protected PropertyValueModel<EclipseLinkMutable> buildMutableModel() {
 		return new PropertyAspectAdapter<T, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkMutable buildValue_() {
-				return ((EclipseLinkVersionMapping) this.subject).getMutable();
+				return this.subject.getMutable();
 			}
 		};
 	}
@@ -171,14 +170,14 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 	}
 
 	protected Control initializeConvertersSection(Composite container) {
-		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
+		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<VersionMapping, EclipseLinkConverterContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterContainer buildValue_() {
-				return ((EclipseLinkVersionMapping) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}
 		};
 	}

@@ -11,10 +11,9 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
@@ -32,10 +31,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmManyToOneMapping2_0Composite
-	extends AbstractManyToOneMapping2_0Composite<ManyToOneMapping, ManyToOneRelationship2_0>
+	extends AbstractManyToOneMapping2_0Composite<ManyToOneMapping2_0, ManyToOneRelationship2_0, Cascade2_0>
 {
 	public OrmManyToOneMapping2_0Composite(
-			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
+			PropertyValueModel<? extends ManyToOneMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -58,7 +57,7 @@ public class OrmManyToOneMapping2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
 		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
@@ -71,20 +70,11 @@ public class OrmManyToOneMapping2_0Composite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeHolder(), container);
+		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadePane.getControl().setLayoutData(gridData);
 
 		return container;
-	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<ManyToOneMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
 	}
 }

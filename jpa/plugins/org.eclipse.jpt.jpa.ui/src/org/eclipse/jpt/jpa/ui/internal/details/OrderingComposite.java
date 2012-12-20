@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
  * @see OneToManyMappingComposite
  */
 public class OrderingComposite
-	extends AbstractOrderingComposite
+	extends AbstractOrderingComposite<Orderable>
 {
 	public OrderingComposite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
 		super(parentPane, parentComposite);
@@ -48,7 +48,7 @@ public class OrderingComposite
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Orderable> orderableHolder = buildOrderableHolder();
+		PropertyValueModel<Orderable> orderableHolder = buildOrderableModel();
 
 		// No Ordering radio button
 		addRadioButton(

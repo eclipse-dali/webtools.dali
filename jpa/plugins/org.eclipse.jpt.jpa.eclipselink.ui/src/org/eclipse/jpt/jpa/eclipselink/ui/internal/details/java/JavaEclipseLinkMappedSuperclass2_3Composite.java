@@ -13,8 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
@@ -33,10 +31,10 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkMappedSuperclass2_3Composite
-	extends AbstractJavaEclipseLinkMappedSuperclassComposite
+	extends AbstractJavaEclipseLinkMappedSuperclassComposite<JavaEclipseLinkMappedSuperclass>
 {
 	public JavaEclipseLinkMappedSuperclass2_3Composite(
-			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends JavaEclipseLinkMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -60,27 +58,18 @@ public class JavaEclipseLinkMappedSuperclass2_3Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
 	}
 
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
-	}
-
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
+		return new JavaEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
 	}
 	
 	protected void initializeMultitenancyCollapsibleSection(Composite container) {
@@ -99,14 +88,14 @@ public class JavaEclipseLinkMappedSuperclass2_3Composite
 	}
 
 	protected Control initializeMultitenancySection(Composite container) {
-		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyHolder(), container).getControl();
+		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkMultitenancy2_3> buildMultitenancyHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapter<JavaEclipseLinkMappedSuperclass, JavaEclipseLinkMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapter<JavaEclipseLinkMappedSuperclass, JavaEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkMultitenancy2_3 buildValue_() {
-				return ((JavaEclipseLinkMappedSuperclass) this.subject).getMultitenancy();
+				return this.subject.getMultitenancy();
 			}
 		};
 	}

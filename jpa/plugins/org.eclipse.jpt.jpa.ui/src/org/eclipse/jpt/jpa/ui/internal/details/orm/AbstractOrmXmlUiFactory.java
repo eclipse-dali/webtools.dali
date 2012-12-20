@@ -12,58 +12,64 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.TransientMapping;
+import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractOrmXmlUiFactory
-	implements OrmXmlUiFactory
+	implements JpaUiFactory
 {
 	// ********** type mappings **********
 
-	public JpaComposite createOrmMappedSuperclassComposite(
-			PropertyValueModel<OrmMappedSuperclass> mappedSuperclassModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmMappedSuperclassComposite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmMappedSuperclassComposite((PropertyValueModel<? extends OrmMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> entityModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEntityComposite(entityModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEntityComposite((PropertyValueModel<? extends OrmEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmEmbeddableComposite(
-			PropertyValueModel<OrmEmbeddable> embeddableModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createEmbeddableComposite(
+			PropertyValueModel<? extends Embeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEmbeddableComposite(embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEmbeddableComposite((PropertyValueModel<? extends OrmEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 
 	// ********** attribute mappings **********
 
-	public JpaComposite createOrmIdMappingComposite(
-			PropertyValueModel<OrmIdMapping> mappingModel,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -71,8 +77,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmIdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmEmbeddedIdMappingComposite(
-			PropertyValueModel<OrmEmbeddedIdMapping> mappingModel,
+	public JpaComposite createEmbeddedIdMappingComposite(
+			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -80,8 +86,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmEmbeddedIdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmBasicMappingComposite(
-			PropertyValueModel<OrmBasicMapping> mappingModel,
+	public JpaComposite createBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -89,8 +95,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmBasicMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmVersionMappingComposite(
-			PropertyValueModel<OrmVersionMapping> mappingModel,
+	public JpaComposite createVersionMappingComposite(
+			PropertyValueModel<? extends VersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -98,8 +104,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmVersionMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmManyToOneMappingComposite(
-			PropertyValueModel<OrmManyToOneMapping> mappingModel,
+	public JpaComposite createManyToOneMappingComposite(
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -107,8 +113,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmOneToManyMappingComposite(
-			PropertyValueModel<OrmOneToManyMapping> mappingModel,
+	public JpaComposite createOneToManyMappingComposite(
+			PropertyValueModel<? extends OneToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -116,8 +122,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmOneToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmOneToOneMappingComposite(
-			PropertyValueModel<OrmOneToOneMapping> mappingModel,
+	public JpaComposite createOneToOneMappingComposite(
+			PropertyValueModel<? extends OneToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -125,8 +131,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmOneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmManyToManyMappingComposite(
-			PropertyValueModel<OrmManyToManyMapping> mappingModel,
+	public JpaComposite createManyToManyMappingComposite(
+			PropertyValueModel<? extends ManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -134,8 +140,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmManyToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmEmbeddedMappingComposite(
-			PropertyValueModel<OrmEmbeddedMapping> mappingModel,
+	public JpaComposite createEmbeddedMappingComposite(
+			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -143,8 +149,8 @@ public abstract class AbstractOrmXmlUiFactory
 		return new OrmEmbeddedMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createOrmTransientMappingComposite(
-			PropertyValueModel<OrmTransientMapping> mappingModel,
+	public JpaComposite createTransientMappingComposite(
+			PropertyValueModel<? extends TransientMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

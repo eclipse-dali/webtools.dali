@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
@@ -28,10 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class OrmIdMapping2_0Composite
-	extends AbstractIdMappingComposite<IdMapping>
+	extends AbstractIdMappingComposite<IdMapping2_0>
 {
 	public OrmIdMapping2_0Composite(
-			PropertyValueModel<? extends IdMapping> mappingModel,
+			PropertyValueModel<? extends IdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -50,7 +48,7 @@ public class OrmIdMapping2_0Composite
 		mappedByRelationshipPane.getControl().setLayoutData(gridData);
 
 		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnHolder(), container);
+		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);
@@ -61,7 +59,7 @@ public class OrmIdMapping2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		return container;
 	}
@@ -69,14 +67,5 @@ public class OrmIdMapping2_0Composite
 	@Override
 	protected void initializeGenerationCollapsibleSection(Composite container) {
 		new IdMappingGeneration2_0Composite(this, container);
-	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<IdMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
 	}
 }

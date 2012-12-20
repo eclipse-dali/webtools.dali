@@ -10,11 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 
-public abstract class AbstractMappingUiDefinition<M, T>
-	implements MappingUiDefinition<M, T>
+public abstract class AbstractMappingUiDefinition
+	implements MappingUiDefinition
 {
 	protected AbstractMappingUiDefinition() {
 		super();
@@ -24,7 +25,7 @@ public abstract class AbstractMappingUiDefinition<M, T>
 		return JptJpaUiImages.JPA_CONTENT;
 	}
 
-	public boolean isEnabledFor(M mappableObject) {
+	public boolean isEnabledFor(JpaContextNode node) {
 		return true;
 	}
 }

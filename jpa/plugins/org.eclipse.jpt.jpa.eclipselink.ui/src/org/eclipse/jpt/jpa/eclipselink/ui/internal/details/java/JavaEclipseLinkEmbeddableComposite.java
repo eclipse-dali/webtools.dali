@@ -12,16 +12,16 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkEmbeddableComposite
-	extends AbstractJavaEclipseLinkEmbeddableComposite
+	extends AbstractJavaEclipseLinkEmbeddableComposite<JavaEclipseLinkEmbeddable>
 {
 	public JavaEclipseLinkEmbeddableComposite(
-			PropertyValueModel<? extends JavaEmbeddable> embeddableModel,
+			PropertyValueModel<? extends JavaEclipseLinkEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {

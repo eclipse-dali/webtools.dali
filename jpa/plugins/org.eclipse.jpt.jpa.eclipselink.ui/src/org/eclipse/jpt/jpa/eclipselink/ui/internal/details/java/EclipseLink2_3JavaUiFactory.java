@@ -12,8 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,21 +24,23 @@ public class EclipseLink2_3JavaUiFactory
 {
 	// ********** type mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> entityModel,
-			Composite parent,
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
+			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEntity2_3Composite(entityModel, parent, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEntity2_3Composite((PropertyValueModel<? extends JavaEclipseLinkEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
-			Composite parent,
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
+			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkMappedSuperclass2_3Composite(mappedSuperclassModel, parent, widgetFactory, resourceManager);
+		return new JavaEclipseLinkMappedSuperclass2_3Composite((PropertyValueModel<? extends JavaEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

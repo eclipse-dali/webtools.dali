@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
@@ -31,7 +30,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntity>
+public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEclipseLinkEntity>
 	extends AbstractEntityComposite<T>
 {
 	protected AbstractJavaEclipseLinkEntityComposite(
@@ -72,14 +71,14 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCachingComposite(this, buildCachingHolder(), container).getControl();
+		return new JavaEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
-	protected PropertyAspectAdapter<JavaEntity, JavaEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapter<T, JavaEclipseLinkCaching> buildCachingModel() {
+		return new PropertyAspectAdapter<T, JavaEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkCaching buildValue_() {
-				return ((JavaEclipseLinkEntity) this.subject).getCaching();
+				return this.subject.getCaching();
 			}
 		};
 	}
@@ -104,10 +103,10 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 	}
 	
 	private PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkConverterContainer buildValue_() {
-				return ((JavaEclipseLinkEntity) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}	
 		};
 	}

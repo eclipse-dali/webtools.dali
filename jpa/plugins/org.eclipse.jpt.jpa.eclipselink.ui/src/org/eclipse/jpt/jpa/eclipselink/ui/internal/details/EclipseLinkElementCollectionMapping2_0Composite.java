@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
@@ -33,7 +32,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends ElementCollectionMapping2_0>
+public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends EclipseLinkElementCollectionMapping2_0>
 	extends AbstractElementCollectionMapping2_0Composite<T>
 {
 	protected EclipseLinkElementCollectionMapping2_0Composite(
@@ -69,14 +68,14 @@ public abstract class EclipseLinkElementCollectionMapping2_0Composite<T extends 
 	}
 
 	protected Control initializeConvertersSection(Composite container) {
-		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
+		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
 		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterContainer buildValue_() {
-				return ((EclipseLinkElementCollectionMapping2_0) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}
 		};
 	}

@@ -13,21 +13,19 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaTypeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 public class NullJavaTypeMappingUiDefinition
-	extends AbstractMappingUiDefinition<PersistentType, JavaTypeMapping>
-	implements DefaultJavaTypeMappingUiDefinition<JavaTypeMapping>
+	extends AbstractMappingUiDefinition
+	implements DefaultMappingUiDefinition
 {
 	// singleton
 	private static final NullJavaTypeMappingUiDefinition INSTANCE = new NullJavaTypeMappingUiDefinition();
@@ -35,7 +33,7 @@ public class NullJavaTypeMappingUiDefinition
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaTypeMappingUiDefinition<JavaTypeMapping> instance() {
+	public static DefaultMappingUiDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -76,24 +74,7 @@ public class NullJavaTypeMappingUiDefinition
 		return JptCommonUiImages.WARNING;
 	}
 
-	public JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaTypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+	public JpaComposite buildMappingComposite(JpaUiFactory factory, PropertyValueModel<? extends JpaContextNode> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new NullComposite(mappingModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-
-	// ********** null composite **********
-
-	/* CU private */ static class NullComposite 
-		extends Pane<JavaTypeMapping>
-		implements JpaComposite 
-	{
-		NullComposite(PropertyValueModel<JavaTypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-			super(mappingModel, parentComposite, widgetFactory, resourceManager);
-		}
-
-		@Override
-		protected void initializeLayout(Composite container) {
-			// NOP
-		}
 	}
 }

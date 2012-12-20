@@ -12,23 +12,27 @@ package org.eclipse.jpt.jpa.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.TransientMapping;
+import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.IdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingComposite;
@@ -36,43 +40,45 @@ import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.JavaEmbeddedMapping2_0Composite;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractJavaUiFactory
-	implements JavaUiFactory
+	implements JpaUiFactory
 {
 	// ********** type mappings **********
 
-	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaMappedSuperclassComposite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaMappedSuperclassComposite((PropertyValueModel<? extends JavaMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> entityModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEntityComposite(entityModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEntityComposite((PropertyValueModel<? extends JavaEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> embeddableModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createEmbeddableComposite(
+			PropertyValueModel<? extends Embeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEmbeddableComposite(embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEmbeddableComposite((PropertyValueModel<? extends JavaEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 
 	// ********** attribute mappings **********
 
-	public JpaComposite createJavaIdMappingComposite(
-			PropertyValueModel<JavaIdMapping> mappingModel,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -80,8 +86,8 @@ public abstract class AbstractJavaUiFactory
 		return new IdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaEmbeddedIdMappingComposite(
-			PropertyValueModel<JavaEmbeddedIdMapping> mappingModel,
+	public JpaComposite createEmbeddedIdMappingComposite(
+			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -89,8 +95,8 @@ public abstract class AbstractJavaUiFactory
 		return new EmbeddedIdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaBasicMappingComposite(
-			PropertyValueModel<JavaBasicMapping> mappingModel,
+	public JpaComposite createBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -98,8 +104,8 @@ public abstract class AbstractJavaUiFactory
 		return new BasicMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaVersionMappingComposite(
-			PropertyValueModel<JavaVersionMapping> mappingModel,
+	public JpaComposite createVersionMappingComposite(
+			PropertyValueModel<? extends VersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -107,8 +113,8 @@ public abstract class AbstractJavaUiFactory
 		return new VersionMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaManyToOneMappingComposite(
-			PropertyValueModel<JavaManyToOneMapping> mappingModel,
+	public JpaComposite createManyToOneMappingComposite(
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -116,8 +122,8 @@ public abstract class AbstractJavaUiFactory
 		return new ManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<JavaOneToManyMapping> mappingModel,
+	public JpaComposite createOneToManyMappingComposite(
+			PropertyValueModel<? extends OneToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -125,8 +131,8 @@ public abstract class AbstractJavaUiFactory
 		return new OneToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaOneToOneMappingComposite(
-			PropertyValueModel<JavaOneToOneMapping> mappingModel,
+	public JpaComposite createOneToOneMappingComposite(
+			PropertyValueModel<? extends OneToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -134,8 +140,8 @@ public abstract class AbstractJavaUiFactory
 		return new OneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaManyToManyMappingComposite(
-			PropertyValueModel<JavaManyToManyMapping> mappingModel,
+	public JpaComposite createManyToManyMappingComposite(
+			PropertyValueModel<? extends ManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -143,17 +149,17 @@ public abstract class AbstractJavaUiFactory
 		return new ManyToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaEmbeddedMappingComposite(
-			PropertyValueModel<JavaEmbeddedMapping> mappingModel,
+	public JpaComposite createEmbeddedMappingComposite(
+			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEmbeddedMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EmbeddedMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaTransientMappingComposite(
-			PropertyValueModel<JavaTransientMapping> mappingModel,
+	public JpaComposite createTransientMappingComposite(
+			PropertyValueModel<? extends TransientMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

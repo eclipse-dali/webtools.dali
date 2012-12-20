@@ -13,19 +13,19 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.Cascade;
-import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
-import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractCascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
+
 public class CascadePane2_0
-	extends CascadeComposite
+	extends AbstractCascadePane<Cascade2_0>
 {
 	public CascadePane2_0(
-		Pane<? extends RelationshipMapping> parentPane,
-		PropertyValueModel<? extends Cascade> cascadeModel,
+		Pane<? extends RelationshipMapping2_0> parentPane,
+		PropertyValueModel<? extends Cascade2_0> cascadeModel,
 		Composite parent
 	) {
 		super(parentPane, cascadeModel, parent);
@@ -54,20 +54,20 @@ public class CascadePane2_0
 		addCheckBox(
 				container,
 				JptUiDetailsMessages2_0.CascadePane2_0_detach,
-				buildCascadeTypeDetachHolder(),
+				buildCascadeTypeDetachModel(),
 				null);
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeDetachHolder() {
-		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade2_0.DETACH_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeDetachModel() {
+		return new PropertyAspectAdapter<Cascade2_0, Boolean>(getSubjectHolder(), Cascade2_0.DETACH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(((Cascade2_0) this.subject).isDetach());
+				return Boolean.valueOf(this.subject.isDetach());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				((Cascade2_0) this.subject).setDetach(value.booleanValue());
+				this.subject.setDetach(value.booleanValue());
 			}
 		};
 	}	

@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
@@ -26,10 +27,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaManyToOneMapping2_0Composite
-	extends AbstractManyToOneMapping2_0Composite<JavaManyToOneMapping, JavaManyToOneRelationship2_0>
+	extends AbstractManyToOneMapping2_0Composite<ManyToOneMapping2_0, JavaManyToOneRelationship2_0, Cascade2_0>
 {
 	public JavaManyToOneMapping2_0Composite(
-			PropertyValueModel<? extends JavaManyToOneMapping> mappingModel,
+			PropertyValueModel<? extends ManyToOneMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -57,7 +58,7 @@ public class JavaManyToOneMapping2_0Composite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeHolder(), container);
+		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadePane.getControl().setLayoutData(gridData);

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -105,7 +106,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		new IdMappingGenerationComposite(this, container);
 	}
 	
-	protected PropertyValueModel<? extends Column> buildColumnHolder() {
+	protected PropertyValueModel<? extends Column> buildColumnModel() {
 		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder())  {
 			@Override
 			protected Column transform_(T value) {
@@ -145,6 +146,15 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 			@Override
 			protected BaseTemporalConverter transform_(Converter converter) {
 				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
+			}
+		};
+	}
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}

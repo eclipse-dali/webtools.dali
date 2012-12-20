@@ -13,9 +13,8 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEntity2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
@@ -36,10 +35,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEntity2_0Composite
-	extends AbstractOrmEntityComposite
+	extends AbstractOrmEntityComposite<OrmEntity2_0>
 {
 	public OrmEntity2_0Composite(
-			PropertyValueModel<? extends OrmEntity> entityModel,
+			PropertyValueModel<? extends OrmEntity2_0> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -66,14 +65,14 @@ public class OrmEntity2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Cacheable widgets
-		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableHolder(), container);
+		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cacheableCheckBox.getControl().setLayoutData(gridData);
@@ -87,11 +86,11 @@ public class OrmEntity2_0Composite
 		return container;
 	}
 	
-	protected PropertyValueModel<Cacheable2_0> buildCacheableHolder() {
-		return new PropertyAspectAdapter<OrmEntity, Cacheable2_0>(getSubjectHolder()) {
+	protected PropertyValueModel<Cacheable2_0> buildCacheableModel() {
+		return new PropertyAspectAdapter<OrmEntity2_0, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
-				return ((CacheableHolder2_0) this.subject).getCacheable();
+				return this.subject.getCacheable();
 			}
 		};
 	}
@@ -103,11 +102,11 @@ public class OrmEntity2_0Composite
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerHolder(), container).getControl();
+		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new Queries2_0Composite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 }

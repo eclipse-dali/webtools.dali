@@ -18,11 +18,14 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -88,7 +91,7 @@ public abstract class AbstractJpaPlatformUi
 
 	// ********** details providers **********
 
-	public JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+	public JpaDetailsPageManager buildJpaDetailsPageManager(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		JpaDetailsProvider provider = this.getDetailsProvider(structureNode);
 		return (provider == null) ? null : provider.buildDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
@@ -109,19 +112,23 @@ public abstract class AbstractJpaPlatformUi
 
 	// ********** type mappings **********
 
-	public JpaComposite buildTypeMappingComposite(JptResourceType resourceType, String mappingKey, Composite parentComposite, PropertyValueModel<TypeMapping> mappingModel, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		return this.getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(mappingKey, mappingModel, parentComposite, widgetFactory, resourceManager);
+	public JpaComposite buildTypeMappingComposite(JptResourceType resourceType, String mappingKey, PropertyValueModel<TypeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return this.getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(mappingKey, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions(JptResourceType resourceType) {
+	public Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(PersistentType persistentType) {
+		return IterableTools.filter(this.getTypeMappingUiDefinitions(persistentType.getResourceType()), new UiDefinitionFilter(persistentType));
+	}
+
+	public Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(JptResourceType resourceType) {
 		return this.getMappingResourceUiDefinition(resourceType).getTypeMappingUiDefinitions();
 	}
 
-	public MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
+	public MappingUiDefinition getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
 		return this.getMappingResourceUiDefinition(resourceType).getTypeMappingUiDefinition(mappingKey);
 	}
 
-	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JptResourceType resourceType) {
+	public DefaultMappingUiDefinition getDefaultTypeMappingUiDefinition(JptResourceType resourceType) {
 		return this.getMappingResourceUiDefinition(resourceType).getDefaultTypeMappingUiDefinition();
 	}
 
@@ -132,18 +139,37 @@ public abstract class AbstractJpaPlatformUi
 		return this.getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(mappingKey, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions(JptResourceType resourceType) {
+	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute persistentAttribute) {
+		return IterableTools.filter(this.getAttributeMappingUiDefinitions(persistentAttribute.getResourceType()), new UiDefinitionFilter(persistentAttribute));
+	}
+
+	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(JptResourceType resourceType) {
 		return this.getMappingResourceUiDefinition(resourceType).getAttributeMappingUiDefinitions();
 	}
 
-	public MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
+	public MappingUiDefinition getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
 		return this.getMappingResourceUiDefinition(resourceType).getAttributeMappingUiDefinition(mappingKey);
 	}
 
-	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
+	public DefaultMappingUiDefinition getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
 		return this.getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
 	}
 
+
+	/* CU private */ class UiDefinitionFilter
+		extends Filter.Adapter<MappingUiDefinition>
+	{
+		private final JpaContextNode node;
+		
+		public UiDefinitionFilter(JpaContextNode node) {
+			super();
+			this.node =  node;
+		}
+		@Override
+		public boolean accept(MappingUiDefinition mappingUiDefinition) {
+			return mappingUiDefinition.isEnabledFor(this.node);
+		}
+	}
 
 	// ********** resource ui definitions **********
 

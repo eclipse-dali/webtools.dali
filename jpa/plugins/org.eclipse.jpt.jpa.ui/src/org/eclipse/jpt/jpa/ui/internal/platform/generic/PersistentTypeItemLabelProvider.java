@@ -66,7 +66,7 @@ public class PersistentTypeItemLabelProvider
 			return this.getTypeMappingUiDefinition(typeMapping).getImageDescriptor();
 		}
 
-		private MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition(TypeMapping typeMapping) {
+		private MappingUiDefinition getTypeMappingUiDefinition(TypeMapping typeMapping) {
 			return this.getJpaPlatformUi(typeMapping).getTypeMappingUiDefinition(typeMapping.getResourceType(), typeMapping.getKey());
 		}
 

@@ -31,15 +31,14 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddableUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappedSuperclassUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -115,17 +114,21 @@ public class AddPersistentClassDialog extends StatusDialog
 		this.mappingCombo = new ComboViewer(createCombo(composite, 2));
 		this.mappingCombo.setContentProvider(
 			new IStructuredContentProvider() {
-				public void dispose() {}
-				
-				public Object[] getElements(Object inputElement) {
-					return new Object[] {
-						OrmMappedSuperclassUiDefinition.instance(), 
-						OrmEntityUiDefinition.instance(), 
-						OrmEmbeddableUiDefinition.instance()
-					};
+				public void dispose() {
+					//nothing to dispose
 				}
 				
-				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+				public Object[] getElements(Object inputElement) {
+					return ArrayTools.array(getTypeMappingUiDefinitions((EntityMappings) inputElement));
+				}
+
+				protected Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(EntityMappings entityMappings) {
+					return getJpaPlatformUi().getTypeMappingUiDefinitions(entityMappings.getResourceType());
+				}
+
+				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+					//NOP
+				}
 			});
 		this.mappingCombo.setLabelProvider(
 			new LabelProvider() {
@@ -139,8 +142,9 @@ public class AddPersistentClassDialog extends StatusDialog
 				validate();
 			}
 		});
-		this.mappingCombo.setInput("FOO");
-		this.mappingCombo.getCombo().select(1);  // select Entity to begin
+		this.mappingCombo.setInput(this.entityMappings);
+		//TODO maybe use JpaPlatformUi.getDefaultTypeMappingDefintion() to do this? currently that returns null for orm.xml
+		this.mappingCombo.getCombo().select(0);  // select Entity to begin 
 		
 		// TODO - F1 Help
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
@@ -211,6 +215,10 @@ public class AddPersistentClassDialog extends StatusDialog
 		gd.horizontalSpan = span;
 		combo.setLayoutData(gd);
 		return combo;
+	}
+
+	protected JpaPlatformUi getJpaPlatformUi() {
+		return (JpaPlatformUi) this.entityMappings.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 	
 	private JpaProject getJpaProject() {
@@ -296,6 +304,6 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	public OrmPersistentType openAndReturnType() {
 		super.open();
-		return addedType;
+		return this.addedType;
 	}
 }

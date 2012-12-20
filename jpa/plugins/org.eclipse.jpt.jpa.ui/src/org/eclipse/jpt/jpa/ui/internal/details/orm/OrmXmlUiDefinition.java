@@ -13,13 +13,20 @@ import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemLabelProviderFactory;
 
@@ -47,7 +54,7 @@ public class OrmXmlUiDefinition
 	
 	
 	@Override
-	protected OrmXmlUiFactory buildOrmXmlUiFactory() {
+	protected JpaUiFactory buildUiFactory() {
 		return new GenericOrmXmlUiFactory();
 	}
 	
@@ -66,27 +73,16 @@ public class OrmXmlUiDefinition
 				);
 	
 	@Override
-	protected void addOrmAttributeMappingUiDefinitionsTo(
-			List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
-		
-		definitions.add(OrmIdMappingUiDefinition.instance());
-		definitions.add(OrmEmbeddedIdMappingUiDefinition.instance());
-		definitions.add(OrmBasicMappingUiDefinition.instance());
-		definitions.add(OrmVersionMappingUiDefinition.instance());
-		definitions.add(OrmManyToOneMappingUiDefinition.instance());
-		definitions.add(OrmOneToManyMappingUiDefinition.instance());
-		definitions.add(OrmOneToOneMappingUiDefinition.instance());
-		definitions.add(OrmManyToManyMappingUiDefinition.instance());
-		definitions.add(OrmEmbeddedMappingUiDefinition.instance());
-		definitions.add(OrmTransientMappingUiDefinition.instance());
-	}
-	
-	@Override
-	protected void addOrmTypeMappingUiDefinitionsTo(
-			List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
-		
-		definitions.add(OrmEntityUiDefinition.instance());
-		definitions.add(OrmMappedSuperclassUiDefinition.instance());
-		definitions.add(OrmEmbeddableUiDefinition.instance());
+	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
+		definitions.add(IdMappingUiDefinition.instance());
+		definitions.add(EmbeddedIdMappingUiDefinition.instance());
+		definitions.add(BasicMappingUiDefinition.instance());
+		definitions.add(VersionMappingUiDefinition.instance());
+		definitions.add(ManyToOneMappingUiDefinition.instance());
+		definitions.add(OneToManyMappingUiDefinition.instance());
+		definitions.add(OneToOneMappingUiDefinition.instance());
+		definitions.add(ManyToManyMappingUiDefinition.instance());
+		definitions.add(EmbeddedMappingUiDefinition.instance());
+		definitions.add(TransientMappingUiDefinition.instance());
 	}
 }

@@ -13,15 +13,16 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapping, R extends OneToOneRelationship2_0>
-	extends AbstractOneToOneMappingComposite<T, R>
+public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapping2_0, R extends OneToOneRelationship2_0, C extends Cascade2_0>
+	extends AbstractOneToOneMappingComposite<T, R, C>
 {
 	protected AbstractOneToOneMapping2_0Composite(
 			PropertyValueModel<? extends T> mappingModel,
@@ -40,14 +41,23 @@ public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapp
 	}
 
 	protected void initializeDerivedIdentityCollapsibleSection(Composite container) {
-		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityModel(), container);
 	}
 	
-	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityHolder() {
+	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityModel() {
 		return new PropertyAspectAdapter<T, DerivedIdentity2_0>(getSubjectHolder()) {
 			@Override
 			protected DerivedIdentity2_0 buildValue_() {
-				return ((OneToOneMapping2_0) this.subject).getDerivedIdentity();
+				return this.subject.getDerivedIdentity();
+			}
+		};
+	}
+
+	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableModel() {
+		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(getSubjectHolder()) {
+			@Override
+			protected OrphanRemovable2_0 buildValue_() {
+				return this.subject.getOrphanRemoval();
 			}
 		};
 	}

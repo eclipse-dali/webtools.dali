@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.swt.widgets.Composite;
@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkEmbeddable1_2Composite
-	extends AbstractJavaEclipseLinkEmbeddableComposite
+	extends AbstractJavaEclipseLinkEmbeddableComposite<JavaEclipseLinkEmbeddable>
 {
 	public JavaEclipseLinkEmbeddable1_2Composite(
-			PropertyValueModel<? extends JavaEmbeddable> embeddableModel,
+			PropertyValueModel<? extends JavaEclipseLinkEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {

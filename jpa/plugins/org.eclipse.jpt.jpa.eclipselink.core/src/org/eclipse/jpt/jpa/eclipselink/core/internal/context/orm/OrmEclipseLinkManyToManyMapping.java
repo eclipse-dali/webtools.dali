@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -36,7 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class OrmEclipseLinkManyToManyMapping
 	extends AbstractOrmManyToManyMapping<XmlManyToMany>
 	implements
-		EclipseLinkManyToManyMapping, 
+		EclipseLinkManyToManyMapping2_0, 
 		EclipseLinkOrmConvertibleMapping,
 		OrmEclipseLinkConverterContainer.Owner
 {

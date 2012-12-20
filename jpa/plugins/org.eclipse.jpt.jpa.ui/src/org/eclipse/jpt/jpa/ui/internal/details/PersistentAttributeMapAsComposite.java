@@ -78,7 +78,7 @@ public class PersistentAttributeMapAsComposite
 			return getSubject().getName();
 		}
 		
-		public Iterable<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> getMappingUiDefinitions() {
+		public Iterable<MappingUiDefinition> getMappingUiDefinitions() {
 			return getAttributeMappingUiDefinitions();
 		}
 
@@ -87,11 +87,11 @@ public class PersistentAttributeMapAsComposite
 		}
 	}
 	
-	protected Iterable<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> getAttributeMappingUiDefinitions() {
-		return getJpaPlatformUi().getAttributeMappingUiDefinitions(getSubject().getResourceType());
+	protected Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions() {
+		return getJpaPlatformUi().getAttributeMappingUiDefinitions(getSubject());
 	}
 	
-	protected MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition() {
+	protected MappingUiDefinition getAttributeMappingUiDefinition() {
 		return getJpaPlatformUi().getAttributeMappingUiDefinition(getSubject().getResourceType(), getMappingKey());
 	}
 	

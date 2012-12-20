@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -101,7 +102,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	protected Control initializeBasicSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnHolder(), container);
+		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);
@@ -170,7 +171,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		return container;
 	}
 
-	protected PropertyValueModel<Column> buildColumnHolder() {
+	protected PropertyValueModel<Column> buildColumnModel() {
 		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder()) {
 			@Override
 			protected Column transform_(T mapping) {
@@ -207,7 +208,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -219,6 +220,15 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 				if (value.booleanValue()) {
 					this.subject.setConverter(converterType);
 				}
+			}
+		};
+	}
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}

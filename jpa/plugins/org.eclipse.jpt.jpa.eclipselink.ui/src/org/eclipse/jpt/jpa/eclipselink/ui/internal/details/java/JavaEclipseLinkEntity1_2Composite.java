@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
@@ -27,10 +25,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEclipseLinkEntity1_2Composite
-	extends AbstractJavaEclipseLinkEntityComposite<JavaEntity>
+	extends AbstractJavaEclipseLinkEntityComposite<JavaEclipseLinkEntity>
 {
 	public JavaEclipseLinkEntity1_2Composite(
-			PropertyValueModel<? extends JavaEntity> entityModel,
+			PropertyValueModel<? extends JavaEclipseLinkEntity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -53,21 +51,12 @@ public class JavaEclipseLinkEntity1_2Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);	
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);	
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
-	}
-
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
 	}
 }

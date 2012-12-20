@@ -10,11 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 
-public abstract class AbstractEclipseLinkBasicCollectionMappingUiDefinition<M, T extends EclipseLinkBasicCollectionMapping>
-	extends AbstractMappingUiDefinition<M, T>
+public abstract class AbstractEclipseLinkBasicCollectionMappingUiDefinition
+	extends AbstractMappingUiDefinition
 {
 	protected AbstractEclipseLinkBasicCollectionMappingUiDefinition() {
 		super();

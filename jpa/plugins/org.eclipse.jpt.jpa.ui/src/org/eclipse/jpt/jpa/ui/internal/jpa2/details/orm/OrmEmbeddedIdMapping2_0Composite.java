@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
@@ -27,10 +25,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class OrmEmbeddedIdMapping2_0Composite
-	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
+	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping2_0>
 {
 	public OrmEmbeddedIdMapping2_0Composite(
-			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
+			PropertyValueModel<? extends EmbeddedIdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -49,7 +47,7 @@ public class OrmEmbeddedIdMapping2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 		
 		// Mapped by relationship widgets
 		EmbeddedIdMapping2_0MappedByRelationshipPane mappedByRelationshipPane = new EmbeddedIdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
@@ -66,14 +64,5 @@ public class OrmEmbeddedIdMapping2_0Composite
 		overridesComposite.getControl().setLayoutData(gridData);
 
 		return container;
-	}	
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<EmbeddedIdMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
 	}
 }

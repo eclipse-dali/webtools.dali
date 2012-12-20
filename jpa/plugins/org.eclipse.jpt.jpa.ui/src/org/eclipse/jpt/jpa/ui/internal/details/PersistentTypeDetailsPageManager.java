@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -119,11 +120,18 @@ public class PersistentTypeDetailsPageManager
 		return this.getJpaPlatformUi().buildTypeMappingComposite(
 				this.getSubject().getResourceType(), 
 				key, 
-				pageBook, 
 				this.buildMappingHolder(key), 
+				this.getMappingCompositeEnabledModel(), 
+				pageBook, 
 				this.getWidgetFactory(),
 				this.getResourceManager()
 			);
+	}
+
+	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = new StaticPropertyValueModel<Boolean>(Boolean.TRUE);
+
+	protected PropertyValueModel<Boolean> getMappingCompositeEnabledModel() {
+		return TRUE_ENABLED_MODEL;		
 	}
 
 	@Override

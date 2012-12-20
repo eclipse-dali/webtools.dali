@@ -79,7 +79,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
@@ -111,7 +110,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEntity2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Inheritance;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -132,7 +131,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmEntity<X extends XmlEntity>
 	extends AbstractOrmTypeMapping<X>
-	implements OrmEntity, OrmCacheableHolder2_0, OrmIdClassReference.Owner
+	implements OrmEntity2_0, OrmIdClassReference.Owner
 {
 	protected String specifiedName;
 	protected String defaultName;

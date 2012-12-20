@@ -16,13 +16,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 
 
 public abstract class AbstractJavaOneToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
-	implements OneToOneMapping2_0, JavaOneToOneMapping, OrphanRemovalHolder2_0
+	implements OneToOneMapping2_0, JavaOneToOneMapping
 {
 	protected final OrphanRemovable2_0 orphanRemoval;
 

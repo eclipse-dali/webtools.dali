@@ -52,7 +52,7 @@ public class JavaPersistentTypeDetailsProvider
 				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 	
-	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new PersistentTypeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 }

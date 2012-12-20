@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 2.0
  * 
  * @see JpaDetailsPageManager
@@ -41,7 +41,7 @@ public interface JpaDetailsProvider {
 	 * factory, and resource manager.
 	 */
 	// TODO pass in JpaUiFactory so these pages can be built using the factory and overridden?
-	JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(
+	JpaDetailsPageManager buildDetailsPageManager(
 			Composite parent,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager);

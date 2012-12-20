@@ -13,17 +13,16 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEmbeddableComposite
-	extends Pane<Embeddable>
+	extends Pane<JavaEmbeddable>
 	implements JpaComposite
 {
 	public JavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> embeddableModel,
+			PropertyValueModel<? extends JavaEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {

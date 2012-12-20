@@ -48,7 +48,7 @@ public class VersionMappingComposite
 	protected Control initializeVersionSection(Composite container) {
 		container = this.addSubPane(container); //A Section with a Group(ColumnComposite) as its direct direct child throws exceptions
 
-		new ColumnComposite(this, buildColumnHolder(), container);
+		new ColumnComposite(this, buildColumnModel(), container);
 
 		return container;
 	}

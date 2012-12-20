@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
@@ -27,10 +26,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkMappedSuperclass2_1Composite
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<OrmEclipseLinkMappedSuperclass>
 {
 	public OrmEclipseLinkMappedSuperclass2_1Composite(
-			PropertyValueModel<? extends OrmMappedSuperclass> mappedSuperclassModel, 
+			PropertyValueModel<? extends OrmEclipseLinkMappedSuperclass> mappedSuperclassModel, 
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -49,7 +48,7 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
+		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
 	}
 	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
@@ -68,15 +67,15 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 	}
 
 	protected Control initializeQueriesSection(Composite container) {
-		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 
-	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, QueryContainer>(
+	private PropertyValueModel<QueryContainer> buildQueryContainerModel() {
+		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, QueryContainer>(
 				getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
-				return ((OrmEclipseLinkMappedSuperclass) this.subject).getQueryContainer();
+				return this.subject.getQueryContainer();
 			}
 		};
 	}

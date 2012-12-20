@@ -41,27 +41,27 @@ public class PersistentAttributeMapAsContribution
 	}
 	
 	@Override
-	protected CommandContributionItemParameter buildContributionItemParameter(MappingUiDefinition<ReadOnlyPersistentAttribute, ?> mappingUiProvider) {
+	protected CommandContributionItemParameter buildContributionItemParameter(MappingUiDefinition mappingUiProvider) {
 		CommandContributionItemParameter parameter = super.buildContributionItemParameter(mappingUiProvider);
 		String defaultKey = null;
-		if (mappingUiProvider instanceof DefaultMappingUiDefinition<?, ?>) {
-			defaultKey = ((DefaultMappingUiDefinition<? extends PersistentAttribute, ?>) mappingUiProvider).getDefaultKey();
+		if (mappingUiProvider instanceof DefaultMappingUiDefinition) {
+			defaultKey = ((DefaultMappingUiDefinition) mappingUiProvider).getDefaultKey();
 		}
 		parameter.parameters.put(PersistentAttributeMapAsHandler.DEFAULT_MAPPING_COMMAND_PARAMETER_ID, defaultKey);
 		return parameter;
 	}
 	
 	@Override
-	protected Iterable<? extends MappingUiDefinition<ReadOnlyPersistentAttribute, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, JptResourceType resourceType) {
-		return jpaPlatformUI.getAttributeMappingUiDefinitions(resourceType);
+	protected Iterable<MappingUiDefinition> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, ReadOnlyPersistentAttribute node) {
+		return jpaPlatformUI.getAttributeMappingUiDefinitions(node);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, ReadOnlyPersistentAttribute node) {
+	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, ReadOnlyPersistentAttribute node) {
 		return getDefaultMappingUiDefinition(jpaPlatformUI, ((PersistentAttribute) node).getDefaultMappingKey(), node.getResourceType());
 	}
 	
-	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, String defaultMappingKey, JptResourceType resourceType) {
+	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, String defaultMappingKey, JptResourceType resourceType) {
 		return jpaPlatformUI.getDefaultAttributeMappingUiDefinition(resourceType, defaultMappingKey);
 	}
 }

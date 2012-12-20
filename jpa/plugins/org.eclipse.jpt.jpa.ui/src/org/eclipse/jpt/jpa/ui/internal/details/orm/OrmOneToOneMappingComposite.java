@@ -14,8 +14,9 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmCascade;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
@@ -26,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmOneToOneMappingComposite 
-	extends AbstractOneToOneMappingComposite<OneToOneMapping, OneToOneRelationship>
+	extends AbstractOneToOneMappingComposite<OneToOneMapping, OneToOneRelationship, OrmCascade>
 {
 	public OrmOneToOneMappingComposite(
 			PropertyValueModel<? extends OneToOneMapping> mappingModel,
@@ -60,7 +61,7 @@ public class OrmOneToOneMappingComposite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadeComposite = new CascadePane(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadeComposite.getControl().setLayoutData(gridData);

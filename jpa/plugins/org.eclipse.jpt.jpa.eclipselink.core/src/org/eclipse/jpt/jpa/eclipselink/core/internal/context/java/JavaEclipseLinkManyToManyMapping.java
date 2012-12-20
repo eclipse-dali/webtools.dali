@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -24,7 +24,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkManyToManyMapping
 	extends AbstractJavaManyToManyMapping
-	implements EclipseLinkManyToManyMapping, EclipseLinkJavaConvertibleMapping
+	implements EclipseLinkManyToManyMapping2_0, EclipseLinkJavaConvertibleMapping
 {
 	protected final JavaEclipseLinkJoinFetch joinFetch;
 

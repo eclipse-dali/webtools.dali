@@ -10,31 +10,31 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
+import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
+import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractOneToOneMappingUiDefinition<M, T extends OneToOneMapping>
-	extends AbstractMappingUiDefinition<M, T>
+public abstract class AbstractOneToOneMappingUiDefinition
+	extends AbstractMappingUiDefinition
 {
 	protected AbstractOneToOneMappingUiDefinition() {
 		super();
 	}
 
-	public String getKey() {
-		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
-	}
 
-	public String getLabel() {
-		return JptUiDetailsMessages.OneToOneMappingUiProvider_label;
-	}
-	
-	public String getLinkLabel() {
-		return JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel;
-	}
-	
 	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return JptJpaUiImages.ONE_TO_ONE;
+	}
+
+	@SuppressWarnings("unchecked")
+	public JpaComposite buildMappingComposite(JpaUiFactory factory, PropertyValueModel<? extends JpaContextNode> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		return factory.createOneToOneMappingComposite((PropertyValueModel<OneToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

@@ -53,7 +53,7 @@ public class OrmPersistentTypeDetailsProvider
 				&& structureNode.getResourceType().getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 	
-	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new PersistentTypeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 }

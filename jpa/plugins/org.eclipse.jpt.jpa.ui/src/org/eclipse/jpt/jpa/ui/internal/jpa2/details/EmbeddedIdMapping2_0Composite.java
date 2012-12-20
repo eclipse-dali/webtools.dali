@@ -12,17 +12,17 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class EmbeddedIdMapping2_0Composite
-	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
+	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping2_0>
 {
 	public EmbeddedIdMapping2_0Composite(
-			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
+			PropertyValueModel<? extends EmbeddedIdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

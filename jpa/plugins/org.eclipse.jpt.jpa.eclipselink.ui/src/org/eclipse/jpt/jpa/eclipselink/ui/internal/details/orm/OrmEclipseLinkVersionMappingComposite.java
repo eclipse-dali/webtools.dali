@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.VersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableTriStateCheckBox;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVersionMappingComposite;
@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkVersionMappingComposite
-	extends EclipseLinkVersionMappingComposite<VersionMapping>
+	extends EclipseLinkVersionMappingComposite<EclipseLinkVersionMapping>
 {
 	public OrmEclipseLinkVersionMappingComposite(
-			PropertyValueModel<? extends VersionMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkVersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -41,7 +41,7 @@ public class OrmEclipseLinkVersionMappingComposite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnHolder(), container);
+		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);
@@ -55,7 +55,7 @@ public class OrmEclipseLinkVersionMappingComposite
 		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
 
 		// Mutable widgets
-		EclipseLinkMutableTriStateCheckBox mutableCheckBox = new EclipseLinkMutableTriStateCheckBox(this, buildMutableHolder(), container);
+		EclipseLinkMutableTriStateCheckBox mutableCheckBox = new EclipseLinkMutableTriStateCheckBox(this, buildMutableModel(), container);
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		mutableCheckBox.getControl().setLayoutData(gridData);

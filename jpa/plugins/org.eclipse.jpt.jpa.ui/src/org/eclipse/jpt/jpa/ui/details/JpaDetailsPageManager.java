@@ -24,14 +24,13 @@ import org.eclipse.swt.widgets.Control;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @param <T> the type of the details page manager's model
+ 
  * 
  * @version 3.3
  * @since 2.0
  * @see JpaDetailsProvider
  */
-public interface JpaDetailsPageManager<T extends JpaStructureNode> {
+public interface JpaDetailsPageManager {
 	/**
 	 * Return the details page manager's page.
 	 */
@@ -40,15 +39,14 @@ public interface JpaDetailsPageManager<T extends JpaStructureNode> {
 	/**
 	 * Return the details page manager's subject.
 	 */
-	T getSubject();
+	JpaStructureNode getSubject();
 
 	/**
 	 * Set the details page manager's subject.
-	 * The subject must be of type <code>T</code>.
 	 */
-	void setSubject(Object subject);
+	void setSubject(JpaStructureNode subject);
 
 	interface Factory {
-		<T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager);
+		JpaDetailsPageManager buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager);
 	}
 }

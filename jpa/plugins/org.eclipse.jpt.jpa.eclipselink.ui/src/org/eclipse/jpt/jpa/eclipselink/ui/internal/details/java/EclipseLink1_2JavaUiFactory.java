@@ -12,9 +12,12 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -23,30 +26,33 @@ public class EclipseLink1_2JavaUiFactory
 {
 	// ********** type mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkMappedSuperclass1_2Composite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkMappedSuperclass1_2Composite((PropertyValueModel<? extends JavaEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> entityModel,
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEntity1_2Composite(entityModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEntity1_2Composite((PropertyValueModel<? extends JavaEclipseLinkEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> embeddableModel,
+	public JpaComposite createEmbeddableComposite(
+			PropertyValueModel<? extends Embeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEmbeddable1_2Composite(embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEmbeddable1_2Composite((PropertyValueModel<? extends JavaEclipseLinkEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEntityComposite
-	extends AbstractOrmEntityComposite
+	extends AbstractOrmEntityComposite<OrmEntity>
 {
 	public OrmEntityComposite(
 			PropertyValueModel<? extends OrmEntity> entityModel,

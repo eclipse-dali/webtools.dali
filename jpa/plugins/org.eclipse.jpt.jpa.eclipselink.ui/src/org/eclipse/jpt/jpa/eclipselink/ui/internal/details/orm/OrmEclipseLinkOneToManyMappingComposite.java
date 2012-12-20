@@ -11,15 +11,14 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.Cascade;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedCheckBox;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
@@ -32,10 +31,10 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 
 
 public class OrmEclipseLinkOneToManyMappingComposite
-	extends EclipseLinkOneToManyMappingComposite<OneToManyMapping>
+	extends AbstractEclipseLinkOneToManyMappingComposite<EclipseLinkOneToManyMapping, Cascade>
 {
 	public OrmEclipseLinkOneToManyMappingComposite(
-			PropertyValueModel<? extends OneToManyMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkOneToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -65,29 +64,20 @@ public class OrmEclipseLinkOneToManyMappingComposite
 
 		// Join fetch widgets
 		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
-		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Private owned widgets
-		EclipseLinkPrivateOwnedCheckBox privateOwnedCheckBox = new EclipseLinkPrivateOwnedCheckBox(this, buildPrivateOwnableHolder(), container);
+		EclipseLinkPrivateOwnedCheckBox privateOwnedCheckBox = new EclipseLinkPrivateOwnedCheckBox(this, buildPrivateOwnedModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		privateOwnedCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadeComposite = new CascadePane(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadeComposite.getControl().setLayoutData(gridData);
 
 		return container;
-	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
 	}
 }

@@ -68,6 +68,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
@@ -89,7 +90,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlMultiRelationshipMapping>
 	extends AbstractOrmRelationshipMapping<X>
-	implements OrmMultiRelationshipMapping, OrmCollectionMapping2_0
+	implements OrmMultiRelationshipMapping, OrmCollectionMapping2_0, MultiRelationshipMapping2_0
 {
 	protected final Orderable orderable;
 

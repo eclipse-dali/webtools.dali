@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.swt.widgets.Composite;
 

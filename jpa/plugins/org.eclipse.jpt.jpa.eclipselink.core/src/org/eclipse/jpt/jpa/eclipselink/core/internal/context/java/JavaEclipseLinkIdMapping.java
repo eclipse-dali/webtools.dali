@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -26,7 +26,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkIdMapping
 	extends AbstractJavaIdMapping
-	implements EclipseLinkIdMapping, EclipseLinkJavaConvertibleMapping
+	implements 
+		EclipseLinkIdMapping2_0,
+		EclipseLinkJavaConvertibleMapping
 {
 	protected final JavaEclipseLinkMutable mutable;
 

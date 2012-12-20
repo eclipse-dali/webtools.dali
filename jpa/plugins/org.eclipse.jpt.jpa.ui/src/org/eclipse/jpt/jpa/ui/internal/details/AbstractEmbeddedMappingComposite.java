@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.layout.GridData;
@@ -55,5 +57,14 @@ public abstract class AbstractEmbeddedMappingComposite<T extends EmbeddedMapping
 		container = this.addSubPane(container);
 		new EmbeddedMappingOverridesComposite(this, container);
 		return container;
+	}
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
+			}
+		};
 	}
 }

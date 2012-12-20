@@ -41,11 +41,17 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  */
-public abstract class AbstractJavaMappedSuperclassComposite
-	extends AbstractMappedSuperclassComposite<JavaMappedSuperclass>
-{
+public abstract class AbstractJavaMappedSuperclassComposite<T extends JavaMappedSuperclass>
+	extends AbstractMappedSuperclassComposite<T> {
+	/**
+	 * Creates a new <code>MappedSuperclassComposite</code>.
+	 *
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public AbstractJavaMappedSuperclassComposite(
-			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends T> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -74,11 +80,11 @@ public abstract class AbstractJavaMappedSuperclassComposite
 	}
 
 	protected Control initializeQueriesSection(Composite container) {
-		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 	
-	protected PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, QueryContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
+		return new PropertyAspectAdapter<T, QueryContainer>(this.getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
 				return this.subject.getQueryContainer();

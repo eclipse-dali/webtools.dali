@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.transformer.NotNullObjectTransfor
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
@@ -36,7 +35,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
+public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMapping>
 	extends AbstractIdMappingComposite<T>
 {
 	protected EclipseLinkIdMappingComposite(
@@ -52,8 +51,8 @@ public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 	protected Control initializeIdSection(Composite container) {
 		container = this.addSubPane(container);
 
-		new ColumnComposite(this, buildColumnHolder(), container);
-		new EclipseLinkMutableTriStateCheckBox(this, buildMutableHolder(), container);
+		new ColumnComposite(this, buildColumnModel(), container);
+		new EclipseLinkMutableTriStateCheckBox(this, buildMutableModel(), container);
 
 		return container;
 	}	
@@ -106,11 +105,11 @@ public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertModel, NotNullObjectTransformer.<EclipseLinkConvert>instance());
 	}
 
-	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
+	protected PropertyValueModel<EclipseLinkMutable> buildMutableModel() {
 		return new PropertyAspectAdapter<T, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkMutable buildValue_() {
-				return ((EclipseLinkIdMapping) this.subject).getMutable();
+				return this.subject.getMutable();
 			}
 		};
 	}
@@ -135,10 +134,10 @@ public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<IdMapping, EclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterContainer buildValue_() {
-				return ((EclipseLinkIdMapping) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}
 		};
 	}

@@ -13,12 +13,10 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedCheckBox;
@@ -37,10 +35,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEclipseLinkOneToOneMapping2_0Composite
-	extends AbstractOneToOneMapping2_0Composite<JavaOneToOneMapping, JavaOneToOneRelationship2_0>
+	extends AbstractOneToOneMapping2_0Composite<EclipseLinkOneToOneMapping2_0, JavaOneToOneRelationship2_0, Cascade2_0>
 {
 	public JavaEclipseLinkOneToOneMapping2_0Composite(
-			PropertyValueModel<? extends JavaOneToOneMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkOneToOneMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -62,7 +60,7 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite
 
 		// Join fetch widgets
 		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
-		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Optional widgets
 		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
@@ -71,19 +69,19 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Private owned widgets
-		EclipseLinkPrivateOwnedCheckBox privateOwnedCheckBox = new EclipseLinkPrivateOwnedCheckBox(this, buildPrivateOwnableHolder(), container);
+		EclipseLinkPrivateOwnedCheckBox privateOwnedCheckBox = new EclipseLinkPrivateOwnedCheckBox(this, buildPrivateOwnedModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		privateOwnedCheckBox.getControl().setLayoutData(gridData);
 
 		// Orphan removal widgets
-		OrphanRemoval2_0TriStateCheckBox orphanRemovalCheckBox = new OrphanRemoval2_0TriStateCheckBox(this, buildOrphanRemovableHolder(), container);
+		OrphanRemoval2_0TriStateCheckBox orphanRemovalCheckBox = new OrphanRemoval2_0TriStateCheckBox(this, buildOrphanRemovableModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		orphanRemovalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeHolder(), container);
+		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadePane.getControl().setLayoutData(gridData);
@@ -93,32 +91,23 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite
 
 	@Override
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new OneToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
+		new OneToOneJoiningStrategy2_0Pane(this, buildRelationshipModel(), container);
 	}	
 	
-	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<JavaOneToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
+		return new PropertyAspectAdapter<EclipseLinkOneToOneMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return ((EclipseLinkOneToOneMapping) this.subject).getJoinFetch();
+				return this.subject.getJoinFetch();
 			}
 		};
 	}
 	
-	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<JavaOneToOneMapping, EclipseLinkPrivateOwned>(this.getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnedModel() {
+		return new PropertyAspectAdapter<EclipseLinkOneToOneMapping2_0, EclipseLinkPrivateOwned>(this.getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
-				return ((EclipseLinkOneToOneMapping) this.subject).getPrivateOwned();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<JavaOneToOneMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
-			@Override
-			protected OrphanRemovable2_0 buildValue_() {
-				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();
+				return this.subject.getPrivateOwned();
 			}
 		};
 	}

@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkIdMappingComposite
-	extends EclipseLinkIdMappingComposite<IdMapping>
+	extends EclipseLinkIdMappingComposite<EclipseLinkIdMapping>
 {
 	public JavaEclipseLinkIdMappingComposite(
-			PropertyValueModel<? extends IdMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

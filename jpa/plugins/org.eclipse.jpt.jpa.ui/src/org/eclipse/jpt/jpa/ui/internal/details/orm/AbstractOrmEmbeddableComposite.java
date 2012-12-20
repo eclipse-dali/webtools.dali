@@ -22,11 +22,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractOrmEmbeddableComposite
-	extends AbstractEmbeddableComposite<OrmEmbeddable>
+public abstract class AbstractOrmEmbeddableComposite<T extends OrmEmbeddable>
+	extends AbstractEmbeddableComposite<T>
 {
 	protected AbstractOrmEmbeddableComposite(
-			PropertyValueModel<? extends OrmEmbeddable> embeddableModel,
+			PropertyValueModel<? extends T> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {

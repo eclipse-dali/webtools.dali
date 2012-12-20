@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingOverridesComposite;
@@ -22,10 +21,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
 public class EmbeddedMapping2_0OverridesComposite
-	extends AbstractEmbeddedMappingOverridesComposite<EmbeddedMapping>
+	extends AbstractEmbeddedMappingOverridesComposite<EmbeddedMapping2_0>
 {
 	public EmbeddedMapping2_0OverridesComposite(
-			Pane<? extends EmbeddedMapping> parentPane,
+			Pane<? extends EmbeddedMapping2_0> parentPane,
 			Composite parent) {
 		
 		super(parentPane, parent);
@@ -39,7 +38,7 @@ public class EmbeddedMapping2_0OverridesComposite
 	
 	@Override
 	protected PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder() {
-		return new PropertyAspectAdapter<EmbeddedMapping, AttributeOverrideContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EmbeddedMapping2_0, AttributeOverrideContainer>(getSubjectHolder()) {
 			@Override
 			protected AttributeOverrideContainer buildValue_() {
 				return this.subject.getAttributeOverrideContainer();
@@ -54,10 +53,10 @@ public class EmbeddedMapping2_0OverridesComposite
 	
 	@Override
 	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
-		return new PropertyAspectAdapter<EmbeddedMapping, AssociationOverrideContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EmbeddedMapping2_0, AssociationOverrideContainer>(getSubjectHolder()) {
 			@Override
 			protected AssociationOverrideContainer buildValue_() {
-				return ((EmbeddedMapping2_0) this.subject).getAssociationOverrideContainer();
+				return this.subject.getAssociationOverrideContainer();
 			}
 		};
 	}

@@ -107,7 +107,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 				new LabelProvider() {
 					@Override
 					public String getText(Object element) {
-						return ((MappingUiDefinition<?,?>) element).getLabel();
+						return ((MappingUiDefinition) element).getLabel();
 					}
 				});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -226,9 +226,9 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 		return (OrmXmlDefinition) this.getJpaProject().getJpaPlatform().getResourceDefinition(this.getJptResourceType());
 	}
 	
-	protected Comparator<MappingUiDefinition<?,?>> getProvidersComparator() {
-		return new Comparator<MappingUiDefinition<?,?>>() {
-			public int compare(MappingUiDefinition<?,?> item1, MappingUiDefinition<?,?> item2) {
+	protected Comparator<MappingUiDefinition> getProvidersComparator() {
+		return new Comparator<MappingUiDefinition>() {
+			public int compare(MappingUiDefinition item1, MappingUiDefinition item2) {
 				String displayString1 = item1.getLabel();
 				String displayString2 = item2.getLabel();
 				return Collator.getInstance().compare(displayString1, displayString2);
@@ -317,7 +317,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) this.mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((MappingUiDefinition<?,?>) selection.getFirstElement()).getKey();
+		return (selection.isEmpty()) ? null : ((MappingUiDefinition) selection.getFirstElement()).getKey();
 	}
 	
 	public String getTargetType() {

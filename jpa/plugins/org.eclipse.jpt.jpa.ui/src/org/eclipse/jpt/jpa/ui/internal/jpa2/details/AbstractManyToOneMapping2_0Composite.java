@@ -13,15 +13,15 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToOneMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMapping, R extends ManyToOneRelationship2_0>
-	extends AbstractManyToOneMappingComposite<T, R>
+public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMapping2_0, R extends ManyToOneRelationship2_0, C extends Cascade2_0>
+	extends AbstractManyToOneMappingComposite<T, R, C>
 {
 	protected AbstractManyToOneMapping2_0Composite(
 			PropertyValueModel<? extends T> mappingModel,
@@ -40,19 +40,19 @@ public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMa
 	}
 
 	protected void initializeDerivedIdentityCollapsibleSection(Composite container) {
-		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityModel(), container);
 	}
 
 	@Override
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new ManyToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
+		new ManyToOneJoiningStrategy2_0Pane(this, buildRelationshipModel(), container);
 	}
 
-	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityHolder() {
+	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityModel() {
 		return new PropertyAspectAdapter<T, DerivedIdentity2_0>(getSubjectHolder()) {
 			@Override
 			protected DerivedIdentity2_0 buildValue_() {
-				return ((ManyToOneMapping2_0) this.subject).getDerivedIdentity();
+				return this.subject.getDerivedIdentity();
 			}
 		};
 	}

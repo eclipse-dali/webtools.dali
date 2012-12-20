@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.menus;
 
-import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -39,12 +38,12 @@ public class PersistentTypeMapAsContribution
 	}
 	
 	@Override
-	protected Iterable<? extends MappingUiDefinition<PersistentType, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, JptResourceType resourceType) {
-		return jpaPlatformUI.getTypeMappingUiDefinitions(resourceType);
+	protected Iterable<MappingUiDefinition> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, PersistentType node) {
+		return jpaPlatformUI.getTypeMappingUiDefinitions(node);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<PersistentType, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, PersistentType node) {
+	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, PersistentType node) {
 		return jpaPlatformUI.getDefaultTypeMappingUiDefinition(node.getResourceType());
 	}
 }

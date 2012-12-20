@@ -12,8 +12,10 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
@@ -24,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping, R extends OneToOneRelationship> 
+public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping, R extends OneToOneRelationship, C extends Cascade> 
 	extends Pane<T>
 	implements JpaComposite
 {
@@ -56,12 +58,11 @@ public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping
 	protected abstract Control initializeOneToOneSection(Composite container);
 
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new OneToOneJoiningStrategyPane(this, buildRelationshipModel(), container);
 	}
 
-	protected PropertyValueModel<R> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, R>(
-				getSubjectHolder()) {
+	protected PropertyValueModel<R> buildRelationshipModel() {
+		return new TransformationPropertyValueModel<T, R>(getSubjectHolder()) {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected R transform_(T value) {
@@ -70,11 +71,21 @@ public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping
 		};
 	}
 
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
+	protected PropertyValueModel<C> buildCascadeModel() {
+		return new TransformationPropertyValueModel<T, C>(getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
 			@Override
-			protected Cascade transform_(T value) {
-				return value.getCascade();
+			protected C transform_(T value) {
+				return (C) value.getCascade();
+			}
+		};
+	}
+
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}

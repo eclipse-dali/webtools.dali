@@ -12,14 +12,13 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneRelationship;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToOneMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.swt.layout.GridData;
@@ -28,10 +27,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmManyToOneMappingComposite 
-	extends AbstractManyToOneMappingComposite<OrmManyToOneMapping, OrmManyToOneRelationship>
+	extends AbstractManyToOneMappingComposite<ManyToOneMapping, OrmManyToOneRelationship, Cascade>
 {
 	public OrmManyToOneMappingComposite(
-			PropertyValueModel<? extends OrmManyToOneMapping> mappingModel,
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -62,7 +61,7 @@ public class OrmManyToOneMappingComposite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadeComposite = new CascadePane(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadeComposite.getControl().setLayoutData(gridData);

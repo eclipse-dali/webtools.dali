@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
@@ -26,10 +24,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class OrmEmbeddedMapping2_0Composite
-	extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
+	extends AbstractEmbeddedMappingComposite<EmbeddedMapping2_0>
 {
 	public OrmEmbeddedMapping2_0Composite(
-			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
+			PropertyValueModel<? extends EmbeddedMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -47,7 +45,7 @@ public class OrmEmbeddedMapping2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Overrides widgets
 		EmbeddedMapping2_0OverridesComposite overridesComposite = new EmbeddedMapping2_0OverridesComposite(
@@ -59,14 +57,5 @@ public class OrmEmbeddedMapping2_0Composite
 		overridesComposite.getControl().setLayoutData(gridData);
 
 		return container;
-	}	
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<EmbeddedMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
 	}
 }

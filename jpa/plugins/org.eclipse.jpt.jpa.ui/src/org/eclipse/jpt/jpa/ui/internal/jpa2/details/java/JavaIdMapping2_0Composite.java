@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class JavaIdMapping2_0Composite
-	extends AbstractIdMappingComposite<IdMapping>
+	extends AbstractIdMappingComposite<IdMapping2_0>
 {
 	public JavaIdMapping2_0Composite(
-			PropertyValueModel<? extends IdMapping> mappingModel,
+			PropertyValueModel<? extends IdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -38,7 +38,7 @@ public class JavaIdMapping2_0Composite
 		container = this.addSubPane(container);
 
 		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
-		new ColumnComposite(this, buildColumnHolder(), container);
+		new ColumnComposite(this, buildColumnModel(), container);
 
 		return container;
 	}

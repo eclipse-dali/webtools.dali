@@ -9,22 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
-import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.swt.widgets.Composite;
 
 public class DefaultEmbeddedMappingUiDefinition
-	extends AbstractEmbeddedMappingUiDefinition<ReadOnlyPersistentAttribute, JavaEmbeddedMapping>
-	implements DefaultJavaAttributeMappingUiDefinition<JavaEmbeddedMapping>
+	extends AbstractEmbeddedMappingUiDefinition
+	implements DefaultMappingUiDefinition
 {
 	// singleton
 	private static final DefaultEmbeddedMappingUiDefinition INSTANCE = new DefaultEmbeddedMappingUiDefinition();
@@ -32,7 +24,7 @@ public class DefaultEmbeddedMappingUiDefinition
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingUiDefinition<JavaEmbeddedMapping> instance() {
+	public static DefaultMappingUiDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -45,7 +37,6 @@ public class DefaultEmbeddedMappingUiDefinition
 	}
 
 
-	@Override
 	public String getKey() {
 		return null;
 	}
@@ -54,17 +45,11 @@ public class DefaultEmbeddedMappingUiDefinition
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
 	public String getLabel() {
 		return JptUiDetailsMessages.DefaultEmbeddedMappingUiProvider_label;
 	}
 
-	@Override
 	public String getLinkLabel() {
 		return JptUiDetailsMessages.DefaultEmbeddedMappingUiProvider_linkLabel;
-	}
-
-	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaEmbeddedMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		return factory.createJavaEmbeddedMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

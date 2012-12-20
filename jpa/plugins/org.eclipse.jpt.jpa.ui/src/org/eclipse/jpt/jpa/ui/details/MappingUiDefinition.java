@@ -10,8 +10,14 @@
 package org.eclipse.jpt.jpa.ui.details;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * A mapping UI definition provides the {@link #getLabel() label} and
@@ -24,10 +30,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.0
  */
-public interface MappingUiDefinition<M, T> {
+public interface MappingUiDefinition {
 
 	/**
 	 * Return a key corresponding to the mapping's key.
@@ -61,6 +67,19 @@ public interface MappingUiDefinition<M, T> {
 	String getLinkLabel();
 
 	/**
+	 * Create a JPA composite corresponding to the definition's mapping type.
+	 * This will be displayed by the JPA details view
+	 * when the mapping key matches the definition's key.
+	 */
+	JpaComposite buildMappingComposite(
+			JpaUiFactory factory,
+			PropertyValueModel<? extends JpaContextNode> nodeModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager);
+
+	/**
 	 * Return an image descriptor corresponding to the mapping type.
 	 */
 	ImageDescriptor getImageDescriptor();
@@ -76,12 +95,25 @@ public interface MappingUiDefinition<M, T> {
 	}
 
 	/**
-	 * Return whether the mapping type represented by this definition is enabled for the given
-	 * mappable object.  This is almost always true.
+	 * Return whether the ui represented by this definition is enabled for the given
+	 * node.  This is almost always true.
 	 */
-	// TODO bjv remove this; either
-	// - delegate to whatever controls the list of UI definitions so it can be overridden by EclipseLink
-	// or
-	// - delegate to the model definitions (if we think there are more extends that need this...)
-	boolean isEnabledFor(M mappableObject);
+	boolean isEnabledFor(JpaContextNode node);
+
+
+	// ********** null composite **********
+
+	static class NullComposite
+		extends Pane<JpaContextNode>
+		implements JpaComposite
+	{
+		public NullComposite(PropertyValueModel<? extends JpaContextNode> mappingModel, Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+			super(mappingModel, parent, widgetFactory, resourceManager);
+		}
+
+		@Override
+		protected void initializeLayout(Composite container) {
+			// NOP
+		}
+	}
 }

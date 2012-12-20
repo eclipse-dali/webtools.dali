@@ -12,8 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,21 +24,23 @@ public class EclipseLinkOrmXml2_3UiFactory
 {
 	// ********** type mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmMappedSuperclassComposite(
-			PropertyValueModel<OrmMappedSuperclass> mappedSuperclassModel,
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkMappedSuperclass2_3Composite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkMappedSuperclass2_3Composite((PropertyValueModel<OrmEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> entityModel,
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new OrmEclipseLinkEntity2_3Composite(entityModel, parentComposite, widgetFactory, resourceManager);
+		return new OrmEclipseLinkEntity2_3Composite((PropertyValueModel<OrmEclipseLinkEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

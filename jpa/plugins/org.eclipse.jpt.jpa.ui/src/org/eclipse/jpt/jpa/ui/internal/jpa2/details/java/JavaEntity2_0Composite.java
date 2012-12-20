@@ -13,10 +13,8 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
@@ -35,10 +33,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEntity2_0Composite
-	extends AbstractEntityComposite<JavaEntity>
+	extends AbstractEntityComposite<JavaEntity2_0>
 {
 	public JavaEntity2_0Composite(
-			PropertyValueModel<? extends JavaEntity> entityModel,
+			PropertyValueModel<? extends JavaEntity2_0> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -61,14 +59,14 @@ public class JavaEntity2_0Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, buildAccessHolder(), container);
+		new AccessTypeComboViewer(this, buildAccessReferenceModel(), container);
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Cacheable widgets
-		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableHolder(), container);
+		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cacheableCheckBox.getControl().setLayoutData(gridData);
@@ -76,20 +74,11 @@ public class JavaEntity2_0Composite
 		return container;
 	}
 	
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<Cacheable2_0> buildCacheableHolder() {
-		return new PropertyAspectAdapter<JavaEntity, Cacheable2_0>(getSubjectHolder()) {
+	protected PropertyValueModel<Cacheable2_0> buildCacheableModel() {
+		return new PropertyAspectAdapter<JavaEntity2_0, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
-				return ((CacheableHolder2_0) this.subject).getCacheable();
+				return this.subject.getCacheable();
 			}
 		};
 	}
@@ -111,6 +100,6 @@ public class JavaEntity2_0Composite
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new Queries2_0Composite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 }

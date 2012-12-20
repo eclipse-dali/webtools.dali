@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class OrmEclipseLinkIdMapping
 	extends AbstractOrmIdMapping<XmlId>
 	implements
-		EclipseLinkIdMapping,
+		EclipseLinkIdMapping2_0,
 		EclipseLinkOrmConvertibleMapping,
 		OrmEclipseLinkConverterContainer.Owner
 {

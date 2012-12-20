@@ -36,7 +36,7 @@ public class OrmVersionMappingComposite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnHolder(), container);
+		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);

@@ -11,47 +11,26 @@ package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
-import org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaTypeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaTypeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.JavaStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.JavaStructureItemLabelProviderFactory;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * All the state in the definition should be "static"
  * (i.e. unchanging once it is initialized).
  */
 public abstract class AbstractJavaResourceUiDefinition
-	extends AbstractResourceUiDefinition
-	implements MappingResourceUiDefinition
+	extends AbstractMappingResourceUiDefinition
 {
-	private final JavaUiFactory factory;
 
-	private ArrayList<JavaTypeMappingUiDefinition<? extends TypeMapping>> specifiedTypeMappingUiDefinitions;
-
-	private ArrayList<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> specifiedAttributeMappingUiDefinitions;
-
-	private ArrayList<DefaultJavaAttributeMappingUiDefinition<?>> defaultAttributeMappingUiDefinitions;
+	private ArrayList<DefaultMappingUiDefinition> defaultAttributeMappingUiDefinitions;
 
 
 	/**
@@ -59,11 +38,7 @@ public abstract class AbstractJavaResourceUiDefinition
 	 */
 	protected AbstractJavaResourceUiDefinition() {
 		super();
-		this.factory = this.buildJavaUiFactory();
 	}
-
-
-	protected abstract JavaUiFactory buildJavaUiFactory();
 
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(JavaSourceFileDefinition.instance().getResourceType());
@@ -82,85 +57,21 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	// ********** type mappings **********
 
-	public JpaComposite buildTypeMappingComposite(String mappingKey, PropertyValueModel<TypeMapping> mappingModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		JavaTypeMappingUiDefinition<TypeMapping> definition = this.getJavaTypeMappingUiDefinition(mappingModel.getValue());
-		return definition.buildTypeMappingComposite(this.factory, mappingModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected JavaTypeMappingUiDefinition<TypeMapping> getJavaTypeMappingUiDefinition(TypeMapping typeMapping) {
-		return (JavaTypeMappingUiDefinition<TypeMapping>) this.getJavaTypeMappingUiDefinition_(typeMapping);
-	}
-
-	protected JavaTypeMappingUiDefinition<? extends TypeMapping> getJavaTypeMappingUiDefinition_(TypeMapping typeMapping) {
-		String mappingKey = (typeMapping == null) ? null : typeMapping.getKey();
-		return this.getTypeMappingUiDefinition(mappingKey);
-	}
-
-	public JavaTypeMappingUiDefinition<? extends TypeMapping> getTypeMappingUiDefinition(String mappingKey) {
-		return (mappingKey == null) ?
-				this.getDefaultTypeMappingUiDefinition() :
-				this.getSpecifiedJavaTypeMappingUiDefinition(mappingKey);
-	}
-
-	protected JavaTypeMappingUiDefinition<? extends TypeMapping> getSpecifiedJavaTypeMappingUiDefinition(String mappingKey) {
-		for (JavaTypeMappingUiDefinition<? extends TypeMapping> definition : this.getSpecifiedTypeMappingUiDefinitions()) {
-			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
-				return definition;
-			}
-		}
-		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
-	}
-
-	public Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions() {
-		return new SuperIterableWrapper<MappingUiDefinition<PersistentType, ? extends TypeMapping>>(this.getSpecifiedTypeMappingUiDefinitions());
-	}
-
-	protected synchronized Iterable<JavaTypeMappingUiDefinition<? extends TypeMapping>> getSpecifiedTypeMappingUiDefinitions() {
-		if (this.specifiedTypeMappingUiDefinitions == null) {
-			this.specifiedTypeMappingUiDefinitions = this.buildSpecifiedTypeMappingUiDefinitions();
-		}
-		return this.specifiedTypeMappingUiDefinitions;
-	}
-
-	protected ArrayList<JavaTypeMappingUiDefinition<? extends TypeMapping>> buildSpecifiedTypeMappingUiDefinitions() {
-		ArrayList<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions = new ArrayList<JavaTypeMappingUiDefinition<? extends TypeMapping>>();
-		this.addSpecifiedTypeMappingUiDefinitionsTo(definitions);
-		return definitions;
-	}
-
-	protected abstract void addSpecifiedTypeMappingUiDefinitionsTo(List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions);
-
-	public DefaultJavaTypeMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition() {
+	public DefaultMappingUiDefinition getDefaultTypeMappingUiDefinition() {
 		return NullJavaTypeMappingUiDefinition.instance();
 	}
 
 
 	// ********** attribute mappings **********
 
-	public JpaComposite buildAttributeMappingComposite(String mappingKey, PropertyValueModel<AttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		JavaAttributeMappingUiDefinition<AttributeMapping> definition = this.getAttributeMappingUiDefinition(mappingModel.getValue());
-		return definition.buildAttributeMappingComposite(this.factory, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected JavaAttributeMappingUiDefinition<AttributeMapping> getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
-		return (JavaAttributeMappingUiDefinition<AttributeMapping>) this.getAttributeMappingUiDefinition_(attributeMapping);
-	}
-
-	protected JavaAttributeMappingUiDefinition<? extends AttributeMapping> getAttributeMappingUiDefinition_(AttributeMapping attributeMapping) {
-		String mappingKey = (attributeMapping == null) ? null : attributeMapping.getKey();
-		return this.getAttributeMappingUiDefinition(mappingKey);
-	}
-
-	public JavaAttributeMappingUiDefinition<? extends AttributeMapping> getAttributeMappingUiDefinition(String mappingKey) {
+	public MappingUiDefinition getAttributeMappingUiDefinition(String mappingKey) {
 		return (mappingKey == null) ?
 				this.getDefaultAttributeMappingUiDefinition(mappingKey) :
 				this.getSpecifiedAttributeMappingUiDefinition(mappingKey);
 	}
 
-	protected JavaAttributeMappingUiDefinition<? extends AttributeMapping> getSpecifiedAttributeMappingUiDefinition(String mappingKey) {
-		for (JavaAttributeMappingUiDefinition<? extends AttributeMapping> definition : this.getSpecifiedAttributeMappingUiDefinitions()) {
+	protected MappingUiDefinition getSpecifiedAttributeMappingUiDefinition(String mappingKey) {
+		for (MappingUiDefinition definition : this.getAttributeMappingUiDefinitions()) {
 			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
@@ -168,30 +79,11 @@ public abstract class AbstractJavaResourceUiDefinition
 		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 
-	public Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions() {
-		return new SuperIterableWrapper<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>(this.getSpecifiedAttributeMappingUiDefinitions());
-	}
-
-	protected synchronized ArrayList<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> getSpecifiedAttributeMappingUiDefinitions() {
-		if (this.specifiedAttributeMappingUiDefinitions == null) {
-			this.specifiedAttributeMappingUiDefinitions = this.buildSpecifiedAttributeMappingUiDefinitions();
-		}
-		return this.specifiedAttributeMappingUiDefinitions;
-	}
-
-	protected ArrayList<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> buildSpecifiedAttributeMappingUiDefinitions() {
-		ArrayList<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions = new ArrayList<JavaAttributeMappingUiDefinition<? extends AttributeMapping>>();
-		this.addSpecifiedAttributeMappingUiDefinitionsTo(definitions);
-		return definitions;
-	}
-
-	protected abstract void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions);
-
 
 	// ********** default attribute mappings **********
 
-	public DefaultJavaAttributeMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String mappingKey) {
-		for (DefaultJavaAttributeMappingUiDefinition<? extends AttributeMapping> definition : this.getDefaultAttributeMappingUiDefinitions()) {
+	public DefaultMappingUiDefinition getDefaultAttributeMappingUiDefinition(String mappingKey) {
+		for (DefaultMappingUiDefinition definition : this.getDefaultAttributeMappingUiDefinitions()) {
 			if (ObjectTools.equals(definition.getDefaultKey(), mappingKey)) {
 				return definition;
 			}
@@ -199,19 +91,19 @@ public abstract class AbstractJavaResourceUiDefinition
 		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 
-	protected synchronized ArrayList<DefaultJavaAttributeMappingUiDefinition<? extends AttributeMapping>> getDefaultAttributeMappingUiDefinitions() {
+	protected synchronized ArrayList<DefaultMappingUiDefinition> getDefaultAttributeMappingUiDefinitions() {
 		if (this.defaultAttributeMappingUiDefinitions == null) {
 			this.defaultAttributeMappingUiDefinitions = this.buildDefaultAttributeMappingUiDefinitions();
 		}
 		return this.defaultAttributeMappingUiDefinitions;
 	}
 
-	protected ArrayList<DefaultJavaAttributeMappingUiDefinition<?>> buildDefaultAttributeMappingUiDefinitions() {
-		ArrayList<DefaultJavaAttributeMappingUiDefinition<?>> definitions = new ArrayList<DefaultJavaAttributeMappingUiDefinition<?>>();
+	protected ArrayList<DefaultMappingUiDefinition> buildDefaultAttributeMappingUiDefinitions() {
+		ArrayList<DefaultMappingUiDefinition> definitions = new ArrayList<DefaultMappingUiDefinition>();
 		this.addDefaultAttributeMappingUiDefinitionsTo(definitions);
 		return definitions;
 	}
 
-	protected abstract void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultJavaAttributeMappingUiDefinition<?>> definitions);
+	protected abstract void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultMappingUiDefinition> definitions);
 
 }

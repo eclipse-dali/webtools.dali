@@ -9,22 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
-import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToManyMappingUiDefinition;
-import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
-	extends AbstractOneToManyMappingUiDefinition<ReadOnlyPersistentAttribute, JavaOneToManyMapping>
-	implements DefaultJavaAttributeMappingUiDefinition<JavaOneToManyMapping>
+	extends AbstractOneToManyMappingUiDefinition
+	implements DefaultMappingUiDefinition
 {
 	// singleton
 	private static final DefaultJavaEclipseLinkOneToManyMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkOneToManyMappingUiDefinition();
@@ -32,39 +24,32 @@ public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingUiDefinition<JavaOneToManyMapping> instance() {
+	public static DefaultMappingUiDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Ensure single instance.
 	 */
 	private DefaultJavaEclipseLinkOneToManyMappingUiDefinition() {
 		super();
 	}
-	
-	
-	@Override
+
+
 	public String getKey() {
 		return null;
 	}
-	
+
 	public String getDefaultKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	@Override
+
 	public String getLabel() {
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToManyMappingUiProvider_label;
 	}
-	
-	@Override
+
 	public String getLinkLabel() {
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToManyMappingUiProvider_linkLabel;
-	}
-
-	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaOneToManyMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		return factory.createJavaOneToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

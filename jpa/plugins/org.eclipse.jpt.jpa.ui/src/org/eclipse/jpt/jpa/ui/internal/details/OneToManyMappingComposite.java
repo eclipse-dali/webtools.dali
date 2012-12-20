@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
 import org.eclipse.swt.layout.GridData;
@@ -20,7 +21,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OneToManyMappingComposite 
-	extends AbstractOneToManyMappingComposite<OneToManyMapping, OneToManyRelationship>
+	extends AbstractOneToManyMappingComposite<OneToManyMapping, OneToManyRelationship, Cascade>
 {
 	public OneToManyMappingComposite(
 			PropertyValueModel<? extends OneToManyMapping> mappingModel,
@@ -44,7 +45,7 @@ public class OneToManyMappingComposite
 		new FetchTypeComboViewer(this, container);
 
 		// Cascade widgets
-		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadeComposite = new CascadePane(this, buildCascadeModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadeComposite.getControl().setLayoutData(gridData);

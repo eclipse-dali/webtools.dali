@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
  */
 public abstract class AbstractJpaDetailsPageManager<T extends JpaStructureNode>
 	extends Pane<T>
-	implements JpaDetailsPageManager<T>
+	implements JpaDetailsPageManager
 {
 	protected AbstractJpaDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory, resourceManager);
@@ -42,7 +42,7 @@ public abstract class AbstractJpaDetailsPageManager<T extends JpaStructureNode>
 	}
 
 	@SuppressWarnings("unchecked")
-	public final void setSubject(Object subject) {
+	public final void setSubject(JpaStructureNode subject) {
 		ModifiablePropertyValueModel<T> subjectHolder = (ModifiablePropertyValueModel<T>) getSubjectHolder();
 		subjectHolder.setValue((T) subject);
 	}

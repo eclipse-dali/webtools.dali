@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
@@ -29,11 +27,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public abstract class AbstractJavaEclipseLinkEntity2_xComposite
-	extends AbstractJavaEclipseLinkEntityComposite<JavaEntity>
+public abstract class AbstractJavaEclipseLinkEntity2_xComposite<T extends JavaEclipseLinkEntity>
+	extends AbstractJavaEclipseLinkEntityComposite<T>
 {
 	protected AbstractJavaEclipseLinkEntity2_xComposite(
-			PropertyValueModel<? extends JavaEntity> entityModel,
+			PropertyValueModel<? extends T> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -56,22 +54,13 @@ public abstract class AbstractJavaEclipseLinkEntity2_xComposite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);	
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);	
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
-	}
-
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
 	}
 
 	@Override
@@ -81,16 +70,16 @@ public abstract class AbstractJavaEclipseLinkEntity2_xComposite
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerHolder(), container).getControl();
+		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
+		return new JavaEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new Queries2_0Composite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 }

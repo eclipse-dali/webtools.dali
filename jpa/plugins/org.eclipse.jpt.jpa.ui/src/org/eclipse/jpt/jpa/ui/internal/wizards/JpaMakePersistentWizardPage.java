@@ -67,7 +67,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -387,7 +386,7 @@ public class JpaMakePersistentWizardPage
 
 			@Override
 			protected void setValue(Object element, Object value) {
-				((Type) element).setMappingKey(((MappingUiDefinition<?, ?>) value).getKey());
+				((Type) element).setMappingKey(((MappingUiDefinition) value).getKey());
 				getViewer().update(element, null);
 			}
 		
@@ -416,7 +415,7 @@ public class JpaMakePersistentWizardPage
 		return new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((MappingUiDefinition<?, ?>) element).getLabel();
+				return ((MappingUiDefinition) element).getLabel();
 			}
 		};
 	}
@@ -424,7 +423,7 @@ public class JpaMakePersistentWizardPage
 	protected IStructuredContentProvider buildMappingComboCellEditorContentProvider() {
 		return new IStructuredContentProvider() {
 			public Object[] getElements(Object inputElement) {
-				return ArrayTools.array(((Type) inputElement).typeMappingUiDefinitions());
+				return ArrayTools.array(((Type) inputElement).getTypeMappingUiDefinitions());
 			}
 
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
@@ -458,7 +457,7 @@ public class JpaMakePersistentWizardPage
 			return this.getMappingUiDefinition(element).getImageDescriptor();
 		}
 
-		private MappingUiDefinition<? extends PersistentType, ?> getMappingUiDefinition(Object element) {
+		private MappingUiDefinition getMappingUiDefinition(Object element) {
 			return JpaMakePersistentWizardPage.this.getMappingUiDefinition(((Type) element).mappingKey);
 		}
 		private ResourceManager getResourceManager() {
@@ -466,14 +465,14 @@ public class JpaMakePersistentWizardPage
 		}
 	}
 
-	protected MappingUiDefinition<? extends PersistentType, ?> getMappingUiDefinition(String mappingKey) {
+	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
 		return this.getJpaPlatformUi().getTypeMappingUiDefinition(this.jptResourceType, mappingKey);
 	}
 
-	protected Iterable<String> typeMappingKeys(Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> mappingUiDefinitions) {
-		return new TransformationIterable<MappingUiDefinition<? extends PersistentType, ?>, String>(mappingUiDefinitions) {
+	protected Iterable<String> typeMappingKeys(Iterable<? extends MappingUiDefinition> mappingUiDefinitions) {
+		return new TransformationIterable<MappingUiDefinition, String>(mappingUiDefinitions) {
 			@Override
-			protected String transform(MappingUiDefinition<? extends PersistentType, ?> next) {
+			protected String transform(MappingUiDefinition next) {
 				return next.getKey();
 			}
 		};
@@ -605,7 +604,7 @@ public class JpaMakePersistentWizardPage
 			this.mappingKey = mappingKey;
 		}
 
-		protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions() {
+		protected Iterable<MappingUiDefinition> getTypeMappingUiDefinitions() {
 			return getJpaPlatformUi().getTypeMappingUiDefinitions(JpaMakePersistentWizardPage.this.jptResourceType);
 		}
 	}

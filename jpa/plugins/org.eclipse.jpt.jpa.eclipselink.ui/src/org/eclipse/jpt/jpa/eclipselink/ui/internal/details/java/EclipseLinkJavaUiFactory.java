@@ -12,28 +12,30 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTransformationMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingComposite;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.VersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -42,140 +44,115 @@ public class EclipseLinkJavaUiFactory
 	extends AbstractJavaUiFactory
 {
 	// ********** type mappings **********
-	
+
 	@Override
-	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
+	@SuppressWarnings("unchecked")
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkMappedSuperclassComposite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkMappedSuperclassComposite((PropertyValueModel<? extends JavaEclipseLinkMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new JavaEclipseLinkEntityComposite((PropertyValueModel<? extends JavaEclipseLinkEntity>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> entityModel,
+	public JpaComposite createEmbeddableComposite(
+			PropertyValueModel<? extends Embeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEntityComposite(entityModel, parentComposite, widgetFactory, resourceManager);
-	}
-	
-	@Override
-	public JpaComposite createJavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> embeddableModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new JavaEclipseLinkEmbeddableComposite(embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkEmbeddableComposite((PropertyValueModel<? extends JavaEclipseLinkEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
 	
 	// ********** attribute mappings **********
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaIdMappingComposite(
-			PropertyValueModel<JavaIdMapping> mappingModel,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkIdMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkIdMappingComposite((PropertyValueModel<? extends EclipseLinkIdMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaBasicMappingComposite(
-			PropertyValueModel<JavaBasicMapping> mappingModel,
+	public JpaComposite createBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkBasicMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkBasicMappingComposite((PropertyValueModel<? extends EclipseLinkBasicMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaVersionMappingComposite(
-			PropertyValueModel<JavaVersionMapping> mappingModel,
+	public JpaComposite createVersionMappingComposite(
+			PropertyValueModel<? extends VersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEclipseLinkVersionMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEclipseLinkVersionMappingComposite((PropertyValueModel<? extends EclipseLinkVersionMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaManyToOneMappingComposite(
-			PropertyValueModel<JavaManyToOneMapping> mappingModel, 
+	public JpaComposite createManyToOneMappingComposite(
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite, 
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EclipseLinkManyToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkManyToOneMappingComposite((PropertyValueModel<? extends EclipseLinkManyToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<JavaOneToManyMapping> mappingModel, 
+	public JpaComposite createOneToManyMappingComposite(
+			PropertyValueModel<? extends OneToManyMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite, 
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EclipseLinkOneToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOneToManyMappingComposite((PropertyValueModel<? extends EclipseLinkOneToManyMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaOneToOneMappingComposite(
-			PropertyValueModel<JavaOneToOneMapping> mappingModel, 
+	public JpaComposite createOneToOneMappingComposite(
+			PropertyValueModel<? extends OneToOneMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite, 
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EclipseLinkOneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkOneToOneMappingComposite((PropertyValueModel<? extends EclipseLinkOneToOneMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaManyToManyMappingComposite(
-			PropertyValueModel<JavaManyToManyMapping> mappingModel, 
+	public JpaComposite createManyToManyMappingComposite(
+			PropertyValueModel<? extends ManyToManyMapping> mappingModel, 
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite, 
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EclipseLinkManyToManyMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-	
-	public JpaComposite createJavaEclipseLinkBasicMapMappingComposite(
-			PropertyValueModel<EclipseLinkBasicMapMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new EclipseLinkBasicMapMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-	
-	public JpaComposite createJavaEclipseLinkBasicCollectionMappingComposite(
-			PropertyValueModel<EclipseLinkBasicCollectionMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new EclipseLinkBasicCollectionMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-	
-	public JpaComposite createJavaEclipseLinkVariableOneToOneMappingComposite(
-			PropertyValueModel<EclipseLinkVariableOneToOneMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new EclipseLinkVariableOneToOneMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-	
-	public JpaComposite createJavaEclipseLinkTransformationMappingComposite(
-			PropertyValueModel<EclipseLinkTransformationMapping> mappingModel,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parentComposite,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager) {
-		return new EclipseLinkTransformationMappingComposite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EclipseLinkManyToManyMappingComposite((PropertyValueModel<? extends EclipseLinkManyToManyMapping>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 }

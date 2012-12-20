@@ -61,9 +61,8 @@ public class JpaStructureNodeAdapterFactory
 			this.jpaStructureNode = jpaStructureNode;
 		}
 
-		@SuppressWarnings("unchecked")
-		public <T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-			return (JpaDetailsPageManager<T>) this.getJpaPlatformUi().buildJpaDetailsPageManager(parent, this.jpaStructureNode, widgetFactory, resourceManager);
+		public JpaDetailsPageManager buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+			return this.getJpaPlatformUi().buildJpaDetailsPageManager(parent, this.jpaStructureNode, widgetFactory, resourceManager);
 		}
 
 		private JpaPlatformUi getJpaPlatformUi() {

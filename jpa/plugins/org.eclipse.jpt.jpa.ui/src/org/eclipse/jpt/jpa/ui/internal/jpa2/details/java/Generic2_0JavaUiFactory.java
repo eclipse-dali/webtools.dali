@@ -12,132 +12,152 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
-import org.eclipse.jpt.jpa.ui.jpa2.details.java.JavaUiFactory2_0;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
 public class Generic2_0JavaUiFactory
 	extends AbstractJavaUiFactory
-	implements JavaUiFactory2_0
+	implements JpaUiFactory2_0
 {
 	// ********** type mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> mappedSuperclassModel,
+	public JpaComposite createMappedSuperclassComposite(
+			PropertyValueModel<? extends MappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaMappedSuperclass2_0Composite(mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaMappedSuperclass2_0Composite((PropertyValueModel<? extends JavaMappedSuperclass>) mappedSuperclassModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> entityModel,
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEntity2_0Composite(entityModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEntity2_0Composite((PropertyValueModel<? extends JavaEntity2_0>) entityModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> embeddableModel,
+	public JpaComposite createEmbeddableComposite(
+			PropertyValueModel<? extends Embeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEmbeddable2_0Composite(embeddableModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEmbeddable2_0Composite((PropertyValueModel<? extends JavaEmbeddable>) embeddableModel, parentComposite, widgetFactory, resourceManager);
 	}
 
 
 	// ********** attribute mappings **********
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaIdMappingComposite(
-			PropertyValueModel<JavaIdMapping> mappingModel,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaIdMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaIdMapping2_0Composite((PropertyValueModel<? extends IdMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEmbeddedIdMappingComposite(
-			PropertyValueModel<JavaEmbeddedIdMapping> mappingModel,
+	public JpaComposite createEmbeddedIdMappingComposite(
+			PropertyValueModel<? extends EmbeddedIdMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new EmbeddedIdMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new EmbeddedIdMapping2_0Composite((PropertyValueModel<? extends EmbeddedIdMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEmbeddedMappingComposite(
-			PropertyValueModel<JavaEmbeddedMapping> mappingModel,
+	public JpaComposite createEmbeddedMappingComposite(
+			PropertyValueModel<? extends EmbeddedMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaEmbeddedMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaEmbeddedMapping2_0Composite((PropertyValueModel<? extends EmbeddedMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaManyToManyMappingComposite(
-			PropertyValueModel<JavaManyToManyMapping> mappingModel,
+	public JpaComposite createManyToManyMappingComposite(
+			PropertyValueModel<? extends ManyToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaManyToManyMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaManyToManyMapping2_0Composite((PropertyValueModel<? extends ManyToManyMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaManyToOneMappingComposite(
-			PropertyValueModel<JavaManyToOneMapping> mappingModel,
+	public JpaComposite createManyToOneMappingComposite(
+			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaManyToOneMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaManyToOneMapping2_0Composite((PropertyValueModel<? extends ManyToOneMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<JavaOneToManyMapping> mappingModel,
+	public JpaComposite createOneToManyMappingComposite(
+			PropertyValueModel<? extends OneToManyMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaOneToManyMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaOneToManyMapping2_0Composite((PropertyValueModel<? extends OneToManyMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaOneToOneMappingComposite(
-			PropertyValueModel<JavaOneToOneMapping> mappingModel,
+	public JpaComposite createOneToOneMappingComposite(
+			PropertyValueModel<? extends OneToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
-		return new JavaOneToOneMapping2_0Composite(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
+		return new JavaOneToOneMapping2_0Composite((PropertyValueModel<? extends OneToOneMapping2_0>) mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public JpaComposite createJavaElementCollectionMapping2_0Composite(
-			PropertyValueModel<JavaElementCollectionMapping2_0> mappingModel,
+	public JpaComposite createElementCollectionMapping2_0Composite(
+			PropertyValueModel<? extends ElementCollectionMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

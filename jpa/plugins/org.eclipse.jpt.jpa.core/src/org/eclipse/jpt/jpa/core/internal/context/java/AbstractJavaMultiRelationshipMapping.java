@@ -34,7 +34,6 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -66,6 +65,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -84,7 +84,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaMultiRelationshipMapping<A extends RelationshipMappingAnnotation>
 	extends AbstractJavaRelationshipMapping<A>
-	implements MultiRelationshipMapping, JavaRelationshipMapping, JavaCollectionMapping2_0
+	implements MultiRelationshipMapping2_0, JavaRelationshipMapping, JavaCollectionMapping2_0
 {
 	protected final Orderable orderable;
 

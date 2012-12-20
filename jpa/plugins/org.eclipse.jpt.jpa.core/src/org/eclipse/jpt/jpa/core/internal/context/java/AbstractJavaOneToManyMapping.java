@@ -17,12 +17,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 
 public abstract class AbstractJavaOneToManyMapping
 	extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
-	implements OneToManyMapping2_0, JavaOneToManyMapping, OrphanRemovalHolder2_0
+	implements OneToManyMapping2_0, JavaOneToManyMapping
 {
 	protected final OrphanRemovable2_0 orphanRemoval;
 

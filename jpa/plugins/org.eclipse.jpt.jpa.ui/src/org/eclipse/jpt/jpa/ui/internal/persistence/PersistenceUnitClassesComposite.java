@@ -40,8 +40,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -222,7 +220,7 @@ public class PersistenceUnitClassesComposite
 					JptCommonUiImages.WARNING;
 		}
 
-		private MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JavaPersistentType persistentType) {
+		private MappingUiDefinition getTypeMappingUiDefinition(JavaPersistentType persistentType) {
 			return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
 		}
 

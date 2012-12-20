@@ -66,7 +66,6 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -96,7 +95,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
@@ -112,7 +111,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaEntity
 	extends AbstractJavaTypeMapping<EntityAnnotation>
-	implements JavaEntity, JavaCacheableHolder2_0, JavaGeneratorContainer.ParentAdapter, JavaQueryContainer.Owner
+	implements JavaEntity2_0, JavaGeneratorContainer.ParentAdapter, JavaQueryContainer.Owner
 {
 	protected String specifiedName;
 	protected String defaultName;

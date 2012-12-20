@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
@@ -29,11 +28,11 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractOrmEclipseLinkEntityComposite
-	extends AbstractOrmEntityComposite
+public abstract class AbstractOrmEclipseLinkEntityComposite<T extends OrmEclipseLinkEntity>
+	extends AbstractOrmEntityComposite<T>
 {
 	protected AbstractOrmEclipseLinkEntityComposite(
-			PropertyValueModel<? extends OrmEntity> entityModel,
+			PropertyValueModel<? extends T> entityModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -70,14 +69,14 @@ public abstract class AbstractOrmEclipseLinkEntityComposite
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCachingComposite(this, buildCachingHolder(), container).getControl();
+		return new OrmEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
-	protected PropertyAspectAdapter<OrmEntity, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<OrmEntity, EclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkCaching buildValue_() {
-				return ((OrmEclipseLinkEntity) this.subject).getCaching();
+				return this.subject.getCaching();
 			}
 		};
 	}
@@ -102,10 +101,10 @@ public abstract class AbstractOrmEclipseLinkEntityComposite
 	}
 	
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<OrmEntity, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkConverterContainer buildValue_() {
-				return ((OrmEclipseLinkEntity) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}
 		};
 	}

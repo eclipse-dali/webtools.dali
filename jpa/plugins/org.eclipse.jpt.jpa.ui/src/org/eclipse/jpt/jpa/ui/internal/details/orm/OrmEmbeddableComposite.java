@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEmbeddableComposite
-	extends AbstractOrmEmbeddableComposite
+	extends AbstractOrmEmbeddableComposite<OrmEmbeddable>
 {
 	public OrmEmbeddableComposite(
 			PropertyValueModel<? extends OrmEmbeddable> embeddableModel,

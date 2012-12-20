@@ -11,9 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -53,7 +51,7 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Overrides widgets
 		EmbeddedMappingOverridesComposite overridesComposite = new EmbeddedMappingOverridesComposite(
@@ -65,13 +63,4 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite
 
 		return container;
 	}	
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<EmbeddedMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
-	}
 }

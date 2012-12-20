@@ -13,8 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
@@ -35,10 +33,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkElementCollectionMapping2_1Composite
-	extends EclipseLinkElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
+	extends EclipseLinkElementCollectionMapping2_0Composite<EclipseLinkElementCollectionMapping2_0>
 {
 	public OrmEclipseLinkElementCollectionMapping2_1Composite(
-			PropertyValueModel<? extends ElementCollectionMapping2_0> mappingModel,
+			PropertyValueModel<? extends EclipseLinkElementCollectionMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -64,7 +62,7 @@ public class OrmEclipseLinkElementCollectionMapping2_1Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
 		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
@@ -72,10 +70,10 @@ public class OrmEclipseLinkElementCollectionMapping2_1Composite
 
 		// Join fetch widgets
 		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
-		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchHolder(), container);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Collection table widgets
-		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		collectionTableComposite.getControl().setLayoutData(gridData);
@@ -83,20 +81,11 @@ public class OrmEclipseLinkElementCollectionMapping2_1Composite
 		return container;
 	}
 
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
-	}
-
-	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchHolder() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
+		return new PropertyAspectAdapter<EclipseLinkElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return ((EclipseLinkElementCollectionMapping2_0) this.subject).getJoinFetch();
+				return this.subject.getJoinFetch();
 			}
 		};
 	}

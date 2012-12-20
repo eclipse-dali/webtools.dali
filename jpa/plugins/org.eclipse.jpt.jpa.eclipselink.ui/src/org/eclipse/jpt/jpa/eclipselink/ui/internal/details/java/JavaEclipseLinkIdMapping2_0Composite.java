@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
@@ -22,10 +22,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class JavaEclipseLinkIdMapping2_0Composite
-	extends EclipseLinkIdMappingComposite<JavaIdMapping>
+	extends EclipseLinkIdMappingComposite<EclipseLinkIdMapping2_0>
 {
 	public JavaEclipseLinkIdMapping2_0Composite(
-			PropertyValueModel<? extends JavaIdMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkIdMapping2_0> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -47,9 +47,9 @@ public class JavaEclipseLinkIdMapping2_0Composite
 		container = this.addSubPane(container);
 
 		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
-		new ColumnComposite(this, buildColumnHolder(), container);
+		new ColumnComposite(this, buildColumnModel(), container);
 
-		new EclipseLinkMutableTriStateCheckBox(this, buildMutableHolder(), container);
+		new EclipseLinkMutableTriStateCheckBox(this, buildMutableModel(), container);
 
 		return container;
 	}	

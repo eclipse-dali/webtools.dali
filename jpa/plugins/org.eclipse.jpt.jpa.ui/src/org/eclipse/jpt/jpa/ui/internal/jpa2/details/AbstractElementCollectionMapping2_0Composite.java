@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
@@ -94,7 +95,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		new FetchTypeComboViewer(this, container);
 
 		// Collection table widgets
-		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		collectionTableComposite.getControl().setLayoutData(gridData);
@@ -158,7 +159,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	protected Control buildBasicValueSection(Composite container) {
 		Composite basicComposite = addSubPane(container);
 
-		new ColumnComposite(this, buildValueColumnHolder(), basicComposite);
+		new ColumnComposite(this, buildValueColumnModel(), basicComposite);
 
 		// type section
 		final Section section = this.getWidgetFactory().createSection(basicComposite, ExpandableComposite.TWISTIE);
@@ -240,8 +241,8 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		);
 	}
 	
-	protected PropertyValueModel<ElementCollectionMapping2_0.Type> buildValueHolder() {
-		return new PropertyAspectAdapter<T, ElementCollectionMapping2_0.Type>(
+	protected PropertyValueModel<T.Type> buildValueHolder() {
+		return new PropertyAspectAdapter<T, T.Type>(
 				this.getSubjectHolder(), CollectionMapping.VALUE_TYPE_PROPERTY) {
 			@Override
 			protected ElementCollectionMapping2_0.Type buildValue_() {
@@ -250,9 +251,9 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 
-	private Transformer<ElementCollectionMapping2_0.Type, Control> buildPaneTransformer(final Composite container) {
-		return new Transformer<ElementCollectionMapping2_0.Type, Control>() {
-			public Control transform(ElementCollectionMapping2_0.Type type) {
+	private Transformer<T.Type, Control> buildPaneTransformer(final Composite container) {
+		return new Transformer<T.Type, Control>() {
+			public Control transform(T.Type type) {
 				return AbstractElementCollectionMapping2_0Composite.this.transformValueType(type, container);
 			}
 		};
@@ -261,7 +262,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	/**
 	 * Given the selected override, return the control that will be displayed
 	 */
-	protected Control transformValueType(ElementCollectionMapping2_0.Type type, Composite container) {
+	protected Control transformValueType(T.Type type, Composite container) {
 		if (type == null) {
 			return null;
 		}
@@ -275,8 +276,8 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		}
 	}
 	
-	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableHolder() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, CollectionTable2_0>(getSubjectHolder()) {
+	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableModel() {
+		return new PropertyAspectAdapter<T, CollectionTable2_0>(getSubjectHolder()) {
 			@Override
 			protected CollectionTable2_0 buildValue_() {
 				return this.subject.getCollectionTable();
@@ -284,7 +285,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 	
-	protected PropertyValueModel<Column> buildValueColumnHolder() {
+	protected PropertyValueModel<Column> buildValueColumnModel() {
 		return new PropertyAspectAdapter<ElementCollectionMapping2_0, Column>(getSubjectHolder()) {
 			@Override
 			protected Column buildValue_() {
@@ -386,8 +387,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			}
 		};
 	}
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
 
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
+			}
+		};
+	}
 }

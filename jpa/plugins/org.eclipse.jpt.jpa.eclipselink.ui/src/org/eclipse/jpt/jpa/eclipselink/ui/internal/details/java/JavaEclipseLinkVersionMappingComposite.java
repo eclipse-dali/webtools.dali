@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.VersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkVersionMappingComposite
-	extends EclipseLinkVersionMappingComposite<VersionMapping>
+	extends EclipseLinkVersionMappingComposite<EclipseLinkVersionMapping>
 {
 	public JavaEclipseLinkVersionMappingComposite(
-			PropertyValueModel<? extends VersionMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkVersionMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,

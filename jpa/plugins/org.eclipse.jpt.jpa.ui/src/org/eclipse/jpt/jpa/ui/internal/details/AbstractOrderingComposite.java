@@ -38,24 +38,25 @@ import org.eclipse.swt.widgets.Composite;
  * @see ManyToManyMappingComposite
  * @see OneToManyMappingComposite
  */
-public abstract class AbstractOrderingComposite
+public abstract class AbstractOrderingComposite<T extends Orderable>
 	extends Pane<CollectionMapping>
 {
 	protected AbstractOrderingComposite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
 		super(parentPane, parentComposite);
 	}
 
-	protected PropertyValueModel<Orderable> buildOrderableHolder() {
-		return new PropertyAspectAdapter<CollectionMapping, Orderable>(getSubjectHolder()) {
+	protected PropertyValueModel<T> buildOrderableModel() {
+		return new PropertyAspectAdapter<CollectionMapping, T>(getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
 			@Override
-			protected Orderable buildValue_() {
-				return this.subject.getOrderable();
+			protected T buildValue_() {
+				return (T) this.subject.getOrderable();
 			}
 		};
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildNoOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable.NO_ORDERING_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildNoOrderingHolder(PropertyValueModel<T> orderableHolder) {
+		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.NO_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isNoOrdering());
@@ -68,8 +69,8 @@ public abstract class AbstractOrderingComposite
 		};
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable.PK_ORDERING_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder(PropertyValueModel<T> orderableHolder) {
+		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.PK_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isPkOrdering());
@@ -82,8 +83,8 @@ public abstract class AbstractOrderingComposite
 		};
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildCustomOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable.CUSTOM_ORDERING_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildCustomOrderingHolder(PropertyValueModel<T> orderableHolder) {
+		return new PropertyAspectAdapter<T, Boolean>(orderableHolder, Orderable.CUSTOM_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isCustomOrdering());
@@ -96,8 +97,8 @@ public abstract class AbstractOrderingComposite
 		};
 	}
 
-	protected ModifiablePropertyValueModel<String> buildSpecifiedOrderByHolder(PropertyValueModel<Orderable> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable, String>(orderableHolder, Orderable.SPECIFIED_ORDER_BY_PROPERTY) {
+	protected ModifiablePropertyValueModel<String> buildSpecifiedOrderByHolder(PropertyValueModel<T> orderableHolder) {
+		return new PropertyAspectAdapter<T, String>(orderableHolder, Orderable.SPECIFIED_ORDER_BY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getSpecifiedOrderBy();

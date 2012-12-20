@@ -11,19 +11,17 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.Cascade;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
@@ -34,10 +32,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkManyToOneMapping1_1Composite
-	extends EclipseLinkManyToOneMappingComposite<ManyToOneMapping>
+	extends AbstractEclipseLinkManyToOneMappingComposite<EclipseLinkManyToOneMapping, Cascade>
 {
 	public OrmEclipseLinkManyToOneMapping1_1Composite(
-			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
+			PropertyValueModel<? extends EclipseLinkManyToOneMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
@@ -59,7 +57,7 @@ public class OrmEclipseLinkManyToOneMapping1_1Composite
 
 		// Access type widgets
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
 		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
@@ -67,7 +65,7 @@ public class OrmEclipseLinkManyToOneMapping1_1Composite
 
 		// Join fetch widgets
 		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
-		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Optional widgets
 		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
@@ -76,21 +74,11 @@ public class OrmEclipseLinkManyToOneMapping1_1Composite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadeComposite = new CascadePane(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadeComposite.getControl().setLayoutData(gridData);
 
 		return container;
 	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<ManyToOneMapping, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
-	}
-
 }

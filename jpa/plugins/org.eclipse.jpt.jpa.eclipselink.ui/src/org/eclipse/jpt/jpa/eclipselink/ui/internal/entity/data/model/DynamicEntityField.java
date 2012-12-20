@@ -21,7 +21,7 @@ public class DynamicEntityField {
 	private static final char BRACKET_SQUARE = '[';
 	private static final char BRACKET_ANGULAR = '<';
 	private static final String PACKAGE_JAVA_LANG = "java.lang."; //$NON-NLS-1$
-	private MappingUiDefinition<?,?> mappingType;
+	private MappingUiDefinition mappingType;
 	private String name = ""; //$NON-NLS-1$
 	private String attributeType;
 	private String fqnAttributeType;
@@ -43,7 +43,7 @@ public class DynamicEntityField {
 	/**
 	 * @return the mapping type of the dynamic entity field
 	 */
-	public MappingUiDefinition<?,?> getMappingType() {
+	public MappingUiDefinition getMappingType() {
 		return this.mappingType;
 	}
 	
@@ -52,7 +52,7 @@ public class DynamicEntityField {
 	 * 
 	 * @param mappingType 
 	 */
-	public void setMappingType(MappingUiDefinition<?,?> mappingType) {
+	public void setMappingType(MappingUiDefinition mappingType) {
 		this.mappingType = mappingType;
 	}
 
@@ -60,7 +60,7 @@ public class DynamicEntityField {
 	 * @return the name of the dynamic entity field
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class DynamicEntityField {
 	 * @return the attribute type (as a simple name) of the dynamic entity field
 	 */
 	public String getAttributeType() {
-		return attributeType;
+		return this.attributeType;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class DynamicEntityField {
 	 * @return the target type (as a simple name) of the dynamic entity field
 	 */
 	public String getTargetType() {
-		return targetType;
+		return this.targetType;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class DynamicEntityField {
 	 * @return the attribute type (as fully qualified name) of the dynamic entity field
 	 */
 	public String getFqnAttributeType() {
-		return fqnAttributeType;
+		return this.fqnAttributeType;
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class DynamicEntityField {
 	 * @return the target type (as fully qualified name) of the dynamic entity field
 	 */
 	public String getFqnTargetType() {
-		return fqnTargetType;
+		return this.fqnTargetType;
 	}
 	
 	/**
@@ -202,7 +202,7 @@ public class DynamicEntityField {
 	 * or part of composite primary key
 	 */
 	public boolean isKey() {
-		return key;
+		return this.key;
 	}
 
 	/**
@@ -229,11 +229,11 @@ public class DynamicEntityField {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((fqnAttributeType == null) ? 0 : fqnAttributeType.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime* result + (mappingType == null? 0 : mappingType.hashCode());
+				+ ((this.fqnAttributeType == null) ? 0 : this.fqnAttributeType.hashCode());
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime* result + (this.mappingType == null? 0 : this.mappingType.hashCode());
 		result = prime * result
-				+ ((fqnTargetType == null) ? 0 : fqnTargetType.hashCode());
+				+ ((this.fqnTargetType == null) ? 0 : this.fqnTargetType.hashCode());
 		return result;
 	}
 
@@ -252,25 +252,25 @@ public class DynamicEntityField {
 		if (getClass() != obj.getClass())
 			return false;
 		final DynamicEntityField other = (DynamicEntityField) obj;
-		if (fqnAttributeType == null) {
+		if (this.fqnAttributeType == null) {
 			if (other.fqnAttributeType != null)
 				return false;
-		} else if (!fqnAttributeType.equals(other.fqnAttributeType))
+		} else if (!this.fqnAttributeType.equals(other.fqnAttributeType))
 			return false;
-		if (name == null) {
+		if (this.name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!this.name.equals(other.name))
 			return false;
-		if (mappingType == null) {
+		if (this.mappingType == null) {
 			if (other.mappingType != null)
 				return false;
-		} else if (!mappingType.equals(other.mappingType))
+		} else if (!this.mappingType.equals(other.mappingType))
 			return false;
-		if (fqnTargetType == null) {
+		if (this.fqnTargetType == null) {
 			if (other.fqnTargetType != null)
 				return false;
-		} else if (!fqnTargetType.equals(other.fqnTargetType))
+		} else if (!this.fqnTargetType.equals(other.fqnTargetType))
 			return false;
 		return true;
 	}

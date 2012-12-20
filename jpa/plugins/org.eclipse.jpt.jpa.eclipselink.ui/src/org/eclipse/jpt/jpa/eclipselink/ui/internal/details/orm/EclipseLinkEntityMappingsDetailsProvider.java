@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_2Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
@@ -59,7 +58,7 @@ public class EclipseLinkEntityMappingsDetailsProvider
 				|| resourceType.equals(EclipseLinkOrmXml1_2Definition.instance().getResourceType());
 	}
 	
-	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new EclipseLinkEntityMappingsDetailsPageManager(parent, widgetFactory, resourceManager);
 	}
 }

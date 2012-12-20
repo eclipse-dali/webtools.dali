@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  */
 public class JavaMappedSuperclassComposite
-	extends AbstractJavaMappedSuperclassComposite
+	extends AbstractJavaMappedSuperclassComposite<JavaMappedSuperclass>
 {
 	public JavaMappedSuperclassComposite(
 			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,

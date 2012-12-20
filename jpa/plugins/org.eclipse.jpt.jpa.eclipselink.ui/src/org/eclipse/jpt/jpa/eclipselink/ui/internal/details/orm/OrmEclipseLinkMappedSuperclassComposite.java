@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkMappedSuperclassComposite
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<OrmEclipseLinkMappedSuperclass>
 {
 	public OrmEclipseLinkMappedSuperclassComposite(
-			PropertyValueModel<? extends OrmMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends OrmEclipseLinkMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {

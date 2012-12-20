@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_5Definition;
@@ -56,10 +55,10 @@ public class EclipseLinkEntityMappings2_3DetailsProvider
 	protected boolean providesDetails(JptResourceType resourceType) {
 		return resourceType.equals(EclipseLinkOrmXml2_3Definition.instance().getResourceType()) ||
 			resourceType.equals(EclipseLinkOrmXml2_4Definition.instance().getResourceType()) ||
-		resourceType.equals(EclipseLinkOrmXml2_5Definition.instance().getResourceType());
+			resourceType.equals(EclipseLinkOrmXml2_5Definition.instance().getResourceType());
 	}
 
-	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new EclipseLinkEntityMappingsDetailsPageManager2_3(parent, widgetFactory, resourceManager);
 	}
 }

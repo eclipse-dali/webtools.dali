@@ -11,9 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
@@ -49,7 +47,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * -----------------------------------------------------------------------------</pre>
  */
 public class JavaMappedSuperclass2_0Composite
-	extends AbstractJavaMappedSuperclassComposite
+	extends AbstractJavaMappedSuperclassComposite<JavaMappedSuperclass>
 {
 	public JavaMappedSuperclass2_0Composite(
 			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
@@ -64,21 +62,12 @@ public class JavaMappedSuperclass2_0Composite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
-		new AccessTypeComboViewer(this, buildAccessHolder(), container);
+		new AccessTypeComboViewer(this, buildAccessReferenceModel(), container);
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
-	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, AccessHolder>(getSubjectHolder()) {
-			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
 	}
 }

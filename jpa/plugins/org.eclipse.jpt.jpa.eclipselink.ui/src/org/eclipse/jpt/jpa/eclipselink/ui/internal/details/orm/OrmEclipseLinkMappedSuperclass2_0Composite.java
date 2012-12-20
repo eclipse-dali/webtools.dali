@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class OrmEclipseLinkMappedSuperclass2_0Composite
-	extends AbstractOrmEclipseLinkMappedSuperclassComposite
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<OrmEclipseLinkMappedSuperclass>
 {
 	public OrmEclipseLinkMappedSuperclass2_0Composite(
-			PropertyValueModel<? extends OrmMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends OrmEclipseLinkMappedSuperclass> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -29,6 +29,6 @@ public class OrmEclipseLinkMappedSuperclass2_0Composite
 
 	@Override
 	protected Control initializeCachingSection(Composite container) {
-		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
+		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingModel(), container).getControl();
 	}
 }

@@ -488,9 +488,9 @@ public class DynamicEntityFieldTableSection extends Composite {
 			close();
 		}
 
-		private MappingUiDefinition<?,?> getMappingUiDefinition(ComboViewer mappingType) {
+		private MappingUiDefinition getMappingUiDefinition(ComboViewer mappingType) {
 			StructuredSelection selection = (StructuredSelection) mappingType.getSelection();
-			return (selection.isEmpty()) ? null : (MappingUiDefinition<?,?>) selection.getFirstElement();
+			return (selection.isEmpty()) ? null : (MappingUiDefinition) selection.getFirstElement();
 		}
 
 		/**

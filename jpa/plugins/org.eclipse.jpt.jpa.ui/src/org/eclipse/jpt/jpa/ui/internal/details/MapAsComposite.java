@@ -64,7 +64,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 	extends Pane<T>
 {
 	protected boolean dragEvent;
-	protected MappingChangeHandler<T> mappingChangeHandler;
+	protected MappingChangeHandler mappingChangeHandler;
 	protected int mappingTypeLength;
 	protected int mappingTypeStart;
 	protected boolean mouseDown;
@@ -115,7 +115,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 	 *
 	 * @return A new <code>MappingChangeHandler</code>
 	 */
-	protected abstract MappingChangeHandler<T> buildMappingChangeHandler();
+	protected abstract MappingChangeHandler buildMappingChangeHandler();
 	
 	private MouseListener buildMouseListener() {
 		return new MouseListener() {
@@ -305,7 +305,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 		MappingSelectionDialog dialog = new MappingSelectionDialog(this.getShell(), this.getResourceManager());
 		dialog.setBlockOnOpen(true);
 		if (dialog.open() == IDialogConstants.OK_ID) {
-			MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) dialog.getFirstResult();
+			MappingUiDefinition definition = (MappingUiDefinition) dialog.getFirstResult();
 			morphMapping(definition);
 		}
 	}
@@ -383,7 +383,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 	 * This handler is responsible to give the text information and to open the
 	 * mapping dialog if the user clicked on the mapping type.
 	 */
-	protected interface MappingChangeHandler<T> {
+	protected interface MappingChangeHandler {
 
 		/**
 		 * Returns the entire text describing the mapping (entity or mapping) and
@@ -406,7 +406,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 		 *
 		 * @param provider The definition that was selected for changing the mapping
 		 */
-		void morphMapping(MappingUiDefinition<T, ?> definition);
+		void morphMapping(MappingUiDefinition definition);
 
 		/**
 		 * Returns the name of the current mapping.
@@ -420,7 +420,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 		 *
 		 * @return The supported types of mapping
 		 */
-		Iterable<MappingUiDefinition<T, ?>> getMappingUiDefinitions();
+		Iterable<MappingUiDefinition> getMappingUiDefinitions();
 
 		/**
 		 * Returns the mapping UI definition for current mapping
@@ -428,7 +428,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 		 *
 		 * @return The supported types of mapping
 		 */
-		MappingUiDefinition<T, ?> getMappingUiDefinition();
+		MappingUiDefinition getMappingUiDefinition();
 	}
 
 	/**
@@ -438,7 +438,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 	protected class MappingSelectionDialog
 		extends FilteredItemsSelectionDialog 
 	{
-		private MappingUiDefinition<?,?> defaultDefinition;
+		private MappingUiDefinition defaultDefinition;
 		
 		/**
 		 * Creates a new <code>MappingSelectionDialog</code>.
@@ -488,9 +488,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 
 				// Add the registered mapping providers to the dialog
 				for (MappingUiDefinition mappingDefinition : mappingChangeHandler.getMappingUiDefinitions()) {
-					if (mappingDefinition.isEnabledFor(getSubject())) {
-						provider.add(mappingDefinition, itemsFilter);
-					}
+					provider.add(mappingDefinition, itemsFilter);
 				}
 			}
 			finally {

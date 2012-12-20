@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -11,22 +11,27 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkArrayMapping2_3UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructureMapping2_3UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmBasicMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddedIdMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddedMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmIdMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToManyMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToOneMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmTransientMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmVersionMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
 
 
 public class EclipseLinkOrmXml2_3UiDefinition
@@ -52,7 +57,7 @@ public class EclipseLinkOrmXml2_3UiDefinition
 	}
 
 	@Override
-	protected OrmXmlUiFactory buildOrmXmlUiFactory() {
+	protected JpaUiFactory buildUiFactory() {
 		return new EclipseLinkOrmXml2_3UiFactory();
 	}
 
@@ -63,26 +68,26 @@ public class EclipseLinkOrmXml2_3UiDefinition
 
 
 	@Override
-	protected void addOrmAttributeMappingUiDefinitionsTo(List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
-		definitions.add(OrmIdMappingUiDefinition.instance());
-		definitions.add(OrmEmbeddedIdMappingUiDefinition.instance());
-		definitions.add(OrmBasicMappingUiDefinition.instance());
-		definitions.add(OrmVersionMappingUiDefinition.instance());
-		definitions.add(OrmManyToOneMappingUiDefinition.instance());
-		definitions.add(OrmOneToManyMappingUiDefinition.instance());
-		definitions.add(OrmOneToOneMappingUiDefinition.instance());
-		definitions.add(OrmManyToManyMappingUiDefinition.instance());
-		definitions.add(OrmEmbeddedMappingUiDefinition.instance());
-		definitions.add(OrmTransientMappingUiDefinition.instance());
+	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
+		definitions.add(IdMappingUiDefinition.instance());
+		definitions.add(EmbeddedIdMappingUiDefinition.instance());
+		definitions.add(BasicMappingUiDefinition.instance());
+		definitions.add(VersionMappingUiDefinition.instance());
+		definitions.add(ManyToOneMappingUiDefinition.instance());
+		definitions.add(OneToManyMappingUiDefinition.instance());
+		definitions.add(OneToOneMappingUiDefinition.instance());
+		definitions.add(ManyToManyMappingUiDefinition.instance());
+		definitions.add(EmbeddedMappingUiDefinition.instance());
+		definitions.add(TransientMappingUiDefinition.instance());
 
-		definitions.add(OrmEclipseLinkBasicCollectionMappingUiDefinition.instance());
-		definitions.add(OrmEclipseLinkBasicMapMappingUiDefinition.instance());
-		definitions.add(OrmEclipseLinkVariableOneToOneMappingUiDefinition.instance());
-		definitions.add(OrmEclipseLinkTransformationMappingUiDefinition.instance());
+		definitions.add(EclipseLinkBasicCollectionMappingUiDefinition.instance());
+		definitions.add(EclipseLinkBasicMapMappingUiDefinition.instance());
+		definitions.add(EclipseLinkVariableOneToOneMappingUiDefinition.instance());
+		definitions.add(EclipseLinkTransformationMappingUiDefinition.instance());
 
-		definitions.add(OrmElementCollectionMapping2_0UiDefinition.instance());
-		definitions.add(OrmEclipseLinkArrayMapping2_3UiDefinition.instance());
-		definitions.add(OrmEclipseLinkStructureMapping2_3UiDefinition.instance());
+		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+		definitions.add(EclipseLinkArrayMapping2_3UiDefinition.instance());
+		definitions.add(EclipseLinkStructureMapping2_3UiDefinition.instance());
 	}
 
 }

@@ -11,18 +11,18 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Cascade;
-import org.eclipse.jpt.jpa.core.context.orm.OrmCascade;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 
 public class GenericOrmCascade
 	extends AbstractOrmXmlContextNode
-	implements OrmCascade, Cascade2_0
+	implements OrmCascade2_0
 {
 	protected boolean all;
 

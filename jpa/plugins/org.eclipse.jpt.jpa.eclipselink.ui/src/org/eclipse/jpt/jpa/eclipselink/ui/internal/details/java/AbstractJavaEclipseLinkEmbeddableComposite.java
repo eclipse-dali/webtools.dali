@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -28,11 +27,11 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractJavaEclipseLinkEmbeddableComposite
-	extends AbstractEmbeddableComposite<JavaEmbeddable>
+public abstract class AbstractJavaEclipseLinkEmbeddableComposite<T extends JavaEclipseLinkEmbeddable>
+	extends AbstractEmbeddableComposite<T>
 {
 	protected AbstractJavaEclipseLinkEmbeddableComposite(
-			PropertyValueModel<? extends JavaEmbeddable> embeddableModel,
+			PropertyValueModel<? extends T> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -61,14 +60,14 @@ public abstract class AbstractJavaEclipseLinkEmbeddableComposite
 	}
 
 	protected Control initializeConvertersSection(Composite container) {
-		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
+		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerValueModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaEmbeddable, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterContainerValueModel() {
+		return new PropertyAspectAdapter<T, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkConverterContainer buildValue_() {
-				return ((JavaEclipseLinkEmbeddable) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}	
 		};
 	}

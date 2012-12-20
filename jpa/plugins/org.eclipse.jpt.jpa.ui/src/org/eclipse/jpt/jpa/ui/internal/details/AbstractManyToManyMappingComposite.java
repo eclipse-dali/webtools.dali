@@ -28,7 +28,7 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMapping, R extends ManyToManyRelationship> 
+public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMapping, R extends ManyToManyRelationship, C extends Cascade> 
 	extends Pane<T>
     implements JpaComposite
 {
@@ -61,7 +61,7 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 	protected abstract Control initializeManyToManySection(Composite container);
 
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
-		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new ManyToManyJoiningStrategyPane(this, buildRelationshipModel(), container);
 	}
 	
 	protected void initializeOrderingCollapsibleSection(Composite container) {
@@ -84,9 +84,8 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 	}
 
 	
-	protected PropertyValueModel<R> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, R>(
-				getSubjectHolder()) {
+	protected PropertyValueModel<R> buildRelationshipModel() {
+		return new TransformationPropertyValueModel<T, R>(getSubjectHolder()) {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected R transform_(T value) {
@@ -95,16 +94,17 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 		};
 	}
 	
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
+	protected PropertyValueModel<C> buildCascadeModel() {
+		return new TransformationPropertyValueModel<T, C>(getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
 			@Override
-			protected Cascade transform_(T value) {
-				return value.getCascade();
+			protected C transform_(T value) {
+				return (C) value.getCascade();
 			}
 		};
 	}
 	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
+	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
 		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {

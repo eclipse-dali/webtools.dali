@@ -74,7 +74,7 @@ public interface JpaPlatformUi {
 
 	// ********** details page managers **********
 
-	JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(
+	JpaDetailsPageManager buildJpaDetailsPageManager(
 			Composite parent,
 			JpaStructureNode structureNode,
 			WidgetFactory widgetFactory,
@@ -94,16 +94,19 @@ public interface JpaPlatformUi {
 	JpaComposite buildTypeMappingComposite(
 			JptResourceType resourceType, 
 			String mappingKey, 
-			Composite parent, 
-			PropertyValueModel<TypeMapping> mappingHolder,
+			PropertyValueModel<TypeMapping> mappingModel,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parentComposite, 
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager);
 
-	Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions(JptResourceType resourceType);
+	Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(PersistentType persistentType);
 
-	MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+	Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(JptResourceType resourceType);
 
-	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JptResourceType resourceType);
+	MappingUiDefinition getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+
+	DefaultMappingUiDefinition getDefaultTypeMappingUiDefinition(JptResourceType resourceType);
 
 
 	// ********** attribute mappings **********
@@ -111,17 +114,19 @@ public interface JpaPlatformUi {
 	JpaComposite buildAttributeMappingComposite(
 			JptResourceType resourceType, 
 			String mappingKey, 
-			Composite parent,
+			Composite parentComposite,
 			PropertyValueModel<AttributeMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager);
 
-	Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions(JptResourceType resourceType);
+	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute persistentAttribute);
 
-	MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(JptResourceType resourceType);
 
-	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+	MappingUiDefinition getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+
+	DefaultMappingUiDefinition getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
 
 
 	// ********** metadata conversion **********

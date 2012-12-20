@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -29,10 +28,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkEmbeddableComposite
-	extends AbstractOrmEmbeddableComposite
+	extends AbstractOrmEmbeddableComposite<OrmEclipseLinkEmbeddable>
 {
 	public OrmEclipseLinkEmbeddableComposite(
-			PropertyValueModel<? extends OrmEmbeddable> embeddableModel,
+			PropertyValueModel<? extends OrmEclipseLinkEmbeddable> embeddableModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -66,10 +65,10 @@ public class OrmEclipseLinkEmbeddableComposite
 	}
 
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<OrmEmbeddable, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmEclipseLinkEmbeddable, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkConverterContainer buildValue_() {
-				return ((OrmEclipseLinkEmbeddable) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}
 		};
 	}

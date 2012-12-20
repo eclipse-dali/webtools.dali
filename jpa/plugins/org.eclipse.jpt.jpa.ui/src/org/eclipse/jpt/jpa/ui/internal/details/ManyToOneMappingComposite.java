@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneRelationship;
 import org.eclipse.swt.layout.GridData;
@@ -20,7 +21,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class ManyToOneMappingComposite 
-	extends AbstractManyToOneMappingComposite<ManyToOneMapping, ManyToOneRelationship>
+	extends AbstractManyToOneMappingComposite<ManyToOneMapping, ManyToOneRelationship, Cascade>
 {
 	public ManyToOneMappingComposite(
 			PropertyValueModel<? extends ManyToOneMapping> mappingModel,
@@ -50,7 +51,7 @@ public class ManyToOneMappingComposite
 		optionalCheckBox.getControl().setLayoutData(gridData);
 
 		// Cascade widgets
-		CascadeComposite cascadePane = new CascadeComposite(this, buildCascadeHolder(), container);
+		CascadePane cascadePane = new CascadePane(this, buildCascadeModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cascadePane.getControl().setLayoutData(gridData);

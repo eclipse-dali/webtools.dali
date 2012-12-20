@@ -14,9 +14,6 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
@@ -34,11 +31,11 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
-	extends AbstractJavaMappedSuperclassComposite
+public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends JavaEclipseLinkMappedSuperclass>
+	extends AbstractJavaMappedSuperclassComposite<T>
 {
 	protected AbstractJavaEclipseLinkMappedSuperclassComposite(
-			PropertyValueModel<? extends JavaMappedSuperclass> mappedSuperclassModel,
+			PropertyValueModel<? extends T> mappedSuperclassModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager) {
@@ -71,14 +68,14 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 	}
 	
 	protected Control initializeCachingSection(Composite container) {
-		return new JavaEclipseLinkCachingComposite(this, buildCachingHolder(), container).getControl();
+		return new JavaEclipseLinkCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
-	protected PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapter<T, JavaEclipseLinkCaching> buildCachingModel() {
+		return new PropertyAspectAdapter<T, JavaEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkCaching buildValue_() {
-				return ((JavaEclipseLinkMappedSuperclass) this.subject).getCaching();
+				return this.subject.getCaching();
 			}
 		};
 	}
@@ -103,10 +100,10 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 	}
 
 	private PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkConverterContainer buildValue_() {
-				return ((JavaEclipseLinkMappedSuperclass) this.subject).getConverterContainer();
+				return this.subject.getConverterContainer();
 			}	
 		};
 	}
@@ -146,14 +143,14 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 	}
 
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, this.buildGeneratorContainerHolder(), container).getControl();
+		return new Generation2_0Composite(this, this.buildGeneratorContainerModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, GeneratorContainer>(getSubjectHolder()) {
+	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
+		return new PropertyAspectAdapter<T, GeneratorContainer>(this.getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
-				return ((EclipseLinkMappedSuperclass) this.subject).getGeneratorContainer();
+				return this.subject.getGeneratorContainer();
 			}
 		};
 	}
