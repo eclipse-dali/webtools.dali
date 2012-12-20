@@ -99,8 +99,20 @@ public interface JpaPlatformUi {
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager);
 
+	/**
+	 * Return the list of possible type mapping ui definitions
+	 * filtered using MappingUiDefinition#isEnabledFor(JpaContextNode).
+	 * <p>
+	 * @see #getTypeMappingUiDefinitions(JptResourceType)
+	 */
 	Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(PersistentType persistentType);
 
+	/**
+	 * Return the list of all the possible type mapping ui definitions
+	 * for the given JptResourceType.
+	 * <p>
+	 * @see #getTypeMappingUiDefinitions(PersistentType)
+	 */
 	Iterable<MappingUiDefinition> getTypeMappingUiDefinitions(JptResourceType resourceType);
 
 	MappingUiDefinition getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
@@ -119,8 +131,20 @@ public interface JpaPlatformUi {
 			WidgetFactory widgetFactory,
 			ResourceManager resourceManager);
 
+	/**
+	 * Return the list of possible attribute mapping ui definitions
+	 * filtered using MappingUiDefinition#isEnabledFor(JpaContextNode).
+	 * <p>
+	 * @see #getAttributeMappingUiDefinitions(JptResourceType)
+	 */
 	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute persistentAttribute);
 
+	/**
+	 * Return the list of all the possible attribute mapping ui definitions
+	 * for the given JptResourceType.
+	 * <p>
+	 * @see #getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute)
+	 */
 	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(JptResourceType resourceType);
 
 	MappingUiDefinition getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
