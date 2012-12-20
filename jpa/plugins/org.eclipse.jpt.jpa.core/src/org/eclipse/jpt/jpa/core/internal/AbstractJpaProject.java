@@ -849,7 +849,7 @@ public abstract class AbstractJpaProject
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
 	public Iterable<JavaResourceAbstractType> getMappedJavaSourceTypes() {
-		return getInternalAnnotatedSourceJavaResourceTypes();
+		return getInternalMappedSourceJavaResourceTypes();
 	}
 
 	/**
