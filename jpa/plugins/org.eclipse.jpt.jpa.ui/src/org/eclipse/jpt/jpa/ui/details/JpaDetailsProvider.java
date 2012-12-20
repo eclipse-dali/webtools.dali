@@ -30,11 +30,13 @@ import org.eclipse.swt.widgets.Composite;
  * @see JpaDetailsPageManager
  */
 public interface JpaDetailsProvider {
+
 	/**
-	 * Return whether the provider can build a details page manager for the
-	 * specified JPA structure node.
+	 * Return the type of structure node for which this provides details
+	 * 
+	 * @see JpaStructureNode#getType()
 	 */
-	boolean providesDetails(JpaStructureNode structureNode);
+	Class<? extends JpaStructureNode> getType();
 
 	/**
 	 * Build a new details page manager with the specified parent, widget

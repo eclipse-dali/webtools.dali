@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFacto
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
@@ -61,7 +62,20 @@ public class OrmXmlUiDefinition
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(GenericOrmXmlDefinition.instance().getResourceType());
 	}
+
+
+	// ********** details providers **********
 	
+	@Override
+	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(OrmPersistentTypeDetailsProvider.instance());
+		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+		providers.add(EntityMappingsDetailsProvider.instance());
+	}
+
+
+	// ********** structure view factory provider **********
+
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}

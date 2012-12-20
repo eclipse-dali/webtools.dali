@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 
 /**
  * All the state in the JPA platform UI provider should be "static"
@@ -22,8 +21,6 @@ import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 public abstract class AbstractJpaPlatformUiProvider
 	implements JpaPlatformUiProvider
 {
-	private ArrayList<JpaDetailsProvider> detailsProviders;
-
 	private ArrayList<ResourceUiDefinition> resourceUiDefinitions;
 
 
@@ -34,30 +31,7 @@ public abstract class AbstractJpaPlatformUiProvider
 		super();
 	}
 
-
-	// ********** details providers **********
-
-	public synchronized Iterable<JpaDetailsProvider> getDetailsProviders() {
-		if (this.detailsProviders == null) {
-			this.detailsProviders = this.buildDetailsProviders();
-		}
-		return this.detailsProviders;
-	}
-
-	protected ArrayList<JpaDetailsProvider> buildDetailsProviders() {
-		ArrayList<JpaDetailsProvider> providers = new ArrayList<JpaDetailsProvider>();
-		this.addDetailsProvidersTo(providers);
-		return providers;
-	}
-
-	/**
-	 * Implement this to specify JPA details providers.
-	 */
-	protected abstract void addDetailsProvidersTo(List<JpaDetailsProvider> providers);
-
-
-
-	// ********** structure providers **********
+	// ********** resource ui definitions **********
 
 	public Iterable<ResourceUiDefinition> getResourceUiDefinitions() {
 		if (this.resourceUiDefinitions == null) {

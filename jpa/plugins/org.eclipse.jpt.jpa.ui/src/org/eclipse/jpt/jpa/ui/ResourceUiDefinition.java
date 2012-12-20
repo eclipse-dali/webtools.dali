@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 
 /**
@@ -29,6 +30,11 @@ public interface ResourceUiDefinition {
 	 * type.
 	 */
 	boolean providesUi(JptResourceType resourceType);
+
+	/**
+	 * Return the details providers for this resource ui definition.
+	 */
+	Iterable<JpaDetailsProvider> getDetailsProviders();
 
 	/**
 	 * Return the resource definition's JPA Structure View factory provider.

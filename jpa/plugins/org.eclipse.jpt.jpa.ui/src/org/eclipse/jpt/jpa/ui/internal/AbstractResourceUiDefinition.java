@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 
 /**
@@ -23,6 +24,7 @@ import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 public abstract class AbstractResourceUiDefinition
 	implements ResourceUiDefinition
 {
+	private ArrayList<JpaDetailsProvider> detailsProviders;
 
 	private ArrayList<JpaEditorPageDefinition> editorPageDefinitions;
 
@@ -33,6 +35,32 @@ public abstract class AbstractResourceUiDefinition
 	protected AbstractResourceUiDefinition() {
 		super();
 	}
+
+
+	// ********** details providers **********
+
+	public synchronized Iterable<JpaDetailsProvider> getDetailsProviders() {
+		if (this.detailsProviders == null) {
+			this.detailsProviders = this.buildDetailsProviders();
+		}
+		return this.detailsProviders;
+	}
+
+	protected ArrayList<JpaDetailsProvider> buildDetailsProviders() {
+		ArrayList<JpaDetailsProvider> providers = new ArrayList<JpaDetailsProvider>();
+		this.addDetailsProvidersTo(providers);
+		return providers;
+	}
+
+	/**
+	 * Add the appropriate details providers.
+	 */
+	protected void addDetailsProvidersTo(@SuppressWarnings("unused") List<JpaDetailsProvider> providers) {
+		// only resources for which Dali supplies an details page need implement this method
+	}
+
+	
+	// ********** editor page definitions **********
 
 	public synchronized ListIterable<JpaEditorPageDefinition> getEditorPageDefinitions() {
 		if (this.editorPageDefinitions == null) {

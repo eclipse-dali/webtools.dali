@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -62,7 +63,8 @@ public class JpaStructureNodeAdapterFactory
 		}
 
 		public JpaDetailsPageManager buildPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-			return this.getJpaPlatformUi().buildJpaDetailsPageManager(parent, this.jpaStructureNode, widgetFactory, resourceManager);
+			JpaDetailsProvider provider = this.getJpaPlatformUi().getDetailsProvider(this.jpaStructureNode);
+			return (provider == null) ? null : provider.buildDetailsPageManager(parent, widgetFactory, resourceManager);
 		}
 
 		private JpaPlatformUi getJpaPlatformUi() {

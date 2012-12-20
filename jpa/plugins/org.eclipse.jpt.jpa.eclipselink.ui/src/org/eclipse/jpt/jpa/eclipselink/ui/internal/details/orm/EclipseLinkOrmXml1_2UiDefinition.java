@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMa
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
@@ -31,6 +32,8 @@ import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 
 public class EclipseLinkOrmXml1_2UiDefinition
@@ -64,6 +67,19 @@ public class EclipseLinkOrmXml1_2UiDefinition
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(EclipseLinkOrmXml1_2Definition.instance().getResourceType());
 	}
+
+
+	// ********** details providers **********
+
+	@Override
+	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(OrmPersistentTypeDetailsProvider.instance());
+		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+		providers.add(EclipseLinkEntityMappingsDetailsProvider.instance());
+	}
+
+
+	// ********** structure view factory provider **********
 	
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return OrmXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;

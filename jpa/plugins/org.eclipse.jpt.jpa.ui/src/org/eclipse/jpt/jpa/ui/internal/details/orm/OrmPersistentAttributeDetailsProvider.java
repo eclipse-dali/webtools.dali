@@ -11,10 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
@@ -45,13 +42,11 @@ public class OrmPersistentAttributeDetailsProvider
 	private OrmPersistentAttributeDetailsProvider() {
 		super();
 	}
-	
-	
-	public boolean providesDetails(JpaStructureNode structureNode) {
-			return ObjectTools.equals(structureNode.getType(), OrmPersistentAttribute.class)
-				&& structureNode.getResourceType().getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
+
+	public Class<OrmPersistentAttribute> getType() {
+		return OrmPersistentAttribute.class;
 	}
-	
+
 	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new OrmPersistentAttributeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}

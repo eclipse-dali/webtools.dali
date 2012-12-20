@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
@@ -27,6 +28,8 @@ import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
@@ -62,7 +65,20 @@ public class OrmXml2_1UiDefinition
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(GenericOrmXml2_1Definition.instance().getResourceType());
 	}
-	
+
+
+	// ********** details providers **********
+
+	@Override
+	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(OrmPersistentTypeDetailsProvider.instance());
+		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+		providers.add(EntityMappings2_0DetailsProvider.instance());
+	}
+
+
+	// ********** structure view factory provider **********
+
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return OrmXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}

@@ -10,10 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
@@ -28,29 +25,28 @@ public class JavaPersistentAttributeDetailsProvider
 {
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new JavaPersistentAttributeDetailsProvider();
-	
-	
+
+
 	/**
 	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private JavaPersistentAttributeDetailsProvider() {
 		super();
 	}
-	
-	
-	public boolean providesDetails(JpaStructureNode structureNode) {
-			return ObjectTools.equals(structureNode.getType(), JavaPersistentAttribute.class)
-				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.CONTENT_TYPE);
+
+
+	public Class<JavaPersistentAttribute> getType() {
+		return JavaPersistentAttribute.class;
 	}
-	
+
 	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new JavaPersistentAttributeDetailsPageManager(parent, widgetFactory, resourceManager);
 	}

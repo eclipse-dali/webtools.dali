@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -31,11 +30,6 @@ import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaPlatformUiProvider {
-
-	/**
-	 * Return the platform's details providers.
-	 */
-	Iterable<JpaDetailsProvider> getDetailsProviders();
 
 	/**
 	 * Return the platform's resource UI definitions.

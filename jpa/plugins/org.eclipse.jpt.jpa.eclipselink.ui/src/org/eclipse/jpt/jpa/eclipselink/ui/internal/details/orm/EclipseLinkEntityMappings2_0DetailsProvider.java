@@ -10,11 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_2Definition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityMappingsDetailsProvider;
@@ -25,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * when the information comes from the XML file (either from the persistence
  * configuration or from the Mappings Descriptor).
  *
- * @version 3.1
+ * @version 3.3
  * @since 2.2
  */
 public class EclipseLinkEntityMappings2_0DetailsProvider
@@ -50,13 +46,6 @@ public class EclipseLinkEntityMappings2_0DetailsProvider
 		super();
 	}
 	
-	
-	@Override
-	protected boolean providesDetails(JptResourceType resourceType) {
-		return resourceType.equals(EclipseLinkOrmXml2_0Definition.instance().getResourceType()) ||
-			resourceType.equals(EclipseLinkOrmXml2_1Definition.instance().getResourceType()) ||
-			resourceType.equals(EclipseLinkOrmXml2_2Definition.instance().getResourceType());
-	}
 	
 	public JpaDetailsPageManager buildDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return new EclipseLinkEntityMappingsDetailsPageManager2_0(parent, widgetFactory, resourceManager);

@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.JavaStructureItemContentProviderFactory;
@@ -43,6 +44,18 @@ public abstract class AbstractJavaResourceUiDefinition
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(JavaSourceFileDefinition.instance().getResourceType());
 	}
+
+
+	// ********** details providers **********
+
+	@Override
+	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(JavaPersistentTypeDetailsProvider.instance());
+		providers.add(JavaPersistentAttributeDetailsProvider.instance());
+	}
+
+
+	// ********** structure view factory provider **********
 
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return STRUCTURE_VIEW_FACTORY_PROVIDER;

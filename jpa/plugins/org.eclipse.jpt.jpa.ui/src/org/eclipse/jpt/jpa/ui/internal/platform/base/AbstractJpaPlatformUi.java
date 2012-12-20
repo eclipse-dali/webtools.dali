@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -35,7 +36,6 @@ import org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -91,22 +91,17 @@ public abstract class AbstractJpaPlatformUi
 
 	// ********** details providers **********
 
-	public JpaDetailsPageManager buildJpaDetailsPageManager(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		JpaDetailsProvider provider = this.getDetailsProvider(structureNode);
-		return (provider == null) ? null : provider.buildDetailsPageManager(parent, widgetFactory, resourceManager);
-	}
-
-	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
-		for (JpaDetailsProvider provider : this.getDetailsProviders()) {
-			if (provider.providesDetails(structureNode)) {
+	public JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
+		for (JpaDetailsProvider provider : this.getDetailsProviders(structureNode.getResourceType())) {
+			if (ObjectTools.equals(structureNode.getType(), provider.getType())) {
 				return provider;
 			}
 		}
 		return null; // some JPA structure nodes do not have a details page
 	}
 
-	protected Iterable<JpaDetailsProvider> getDetailsProviders() {
-		return this.platformUiProvider.getDetailsProviders();
+	protected Iterable<JpaDetailsProvider> getDetailsProviders(JptResourceType resourceType) {
+		return this.getResourceUiDefinition(resourceType).getDetailsProviders();
 	}
 
 

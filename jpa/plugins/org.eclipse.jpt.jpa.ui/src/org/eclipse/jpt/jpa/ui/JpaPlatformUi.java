@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
@@ -72,13 +72,12 @@ public interface JpaPlatformUi {
 	ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JpaFile jpaFile);
 
 
-	// ********** details page managers **********
+	// ********** details provider **********
 
-	JpaDetailsPageManager buildJpaDetailsPageManager(
-			Composite parent,
-			JpaStructureNode structureNode,
-			WidgetFactory widgetFactory,
-			ResourceManager resourceManager);
+	/**
+	 * Return a details provider for the specified JPA structure node.
+	 */
+	JpaDetailsProvider getDetailsProvider(JpaStructureNode node);
 
 
 	// ********** file ui definitions **********
