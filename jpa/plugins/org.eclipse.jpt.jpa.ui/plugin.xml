@@ -123,13 +123,6 @@
 			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaViewManager$PageManager"/>
 		</factory>
 
-		<!-- IViewPart -> IShowInTarget -->
-		<factory
-			adaptableType="org.eclipse.ui.IViewPart"
-			class="org.eclipse.jpt.jpa.ui.internal.ViewPartShowInAdapterFactory">
-			<adapter type="org.eclipse.ui.part.IShowInTarget"/>
-		</factory>
-
 	</extension>
 
 
@@ -965,9 +958,6 @@
 			<viewShortcut id="org.eclipse.jpt.ui.jpaStructureView"/>
 			<viewShortcut id="org.eclipse.jpt.ui.jpaDetailsView"/>
 			<viewShortcut id="org.eclipse.datatools.connectivity.DataSourceExplorerNavigator"/>
-			
-			<showInPart id="org.eclipse.jpt.ui.jpaDetailsView"/>
-			<showInPart id="org.eclipse.jpt.ui.jpaStructureView"/>
 			
 		</perspectiveExtension>
     	
