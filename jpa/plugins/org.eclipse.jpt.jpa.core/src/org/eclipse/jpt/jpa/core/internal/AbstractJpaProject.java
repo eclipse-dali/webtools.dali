@@ -818,22 +818,13 @@ public abstract class AbstractJpaProject
 
 	// ********** annotated Java source classes **********
 
-	public Iterable<String> getAnnotatedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourceAbstractType, String>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
-			@Override
-			protected String transform(JavaResourceAbstractType jraType) {
-				return jraType.getTypeBinding().getQualifiedName();
-			}
-		};
-	}
-
 	/**
 	 * Return only those valid annotated Java resource types that are
 	 * directly part of the JPA project, ignoring those in JARs referenced in
 	 * <code>persistence.xml</code>.
 	 * @see JavaResourceAbstractType#isAnnotated()
 	 */
-	protected Iterable<JavaResourceAbstractType> getInternalAnnotatedSourceJavaResourceTypes() {
+	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceTypes() {
 		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceAbstractType jraType) {
@@ -860,7 +851,7 @@ public abstract class AbstractJpaProject
 	 */
 	protected Iterable<JavaResourceAbstractType> getInternalMappedSourceJavaResourceTypes() {
 		final Iterable<String> typeMappingAnnotationNames = this.getTypeMappingAnnotationNames();
-		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
+		return new FilteringIterable<JavaResourceAbstractType>(this.getAnnotatedJavaSourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceAbstractType jraType) {
 				return jraType.isAnnotatedWithAnyOf(typeMappingAnnotationNames);

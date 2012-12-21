@@ -283,28 +283,27 @@ public class GenericRootContextNode
 		}
 
 		PersistenceUnit persistenceUnit = persistence.getPersistenceUnits().iterator().next();
-		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.getAnnotatedJavaSourceClassNames());
-		HashBag<String> orphans = annotatedClassNames.clone();
-		for (String annotatedClassName : annotatedClassNames) {
-			if (persistenceUnit.specifiesPersistentType(annotatedClassName)) {
-				orphans.remove(annotatedClassName);
+		HashBag<JavaResourceAbstractType> annotatedTypes = CollectionTools.bag(this.jpaProject.getAnnotatedJavaSourceTypes());
+		HashBag<JavaResourceAbstractType> orphans = annotatedTypes.clone();
+		for (JavaResourceAbstractType jrat : annotatedTypes) {
+			if (persistenceUnit.specifiesPersistentType(jrat.getTypeBinding().getQualifiedName())) {
+				orphans.remove(jrat);
 			}
-			else if (MetamodelSynchronizer.MetamodelTools.isMetamodel(getJpaProject().getJavaResourceType(annotatedClassName))) {
-				orphans.remove(annotatedClassName);
+			else if (MetamodelSynchronizer.MetamodelTools.isMetamodel(jrat)) {
+				orphans.remove(jrat);
 			}
 		}
 
 		Iterable<String> typeMappingAnnotationNames = this.jpaProject.getTypeMappingAnnotationNames();
-		for (String orphan : orphans) {
-			JavaResourceAbstractType jrt = this.jpaProject.getJavaResourceType(orphan);
-			if (jrt.isAnnotatedWithAnyOf(typeMappingAnnotationNames)) {
+		for (JavaResourceAbstractType jrat : annotatedTypes) {
+			if (jrat.isAnnotatedWithAnyOf(typeMappingAnnotationNames)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
-						new String[] {jrt.getTypeBinding().getQualifiedName()},
-						jrt.getFile(),
-						jrt.getNameTextRange()
+						new String[] {jrat.getTypeBinding().getQualifiedName()},
+						jrat.getFile(),
+						jrat.getNameTextRange()
 					)
 				);
 			}
@@ -313,9 +312,9 @@ public class GenericRootContextNode
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
-						new String[] {jrt.getName()},
-						jrt.getFile(),
-						jrt.getNameTextRange()
+						new String[] {jrat.getName()},
+						jrat.getFile(),
+						jrat.getNameTextRange()
 					)
 				);
 			}

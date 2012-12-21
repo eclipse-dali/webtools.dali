@@ -223,10 +223,10 @@ public interface JpaProject
 	// ********** Java resources **********
 
 	/**
-	 * Return the names of the JPA project's annotated Java classes
+	 * Return the resource types of the JPA project's annotated Java classes
 	 * (ignoring classes in JARs referenced in the <code>persistence.xml</code>).
 	 */
-	Iterable<String> getAnnotatedJavaSourceClassNames();
+	Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceTypes();
 	
 	/**
 	 * Return only the types of those valid <em>mapped</em> (i.e. annotated with
