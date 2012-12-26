@@ -444,9 +444,12 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 		JpaPlatformConfig config = (JpaPlatformConfig) project.getAdapter(JpaPlatformConfig.class);
 		return config.getGroupConfig().getId();
 	}
-	
+
 	private boolean projectIsEclipseLink2_1Compatible(IProject project) {
 		JpaProject jpaProject = this.getJpaProject(project);
+		if(jpaProject == null) {
+			return false;
+		}
 		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) jpaProject.getJpaPlatform().getJpaVersion();
 		return jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLink2_1JpaPlatformFactory.VERSION);
 	}
