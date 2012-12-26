@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.commands;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.internal.commands.AbstractJavaMetadataConversionHandler;
+import org.eclipse.jpt.jpa.ui.internal.handlers.AbstractJavaMetadataConversionHandler;
 
 public class JavaConverterConversionHandler
 	extends AbstractJavaMetadataConversionHandler

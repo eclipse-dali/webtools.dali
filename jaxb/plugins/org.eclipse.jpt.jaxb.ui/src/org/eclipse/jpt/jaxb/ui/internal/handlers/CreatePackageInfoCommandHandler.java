@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.ui.internal.commands;
+package org.eclipse.jpt.jaxb.ui.internal.handlers;
 
 import java.util.Iterator;
 import java.util.List;

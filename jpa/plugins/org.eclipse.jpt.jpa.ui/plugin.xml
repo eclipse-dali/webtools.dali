@@ -226,29 +226,6 @@
 			factoryClass="org.eclipse.jpt.jpa.ui.internal.jpa2.platform.generic.Generic2_1JpaPlatformUiFactory"/>
 	
 	</extension>
-  	
-	
-	<!-- ***** action sets ***** -->
-
-	<extension
-		point="org.eclipse.ui.actionSets">
-		
-		<actionSet
-			description="%JptCreationActionSet.description"
-			id="org.eclipse.jpt.jpa.ui.JptCreationActionSet"
-			label="%JptCreationActionSet.label">
-			<action
-				class="org.eclipse.jpt.jpa.ui.internal.wizards.NewEntityDropDownAction"
-				disabledIcon="$nl$/images/buttons/new-entity-disabled.gif"
-				icon="$nl$/images/buttons/new-entity.gif"
-				id="org.eclipse.jpt.jpa.ui.NewEntityAction"
-				label="%NewEntityAction.label"
-				style="pulldown"
-				toolbarPath="Normal/JptWizards">
-			</action>
-		</actionSet>
-		
-	</extension>
 	
 	
 	<!-- ***** commands ***** -->
@@ -266,7 +243,37 @@
 			id="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion"
 			name="%upgradeToLatestVersion">
 		</command>
+
+		<command
+			id="org.eclipse.jpt.jpa.ui.generateDDL"
+			name="%generateDDL" >
+		</command>
+
+		<command
+			id="org.eclipse.jpt.jpa.ui.newEntity"
+			name="%newJpaEntityWizardName">
+		</command>
 		
+		<command
+			id="org.eclipse.jpt.jpa.ui.newMappingFile"
+			name="%newJpaMappingFileWizardName">
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.jpa.ui.generateEntities"
+			name="%generateEntities" >
+		</command>
+
+		<command
+			id="org.eclipse.jpt.jpa.ui.makePersistent"
+			name="%makePersistent" >
+		</command>
+
+		<command
+			id="org.eclipse.jpt.jpa.core.synchronizeClasses"
+			name="%synchronizeClasses" >
+		</command>
+
 		<category
 			id="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands"
 			name="%jpaStructureViewCommandCategory">
@@ -361,7 +368,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.ConvertJavaProjectToJpaCommandHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.ConvertJavaProjectToJpaCommandHandler">
 			<activeWhen>
 				<with variable="selection">
 					<count value="1"/>
@@ -383,7 +390,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.UpgradeXmlFileVersionHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.UpgradeXmlFileVersionHandler">
 			<activeWhen>
 				<iterate ifEmpty="false">
 					<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
@@ -395,7 +402,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.UpgradeXmlResourceVersionHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.UpgradeXmlResourceVersionHandler">
 			<activeWhen>
 				<iterate ifEmpty="false">
 					<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
@@ -404,10 +411,100 @@
 				</iterate>
 			</activeWhen>
 		</handler>
+
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.newEntity"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.NewEntityHandler">
+		</handler>
+
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.newMappingFile"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.NewMappingFileHandler">
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.generateDDL"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.GenerateDDLHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<and>
+								<test
+									property="org.eclipse.wst.common.project.facet.core.projectFacet"
+									value="jpt.jpa"/>
+							</and>
+						</adapt>
+					</iterate>
+				</with>
+			</activeWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.generateEntities"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.GenerateEntitiesHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<adapt type="org.eclipse.core.resources.IProject">
+							<and>
+								<test
+									property="org.eclipse.wst.common.project.facet.core.projectFacet"
+									value="jpt.jpa"/>
+							</and>
+						</adapt>
+					</iterate>
+				</with>
+			</activeWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.ui.makePersistent"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.MakePersistentHandler">
+			<enabledWhen>
+				<with variable="selection">
+					<count value="+"/>
+					<iterate>
+	                  	<and>
+							<adapt type="org.eclipse.jdt.core.IJavaElement" />
+		                     <or>
+		            			<instanceof value="org.eclipse.jdt.core.ICompilationUnit"/>
+		            			<instanceof value="org.eclipse.jdt.core.IType"/>
+		            			<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+		            			<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+		                     </or>
+		                 </and>
+					</iterate>
+				</with>
+			</enabledWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.core.synchronizeClasses"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.SynchronizeClassesHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<or>
+							<adapt type="org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml" />
+							<adapt type="org.eclipse.core.resources.IFile">
+								<test
+									property="org.eclipse.core.resources.name"
+									value="persistence.xml">
+								</test>
+							</adapt>
+						</or>
+					</iterate>
+				</with>
+			</activeWhen>
+		</handler>
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.entityMappingsAddPersistentClass"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.AddPersistentClassHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.AddPersistentClassHandler">
 			<activeWhen>
 				<and>			
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -421,7 +518,7 @@
 		
 		<handler
 			commandId="org.eclipse.ui.edit.delete"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentClassHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.RemovePersistentClassHandler">
 			<activeWhen>
 				<and>			
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -434,7 +531,7 @@
 		
 		<handler
 			commandId="org.eclipse.ui.edit.delete"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentAttributeFromXmlHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.RemovePersistentAttributeFromXmlHandler">
 			<activeWhen>
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -448,7 +545,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXml"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.AddPersistentAttributeToXmlHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.AddPersistentAttributeToXmlHandler">
 			<activeWhen>
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -463,7 +560,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXmlAndMap"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.AddPersistentAttributeToXmlAndMapHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.AddPersistentAttributeToXmlAndMapHandler">
 			<activeWhen>
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -477,7 +574,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.persistentTypeMapAs"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.PersistentTypeMapAsHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.PersistentTypeMapAsHandler">
 			<activeWhen>
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -490,7 +587,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeMapAs"
-			class="org.eclipse.jpt.jpa.ui.internal.commands.PersistentAttributeMapAsHandler">
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.PersistentAttributeMapAsHandler">
 			<activeWhen>
 				<and>
 					<reference definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView"/>
@@ -503,7 +600,7 @@
 		</handler>
 		
 		<handler
-			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaGeneratorConversionHandler"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.JavaGeneratorConversionHandler"
         	commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators">
         	
 			<activeWhen>
@@ -520,7 +617,7 @@
         	
 			
 		<handler
-			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaQueryConversionHandler"
+			class="org.eclipse.jpt.jpa.ui.internal.handlers.JavaQueryConversionHandler"
 			commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries">
 			
 			<activeWhen>
@@ -542,7 +639,52 @@
 
  	<extension
 		point="org.eclipse.ui.menus">
+ 
+		<!-- contributions for toolbar -->
+
+		<menuContribution
+	        locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
 		
+			<toolbar 
+				id="org.eclipse.jpt.jpa.ui.jptCreation.toolbar"
+				label="%JptCreationToolbar.label">
+
+				<command
+					commandId="org.eclipse.jpt.jpa.ui.newEntity"
+                  	id="org.eclipse.jpt.jpa.ui.jptCreation.pulldown"
+					label="%newJpaEntityWizardName"
+					icon="$nl$/images/buttons/new-entity.gif"
+					disabledIcon="$nl$/images/buttons/new-entity-disabled.gif"
+					style="pulldown">
+				</command>
+				
+			</toolbar>
+
+		</menuContribution>
+
+      <menuContribution 
+      		locationURI="menu:org.eclipse.jpt.jpa.ui.jptCreation.pulldown">
+
+            <command 
+                commandId="org.eclipse.jpt.jpa.ui.newEntity"
+                label="%newJpaEntityWizardName"
+				icon="$nl$/images/buttons/new-entity.gif"
+				disabledIcon="$nl$/images/buttons/new-entity-disabled.gif"
+                style="push">
+            </command>
+            
+            <command 
+                commandId="org.eclipse.jpt.jpa.ui.newMappingFile"
+                label="%newJpaMappingFileWizardName"
+				icon="$nl$/images/buttons/new-jpa-file.gif"
+				disabledIcon="$nl$/images/buttons/new-jpa-file.gif"
+                style="push">
+            </command>
+            
+            <separator name="jptCreation.separator" visible="false"/>
+            
+      </menuContribution>
+      
 		<!-- contributions for any popup -->
 		<menuContribution
 			locationURI="popup:org.eclipse.ui.popup.any">
@@ -630,10 +772,35 @@
 
 			</menu>
 			
+		</menuContribution>
+		
+		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
+			<command commandId="org.eclipse.jpt.jpa.ui.generateDDL">
+				<visibleWhen checkEnabled="true"/>
+			</command>
+		</menuContribution>
+
+		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
+			<command commandId="org.eclipse.jpt.jpa.ui.generateEntities">
+				<visibleWhen checkEnabled="true"/>
+			</command>
+			
 			<separator name="generate"/>
 			
 		</menuContribution>
-		
+
+		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
+			<command commandId="org.eclipse.jpt.jpa.ui.makePersistent">
+				<visibleWhen checkEnabled="true"/>
+			</command>
+		</menuContribution>
+
+		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
+			<command commandId="org.eclipse.jpt.jpa.core.synchronizeClasses">
+				<visibleWhen checkEnabled="true"/>
+			</command>
+		</menuContribution>
+
 		<!-- contributions to the project configure menu -->
 		<menuContribution locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
 			<command commandId="org.eclipse.jpt.jpa.ui.convertJavaProjectToJpa">
@@ -940,13 +1107,7 @@
 			<perspectiveShortcut id="org.eclipse.debug.ui.DebugPerspective"/>
 			<perspectiveShortcut id="org.eclipse.jst.j2ee.J2EEPerspective"/>
 			<perspectiveShortcut id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
-			
-			<actionSet id="org.eclipse.debug.ui.launchActionSet"/>
-			<actionSet id="org.eclipse.jdt.ui.JavaActionSet"/>
-			<actionSet id="org.eclipse.jdt.ui.JavaElementCreationActionSet"/>
-			<actionSet id="org.eclipse.ui.NavigateActionSet"/>
-			<actionSet id="org.eclipse.jpt.jpa.ui.JptCreationActionSet"/>
-			
+
 			<viewShortcut id="org.eclipse.jdt.ui.PackageExplorer"/>
 			<viewShortcut id="org.eclipse.jdt.ui.TypeHierarchy"/>
 			<viewShortcut id="org.eclipse.jdt.ui.SourceView"/>
@@ -969,89 +1130,7 @@
 		
 	</extension>
 	
-	
-	<!-- ***** pop-up menus ***** -->
 
-	<extension
-		point="org.eclipse.ui.popupMenus">
-		
-		<objectContribution
-			id="org.eclipse.jpt.jpa.ui.project.JPATools"
-			objectClass="org.eclipse.core.resources.IProject"
-			adaptable="true">
-			
-			<!-- ignore the warning - see bug 247250 -->
-			<enablement>
-				<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
-			</enablement>
-			
-			<action
-				id="org.eclipse.jpt.jpa.ui.generateEntities"
-				label="%generateEntities"
-				class="org.eclipse.jpt.jpa.ui.internal.actions.GenerateEntitiesAction"
-				enablesFor="1"
-				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/generate"/>
-			
-			<action
-				id="org.eclipse.jpt.jpa.ui.generateDDL"
-				label="%generateDDL"
-				class="org.eclipse.jpt.jpa.ui.internal.actions.GenerateDDLAction"
-				enablesFor="1"
-				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/generate"/>
-				
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.jpa.ui.MakePersistent"
-			objectClass="org.eclipse.jdt.core.IJavaElement"
-			adaptable="true">
-			
-			<action
-         		class="org.eclipse.jpt.jpa.ui.internal.actions.MakePersistentAction"
-         		enablesFor="*"
-         		id="org.eclipse.jpt.jpa.ui.generateEntities"
-         		label="%makePersistent"
-         		menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/content">
-      			<enablement>
-        	 		<or>
-            			<objectClass name="org.eclipse.jdt.core.ICompilationUnit"/>
-            			<objectClass name="org.eclipse.jdt.core.IType"/>
-            			<objectClass name="org.eclipse.jdt.core.IPackageFragment"/>
-            			<objectClass name="org.eclipse.jdt.core.IPackageFragmentRoot"/>
-         			</or>
-      			</enablement>
-   			</action>
-
-		</objectContribution>
-
-		<objectContribution
-			id="org.eclipse.jpt.jpa.ui.persistenceXmlFileActions"
-			objectClass="org.eclipse.core.resources.IFile"
-			nameFilter="persistence.xml">
-			
-			<action
-				id="synchClassesAction"
-				label="%synchronizeClasses"
-				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/content"
-				class="org.eclipse.jpt.jpa.ui.internal.actions.SynchronizeClassesAction"
-				enablesFor="1"/>
-			
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.jpa.ui.persistenceXmlActions"
-			objectClass="org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml">
-			<action
-				id="synchClassesAction"
-				label="%synchronizeClasses"
-				menubarPath="content"
-				class="org.eclipse.jpt.jpa.ui.internal.actions.SynchronizeClassesAction"
-				enablesFor="1"/>
-		</objectContribution>
-		
-	</extension>
-	
-	
 	<!-- ***** preferences ***** -->
 
 	<extension

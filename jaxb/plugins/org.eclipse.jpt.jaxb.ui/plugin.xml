@@ -141,6 +141,8 @@
 	</extension>
 	
 	
+	<!-- ***** commands ***** -->
+	
 	<extension
 		point="org.eclipse.ui.commands">
 		
@@ -148,15 +150,22 @@
 			id="org.eclipse.jpt.jaxb.ui.command.createPackageInfo"
 			name="%createPackageInfoCommand"/>
 		
+		<command
+			id="org.eclipse.jpt.jaxb.ui.generateJaxbClasses"
+			name="%generateJaxbClasses" >
+		</command>
+		
 	</extension>		
-			
+
+
+	<!-- ***** handlers ***** -->
 	
 	<extension
 		point="org.eclipse.ui.handlers">
 		
 		<handler
 			commandId="org.eclipse.jpt.jaxb.ui.command.createPackageInfo"
-			class="org.eclipse.jpt.jaxb.ui.internal.commands.CreatePackageInfoCommandHandler">
+			class="org.eclipse.jpt.jaxb.ui.internal.handlers.CreatePackageInfoCommandHandler">
 			<enabledWhen>
 				<iterate ifEmpty="false">
 					<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
@@ -167,10 +176,36 @@
 				</iterate>
 			</enabledWhen>
 		</handler>
-		
+				
+		<handler
+			commandId="org.eclipse.jpt.jaxb.ui.generateJaxbClasses"
+			class="org.eclipse.jpt.jaxb.ui.internal.handlers.GenerateClassesHandler">
+			<activeWhen>
+				<with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<and>
+							<adapt type="org.eclipse.core.resources.IFile">
+							<and>
+								<test
+									property="org.eclipse.core.resources.name"
+									value="*.xsd"/>
+								<test
+									property="org.eclipse.core.resources.projectNature"
+									value="org.eclipse.jdt.core.javanature"/>
+							</and>
+							</adapt>
+						</and>
+					</iterate>
+				</with>
+			</activeWhen>
+		</handler>
+
 	</extension>
-	
-	
+ 	
+ 	
+	<!-- ***** menus ***** -->
+
 	<extension
 		point="org.eclipse.ui.menus">
 		
@@ -225,9 +260,18 @@
 			</command>
 			
 		</menuContribution>
-		
+
+		<!-- contributions to the "Generate" submenu -->
+
+		<menuContribution 
+			locationURI="popup:generateMenuId?after=additions">
+				<command commandId="org.eclipse.jpt.jaxb.ui.generateJaxbClasses">
+					<visibleWhen checkEnabled="true"/>
+				</command>
+		</menuContribution>
+
 	</extension>
-	
+
 	
 	<extension
 		point="org.eclipse.ui.navigator.navigatorContent">
@@ -283,29 +327,6 @@
 				<contentExtension pattern="org.eclipse.jpt.jaxb.ui.*"/>
 			</includes>
 		</viewerContentBinding>
-		
-	</extension>
-	
-	
-	<extension
-		point="org.eclipse.ui.popupMenus">
-
-		<!-- contributions to the "Generate" submenu -->
-		<objectContribution
-			id="org.eclipse.jpt.jaxb.ui.xsdFileActions"
-			objectClass="org.eclipse.core.resources.IFile"
-			nameFilter="*.xsd">
-			<filter
-				name="projectNature"
-				value="org.eclipse.jdt.core.javanature">
-			</filter>
-			<action
-				id="org.eclipse.jpt.jaxb.ui.generateJaxbClasses" 
-				label="%generateJaxbClasses"
-				menubarPath="generateMenuId/GenerateXML"
-				class="org.eclipse.jpt.jaxb.ui.internal.actions.GenerateClassesAction"> 
-			</action> 
-		</objectContribution>
 		
 	</extension>
 	

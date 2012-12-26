@@ -68,7 +68,7 @@
 			id="org.eclipse.jpt.jpa.eclipselink"
 			name="%eclipseLinkWizardCategoryName"
 			parentCategory="org.eclipse.jpt.jpa"/>
-		
+
 <!-- bug 395126
 			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/$nl$/images/buttons/new-jpa-file.gif"
  -->
@@ -233,6 +233,16 @@
 
   	<extension
         point="org.eclipse.ui.commands">
+
+		<command
+			id="org.eclipse.jpt.jpa.eclipselink.ui.newEclipseLinkMappingFile"
+			name="%newEclipseLinkMappingFileWizardName">
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.jpa.eclipselink.ui.newDynamicEntity"
+			name="%newEclipseLinkDynamicEntityName">
+		</command>
 		
 		<command
 			id="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
@@ -260,6 +270,16 @@
    <extension
           point="org.eclipse.ui.handlers">
 		
+		<handler
+			commandId="org.eclipse.jpt.jpa.eclipselink.ui.newEclipseLinkMappingFile"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.NewEclipseLinkMappingFileHandler">
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.eclipselink.ui.newDynamicEntity"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.NewDynamicEntityHandler">
+		</handler>
+
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.AddVirtualAttributeHandler">
@@ -361,8 +381,31 @@
 	<extension
 		point="org.eclipse.ui.menus">
 		
+		<!-- contributions to the JptCreation pulldown -->
+		<menuContribution 
+			locationURI="menu:org.eclipse.jpt.jpa.ui.jptCreation.pulldown?after=jptCreation.separator">
+	
+			<command 
+				commandId="org.eclipse.jpt.jpa.eclipselink.ui.newEclipseLinkMappingFile"
+				label="%newEclipseLinkMappingFileWizardName"
+				icon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-jpa-file.gif"
+				disabledIcon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-jpa-file.gif"
+				style="push">
+			</command>
+
+			<command 
+				commandId="org.eclipse.jpt.jpa.eclipselink.ui.newDynamicEntity"
+				label="%newEclipseLinkDynamicEntityName"
+				icon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-entity.gif"
+				disabledIcon="platform:/plugin/org.eclipse.jpt.jpa.ui/images/buttons/new-entity.gif"
+				style="push">
+			</command>
+
+		</menuContribution>
+
 		<!-- contributions to the "JPA Tools" submenu -->
-		<menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools?after=generate">
+		<menuContribution 
+			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools?after=generate">
 			
 			<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities">
 				<visibleWhen checkEnabled="true"/>
@@ -384,7 +427,8 @@
 		</menuContribution>
 		
 		<!-- contributions to objects in the JPA structure view -->
-		<menuContribution locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
+		<menuContribution 
+			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
 			
 			<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
 				<visibleWhen checkEnabled="true"/>
@@ -392,7 +436,8 @@
 		</menuContribution>
 		
         <!-- contributions to "Move to XML" submenu-->
-        <menuContribution locationURI="popup:org.eclipse.jpt.jpa.ui.menu.moveToXml">
+        <menuContribution 
+        	locationURI="popup:org.eclipse.jpt.jpa.ui.menu.moveToXml">
 			
 			<command 
 				commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
@@ -403,7 +448,9 @@
 		</menuContribution>
 
 		<!-- contributions for any popup -->
-        <menuContribution locationURI="popup:org.eclipse.ui.popup.any">
+        <menuContribution 
+        	locationURI="popup:org.eclipse.ui.popup.any">
+        	
         	<command commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
         		<visibleWhen>
         			<iterate ifEmpty="false">
