@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.commands.PersistentTypeMapAsHandler;
+import org.eclipse.jpt.jpa.ui.internal.handlers.PersistentTypeMapAsHandler;
 
 /**
  * This menu contribution is responsible for populating the "Map As" menu with

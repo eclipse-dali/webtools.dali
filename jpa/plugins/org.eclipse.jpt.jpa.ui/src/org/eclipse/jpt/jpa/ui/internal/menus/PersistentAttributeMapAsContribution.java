@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.commands.PersistentAttributeMapAsHandler;
+import org.eclipse.jpt.jpa.ui.internal.handlers.PersistentAttributeMapAsHandler;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 /**

@@ -7,19 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.commands;
+package org.eclipse.jpt.jpa.ui.internal.handlers;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 
-public class JavaGeneratorConversionHandler
+public class JavaQueryConversionHandler
 	extends AbstractJavaMetadataConversionHandler
 {
-	public JavaGeneratorConversionHandler() {
+	public JavaQueryConversionHandler() {
 		super();
 	}
 
 	@Override
 	protected void convertJavaMetadata(JpaProject jpaProject) {
-		this.getJpaPlatformUi(jpaProject).convertJavaGeneratorMetadataToGlobal(jpaProject);
+		this.getJpaPlatformUi(jpaProject).convertJavaQueryMetadataToGlobal(jpaProject);
 	}
 }

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.commands;
+package org.eclipse.jpt.jpa.ui.internal.handlers;
 
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.commands.AbstractHandler;
