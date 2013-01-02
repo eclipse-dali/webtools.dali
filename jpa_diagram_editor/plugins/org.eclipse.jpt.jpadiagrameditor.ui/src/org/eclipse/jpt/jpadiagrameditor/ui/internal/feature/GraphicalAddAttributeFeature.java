@@ -74,12 +74,14 @@ public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 	private ContainerShape addAttributeToProperlyShape(ContainerShape entityShape, String txt, HashSet<String> annots,
 			ContainerShape primaryShape, ContainerShape relationShape, ContainerShape basicShape) {
 		ContainerShape textShape = null;
-		if (annots.contains(JPAEditorConstants.ANNOTATION_ID) || annots.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) {
+		if (annots.contains(JPAEditorConstants.ANNOTATION_ID) || annots.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)
+				|| annots.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)) {
 			textShape = addAttributeToShape(entityShape, txt, annots, primaryShape);
-		} else if (annots.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)
+		} else if (!annots.contains(JPAEditorConstants.ANNOTATION_ID) && !annots.contains(JPAEditorConstants.ANNOTATION_MAPS_ID) 
+				 && (annots.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)
 				|| annots.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)
 				|| annots.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY)
-				|| annots.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) {
+				|| annots.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE))) {
 			textShape = addAttributeToShape(entityShape, txt, annots, relationShape);
 		} else {
 			textShape = addAttributeToShape(entityShape, txt, annots, basicShape);

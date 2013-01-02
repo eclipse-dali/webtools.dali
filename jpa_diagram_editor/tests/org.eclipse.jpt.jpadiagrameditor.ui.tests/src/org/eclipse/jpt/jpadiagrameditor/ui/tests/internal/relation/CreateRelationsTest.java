@@ -139,7 +139,7 @@ public class CreateRelationsTest {
 	@Test
 	public void testCreateOneToOneUnidirRelation() throws Exception {
 				
-		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address", true);
+		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address", true, false);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -155,7 +155,7 @@ public class CreateRelationsTest {
 	@Test
 	public void testCreateOneToOneBidirRelation() throws Exception {
 		
-		AbstractRelation rel = new OneToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
+		AbstractRelation rel = new OneToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null, false);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -193,7 +193,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateManyToOneUnidirRelation() throws Exception {
-		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address", true);
+		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address", true, false);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -206,7 +206,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateManyToOneBidirRelation() throws Exception {
-		AbstractRelation rel = new ManyToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
+		AbstractRelation rel = new ManyToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null, false);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());

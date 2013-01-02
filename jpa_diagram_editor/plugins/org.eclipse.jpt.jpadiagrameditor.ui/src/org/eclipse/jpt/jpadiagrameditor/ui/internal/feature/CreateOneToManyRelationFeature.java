@@ -27,7 +27,7 @@ abstract class CreateOneToManyRelationFeature
 		extends	CreateRelationFeature {
 
 	public CreateOneToManyRelationFeature(IJPAEditorFeatureProvider fp, String name, String description) {
-		super(fp, name, description);
+		super(fp, name, description, false);
 	}
 	
 	/* (non-Javadoc)

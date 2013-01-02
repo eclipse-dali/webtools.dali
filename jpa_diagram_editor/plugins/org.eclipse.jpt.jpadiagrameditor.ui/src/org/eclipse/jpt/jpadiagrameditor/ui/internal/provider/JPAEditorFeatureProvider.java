@@ -414,11 +414,11 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     @Override
     public ICreateConnectionFeature[] getCreateConnectionFeatures() {
         return new ICreateConnectionFeature[] {
-        	new CreateOneToOneUniDirRelationFeature(this),
-            new CreateOneToOneBiDirRelationFeature(this),           
+        	new CreateOneToOneUniDirRelationFeature(this, false),
+            new CreateOneToOneBiDirRelationFeature(this, false),           
         	new CreateOneToManyUniDirRelationFeature(this),                    
-        	new CreateManyToOneUniDirRelationFeature(this),
-            new CreateManyToOneBiDirRelationFeature(this),            
+        	new CreateManyToOneUniDirRelationFeature(this, false),
+            new CreateManyToOneBiDirRelationFeature(this, false),            
         	new CreateManyToManyUniDirRelationFeature(this),
             new CreateManyToManyBiDirRelationFeature(this)
         };
@@ -635,7 +635,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     }
     
     public boolean doesEmbeddedRelationExist(JavaPersistentType embeddable, JavaPersistentType embeddingEntity, String embeddedAttributeName, HasReferenceType relType){
-    	String id = HasReferanceRelation.generateId(embeddable, embeddingEntity, embeddedAttributeName, relType);
+    	String id = HasReferanceRelation.generateId(embeddingEntity, embeddable, embeddedAttributeName, relType);
     	return (getBusinessObjectForKey(id) != null);
     }
     

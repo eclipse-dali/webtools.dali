@@ -73,6 +73,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseCompartmentS
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateInheritedEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateIsARelationFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToOneBiDirRelationFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToOneUniDirRelationFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateOneToOneBiDirRelationFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateOneToOneUniDirRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteJPAEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DiscardAndRemoveAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.EmbedCollectionOfObjectsFeature;
@@ -258,14 +262,58 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         
     	createInheritancePaletteSection(ret, superCompartments);
     	
+    	if(!JPAEditorUtil.checkJPAFacetVersion(getTargetJPAProject(), JPAEditorUtil.JPA_PROJECT_FACET_10)) {
+    		createDerivedIdentifiersPalleteSection(ret, superCompartments);
+    	}
+    	
     	createCompositionPaletteSection(ret, superCompartments);
 
         return ret.toArray(new IPaletteCompartmentEntry[ret.size()]);
+    }
+    
+    private void createDerivedIdentifiersPalleteSection(List<IPaletteCompartmentEntry> ret,
+			IPaletteCompartmentEntry[] superCompartments){
+    	PaletteCompartmentEntry compositionEnt = new PaletteCompartmentEntry(JPAEditorMessages.JPAEditorToolBehaviorProvider_DerivedIdentifiersPalleteTitle, superCompartments[1].getIconId());   
+		
+    	CreateOneToOneUniDirRelationFeature oneToOneUniDirPkFt = new CreateOneToOneUniDirRelationFeature((IJPAEditorFeatureProvider) this.getFeatureProvider(), true);
+    	ConnectionCreationToolEntry oneToOneUniDirPkToolEntry = new ConnectionCreationToolEntry(oneToOneUniDirPkFt.getCreateName(),
+				oneToOneUniDirPkFt.getCreateDescription(), oneToOneUniDirPkFt.getCreateImageId(), oneToOneUniDirPkFt.getCreateLargeImageId());
+    	oneToOneUniDirPkToolEntry.addCreateConnectionFeature(oneToOneUniDirPkFt);
+		compositionEnt.addToolEntry(oneToOneUniDirPkToolEntry);
+		
+		CreateOneToOneBiDirRelationFeature oneToOneBiDirPkFt = new CreateOneToOneBiDirRelationFeature((IJPAEditorFeatureProvider) this.getFeatureProvider(), true);
+		ConnectionCreationToolEntry oneToOneBiDirPkToolEntry = new ConnectionCreationToolEntry(oneToOneBiDirPkFt.getCreateName(),
+				oneToOneBiDirPkFt.getCreateDescription(), oneToOneBiDirPkFt.getCreateImageId(), oneToOneBiDirPkFt.getCreateLargeImageId());
+		oneToOneBiDirPkToolEntry.addCreateConnectionFeature(oneToOneBiDirPkFt);
+		compositionEnt.addToolEntry(oneToOneBiDirPkToolEntry);
+
+		CreateManyToOneUniDirRelationFeature manyToOneUniDirPkFt = new CreateManyToOneUniDirRelationFeature((IJPAEditorFeatureProvider) this.getFeatureProvider(), true);
+    	ConnectionCreationToolEntry manyToOneUniDirPkToolEntry = new ConnectionCreationToolEntry(manyToOneUniDirPkFt.getCreateName(),
+				manyToOneUniDirPkFt.getCreateDescription(), manyToOneUniDirPkFt.getCreateImageId(), manyToOneUniDirPkFt.getCreateLargeImageId());
+    	manyToOneUniDirPkToolEntry.addCreateConnectionFeature(manyToOneUniDirPkFt);
+		compositionEnt.addToolEntry(manyToOneUniDirPkToolEntry);
+		
+		CreateManyToOneBiDirRelationFeature manyToOneBiDirPkFt = new CreateManyToOneBiDirRelationFeature((IJPAEditorFeatureProvider) this.getFeatureProvider(), true);
+		ConnectionCreationToolEntry manyToOneBiDirPkToolEntry = new ConnectionCreationToolEntry(manyToOneBiDirPkFt.getCreateName(),
+				manyToOneBiDirPkFt.getCreateDescription(), manyToOneBiDirPkFt.getCreateImageId(), manyToOneBiDirPkFt.getCreateLargeImageId());
+		manyToOneBiDirPkToolEntry.addCreateConnectionFeature(manyToOneBiDirPkFt);
+		compositionEnt.addToolEntry(manyToOneBiDirPkToolEntry);
+		
+    	ret.add(2, compositionEnt);
     }
 
 	private void createCompositionPaletteSection(
 			List<IPaletteCompartmentEntry> ret,
 			IPaletteCompartmentEntry[] superCompartments) {
+		int index;
+		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(getTargetJPAProject(), JPAEditorUtil.JPA_PROJECT_FACET_10);
+		
+		if(isJPA10Project) {
+			index = 2;
+		} else {
+			index = 3;
+		}
+		
 		PaletteCompartmentEntry compositionEnt = new PaletteCompartmentEntry(JPAEditorMessages.JPAEditorToolBehaviorProvider_CompositionPaletteName, superCompartments[1].getIconId());   
 		
     	EmbedSingleObjectFeature embedObjectFt = new EmbedSingleObjectFeature(this.getFeatureProvider());
@@ -274,7 +322,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
     	isEmbeddedObjectToolEntry.addCreateConnectionFeature(embedObjectFt);
 		compositionEnt.addToolEntry(isEmbeddedObjectToolEntry);
 		
-		if(!JPAEditorUtil.checkJPAFacetVersion(getTargetJPAProject(), JPAEditorUtil.JPA_PROJECT_FACET_10)) {
+		if(!isJPA10Project) {
 			EmbedCollectionOfObjectsFeature embedCollectionFt = new EmbedCollectionOfObjectsFeature(this.getFeatureProvider());
 			ConnectionCreationToolEntry isEmbeddedCollectionToolEntry = new ConnectionCreationToolEntry(embedCollectionFt.getCreateName(),
 					embedCollectionFt.getCreateDescription(), embedCollectionFt.getCreateImageId(), embedCollectionFt.getCreateLargeImageId());
@@ -282,7 +330,7 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 			compositionEnt.addToolEntry(isEmbeddedCollectionToolEntry);
 		}
 		
-    	ret.add(2, compositionEnt);
+    	ret.add(index, compositionEnt);
 	}
 
 	private JpaProject getTargetJPAProject() {

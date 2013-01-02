@@ -221,15 +221,15 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 
 	private void fillCompartments(JavaPersistentType jpt, ContainerShape entityShape) {
-		String[] primaryKeyAnnotations = new String[] {JPAEditorConstants.ANNOTATION_ID, JPAEditorConstants.ANNOTATION_EMBEDDED_ID};
+		String[] primaryKeyAnnotations = new String[] {JPAEditorConstants.ANNOTATION_ID, JPAEditorConstants.ANNOTATION_EMBEDDED_ID, JPAEditorConstants.ANNOTATION_MAPS_ID};
 		for(String annotation : primaryKeyAnnotations){
-			addCompartmentChildren(primaryShape, jpt, annotation);
+			addCompartmentChildren(primaryShape, jpt, annotation, null);
 		}
 		String[] relationAnnotations = new String[] {JPAEditorConstants.ANNOTATION_MANY_TO_MANY, 
 				JPAEditorConstants.ANNOTATION_MANY_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_MANY,
 				JPAEditorConstants.ANNOTATION_ONE_TO_ONE};
 	    for(String annotation : relationAnnotations){
-		   addCompartmentChildren(relationShape, jpt, annotation);
+		   addCompartmentChildren(relationShape, jpt, annotation, primaryKeyAnnotations);
 	    }
         addBasicAttributes(basicShape, jpt);
         GraphicsUpdater.updateEntityShape(entityShape);
@@ -284,16 +284,27 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 	private void addCompartmentChildren(
 			ContainerShape containerShape, JavaPersistentType jpt,
-			String attributeAnnotations) {
+			String attributeAnnotations, String[] excludeAnnotations) {
 		List<JavaPersistentAttribute> attributes = new ArrayList<JavaPersistentAttribute>();
 
 		for (JavaPersistentAttribute attribute : jpt.getAttributes()) {
 			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
-			if (annotations.contains(attributeAnnotations)) {
+			if (annotations.contains(attributeAnnotations) && canAddAttribute(annotations, excludeAnnotations)) {
 				attributes.add(attribute);
 			}
 		}
 		addAttributes(containerShape, attributes);
+	}
+	
+	private boolean canAddAttribute(HashSet<String> annotations, String[] excludeAnnotations){
+		if(excludeAnnotations == null || excludeAnnotations.length == 0)
+			return true;
+		for(String annotation : excludeAnnotations){
+			if(annotations.contains(annotation))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	private void addBasicAttributes(ContainerShape containerShape, JavaPersistentType jpt){
@@ -303,7 +314,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
 			if(!(annotations.contains(JPAEditorConstants.ANNOTATION_ID))&& !(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) && 
 					!(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY))&&
-					!(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) || annotations.isEmpty()){
+					!(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)) || annotations.isEmpty()){
 				attributes.add(attribute);
 			}
 		}

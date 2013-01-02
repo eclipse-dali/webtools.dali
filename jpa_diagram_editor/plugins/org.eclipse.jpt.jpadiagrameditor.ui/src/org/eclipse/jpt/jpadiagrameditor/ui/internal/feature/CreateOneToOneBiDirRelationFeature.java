@@ -32,10 +32,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class CreateOneToOneBiDirRelationFeature extends CreateOneToOneRelationFeature
 												implements ICreateBiDirRelationFeature {
-	
-	public CreateOneToOneBiDirRelationFeature(IJPAEditorFeatureProvider fp) {
+		
+	public CreateOneToOneBiDirRelationFeature(IJPAEditorFeatureProvider fp, boolean isDerivedIdFeature) {
 		super(fp, JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,  
-				JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureDescription); 
+				JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureDescription, isDerivedIdFeature);
 	}
 		
 	@Override
@@ -56,12 +56,14 @@ public class CreateOneToOneBiDirRelationFeature extends CreateOneToOneRelationFe
 			nameWithNonCapitalLetter2 = JPAEditorUtil.produceValidAttributeName(inverseAttributeName);
 		String inverseAttributeText = JPAEditorUtil.produceUniqueAttributeName(inverse, ownerAttributeText, nameWithNonCapitalLetter2);		
 		
-		OneToOneBiDirRelation rel = new OneToOneBiDirRelation(fp, owner, inverse, ownerAttributeText, inverseAttributeText, true, embeddingEntity); 
+		OneToOneBiDirRelation rel = new OneToOneBiDirRelation(fp, owner, inverse, ownerAttributeText, inverseAttributeText, true, embeddingEntity, isDerivedIdFeature); 
 		return rel;		
 	}
 	
-    @Override
-	public String getCreateImageId() {
+    public String getCreateImageId() {
+    	if(isDerivedIdFeature) {
+    		return JPAEditorImageProvider.ICON_ONE_TO_ONE_2_KEY_DIR;
+    	}
         return JPAEditorImageProvider.ICON_ONE_TO_ONE_2_DIR;
     }
     

@@ -32,10 +32,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class CreateOneToOneUniDirRelationFeature extends CreateOneToOneRelationFeature
 												 implements ICreateUniDirRelationFeature {
-	
-	public CreateOneToOneUniDirRelationFeature(IJPAEditorFeatureProvider fp) {
+		
+	public CreateOneToOneUniDirRelationFeature(IJPAEditorFeatureProvider fp, boolean isDerivedIdFeature) {
 		super(fp, JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName, 
-				JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureDescription); 
+				JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureDescription, isDerivedIdFeature);
 	}
 		
 	@Override
@@ -50,12 +50,14 @@ public class CreateOneToOneUniDirRelationFeature extends CreateOneToOneRelationF
 		if (JpaArtifactFactory.instance().isMethodAnnotated(owner))
 			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(name);
 		String attribTxt = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter);		
-		OneToOneUniDirRelation res = new OneToOneUniDirRelation(fp, owner, inverse, attribTxt, true);
+		OneToOneUniDirRelation res = new OneToOneUniDirRelation(fp, owner, inverse, attribTxt, true, isDerivedIdFeature);
 		return res;
 	}
 	
-    @Override
-	public String getCreateImageId() {
+    public String getCreateImageId() {
+    	if(isDerivedIdFeature) {
+    		return JPAEditorImageProvider.ICON_ONE_TO_ONE_1_KEY_DIR;
+    	}
         return JPAEditorImageProvider.ICON_ONE_TO_ONE_1_DIR;
     }
     

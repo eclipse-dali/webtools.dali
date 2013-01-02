@@ -27,11 +27,11 @@ public class OneToOneUniDirRelation extends OneToOneRelation implements IUnidire
 	public OneToOneUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 								  JavaPersistentType inverse, 
 								  String ownerAttributeName,
-								  boolean createAttribs) {
+								  boolean createAttribs, boolean isDerivedIdFeature) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName; 
 		if (createAttribs) 
-			createRelation(fp);
+			createRelation(fp, isDerivedIdFeature);
 	}
 	
 	public JavaPersistentAttribute getAnnotatedAttribute() {
@@ -42,8 +42,11 @@ public class OneToOneUniDirRelation extends OneToOneRelation implements IUnidire
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp) {
+	private void createRelation(IJPAEditorFeatureProvider fp, boolean isDerivedIdFeature) {
 		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
+		if(isDerivedIdFeature){
+			JpaArtifactFactory.instance().calculateDerivedIdAnnotation(owner, inverse, ownerAnnotatedAttribute);
+		}
 		JpaArtifactFactory.instance().addOneToOneUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute);
 	} 
 		

@@ -42,9 +42,12 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 abstract public class CreateRelationFeature extends AbstractCreateConnectionFeature {
 	
 	protected JavaPersistentType owner;
+	
+	protected boolean isDerivedIdFeature;
 
-	public CreateRelationFeature(IJPAEditorFeatureProvider fp, String name, String description) {
+	public CreateRelationFeature(IJPAEditorFeatureProvider fp, String name, String description, boolean isDerivedIdFeature) {
 		super(fp, name, description);
+		this.isDerivedIdFeature = isDerivedIdFeature;
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
@@ -63,6 +66,10 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	    if ((this instanceof ICreateBiDirRelationFeature) && 
 	    	(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(owner)))
 	    	return false;
+	    if(isDerivedIdFeature && (!JpaArtifactFactory.instance().hasEntityAnnotation(owner)
+	    		|| !JpaArtifactFactory.instance().hasEntityAnnotation(inverse))){
+	    	return false;
+	    }
 	    return true;
 	}
 
@@ -183,14 +190,14 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 			disableAllJPTsThatAreNotEntities(unit);
 		} 
 		else if(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(owner)){
-			if (this instanceof ICreateBiDirRelationFeature){
+			if (isDerivedIdFeature || (this instanceof ICreateBiDirRelationFeature)){
 				disableAllPersistentTypes(unit);
 			} else {
 				disableAllJPTsThatAreNotEntities(unit);
 			}
 		} 
 		else if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)) {
-	    	if(!isRelationshipPossible() || JPAEditorUtil.checkJPAFacetVersion(owner.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10)) {
+	    	if(isDerivedIdFeature || !isRelationshipPossible() || JPAEditorUtil.checkJPAFacetVersion(owner.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10)) {
 	    		disableAllPersistentTypes(unit);
 	    	} else {
 	    		disableAllJPTsThatAreNotEntities(unit);
@@ -240,12 +247,12 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName()), JPAEditorUtil.JPA_PROJECT_FACET_10);
-		if(!isJPA10Project)
-			return;
+
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) {
 				final JavaPersistentType jpt = classRef.getJavaPersistentType();
-				if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt)){
+				if((isJPA10Project && JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt))
+						|| (isDerivedIdFeature && !JpaArtifactFactory.instance().hasEntityAnnotation(jpt))){
 					getFeatureProvider().setGrayColor(jpt);
 				}
 				

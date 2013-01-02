@@ -44,9 +44,11 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceModel;
@@ -76,8 +78,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
@@ -254,7 +258,7 @@ public class JpaArtifactFactory {
 			String mappedByAttr = getMappeByAttribute(fp, manySideJPT, manySideAttribute);
 			setMappedByAnnotationAttribute(resolvedSingleSideAttribute, singleSideJPT, mappedByAttr);			
 		} else {
-			addJoinColumnIfNecessary(resolvedSingleSideAttribute, singleSideJPT, fp);
+			addJoinColumnIfNecessary(resolvedSingleSideAttribute, singleSideJPT);
 		}		
 		if (isMap)
 			singleSideAttibute.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
@@ -265,8 +269,8 @@ public class JpaArtifactFactory {
 		
 		String mappedByAttr = ownerSideAttribute.getName();
 		
-		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(ownerSideJPT)){
-			HasReferanceRelation ref = JpaArtifactFactory.instance().findFisrtHasReferenceRelationByEmbeddable(ownerSideJPT, (IJPAEditorFeatureProvider)fp);
+		if(hasEmbeddableAnnotation(ownerSideJPT)){
+			HasReferanceRelation ref = JpaArtifactFactory.INSTANCE.findFisrtHasReferenceRelationByEmbeddable(ownerSideJPT, (IJPAEditorFeatureProvider)fp);
 			if(ref != null){
 				JavaPersistentAttribute embeddingAttribute = ref.getEmbeddedAnnotatedAttribute();
 				mappedByAttr  = embeddingAttribute.getName() + "." + ownerSideAttribute.getName(); //$NON-NLS-1$
@@ -298,7 +302,7 @@ public class JpaArtifactFactory {
 	}
 	
 	private void addJoinColumnIfNecessary(JavaPersistentAttribute jpa,
-			JavaPersistentType jpt, IFeatureProvider fp) {
+			JavaPersistentType jpt) {
 
 		if (JPAEditorUtil.checkJPAFacetVersion(jpa.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10) ||
 				JPADiagramPropertyPage.shouldOneToManyUnidirBeOldStyle(jpa
@@ -345,6 +349,7 @@ public class JpaArtifactFactory {
 	private Hashtable<String, String> getOverriddenColNames(
 			JavaPersistentAttribute embIdAt) {
 		Hashtable<String, String> res = new Hashtable<String, String>();
+		if(embIdAt.getResourceAttribute().getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME) > 0){
 		AttributeOverrideAnnotation aon = (AttributeOverrideAnnotation) embIdAt
 				.getResourceAttribute().getAnnotation(0, 
 						AttributeOverrideAnnotation.ANNOTATION_NAME);
@@ -357,6 +362,7 @@ public class JpaArtifactFactory {
 				return res;
 			res.put(aon.getName(), colName);
 			return res;
+		}
 		}
 		Iterable<AttributeOverrideAnnotation> it = new SubListIterableWrapper<NestableAnnotation, AttributeOverrideAnnotation>(
 			embIdAt.getResourceAttribute().getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -591,6 +597,32 @@ public class JpaArtifactFactory {
 	}
 	
 	/**
+	 * Finds all java persistent types, which has an attribute, mapped as
+	 * embedded id and type, the fully qualified name of the given embeddable.
+	 * @param embeddable
+	 * @param fp
+	 * @return a collection of all java persistent types, that have an embedded id attribute of
+	 * the given embeddable type.
+	 */
+	public HashSet<JavaPersistentType> findAllJPTWithTheGivenEmbeddedId(JavaPersistentType embeddable, IJPAEditorFeatureProvider fp){
+		HashSet<JavaPersistentType> embeddingEntities = new HashSet<JavaPersistentType>();
+		if(!hasEmbeddableAnnotation(embeddable))
+			return embeddingEntities;
+		ListIterator<PersistenceUnit> lit = embeddable.getJpaProject().getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+		PersistenceUnit pu = lit.next();
+		for(PersistentType jpt : pu.getPersistentTypes()){
+			if(!jpt.equals(embeddable)){
+				for(JavaPersistentAttribute jpa : ((JavaPersistentType)jpt).getAttributes()){
+					if(isEmbeddedId(jpa) && JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa).equals(embeddable.getName())){
+						embeddingEntities.add((JavaPersistentType) jpt);
+					}
+				}
+			}
+		}
+		return embeddingEntities;
+	}
+	
+	/**
 	 * Find the first {@link HasReferenceRelation} for the given embeddable class from all existing
 	 * {@link HasReferanceRelation} in the diagram. 
 	 * @param embeddable - the given embeddable class
@@ -759,12 +791,13 @@ public class JpaArtifactFactory {
 	 */
 	public void deleteAttribute(JavaPersistentType jpt, String attributeName,
 								IJPAEditorFeatureProvider fp) {
-		
-		Command deleteAttributeCommand = new DeleteAttributeCommand(jpt, attributeName, fp);
-		try {
-			getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandExecutor.instance());
-		} catch (InterruptedException e) {
-			JPADiagramEditorPlugin.logError("Cannot delete attribute with name " + attributeName, e); //$NON-NLS-1$		
+		synchronized (jpt) {
+			Command deleteAttributeCommand = new DeleteAttributeCommand(null, jpt, attributeName, fp);
+			try {
+				getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandExecutor.instance());
+			} catch (InterruptedException e) {
+				JPADiagramEditorPlugin.logError("Cannot delete attribute with name " + attributeName, e); //$NON-NLS-1$		
+			}
 		}
 	}
 	
@@ -1148,7 +1181,7 @@ public class JpaArtifactFactory {
 			String oldName, String newName, String inverseEntityName,
 									 IJPAEditorFeatureProvider fp) throws InterruptedException {
 		newName = JPAEditorUtil.decapitalizeFirstLetter(newName);
-		if (JpaArtifactFactory.instance().isMethodAnnotated(jpt)) {		
+		if (isMethodAnnotated(jpt)) {		
 			newName = JPAEditorUtil.produceValidAttributeName(newName);
 		} 
 		newName = JPAEditorUtil.produceUniqueAttributeName(jpt, newName);
@@ -1159,7 +1192,7 @@ public class JpaArtifactFactory {
 				.getResourceAttribute();
 		fp.addRemoveIgnore((JavaPersistentType)oldAt.getParent(), jra.getName());
 
-		Command renameAttributeCommand = new RenameAttributeCommand(jpt, oldName, newName, fp);
+		Command renameAttributeCommand = new RenameAttributeCommand(null, jpt, oldName, newName, fp);
 		getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandExecutor.instance());
 		
 		JavaPersistentAttribute newAt = jpt.getAttributeNamed(newName);
@@ -1199,8 +1232,41 @@ public class JpaArtifactFactory {
 			Command changeMappedByValueCommand = new SetMappedByNewValueCommand(fp, pu, inverseEntityName, inverseAttributeName, newAt, oldAt, rel);
 			getJpaProjectManager().execute(changeMappedByValueCommand, SynchronousUiCommandExecutor.instance());
 		}
-		if (rel != null)
+		if (rel != null) {
 			updateRelation(jpt, fp, rel);
+			if(hasIDClassAnnotation(jpt)) {
+				String idClassFQN = getIdType(jpt);
+				IJavaProject javaProject = JavaCore.create(jpt.getJpaProject().getProject());
+				IType type = getType(javaProject, idClassFQN);
+				if(type != null && type.getField(oldAt.getName()).exists()){
+					Command renameAttributeCommand = new RenameAttributeCommand(type.getCompilationUnit(), null, oldAt.getName(), newAt.getName(), fp);
+					getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandExecutor.instance());
+				}
+			}
+		}
+		
+		HashSet<JavaPersistentType> embeddingEntities = findAllJPTWithTheGivenEmbeddedId(jpt, fp);
+		if(embeddingEntities != null && !embeddingEntities.isEmpty()){
+			renameMapsIdAnnotationValue(oldAt, newAt, embeddingEntities);
+		}
+		
+	}
+
+	private void renameMapsIdAnnotationValue(JavaPersistentAttribute oldAt,
+			JavaPersistentAttribute newAt, HashSet<JavaPersistentType> embeddingEntities) {
+		
+		for(JavaPersistentType embeddingEntity : embeddingEntities){
+			for(JavaPersistentAttribute attr : embeddingEntity.getAttributes()){
+				Annotation ann = attr.getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
+				if(ann != null){
+					MapsId2_0Annotation mapsIdAnn = (MapsId2_0Annotation) ann;
+					if(mapsIdAnn.getValue() != null && mapsIdAnn.getValue().equals(oldAt.getName())){
+						((MapsId2_0Annotation)ann).setValue(newAt.getName());
+						embeddingEntity.synchronizeWithResourceModel();
+					}
+				}
+			}
+		}
 	}
 	
 	
@@ -1389,7 +1455,7 @@ public class JpaArtifactFactory {
 		if (annotationName.equals(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) {
 			if (!fp.doesRelationExist(jpt, relJPT, attrName, null, RelType.ONE_TO_ONE,
 					RelDir.UNI))
-				res = new OneToOneUniDirRelation(fp, jpt, relJPT, attrName, false);
+				res = new OneToOneUniDirRelation(fp, jpt, relJPT, attrName, false, false);
 		} else if (annotationName
 				.equals(JPAEditorConstants.ANNOTATION_ONE_TO_MANY)) {
 			if (!fp.doesRelationExist(jpt, relJPT, attrName, null, RelType.ONE_TO_MANY,
@@ -1399,7 +1465,7 @@ public class JpaArtifactFactory {
 				.equals(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) {
 			if (!fp.doesRelationExist(jpt, relJPT, attrName, null, RelType.MANY_TO_ONE,
 					RelDir.UNI))
-				res = new ManyToOneUniDirRelation(fp, jpt, relJPT, attrName, false);
+				res = new ManyToOneUniDirRelation(fp, jpt, relJPT, attrName, false, false);
 		} else if (annotationName
 				.equals(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) {
 			if (!fp.doesRelationExist(jpt, relJPT, attrName, null, RelType.MANY_TO_MANY,
@@ -1481,13 +1547,13 @@ public class JpaArtifactFactory {
 			if (!fp.doesRelationExist(jpt, relJPT, ownerAttrName, inverseAttrName, RelType.ONE_TO_ONE,
 					RelDir.BI))
 				res = new OneToOneBiDirRelation(fp, jpt, relJPT, ownerAttrName,
-						inverseAttrName, false, relJPT);
+						inverseAttrName, false, relJPT, false);
 		} else if (annotationName
 				.equals(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) {
 			if (!fp.doesRelationExist(jpt, relJPT, ownerAttrName, inverseAttrName, RelType.MANY_TO_ONE,
 					RelDir.BI))
 				res = new ManyToOneBiDirRelation(fp, jpt, relJPT, ownerAttrName,
-						inverseAttrName, false, relJPT);
+						inverseAttrName, false, relJPT, false);
 		} else if (annotationName
 				.equals(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) {
 			if (!fp.doesRelationExist(jpt, relJPT, ownerAttrName, inverseAttrName, RelType.MANY_TO_MANY,
@@ -1710,6 +1776,14 @@ public class JpaArtifactFactory {
 		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 	
+	public boolean hasIDClassAnnotation(JavaPersistentType jpt){
+		Annotation an = jpt.getJavaResourceType().getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		if(an != null){
+			return true;
+		}
+		return false;
+	}
+	
 	public String getIdType(JavaPersistentType jpt) {
 		IdClassAnnotation an = (IdClassAnnotation)jpt.getJavaResourceType().getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (an != null)
@@ -1725,8 +1799,9 @@ public class JpaArtifactFactory {
 	public JavaPersistentAttribute[] getIds(JavaPersistentType jpt) {
 		ArrayList<JavaPersistentAttribute> res = new ArrayList<JavaPersistentAttribute>();
 		for (JavaPersistentAttribute at : jpt.getAttributes()) {
-			if (isId(at))
+			if (isId(at)) {
 				res.add(at);
+			}
 		}
 		JavaPersistentAttribute[] ret = new JavaPersistentAttribute[res.size()];
 		return res.toArray(ret);
@@ -1750,6 +1825,23 @@ public class JpaArtifactFactory {
 		return false;
 	}
 
+	private boolean hasSimplePk(JavaPersistentType jpt) {
+		for(JavaPersistentAttribute at : jpt.getAttributes()){
+			if(isSimpleId(at) && !hasIDClassAnnotation(jpt)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private JavaPersistentAttribute getSimplePkAttribute(JavaPersistentType jpt){
+		for(JavaPersistentAttribute jpa : jpt.getAttributes()){
+			if(isSimpleId(jpa)){
+				return jpa;
+			}
+		}
+		return null;
+	}
 	
 	public boolean isId(ReadOnlyPersistentAttribute jpa) {
 		return isSimpleId(jpa) || isEmbeddedId(jpa);
@@ -1757,6 +1849,24 @@ public class JpaArtifactFactory {
 	
 	public boolean isSimpleId(ReadOnlyPersistentAttribute jpa) {
 		return (jpa.getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+	}
+	
+	private boolean hasEmbeddedPk(JavaPersistentType jpt){
+		for(JavaPersistentAttribute at : jpt.getAttributes()){
+			if(isEmbeddedId(at)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private JavaPersistentAttribute getEmbeddedIdAttribute(JavaPersistentType jpt){
+		for(JavaPersistentAttribute jpa : jpt.getAttributes()){
+			if(isEmbeddedId(jpa)){
+				return jpa;
+			}
+		}
+		return null;
 	}
 	
 	public boolean isEmbeddedId(ReadOnlyPersistentAttribute jpa) {
@@ -1869,4 +1979,113 @@ public class JpaArtifactFactory {
 			JPADiagramEditorPlugin.logError("Cannot create hierarchy of entity type " + subclass.getName(), e); //$NON-NLS-1$		
 		}
 	}
+	
+	/**
+	 * Adds derived identifier
+	 * @param ownerJPT - the dependent entity (the relationship's owner entity)
+	 * @param inverseJPT - the parent entity (the relationship's inverse/target entity)
+	 * @param ownerAttr - the relationship's owner attribute
+	 */
+	public void calculateDerivedIdAnnotation(JavaPersistentType ownerJPT, JavaPersistentType inverseJPT, JavaPersistentAttribute ownerAttr) {
+		String attributeType = null;
+		if(hasSimplePk(inverseJPT)){
+			JavaPersistentAttribute jpa = getSimplePkAttribute(inverseJPT);
+			attributeType  = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa);
+		} else {
+			if(hasIDClassAnnotation(inverseJPT)){
+				attributeType = getIdType(inverseJPT);
+			} else if (hasEmbeddedPk(inverseJPT)){
+				attributeType = JPAEditorUtil.getAttributeTypeNameWithGenerics(getEmbeddedIdAttribute(inverseJPT));
+			}
+		}
+		addAppropriateDerivedIdAnnotation(ownerJPT, inverseJPT, ownerAttr, attributeType);
+
+	}
+
+	/**
+	 * Adds the derived identifier annotation depending on the dependent entity's primary key type.
+	 * @param ownerJPT - the dependent entity (the relationship's owner entity)
+	 * @param inverseJPT - the parent entity (the relationship's inverse/target entity)
+	 * @param ownerAttr - the relationship's owner attribute
+	 * @param inverseIdClassFQN - he type of the primary key of the parent entity
+	 */
+	private void addAppropriateDerivedIdAnnotation(JavaPersistentType ownerJPT,
+			JavaPersistentType inverseJPT, JavaPersistentAttribute ownerAttr,
+			String inverseIdClassFQN) {
+		if(hasIDClassAnnotation(ownerJPT)){
+			String ownerIdClassFQN = getIdType(ownerJPT);
+			addDerivedIdAnnotation(ownerJPT, inverseJPT, ownerAttr, ownerIdClassFQN,
+					inverseIdClassFQN, IdAnnotation.ANNOTATION_NAME);
+		} else if(hasEmbeddedPk(ownerJPT)){
+			String ownerIdClassFQN = JPAEditorUtil.getAttributeTypeNameWithGenerics(getEmbeddedIdAttribute(ownerJPT));
+			addDerivedIdAnnotation(ownerJPT, inverseJPT, ownerAttr, ownerIdClassFQN,
+					inverseIdClassFQN, MapsId2_0Annotation.ANNOTATION_NAME);
+		} else if(hasSimplePk(ownerJPT)){
+			ownerAttr.getResourceAttribute().addAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
+		} else {
+			ownerAttr.getResourceAttribute().addAnnotation(IdAnnotation.ANNOTATION_NAME);
+		}
+		addJoinColumnIfNecessary(ownerAttr, inverseJPT);
+	}
+
+	/**
+	 * Adds the appropriate derived identifier's annotation to the relationship's owner attribute.
+	 * @param ownerJPT - the dependent entity (the relationship's owner entity)
+	 * @param inverseJPT - the parent entity ( the relationship's inverse/target entity)
+	 * @param ownerAttr - the relationship's owner attribute
+	 * @param ownerIdClassFQN - the fully qualified name of the composite primary key's class 
+	 * @param inverseIdClassFQN - the type of the primary key of the parent entity
+	 * @param annotationName - the derived identifier's annotation (either @Id or @MapsId)
+	 */
+	private void addDerivedIdAnnotation(JavaPersistentType ownerJPT,
+			JavaPersistentType inverseJPT, JavaPersistentAttribute ownerAttr,
+			String ownerIdClassFQN,	String inverseIdClassFQN, String annotationName) {
+		if(!inverseIdClassFQN.equals(ownerIdClassFQN)){
+			String attributeType = JPAEditorUtil.returnSimpleName(inverseIdClassFQN);
+			addFieldInCompositeKeyClass(inverseJPT, ownerAttr, ownerIdClassFQN, attributeType);
+			Annotation ann = ownerAttr.getResourceAttribute().addAnnotation(annotationName);
+			if(ann instanceof MapsId2_0Annotation){
+				((MapsId2_0Annotation)ann).setValue(ownerAttr.getName());
+			}
+		} else {
+			ownerAttr.getResourceAttribute().addAnnotation(annotationName);
+		}
+	}
+
+	/**
+	 * This method is called during the calculation of the derived identifier. If the dependent entity has a
+	 * composite primary key, this method is used to be created a new field in the composite primary key's class.
+	 * The field will be of the same type as type the primary key of the parent entity and the name will be the
+	 * same as the name of the owner relationship's attribute. 
+	 * @param inverseJPT - the parent entity (the relationship's inverse/target entity)
+	 * @param ownerAttr - the dependent entity (the relationship's owner entity) 
+	 * @param fqnClass - the fully qualified name of the composite primary key's class
+	 * @param attributeTypeName - the attribute's type
+	 */
+	private void addFieldInCompositeKeyClass(JavaPersistentType inverseJPT,
+			JavaPersistentAttribute ownerAttr, String fqnClass, String attributeTypeName) {
+		IJavaProject javaProject = JavaCore.create(ownerAttr.getJpaProject().getProject());
+		IType type = getType(javaProject, fqnClass);
+		if(type != null && !type.getField(ownerAttr.getName()).exists()){
+			ICompilationUnit unit = type.getCompilationUnit();
+			JavaPersistentType jpt = JPAEditorUtil.getJPType(unit);
+			Command createNewAttributeCommand = new AddAttributeCommand(null, jpt, attributeTypeName, null, ownerAttr.getName(),
+					ownerAttr.getName(), null, null, false, unit);
+			try {
+				getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
+			} catch (InterruptedException e) {
+				JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + ownerAttr.getName(), e); //$NON-NLS-1$		
+			}
+		}
+	}
+	
+	public IType getType(IJavaProject javaProject, String fqnClass) {
+		try {
+			IType type = javaProject.findType(fqnClass);
+			return type;
+		} catch (JavaModelException e) {
+			e.printStackTrace();
+		}
+		return null;
+	} 
 }

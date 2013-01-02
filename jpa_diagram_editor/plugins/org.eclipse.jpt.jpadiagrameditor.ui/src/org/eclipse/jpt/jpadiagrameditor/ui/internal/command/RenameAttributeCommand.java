@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.command;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -37,16 +38,18 @@ import org.eclipse.ui.IWorkbenchWindow;
 public class RenameAttributeCommand implements Command {
 	
 	private JavaPersistentType jpt;
+	private ICompilationUnit jptCompilationUnit;
 	private String oldName;
 	private String newName;
 	private IJPAEditorFeatureProvider fp;
 	
 	
-	public RenameAttributeCommand(JavaPersistentType jpt, String oldName,
+	public RenameAttributeCommand(ICompilationUnit jptCompilationUnit, JavaPersistentType jpt, String oldName,
 			String newName, IJPAEditorFeatureProvider fp){
 		
 		super();
 		this.jpt = jpt;
+		this.jptCompilationUnit = jptCompilationUnit;
 		this.oldName = oldName;
 		this.newName = newName;
 		this.fp = fp;
@@ -54,10 +57,20 @@ public class RenameAttributeCommand implements Command {
 	}
 
 	public void execute() {
-		ICompilationUnit cu = fp.getCompilationUnit(jpt);
+		if(jptCompilationUnit == null) {
+			jptCompilationUnit = fp.getCompilationUnit(jpt);
+		}
 		try {
-			renameAttribute(cu, oldName, this.newName, fp, JpaArtifactFactory.instance().isMethodAnnotated(jpt));
-			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			boolean isMethodAnnotated = false;
+			if(jpt!= null){
+				isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpt);
+			}
+			renameAttribute(jptCompilationUnit, oldName, this.newName, fp, isMethodAnnotated);
+			
+			if(jpt != null) {
+				jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+				jpt.getJpaPlatform().buildJpaFile(jpt.getJpaProject(), (IFile) jptCompilationUnit.getResource());
+			}
 		} catch (InterruptedException e) {
 			JPADiagramEditorPlugin.logError("Cannot rename attribute", e); //$NON-NLS-1$
 		}

@@ -104,7 +104,7 @@ public class CreateRelationFeaturesTest {
 		}
 
 		
-		CreateOneToOneUniDirRelationFeature ft = new CreateOneToOneUniDirRelationFeature(featureProvider);
+		CreateOneToOneUniDirRelationFeature ft = new CreateOneToOneUniDirRelationFeature(featureProvider, false);
 		ICreateConnectionContext ctx = EasyMock.createMock(ICreateConnectionContext.class);
 		
 		ContainerShape cs1 = EasyMock.createMock(ContainerShape.class);
@@ -178,7 +178,7 @@ public class CreateRelationFeaturesTest {
 		}
 
 		
-		CreateOneToOneBiDirRelationFeature ft = new CreateOneToOneBiDirRelationFeature(featureProvider);
+		CreateOneToOneBiDirRelationFeature ft = new CreateOneToOneBiDirRelationFeature(featureProvider, false);
 		ICreateConnectionContext ctx = EasyMock.createMock(ICreateConnectionContext.class);
 		
 		ContainerShape cs1 = EasyMock.createMock(ContainerShape.class);
@@ -245,7 +245,7 @@ public class CreateRelationFeaturesTest {
 		}
 
 		
-		CreateManyToOneUniDirRelationFeature ft = new CreateManyToOneUniDirRelationFeature(featureProvider);
+		CreateManyToOneUniDirRelationFeature ft = new CreateManyToOneUniDirRelationFeature(featureProvider, false);
 		ICreateConnectionContext ctx = EasyMock.createMock(ICreateConnectionContext.class);
 		
 		ContainerShape cs1 = EasyMock.createMock(ContainerShape.class);
@@ -311,7 +311,7 @@ public class CreateRelationFeaturesTest {
 		}
 
 		
-		CreateManyToOneBiDirRelationFeature ft = new CreateManyToOneBiDirRelationFeature(featureProvider);
+		CreateManyToOneBiDirRelationFeature ft = new CreateManyToOneBiDirRelationFeature(featureProvider, false);
 		ICreateConnectionContext ctx = EasyMock.createMock(ICreateConnectionContext.class);
 		
 		ContainerShape cs1 = EasyMock.createMock(ContainerShape.class);

@@ -20,8 +20,8 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeaturePr
 abstract class CreateManyToOneRelationFeature 
 		extends	CreateRelationFeature {
 
-	public CreateManyToOneRelationFeature(IJPAEditorFeatureProvider fp, String name, String description) {
-		super(fp, name, description);
+	public CreateManyToOneRelationFeature(IJPAEditorFeatureProvider fp, String name, String description, boolean isDerivedIdFeature) {
+		super(fp, name, description, isDerivedIdFeature);
 	}
 
 }

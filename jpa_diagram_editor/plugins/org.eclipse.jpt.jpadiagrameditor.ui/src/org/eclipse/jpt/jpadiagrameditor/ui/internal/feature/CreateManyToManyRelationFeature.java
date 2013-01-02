@@ -22,7 +22,7 @@ abstract class CreateManyToManyRelationFeature
 		extends	CreateRelationFeature {
 
 	public CreateManyToManyRelationFeature(IJPAEditorFeatureProvider fp, String name, String description) {
-		super(fp, name, description);
+		super(fp, name, description, false);
 	}
 	
 }

@@ -405,14 +405,24 @@ public class JPAEditorUtil {
 		Image icon = null;
 		if ((annotations == null) || (annotations.size() == 0) || annotations.contains(JPAEditorConstants.ANNOTATION_BASIC)) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_BASIC);
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ID)) {
+		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ID) && 
+				!annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) &&
+				!annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.PRIMARY_KEY);
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) {
-			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ONE_TO_ONE);
+		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE) ) {
+			if(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)){
+				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ONE_TO_ONE_PRIMARY_KEY);
+			} else {
+				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ONE_TO_ONE);
+			}
 		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY)) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ONE_TO_MANY);
-		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) {
-			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_MANY_TO_ONE);
+		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)){
+			if(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)){
+				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.MANY_TO_ONE_PRIMARY_KEY);
+			} else {
+				icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_MANY_TO_ONE);
+			}
 		} else if (annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_MANY_TO_MANY);		
 		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)){

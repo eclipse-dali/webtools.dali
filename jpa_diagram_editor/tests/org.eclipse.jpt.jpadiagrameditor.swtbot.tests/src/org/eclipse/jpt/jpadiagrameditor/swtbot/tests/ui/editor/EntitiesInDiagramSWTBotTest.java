@@ -2,11 +2,15 @@ package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
@@ -176,6 +180,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		Utils.sayTestFinished("testAddAttribute");
 	}
 
+	@Ignore
 	@Test
 	public void testAddElementCollectionAttribute() {
 		Utils.sayTestStarted("testAddElementCollectionAttribute");
@@ -1104,7 +1109,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		// create One-to-One unidirectional relation from entity1 to entity2
 		editorProxy
@@ -1113,7 +1118,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1144,7 +1149,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
 						entity1,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1180,7 +1185,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1189,7 +1194,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1198,7 +1203,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1228,7 +1233,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
 						entity1,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1263,7 +1268,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		// create One-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1272,7 +1277,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1304,7 +1309,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateOneToManyUniDirRelationFeature_oneToManyUniDirFeatureName,
 						entity1,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1339,7 +1344,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1348,7 +1353,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1379,7 +1384,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1416,7 +1421,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
 						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1426,7 +1431,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
 						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		// create Many-to-One bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1436,7 +1441,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity2,
 						IRelation.RelType.MANY_TO_ONE,
 						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1468,7 +1473,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						IRelation.RelType.MANY_TO_ONE,
 						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1502,7 +1507,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1511,7 +1516,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1542,7 +1547,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToManyUniDirRelationFeature_manyToManyUniDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1578,7 +1583,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1587,7 +1592,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		// create Many-to-Many bidirectional relation from entity1 to entity2
 		editorProxy
@@ -1596,7 +1601,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						entity1,
 						entity2,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1627,7 +1632,7 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						JPAEditorMessages.CreateManyToManyBiDirRelationFeature_manyToManyBiDirFeatureName,
 						entity1,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -1698,6 +1703,624 @@ public class EntitiesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		jpaDiagramEditor.save();
 
 		Utils.sayTestFinished("testIsARelationBetweenExistingEntities");
+	}
+	
+	/**
+	 * Create two entities in the diagram. From the second entity, remove the default
+	 * primary key attribute. From the "Derived Identifiers" select "One-to-One" unidirectional
+	 * relation feature and click first on the second entity and then on the first one.
+	 * Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * as primary key attribute in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testSimpleDerivedIdWithoutDefaultPK(){
+		Utils.sayTestStarted("testSimpleDerivedIdWithoutDefaultPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);	
+		
+		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+
+		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+		
+		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+
+		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+		
+		Utils.sayTestFinished("testSimpleDerivedIdWithoutDefaultPK");
+	}
+	
+	/**
+	 * Create two entities in the diagram. From the "Derived Identifiers" select "One-to-One"
+	 * unidirectional relation feature and click first on the second entity and then on the first one.
+	 * Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * with the MapsId annotation in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testSimpleDerivedIdWithDefaultPK(){
+		Utils.sayTestStarted("testSimpleDerivedIdWithDefaultPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+
+		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+		
+		editorProxy.testUniDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+
+		editorProxy.testBiDirDerivedIdWithIdAnnotation(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+		
+		Utils.sayTestFinished("testSimpleDerivedIdWithDefaultPK");
+	}
+	
+	
+	/**
+	 * Create two entities and one embeddable in the diagram. From the second entity, remove the default
+	 * primary key attribute. From the "Composition" section, select "Embed Single object" and embed the
+	 * embeddable into the entity2. From the "JPA Details" view, change the mapping of the embedded attribute
+	 * in the entity2 to EmbeddedId. From the "Derived Identifiers" select "One-to-One"
+	 * unidirectional relation feature and click first on the second entity and then on the first one.
+	 * Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * with the MapsId annotation in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithEmbeddedPK(){
+		Utils.sayTestStarted("testDerivedIdWithEmbeddedPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);	
+		
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(dependentEntity, embeddable);
+		
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, null);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, null);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, null);
+
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, null);
+		
+		Utils.sayTestFinished("testDerivedIdWithEmbeddedPK");
+	}
+	
+	/**
+	 * Create two entities in the diagram. Create a simple java class. From the second entity, remove the default
+	 * primary key attribute. Use the created java class as IDClass in entity2. From the "Derived Identifiers" select "One-to-One"
+	 * unidirectional relation feature and click first on the second entity and then on the first one.
+	 * Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * as primary key attribute in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithIdClassPK() throws Exception{
+		Utils.sayTestStarted("testDerivedIdWithIdClassPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		IFile idClass = editorProxy.setIdClass(dependentEntity, "TestIdClass", jpaProject);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, null);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, null);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, null);
+
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, null);
+		
+		Utils.sayTestFinished("testDerivedIdWithIdClassPK");
+	}
+	
+	/**
+	 * Create two entities in the diagram. Create a simple java class. Remove the default
+	 * primary key attribute from both entities. Use the created java class as IDClass in both entities.
+	 * From the "Derived Identifiers" select "One-to-One" unidirectional relation feature and click first on the second entity and then on the first one.
+	 * Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * as primary key attribute in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithSameIdClassPK() throws Exception{
+		Utils.sayTestStarted("testDerivedIdWithSameIdClassPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+		
+		IFile idClass = editorProxy.setIdClass(parentEntity, "TestParentIdClass", jpaProject);
+		String idClassFQN = "TestParentIdClass";
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		((IdClassAnnotation)an).setValue(idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		Utils.sayTestFinished("testDerivedIdWithSameIdClassPK");
+	}
+	
+	/**
+	 * Create two entities in the diagram. Create two simple java class. Remove the default
+	 * primary key attribute from both entities. Use the first java class as IDClass in the first entity and the second
+	 * java class as IdClass for the second entity. From the "Derived Identifiers" select "One-to-One"
+	 * unidirectional relation feature and click first on the second entity and then on the first one.
+	 * Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * as primary key attribute in the second entity and there is no "Relation Attributes" section.
+	 * Assert that a new helper attribute is automatically added in the second java class and its type is the type
+	 * of the first java class, used as IDClass.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithDifferentIdClassPK() throws Exception{
+		Utils.sayTestStarted("testDerivedIdWithDifferentIdClassPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+		
+		editorProxy.setIdClass(parentEntity, "TestParentIdClass", jpaProject);
+		String idClassFQN = "TestParentIdClass";
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		IFile idClass = editorProxy.setIdClass(dependentEntity, "TestIdClass", jpaProject);
+
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		Utils.sayTestFinished("testDerivedIdWithDifferentIdClassPK");
+	}	
+	
+	/**
+	 * Create two entities and one embeddable in the diagram. Remove the default primary key attribute from both entities. 
+	 * Embed the embeddable in both entities and change the mappig of the embedded attributes to EmbeddedIds.
+	 * From the "Derived Identifiers" select "One-to-One" unidirectional relation feature and click first on the second
+	 * entity and then on the first one. Assert that the connection appears. Assert that the owner attribute of the relation is mapped
+	 * with MapsId in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithSameEmbeddedPK(){
+		Utils.sayTestStarted("testDerivedIdWithSameEmbeddedPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);
+		editorProxy.deleteEntityDefaultPK(parentEntity);
+		
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(dependentEntity, embeddable);
+		
+		editorProxy.addEmbeddedIdToEntity(parentEntity, embeddable);
+		
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		Utils.sayTestFinished("testDerivedIdWithSameEmbeddedPK");
+	}
+	
+	/**
+	 * Create two entities and two embeddable in the diagram. Remove the default primary key attribute from both entities. 
+	 * Embed the first embeddable in the first enetity and the second one in the second entity. Change the mapping of the
+	 * embedded attributes to EmbeddedIds. From the "Derived Identifiers" select "One-to-One" unidirectional relation feature
+	 * and click first on the second entity and then on the first one. Assert that the connection appears. Assert that the owner
+	 * attribute of the relation is mapped with MapsId in the second entity and there is no "Relation Attributes" section.
+	 * Assert that e new helper attribute is added in the second embeddable and its type is of the first embeddable.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithDifferentEmbeddedPK(){
+		Utils.sayTestStarted("testDerivedIdWithDifferentEmbeddedPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		editorProxy.deleteEntityDefaultPK(parentEntity);
+		
+		SWTBotGefEditPart parentEmbeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(parentEntity, parentEmbeddable);
+		
+		editorProxy.waitASecond();
+		
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);
+
+		SWTBotGefEditPart dependentEmbeddable = editorProxy.addEmbeddableToDiagram(300, 300, jpaProject);				
+		editorProxy.addEmbeddedIdToEntity(dependentEntity, dependentEmbeddable);
+		
+		String idClassFQN = editorProxy.getJPTObjectForGefElement(parentEmbeddable).getName();
+
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, dependentEmbeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		Utils.sayTestFinished("testDerivedIdWithDifferentEmbeddedPK");
+	}
+	
+	/**
+	 * Create two entities and one embeddable in the diagram. Create a simple java class. Remove the default primary key attribute
+	 * from both entities. Set the java class as IDClass to the first entity and embed the embeddable in the second entity.
+	 * Change the mapping of the embedded attributes to EmbeddedIds. From the "Derived Identifiers" select "One-to-One" unidirectional relation feature
+	 * and click first on the second entity and then on the first one. Assert that the connection appears. Assert that the owner
+	 * attribute of the relation is mapped with MapsId in the second entity and there is no "Relation Attributes" section.
+	 * Assert that e new helper attribute is added in the embeddable and its type is of the java class used as IdClass.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithIdClassAndEmbeddedPK() throws Exception {
+		Utils.sayTestStarted("testDerivedIdWithIdClassAndEmbeddedPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);
+		
+		JPACreateFactory.instance().createIdClassInProject(jpaProject.getProject(), new String[] {"org", "persistence"}, "TestIdClass");
+		String idClassFQN = "org.persistence.TestIdClass";
+		
+		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(parentEntity);
+		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		((IdClassAnnotation)an).setValue("TestIdClass");
+		
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(dependentEntity, embeddable);
+				
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		Utils.sayTestFinished("testDerivedIdWithIdClassAndEmbeddedPK");
+	}
+	
+	
+	/**
+	 * Create two entities and one embeddable in the diagram.Remove the default primary key attribute
+	 * from both entities. Set the embeddable as IDClass to the first entity and embed the embeddable in the second entity.
+	 * Change the mapping of the embedded attributes to EmbeddedIds. From the "Derived Identifiers" select "One-to-One" unidirectional relation feature
+	 * and click first on the second entity and then on the first one. Assert that the connection appears. Assert that the owner
+	 * attribute of the relation is mapped with MapsId in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithIdClassAndSameEmbeddedPK() throws Exception {
+		Utils.sayTestStarted("testDerivedIdWithIdClassAndSameEmbeddedPK");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(parentEntity);
+		String attrnamString = editorProxy.getUniqueAttrName(parentEntity);
+		editorProxy.addAttributeToJPT(parentEntity, attrnamString);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);
+		
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(dependentEntity, embeddable);
+		
+		String attrname = editorProxy.getUniqueAttrName(embeddable);
+		jpaDiagramEditor.activateDefaultTool();
+		editorProxy.waitASecond();
+		editorProxy.addAttributeToJPT(embeddable, attrname);
+				
+		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(parentEntity);
+		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		((IdClassAnnotation)an).setValue(editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName());
+		
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+
+		editorProxy.testUniDirDerivedIdWithEmbeddedPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, embeddable, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		Utils.sayTestFinished("testDerivedIdWithIdClassAndSameEmbeddedPK");
+	}
+
+	/**
+	 * Create two entities and one embeddable in the diagram. Create a simple java class. Remove the default primary key attribute
+	 * from both entities. Embed the embeddable in the first entity and set the java class as IDClass to the second entity.
+	 * Change the mapping of the embedded attributes to EmbeddedIds. From the "Derived Identifiers" select "One-to-One" unidirectional relation feature
+	 * and click first on the second entity and then on the first one. Assert that the connection appears. Assert that the owner
+	 * attribute of the relation is mapped as primary key attribute in the second entity and there is no "Relation Attributes" section.
+	 * Assert that e new helper attribute is added in the java class and its type is of the embeddable.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithEmbeddedPkAndIdClass() throws Exception {
+		Utils.sayTestStarted("testDerivedIdWithEmbeddedPkAndIdClass");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(parentEntity);
+		
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(parentEntity, embeddable);
+
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		
+		IFile idClass = JPACreateFactory.instance().createIdClassInProject(jpaProject.getProject(), new String[] {"org", "persistence"}, "TestIdClass");
+		String idClassFQN = editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName();
+		
+		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		((IdClassAnnotation)an).setValue("TestIdClass");
+				
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, false, idClassFQN);
+
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, idClass, IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, false, idClassFQN);
+		
+		Utils.sayTestFinished("testDerivedIdWithEmbeddedPkAndIdClass");
+	}
+	
+	/**
+	 * Create two entities and one embeddable in the diagram. Remove the default primary key attribute
+	 * from both entities. Embed the embeddable in the first entity and set the embeddable as IDClass to the second entity.
+	 * Change the mapping of the embedded attributes to EmbeddedIds. From the "Derived Identifiers" select "One-to-One" unidirectional relation feature
+	 * and click first on the second entity and then on the first one. Assert that the connection appears. Assert that the owner
+	 * attribute of the relation is mapped as primary key attribute in the second entity and there is no "Relation Attributes" section.
+	 * Test that the created relation is successfully deleted. Repeats all steps for the other three
+	 * types of relation also.
+	 */
+	@Test
+	public void testDerivedIdWithEmbeddedPkAndSameIdClass() throws Exception {
+		Utils.sayTestStarted("testDerivedIdWithEmbeddedPkAndSameIdClass");
+		
+		assertTrue("The diagram must be empty.", jpaDiagramEditor
+				.mainEditPart().children().isEmpty());
+		
+		SWTBotGefEditPart parentEntity = editorProxy.addEntityToDiagram(50, 50,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(parentEntity);
+		
+		SWTBotGefEditPart embeddable = editorProxy.addEmbeddableToDiagram(300, 50, jpaProject);
+		
+		editorProxy.addEmbeddedIdToEntity(parentEntity, embeddable);
+		
+		String attrname = editorProxy.getUniqueAttrName(embeddable);
+		jpaDiagramEditor.activateDefaultTool();
+		editorProxy.waitASecond();
+		editorProxy.addAttributeToJPT(embeddable, attrname);
+
+		SWTBotGefEditPart dependentEntity = editorProxy.addEntityToDiagram(50, 300,
+				jpaProject);
+		
+		editorProxy.deleteEntityDefaultPK(dependentEntity);
+		String attrnamString = editorProxy.getUniqueAttrName(parentEntity);
+		editorProxy.addAttributeToJPT(parentEntity, attrnamString);
+				
+		JavaPersistentType parentJPTType= editorProxy.getJPTObjectForGefElement(dependentEntity);
+		Annotation an = parentJPTType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		((IdClassAnnotation)an).setValue(editorProxy.getJPTObjectForGefElement(embeddable).getSimpleName());
+		
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, false, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.ONE_TO_ONE, JPAEditorConstants.ANNOTATION_ONE_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, false, true, null);
+
+		editorProxy.testUniDirDerivedIdWithIdClassPk(JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
+				dependentEntity, parentEntity, (IFile)parentJPTType.getResource(), IRelation.RelType.MANY_TO_ONE, JPAEditorConstants.ANNOTATION_MANY_TO_ONE,
+				JPAEditorConstants.ANNOTATION_MAPS_ID, JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true, true, null);
+		
+		Utils.sayTestFinished("testDerivedIdWithEmbeddedPkAndSameIdClass");
 	}
 
 	/**

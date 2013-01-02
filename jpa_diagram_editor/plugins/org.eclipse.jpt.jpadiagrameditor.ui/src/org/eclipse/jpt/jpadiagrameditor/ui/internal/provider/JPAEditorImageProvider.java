@@ -31,6 +31,8 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
     public static final String ADD_EMBEDDABLE	        = PREFIX + "add_embeddable";	        	    //$NON-NLS-1$    
     
     public static final String PRIMARY_KEY 				= PREFIX + "pk"; 								//$NON-NLS-1$
+    public static final String ONE_TO_ONE_PRIMARY_KEY 	= PREFIX + "one_to_one_pk"; 					//$NON-NLS-1$
+    public static final String MANY_TO_ONE_PRIMARY_KEY 	= PREFIX + "many_to_one_pk"; 					//$NON-NLS-1$
     public static final String ICON_BASIC 				= PREFIX + "field"; 							//$NON-NLS-1$
     public static final String ADD_ATTRIBUTE 			= PREFIX + "add_attribute"; 					//$NON-NLS-1$
     public static final String ADD_ELEMENT_COLLECTION 	= PREFIX + "add_element-collection.gif";    	//$NON-NLS-1$
@@ -47,6 +49,10 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
     public static final String ICON_UNMAPPED 			= PREFIX + "unmapped"; 							//$NON-NLS-1$  
     public static final String ICON_DERIVE_JPT 			= PREFIX + "derive_jpt"; 							//$NON-NLS-1$ 
 
+    public static final String ICON_ONE_TO_ONE_1_KEY_DIR 	= PREFIX + "one_to_one_1_key_relation"; 		//$NON-NLS-1$
+    public static final String ICON_ONE_TO_ONE_2_KEY_DIR 	= PREFIX + "one_to_one_2_key_relation"; 		//$NON-NLS-1$
+    public static final String ICON_MANY_TO_ONE_1_KEY_DIR 	= PREFIX + "many_to_one_1_key_relation"; 		//$NON-NLS-1$    
+    public static final String ICON_MANY_TO_ONE_2_KEY_DIR 	= PREFIX + "many_to_one_2_key_relation"; 		//$NON-NLS-1$
 
     public static final String ICON_ONE_TO_ONE_1_DIR 	= PREFIX + "one_to_one_1_dir_relation"; 		//$NON-NLS-1$
     public static final String ICON_ONE_TO_MANY_1_DIR 	= PREFIX + "one_to_many_1_dir_relation"; 		//$NON-NLS-1$
@@ -79,6 +85,9 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
         addImageFilePath(ADD_MAPPED_SUPERCLASS, ROOT_FOLDER_FOR_IMG + "ent/add_mapped-superclass.gif"); //$NON-NLS-1$
         addImageFilePath(ADD_EMBEDDABLE, ROOT_FOLDER_FOR_IMG + "ent/add_embeddable.gif");               //$NON-NLS-1$
         addImageFilePath(PRIMARY_KEY, ROOT_FOLDER_FOR_IMG + "ent/id.gif");								//$NON-NLS-1$
+        addImageFilePath(ONE_TO_ONE_PRIMARY_KEY, ROOT_FOLDER_FOR_IMG + "ent/one-to-one-key.gif");								//$NON-NLS-1$
+        addImageFilePath(MANY_TO_ONE_PRIMARY_KEY, ROOT_FOLDER_FOR_IMG + "ent/many-to-one-key.gif");								//$NON-NLS-1$
+
         addImageFilePath(ADD_ATTRIBUTE, ROOT_FOLDER_FOR_IMG + "ent/add_attribute.gif");					//$NON-NLS-1$
         addImageFilePath(ADD_ELEMENT_COLLECTION, ROOT_FOLDER_FOR_IMG + "ent/add_element-collection.gif"); //$NON-NLS-1$
         addImageFilePath(REMOVE_ATTRIBUTE, ROOT_FOLDER_FOR_IMG + "ent/remove_attribute.gif");			//$NON-NLS-1$
@@ -93,6 +102,11 @@ public class JPAEditorImageProvider extends AbstractImageProvider {
         addImageFilePath(ICON_ELEMENT_COLLECTION, ROOT_FOLDER_FOR_IMG + "ent/element-collection.gif"); 	//$NON-NLS-1$
         addImageFilePath(ICON_UNMAPPED, ROOT_FOLDER_FOR_IMG + "ent/null-attribute-mapping.gif"); 		//$NON-NLS-1$
         addImageFilePath(ICON_DERIVE_JPT, ROOT_FOLDER_FOR_IMG + "ent/derive_jpt.gif"); 		//$NON-NLS-1$
+        
+        addImageFilePath(ICON_ONE_TO_ONE_1_KEY_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-one-1-key.gif");		//$NON-NLS-1$
+        addImageFilePath(ICON_ONE_TO_ONE_2_KEY_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-one-2-key.gif");	//$NON-NLS-1$
+        addImageFilePath(ICON_MANY_TO_ONE_1_KEY_DIR, ROOT_FOLDER_FOR_IMG + "ent/many-to-one-1-key.gif");	//$NON-NLS-1$        
+        addImageFilePath(ICON_MANY_TO_ONE_2_KEY_DIR, ROOT_FOLDER_FOR_IMG + "ent/many-to-one-2-key.gif");	//$NON-NLS-1$
 
         addImageFilePath(ICON_ONE_TO_ONE_1_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-one-1-dir.gif");		//$NON-NLS-1$
         addImageFilePath(ICON_ONE_TO_MANY_1_DIR, ROOT_FOLDER_FOR_IMG + "ent/one-to-many-1-dir.gif");	//$NON-NLS-1$

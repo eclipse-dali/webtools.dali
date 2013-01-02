@@ -816,7 +816,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.ONE_TO_ONE,
-						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -851,7 +851,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.ONE_TO_MANY,
-						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -886,7 +886,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.MANY_TO_ONE,
-						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToOneMappingUiProvider_linkLabel, true);
 
 		editorProxy.deleteDiagramElements();
 
@@ -922,7 +922,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 						mappedSuperclass,
 						entity,
 						IRelation.RelType.MANY_TO_MANY,
-						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel);
+						JptUiDetailsMessages.ManyToManyMappingUiProvider_linkLabel, false);
 
 		editorProxy.deleteDiagramElements();
 
@@ -951,12 +951,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName,
-						0, entity, mappedSuperclass);
+						2, entity, mappedSuperclass);
 
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-						1, entity, mappedSuperclass);
+						3, entity, mappedSuperclass);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -984,7 +984,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateOneToOneBiDirRelationFeature_oneToOneBiDirFeatureName,
-						1, mappedSuperclass, entity);
+						3, mappedSuperclass, entity);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1040,12 +1040,12 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,
-						0, entity, mappedSuperclass);
+						2, entity, mappedSuperclass);
 
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-						1, entity, mappedSuperclass);
+						3, entity, mappedSuperclass);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();
@@ -1073,7 +1073,7 @@ public class MappedSuperclassesInDiagramSWTBotTest extends SWTBotGefTestCase {
 		editorProxy
 				.testNoConnectionIsCreated(
 						JPAEditorMessages.CreateManyToOneBiDirRelationFeature_manyToOneBiDirFeatureName,
-						1, mappedSuperclass, entity);
+						3, mappedSuperclass, entity);
 
 		editorProxy.deleteDiagramElements();
 		jpaDiagramEditor.save();

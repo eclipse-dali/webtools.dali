@@ -435,7 +435,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	private String findRelationshipKey(JavaPersistentAttribute jpa, IJPAEditorFeatureProvider fp){
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
 		if(jpaFactory.isEmbeddedAttribute(jpa)){
-			JavaPersistentType embeddableClass = jpaFactory.findJPT(jpa, fp, JpaArtifactFactory.instance().getAnnotations(jpa)[0]);
+			Annotation embeddedAn = null;
+			Annotation[] anns = JpaArtifactFactory.instance().getAnnotations(jpa);
+			if(anns != null && anns.length > 0){
+				embeddedAn = anns[0];
+			}
+			JavaPersistentType embeddableClass = jpaFactory.findJPT(jpa, fp, embeddedAn);
 			if(embeddableClass == null)
 				return ""; //$NON-NLS-1$
 			for (JavaPersistentAttribute relEntAt : embeddableClass.getAttributes())	{

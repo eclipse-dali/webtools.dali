@@ -148,6 +148,7 @@ public class JPAEditorConstants {
 	public final static String ANNOTATION_ELEMENT_COLLECTION = "ElementCollection"; 			//$NON-NLS-1$
 	public final static String ANNOTATION_EMBEDDED_ID = "EmbeddedId"; 		//$NON-NLS-1$
 	public final static String ANNOTATION_TRANSIENT = "Transient"; 			//$NON-NLS-1$
+	public final static String ANNOTATION_MAPS_ID = "MapsId"; 			    //$NON-NLS-1$
 	
 	public static final int RELATION_TYPE_UNIDIRECTIONAL = 1;
 	public static final int RELATION_TYPE_BIDIRECTIONAL = 2;

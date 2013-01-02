@@ -112,19 +112,22 @@ public class AddAttributeCommand implements Command {
 			createAttribute(fp, jpt, attributeType, mapKeyType, attributeName,
 					actName, cu, type, isCollection, attrTypes, contents);
 
-			JavaPersistentAttribute attr = jpt.getAttributeNamed(actName);
-			int cnt = 0;
-			while ((attr == null) && (cnt < 25)) {
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
+			if(jpt != null) {
+				JavaPersistentAttribute attr = jpt.getAttributeNamed(actName);
+				int cnt = 0;
+				while ((attr == null) && (cnt < 25)) {
+					try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
+					}
+					jpt.getJavaResourceType().getJavaResourceCompilationUnit()
+							.synchronizeWithJavaSource();
+					jpt.update();
+					jpt.synchronizeWithResourceModel();
+					attr = jpt.getAttributeNamed(actName);
+					cnt++;
 				}
-				jpt.getJavaResourceType().getJavaResourceCompilationUnit()
-						.synchronizeWithJavaSource();
-				jpt.update();
-				attr = jpt.getAttributeNamed(actName);
-				cnt++;
 			}
 
 		} catch (JavaModelException e) {
@@ -182,7 +185,7 @@ public class AddAttributeCommand implements Command {
 				" " + JPAEditorUtil.decapitalizeFirstLetter(actName) + ";"; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		String contents = ""; //$NON-NLS-1$
-		if(!JpaArtifactFactory.instance().isMethodAnnotated(jpt)){
+		if(jpt!= null && !JpaArtifactFactory.instance().isMethodAnnotated(jpt)){
 			contents = annotationContents + attrFieldContent;
 		} else {
 			contents = attrFieldContent;
@@ -379,7 +382,7 @@ public class AddAttributeCommand implements Command {
 				+ actName.substring(1);
 		
 		String contents = ""; //$NON-NLS-1$
-		if(JpaArtifactFactory.instance().isMethodAnnotated(jpt)){
+		if(jpt != null && JpaArtifactFactory.instance().isMethodAnnotated(jpt)){
 			contents += annotationContents;
 		}
 		contents += "    public " + attrType + //$NON-NLS-1$

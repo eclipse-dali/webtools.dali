@@ -187,6 +187,8 @@ public class JPAEditorMessages extends NLS {
 
 	public static String JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonLabel;
 	public static String JPAEditorToolBehaviorProvider_CreateElementCollectionAttributeButtonDescription;
+
+	public static String JPAEditorToolBehaviorProvider_DerivedIdentifiersPalleteTitle;
 	public static String JPAEditorToolBehaviorProvider_expandAttrMenuItem;
 
 	public static String JPAEditorToolBehaviorProvider_expandAttrMenuItemDescr;

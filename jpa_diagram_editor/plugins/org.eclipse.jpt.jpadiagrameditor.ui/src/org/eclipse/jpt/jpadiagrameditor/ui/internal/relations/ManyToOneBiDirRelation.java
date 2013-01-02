@@ -29,12 +29,13 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 								  JavaPersistentType inverse, 
 								  String ownerAttributeName,
 								  String inverseAttributeName,
-								  boolean createAttribs, JavaPersistentType embeddingEntity) {
+								  boolean createAttribs, JavaPersistentType embeddingEntity,
+								  boolean isDerivedIdFeature) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
 		this.inverseAttributeName = inverseAttributeName;
 		if (createAttribs)
-			createRelation(fp, embeddingEntity);
+			createRelation(fp, embeddingEntity, isDerivedIdFeature);
 		
 	}	
 
@@ -58,9 +59,12 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity) {
+	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity, boolean isDerivedIdFeature) {
 		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
-
+		if(isDerivedIdFeature){
+			JpaArtifactFactory.instance().calculateDerivedIdAnnotation(owner, inverse, ownerAnnotatedAttribute);
+		}
+		
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		String mapKeyType = getMapKeyType(isMap, owner, embeddingEntity);
 		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
@@ -70,7 +74,7 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, true, mapKeyType);
 		}
 		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
-	} 	
+	}
 		
 	@Override
 	public RelDir getRelDir() {
@@ -83,4 +87,5 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		}
 		return isMap ? JpaArtifactFactory.instance().getIdType(jpt) : null;
 	}
+
 }

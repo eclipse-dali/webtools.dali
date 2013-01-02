@@ -12,7 +12,9 @@ import static org.junit.Assert.fail;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -36,8 +38,12 @@ import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButton;
 import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButtonPad;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -45,7 +51,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -246,6 +256,7 @@ public class EditorProxy {
 						jptType));
 		
 		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		assertNotNull(jpa);
 		assertEquals(
 				"The newly added attribute must be mapped as basic attribute.",
 				MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY,
@@ -930,7 +941,7 @@ public class EditorProxy {
 	 */
 	public void assertBiDirRelationIsNotDeleted(SWTBotGefEditPart entity1,
 			SWTBotGefEditPart entity2, SWTBotGefConnectionEditPart connection,
-			String ownerAttributeName, String inverseAttributeName) {
+			String ownerAttributeName, String inverseAttributeName, boolean isDerivedIdFeature) {
 		connection.select();
 		jpaDiagramEditor.clickContextMenu("Delete");
 		denyDelete();
@@ -940,11 +951,19 @@ public class EditorProxy {
 		assertNotNull("Attribute must not be deleted!", connection);
 		assertNotNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
 		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
-		assertTrue(
+		if(isDerivedIdFeature){
+			assertFalse(
+					"\"Relation Attributes\" section of the owner entity must not be visible!",
+					isSectionVisible(
+							entity1,
+							JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		} else {
+			assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
 				isSectionVisible(
 						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		}
 		assertTrue(
 				"\"Relation Attributes\" section of the inverse entity must be visible!",
 				isSectionVisible(
@@ -996,7 +1015,7 @@ public class EditorProxy {
 	 */
 	public void assertUniDirRelationIsNotDeleted(SWTBotGefEditPart entity1,
 			SWTBotGefEditPart entity2, SWTBotGefConnectionEditPart connection,
-			String attributeName) {
+			String attributeName, boolean isDerivedIdFeature) {
 		connection.select();
 		jpaDiagramEditor.clickContextMenu("Delete");
 		denyDelete();
@@ -1005,11 +1024,20 @@ public class EditorProxy {
 		connection = getConnection(entity1, entity2);
 		assertNotNull("Attribute must not be deleted!", connection);
 		assertNotNull(jpaDiagramEditor.getEditPart(attributeName));
+		
+		if(isDerivedIdFeature){
+			assertFalse(
+					"\"Relation Attributes\" section of the inverse entity must not be visible!",
+					isSectionVisible(
+							entity1,
+							JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		} else {
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
 				isSectionVisible(
 						entity1,
 						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		}
 		assertFalse(
 				"\"Relation Attributes\" section of the inverse entity must not be visible!",
 				isSectionVisible(
@@ -1065,8 +1093,8 @@ public class EditorProxy {
 		confirmDelete();
 		bot.waitUntil(new ElementDisappears(jpaDiagramEditor,
 				ownerAttributeName), 10000);
-		assertTrue(entity1.sourceConnections().isEmpty());
-		assertTrue(entity2.targetConnections().isEmpty());
+//		assertTrue(entity1.sourceConnections().isEmpty());
+//		assertTrue(entity2.targetConnections().isEmpty());
 		assertNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
 		assertNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
 
@@ -1132,8 +1160,8 @@ public class EditorProxy {
 		confirmDelete();
 		bot.waitUntil(new ElementDisappears(jpaDiagramEditor, attributeName),
 				10000);
-		assertTrue(entity1.sourceConnections().isEmpty());
-		assertTrue(entity2.targetConnections().isEmpty());
+//		assertTrue(entity1.sourceConnections().isEmpty());
+//		assertTrue(entity2.targetConnections().isEmpty());
 		assertNull(jpaDiagramEditor.getEditPart(attributeName));
 		assertFalse(
 				"\"Relation Attributes\" section of the owner entity must not be visible!",
@@ -1188,14 +1216,13 @@ public class EditorProxy {
 		// entity1
 		// and that there is no relationship which starts from entity2
 		assertFalse(entity1.sourceConnections().isEmpty());
-		assertEquals(1, entity1.sourceConnections().size());
 		assertTrue(entity2.sourceConnections().isEmpty());
 
 		// assert that there is exactly one relationship which ends in entity2
 		// and that there is no relationship which end in entity1.
 		assertFalse(entity2.targetConnections().isEmpty());
 		assertEquals(1, entity2.targetConnections().size());
-		// assertTrue(entity1.targetConnections().isEmpty());
+//		assertTrue(entity1.targetConnections().isEmpty());
 
 		assertTrue(
 				"\"Relation Attributes\" section of the owner entity must be visible!",
@@ -1217,6 +1244,36 @@ public class EditorProxy {
 		}
 	}
 
+	/**
+	 * Assert that there is exactly one GEF element representing the
+	 * relationship
+	 * 
+	 * @param entity1
+	 * @param entity2
+	 */
+	public void assertDerivedIdConnectionIsCreated(SWTBotGefEditPart entity1,
+			SWTBotGefEditPart entity2, boolean isBiDIr) {
+
+		assertFalse(
+				"\"Relation Attributes\" section of the owner entity must not be visible!",
+				isSectionVisible(
+						entity1,
+						JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+	
+		if (isBiDIr) {
+			assertTrue(
+					"\"Relation Attributes\" section of the inverse entity must be visible!",
+					isSectionVisible(
+							entity2,
+							JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		} else {
+			assertFalse(
+					"\"Relation Attributes\" section of the inverse entity must not be visible!",
+					isSectionVisible(
+							entity2,
+							JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+		}
+	}
 	public void assertIsARelationExists(SWTBotGefEditPart entity1,
 			SWTBotGefEditPart entity2) {
 		// assert that there is exactly one relationship, which start from
@@ -1797,13 +1854,19 @@ public class EditorProxy {
 
 	public void testUniDirRelation(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String linkLabel) {
+			RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		int sourceConSize = owner.sourceConnections().size();
+		
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 2);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		}
 
 		jpaDiagramEditor.click(owner);
 		jpaDiagramEditor.click(inverse);
-		bot.waitUntil(new ConnectionIsShown(owner), 10000);
+		bot.waitUntil(new ConnectionIsShown(owner, sourceConSize), 10000);
 
 		waitASecond();
 		jpaDiagramEditor.activateDefaultTool();
@@ -1823,15 +1886,354 @@ public class EditorProxy {
 		assertAttributeIsCorretlyMapped(attributeName, linkLabel);
 
 		assertUniDirRelationIsNotDeleted(owner, inverse, connection,
-				attributeName);
+				attributeName, false);
 
 		assertUniDirRelationIsDeleted(owner, inverse, connection, attributeName);
 	}
+	
+	
+	public void testUniDirDerivedIdWithIdAnnotation(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
+			RelType reltype, String relationAnnotation, String derivedIdAnnotation, String linkLabel){
+		jpaDiagramEditor
+		.activateTool(relationFeatureName, 0);
+		jpaDiagramEditor.click(owner);
+		jpaDiagramEditor.click(inverse);
+		
+		bot.waitUntil(new ConnectionIsShown(owner));
+
+		waitASecond();
+		jpaDiagramEditor.activateDefaultTool();
+
+		assertDerivedIdConnectionIsCreated(owner, inverse, false);
+
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
+		IRelation rel = getConnection(connection);
+		assertNotNull(rel);
+		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
+		assertEquals(reltype, rel.getRelType());
+
+		String ownerAttributeName = testOwnerRelationAttributeProperties(rel);
+
+		assertAttributeIsCorretlyMapped(ownerAttributeName, linkLabel);
+		
+		SWTBotView jpaDetailsView = workbenchBot.viewByTitle("JPA Details");
+		jpaDetailsView.setFocus();
+		assertTrue("JPA Details view must be opened!",
+				jpaDetailsView.isActive());
+
+		SWTBotGefEditPart attribute = jpaDiagramEditor
+				.getEditPart(ownerAttributeName);
+		attribute.select();
+		attribute.click();
+		
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		assertTrue(annotations.contains(relationAnnotation));
+		assertTrue(annotations.contains(derivedIdAnnotation));
+		
+		assertUniDirRelationIsNotDeleted(owner, inverse, connection, ownerAttributeName, true);
+		
+		assertUniDirRelationIsDeleted(owner, inverse, connection, ownerAttributeName);
+
+	}
+	
+	public void testUniDirDerivedIdWithEmbeddedPk(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse, SWTBotGefEditPart embeddable,
+			RelType reltype, String relationAnnotation, String derivedIdAnnotation, String linkLabel,
+			boolean isBiDir, boolean isSamePK, String idClassFQN){
+		int sourceConnSize = owner.sourceConnections().size();		
+		
+		if(isBiDir){
+			jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		}
+		jpaDiagramEditor.click(owner);
+		jpaDiagramEditor.click(inverse);
+		
+		bot.waitUntil(new ConnectionIsShown(owner, sourceConnSize), 10000);
+
+		waitASecond();
+		jpaDiagramEditor.activateDefaultTool();
+
+		assertDerivedIdConnectionIsCreated(owner, inverse, isBiDir);
+
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
+		IRelation rel = getConnection(connection);
+		assertNotNull(rel);
+		if(isBiDir){
+			assertEquals(IRelation.RelDir.BI, rel.getRelDir());
+		} else {
+			assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
+		}
+		assertEquals(reltype, rel.getRelType());
+
+		String ownerAttributeName = testOwnerRelationAttributeProperties(rel);
+		String inverseAttributeName = null;
+		if(isBiDir){
+			inverseAttributeName = testInverseRelationAttributeProperties(rel);
+		}
+
+		assertAttributeIsCorretlyMapped(ownerAttributeName, linkLabel);
+
+		SWTBotGefEditPart attribute = jpaDiagramEditor
+				.getEditPart(ownerAttributeName);
+		attribute.select();
+		attribute.click();
+		
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		assertTrue(annotations.contains(relationAnnotation));
+		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID));
+		
+		String helperAttributeName = null;
+		if(!isSamePK) {
+			helperAttributeName = assertContainsHelperAttrInEmbeddable(inverse,	embeddable, jpa, idClassFQN);
+		}
+		
+		if(isBiDir){
+			assertBiDirRelationIsNotDeleted(owner, inverse, connection, ownerAttributeName, inverseAttributeName, true);
+			assertBiDirRelationIsDeleted(owner, inverse, connection, ownerAttributeName, inverseAttributeName);
+		} else {
+			assertUniDirRelationIsNotDeleted(owner, inverse, connection, ownerAttributeName, true);
+			assertUniDirRelationIsDeleted(owner, inverse, connection, ownerAttributeName);
+		}
+		
+		if(!isSamePK)
+			assertNull(getAttributeInPE(embeddable, helperAttributeName));
+	}
+	
+	public void testUniDirDerivedIdWithIdClassPk(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse, IFile idClass,
+			RelType reltype, String relationAnnotation, String derivedIdAnnotation, String linkLabel,
+			boolean isBiDir, boolean isSamePK, String idClassFQN) throws JavaModelException{
+		if(isBiDir){
+			jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		}
+		jpaDiagramEditor.click(owner);
+		jpaDiagramEditor.click(inverse);
+		
+		bot.waitUntil(new ConnectionIsShown(owner), 10000);
+
+		waitASecond();
+		jpaDiagramEditor.activateDefaultTool();
+
+		assertDerivedIdConnectionIsCreated(owner, inverse, isBiDir);
+
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
+		IRelation rel = getConnection(connection);
+		assertNotNull(rel);
+		if(isBiDir){
+			assertEquals(IRelation.RelDir.BI, rel.getRelDir());
+		} else {
+			assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
+		}
+		assertEquals(reltype, rel.getRelType());
+
+		String ownerAttributeName = testOwnerRelationAttributeProperties(rel);
+		String inverseAttributeName = null;
+		if(isBiDir){
+			inverseAttributeName = testInverseRelationAttributeProperties(rel);
+		}
+
+		assertAttributeIsCorretlyMapped(ownerAttributeName, linkLabel);
+
+		SWTBotGefEditPart attribute = jpaDiagramEditor
+				.getEditPart(ownerAttributeName);
+		attribute.select();
+		attribute.click();
+		
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		assertTrue(annotations.contains(relationAnnotation));
+		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_ID));
+		
+		String helperAttributeName = null;
+		if(!isSamePK) {
+			helperAttributeName = assertContainsHelperAttrInIdClass(inverse, idClass, jpa, idClassFQN);
+		}
+		
+		if(isBiDir){
+			assertBiDirRelationIsNotDeleted(owner, inverse, connection, ownerAttributeName, inverseAttributeName, true);
+			assertBiDirRelationIsDeleted(owner, inverse, connection, ownerAttributeName, inverseAttributeName);
+		} else {
+			assertUniDirRelationIsNotDeleted(owner, inverse, connection, ownerAttributeName, true);
+			assertUniDirRelationIsDeleted(owner, inverse, connection, ownerAttributeName);
+		}
+		
+		if(!isSamePK) {
+			IType idClassType = JavaCore.createCompilationUnitFrom(idClass).findPrimaryType();
+			assertFalse(idClassType.getField(helperAttributeName).exists());
+		}
+	}
+
+	private String assertContainsHelperAttrInEmbeddable(
+			SWTBotGefEditPart inverse, SWTBotGefEditPart embeddable,
+			JavaPersistentAttribute jpa, String IdClassFQN) {
+		String helperAttributeName = JPAEditorUtil.decapitalizeFirstLetter(getJPTObjectForGefElement(inverse).getSimpleName());
+		SWTBotGefEditPart helperAttr = getAttributeInPE(embeddable, helperAttributeName);
+		assertNotNull(helperAttr);
+		
+		Annotation an = jpa.getResourceAttribute().getAnnotation(MapsId2_0Annotation.ANNOTATION_NAME);
+		assertNotNull(an);
+		assertTrue(an instanceof MapsId2_0Annotation);
+		String mapsIdValue = ((MapsId2_0Annotation)an).getValue();
+		assertEquals(mapsIdValue, helperAttributeName);
+						
+		String helperAttrType = JPAEditorUtil.getAttributeTypeNameWithGenerics(getJPAObjectForGefElement(helperAttr));
+			
+		if(IdClassFQN != null){
+			assertEquals(helperAttrType, IdClassFQN);
+		} else {
+			String primaryKeyType = JPAEditorUtil.getAttributeTypeNameWithGenerics(getJPAObjectForGefElement(getAttributeInPE(inverse, "id")));
+			assertEquals(helperAttrType, primaryKeyType);
+		}
+		return helperAttributeName;
+	}
+	
+	
+	private String assertContainsHelperAttrInIdClass(
+			SWTBotGefEditPart inverse, IFile idClass,
+			JavaPersistentAttribute jpa, String IdClassFQN) throws JavaModelException {
+		
+		IType idClassType = JavaCore.createCompilationUnitFrom(idClass).findPrimaryType();
+		assertNotNull(idClassType);
+		
+		Annotation an = jpa.getResourceAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
+		assertNotNull(an);
+		
+		IField helperAttr = idClassType.getField(jpa.getName());
+		assertNotNull(helperAttr);		
+		
+		
+		String helperAttrType = helperAttr.getSource().split(" ")[1];
+			
+		if(IdClassFQN != null){
+			assertEquals(helperAttrType, IdClassFQN);
+		} else {
+			String primaryKeyType = JPAEditorUtil.getAttributeTypeNameWithGenerics(getJPAObjectForGefElement(getAttributeInPE(inverse, "id")));
+			assertEquals(helperAttrType, primaryKeyType);
+		}
+		return helperAttr.getElementName();
+	}
+	
+	public SWTBotGefEditPart getAttributeInPE(
+			SWTBotGefEditPart dependentEntity, String embeddedAttributeName) {
+		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
+		editParts.add(dependentEntity);
+		SWTBotGefEditPart embeddedAttribute = jpaDiagramEditor.getEditpart(
+				embeddedAttributeName, editParts);
+		return embeddedAttribute;
+	}
+	
+	public void testBiDirDerivedIdWithIdAnnotation(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
+			RelType reltype, String relationAnnotation, String derivedIdAnnotation, String linkLabel){
+		jpaDiagramEditor
+		.activateTool(relationFeatureName, 1);
+		jpaDiagramEditor.click(owner);
+		jpaDiagramEditor.click(inverse);
+		
+		bot.waitUntil(new ConnectionIsShown(owner));
+
+		waitASecond();
+		jpaDiagramEditor.activateDefaultTool();
+
+		assertDerivedIdConnectionIsCreated(owner, inverse, true);
+
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
+		IRelation rel = getConnection(connection);
+		assertNotNull(rel);
+		assertEquals(IRelation.RelDir.BI, rel.getRelDir());
+		assertEquals(reltype, rel.getRelType());
+
+		String ownerAttributeName = testOwnerRelationAttributeProperties(rel);
+		String inverseAttributeName = testInverseRelationAttributeProperties(rel);
+
+		assertAttributeIsCorretlyMapped(ownerAttributeName, linkLabel);
+		
+		SWTBotView jpaDetailsView = workbenchBot.viewByTitle("JPA Details");
+		jpaDetailsView.setFocus();
+		assertTrue("JPA Details view must be opened!",
+				jpaDetailsView.isActive());
+
+		SWTBotGefEditPart attribute = jpaDiagramEditor
+				.getEditPart(ownerAttributeName);
+		attribute.select();
+		attribute.click();
+		
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		assertTrue(annotations.contains(relationAnnotation));
+		assertTrue(annotations.contains(derivedIdAnnotation));
+		
+		assertBiDirRelationIsNotDeleted(owner, inverse, connection, ownerAttributeName, inverseAttributeName, true);
+		
+		assertBiDirRelationIsDeleted(owner, inverse, connection, ownerAttributeName, inverseAttributeName);
+	}
+	
+	public void testUniDirDerivedIdWithMapsIdAnnotation(String relationFeatureName,
+			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
+			RelType reltype, String linkLabel){
+		jpaDiagramEditor
+		.activateTool(relationFeatureName, 0);
+		jpaDiagramEditor.click(owner);
+		jpaDiagramEditor.click(inverse);
+		
+		bot.waitUntil(new ConnectionIsShown(owner));
+
+		waitASecond();
+		jpaDiagramEditor.activateDefaultTool();
+
+		assertDerivedIdConnectionIsCreated(owner, inverse, false);
+
+		SWTBotGefConnectionEditPart connection = getConnection(owner, inverse);
+		assertNotNull("Connection must be shown in the diagram.", connection);
+		IRelation rel = getConnection(connection);
+		assertNotNull(rel);
+		assertEquals(IRelation.RelDir.UNI, rel.getRelDir());
+		assertEquals(reltype, rel.getRelType());
+
+		String ownerAttributeName = testOwnerRelationAttributeProperties(rel);
+
+		assertAttributeIsCorretlyMapped(ownerAttributeName, linkLabel);
+		
+		SWTBotView jpaDetailsView = workbenchBot.viewByTitle("JPA Details");
+		jpaDetailsView.setFocus();
+		assertTrue("JPA Details view must be opened!",
+				jpaDetailsView.isActive());
+
+		SWTBotGefEditPart attribute = jpaDiagramEditor
+				.getEditPart(ownerAttributeName);
+		attribute.select();
+		attribute.click();
+		
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(attribute);
+		
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_ONE));
+		assertTrue(annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID));
+	}
 
 	public void testSelfUniDirRelation(String relationFeatureName,
-			SWTBotGefEditPart entity, RelType reltype, String linkLabel) {
+			SWTBotGefEditPart entity, RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 2);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		}
 		jpaDiagramEditor.click(entity);
 		jpaDiagramEditor.click(entity);
 		bot.waitUntil(new ConnectionIsShown(entity));
@@ -1860,9 +2262,13 @@ public class EditorProxy {
 
 	public void testUniDirRelRemoveOwnerAttribute(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String linkLabel) {
+			RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 2);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 0);
+		}
 		jpaDiagramEditor.click(owner);
 		jpaDiagramEditor.click(inverse);
 		bot.waitUntil(new ConnectionIsShown(owner));
@@ -1902,22 +2308,26 @@ public class EditorProxy {
 
 	public void testBiDirRel(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String linkLabel) {
+			RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 		testBiDirRelWithTwoMappingTypes(relationFeatureName, owner, inverse,
-				reltype, linkLabel, linkLabel);
+				reltype, linkLabel, linkLabel, canBeDerivedIdFeature);
 	}
 
 	public void testSelfBiDirRel(String relationFeatureName,
-			SWTBotGefEditPart owner, RelType reltype, String linkLabel) {
+			SWTBotGefEditPart owner, RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 		testSelfBiDirRelWithTwoMappings(relationFeatureName, owner, reltype,
-				linkLabel, linkLabel);
+				linkLabel, linkLabel, canBeDerivedIdFeature);
 	}
 
 	public void testBiDirRelWithTwoMappingTypes(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String ownerLinkLabel, String inverseLinkLabel) {
+			RelType reltype, String ownerLinkLabel, String inverseLinkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 3);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		}
 		jpaDiagramEditor.click(owner);
 		jpaDiagramEditor.click(inverse);
 		bot.waitUntil(new ConnectionIsShown(owner));
@@ -1942,7 +2352,7 @@ public class EditorProxy {
 		assertAttributeIsCorretlyMapped(inverseAttributeName, inverseLinkLabel);
 
 		assertBiDirRelationIsNotDeleted(owner, inverse, connection,
-				ownerAttributeName, inverseAttributeName);
+				ownerAttributeName, inverseAttributeName, false);
 
 		assertBiDirRelationIsDeleted(owner, inverse, connection,
 				ownerAttributeName, inverseAttributeName);
@@ -1950,9 +2360,13 @@ public class EditorProxy {
 
 	public void testSelfBiDirRelWithTwoMappings(String relationFeatureName,
 			SWTBotGefEditPart entity, RelType reltype, String ownerLinkLabel,
-			String inverseLinkLabel) {
+			String inverseLinkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 3);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		}
 		jpaDiagramEditor.click(entity);
 		jpaDiagramEditor.click(entity);
 		bot.waitUntil(new ConnectionIsShown(entity));
@@ -1985,18 +2399,22 @@ public class EditorProxy {
 
 	public void testBiDirRelRemoveInverseAttribute(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String linkLabel) {
+			RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 
 		testBiDirRelWithTwoMappingsWithoutInverseAttr(relationFeatureName,
-				owner, inverse, reltype, linkLabel, linkLabel);
+				owner, inverse, reltype, linkLabel, linkLabel, canBeDerivedIdFeature);
 	}
 
 	public void testBiDirRelWithTwoMappingsWithoutInverseAttr(
 			String relationFeatureName, SWTBotGefEditPart owner,
 			SWTBotGefEditPart inverse, RelType reltype, String ownerLinkLabel,
-			String inverseLinkLabel) {
+			String inverseLinkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 3);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		}
 		jpaDiagramEditor.click(owner);
 		jpaDiagramEditor.click(inverse);
 		bot.waitUntil(new ConnectionIsShown(owner));
@@ -2062,17 +2480,21 @@ public class EditorProxy {
 
 	public void testBiDirRelRemoveOwnerAttr(String relationFeatureName,
 			SWTBotGefEditPart owner, SWTBotGefEditPart inverse,
-			RelType reltype, String linkLabel) {
+			RelType reltype, String linkLabel, boolean canBeDerivedIdFeature) {
 		testBiDirRelWithTwoMappingsWithoutOwnerAttr(relationFeatureName, owner,
-				inverse, reltype, linkLabel, linkLabel);
+				inverse, reltype, linkLabel, linkLabel, canBeDerivedIdFeature);
 	}
 
 	public void testBiDirRelWithTwoMappingsWithoutOwnerAttr(
 			String relationFeatureName, SWTBotGefEditPart owner,
 			SWTBotGefEditPart inverse, RelType reltype, String ownerLinkLabel,
-			String inverseLinkLabel) {
+			String inverseLinkLabel, boolean canBeDerivedIdFeature) {
 
-		jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		if(canBeDerivedIdFeature) {
+			jpaDiagramEditor.activateTool(relationFeatureName, 3);
+		} else {
+			jpaDiagramEditor.activateTool(relationFeatureName, 1);
+		}
 		jpaDiagramEditor.click(owner);
 		jpaDiagramEditor.click(inverse);
 		bot.waitUntil(new ConnectionIsShown(owner));
@@ -2327,10 +2749,13 @@ public class EditorProxy {
 			SWTBotGefEditPart embeddingEntity, SWTBotGefEditPart embeddable,
 			HasReferenceType refType, String embeddedMappingKey,
 			String linkLabel, int elementsInDiagramCount) {
-
+		
 		jpaDiagramEditor.activateTool(toolEntry);
-
+		
 		jpaDiagramEditor.click(embeddingEntity);
+		
+		waitASecond();
+		
 		jpaDiagramEditor.click(embeddable);
 
 		String attributeName = checkEmbeddedConnectionProperties(
@@ -2483,5 +2908,72 @@ public class EditorProxy {
 			PersistentType type = persistentTypesIterator.next();
 			type.getResource().delete(true, new NullProgressMonitor());
 		}
+	}
+	
+	/**
+	 * Embed the given embeddedable into the given embedding entity and change the mapping of the
+	 * embedded attribute to EmbeddedId.
+	 * @param embeddingEntity
+	 * @param embeddable
+	 */
+	public void addEmbeddedIdToEntity(SWTBotGefEditPart embeddingEntity,
+			SWTBotGefEditPart embeddable) {
+		
+		jpaDiagramEditor.activateDefaultTool();
+		embeddingEntity.select();
+		embeddingEntity.click();
+		
+		String embeddedAttributeName = embedConnection(JPAEditorMessages.EmbedSingleObjectFeature_EmbeddedFeatureName, embeddingEntity,
+				embeddable, HasReferenceType.SINGLE,
+				MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
+				JptUiDetailsMessages.EmbeddedMappingUiProvider_linkLabel,
+				3);
+				
+		SWTBotGefEditPart embeddedAttribute = getAttributeInPE(embeddingEntity,
+				embeddedAttributeName);
+		
+		assertNotNull(embeddedAttribute);
+		JavaPersistentAttribute jpa = getJPAObjectForGefElement(embeddedAttribute);
+		jpa.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+	}
+	
+	/**
+	 * Delete the default primary key from the selected entity in the diagram
+	 * @param entity - the entity from which the primary key to be deleted
+	 */
+	public void deleteEntityDefaultPK(
+			SWTBotGefEditPart entity) {
+		List<SWTBotGefEditPart> editParts = new ArrayList<SWTBotGefEditPart>();
+		editParts.add(entity);
+		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditpart(
+				"id", editParts);
+		
+		pressAttributeDeleteContextButton(attribute);
+		confirmDelete();
+		bot.waitUntil(new ElementDisappears(jpaDiagramEditor, entity, "id"),
+				20000);
+		attribute = jpaDiagramEditor.getEditpart(
+				"id", editParts);
+		assertNull("Attribute must be deleted!", attribute);
+	}
+	
+	/**
+	 * Creates a new simple java class and set this class as IDClass for the given entity.
+	 * @param entity - entity to which the idClass annotation will be added.
+	 * @param idClassName - the name of the java class
+	 * @param jpaProject - the given jpa project
+	 * @return the simple java class file.
+	 * @throws IOException
+	 * @throws CoreException
+	 * @throws JavaModelException
+	 */
+	public IFile setIdClass(SWTBotGefEditPart entity, String idClassName, JpaProject jpaProject)
+			throws IOException, CoreException, JavaModelException {
+		IFile idClass = JPACreateFactory.instance().createIdClassInProject(jpaProject.getProject(), new String[] {"org", "persistence"}, idClassName);
+		
+		JavaPersistentType jptType= getJPTObjectForGefElement(entity);
+		Annotation an = jptType.getJavaResourceType().addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		((IdClassAnnotation)an).setValue(idClassName);
+		return idClass;
 	}
 }

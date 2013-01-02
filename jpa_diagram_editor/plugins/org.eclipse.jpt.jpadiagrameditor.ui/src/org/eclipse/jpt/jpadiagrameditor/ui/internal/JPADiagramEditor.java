@@ -321,6 +321,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 				jpaSelectionModel.setValue(jpaStructureNode);
 				setFileModel(jpaStructureNode);
 				selectionManager.setSelection(jpaStructureNode);
+//				jpaStructureNode.getJpaPlatform().buildJpaFile(jpaStructureNode.getJpaProject(), jpaFileModel.getValue().getFile());
 				return;
 			}
 		}

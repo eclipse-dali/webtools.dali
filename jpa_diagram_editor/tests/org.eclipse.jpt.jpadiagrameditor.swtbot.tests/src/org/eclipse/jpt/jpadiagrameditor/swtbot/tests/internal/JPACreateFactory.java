@@ -422,25 +422,16 @@ public class JPACreateFactory {
 			if (!folder.exists()) {
 				createDirectories(folder, true, true, new NullProgressMonitor());
 			}
-			IFile file = folder.getFile(entityShortName + "Id.java");		
+			IFile file = folder.getFile(entityShortName + ".java");		
 			if (!file.exists()) {
 				String content = "package " + packageName + ";\n\n" 
-						+ "import javax.persistence.*;\n\n" 
-						+"import java.io.Serializable;"
-						+ "public class " + entityShortName + "Id {\n"
-						+ "	private String firstName;\n"
-						+ "	private String lastName;\n"
-						+ "	public String getFirstName() {\n" 
-						+ "		return firstName;\n"
+						+ "public class " + entityShortName + " {\n"
+						+ "	private long id;\n"
+						+ "	public long getId() {\n" 
+						+ "		return id;\n"
 						+ "	}\n"
-						+ "	public void setFirstName(String firstName) {\n"
-						+ "		this.firstName = firstName;\n" 
-						+ "	}\n"
-						+ "	public String getLastName() {\n" 
-						+ "		return lastName;\n"
-						+ "	}\n"
-						+ "	public void setLastName(String lastName) {\n"
-						+ "		this.lastName = lastName;\n" 
+						+ "	public void setId(long id) {\n"
+						+ "		this.id = id;\n" 
 						+ "	}\n"
 						+ "}"; //$NON-NLS-1$
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();

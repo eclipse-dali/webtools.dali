@@ -27,12 +27,13 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 								 JavaPersistentType inverse, 
 								 String ownerAttributeName,
 								 String inverseAttributeName,
-								 boolean createAttribs, JavaPersistentType embeddingEntity) {
+								 boolean createAttribs, JavaPersistentType embeddingEntity,
+								 boolean isDerivedIdFeature) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
 		this.inverseAttributeName = inverseAttributeName;
 		if (createAttribs)
-			createRelation(fp, embeddingEntity);
+			createRelation(fp, embeddingEntity, isDerivedIdFeature);
 	}
 
 	@Override
@@ -57,8 +58,11 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity) {
+	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity, boolean isDerivedIdFeature) {
 		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
+		if(isDerivedIdFeature){
+			JpaArtifactFactory.instance().calculateDerivedIdAnnotation(owner, inverse, ownerAnnotatedAttribute);
+		}
 		
 		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
 			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, false, null);

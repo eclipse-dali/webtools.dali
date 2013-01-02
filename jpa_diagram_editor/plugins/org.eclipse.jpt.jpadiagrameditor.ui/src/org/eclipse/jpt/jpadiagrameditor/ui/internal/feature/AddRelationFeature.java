@@ -21,6 +21,7 @@ import static org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.R
 import static org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType.ONE_TO_MANY;
 import static org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType.ONE_TO_ONE;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -51,6 +52,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtilImpl;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
 import org.eclipse.swt.graphics.Point;
 
@@ -210,17 +212,29 @@ public class AddRelationFeature extends AbstractAddFeature {
 		}
 		JavaPersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
 		owner.update();
-		JavaAttributeMapping mapping = owner.getMapping();  
-		a = (OneToOneAnnotation)mapping.getMappingAnnotation();		
-		if (a == null)
-			return;
-		optional = a.getOptional();
-		isOptional = (optional == null) ? true : optional.booleanValue();		
-		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 1.0);									 
-		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);				
-		if (!UNI.equals(direction)) {
-			imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getInverseAttributeName(), 1.0);				
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(owner);
+		if(isDerivedId(annotations)){
+			isOptional = false;
+		} else {
+			JavaAttributeMapping mapping = owner.getMapping();
+			a = (OneToOneAnnotation) mapping.getMappingAnnotation();
+			if (a == null)
+				return;
+			optional = a.getOptional();
+			isOptional = (optional == null) ? true : optional.booleanValue();
 		}
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 1.0);
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);
+		if (!UNI.equals(direction)) {
+			imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getInverseAttributeName(), 1.0);
+		}
+	}
+	
+	private boolean isDerivedId(HashSet<String> annotations){
+		if(annotations.contains(JPAEditorConstants.ANNOTATION_ID) || annotations.contains(JPAEditorConstants.ANNOTATION_MAPS_ID)){
+			return true;
+		}		
+		return false;
 	}
         
 	private void addOneToManyTextDecorator(FreeFormConnection c, IRelation rel) {
@@ -230,15 +244,23 @@ public class AddRelationFeature extends AbstractAddFeature {
 	}
                 
 	private void addManyToOneTextDecorator(FreeFormConnection c, RelDir direction, IRelation rel) {
+		boolean isOptional = false;
 		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_N, 0.0);
 		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);				
 		JavaPersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
-		JavaAttributeMapping mapping = owner.getMapping();
-		ManyToOneAnnotation a = (ManyToOneAnnotation)mapping.getMappingAnnotation();
-		if (a == null) 
-			return;
-		Boolean optional = a.getOptional();
-		boolean isOptional = (optional == null) ? true : optional.booleanValue();		
+
+		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(owner);
+		if(isDerivedId(annotations)){
+			isOptional = false;
+		} else {
+			JavaAttributeMapping mapping = owner.getMapping();
+			ManyToOneAnnotation a = (ManyToOneAnnotation) mapping.getMappingAnnotation();
+			if (a == null)
+				return;
+			Boolean optional = a.getOptional();
+			isOptional = (optional == null) ? true : optional.booleanValue();
+		}
+		
 		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ?
 																	JPAEditorConstants.CARDINALITY_ZERO_ONE :
 																	JPAEditorConstants.CARDINALITY_ONE, 1.0);

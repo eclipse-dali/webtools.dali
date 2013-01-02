@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -72,7 +73,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 
 	protected Set<JavaPersistentAttribute> ats = null;
 	protected boolean hasNameAnnotation = false;
-
+	
 	public RefactorEntityFeature(IFeatureProvider fp) {
 		super(fp);
 	}
@@ -111,10 +112,10 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 	}
 	
 	public void execute(ICustomContext context, SelectionDispatchAction action) {
-		final Shape pict = (Shape)context.getInnerPictogramElement();
+		PictogramElement pe = context.getInnerPictogramElement();
+		final ContainerShape pict = ((Shape)pe).getContainer();
+	    JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(pict);
 		
-		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().
-									getBusinessObjectForPictogramElement(pict);
 		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
 
 		StructuredSelection sel = new StructuredSelection(cu);
@@ -145,7 +146,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			protected void doExecute() {
 				remapEntity(oldName, pict, pu, rename, lsnr, dot, getFeatureProvider());
 			}
-		});	
+		});
 	}
 	
 	public void execute(ICustomContext context, String newName, ICompilationUnit cu, JavaPersistentType jpt) {

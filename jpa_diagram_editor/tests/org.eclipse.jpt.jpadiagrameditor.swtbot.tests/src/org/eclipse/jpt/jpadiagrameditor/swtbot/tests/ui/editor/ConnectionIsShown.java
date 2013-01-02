@@ -6,6 +6,13 @@ import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 public class ConnectionIsShown extends DefaultCondition{
 	
 	private SWTBotGefEditPart entity;
+	private int sourceConnectionSize;
+	
+	public ConnectionIsShown(SWTBotGefEditPart entity, int sourceConnectionSize){
+		super();
+		this.entity = entity;
+		this.sourceConnectionSize = sourceConnectionSize;
+	}
 	
 	public ConnectionIsShown(SWTBotGefEditPart entity){
 		super();
@@ -13,6 +20,9 @@ public class ConnectionIsShown extends DefaultCondition{
 	}
 
 	public boolean test() throws Exception {
+		if(sourceConnectionSize != 0) {
+			return ((!entity.sourceConnections().isEmpty() && (entity.sourceConnections().size() == sourceConnectionSize + 1)) || !entity.targetConnections().isEmpty());
+		}
 		return (!entity.sourceConnections().isEmpty() || !entity.targetConnections().isEmpty());
 	}
 
