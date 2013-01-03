@@ -295,7 +295,7 @@ public class GenericRootContextNode
 		}
 
 		Iterable<String> typeMappingAnnotationNames = this.jpaProject.getTypeMappingAnnotationNames();
-		for (JavaResourceAbstractType jrat : annotatedTypes) {
+		for (JavaResourceAbstractType jrat : orphans) {
 			if (jrat.isAnnotatedWithAnyOf(typeMappingAnnotationNames)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
