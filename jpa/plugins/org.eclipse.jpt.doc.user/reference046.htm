@@ -8,16 +8,16 @@
 <title>Ordering</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-10-11T7:52:10Z" />
+<meta name="date" content="2013-01-03T9:24:55Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Ordering" />
-<meta name="relnum" content="Release 3.2" />
-<meta name="partnum" content="Release 3.2" />
+<meta name="relnum" content="Release 3.3" />
+<meta name="partnum" content="Release 3.3" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-10-11</p>
+<p class="betadraftsubtitle">Beta Draft: 2013-01-03</p>
 <p><a id="CACBIJFD" name="CACBIJFD"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
 <h1>Ordering</h1>
@@ -39,7 +39,7 @@
 <tbody>
 <tr align="left" valign="top">
 <td align="left" id="r2c1-t44" headers="r1c1-t44">
-<p><span class="bold">None</span></p>
+<p><span class="bold">Name</span></p>
 </td>
 <td align="left" headers="r2c1-t44 r1c2-t44"><br /></td>
 <td align="left" headers="r2c1-t44 r1c3-t44"><br /></td>
@@ -75,7 +75,9 @@
 <td align="left" id="r6c1-t44" headers="r1c1-t44">
 <p>Insertable</p>
 </td>
-<td align="left" headers="r6c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r6c1-t44 r1c2-t44">
+<p>Specify if the column is included in SQL <code>INSERT</code> statements</p>
+</td>
 <td align="left" headers="r6c1-t44 r1c3-t44">
 <p>True</p>
 </td>
@@ -85,7 +87,9 @@
 <td align="left" id="r7c1-t44" headers="r1c1-t44">
 <p>Updatable</p>
 </td>
-<td align="left" headers="r7c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r7c1-t44 r1c2-t44">
+<p>Specify if the column is included in SQL <code>UPDATE</code> statements</p>
+</td>
 <td align="left" headers="r7c1-t44 r1c3-t44">
 <p>True</p>
 </td>
@@ -95,7 +99,9 @@
 <td align="left" id="r8c1-t44" headers="r1c1-t44">
 <p>Nullable</p>
 </td>
-<td align="left" headers="r8c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r8c1-t44 r1c2-t44">
+<p>Specify if the database column is nullable</p>
+</td>
 <td align="left" headers="r8c1-t44 r1c3-t44">
 <p>True</p>
 </td>
@@ -105,8 +111,12 @@
 <td align="left" id="r9c1-t44" headers="r1c1-t44">
 <p>Column definition</p>
 </td>
-<td align="left" headers="r9c1-t44 r1c2-t44"><br /></td>
-<td align="left" headers="r9c1-t44 r1c3-t44"><br /></td>
+<td align="left" headers="r9c1-t44 r1c2-t44">
+<p>The SQL fragment that used to generate the DDL for the column</p>
+</td>
+<td align="left" headers="r9c1-t44 r1c3-t44">
+<p>Generated SQL to create a column of the inferred type</p>
+</td>
 <td align="left" headers="r9c1-t44 r1c4-t44"><br /></td>
 </tr>
 </tbody>
@@ -120,7 +130,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2013,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
