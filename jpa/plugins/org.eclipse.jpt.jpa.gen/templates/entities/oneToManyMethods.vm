@@ -1,0 +1,16 @@
+##included template. Generates the @OneToMany methods.
+##Assumes that the context has a "role" object representing the generated AssociationRole
+##
+	public $role.referencedTable.className $customizer.propertyAdd($role.propertyName)($role.referencedTable.className $customizer.convertToSingularisedString($role.propertyName)) {
+		$customizer.propertyGetter($role.propertyName)().add($customizer.convertToSingularisedString($role.propertyName));
+		$customizer.convertToSingularisedString($role.propertyName).$customizer.propertySetter($role.oppositeRole.propertyName)(this);
+
+		return $customizer.convertToSingularisedString($role.propertyName);
+	}
+
+	public $role.referencedTable.className $customizer.propertyRemove($role.propertyName)($role.referencedTable.className $customizer.convertToSingularisedString($role.propertyName)) {
+		$customizer.propertyGetter($role.propertyName)().remove($customizer.convertToSingularisedString($role.propertyName));
+		$customizer.convertToSingularisedString($role.propertyName).$customizer.propertySetter($role.oppositeRole.propertyName)(null);
+
+		return $customizer.convertToSingularisedString($role.propertyName);
+	}
