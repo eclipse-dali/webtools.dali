@@ -13,12 +13,19 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer.Context;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
@@ -37,10 +44,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OxmJavaTypeImpl
-		extends AbstractOxmJaxbType<JavaClass>
+		extends AbstractOxmTypeMapping
 		implements OxmJavaType {
-	
-	protected EJavaType eJavaType;
 	
 	protected String specifiedName;
 	
@@ -55,14 +60,12 @@ public class OxmJavaTypeImpl
 	
 	
 	public OxmJavaTypeImpl(OxmXmlBindings parent, EJavaType eJavaType) {
-		super(parent);
-		this.eJavaType = eJavaType;
+		super(parent, eJavaType);
 		
 		this.specifiedAttributes = new Vector<OxmJavaAttribute>();
 		this.specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
 		
 		initSpecifiedName();
-		initQualifiedName();
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
 		initSpecifiedAccessType();
@@ -71,12 +74,13 @@ public class OxmJavaTypeImpl
 	}
 	
 	
-	public OxmXmlBindings getXmlBindings() {
-		return (OxmXmlBindings) getParent();
+	@Override
+	public EJavaType getETypeMapping() {
+		return (EJavaType) super.getETypeMapping();
 	}
 	
-	public EJavaType getEJavaType() {
-		return this.eJavaType;
+	public TypeKind getTypeKind() {
+		return TypeKind.CLASS;
 	}
 	
 	@Override
@@ -84,8 +88,14 @@ public class OxmJavaTypeImpl
 		return new GenericJavaJaxbClass(this, resourceType);
 	}
 	
+	@Override
+	public JavaClass getJavaType() {
+		return (JavaClass) super.getJavaType();
+	}
+	
 	protected JaxbClassMapping getJavaClassMapping() {
-		return (this.javaType == null) ? null : this.javaType.getMapping();
+		JavaClass javaClass = getJavaType();
+		return (javaClass == null) ? null : javaClass.getMapping();
 	}
 	
 	
@@ -95,7 +105,7 @@ public class OxmJavaTypeImpl
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		setSpecifiedName_(buildSpecifiedName());
-		setQualifiedName_(buildQualifiedName());
+		setTypeName_(buildTypeName());
 		syncSpecifiedAccessOrder();
 		syncSpecifiedAccessType();
 		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
@@ -117,7 +127,7 @@ public class OxmJavaTypeImpl
 	}
 	
 	public void setSpecifiedName(String newName) {
-		this.eJavaType.setName(newName);
+		getETypeMapping().setName(newName);
 		setSpecifiedName_(newName);
 	}
 	
@@ -132,16 +142,24 @@ public class OxmJavaTypeImpl
 	}
 	
 	protected String buildSpecifiedName() {
-		return this.eJavaType.getName();
+		return getETypeMapping().getName();
 	}
 	
-	protected void initQualifiedName() {
-		this.qualifiedName = buildQualifiedName();
+	
+	// ***** type name *****
+	
+	@Override
+	protected void updateTypeName() {
+		String fqName = this.typeName.getFullyQualifiedName();
+		String newFqName = getXmlBindings().getQualifiedName(this.specifiedName);
+		if (! ObjectTools.equals(fqName, newFqName)) {
+			setTypeName_(buildTypeName());
+		}
 	}
 	
 	@Override
-	protected String buildQualifiedName() {
-		return getXmlBindings().getQualifiedName(this.specifiedName);
+	protected TypeName buildTypeName() {
+		return new OxmTypeName(getXmlBindings().getQualifiedName(this.specifiedName));
 	}
 	
 	
@@ -166,7 +184,7 @@ public class OxmJavaTypeImpl
 	}
 	
 	public void setSpecifiedAccessOrder(XmlAccessOrder accessOrder) {
-		this.eJavaType.setXmlAccessorOrder(ELXmlAccessOrder.toOxmResourceModel(accessOrder));
+		getETypeMapping().setXmlAccessorOrder(ELXmlAccessOrder.toOxmResourceModel(accessOrder));
 		setSpecifiedAccessOrder_(accessOrder);
 	}
 	
@@ -225,7 +243,7 @@ public class OxmJavaTypeImpl
 	}
 	
 	protected XmlAccessOrder buildSpecifiedAccessOrder() {
-		return ELXmlAccessOrder.fromOxmResourceModel(this.eJavaType.getXmlAccessorOrder());
+		return ELXmlAccessOrder.fromOxmResourceModel(getETypeMapping().getXmlAccessorOrder());
 	}
 	
 	
@@ -250,7 +268,7 @@ public class OxmJavaTypeImpl
 	}
 	
 	public void setSpecifiedAccessType(XmlAccessType access) {
-		this.eJavaType.setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(access));
+		getETypeMapping().setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(access));
 		setSpecifiedAccessType_(access);
 	}
 	
@@ -310,7 +328,121 @@ public class OxmJavaTypeImpl
 	}
 	
 	protected XmlAccessType buildSpecifiedAccessType() {
-		return ELXmlAccessType.fromOxmResourceModel(this.eJavaType.getXmlAccessorType());
+		return ELXmlAccessType.fromOxmResourceModel(getETypeMapping().getXmlAccessorType());
+	}
+	
+	
+	// ***** factory class *****
+	
+	public String getFactoryClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getSpecifiedFactoryClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setSpecifiedFactoryClass(String factoryClass) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	// ***** factory method *****
+	
+	public String getFactoryMethod() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setFactoryMethod(String factoryMethod) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	// ***** prop order *****
+	
+	public ListIterable<String> getPropOrder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public int getPropOrderSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public String getProp(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void addProp(int index, String prop) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void removeProp(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void removeProp(String prop) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveProp(int targetIndex, int sourceIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	// ***** superclass *****
+	
+	public JaxbClassMapping getSuperclass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	// ***** attributes *****
+	
+	public Iterable<JaxbPersistentAttribute> getAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public int getAttributesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public Iterable<JaxbPersistentAttribute> getIncludedAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public int getIncludedAttributesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public Iterable<JaxbPersistentAttribute> getAllLocallyDefinedAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public JaxbAttributesContainer buildIncludedAttributesContainer(JaxbClassMapping parent, Context context) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
@@ -338,7 +470,7 @@ public class OxmJavaTypeImpl
 	}
 	
 	protected void initSpecifiedAttributes() {
-		for (EJavaAttribute eJavaAttribute : this.eJavaType.getJavaAttributes()) {
+		for (EJavaAttribute eJavaAttribute : getETypeMapping().getJavaAttributes()) {
 			this.specifiedAttributes.add(buildSpecifiedAttribute(eJavaAttribute));
 		}
 	}
@@ -355,16 +487,24 @@ public class OxmJavaTypeImpl
 	}
 	
 	
+	// ***** misc *****
+	
+	public JaxbAttributeMapping getXmlIdMapping() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	// ***** validation *****
 	
 	@Override
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.eJavaType.getValidationTextRange();
+		TextRange textRange = getETypeMapping().getValidationTextRange();
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 	
 	protected TextRange getNameTextRange() {
-		return this.eJavaType.getNameTextRange();
+		return getETypeMapping().getNameTextRange();
 	}
 	
 	@Override
@@ -400,6 +540,55 @@ public class OxmJavaTypeImpl
 	}
 	
 	
+	protected static class OxmTypeName
+			implements TypeName {
+		
+		// never null
+		protected String fullyQualifiedName;
+		
+		protected OxmTypeName(String fullyQualifiedName) {
+			assert (fullyQualifiedName != null);
+			this.fullyQualifiedName = fullyQualifiedName;
+		}
+		
+		public String getPackageName() {
+			return ClassNameTools.packageName(this.fullyQualifiedName);
+		}
+		
+		public String getSimpleName() {
+			return ClassNameTools.simpleName(this.fullyQualifiedName);
+		}
+		
+		public String getTypeQualifiedName() {
+			String packageName = this.getPackageName();
+			return (StringTools.isBlank(packageName)) ? this.fullyQualifiedName : this.fullyQualifiedName.substring(packageName.length() + 1);
+		}
+		
+		public String getFullyQualifiedName() {
+			return this.fullyQualifiedName;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			return ObjectTools.equals(this.fullyQualifiedName, ((OxmTypeName) obj).fullyQualifiedName);
+		}
+		
+		@Override
+		public int hashCode() {
+			return ObjectTools.hashCode(this.fullyQualifiedName);
+		}
+	}
+	
+	
 	/**
 	 * specified attribute container adapter
 	 */
@@ -411,7 +600,7 @@ public class OxmJavaTypeImpl
 		}
 		
 		public Iterable<EJavaAttribute> getResourceElements() {
-			return OxmJavaTypeImpl.this.eJavaType.getJavaAttributes();
+			return OxmJavaTypeImpl.this.getETypeMapping().getJavaAttributes();
 		}
 		
 		public EJavaAttribute getResourceElement(OxmJavaAttribute contextElement) {

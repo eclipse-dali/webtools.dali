@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
@@ -170,7 +171,7 @@ public abstract class GenericJavaXmlSchemaType
 	
 	
 	protected class XmlSchemaTypeQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlSchemaTypeQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
@@ -188,12 +189,12 @@ public abstract class GenericJavaXmlSchemaType
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return null;
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			return XmlSchemaType.DEFAULT_NAMESPACE;
 		}
 		
@@ -235,7 +236,7 @@ public abstract class GenericJavaXmlSchemaType
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

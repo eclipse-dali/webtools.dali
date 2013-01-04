@@ -457,7 +457,7 @@ public class GenericJavaXmlElement
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

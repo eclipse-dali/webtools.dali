@@ -47,8 +47,6 @@ public interface JaxbTypeMapping
 	
 	boolean isXmlTransient();
 	
-	void setXmlTransient(boolean newValue);
-	
 	
 	// ***** XmlType.name and XmlType.namespace *****
 	

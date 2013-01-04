@@ -97,7 +97,7 @@ public class OxmFileImpl
 	
 	// ***** package *****
 	
-	public ELJaxbPackage getPackage() {
+	public ELJaxbPackage getJaxbPackage() {
 		return this.elJaxbPackage;
 	}
 	
@@ -160,7 +160,7 @@ public class OxmFileImpl
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (getPackage() == null) {
+		if (getJaxbPackage() == null) {
 			if (StringTools.isBlank(getPackageName())) {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(

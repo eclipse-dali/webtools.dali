@@ -4,13 +4,13 @@ package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
+import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -462,5 +462,77 @@ public class EXmlType extends EBaseObjectImpl implements EBaseObject
 		result.append(')');
 		return result.toString();
 	}
-
-} // EXmlType
+	
+	
+	// ***** validation *****
+	
+	public TextRange getNamespaceTextRange() {
+		return getAttributeTextRange(Oxm.NAMESPACE);
+	}
+	
+	public boolean namespaceTouches(int pos) {
+		TextRange textRange = getAttributeCodeAssistTextRange(Oxm.NAMESPACE);
+		return (textRange != null) && (textRange.touches(pos));
+	}
+	
+	public TextRange getNameTextRange() {
+		return getAttributeTextRange(Oxm.NAME);
+	}
+	
+	public boolean nameTouches(int pos) {
+		TextRange textRange = getAttributeCodeAssistTextRange(Oxm.NAME);
+		return (textRange != null) && (textRange.touches(pos));
+	}
+	
+	
+	// ***** translators *****
+	
+	public static Translator buildTranslator() {
+		return new SimpleTranslator(Oxm.XML_TYPE, OxmPackage.eINSTANCE.getEAbstractTypeMapping_XmlType(), buildTranslatorChildren());
+	}
+	
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildNamespaceTranslator(),
+			buildFactoryClassTranslator(),
+			buildFactoryMethodTranslator(),
+			buildPropOrderTranslator(),
+		};
+	}
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(
+			Oxm.NAME,
+			OxmPackage.eINSTANCE.getEXmlType_Name(), 
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
+	}
+	
+	protected static Translator buildNamespaceTranslator() {
+		return new Translator(
+			Oxm.NAMESPACE,
+			OxmPackage.eINSTANCE.getEXmlType_Namespace(), 
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
+	}
+	
+	protected static Translator buildFactoryClassTranslator() {
+		return new Translator(
+			Oxm.FACTORY_CLASS,
+			OxmPackage.eINSTANCE.getEXmlType_FactoryClass(), 
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
+	}
+	
+	protected static Translator buildFactoryMethodTranslator() {
+		return new Translator(
+			Oxm.FACTORY_METHOD,
+			OxmPackage.eINSTANCE.getEXmlType_FactoryMethod(), 
+			Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildPropOrderTranslator() {
+		return new Translator(
+			Oxm.PROP_ORDER,
+			OxmPackage.eINSTANCE.getEXmlType_PropOrder(), 
+			Translator.DOM_ATTRIBUTE);
+	}
+}

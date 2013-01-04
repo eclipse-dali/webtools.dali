@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
@@ -130,7 +131,7 @@ public class GenericJavaXmlRootElement
 	
 	
 	protected class XmlRootElementQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlRootElementQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
@@ -143,13 +144,13 @@ public class GenericJavaXmlRootElement
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return Introspector.decapitalize(GenericJavaXmlRootElement.this.getJaxbType().getTypeName().getSimpleName());
 		}
 		
@@ -209,7 +210,7 @@ public class GenericJavaXmlRootElement
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

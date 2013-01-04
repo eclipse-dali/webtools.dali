@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.context;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -40,7 +41,7 @@ public interface JaxbPackageInfo
 	/**
 	 * Return the XML schema for this package info, this will not be null.
 	 */
-	XmlSchema getXmlSchema();
+	JavaXmlSchema getXmlSchema();
 	
 	
 	// ***** XmlSchemaTypes *****

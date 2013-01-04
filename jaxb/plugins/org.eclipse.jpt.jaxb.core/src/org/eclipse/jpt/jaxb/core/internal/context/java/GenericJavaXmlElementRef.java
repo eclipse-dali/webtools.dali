@@ -306,9 +306,9 @@ public class GenericJavaXmlElementRef
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			if (isTypeJAXBElement()) {
-				return super.getDefaultName();
+				return super.buildDefaultName();
 			}
 			
 			JaxbTypeMapping referencedTypeMapping = getReferencedTypeMapping();
@@ -323,7 +323,7 @@ public class GenericJavaXmlElementRef
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbTypeMapping referencedTypeMapping = getReferencedTypeMapping();
 			if (referencedTypeMapping != null) {
 				XmlRootElement rootElement = referencedTypeMapping.getXmlRootElement();
@@ -332,7 +332,7 @@ public class GenericJavaXmlElementRef
 				}
 			}
 			
-			return super.getDefaultNamespace();
+			return super.buildDefaultNamespace();
 		}
 		
 		@Override
@@ -383,7 +383,7 @@ public class GenericJavaXmlElementRef
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

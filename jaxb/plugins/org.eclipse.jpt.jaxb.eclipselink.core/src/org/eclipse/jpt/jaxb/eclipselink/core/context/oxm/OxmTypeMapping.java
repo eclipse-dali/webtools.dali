@@ -9,8 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,32 +24,38 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaType;
  * @version 3.3
  * @since 3.3
  */
-public interface OxmJaxbType<T extends JavaType>
-		extends JaxbContextNode {
-	
-	// ***** qualified name *****
+public interface OxmTypeMapping
+		extends JaxbTypeMapping {
 	
 	/**
-	 * String associated with changes to the "qualifiedName" property
+	 * Resource model element
 	 */
-	static final String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
+	EAbstractTypeMapping getETypeMapping();
 	
-	/**
-	 * Return
-	 * - the name specified in source, if it is qualified or primitive
-	 * - the name specified in source with the xml-bindings package name prepended
-	 */
-	String getQualifiedName();
 	
-	/**
-	 * Return the name with no package qualification
-	 */
-	String getSimpleName();
+	// ***** type name *****
+	
+	String TYPE_NAME_PROPERTY = "typeName"; //$NON-NLS-1$
 	
 	
 	// ***** java type *****
 	
-	final static String JAVA_TYPE_PROPERTY = "javaType"; //$NON-NLS-1$
+	String JAVA_TYPE_PROPERTY = "javaType"; //$NON-NLS-1$
 	
-	T getJavaType();
+	JavaType getJavaType();
+	
+	ELJaxbPackage getJaxbPackage();
+	
+	
+	// ***** xml transient *****
+	
+	String DEFAULT_XML_TRANSIENT_PROPERTY = "defaultXmlTransient";  //$NON-NLS-1$
+	
+	boolean isDefaultXmlTransient();
+	
+	String SPECIFIED_XML_TRANSIENT_PROPERTY = "specifiedXmlTransient";  //$NON-NLS-1$
+	
+	Boolean getSpecifiedXmlTransient();
+	
+	void setSpecifiedXmlTransient(Boolean newValue);
 }

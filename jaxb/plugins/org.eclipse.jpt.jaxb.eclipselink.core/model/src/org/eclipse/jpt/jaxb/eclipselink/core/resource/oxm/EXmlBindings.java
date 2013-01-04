@@ -968,6 +968,7 @@ public class EXmlBindings extends ERootObjectImpl
 			buildXmlAccessorOrderTranslator(),
 			buildXmlMappingMetadataCompleteTranslator(),
 			buildPackageNameTranslator(),
+			EXmlSchema.buildTranslator(),
 			EJavaType.buildTranslator()
 		};
 	}
@@ -976,27 +977,27 @@ public class EXmlBindings extends ERootObjectImpl
 		return new Translator(
 			Oxm.XML_ACCESSOR_TYPE, 
 			OxmPackage.eINSTANCE.getEXmlBindings_XmlAccessorType(),
-			Translator.DOM_ATTRIBUTE);
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
 	}
 	
 	protected static Translator buildXmlAccessorOrderTranslator() {
 		return new Translator(
 			Oxm.XML_ACCESSOR_ORDER, 
 			OxmPackage.eINSTANCE.getEXmlBindings_XmlAccessorOrder(),
-			Translator.DOM_ATTRIBUTE);
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
 	}
 	
 	protected static Translator buildXmlMappingMetadataCompleteTranslator() {
 		return new Translator(
 			Oxm.XML_MAPPING_METADATA_COMPLETE,
 			OxmPackage.eINSTANCE.getEXmlBindings_XmlMappingMetadataComplete(),
-			Translator.DOM_ATTRIBUTE);
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
 	}
 	
 	protected static Translator buildPackageNameTranslator() {
 		return new Translator(
 			Oxm.PACKAGE_NAME, 
 			OxmPackage.eINSTANCE.getEXmlBindings_PackageName(), 
-			Translator.DOM_ATTRIBUTE);
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
 	}
 }

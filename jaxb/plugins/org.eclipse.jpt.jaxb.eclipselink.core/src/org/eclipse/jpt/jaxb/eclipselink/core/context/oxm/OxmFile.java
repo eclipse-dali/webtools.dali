@@ -35,7 +35,7 @@ public interface OxmFile
 	
 	static final String PACKAGE_PROPERTY = "package"; //$NON-NLS-1$
 	
-	ELJaxbPackage getPackage();
+	ELJaxbPackage getJaxbPackage();
 	
 	/** NB: not API.  Used internally only. */
 	void setPackage(ELJaxbPackage newPackage);

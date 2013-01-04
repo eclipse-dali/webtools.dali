@@ -30,6 +30,8 @@ public interface OxmXmlBindings
 	
 	EXmlBindings getEXmlBindings();
 	
+	OxmFile getOxmFile();
+	
 	
 	// ***** mapping metadata complete *****
 	
@@ -63,6 +65,11 @@ public interface OxmXmlBindings
 	/** Return a qualified name for the given (qualified or unqualified) child type name, 
 	 *  prepending a package name if applicable */
 	String getQualifiedName(String childTypeName);
+	
+	
+	// ***** xml schema *****
+	
+	OxmXmlSchema getXmlSchema();
 	
 	
 	// ***** java types *****

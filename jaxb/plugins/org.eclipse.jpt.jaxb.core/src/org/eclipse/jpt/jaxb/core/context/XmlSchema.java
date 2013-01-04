@@ -24,15 +24,22 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 public interface XmlSchema
 		extends JaxbContextNode {
 	
-	JaxbPackageInfo getJaxbPackageInfo();
-	
-	
 	// ***** namespace *****
+	
+	/**
+	 * String constant associated with changes to the namespace
+	 */
+	String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 	
 	/**
 	 * Return the specified namespace or "" (default value)
 	 */
 	String getNamespace();
+	
+	/**
+	 * String constant associated with changes to the specified namespace
+	 */
+	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
 	
 	/**
 	 * Return the specified namespace, null if it is not specified
@@ -44,22 +51,23 @@ public interface XmlSchema
 	 */
 	void setSpecifiedNamespace(String namespace);
 	
-	/**
-	 * String constant associated with changes to the specified namespace
-	 */
-	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
 	
+	// ***** location *****
+	
+	/**
+	 * String constant associated with changes to the location
+	 */
+	String LOCATION_PROPERTY = "location"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the XmlSchema annotation location element
 	 */
 	String getLocation();
-	void setLocation(String location);
-		String LOCATION_PROPERTY = "location"; //$NON-NLS-1$
-		String DEFAULT_LOCATION = "##generate"; //$NON-NLS-1$
+	
+	String DEFAULT_LOCATION = "##generate"; //$NON-NLS-1$
 	
 	
-	// **************** attribute form default ********************************
+	// ***** attribute form default *****
 	
 	/**
 	 * Return the specified attribute form default or XmlNsForm.UNSET (default value)

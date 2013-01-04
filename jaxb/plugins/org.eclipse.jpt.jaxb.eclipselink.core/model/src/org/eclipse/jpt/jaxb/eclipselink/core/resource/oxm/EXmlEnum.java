@@ -36,10 +36,9 @@ import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
  *
  * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlEnum()
  * @model kind="class"
- * @extends EBaseObject
  * @generated
  */
-public class EXmlEnum extends EBaseObjectImpl implements EBaseObject
+public class EXmlEnum extends EAbstractTypeMapping
 {
 	/**
 	 * The default value of the '{@link #getJavaEnum() <em>Java Enum</em>}' attribute.

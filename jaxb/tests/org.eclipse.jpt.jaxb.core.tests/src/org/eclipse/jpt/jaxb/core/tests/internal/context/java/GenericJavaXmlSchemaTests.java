@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
@@ -116,7 +117,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	public void testModifyLocation() throws Exception {
 		createPackageInfoWithXmlSchema();
 		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
-		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaXmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
 		assertNull(contextXmlSchema.getLocation());

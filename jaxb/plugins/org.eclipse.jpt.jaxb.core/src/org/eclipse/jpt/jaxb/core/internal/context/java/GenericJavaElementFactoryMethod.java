@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -235,7 +236,7 @@ public class GenericJavaElementFactoryMethod
 	
 	
 	protected class XmlElementDeclQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlElementDeclQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
@@ -248,12 +249,12 @@ public class GenericJavaElementFactoryMethod
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return null;
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
@@ -321,7 +322,7 @@ public class GenericJavaElementFactoryMethod
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {
@@ -331,7 +332,7 @@ public class GenericJavaElementFactoryMethod
 	
 	
 	protected class XmlElementDeclSubstitutionHeadQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlElementDeclSubstitutionHeadQName(JaxbContextNode parent) {
 			super(parent, new SubstitutionHeadQNameAnnotationProxy());
@@ -344,12 +345,12 @@ public class GenericJavaElementFactoryMethod
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return null;
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
@@ -436,7 +437,7 @@ public class GenericJavaElementFactoryMethod
 	
 	
 	protected class SubstitutionHeadQNameAnnotationProxy 
-			implements AbstractJavaQName.AnnotationProxy {
+			implements AbstractQName.ResourceProxy {
 		
 		protected XmlElementDeclAnnotation getAnnotation() {
 			return 	GenericJavaElementFactoryMethod.this.getXmlElementDeclAnnotation();

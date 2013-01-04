@@ -43,12 +43,12 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
-import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaClassMapping;
@@ -116,11 +116,11 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaPackageInfo(parent, resourcePackage);
 	}
 	
-	public XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {
+	public JavaXmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {
 		return new GenericJavaXmlSchema(parent);
 	}
 	
-	public XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {
+	public XmlNs buildJavaXmlNs(JavaXmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {
 		return new GenericJavaXmlNs(parent, xmlNsAnnotation);
 	}
 	

@@ -7,17 +7,16 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
+package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
-import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlElement;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlElement;
+import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 
-public class OxmXmlElementImpl
-		extends AbstractOxmJavaAttribute<EXmlElement>
-		implements OxmXmlElement {
+public interface OxmXmlSchema
+		extends XmlSchema {
 	
-	public OxmXmlElementImpl(OxmJavaType parent, EXmlElement eJavaAttribute) {
-		super(parent, eJavaAttribute);
-	}
+	// ***** namespace *****
+	
+	String DEFAULT_NAMESPACE_PROPERTY = "defaultNamespace"; //$NON-NLS-1$
+	
+	String getDefaultNamespace();
 }

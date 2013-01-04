@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 
 
-public abstract class JaxbTypeItemLabelProvider<I extends JavaType>
+public abstract class JavaTypeItemLabelProvider<I extends JavaType>
 		extends AbstractItemExtendedLabelProvider<I> {
 	
 	protected final String text;
 	protected final String description;
 	
-	protected JaxbTypeItemLabelProvider(I jaxbType, ItemExtendedLabelProvider.Manager manager) {
-		super(jaxbType, manager);
+	protected JavaTypeItemLabelProvider(I javaType, ItemExtendedLabelProvider.Manager manager) {
+		super(javaType, manager);
 		this.text = this.buildText();
 		this.description = this.buildDescription();
 	}

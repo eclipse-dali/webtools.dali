@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -26,9 +27,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaElementQName
-		extends AbstractJavaQName {
+		extends AbstractQName {
 	
-	public AbstractJavaElementQName(JaxbContextNode parent, AbstractJavaQName.AnnotationProxy proxy) {
+	public AbstractJavaElementQName(JaxbContextNode parent, AbstractQName.ResourceProxy proxy) {
 		super(parent, proxy);
 	}
 	
@@ -52,7 +53,7 @@ public abstract class AbstractJavaElementQName
 	protected abstract XmlElementWrapper getElementWrapper();
 	
 	@Override
-	public String getDefaultName() {
+	protected String buildDefaultName() {
 		return getPersistentAttribute().getJavaResourceAttribute().getName();
 	}
 	
@@ -79,7 +80,7 @@ public abstract class AbstractJavaElementQName
 	}
 	
 	@Override
-	public String getDefaultNamespace() {
+	protected String buildDefaultNamespace() {
 		JaxbPackage jaxbPackage = this.getJaxbPackage();
 		return (jaxbPackage != null && jaxbPackage.getElementFormDefault() == XmlNsForm.QUALIFIED) ?
 				getClassMapping().getQName().getNamespace() : "";

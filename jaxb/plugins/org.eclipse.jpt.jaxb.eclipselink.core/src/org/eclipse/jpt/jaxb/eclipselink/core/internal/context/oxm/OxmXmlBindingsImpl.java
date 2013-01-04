@@ -23,6 +23,7 @@ import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlSchema;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
@@ -44,6 +45,8 @@ public class OxmXmlBindingsImpl
 	protected String specifiedPackageName;
 	protected String impliedPackageName;
 	
+	protected final OxmXmlSchema xmlSchema;
+	
 	protected final ContextListContainer<OxmJavaType, EJavaType> javaTypeContainer;
 	
 	
@@ -55,6 +58,7 @@ public class OxmXmlBindingsImpl
 		this.xmlMappingMetadataComplete = buildXmlMappingMetadataComplete();
 		this.specifiedPackageName = buildSpecifiedPackageName();
 		// impliedPackageName not built until update, as it depends on sub-nodes
+		this.xmlSchema = buildXmlSchema();
 		this.javaTypeContainer = buildJavaTypeContainer();
 	}
 	
@@ -62,6 +66,11 @@ public class OxmXmlBindingsImpl
 	public EXmlBindings getEXmlBindings() {
 		return this.eXmlBindings;
 	}
+	
+	public OxmFile getOxmFile() {
+		return (OxmFile) super.getParent();
+	}
+	
 	
 	// ***** sync/update *****
 	
@@ -72,6 +81,7 @@ public class OxmXmlBindingsImpl
 		setSpecifiedAccessOrder_(buildSpecifiedAccessOrder());
 		setXmlMappingMetadataComplete_(buildXmlMappingMetadataComplete());
 		setSpecifiedPackageName_(buildSpecifiedPackageName());
+		this.xmlSchema.synchronizeWithResourceModel();
 		this.javaTypeContainer.synchronizeWithResourceModel();
 	}
 	
@@ -79,6 +89,7 @@ public class OxmXmlBindingsImpl
 	public void update() {
 		super.update();
 		setImpliedPackageName_(buildImpliedPackageName());
+		this.xmlSchema.update();
 		this.javaTypeContainer.update();
 	}
 	
@@ -243,6 +254,17 @@ public class OxmXmlBindingsImpl
 	}
 	
 	
+	// ***** xml schema *****
+	
+	public OxmXmlSchema getXmlSchema() {
+		return this.xmlSchema;
+	}
+	
+	protected OxmXmlSchema buildXmlSchema() {
+		return new OxmXmlSchemaImpl(this);
+	}
+	
+	
 	// ***** java types *****
 	
 	public ListIterable<OxmJavaType> getJavaTypes() {
@@ -259,7 +281,7 @@ public class OxmXmlBindingsImpl
 	
 	public OxmJavaType getJavaType(String qualifiedName) {
 		for (OxmJavaType javaType : getJavaTypes()) {
-			if (ObjectTools.equals(javaType.getQualifiedName(), qualifiedName)) {
+			if (ObjectTools.equals(javaType.getTypeName().getFullyQualifiedName(), qualifiedName)) {
 				return javaType;
 			}
 		}
@@ -312,7 +334,7 @@ public class OxmXmlBindingsImpl
 		}
 		@Override
 		protected EJavaType getResourceElement(OxmJavaType contextElement) {
-			return contextElement.getEJavaType();
+			return contextElement.getETypeMapping();
 		}
 //		@Override
 //		protected void disposeElement(OxmJavaType element) {

@@ -17,15 +17,16 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -44,7 +45,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaTypeMapping
 		extends AbstractJavaContextNode
-		implements JaxbTypeMapping {
+		implements JavaTypeMapping {
 	
 	protected boolean xmlTransient;
 	
@@ -402,7 +403,7 @@ public abstract class AbstractJavaTypeMapping
 	
 	
 	protected class XmlTypeQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlTypeQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
@@ -415,13 +416,13 @@ public abstract class AbstractJavaTypeMapping
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbPackage jaxbPackage = AbstractJavaTypeMapping.this.getJavaType().getJaxbPackage();
 			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return Introspector.decapitalize(AbstractJavaTypeMapping.this.getJavaType().getTypeName().getSimpleName());
 		}
 		
@@ -455,7 +456,7 @@ public abstract class AbstractJavaTypeMapping
 			if ("".equals(getName()) 
 					&& ! ObjectTools.equals(
 							getNamespace(),
-							getDefaultNamespace())) {
+							buildDefaultNamespace())) {
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -485,7 +486,7 @@ public abstract class AbstractJavaTypeMapping
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

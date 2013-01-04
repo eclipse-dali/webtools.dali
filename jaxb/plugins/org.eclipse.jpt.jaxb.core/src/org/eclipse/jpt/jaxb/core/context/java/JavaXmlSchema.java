@@ -7,17 +7,19 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
+package org.eclipse.jpt.jaxb.core.context.java;
 
-import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlElement;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlElement;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 
-public class OxmXmlElementImpl
-		extends AbstractOxmJavaAttribute<EXmlElement>
-		implements OxmXmlElement {
+public interface JavaXmlSchema
+		extends XmlSchema {
 	
-	public OxmXmlElementImpl(OxmJavaType parent, EXmlElement eJavaAttribute) {
-		super(parent, eJavaAttribute);
-	}
+	JaxbPackageInfo getJaxbPackageInfo();
+	
+	
+	// ***** location *****
+	
+	void setLocation(String location);
+	
 }

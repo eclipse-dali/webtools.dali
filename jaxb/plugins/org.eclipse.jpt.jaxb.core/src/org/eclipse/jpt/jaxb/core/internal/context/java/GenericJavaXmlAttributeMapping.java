@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -224,7 +225,7 @@ public class GenericJavaXmlAttributeMapping
 	
 	
 	protected class XmlAttributeQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlAttributeQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
@@ -242,7 +243,7 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return GenericJavaXmlAttributeMapping.this.getPersistentAttribute().getJavaResourceAttribute().getName();
 		}
 		
@@ -253,7 +254,7 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage != null && jaxbPackage.getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
 					GenericJavaXmlAttributeMapping.this.getClassMapping().getQName().getNamespace() : "";
@@ -278,7 +279,7 @@ public class GenericJavaXmlAttributeMapping
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

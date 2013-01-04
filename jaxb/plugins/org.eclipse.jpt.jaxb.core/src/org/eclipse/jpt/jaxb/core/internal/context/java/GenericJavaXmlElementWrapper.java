@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jaxb.core.context.AbstractQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -248,7 +249,7 @@ public class GenericJavaXmlElementWrapper
 	
 	
 	protected class XmlElementQName
-			extends AbstractJavaQName {
+			extends AbstractQName {
 		
 		protected XmlElementQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
@@ -261,12 +262,12 @@ public class GenericJavaXmlElementWrapper
 		}
 		
 		@Override
-		public String getDefaultName() {
+		protected String buildDefaultName() {
 			return "";
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
+		protected String buildDefaultNamespace() {
 			JaxbPackage jaxbPackage = this.getJaxbPackage();
 			return (jaxbPackage != null && jaxbPackage.getElementFormDefault() == XmlNsForm.QUALIFIED) ?
 					GenericJavaXmlElementWrapper.this.getClassMapping().getQName().getNamespace() : "";
@@ -304,7 +305,7 @@ public class GenericJavaXmlElementWrapper
 	
 	
 	protected class QNameAnnotationProxy 
-			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+			extends AbstractQNameAnnotationProxy {
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {

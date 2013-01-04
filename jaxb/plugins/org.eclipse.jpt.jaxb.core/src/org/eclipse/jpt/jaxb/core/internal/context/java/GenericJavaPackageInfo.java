@@ -27,8 +27,8 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
-import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
@@ -44,7 +44,7 @@ public class GenericJavaPackageInfo
 
 	protected final JavaResourcePackage resourcePackage;
 
-	protected final XmlSchema xmlSchema;
+	protected final JavaXmlSchema xmlSchema;
 
 	protected XmlAccessType specifiedAccessType;
 
@@ -107,7 +107,7 @@ public class GenericJavaPackageInfo
 
 	// ********** xml schema **********
 
-	public XmlSchema getXmlSchema() {
+	public JavaXmlSchema getXmlSchema() {
 		return this.xmlSchema;
 	}
 

@@ -42,12 +42,19 @@ public interface Oxm {
 	
 	
 	// Oxm specific nodes
+	String ATTRIBUTE_FORM_DEFAULT = "attribute-form-default"; //$NON-NLS-1$
+	String ELEMENT_FORM_DEFAULT = "element-form-default"; //$NON-NLS-1$
+	String FACTORY_CLASS = "factory-class"; //$NON-NLS-1$
+	String FACTORY_METHOD = "factory-method"; //$NON-NLS-1$
 	String JAVA_ATTRIBUTE = "java-attribute"; //$NON-NLS-1$
 	String JAVA_ATTRIBUTES = "java-attributes"; //$NON-NLS-1$
 	String JAVA_TYPE = "java-type"; //$NON-NLS-1$
 	String JAVA_TYPES = "java-types"; //$NON-NLS-1$
+	String LOCATION = "location"; //$NON-NLS-1$
 	String NAME = "name"; //$NON-NLS-1$
+	String NAMESPACE = "namespace"; //$NON-NLS-1$
 	String PACKAGE_NAME = "package-name"; //$NON-NLS-1$
+	String PROP_ORDER = "prop-order"; //$NON-NLS-1$
 	String XML_ACCESSOR_ORDER = "xml-accessor-order"; //$NON-NLS-1$
 	String XML_ACCESSOR_TYPE = "xml-accessor-type"; //$NON-NLS-1$
 	String XML_ANY_ATTRIBUTE = "xml-any-attribute"; //$NON-NLS-1$
@@ -64,7 +71,9 @@ public interface Oxm {
 	String XML_JOIN_NODES = "xml-join-nodes"; //$NON-NLS-1$
 	String XML_MAPPING_METADATA_COMPLETE = "xml-mapping-metadata-complete"; //$NON-NLS-1$
 	String XML_NULL_POLICY = "xml-null-policy"; //$NON-NLS-1$
+	String XML_SCHEMA = "xml-schema"; //$NON-NLS-1$
 	String XML_TRANSFORMATION = "xml-transformation"; //$NON-NLS-1$
 	String XML_TRANSIENT = "xml-transient"; //$NON-NLS-1$
+	String XML_TYPE = "xml-type"; //$NON-NLS-1$
 	String XML_VALUE = "xml-value"; //$NON-NLS-1$
 }

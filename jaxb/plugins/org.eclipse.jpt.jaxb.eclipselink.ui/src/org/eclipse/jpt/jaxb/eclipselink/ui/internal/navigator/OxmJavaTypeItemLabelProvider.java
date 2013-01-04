@@ -18,8 +18,8 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 public class OxmJavaTypeItemLabelProvider
-	extends AbstractItemExtendedLabelProvider<OxmJavaType>
-{
+		extends AbstractItemExtendedLabelProvider<OxmJavaType> {
+	
 	public OxmJavaTypeItemLabelProvider(OxmJavaType oxmJavaType, ItemExtendedLabelProvider.Manager manager) {
 		super(oxmJavaType, manager);
 	}
@@ -31,20 +31,20 @@ public class OxmJavaTypeItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<OxmJavaType, String>(OxmJavaType.QUALIFIED_NAME_PROPERTY, this.item) {
+		return new PropertyAspectAdapter<OxmJavaType, String>(OxmJavaType.TYPE_NAME_PROPERTY, this.item) {
 			@Override
 			protected String buildValue_() {
-				return this.subject.getSimpleName();
+				return this.subject.getTypeName().getTypeQualifiedName();
 			}
 		};
 	}
 
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<OxmJavaType, String>(OxmJavaType.QUALIFIED_NAME_PROPERTY, this.item) {
+		return new PropertyAspectAdapter<OxmJavaType, String>(OxmJavaType.TYPE_NAME_PROPERTY, this.item) {
 			@Override
 			protected String buildValue_() {
-				return this.subject.getQualifiedName();
+				return this.subject.getTypeName().getFullyQualifiedName();
 			}
 		};
 	}

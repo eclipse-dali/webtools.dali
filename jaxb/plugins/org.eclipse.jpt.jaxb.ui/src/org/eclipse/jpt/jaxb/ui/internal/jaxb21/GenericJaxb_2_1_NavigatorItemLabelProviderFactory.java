@@ -50,10 +50,10 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 			return this.buildJaxbPackageProvider((JaxbPackage) item, manager);
 		}
 		else if (item instanceof JavaClass) {
-			return new JaxbClassItemLabelProvider((JavaClass) item, manager);
+			return new JavaClassItemLabelProvider((JavaClass) item, manager);
 		}
 		else if (item instanceof JavaEnum) {
-			return new JaxbEnumItemLabelProvider((JavaEnum) item, manager);
+			return new JavaEnumItemLabelProvider((JavaEnum) item, manager);
 		}
 		else if (item instanceof JaxbPersistentAttribute) {
 			return new JaxbPersistentAttributeItemLabelProvider((JaxbPersistentAttribute) item, manager);

@@ -41,7 +41,6 @@ public class OxmXmlBindingsTests
 		sb.append("    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"").append(CR);
 		sb.append("    xsi:schemaLocation=\"http://www.eclipse.org/eclipselink/xsds/persistence/oxm http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_4.xsd\"").append(CR);
 		sb.append("    package-name=\"").append(packageName).append("\"").append(CR);
-		sb.append("    xml-accessor-type=\"PUBLIC_MEMBER\"").append(CR);
 		sb.append("    />").append(CR);
 		addOxmFile(fileName, sb);
 	}
@@ -54,9 +53,8 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
-		assertEquals(EXmlAccessType.PUBLIC_MEMBER, eXmlBindings.getXmlAccessorType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, xmlBindings.getSpecifiedAccessType());
+		assertNull(eXmlBindings.getXmlAccessorType());
+		assertNull(xmlBindings.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
 		
 		eXmlBindings.setXmlAccessorType(EXmlAccessType.FIELD);
@@ -100,9 +98,8 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
-		assertEquals(EXmlAccessType.PUBLIC_MEMBER, eXmlBindings.getXmlAccessorType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, xmlBindings.getSpecifiedAccessType());
+		assertNull(eXmlBindings.getXmlAccessorType());
+		assertNull(xmlBindings.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
 		
 		xmlBindings.setSpecifiedAccessType(XmlAccessType.FIELD);
@@ -146,9 +143,8 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
-		assertEquals(EXmlAccessOrder.UNDEFINED, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
+		assertNull(eXmlBindings.getXmlAccessorOrder());
+		assertNull(xmlBindings.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 		
 		eXmlBindings.setXmlAccessorOrder(EXmlAccessOrder.ALPHABETICAL);
@@ -184,9 +180,8 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
-		assertEquals(EXmlAccessOrder.UNDEFINED, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
+		assertNull(eXmlBindings.getXmlAccessorOrder());
+		assertNull(xmlBindings.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 		
 		xmlBindings.setSpecifiedAccessOrder(XmlAccessOrder.ALPHABETICAL);
@@ -222,8 +217,7 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
-		assertEquals(Boolean.FALSE, eXmlBindings.getXmlMappingMetadataComplete());
+		assertNull(eXmlBindings.getXmlMappingMetadataComplete());
 		assertFalse(xmlBindings.isXmlMappingMetadataComplete());
 		
 		eXmlBindings.setXmlMappingMetadataComplete(Boolean.TRUE);
@@ -249,8 +243,7 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
-		assertEquals(Boolean.FALSE, eXmlBindings.getXmlMappingMetadataComplete());
+		assertNull(eXmlBindings.getXmlMappingMetadataComplete());
 		assertFalse(xmlBindings.isXmlMappingMetadataComplete());
 		
 		xmlBindings.setXmlMappingMetadataComplete(true);

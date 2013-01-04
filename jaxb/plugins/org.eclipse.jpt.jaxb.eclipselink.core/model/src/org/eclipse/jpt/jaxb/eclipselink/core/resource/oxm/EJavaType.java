@@ -40,12 +40,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlDiscriminatorNode <em>Xml Discriminator Node</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlDiscriminatorValue <em>Xml Discriminator Value</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#isXmlInlineBinaryData <em>Xml Inline Binary Data</em>}</li>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#isXmlTransient <em>Xml Transient</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlNameTransformer <em>Xml Name Transformer</em>}</li>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlType <em>Xml Type</em>}</li>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlRootElement <em>Xml Root Element</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlVirtualAccessMethods <em>Xml Virtual Access Methods</em>}</li>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlSeeAlso <em>Xml See Also</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlJavaTypeAdapter <em>Xml Java Type Adapter</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlClassExtractor <em>Xml Class Extractor</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getJavaAttributes <em>Java Attributes</em>}</li>
@@ -56,7 +52,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
+public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 {
 	/**
 	 * The cached value of the '{@link #getXmlProperties() <em>Xml Properties</em>}' containment reference list.
@@ -212,24 +208,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	 */
 	protected boolean xmlInlineBinaryData = XML_INLINE_BINARY_DATA_EDEFAULT;
 	/**
-	 * The default value of the '{@link #isXmlTransient() <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isXmlTransient()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean XML_TRANSIENT_EDEFAULT = false;
-	/**
-	 * The cached value of the '{@link #isXmlTransient() <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isXmlTransient()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean xmlTransient = XML_TRANSIENT_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getXmlNameTransformer() <em>Xml Name Transformer</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -248,24 +226,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	 */
 	protected String xmlNameTransformer = XML_NAME_TRANSFORMER_EDEFAULT;
 	/**
-	 * The cached value of the '{@link #getXmlType() <em>Xml Type</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlType()
-	 * @generated
-	 * @ordered
-	 */
-	protected EXmlType xmlType;
-	/**
-	 * The cached value of the '{@link #getXmlRootElement() <em>Xml Root Element</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlRootElement()
-	 * @generated
-	 * @ordered
-	 */
-	protected EXmlRootElement xmlRootElement;
-	/**
 	 * The cached value of the '{@link #getXmlVirtualAccessMethods() <em>Xml Virtual Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -274,24 +234,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EXmlVirtualAccessMethods xmlVirtualAccessMethods;
-	/**
-	 * The default value of the '{@link #getXmlSeeAlso() <em>Xml See Also</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlSeeAlso()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final List<String> XML_SEE_ALSO_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getXmlSeeAlso() <em>Xml See Also</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlSeeAlso()
-	 * @generated
-	 * @ordered
-	 */
-	protected List<String> xmlSeeAlso = XML_SEE_ALSO_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getXmlJavaTypeAdapter() <em>Xml Java Type Adapter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -651,41 +593,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Transient</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Transient</em>' attribute.
-	 * @see #setXmlTransient(boolean)
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEJavaType_XmlTransient()
-	 * @model
-	 * @generated
-	 */
-	public boolean isXmlTransient()
-	{
-		return xmlTransient;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#isXmlTransient <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Transient</em>' attribute.
-	 * @see #isXmlTransient()
-	 * @generated
-	 */
-	public void setXmlTransient(boolean newXmlTransient)
-	{
-		boolean oldXmlTransient = xmlTransient;
-		xmlTransient = newXmlTransient;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_TRANSIENT, oldXmlTransient, xmlTransient));
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Xml Name Transformer</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -718,126 +625,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 		xmlNameTransformer = newXmlNameTransformer;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_NAME_TRANSFORMER, oldXmlNameTransformer, xmlNameTransformer));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Xml Type</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Type</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Type</em>' containment reference.
-	 * @see #setXmlType(EXmlType)
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEJavaType_XmlType()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EXmlType getXmlType()
-	{
-		return xmlType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetXmlType(EXmlType newXmlType, NotificationChain msgs)
-	{
-		EXmlType oldXmlType = xmlType;
-		xmlType = newXmlType;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_TYPE, oldXmlType, newXmlType);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlType <em>Xml Type</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Type</em>' containment reference.
-	 * @see #getXmlType()
-	 * @generated
-	 */
-	public void setXmlType(EXmlType newXmlType)
-	{
-		if (newXmlType != xmlType)
-		{
-			NotificationChain msgs = null;
-			if (xmlType != null)
-				msgs = ((InternalEObject)xmlType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EJAVA_TYPE__XML_TYPE, null, msgs);
-			if (newXmlType != null)
-				msgs = ((InternalEObject)newXmlType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EJAVA_TYPE__XML_TYPE, null, msgs);
-			msgs = basicSetXmlType(newXmlType, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_TYPE, newXmlType, newXmlType));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Xml Root Element</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Root Element</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Root Element</em>' containment reference.
-	 * @see #setXmlRootElement(EXmlRootElement)
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEJavaType_XmlRootElement()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EXmlRootElement getXmlRootElement()
-	{
-		return xmlRootElement;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetXmlRootElement(EXmlRootElement newXmlRootElement, NotificationChain msgs)
-	{
-		EXmlRootElement oldXmlRootElement = xmlRootElement;
-		xmlRootElement = newXmlRootElement;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT, oldXmlRootElement, newXmlRootElement);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlRootElement <em>Xml Root Element</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Root Element</em>' containment reference.
-	 * @see #getXmlRootElement()
-	 * @generated
-	 */
-	public void setXmlRootElement(EXmlRootElement newXmlRootElement)
-	{
-		if (newXmlRootElement != xmlRootElement)
-		{
-			NotificationChain msgs = null;
-			if (xmlRootElement != null)
-				msgs = ((InternalEObject)xmlRootElement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT, null, msgs);
-			if (newXmlRootElement != null)
-				msgs = ((InternalEObject)newXmlRootElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT, null, msgs);
-			msgs = basicSetXmlRootElement(newXmlRootElement, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT, newXmlRootElement, newXmlRootElement));
 	}
 
 	/**
@@ -898,41 +685,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_VIRTUAL_ACCESS_METHODS, newXmlVirtualAccessMethods, newXmlVirtualAccessMethods));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Xml See Also</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml See Also</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml See Also</em>' attribute.
-	 * @see #setXmlSeeAlso(List)
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEJavaType_XmlSeeAlso()
-	 * @model dataType="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso" many="false"
-	 * @generated
-	 */
-	public List<String> getXmlSeeAlso()
-	{
-		return xmlSeeAlso;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType#getXmlSeeAlso <em>Xml See Also</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml See Also</em>' attribute.
-	 * @see #getXmlSeeAlso()
-	 * @generated
-	 */
-	public void setXmlSeeAlso(List<String> newXmlSeeAlso)
-	{
-		List<String> oldXmlSeeAlso = xmlSeeAlso;
-		xmlSeeAlso = newXmlSeeAlso;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EJAVA_TYPE__XML_SEE_ALSO, oldXmlSeeAlso, xmlSeeAlso));
 	}
 
 	/**
@@ -1090,10 +842,6 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 		{
 			case OxmPackage.EJAVA_TYPE__XML_PROPERTIES:
 				return ((InternalEList<?>)getXmlProperties()).basicRemove(otherEnd, msgs);
-			case OxmPackage.EJAVA_TYPE__XML_TYPE:
-				return basicSetXmlType(null, msgs);
-			case OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT:
-				return basicSetXmlRootElement(null, msgs);
 			case OxmPackage.EJAVA_TYPE__XML_VIRTUAL_ACCESS_METHODS:
 				return basicSetXmlVirtualAccessMethods(null, msgs);
 			case OxmPackage.EJAVA_TYPE__XML_JAVA_TYPE_ADAPTER:
@@ -1134,18 +882,10 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 				return getXmlDiscriminatorValue();
 			case OxmPackage.EJAVA_TYPE__XML_INLINE_BINARY_DATA:
 				return isXmlInlineBinaryData();
-			case OxmPackage.EJAVA_TYPE__XML_TRANSIENT:
-				return isXmlTransient();
 			case OxmPackage.EJAVA_TYPE__XML_NAME_TRANSFORMER:
 				return getXmlNameTransformer();
-			case OxmPackage.EJAVA_TYPE__XML_TYPE:
-				return getXmlType();
-			case OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT:
-				return getXmlRootElement();
 			case OxmPackage.EJAVA_TYPE__XML_VIRTUAL_ACCESS_METHODS:
 				return getXmlVirtualAccessMethods();
-			case OxmPackage.EJAVA_TYPE__XML_SEE_ALSO:
-				return getXmlSeeAlso();
 			case OxmPackage.EJAVA_TYPE__XML_JAVA_TYPE_ADAPTER:
 				return getXmlJavaTypeAdapter();
 			case OxmPackage.EJAVA_TYPE__XML_CLASS_EXTRACTOR:
@@ -1195,23 +935,11 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 			case OxmPackage.EJAVA_TYPE__XML_INLINE_BINARY_DATA:
 				setXmlInlineBinaryData((Boolean)newValue);
 				return;
-			case OxmPackage.EJAVA_TYPE__XML_TRANSIENT:
-				setXmlTransient((Boolean)newValue);
-				return;
 			case OxmPackage.EJAVA_TYPE__XML_NAME_TRANSFORMER:
 				setXmlNameTransformer((String)newValue);
 				return;
-			case OxmPackage.EJAVA_TYPE__XML_TYPE:
-				setXmlType((EXmlType)newValue);
-				return;
-			case OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT:
-				setXmlRootElement((EXmlRootElement)newValue);
-				return;
 			case OxmPackage.EJAVA_TYPE__XML_VIRTUAL_ACCESS_METHODS:
 				setXmlVirtualAccessMethods((EXmlVirtualAccessMethods)newValue);
-				return;
-			case OxmPackage.EJAVA_TYPE__XML_SEE_ALSO:
-				setXmlSeeAlso((List<String>)newValue);
 				return;
 			case OxmPackage.EJAVA_TYPE__XML_JAVA_TYPE_ADAPTER:
 				setXmlJavaTypeAdapter((EXmlJavaTypeAdapter)newValue);
@@ -1264,23 +992,11 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 			case OxmPackage.EJAVA_TYPE__XML_INLINE_BINARY_DATA:
 				setXmlInlineBinaryData(XML_INLINE_BINARY_DATA_EDEFAULT);
 				return;
-			case OxmPackage.EJAVA_TYPE__XML_TRANSIENT:
-				setXmlTransient(XML_TRANSIENT_EDEFAULT);
-				return;
 			case OxmPackage.EJAVA_TYPE__XML_NAME_TRANSFORMER:
 				setXmlNameTransformer(XML_NAME_TRANSFORMER_EDEFAULT);
 				return;
-			case OxmPackage.EJAVA_TYPE__XML_TYPE:
-				setXmlType((EXmlType)null);
-				return;
-			case OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT:
-				setXmlRootElement((EXmlRootElement)null);
-				return;
 			case OxmPackage.EJAVA_TYPE__XML_VIRTUAL_ACCESS_METHODS:
 				setXmlVirtualAccessMethods((EXmlVirtualAccessMethods)null);
-				return;
-			case OxmPackage.EJAVA_TYPE__XML_SEE_ALSO:
-				setXmlSeeAlso(XML_SEE_ALSO_EDEFAULT);
 				return;
 			case OxmPackage.EJAVA_TYPE__XML_JAVA_TYPE_ADAPTER:
 				setXmlJavaTypeAdapter((EXmlJavaTypeAdapter)null);
@@ -1323,18 +1039,10 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 				return XML_DISCRIMINATOR_VALUE_EDEFAULT == null ? xmlDiscriminatorValue != null : !XML_DISCRIMINATOR_VALUE_EDEFAULT.equals(xmlDiscriminatorValue);
 			case OxmPackage.EJAVA_TYPE__XML_INLINE_BINARY_DATA:
 				return xmlInlineBinaryData != XML_INLINE_BINARY_DATA_EDEFAULT;
-			case OxmPackage.EJAVA_TYPE__XML_TRANSIENT:
-				return xmlTransient != XML_TRANSIENT_EDEFAULT;
 			case OxmPackage.EJAVA_TYPE__XML_NAME_TRANSFORMER:
 				return XML_NAME_TRANSFORMER_EDEFAULT == null ? xmlNameTransformer != null : !XML_NAME_TRANSFORMER_EDEFAULT.equals(xmlNameTransformer);
-			case OxmPackage.EJAVA_TYPE__XML_TYPE:
-				return xmlType != null;
-			case OxmPackage.EJAVA_TYPE__XML_ROOT_ELEMENT:
-				return xmlRootElement != null;
 			case OxmPackage.EJAVA_TYPE__XML_VIRTUAL_ACCESS_METHODS:
 				return xmlVirtualAccessMethods != null;
-			case OxmPackage.EJAVA_TYPE__XML_SEE_ALSO:
-				return XML_SEE_ALSO_EDEFAULT == null ? xmlSeeAlso != null : !XML_SEE_ALSO_EDEFAULT.equals(xmlSeeAlso);
 			case OxmPackage.EJAVA_TYPE__XML_JAVA_TYPE_ADAPTER:
 				return xmlJavaTypeAdapter != null;
 			case OxmPackage.EJAVA_TYPE__XML_CLASS_EXTRACTOR:
@@ -1346,6 +1054,44 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	}
 	
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == EPropertyHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OxmPackage.EJAVA_TYPE__XML_PROPERTIES: return OxmPackage.EPROPERTY_HOLDER__XML_PROPERTIES;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == EPropertyHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OxmPackage.EPROPERTY_HOLDER__XML_PROPERTIES: return OxmPackage.EJAVA_TYPE__XML_PROPERTIES;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1373,12 +1119,8 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 		result.append(xmlDiscriminatorValue);
 		result.append(", xmlInlineBinaryData: ");
 		result.append(xmlInlineBinaryData);
-		result.append(", xmlTransient: ");
-		result.append(xmlTransient);
 		result.append(", xmlNameTransformer: ");
 		result.append(xmlNameTransformer);
-		result.append(", xmlSeeAlso: ");
-		result.append(xmlSeeAlso);
 		result.append(')');
 		return result.toString();
 	}
@@ -1400,6 +1142,8 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildXmlTransientTranslator(),
+			EXmlType.buildTranslator(),
 			new EJavaAttribute.JavaAttributesTranslator()
 		};
 	}

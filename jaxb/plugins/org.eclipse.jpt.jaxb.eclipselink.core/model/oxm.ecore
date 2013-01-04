@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="oxm" nsURI="jpt.eclipselink.oxm.xmi" nsPrefix="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm">
+  <eClassifiers xsi:type="ecore:EClass" name="EAbstractTypeMapping" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlTransient" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xmlType" eType="#//EXmlType"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xmlRootElement" eType="#//EXmlRootElement"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlSeeAlso" eType="#//EXmlSeeAlso"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EAbstractXmlNullPolicy" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xsiNilRepresentsNull" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="emptyNodeRepresentsNull"
@@ -30,7 +38,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorType" eType="#//EXmlAccessType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EJavaType" eSuperTypes="#//EPropertyHolder">
+  <eClassifiers xsi:type="ecore:EClass" name="EJavaType" eSuperTypes="#//EAbstractTypeMapping #//EPropertyHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="superType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorOrder" eType="#//EXmlAccessOrder"/>
@@ -40,15 +48,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlDiscriminatorValue"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlInlineBinaryData" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlTransient" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNameTransformer" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="xmlType" eType="#//EXmlType"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="xmlRootElement" eType="#//EXmlRootElement"
-        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlVirtualAccessMethods"
         eType="#//EXmlVirtualAccessMethods" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlSeeAlso" eType="#//EXmlSeeAlso"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlJavaTypeAdapter" eType="#//EXmlJavaTypeAdapter"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlClassExtractor" eType="#//EXmlClassExtractor"
@@ -207,7 +209,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nillable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EXmlEnum">
+  <eClassifiers xsi:type="ecore:EClass" name="EXmlEnum" eSuperTypes="#//EAbstractTypeMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaEnum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlEnumValues" upperBound="-1"

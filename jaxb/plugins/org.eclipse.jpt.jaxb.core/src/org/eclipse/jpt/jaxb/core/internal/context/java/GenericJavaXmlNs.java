@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
-import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 
@@ -33,7 +33,7 @@ public class GenericJavaXmlNs
 	protected String prefix;
 	
 	
-	public GenericJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {
+	public GenericJavaXmlNs(JavaXmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {
 		super(parent);
 		this.resourceXmlNs = xmlNsAnnotation;
 		this.namespaceURI = this.getResourceNamespaceURI();
@@ -60,8 +60,8 @@ public class GenericJavaXmlNs
 		return getXmlSchema().getJaxbPackageInfo();
 	}
 	
-	protected XmlSchema getXmlSchema() {
-		return (XmlSchema) getParent();
+	protected JavaXmlSchema getXmlSchema() {
+		return (JavaXmlSchema) getParent();
 	}
 	
 	protected JavaResourcePackage getResourcePackage() {

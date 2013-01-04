@@ -27,4 +27,10 @@ public interface JavaTypeMapping
 		extends JaxbTypeMapping {
 	
 	JavaType getJavaType();
+	
+	
+	// ***** XmlTransient *****
+	
+	void setXmlTransient(boolean newValue);
+	
 }

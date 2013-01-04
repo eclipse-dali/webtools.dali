@@ -7,7 +7,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal.context.java;
+package org.eclipse.jpt.jaxb.core.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -15,42 +15,50 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbQName;
+import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractJavaQName
-		extends AbstractJavaContextNode 
+public abstract class AbstractQName
+		extends AbstractJaxbContextNode
 		implements JaxbQName {
 	
-	protected final AnnotationProxy proxy;
+	protected final ResourceProxy proxy;
 	
+	protected String namespace;
+	protected String defaultNamespace;
 	protected String specifiedNamespace;
 	
+	protected String name;
+	protected String defaultName;
 	protected String specifiedName;
 	
 	
-	public AbstractJavaQName(JaxbContextNode parent, AnnotationProxy proxy) {
+	protected AbstractQName(JaxbContextNode parent, ResourceProxy proxy) {
 		super(parent);
 		this.proxy = proxy;
-		this.specifiedNamespace = getAnnotationNamespace();
-		this.specifiedName = getAnnotationName();
+		this.specifiedNamespace = getResourceNamespace();
+		this.specifiedName = getResourceName();
 	}
 	
 	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		setSpecifiedNamespace_(getAnnotationNamespace());
-		setSpecifiedName_(getAnnotationName());
+		syncNamespace();
+		syncName();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		updateNamespace();
+		updateName();
 	}
 	
 	
@@ -65,21 +73,31 @@ public abstract class AbstractJavaQName
 	// ***** namespace *****
 	
 	public String getNamespace() {
-		if (StringTools.isBlank(getSpecifiedNamespace())  // namespace="" is actually interpreted as unspecified by JAXB tools
-				|| ObjectTools.equals(getSpecifiedNamespace(), JAXB.DEFAULT_STRING)) {
-			return getDefaultNamespace();
-		}
-		return getSpecifiedNamespace();
+		return this.namespace;
 	}
 	
-	public abstract String getDefaultNamespace();
+	protected void setNamespace_(String newNamespace) {
+		String oldNamespace = this.namespace;
+		this.namespace = newNamespace;
+		firePropertyChanged(NAMESPACE_PROPERTY, oldNamespace, newNamespace);
+	}
+	
+	public String getDefaultNamespace() {
+		return this.defaultNamespace;
+	}
+	
+	protected void setDefaultNamespace_(String newDefaultNamespace) {
+		String oldDefaultNamespace = this.defaultNamespace;
+		this.defaultNamespace = newDefaultNamespace;
+		firePropertyChanged(DEFAULT_NAMESPACE_PROPERTY, oldDefaultNamespace, newDefaultNamespace);
+	}
 	
 	public String getSpecifiedNamespace() {
 		return this.specifiedNamespace;
 	}
 	
 	public void setSpecifiedNamespace(String newSpecifiedNamespace) {
-		setAnnotationNamespace(newSpecifiedNamespace);
+		setResourceNamespace(newSpecifiedNamespace);
 		setSpecifiedNamespace_(newSpecifiedNamespace);
 	}
 	
@@ -89,33 +107,63 @@ public abstract class AbstractJavaQName
 		firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, oldNamespace, newSpecifiedNamespace);
 	}
 	
-	protected void setAnnotationNamespace(String newNamespace) {
+	protected abstract String buildDefaultNamespace();
+	
+	protected String getResourceNamespace() {
+		return this.proxy.getNamespace();
+	}
+	
+	protected void setResourceNamespace(String newNamespace) {
 		this.proxy.setNamespace(newNamespace);
 	}
 	
-	protected String getAnnotationNamespace() {
-		return this.proxy.getNamespace();
+	protected void syncNamespace() {
+		setSpecifiedNamespace_(getResourceNamespace());
+	}
+	
+	protected void updateNamespace() {
+		setDefaultNamespace_(buildDefaultNamespace());
+		
+		String namespace = this.specifiedNamespace;
+		
+		// if specified namespace is "unspecified", use default namespace
+		if (StringTools.isBlank(namespace)  // namespace="" is actually interpreted as unspecified by JAXB tools
+				|| ObjectTools.equals(namespace, JAXB.DEFAULT_STRING)) {
+			namespace = this.defaultNamespace;
+		}
+		
+		setNamespace_(namespace);
 	}
 	
 	
 	// ***** name *****
 	
 	public String getName() {
-		if (getSpecifiedName() == null
-				|| ObjectTools.equals(getSpecifiedName(), JAXB.DEFAULT_STRING)) {
-			return getDefaultName();
-		}
-		return getSpecifiedName();
+		return this.name;
 	}
 	
-	public abstract String getDefaultName();
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	}
+	
+	public String getDefaultName() {
+		return this.defaultName;
+	}
+	
+	protected void setDefaultName_(String newDefaultName) {
+		String oldDefaultName = this.defaultName;
+		this.defaultName = newDefaultName;
+		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+	}
 	
 	public String getSpecifiedName() {
 		return this.specifiedName;
 	}
 	
 	public void setSpecifiedName(String newSpecifiedName) {
-		setAnnotationName(newSpecifiedName);
+		setResourceName(newSpecifiedName);
 		setSpecifiedName_(newSpecifiedName);
 	}
 	
@@ -125,12 +173,32 @@ public abstract class AbstractJavaQName
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, newSpecifiedName);
 	}
 	
-	protected void setAnnotationName(String newName) {
+	protected abstract String buildDefaultName();
+	
+	protected String getResourceName() {
+		return this.proxy.getName();
+	}
+	
+	protected void setResourceName(String newName) {
 		this.proxy.setName(newName);
 	}
 	
-	protected String getAnnotationName() {
-		return this.proxy.getName();
+	protected void syncName() {
+		setSpecifiedName_(getResourceName());
+	}
+	
+	protected void updateName() {
+		setDefaultName_(buildDefaultName());
+		
+		String name = this.specifiedName;
+		
+		// if specified name is "unspecified", use default namespace
+		if (name == null
+				|| ObjectTools.equals(name, JAXB.DEFAULT_STRING)) {
+			name = this.defaultName;
+		}
+		
+		setName_(name);
 	}
 	
 	
@@ -221,7 +289,7 @@ public abstract class AbstractJavaQName
 	}
 	
 	
-	public interface AnnotationProxy {
+	public interface ResourceProxy {
 		
 		String getNamespace();
 		
@@ -238,53 +306,5 @@ public abstract class AbstractJavaQName
 		boolean nameTouches(int pos);
 		
 		TextRange getNameTextRange();
-	}
-	
-	
-	/**
-	 * represents a {@link QNameAnnotation}
-	 */
-	public static abstract class AbstractQNameAnnotationProxy
-			implements AnnotationProxy {
-		
-		protected abstract QNameAnnotation getAnnotation(boolean createIfNull);
-		
-		public String getNamespace() {
-			QNameAnnotation annotation = getAnnotation(false);
-			return annotation == null ? null : annotation.getNamespace();
-		}
-		
-		public void setNamespace(String newSpecifiedNamespace) {
-			getAnnotation(true).setNamespace(newSpecifiedNamespace);
-		}
-		
-		public boolean namespaceTouches(int pos) {
-			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? false : annotation.namespaceTouches(pos);
-		}
-		
-		public TextRange getNamespaceTextRange() {
-			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? null : annotation.getNamespaceTextRange();
-		}
-			
-		public String getName() {
-			QNameAnnotation annotation = getAnnotation(false);
-			return annotation == null ? null : annotation.getName();
-		}
-		
-		public void setName(String newSpecifiedName) {
-			getAnnotation(true).setName(newSpecifiedName);
-		}
-		
-		public boolean nameTouches(int pos) {
-			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? false : annotation.nameTouches(pos);
-		}
-		
-		public TextRange getNameTextRange() {
-			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? null : annotation.getNameTextRange();
-		}
 	}
 }

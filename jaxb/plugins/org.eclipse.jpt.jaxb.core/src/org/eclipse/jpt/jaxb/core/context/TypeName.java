@@ -24,24 +24,24 @@ package org.eclipse.jpt.jaxb.core.context;
 public interface TypeName {
 	
 	/**
-	 * Return the name of the type without any package or type qualifiers
-	 */
-	String getSimpleName();
-	
-	/**
-	 * Returns the fully qualified name of this type, including qualification for any 
-	 * enclosing types and packages.
-	 */
-	String getFullyQualifiedName();
-	
-	/**
 	 * Return the name of the type's package.  Empty string if none.
 	 */
 	String getPackageName();
+	
+	/**
+	 * Return the name of the type without any package or type qualifiers
+	 */
+	String getSimpleName();
 	
 	/**
 	 * Returns the type-qualified name of this type, including qualification for any 
 	 * enclosing types, but not including package qualification.
 	 */
 	String getTypeQualifiedName();
+	
+	/**
+	 * Returns the fully qualified name of this type, including qualification for any 
+	 * enclosing types and packages.
+	 */
+	String getFullyQualifiedName();
 }

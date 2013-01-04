@@ -29,11 +29,15 @@ public interface JaxbQName
 	
 	// ***** namespace *****
 	
-	static String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
+	static String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 	
 	String getNamespace();
 	
+	static String DEFAULT_NAMESPACE_PROPERTY = "defaultNamespace"; //$NON-NLS-1$
+	
 	String getDefaultNamespace();
+	
+	static String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
 	
 	String getSpecifiedNamespace();
 	
@@ -42,11 +46,15 @@ public interface JaxbQName
 	
 	// ***** name *****
 	
-	static String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
+	static String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	String getName();
 	
+	static String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
+	
 	String getDefaultName();
+	
+	static String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
 	
 	String getSpecifiedName();
 	

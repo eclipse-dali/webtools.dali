@@ -106,6 +106,8 @@ public class OxmValidator extends EObjectValidator
 	{
 		switch (classifierID)
 		{
+			case OxmPackage.EABSTRACT_TYPE_MAPPING:
+				return validateEAbstractTypeMapping((EAbstractTypeMapping)value, diagnostics, context);
 			case OxmPackage.EABSTRACT_XML_NULL_POLICY:
 				return validateEAbstractXmlNullPolicy((EAbstractXmlNullPolicy)value, diagnostics, context);
 			case OxmPackage.EABSTRACT_XML_TRANSFORMER:
@@ -213,6 +215,16 @@ public class OxmValidator extends EObjectValidator
 			default:
 				return true;
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateEAbstractTypeMapping(EAbstractTypeMapping eAbstractTypeMapping, DiagnosticChain diagnostics, Map<Object, Object> context)
+	{
+		return validate_EveryDefaultConstraint((EObject)eAbstractTypeMapping, diagnostics, context);
 	}
 
 	/**

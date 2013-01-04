@@ -63,10 +63,10 @@ public class GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory
 	}
 
 	protected ItemTreeContentProvider buildJaxbClassProvider(JavaClass item, Manager manager) {
-		return new JaxbClassItemContentProvider(item, manager);
+		return new JavaClassItemContentProvider(item, manager);
 	}
 
 	protected ItemTreeContentProvider buildJaxbEnumProvider(JavaEnum item, Manager manager) {
-		return new JaxbEnumItemContentProvider(item, manager);
+		return new JavaEnumItemContentProvider(item, manager);
 	}
 }

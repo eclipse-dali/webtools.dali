@@ -15,6 +15,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -39,6 +41,8 @@ public abstract class AbstractJavaType
 	
 	protected final JavaResourceAbstractType resourceType;
 	
+	protected final TypeName typeName;
+	
 	protected JavaTypeMapping mapping;
 	
 	protected boolean defaultMapped = false;
@@ -49,6 +53,7 @@ public abstract class AbstractJavaType
 	protected AbstractJavaType(JaxbContextNode parent, JavaResourceAbstractType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
+		this.typeName = buildTypeName();
 		initMapping();
 		initXmlJavaTypeAdapter();
 	}
@@ -232,26 +237,12 @@ public abstract class AbstractJavaType
 		return this.resourceType;
 	}
 	
+	protected TypeName buildTypeName() {
+		return new JavaTypeName(this.resourceType);
+	}
+	
 	public TypeName getTypeName() {
-		return new TypeName() {
-			
-			public String getSimpleName() {
-				return AbstractJavaType.this.resourceType.getName();
-			}
-			
-			public String getTypeQualifiedName() {
-				String packageName = getPackageName();
-				return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
-			}
-			
-			public String getFullyQualifiedName() {
-				return AbstractJavaType.this.resourceType.getTypeBinding().getQualifiedName();
-			}
-			
-			public String getPackageName() {
-				return AbstractJavaType.this.resourceType.getTypeBinding().getPackageName();
-			}
-		};
+		return this.typeName;
 	}
 	
 	public JaxbPackage getJaxbPackage() {
@@ -329,6 +320,68 @@ public abstract class AbstractJavaType
 			if (this.xmlJavaTypeAdapter != null) {
 				this.xmlJavaTypeAdapter.validate(messages, reporter);
 			}
+		}
+	}
+	
+	
+	protected static class JavaTypeName
+			implements TypeName {
+		
+		protected String packageName;
+		protected String qualifiedName;
+		
+		protected JavaTypeName(JavaResourceAbstractType resourceType) {
+			this.packageName = buildPackageName(resourceType);
+			this.qualifiedName = buildQualifiedName(resourceType);
+		}
+		
+		
+		protected String buildPackageName(JavaResourceAbstractType resourceType) {
+			return resourceType.getTypeBinding().getPackageName();
+		}
+		
+		protected String buildQualifiedName(JavaResourceAbstractType resourceType) {
+			return resourceType.getTypeBinding().getQualifiedName();
+		}
+		
+		public String getPackageName() {
+			return this.packageName;
+		}
+		
+		public String getSimpleName() {
+			return TypeDeclarationTools.simpleName(this.qualifiedName);
+		}
+		
+		public String getTypeQualifiedName() {
+			return (this.packageName.length() == 0) ? this.qualifiedName : this.qualifiedName.substring(packageName.length() + 1);
+		}
+		
+		public String getFullyQualifiedName() {
+			return this.qualifiedName;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			return ObjectTools.equals(this.packageName, ((JavaTypeName) obj).packageName)
+					&& ObjectTools.equals(this.qualifiedName, ((JavaTypeName) obj).qualifiedName);
+		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ObjectTools.hashCode(this.packageName);
+			result = prime * result + ObjectTools.hashCode(this.qualifiedName);
+			return result;
 		}
 	}
 }

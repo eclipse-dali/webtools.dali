@@ -20,6 +20,7 @@ public class ELJaxbCoreOxmContextModelTests
 		TestSuite suite = new TestSuite(ELJaxbCoreOxmContextModelTests.class.getName());
 		suite.addTestSuite(OxmJavaTypeTests.class);
 		suite.addTestSuite(OxmXmlBindingsTests.class);
+		suite.addTestSuite(OxmXmlSchemaTests.class);
 		return suite;
 	}
 	

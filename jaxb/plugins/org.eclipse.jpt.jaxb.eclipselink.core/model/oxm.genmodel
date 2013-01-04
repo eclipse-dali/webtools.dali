@@ -38,6 +38,12 @@
     </genEnums>
     <genDataTypes ecoreDataType="oxm.ecore#//EPropOrder"/>
     <genDataTypes ecoreDataType="oxm.ecore#//EXmlSeeAlso"/>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractTypeMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractTypeMapping/xmlTransient"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAbstractTypeMapping/xmlType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAbstractTypeMapping/xmlRootElement"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractTypeMapping/xmlSeeAlso"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractXmlNullPolicy">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlNullPolicy/xsiNilRepresentsNull"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlNullPolicy/emptyNodeRepresentsNull"/>
@@ -69,12 +75,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlDiscriminatorNode"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlDiscriminatorValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlInlineBinaryData"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlTransient"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlNameTransformer"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlType"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlRootElement"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlVirtualAccessMethods"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlSeeAlso"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlJavaTypeAdapter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlClassExtractor"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/javaAttributes"/>

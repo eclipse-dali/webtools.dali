@@ -10,9 +10,8 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.context.XmlAccessOrderHolder;
-import org.eclipse.jpt.jaxb.core.context.XmlAccessTypeHolder;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 
 /**
@@ -26,12 +25,11 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
  * @since 3.3
  */
 public interface OxmJavaType
-		extends JaxbContextNode, XmlAccessOrderHolder, XmlAccessTypeHolder {
+		extends OxmTypeMapping, JaxbClassMapping {
 	
-	/**
-	 * Resource model element
-	 */
-	EJavaType getEJavaType();
+	public EJavaType getETypeMapping();
+	
+	public JavaClass getJavaType();
 	
 	
 	// ***** name *****
@@ -50,23 +48,6 @@ public interface OxmJavaType
 	 * Set the name specified in source
 	 */
 	void setSpecifiedName(String newName);
-	
-	/**
-	 * String associated with changes to the "specifiedName" property
-	 */
-	String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
-	
-	/**
-	 * Return
-	 * - the name specified in source, if it is qualified or primitive
-	 * - the name specified in source with the xml-bindings package name prepended
-	 */
-	String getQualifiedName();
-	
-	/**
-	 * Return the name with no package qualification
-	 */
-	String getSimpleName();
 	
 	
 	// ***** specified attributes *****

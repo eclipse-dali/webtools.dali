@@ -21,12 +21,11 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 
 
-public class JaxbClassItemContentProvider
-	extends AbstractItemTreeContentProvider<JavaClass, JaxbPersistentAttribute>
-{
+public class JavaClassItemContentProvider
+		extends AbstractItemTreeContentProvider<JavaClass, JaxbPersistentAttribute> {
 	
-	public JaxbClassItemContentProvider(JavaClass jaxbClass, Manager manager) {
-		super(jaxbClass, manager);
+	public JavaClassItemContentProvider(JavaClass javaClass, Manager manager) {
+		super(javaClass, manager);
 	}
 	
 	

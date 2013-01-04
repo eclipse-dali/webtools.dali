@@ -17,68 +17,53 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
-import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
-import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
 
-public class JaxbClassItemLabelProvider
-	extends JaxbTypeItemLabelProvider<JavaClass>
-{
+public class JavaEnumItemLabelProvider
+		extends JavaTypeItemLabelProvider<JavaEnum> {
 	
-	public JaxbClassItemLabelProvider(JavaClass jaxbClass, ItemExtendedLabelProvider.Manager manager) {
-		super(jaxbClass, manager);
+	public JavaEnumItemLabelProvider(JavaEnum javaEnum, ItemExtendedLabelProvider.Manager manager) {
+		super(javaEnum, manager);
 	}
 	
 	@Override
 	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
-		return new JaxbClassImageDescriptorModel(this.item);
+		return new JavaEnumImageDescriptorModel(this.item);
 	}
 	
 	
-	protected class JaxbClassImageDescriptorModel
-			extends AspectPropertyValueModelAdapter<JavaClass, ImageDescriptor> {
+	protected class JavaEnumImageDescriptorModel
+			extends AspectPropertyValueModelAdapter<JavaEnum, ImageDescriptor> {
 		
-		protected final PropertyValueModel<Boolean> isXmlRegistryModel;
-			
-		protected final PropertyValueModel<JaxbClassMapping> mappingModel;
+		protected final PropertyValueModel<JavaEnumMapping> mappingModel;
 		
 		protected final PropertyValueModel<Boolean> isXmlTransientModel;
 		
 		protected final PropertyChangeListener propertyChangeListener;
 		
 		
-		public JaxbClassImageDescriptorModel(JavaClass subject) {
-			super(new StaticPropertyValueModel<JavaClass>(subject));
-			this.isXmlRegistryModel = buildIsXmlRegistryModel();
+		public JavaEnumImageDescriptorModel(JavaEnum subject) {
+			super(new StaticPropertyValueModel<JavaEnum>(subject));
 			this.mappingModel = buildMappingModel();
 			this.isXmlTransientModel = buildIsXmlTransientModel();
 			this.propertyChangeListener = buildPropertyChangeListener();
 		}
 		
 		
-		protected PropertyValueModel<Boolean> buildIsXmlRegistryModel() {
-			return new PropertyAspectAdapter<JavaClass, Boolean>(JavaClass.XML_REGISTRY_PROPERTY, JaxbClassItemLabelProvider.this.item) {
+		protected PropertyValueModel<JavaEnumMapping> buildMappingModel() {
+			return new PropertyAspectAdapter<JavaEnum, JavaEnumMapping> (JavaEnum.MAPPING_PROPERTY, JavaEnumItemLabelProvider.this.item) {
 				@Override
-				protected Boolean buildValue_() {
-					return Boolean.valueOf(this.subject.getXmlRegistry() != null);
-				}
-			};
-		}
-		
-		protected PropertyValueModel<JaxbClassMapping> buildMappingModel() {
-			return new PropertyAspectAdapter<JavaClass, JaxbClassMapping> (JavaType.MAPPING_PROPERTY, JaxbClassItemLabelProvider.this.item) {
-				@Override
-				protected JaxbClassMapping buildValue_() {
+				protected JavaEnumMapping buildValue_() {
 					return this.subject.getMapping();
 				}
 			};
 		}
 		
 		protected PropertyValueModel<Boolean> buildIsXmlTransientModel() {
-			return new PropertyAspectAdapter<JaxbClassMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
+			return new PropertyAspectAdapter<JavaEnumMapping, Boolean>(this.mappingModel, JavaEnumMapping.XML_TRANSIENT_PROPERTY) {
 				@Override
 				protected Boolean buildValue_() {
 					return Boolean.valueOf(this.subject.isXmlTransient());
@@ -90,7 +75,7 @@ public class JaxbClassItemLabelProvider
 			// transform the subject's property change events into VALUE property change events
 			return new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					JaxbClassImageDescriptorModel.this.aspectChanged();
+					JavaEnumImageDescriptorModel.this.aspectChanged();
 				}
 			};
 		}
@@ -98,24 +83,19 @@ public class JaxbClassItemLabelProvider
 		@Override
 		protected ImageDescriptor buildValue_() {
 			if ((this.mappingModel.getValue() != null) && (this.isXmlTransientModel.getValue() == Boolean.TRUE)) {
-				return JptJaxbUiImages.JAXB_TRANSIENT_CLASS;
+				return JptJaxbUiImages.JAXB_TRANSIENT_ENUM;
 			}
-			if (this.isXmlRegistryModel.getValue() == Boolean.TRUE) {
-				return JptJaxbUiImages.JAXB_REGISTRY;
-			}
-			return JptJaxbUiImages.JAXB_CLASS;
+			return JptJaxbUiImages.JAXB_ENUM;
 		}
 		
 		@Override
 		protected void engageSubject_() {
-			this.isXmlRegistryModel.addPropertyChangeListener(VALUE, this.propertyChangeListener);
 			this.mappingModel.addPropertyChangeListener(VALUE, this.propertyChangeListener);
 			this.isXmlTransientModel.addPropertyChangeListener(VALUE, this.propertyChangeListener);
 		}
 		
 		@Override
 		protected void disengageSubject_() {
-			this.isXmlRegistryModel.removePropertyChangeListener(VALUE, this.propertyChangeListener);
 			this.mappingModel.removePropertyChangeListener(VALUE, this.propertyChangeListener);
 			this.isXmlTransientModel.removePropertyChangeListener(VALUE, this.propertyChangeListener);
 		}

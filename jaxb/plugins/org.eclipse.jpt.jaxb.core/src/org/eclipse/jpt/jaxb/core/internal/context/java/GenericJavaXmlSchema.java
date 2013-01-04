@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
-import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.context.java.JavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
@@ -31,8 +31,9 @@ import org.eclipse.xsd.XSDForm;
 
 public class GenericJavaXmlSchema
 		extends AbstractJavaContextNode
-		implements XmlSchema {
+		implements JavaXmlSchema {
 	
+	protected String namespace;
 	protected String specifiedNamespace;
 	
 	protected String location;
@@ -46,7 +47,7 @@ public class GenericJavaXmlSchema
 	
 	public GenericJavaXmlSchema(JaxbPackageInfo parent) {
 		super(parent);
-		this.specifiedNamespace = this.getResourceNamespace();
+		initNamespace();
 		this.location = this.getResourceLocation();
 		this.specifiedAttributeFormDefault = getResourceAttributeFormDefault();
 		this.specifiedElementFormDefault = getResourceElementFormDefault();
@@ -59,7 +60,7 @@ public class GenericJavaXmlSchema
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedNamespace_(this.getResourceNamespace());
+		syncNamespace();
 		this.setLocation_(this.getResourceLocation());
 		this.setSpecifiedAttributeFormDefault_(getResourceAttributeFormDefault());
 		this.setSpecifiedElementFormDefault_(getResourceElementFormDefault());
@@ -69,6 +70,7 @@ public class GenericJavaXmlSchema
 	@Override
 	public void update() {
 		super.update();
+		updateNamespace();
 		this.updateXmlNsPrefixes();
 	}
 	
@@ -91,10 +93,17 @@ public class GenericJavaXmlSchema
 		return (XmlSchemaAnnotation) this.getResourcePackage().getNonNullAnnotation(JAXB.XML_SCHEMA);
 	}
 	
+	
 	// ********** namespace **********
 	
 	public String getNamespace() {
-		return (this.specifiedNamespace == null) ? "" : this.specifiedNamespace; //$NON-NLS-1$
+		return this.namespace;
+	}
+	
+	protected void setNamespace_(String namespace) {
+		String oldNamespace = this.namespace;
+		this.namespace = namespace;
+		firePropertyChanged(NAMESPACE_PROPERTY, oldNamespace, namespace);
 	}
 	
 	public String getSpecifiedNamespace() {
@@ -114,6 +123,19 @@ public class GenericJavaXmlSchema
 	
 	protected String getResourceNamespace() {
 		return getXmlSchemaAnnotation().getNamespace();
+	}
+	
+	protected void initNamespace() {
+		this.specifiedNamespace = getResourceNamespace();
+	}
+	
+	protected void syncNamespace() {
+		setSpecifiedNamespace_(getResourceNamespace());
+	}
+	
+	protected void updateNamespace() {
+		String namespace = (this.specifiedNamespace != null) ? this.specifiedNamespace : ""; //$NON-NLS-1$
+		setNamespace_(namespace);
 	}
 	
 	
