@@ -128,6 +128,11 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 		this.${role.propertyName} = $role.propertyName;
 	}
 
+#if ($role.cardinality == "one-to-many" && $role.association.bidirectional)
+#parse("oneToManyMethods.vm")
+
+
+#end
 ##
 #end
 ##

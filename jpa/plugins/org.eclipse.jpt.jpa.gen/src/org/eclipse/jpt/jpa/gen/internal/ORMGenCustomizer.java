@@ -546,6 +546,20 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	public String propertySetter(String propertyName) {
 		return "set"+StringUtil.initUpper(propertyName);
 	}
+	/**
+	 * Returns a add method name given a property name.
+	 */
+	public String propertyAdd(String propertyName) {
+		String name = StringUtil.singularise(propertyName);
+		return "add"+StringUtil.initUpper(name);
+	}
+	/**
+	 * Returns a remove method name given a property name.
+	 */
+	public String propertyRemove(String propertyName) {
+		String name = StringUtil.singularise(propertyName);
+		return "remove"+StringUtil.initUpper(name);
+	}
 	public String quote(String s) {
 		return StringUtil.quote(s, '"');
 	}
@@ -560,6 +574,9 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	}
 	public String convertToXmlStringLiteral(String s) {
 		return StringTools.convertToXmlAttributeValue(s);
+	}
+	public String convertToSingularisedString(String s) {
+		return StringUtil.singularise(s);
 	}
 	/**
 	 * Appends an annotation member name and value to an existing annotation.
