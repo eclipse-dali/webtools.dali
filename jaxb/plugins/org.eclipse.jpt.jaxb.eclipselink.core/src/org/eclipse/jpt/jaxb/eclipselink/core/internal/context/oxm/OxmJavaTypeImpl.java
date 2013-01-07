@@ -105,7 +105,6 @@ public class OxmJavaTypeImpl
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		setSpecifiedName_(buildSpecifiedName());
-		setTypeName_(buildTypeName());
 		syncSpecifiedAccessOrder();
 		syncSpecifiedAccessType();
 		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
