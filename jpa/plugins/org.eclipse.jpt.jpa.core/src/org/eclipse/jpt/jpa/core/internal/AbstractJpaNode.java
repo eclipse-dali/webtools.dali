@@ -190,30 +190,6 @@ public abstract class AbstractJpaNode
 	}
 
 
-	// ********** logging **********
-
-	/**
-	 * Log the specified message.
-	 */
-	protected void log(String msg) {
-		this.getJpaProjectManager().log(msg);
-	}
-
-	/**
-	 * Log the specified exception/error.
-	 */
-	protected void log(Throwable throwable) {
-		this.getJpaProjectManager().log(throwable);
-	}
-
-	/**
-	 * Log the specified message and exception/error.
-	 */
-	protected void log(String msg, Throwable throwable) {
-		this.getJpaProjectManager().log(msg, throwable);
-	}
-
-
 	// ********** AspectChangeSupport.Listener support **********
 
 	protected void aspectChanged(String aspectName) {

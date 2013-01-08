@@ -1884,7 +1884,7 @@ public abstract class AbstractJpaProject
 		return new RepeatingJobCommandWrapper(
 					this.buildSynchronizeContextModelJobCommand(),
 					this.buildStartSynchronizeContextModelJobCommandExecutor(),
-					this.manager.getExceptionHandler()
+					JptJpaCorePlugin.instance().getExceptionHandler()
 				);
 	}
 
@@ -1959,14 +1959,14 @@ public abstract class AbstractJpaProject
 	 * Once that is complete, we delegate to the JPA project manager.
 	 */
 	protected NotifyingRepeatingJobCommand buildTempUpdateCommand() {
-		return new NotifyingRepeatingJobCommandWrapper(this.buildUpdateJobCommand(), this.manager.getExceptionHandler());
+		return new NotifyingRepeatingJobCommandWrapper(this.buildUpdateJobCommand(), JptJpaCorePlugin.instance().getExceptionHandler());
 	}
 
 	protected NotifyingRepeatingJobCommand buildUpdateCommand() {
 		return new NotifyingRepeatingJobCommandWrapper(
 					this.buildUpdateJobCommand(),
 					this.buildStartUpdateJobCommandExecutor(),
-					this.manager.getExceptionHandler()
+					JptJpaCorePlugin.instance().getExceptionHandler()
 				);
 	}
 

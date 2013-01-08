@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -468,9 +467,6 @@ public interface JpaProject
 	 * projects
 	 */
 	interface Manager {
-
-		// ********** commands **********
-
 		/**
 		 * Execute the specified command, possibly asynchronously, synchronizing
 		 * with all the other stuff manipulating the JPA projects
@@ -480,9 +476,6 @@ public interface JpaProject
 		 * JPA project manager.
 		 */
 		void execute(JobCommand command, String jobName, JpaProject jpaProject);
-
-
-		// ********** modifying shared documents **********
 
 		/**
 		 * Return the project-wide implementation of the
@@ -494,31 +487,6 @@ public interface JpaProject
 		 * Return the JPA project's JPA workspace.
 		 */
 		JpaWorkspace getJpaWorkspace();
-
-
-		// ********** logging **********
-
-		// TODO remove (use plug-in API)
-		/**
-		 * Log the specified message.
-		 */
-		void log(String msg);
-
-		/**
-		 * Log the specified exception/error.
-		 */
-		void log(Throwable throwable);
-
-		/**
-		 * Log the specified message and exception/error.
-		 */
-		void log(String msg, Throwable throwable);
-
-		// TODO remove (use plug-in API)
-		/**
-		 * Return an exception handler that can be used by the JPA model.
-		 */
-		ExceptionHandler getExceptionHandler();
 	}
 
 

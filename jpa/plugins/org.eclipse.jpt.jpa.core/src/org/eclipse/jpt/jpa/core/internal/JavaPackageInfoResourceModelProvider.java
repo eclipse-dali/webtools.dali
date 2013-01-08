@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageIn
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
 /**
  * Java package-info.java source code
@@ -55,7 +56,7 @@ public class JavaPackageInfoResourceModelProvider
 				return null;
 			} 
 		} catch (JavaModelException ex) {
-			jpaProject.getManager().log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			// Ignore -- project is in a bad state. This will get recalled if necessary
 			return null;
 		}

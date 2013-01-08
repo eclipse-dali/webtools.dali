@@ -43,7 +43,6 @@ import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExec
 import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.ExtendedJobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -903,25 +902,6 @@ class InternalJpaProjectManager
 
 	private void setThreadLocalModifySharedDocumentCommandExecutor(ExtendedCommandExecutor commandExecutor) {
 		this.modifySharedDocumentCommandExecutor.set(commandExecutor);
-	}
-
-
-	// ********** logging **********
-
-	public void log(String msg) {
-		JptJpaCorePlugin.instance().logError(msg);
-	}
-
-	public void log(Throwable throwable) {
-		JptJpaCorePlugin.instance().logError(throwable);
-	}
-
-	public void log(String msg, Throwable throwable) {
-		JptJpaCorePlugin.instance().logError(throwable, msg);
-	}
-
-	public ExceptionHandler getExceptionHandler() {
-		return JptJpaCorePlugin.instance().getExceptionHandler();
 	}
 
 
