@@ -13,26 +13,53 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.platform.InternalJaxbPlatformManager;
-import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 public class InternalJaxbWorkspace
 	implements JaxbWorkspace
 {
 	private final IWorkspace workspace;
 
-	// NB: the JAXB workspace must be synchronized whenever accessing any of this state
-	private InternalJaxbPlatformManager jaxbPlatformManager;
-	private InternalJaxbProjectManager jaxbProjectManager;
+	private final InternalJaxbPlatformManager jaxbPlatformManager;
+	private final InternalJaxbProjectManager jaxbProjectManager;
 
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJaxbCorePlugin#buildJaxbWorkspace(IWorkspace) Dali JAXB plug-in}.
+	 * {@link org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin#buildJaxbWorkspace(IWorkspace)
+	 * Dali JAXB plug-in}.
 	 */
 	public InternalJaxbWorkspace(IWorkspace workspace) {
 		super();
 		this.workspace = workspace;
+		this.jaxbPlatformManager = this.buildJaxbPlatformManager();
+		this.jaxbProjectManager = this.buildJaxbProjectManager();
+		this.jaxbProjectManager.start();
 	}
+
+
+	// ********** JAXB platform manager **********
+
+	public InternalJaxbPlatformManager getJaxbPlatformManager() {
+		return this.jaxbPlatformManager;
+	}
+
+	private InternalJaxbPlatformManager buildJaxbPlatformManager() {
+		return new InternalJaxbPlatformManager(this);
+	}
+
+
+	// ********** JAXB project manager **********
+
+	public InternalJaxbProjectManager getJaxbProjectManager() {
+		return this.jaxbProjectManager;
+	}
+
+	private InternalJaxbProjectManager buildJaxbProjectManager() {
+		return new InternalJaxbProjectManager(this);
+	}
+
+
+	// ********** misc **********
 
 	public IWorkspace getWorkspace() {
 		return this.workspace;
@@ -47,54 +74,13 @@ public class InternalJaxbWorkspace
 		this.getJaxbPlatformManager().initializeDefaultPreferences();
 	}
 
-
-	// ********** JAXB platform manager **********
-
-	public synchronized InternalJaxbPlatformManager getJaxbPlatformManager() {
-		if ((this.jaxbPlatformManager == null) && this.isActive()) {
-			this.jaxbPlatformManager = this.buildJaxbPlatformManager();
-		}
-		return this.jaxbPlatformManager;
-	}
-
-	private InternalJaxbPlatformManager buildJaxbPlatformManager() {
-		return new InternalJaxbPlatformManager(this);
-	}
-
-
-	// ********** JAXB project manager **********
-
-	public synchronized InternalJaxbProjectManager getJaxbProjectManager() {
-		if ((this.jaxbProjectManager == null) && this.isActive()) {
-			this.jaxbProjectManager = this.buildJaxbProjectManager();
-			this.jaxbProjectManager.start();
-		}
-		return this.jaxbProjectManager;
-	}
-
-	private InternalJaxbProjectManager buildJaxbProjectManager() {
-		return new InternalJaxbProjectManager(this);
-	}
-
-
-	// ********** misc **********
-
-	private boolean isActive() {
-		return JptJaxbCorePlugin.instance().isActive();
-	}
-
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJaxbCorePlugin#stop_() Dali plug-in}.
+	 * {@link org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin#stop(org.osgi.framework.BundleContext)
+	 * Dali JAXB plug-in}.
 	 */
-	public synchronized void stop() {
-		if (this.jaxbPlatformManager != null) {
-			this.jaxbPlatformManager = null;
-		}
-		if (this.jaxbProjectManager != null) {
-			this.jaxbProjectManager.stop();
-			this.jaxbProjectManager = null;
-		}
+	public void dispose() {
+		this.jaxbProjectManager.stop();
 	}
 
 	@Override

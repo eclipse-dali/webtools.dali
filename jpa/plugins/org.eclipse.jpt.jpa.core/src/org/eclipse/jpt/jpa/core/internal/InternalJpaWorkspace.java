@@ -13,26 +13,66 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.platform.InternalJpaPlatformManager;
-import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 
 public class InternalJpaWorkspace
 	implements JpaWorkspace
 {
 	private final IWorkspace workspace;
 
-	// NB: the JPA workspace must be synchronized whenever accessing any of this state
-	private InternalJpaPlatformManager jpaPlatformManager;
-	private InternalJpaProjectManager jpaProjectManager;
+	private final InternalJpaPlatformManager jpaPlatformManager;
+	private final InternalJpaProjectManager jpaProjectManager;
+	private final ConnectionProfileFactory connectionProfileFactory;
 
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJpaCorePlugin#buildJpaWorkspace(IWorkspace) Dali JPA plug-in}.
+	 * {@link org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin#buildJpaWorkspace(IWorkspace)
+	 * Dali JPA plug-in}.
 	 */
 	public InternalJpaWorkspace(IWorkspace workspace) {
 		super();
 		this.workspace = workspace;
+		this.jpaPlatformManager = this.buildJpaPlatformManager();
+		this.jpaProjectManager = this.buildJpaProjectManager();
+		this.connectionProfileFactory = this.buildConnectionProfileFactory();
 	}
+
+
+	// ********** JPA platform manager **********
+
+	public InternalJpaPlatformManager getJpaPlatformManager() {
+		return this.jpaPlatformManager;
+	}
+
+	private InternalJpaPlatformManager buildJpaPlatformManager() {
+		return new InternalJpaPlatformManager(this);
+	}
+
+
+	// ********** JPA project manager **********
+
+	public InternalJpaProjectManager getJpaProjectManager() {
+		return this.jpaProjectManager;
+	}
+
+	private InternalJpaProjectManager buildJpaProjectManager() {
+		return new InternalJpaProjectManager(this);
+	}
+
+
+	// ********** connection profile factory **********
+
+	public ConnectionProfileFactory getConnectionProfileFactory() {
+		return this.connectionProfileFactory;
+	}
+
+	private ConnectionProfileFactory buildConnectionProfileFactory() {
+		return (ConnectionProfileFactory) this.workspace.getAdapter(ConnectionProfileFactory.class);
+	}
+
+
+	// ********** misc **********
 
 	public IWorkspace getWorkspace() {
 		return this.workspace;
@@ -47,54 +87,16 @@ public class InternalJpaWorkspace
 		this.getJpaPlatformManager().initializeDefaultPreferences();
 	}
 
-
-	// ********** JPA platform manager **********
-
-	public synchronized InternalJpaPlatformManager getJpaPlatformManager() {
-		if ((this.jpaPlatformManager == null) && this.isActive()) {
-			this.jpaPlatformManager = this.buildJpaPlatformManager();
-		}
-		return this.jpaPlatformManager;
-	}
-
-	private InternalJpaPlatformManager buildJpaPlatformManager() {
-		return new InternalJpaPlatformManager(this);
-	}
-
-
-	// ********** JPA project manager **********
-
-	public synchronized InternalJpaProjectManager getJpaProjectManager() {
-		if ((this.jpaProjectManager == null) && this.isActive()) {
-			this.jpaProjectManager = this.buildJpaProjectManager();
-			this.jpaProjectManager.start();
-		}
-		return this.jpaProjectManager;
-	}
-
-	private InternalJpaProjectManager buildJpaProjectManager() {
-		return new InternalJpaProjectManager(this);
-	}
-
-
-	// ********** misc **********
-
-	private boolean isActive() {
-		return JptJpaCorePlugin.instance().isActive();
-	}
-
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJpaCorePlugin#stop_() Dali plug-in}.
+	 * {@link org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin#stop(org.osgi.framework.BundleContext)
+	 * Dali plug-in}.
+	 * <p>
+	 * This will suspend the current thread until all the JPA projects are
+	 * disposed etc.
 	 */
-	public synchronized void stop() {
-		if (this.jpaPlatformManager != null) {
-			this.jpaPlatformManager = null;
-		}
-		if (this.jpaProjectManager != null) {
-			this.jpaProjectManager.stop();
-			this.jpaProjectManager = null;
-		}
+	public void dispose() {
+		this.jpaProjectManager.dispose();
 	}
 
 	@Override

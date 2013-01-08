@@ -12,14 +12,13 @@ package org.eclipse.jpt.common.utility.internal.log;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.eclipse.jpt.common.utility.MultiThreadedExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.MultiThreadedExceptionHandlerAdapter;
 
 /**
  * This exception handler logs any exceptions to a JDK logger.
  */
 public class LoggingMultiThreadedExceptionHandler
-	implements MultiThreadedExceptionHandler
+	extends MultiThreadedExceptionHandlerAdapter
 {
 	private final Logger logger;
 	private final Level level;
@@ -67,6 +66,7 @@ public class LoggingMultiThreadedExceptionHandler
 	}
 
 
+	@Override
 	public void handleException(Throwable exception) {
 		this.handleException(null, exception);
 	}
@@ -76,6 +76,7 @@ public class LoggingMultiThreadedExceptionHandler
 	 * does not pass through {@link Logger#doLog(LogRecord)}
 	 * like all the other <code>Logger#log(...)</code> methods.
 	 */
+	@Override
 	public void handleException(Thread thread, Throwable exception) {
 		LogRecord logRecord = new LogRecord(this.level, this.message);
 		logRecord.setParameters(new Object[] { (thread == null) ? "null" : thread.getName() }); //$NON-NLS-1$
@@ -83,10 +84,5 @@ public class LoggingMultiThreadedExceptionHandler
 		logRecord.setLoggerName(this.logger.getName());
 		logRecord.setResourceBundle(this.logger.getResourceBundle());
 		this.logger.log(logRecord);
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
 	}
 }

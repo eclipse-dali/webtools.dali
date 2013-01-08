@@ -10,14 +10,13 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.PrintWriter;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 
 /**
  * An exception handler that prints the exceptions to the configured
  * {@link PrintWriter}.
  */
 public class PrintWriterExceptionHandler
-	implements ExceptionHandler
+	extends ExceptionHandlerAdapter
 {
 	private final PrintWriter printWriter;
 
@@ -33,12 +32,8 @@ public class PrintWriterExceptionHandler
 		this.printWriter = printWriter;
 	}
 
+	@Override
 	public void handleException(Throwable t) {
 		t.printStackTrace(this.printWriter);
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
 	}
 }

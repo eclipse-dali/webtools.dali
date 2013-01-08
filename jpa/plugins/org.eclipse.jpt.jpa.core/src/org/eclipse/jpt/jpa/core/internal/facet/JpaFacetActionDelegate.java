@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.facet;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -68,18 +67,18 @@ public abstract class JpaFacetActionDelegate
 		subMonitor.worked(1);
 		
 		// defaults settings
-		this.getJpaPlatformManager().setDefaultJpaPlatformConfig(fv, platformConfig);
+		this.getJpaPlatformManager(project).setDefaultJpaPlatformConfig(fv, platformConfig);
 		subMonitor.worked(1);
 		
 		//Delegate to LibraryInstallDelegate to configure the project classpath
 		((LibraryInstallDelegate) dataModel.getProperty(JpaFacetDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).execute(subMonitor.newChild(1));
 	}
 
-	protected JpaPlatformManager getJpaPlatformManager() {
-		return this.getJpaWorkspace().getJpaPlatformManager();
+	protected JpaPlatformManager getJpaPlatformManager(IProject project) {
+		return this.getJpaWorkspace(project).getJpaPlatformManager();
 	}
 
-	protected JpaWorkspace getJpaWorkspace() {
-		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
+	protected JpaWorkspace getJpaWorkspace(IProject project) {
+		return (JpaWorkspace) project.getWorkspace().getAdapter(JpaWorkspace.class);
 	}
 }

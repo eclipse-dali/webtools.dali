@@ -32,9 +32,9 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.ltk.core.refactoring.participants.ISharableParticipant;
@@ -173,6 +173,7 @@ public class JpaDeletePackageOrFolderParticipant
 	@SuppressWarnings("unchecked")
 	protected Iterable<IFile> getMappingFilesOnClasspath(final JpaProject jpaProject) {
 		final IJavaProject javaProject = jpaProject.getJavaProject();
+		final JpaPlatform jpaPlatform = jpaProject.getJpaPlatform();
 		return new FilteringIterable<IFile>(new CompositeIterable<IFile>(
 				getPossibleMappingFilesInFolders(),
 				getPossibleMappingFilesInPackageFragments())) 
@@ -180,7 +181,7 @@ public class JpaDeletePackageOrFolderParticipant
 				@Override
 				protected boolean accept(IFile file) {
 					if (javaProject.isOnClasspath(file)) {
-						IContentType contentType = GenericJpaPlatform.getContentType(file);
+						IContentType contentType = jpaPlatform.getContentType(file);
 						return contentType != null && contentType.isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
 					}
 					return false;

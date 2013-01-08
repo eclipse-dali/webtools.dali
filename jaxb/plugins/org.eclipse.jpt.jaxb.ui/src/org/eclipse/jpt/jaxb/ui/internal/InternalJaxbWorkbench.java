@@ -20,8 +20,7 @@ public class InternalJaxbWorkbench
 {
 	private final IWorkbench workbench;
 
-	// NB: the JAXB workbench must be synchronized whenever accessing any of this state
-	private InternalJaxbPlatformUiManager jaxbPlatformUiManager;
+	private final InternalJaxbPlatformUiManager jaxbPlatformUiManager;
 
 
 	/**
@@ -31,19 +30,13 @@ public class InternalJaxbWorkbench
 	public InternalJaxbWorkbench(IWorkbench workbench) {
 		super();
 		this.workbench = workbench;
-	}
-
-	public IWorkbench getWorkbench() {
-		return this.workbench;
+		this.jaxbPlatformUiManager = this.buildJaxbPlatformUiManager();
 	}
 
 
 	// ********** JAXB platform UI manager **********
 
-	public synchronized InternalJaxbPlatformUiManager getJaxbPlatformUiManager() {
-		if ((this.jaxbPlatformUiManager == null) && this.isActive()) {
-			this.jaxbPlatformUiManager = this.buildJaxbPlatformUiManager();
-		}
+	public InternalJaxbPlatformUiManager getJaxbPlatformUiManager() {
 		return this.jaxbPlatformUiManager;
 	}
 
@@ -54,18 +47,12 @@ public class InternalJaxbWorkbench
 
 	// ********** misc **********
 
-	private boolean isActive() {
-		return JptJaxbUiPlugin.instance().isActive();
+	public IWorkbench getWorkbench() {
+		return this.workbench;
 	}
 
-	/**
-	 * Internal: Called <em>only</em> by the
-	 * {@link JptJaxbUiPlugin#stop_() Dali plug-in}.
-	 */
-	public synchronized void stop() {
-		if (this.jaxbPlatformUiManager != null) {
-			this.jaxbPlatformUiManager = null;
-		}
+	public void dispose() {
+		// nothing yet...
 	}
 
 	@Override

@@ -266,20 +266,24 @@ public abstract class JptProjectPropertiesPage
 	}
 
 	protected IRunnableWithProgress buildOkRunnableWithProgress() {
-		return new OkRunnableWithProgress();
+		return new OkRunnableWithProgress(this.getProject().getWorkspace());
 	}
 
 	protected class OkRunnableWithProgress
 		implements IRunnableWithProgress
 	{
+		protected final IWorkspace workspace;
+		protected OkRunnableWithProgress(IWorkspace workspace) {
+			super();
+			this.workspace = workspace;
+		}
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			IWorkspace ws = ResourcesPlugin.getWorkspace();
 			try {
 				// the build we execute in #performOk_() locks the workspace root,
 				// so we need to use the workspace root as our scheduling rule here
-				ws.run(
+				this.workspace.run(
 						new OkWorkspaceRunnable(),
-						ws.getRoot(),
+						this.workspace.getRoot(),
 						IWorkspace.AVOID_UPDATE,
 						monitor
 					);

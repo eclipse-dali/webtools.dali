@@ -24,42 +24,24 @@ import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 /**
- * Wrap the DTP {@link ProfileManager} in yet another singleton.
+ * Wrap the DTP {@link ProfileManager}.
  */
 public final class DTPConnectionProfileFactory
 	implements ConnectionProfileFactory
 {
 	private final IWorkspace workspace;
 
-	private ProfileManager dtpProfileManager;
+	private final ProfileManager dtpProfileManager;
 
-	private LocalProfileListener profileListener;
+	private final LocalProfileListener profileListener;
 
 
 	public DTPConnectionProfileFactory(IWorkspace workspace) {
 		super();
 		this.workspace = workspace;
-	}
-
-
-	// ********** lifecycle **********
-
-	/**
-	 * called by plug-in
-	 */
-	public synchronized void start() {
 		this.dtpProfileManager = ProfileManager.getInstance();
-		this.profileListener = new LocalProfileListener();
+		this.profileListener = this.buildProfileListener();
 		this.dtpProfileManager.addProfileListener(this.profileListener);
-	}
-
-	/**
-	 * called by plug-in
-	 */
-	public synchronized void stop() {
-		this.dtpProfileManager.removeProfileListener(this.profileListener);
-		this.profileListener = null;
-		this.dtpProfileManager = null;
 	}
 
 
@@ -106,6 +88,10 @@ public final class DTPConnectionProfileFactory
 		this.profileListener.removeConnectionProfileListener(listener);
 	}
 
+	private LocalProfileListener buildProfileListener() {
+		return new LocalProfileListener();
+	}
+
 
 	// ********** misc **********
 
@@ -115,6 +101,13 @@ public final class DTPConnectionProfileFactory
 
 	public IClasspathContainer buildDriverClasspathContainer(String driverName) {
 		return new DriverClasspathContainer(driverName);
+	}
+
+	/**
+	 * @see org.eclipse.jpt.jpa.db.internal.plugin.JptJpaDbPlugin#stop(org.osgi.framework.BundleContext)
+	 */
+	public void dispose() {
+		this.dtpProfileManager.removeProfileListener(this.profileListener);
 	}
 
 	@Override

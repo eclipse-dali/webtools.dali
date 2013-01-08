@@ -490,6 +490,11 @@ public interface JpaProject
 		 */
 		ExtendedCommandExecutor getModifySharedDocumentCommandExecutor();
 
+		/**
+		 * Return the JPA project's JPA workspace.
+		 */
+		JpaWorkspace getJpaWorkspace();
+
 
 		// ********** logging **********
 

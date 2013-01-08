@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.CompositeExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
@@ -117,9 +118,10 @@ public class CompositeExceptionHandlerTests
 
 
 	public static class TestExceptionHandler
-		implements ExceptionHandler
+		extends ExceptionHandlerAdapter
 	{
 		public volatile Throwable throwable = null;
+		@Override
 		public void handleException(Throwable t) {
 			this.throwable = t;
 		}

@@ -56,6 +56,7 @@ public class WorkspaceAdapterFactory
 	}
 
 	private JpaProjectManager getJpaProjectManager(IWorkspace workspace) {
-		return this.getJpaWorkspace(workspace).getJpaProjectManager();
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace(workspace);
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaProjectManager();
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,7 @@ import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.osgi.service.debug.DebugOptions;
@@ -41,6 +42,7 @@ import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleReference;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -69,8 +71,9 @@ import org.osgi.util.tracker.ServiceTracker;
 public abstract class JptPlugin
 	implements BundleActivator
 {
+	private volatile BundleContext bundleContext;
+
 	// NB: the plug-in must be synchronized whenever accessing any of this state
-	private BundleContext bundleContext;
 	private ExceptionHandler exceptionHandler;
 	private ServiceTracker<DebugOptions, DebugOptions> debugOptionsTracker;
 	private DebugTrace debugTrace;
@@ -88,62 +91,35 @@ public abstract class JptPlugin
 	// ********** plug-in lifecycle **********
 
 	/**
-	 * @see #start_()
-	 */
-	public final synchronized void start(BundleContext context) throws Exception {
-		// make the instance available immediately; although nothing should
-		// retrieve it during start-up, as most state should be populated lazily...
-		this.setInstance(this);
-		// "activate" the plug-in
-		this.bundleContext = context;
-		this.start_();
-	}
-
-	/**
-	 * Subclass should call <code>super.start_()</code> at the beginning
+	 * Subclass should call <code>super.start(context)</code> at the beginning
 	 * of its override implementation.
 	 * <p>
 	 * <strong>NB:</strong> Most state should be built lazily....
 	 */
-	protected void start_() throws Exception {
-		// perform any startup stuff
-	}
-
-	/**
-	 * @see #stop_()
-	 */
-	public final synchronized void stop(BundleContext context) throws Exception {
-		try {
-			this.stop_();
-		} finally {
-			// "deactivate" the plug-in
-			this.bundleContext = null;
-			// leave the instance available during shutdown so stuff can be
-			// logged, traced, etc.
-			this.setInstance(null);
-		}
-	}
-
-	/**
-	 * The plug-in will still be {@link #isActive() active} and its instance
-	 * still present when this method is called.
-	 * <p>
-	 * Subclass should call <code>super.stop_()</code> at the end
-	 * of its override implementation.
-	 */
-	protected void stop_() throws Exception {
-		if (this.debugOptionsTracker != null) {
-			this.debugOptionsTracker.close();
-			this.debugOptionsTracker = null;
-			this.debugTrace = null;
-		}
-		this.exceptionHandler = null;
+	public void start(BundleContext context) throws Exception {
+		this.bundleContext = context;
+		// make the instance available immediately; although nothing *should*
+		// retrieve it during start-up, as most state should be populated lazily...
+		this.setInstance(this);
 	}
 
 	/**
 	 * Set the plug-in's singleton instance.
 	 */
 	protected abstract void setInstance(JptPlugin plugin);
+
+	/**
+	 * Subclass should call <code>super.stop(context)</code> at the end
+	 * of its override implementation.
+	 * <p>
+	 * <strong>NB:</strong> the plug-in should not return from this method
+	 * until all its outstanding processes are finished.
+	 */
+	public void stop(BundleContext context) throws Exception {
+		// the service tracker must be rebuilt with a valid bundle context if the plug-in is restarted
+		this.closeDebugOptionsTracker();
+		// seems like we can leave 'exceptionHandler' in place...
+	}
 
 
 	// ********** content type **********
@@ -153,7 +129,7 @@ public abstract class JptPlugin
 	 * specified context type within the scope of the plug-in; i.e prefix the
 	 * specified content type with the
 	 * {@link #getContentTypeScope() plug-in's content type scope}.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	public IContentType getContentType(String contentType) {
 		StringBuilder scope = this.getContentTypeScope();
@@ -166,7 +142,7 @@ public abstract class JptPlugin
 	 * By default, this is in the form
 	 * <em>&lt;plug-in ID&gt;.content.</em>
 	 * (e.g. <code>"org.eclipse.jpt.common.core.content."</code>).
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	protected StringBuilder getContentTypeScope() {
 		String id = this.getPluginID();
@@ -197,7 +173,7 @@ public abstract class JptPlugin
 	/**
 	 * Return the specified {@link IResource#getPersistentProperty(QualifiedName)
 	 * resource's persistent property}, relative to the plug-in's ID.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}
+	 * Return <code>null</code> if the plug-in has no bundle
 	 * or if there are any problems retrieving the property.
 	 */
 	public String getPersistentProperty(IResource resource, String key) {
@@ -246,7 +222,7 @@ public abstract class JptPlugin
 
 	/**
 	 * Qualify the specified relative name with the plug-in's ID.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	protected QualifiedName buildPersistentPropertyQualifiedName(String relativeName) {
 		String id = this.getPersistentPropertyPluginID();
@@ -614,7 +590,7 @@ public abstract class JptPlugin
 	/**
 	 * Return the plug-in's workspace preferences. These preferences are written
 	 * to disk when the workspace is closed.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 * These preferences are stored the file<br>
 	 * <code>
 	 * <em>&lt;workspace dir&gt;</em>/<em>&lt;project dir&gt;</em>/.settings/<em>&lt;plug-in ID&gt;</em>.prefs
@@ -627,7 +603,7 @@ public abstract class JptPlugin
 	/**
 	 * Return the plug-in's workspace preferences. These preferences are written
 	 * to disk when the workspace is closed.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 * These preferences are stored the file<br>
 	 * <code>
 	 * <em>&lt;workspace dir&gt;</em>/.metadata/.plugins/org.eclipse.core.runtime/.settings/<em>&lt;plug-in ID&gt;</em>.prefs
@@ -641,7 +617,7 @@ public abstract class JptPlugin
 	 * Return the plug-in's <em>current</em> default preferences.
 	 * These preferences are initialized
 	 * during default preferences initialization and are not saved to disk.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 * <p>
 	 * These preferences must use the <em>current</em> plug-in ID as the
 	 * extension is associated with the plug-in.
@@ -676,7 +652,7 @@ public abstract class JptPlugin
 
 	/**
 	 * Return the plug-in's preferences for the specified context.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	protected IEclipsePreferences getPreferences(IScopeContext context) {
 		String qualifier = this.getPreferencesPluginID();
@@ -684,7 +660,7 @@ public abstract class JptPlugin
 	}
 
 	/**
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 * @see #getOriginalPluginID_()
 	 */
 	protected String getPreferencesPluginID() {
@@ -848,7 +824,7 @@ public abstract class JptPlugin
 	/**
 	 * Log the specified message and exception with the specified severity
 	 * and code.
-	 * If the plug-in is {@link #isInactive() inactive}, log the information
+	 * If the plug-in has {@link #getBundle() bundle}, log the information
 	 * to the appropriate Java system log (instead of the Eclise platform log).
 	 * Return the logged status.
 	 * @see IStatus#getSeverity()
@@ -861,7 +837,7 @@ public abstract class JptPlugin
 	/**
 	 * Log the specified message and exception with the specified severity
 	 * and code. Bind the message to the specified arguments.
-	 * If the plug-in is {@link #isInactive() inactive}, log the information
+	 * If the plug-in has {@link #getBundle() bundle}, log the information
 	 * to the appropriate Java system log (instead of the Eclise platform log).
 	 * Return the logged status.
 	 * @see IStatus#getSeverity()
@@ -889,7 +865,7 @@ public abstract class JptPlugin
 
 	/**
 	 * Return the plug-in's log.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 * @see Platform#getLog(Bundle)
 	 */
 	public ILog getLog() {
@@ -1158,7 +1134,7 @@ public abstract class JptPlugin
 	 * with the appropriate severity; by default, {@link IStatus#ERROR error}.
 	 */
 	public synchronized ExceptionHandler getExceptionHandler() {
-		if ((this.exceptionHandler == null) && this.isActive()) {
+		if (this.exceptionHandler == null) {
 			this.exceptionHandler = this.buildExceptionHandler();
 		}
 		return this.exceptionHandler;
@@ -1168,7 +1144,7 @@ public abstract class JptPlugin
 	 * By default the plug-in's exception handler will log any exceptions
 	 * as {@link IStatus#ERROR errors}.
 	 */
-	protected ExceptionHandler buildExceptionHandler() {
+	public ExceptionHandler buildExceptionHandler() {
 		return this.buildExceptionHandler(IStatus.ERROR);
 	}
 
@@ -1177,6 +1153,7 @@ public abstract class JptPlugin
 	 * handler, as opposed to using the plug-in's exception handler.
 	 * @see #getExceptionHandler()
 	 * @see PluginExceptionHandler
+	 * @see IStatus#getSeverity()
 	 */
 	public ExceptionHandler buildExceptionHandler(int severity) {
 		return new PluginExceptionHandler(severity);
@@ -1187,19 +1164,16 @@ public abstract class JptPlugin
 	 * severity.
 	 */
 	protected class PluginExceptionHandler
-		implements ExceptionHandler
+		extends ExceptionHandlerAdapter
 	{
 		private final int severity;
 		protected PluginExceptionHandler(int severity) {
 			super();
 			this.severity = severity;
 		}
+		@Override
 		public void handleException(Throwable t) {
 			JptPlugin.this.log(this.severity, t);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
 		}
 	}
 
@@ -1264,7 +1238,7 @@ public abstract class JptPlugin
 	 * By default, this is in the form
 	 * <em>&lt;plug-in ID&gt;/debug</em>
 	 * (e.g. <code>org.eclipse.jpt.common.core/debug</code>).
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	protected StringBuilder getDebugOptionName() {
 		String id = this.getPluginID();
@@ -1488,15 +1462,37 @@ public abstract class JptPlugin
 	}
 
 	private synchronized ServiceTracker<DebugOptions, DebugOptions> getDebugOptionsTracker() {
-		if ((this.debugOptionsTracker == null) && this.isActive()) {
+		if (this.debugOptionsTracker == null) {
 			this.debugOptionsTracker = this.buildDebugOptionsTracker();
-			this.debugOptionsTracker.open();
 		}
 		return this.debugOptionsTracker;
 	}
 
 	private ServiceTracker<DebugOptions, DebugOptions> buildDebugOptionsTracker() {
-		return new ServiceTracker<DebugOptions, DebugOptions>(this.bundleContext, DebugOptions.class, null);
+		try {
+			return this.buildDebugOptionsTracker_();
+		} catch (RuntimeException ex) {
+			this.logError(ex);
+			return null;
+		}
+	}
+
+	/**
+	 * @exception RuntimeException if the plug-in's {@link #bundleContext
+	 * bundle context} is missing or invalid
+	 */
+	private ServiceTracker<DebugOptions, DebugOptions> buildDebugOptionsTracker_() {
+		ServiceTracker<DebugOptions, DebugOptions> tracker = new ServiceTracker<DebugOptions, DebugOptions>(this.bundleContext, DebugOptions.class, null);
+		tracker.open();
+		return tracker;
+	}
+
+	protected synchronized void closeDebugOptionsTracker() {
+		if (this.debugOptionsTracker != null) {
+			this.debugOptionsTracker.close();
+			this.debugOptionsTracker = null;
+			this.debugTrace = null; // the debug trace is associated with the tracker's service(?)
+		}
 	}
 
 	/**
@@ -1505,7 +1501,7 @@ public abstract class JptPlugin
 	 * By default, this is in the form
 	 * <em>&lt;plug-in ID&gt;/debug/</em>
 	 * (e.g. <code>org.eclipse.jpt.common.core/debug/</code>).
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	protected StringBuilder getDebugOptionScope() {
 		StringBuilder sb = this.getDebugOptionName();
@@ -1746,7 +1742,7 @@ public abstract class JptPlugin
 	}
 
 	protected synchronized DebugTrace getDebugTrace() {
-		if ((this.debugTrace == null) && this.isActive()) {
+		if (this.debugTrace == null) {
 			this.debugTrace = this.buildDebugTrace();
 		}
 		return this.debugTrace;
@@ -1786,16 +1782,25 @@ public abstract class JptPlugin
 	// ********** misc **********
 
 	/**
-	 * Return the plug-in's bundle. Return <code>null</code> if the plug-in is
-	 * {@link #isInactive() inactive}.
+	 * Return the plug-in's bundle.
 	 */
-	public synchronized Bundle getBundle() {
-		return (this.bundleContext == null) ? null : this.bundleContext.getBundle();
+	public Bundle getBundle() {
+		return (this.bundleContext != null) ? this.bundleContext.getBundle() : this.getBundle_();
+	}
+
+	/**
+	 * If the plug-in has not yet been {@link #start(BundleContext) started}, we
+	 * can still get the bundle from the classloader....
+	 */
+	private Bundle getBundle_() {
+		ClassLoader cl = this.getClass().getClassLoader();
+		return (cl instanceof BundleReference) ? ((BundleReference) cl).getBundle() : null;
 	}
 
 	/**
 	 * Return the plug-in's ID (i.e. the symbolic name of the plug-in's bundle).
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
+	 * @see Bundle#getSymbolicName()
 	 */
 	public String getPluginID() {
 		Bundle bundle = this.getBundle();
@@ -1806,10 +1811,11 @@ public abstract class JptPlugin
 	 * Return the plug-in's "original" ID. This is useful for backward and
 	 * forward compatibility of resource persistent properties and preferences.
 	 * By default return the {@link #getPluginID() current plug-in ID}.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
-	public String getOriginalPluginID() {
-		return this.isActive() ? this.getOriginalPluginID_() : null;
+	public final String getOriginalPluginID() {
+		Bundle bundle = this.getBundle();
+		return (bundle == null) ? null : this.getOriginalPluginID_();
 	}
 
 	/**
@@ -1825,15 +1831,29 @@ public abstract class JptPlugin
 	/**
 	 * Return whether the plug-in is active; i.e. it has been
 	 * {@link #start(BundleContext) started}.
+	 * <p>
+	 * <strong>NB:</strong> The plug-in is <em>not</em> active during the
+	 * execution of the methods {@link #start(BundleContext)} or
+	 * {@link #stop(BundleContext)}.
+	 * 
+	 * @see Bundle#getState()
+	 * @see Bundle#ACTIVE
 	 */
-	public synchronized boolean isActive() {
-		return this.bundleContext != null;
+	public boolean isActive() {
+		return this.getBundle().getState() == Bundle.ACTIVE;
 	}
 
 	/**
 	 * Return whether the plug-in is inactive; i.e. it has been
 	 * {@link #stop(BundleContext) stopped} or not yet
 	 * {@link #start(BundleContext) started}.
+	 * <p>
+	 * <strong>NB:</strong> The plug-in is <em>not</em> active during the
+	 * execution of the methods {@link #start(BundleContext)} or
+	 * {@link #stop(BundleContext)}.
+	 * 
+	 * @see Bundle#getState()
+	 * @see Bundle#ACTIVE
 	 */
 	public boolean isInactive() {
 		return ! this.isActive();
@@ -1841,7 +1861,7 @@ public abstract class JptPlugin
 
 	/**
 	 * Qualify the specified relative name with the plug-in's ID.
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}.
+	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	public QualifiedName buildQualifiedName(String relativeName) {
 		String id = this.getPluginID();
@@ -1849,8 +1869,8 @@ public abstract class JptPlugin
 	}
 
 	/**
-	 * Return <code>null</code> if the plug-in is {@link #isInactive() inactive}
-	 * or if the system is running with no data area (<code>-data @none</code>).
+	 * Return <code>null</code> if the plug-in has no corresponding bundle
+	 * or if the platform is running with no data area (<code>-data @none</code>).
 	 * @see org.eclipse.core.runtime.Plugin#getStateLocation()
 	 * @see Platform#getStateLocation(Bundle)
 	 */

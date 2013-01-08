@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Hashtable;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.jpa.db.internal.DTPConnectionProfileFactory;
+import org.osgi.framework.BundleContext;
 
 public class JptJpaDbPlugin
 	extends JptPlugin
@@ -44,29 +45,42 @@ public class JptJpaDbPlugin
 	}
 
 	@Override
-	protected void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			for (DTPConnectionProfileFactory factory : this.connectionProfileFactories.values()) {
-				try {
-					factory.stop();
-				} catch (Throwable ex) {
-					this.logError(ex);  // keep going
-				}
-			}
-			this.connectionProfileFactories.clear();
+			this.disposeConnectionProfileFactories();
 		} finally {
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
 
 	// ********** connection profile factories **********
 
-	public synchronized DTPConnectionProfileFactory getConnectionProfileFactory(IWorkspace workspace) {
+	/**
+	 * Return the connection profile factory corresponding to the specified
+	 * Eclipse workspace.
+	 * <p>
+	 * The preferred way to retrieve a connection profile factory is via the
+	 * Eclipse adapter framework:
+	 * <pre>
+	 * IWorkspace workspace = ...;
+	 * ConnectionProfileFactory factory = (ConnectionProfileFactory) workspace.getAdapter(ConnectionProfileFactory.class)
+	 * </pre>
+	 * @see org.eclipse.jpt.jpa.db.internal.WorkspaceAdapterFactory#getConnectionProfileFactory(IWorkspace)
+	 */
+	public DTPConnectionProfileFactory getConnectionProfileFactory(IWorkspace workspace) {
+		synchronized (this.connectionProfileFactories) {
+			return this.getConnectionProfileFactory_(workspace);
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #connectionProfileFactories} is <code>synchronized</code>
+	 */
+	private DTPConnectionProfileFactory getConnectionProfileFactory_(IWorkspace workspace) {
 		DTPConnectionProfileFactory factory = this.connectionProfileFactories.get(workspace);
-		if (this.isActive() && (factory == null)) {
+		if ((factory == null) && this.isActive()) {  // no new factories can be built during "start" or "stop"...
 			factory = this.buildConnectionProfileFactory(workspace);
-	        factory.start();
 	        this.connectionProfileFactories.put(workspace, factory);
 		}
 		return factory;
@@ -74,5 +88,17 @@ public class JptJpaDbPlugin
 
 	private DTPConnectionProfileFactory buildConnectionProfileFactory(IWorkspace workspace) {
 		return new DTPConnectionProfileFactory(workspace);
+	}
+
+	private void disposeConnectionProfileFactories() {
+		// the list will not change during "stop"
+		for (DTPConnectionProfileFactory factory : this.connectionProfileFactories.values()) {
+			try {
+				factory.dispose();
+			} catch (Throwable ex) {
+				this.logError(ex);  // keep going
+			}
+		}
+		this.connectionProfileFactories.clear();
 	}
 }

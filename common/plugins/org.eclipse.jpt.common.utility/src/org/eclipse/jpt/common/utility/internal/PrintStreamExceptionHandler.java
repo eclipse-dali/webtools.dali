@@ -10,14 +10,13 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.PrintStream;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 
 /**
  * An exception handler that prints the exceptions to the configured
  * {@link PrintStream}.
  */
 public class PrintStreamExceptionHandler
-	implements ExceptionHandler
+	extends ExceptionHandlerAdapter
 {
 	private final PrintStream printStream;
 
@@ -33,12 +32,8 @@ public class PrintStreamExceptionHandler
 		this.printStream = printStream;
 	}
 
+	@Override
 	public void handleException(Throwable t) {
 		t.printStackTrace(this.printStream);
-	}
-
-	@Override
-	public String toString() {
-		return ObjectTools.toString(this);
 	}
 }

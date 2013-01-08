@@ -60,10 +60,10 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.jpa.eclipselink.ui.dialogs.ConnectionDialog";
 
 	public JdbcConnectionPropertiesComposite(
-					Pane<T> parentComposite, 
-					Composite parent) {
-
-		super(parentComposite, parent);
+			Pane<T> parent, 
+			Composite parentComposite
+	) {
+		super(parent, parentComposite);
 	}
 
 	private ModifiablePropertyValueModel<String> buildPasswordHolder() {

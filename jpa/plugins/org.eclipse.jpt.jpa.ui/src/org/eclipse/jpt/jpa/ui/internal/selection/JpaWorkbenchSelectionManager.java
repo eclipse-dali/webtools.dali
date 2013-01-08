@@ -145,7 +145,7 @@ class JpaWorkbenchSelectionManager
 	}
 
 	/**
-	 * <strong>NB:</strong> May trigger construction of workbench manager.
+	 * <strong>NB:</strong> May trigger construction of workbench selection manager.
 	 */
 	static JpaWorkbenchSelectionManager forWorkbench_(IWorkbench workbench) {
 		InternalJpaWorkbench jpaWorkbench = getJpaWorkbench(workbench);

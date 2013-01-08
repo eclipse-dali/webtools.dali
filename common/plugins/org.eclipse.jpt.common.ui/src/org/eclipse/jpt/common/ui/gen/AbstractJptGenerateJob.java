@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.ui.gen;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,7 +52,7 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 		this.generationCompleted = new SynchronizedBoolean(false);
 		this.generationSuccessful = false;
 		
-		IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+		IResourceRuleFactory ruleFactory = this.javaProject.getProject().getWorkspace().getRuleFactory();
 		this.setRule(ruleFactory.modifyRule(this.javaProject.getProject()));
 	}
 

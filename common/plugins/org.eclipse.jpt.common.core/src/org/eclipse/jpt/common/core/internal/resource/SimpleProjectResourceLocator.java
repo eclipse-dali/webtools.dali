@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
@@ -61,15 +61,21 @@ public class SimpleProjectResourceLocator
 	}
 
 	protected ResourceLocator getResourceLocator() {
-		return this.getResourceLocatorManager().getResourceLocator(this.project);
+		ResourceLocatorManager rlManager = this.getResourceLocatorManager();
+		return (rlManager == null) ? null : rlManager.getResourceLocator(this.project);
 	}
 
 	private ResourceLocatorManager getResourceLocatorManager() {
-		return this.getJptWorkspace().getResourceLocatorManager();
+		JptWorkspace jptWorkspace = this.getJptWorkspace();
+		return (jptWorkspace == null) ? null : jptWorkspace.getResourceLocatorManager();
 	}
 
 	private JptWorkspace getJptWorkspace() {
-		return (JptWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JptWorkspace.class);
+		return (JptWorkspace) this.getWorkspace().getAdapter(JptWorkspace.class);
+	}
+
+	private IWorkspace getWorkspace() {
+		return this.project.getWorkspace();
 	}
 
 	@Override

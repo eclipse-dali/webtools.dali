@@ -94,7 +94,7 @@ class InternalJpaPlatformConfig
 		this.pluginId = pluginId;
 	}
 
-	synchronized JpaPlatform getJpaPlatform() {
+	public synchronized JpaPlatform getJpaPlatform() {
 		if (this.jpaPlatform == null) {
 			this.jpaPlatform = this.buildJpaPlatform();
 		}
@@ -103,7 +103,7 @@ class InternalJpaPlatformConfig
 
 	private JpaPlatform buildJpaPlatform() {
 		JpaPlatformFactory factory = this.buildJpaPlatformFactory();
-		return (factory == null) ? null : factory.buildJpaPlatform(this.id);
+		return (factory == null) ? null : factory.buildJpaPlatform(this);
 	}
 
 	private JpaPlatformFactory buildJpaPlatformFactory() {

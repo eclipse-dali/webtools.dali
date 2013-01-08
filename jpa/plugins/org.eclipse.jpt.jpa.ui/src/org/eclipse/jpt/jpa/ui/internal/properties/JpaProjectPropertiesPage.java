@@ -66,6 +66,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
@@ -79,6 +80,7 @@ import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.Database;
@@ -440,6 +442,10 @@ public class JpaProjectPropertiesPage
 		implements JpaPlatformConfig
 	{
 		public JpaPlatformManager getJpaPlatformManager() {
+			return null;
+		}
+
+		public JpaPlatform getJpaPlatform() {
 			return null;
 		}
 
@@ -1097,14 +1103,19 @@ public class JpaProjectPropertiesPage
 		}
 
 		/* class private */ class LocalConnectionProfileListener
-			implements ConnectionProfileListener
+			extends ConnectionProfileAdapter
 		{
+			@Override
 			public void connectionProfileAdded(String name) {
 				ConnectionChoicesModel.this.collectionChanged();
 			}
+
+			@Override
 			public void connectionProfileRemoved(String name) {
 				ConnectionChoicesModel.this.collectionChanged();
 			}
+
+			@Override
 			public void connectionProfileRenamed(String oldName, String newName) {
 				// Ignore this event for now. Connecting a profile actually
 				// throws a connection renamed event, which messes up the

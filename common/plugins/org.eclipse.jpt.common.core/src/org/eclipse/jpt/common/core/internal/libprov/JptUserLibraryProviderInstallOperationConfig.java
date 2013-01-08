@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.libprov;
 
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptWorkspace;
@@ -31,13 +32,16 @@ public abstract class JptUserLibraryProviderInstallOperationConfig
 	@Override
 	public synchronized IStatus validate() {
 		IStatus status = super.validate();
-		if (! status.isOK()) {
+		if ( ! status.isOK()) {
 			return status;
 		}
-		
-		for (LibraryValidator libraryValidator : this.getLibraryValidatorManager().getLibraryValidators(this)) {
+		LibraryValidatorManager lvManager = this.getLibraryValidatorManager();
+		if (lvManager == null) {
+			return Status.OK_STATUS;
+		}
+		for (LibraryValidator libraryValidator : lvManager.getLibraryValidators(this)) {
 			status = libraryValidator.validate(this);
-			if (! status.isOK()) {
+			if ( ! status.isOK()) {
 				return status;
 			}
 		}
@@ -46,10 +50,19 @@ public abstract class JptUserLibraryProviderInstallOperationConfig
 	}
 
 	private LibraryValidatorManager getLibraryValidatorManager() {
-		return this.getJptWorkspace().getLibraryValidatorManager();
+		JptWorkspace jptWorkspace = this.getJptWorkspace();
+		return (jptWorkspace == null) ? null : jptWorkspace.getLibraryValidatorManager();
 	}
 
 	private JptWorkspace getJptWorkspace() {
-		return (JptWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JptWorkspace.class);
+		return (JptWorkspace) this.getWorkspace().getAdapter(JptWorkspace.class);
+	}
+
+	private IWorkspace getWorkspace() {
+		return this.getProject().getWorkspace();
+	}
+
+	private IProject getProject() {
+		return this.getFacetedProject().getProject();
 	}
 }

@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.Database;
@@ -124,7 +125,6 @@ public class GenericJpaDataSource
 		if (this.connectionProfile != null) {
 			this.connectionProfile.removeConnectionListener(this.connectionListener);
 		}
-//		this.setConnectionProfileName(null);
 		this.getConnectionProfileFactory().removeConnectionProfileListener(this.connectionProfileListener);
 	}
 
@@ -169,12 +169,9 @@ public class GenericJpaDataSource
 	 * Also listen for our connection's name being changed.
 	 */
 	protected class LocalConnectionProfileListener
-		implements ConnectionProfileListener
+		extends ConnectionProfileAdapter
 	{
-		protected LocalConnectionProfileListener() {
-			super();
-		}
-
+		@Override
 		public void connectionProfileAdded(String name) {
 			// check to see if a connection profile with our name was added
 			// (assume our connection profile is null)
@@ -185,6 +182,7 @@ public class GenericJpaDataSource
 			}
 		}
 
+		@Override
 		public void connectionProfileRemoved(String name) {
 			if (GenericJpaDataSource.this.connectionProfile == null) {
 				return;
@@ -194,6 +192,7 @@ public class GenericJpaDataSource
 			}
 		}
 
+		@Override
 		public void connectionProfileRenamed(String oldName, String newName) {
 			if (GenericJpaDataSource.this.connectionProfile == null) {
 				if (newName.equals(GenericJpaDataSource.this.connectionProfileName)) {

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+
 /**
  * An empty implementation of {@link ConnectionProfileListener}.
  * <p>
@@ -31,5 +33,10 @@ public class ConnectionProfileAdapter
 
 	public void connectionProfileRenamed(String oldName, String newName) {
 		// do nothing
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this);
 	}
 }

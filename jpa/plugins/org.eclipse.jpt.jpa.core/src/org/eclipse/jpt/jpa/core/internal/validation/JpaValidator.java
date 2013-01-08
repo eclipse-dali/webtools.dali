@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.validation;
 
+import java.util.ArrayList;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -80,34 +81,24 @@ public class JpaValidator
 
 	// ********** internal **********
 
-	private void clearMarkers(IProject project) {
-		try {
-			this.clearMarkers_(project);
-		} catch (CoreException ex) {
-			JptJpaCorePlugin.instance().logError(ex);
-		}
-	}
-
-	private void clearMarkers_(IProject project) throws CoreException {
-		IMarker[] markers = project.findMarkers(MARKER_ID, true, IResource.DEPTH_INFINITE);
-		for (IMarker marker : markers) {
-			marker.delete();
-		}
-	}
-
 	private void validate(IReporter reporter, IProject project) {
-		Iterable<IMessage> messages = this.buildValidationMessages(reporter, project);
-		
+		Iterable<IMessage> allMessages = this.buildValidationMessages(reporter, project);
+
+		ArrayList<IMessage> messages = new ArrayList<IMessage>();
+		for (IMessage message : allMessages) {
+			// check preferences for IGNORE
+			if (ObjectTools.notEquals(JpaPreferences.getProblemSeverity(project, message.getId()), JpaPreferences.PROBLEM_IGNORE)) {
+				messages.add(message);
+			}
+		}
+
 		// since the validation messages are usually built asynchronously
 		// and a workspace shutdown could occur in the meantime,
 		// wait until we actually get the new messages before we clear out the old messages
 		this.clearMarkers(project);
 		
 		for (IMessage message : messages) {
-			// check preferences for IGNORE
-			if (ObjectTools.notEquals(JpaPreferences.getProblemSeverity(project, message.getId()), JpaPreferences.PROBLEM_IGNORE)) {
-				reporter.addMessage(this, message);
-			}
+			reporter.addMessage(this, message);
 		}
 	}
 
@@ -126,5 +117,20 @@ public class JpaValidator
 
 	private JpaProject.Reference getJpaProjectReference(IProject project) {
 		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
+	}
+
+	private void clearMarkers(IProject project) {
+		try {
+			this.clearMarkers_(project);
+		} catch (CoreException ex) {
+			JptJpaCorePlugin.instance().logError(ex);
+		}
+	}
+
+	private void clearMarkers_(IProject project) throws CoreException {
+		IMarker[] markers = project.findMarkers(MARKER_ID, true, IResource.DEPTH_INFINITE);
+		for (IMarker marker : markers) {
+			marker.delete();
+		}
 	}
 }

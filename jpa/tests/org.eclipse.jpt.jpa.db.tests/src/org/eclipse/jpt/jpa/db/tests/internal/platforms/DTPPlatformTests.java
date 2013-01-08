@@ -54,8 +54,8 @@ import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
-import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
@@ -722,6 +722,7 @@ public abstract class DTPPlatformTests extends TestCase {
 			this.dumpOn(sql, pw, columnWidth);
 		}
 		pw.flush();
+		pw.close();
 	}
 
 	protected void dumpOn(String sql, IndentingPrintWriter pw, int columnWidth) throws Exception {
@@ -813,6 +814,7 @@ public abstract class DTPPlatformTests extends TestCase {
 			this.dumpDatabaseOn(pw, deep);
 		}
 		pw.flush();
+		pw.close();
 	}
 
 	protected void dumpDatabaseOn(IndentingPrintWriter pw, boolean deep) {
@@ -853,6 +855,7 @@ public abstract class DTPPlatformTests extends TestCase {
 			this.dumpSchemaOn(schema, pw, deep);
 		}
 		pw.flush();
+		pw.close();
 	}
 
 	protected void dumpSchemaOn(Schema schema, IndentingPrintWriter pw, boolean deep) {
@@ -928,6 +931,7 @@ public abstract class DTPPlatformTests extends TestCase {
 			this.dumpJDBCCatalogsOn(pw);
 		}
 		pw.flush();
+		pw.close();
 	}
 
 	protected void dumpJDBCCatalogsOn(IndentingPrintWriter pw) throws SQLException {
@@ -948,6 +952,7 @@ public abstract class DTPPlatformTests extends TestCase {
 			this.dumpJDBCSchemataOn(pw);
 		}
 		pw.flush();
+		pw.close();
 	}
 
 	protected void dumpJDBCSchemataOn(IndentingPrintWriter pw) throws SQLException {
@@ -969,18 +974,23 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	// ********** connection profile listener **********
 
-	protected static class TestConnectionProfileListener implements ConnectionProfileListener {
+	protected static class TestConnectionProfileListener
+		extends ConnectionProfileAdapter
+	{
 		public String addedName;
 		public String removedName;
 		public String renamedOldName;
 		public String renamedNewName;
 
+		@Override
 		public void connectionProfileAdded(String name) {
 			this.addedName = name;
 		}
+		@Override
 		public void connectionProfileRemoved(String name) {
 			this.removedName = name;
 		}
+		@Override
 		public void connectionProfileRenamed(String oldName, String newName) {
 			this.renamedOldName = oldName;
 			this.renamedNewName = newName;

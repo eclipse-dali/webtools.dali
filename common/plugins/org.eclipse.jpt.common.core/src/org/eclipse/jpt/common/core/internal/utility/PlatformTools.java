@@ -14,6 +14,7 @@ import java.io.InputStream;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -53,11 +54,10 @@ public class PlatformTools {
 	 * Return the {@link IContainer} with the workspace-relative "full" path
 	 */
 	public static IContainer getContainer(IPath fullContainerPath) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		// changed to handle non-workspace projects
 		String projectName = fullContainerPath.segment(0).toString();
 		IPath projectRelativePath = fullContainerPath.removeFirstSegments(1);
-		IProject project = root.getProject(projectName);
+		IProject project = getWorkspaceRoot().getProject(projectName);
 		return (projectRelativePath.isEmpty()) ? project : project.getFolder(projectRelativePath);
 	}
 	
@@ -65,12 +65,19 @@ public class PlatformTools {
 	 * Return the {@link IFile} with the workspace relative "full" path
 	 */
 	public static IFile getFile(IPath fullFilePath) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		// changed to handle non-workspace projects
 		String projectName = fullFilePath.segment(0).toString();
 		IPath projectRelativePath = fullFilePath.removeFirstSegments(1);
-		IProject project = root.getProject(projectName);
+		IProject project = getWorkspaceRoot().getProject(projectName);
 		return project.getFile(projectRelativePath);
+	}
+
+	private static IWorkspaceRoot getWorkspaceRoot() {
+		return getWorkspace().getRoot();
+	}
+	
+	private static IWorkspace getWorkspace() {
+		return ResourcesPlugin.getWorkspace();
 	}
 	
 
@@ -87,7 +94,7 @@ public class PlatformTools {
 	}
 
 	private static JptWorkspace getJptWorkspace() {
-		return getAdapter(ResourcesPlugin.getWorkspace(), JptWorkspace.class);
+		return getAdapter(getWorkspace(), JptWorkspace.class);
 	}
 
 

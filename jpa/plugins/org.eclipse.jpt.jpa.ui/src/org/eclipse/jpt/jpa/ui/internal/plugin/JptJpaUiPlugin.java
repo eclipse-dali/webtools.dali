@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.plugin;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
+import org.osgi.framework.BundleContext;
 
 /**
  * Dali JPA UI plug-in.
@@ -32,15 +33,14 @@ import org.eclipse.ui.IWorkbench;
 public class JptJpaUiPlugin
 	extends JptUIPlugin
 {
-	// NB: the plug-in must be synchronized whenever accessing any of this state
-	private final HashMap<IWorkbench, InternalJpaWorkbench> jpaWorkbenchs = new HashMap<IWorkbench, InternalJpaWorkbench>();
+	private final Hashtable<IWorkbench, InternalJpaWorkbench> jpaWorkbenches = new Hashtable<IWorkbench, InternalJpaWorkbench>();
 
 	/**
 	 * @see #focusIn(Control)
 	 */
 	private final ControlIsNonDaliListenerFlag controlIsNonDaliFlag = new ControlIsNonDaliListenerFlag();
 	private final AsyncEventListenerFlag asyncEventListenerFlag = new AsyncEventListenerFlag(this.controlIsNonDaliFlag);
-	private Display display;
+	private volatile Display display;
 	private final Listener focusListener = new FocusListener();
 
 
@@ -72,8 +72,8 @@ public class JptJpaUiPlugin
 	 * of every "focus in" event.
 	 */
 	@Override
-	public void start_() throws Exception {
-		super.start_();
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
 		// no leak here - the flag has no backpointer to the plug-in
 		this.getJpaProjectManager().addJavaEventListenerFlag(this.asyncEventListenerFlag);
 
@@ -99,17 +99,9 @@ public class JptJpaUiPlugin
 	 * Unregister our SWT listener with the display.
 	 */
 	@Override
-	public void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			for (InternalJpaWorkbench jpaWorkbench : this.jpaWorkbenchs.values()) {
-				try {
-					jpaWorkbench.stop();
-				} catch (Throwable ex) {
-					this.logError(ex);  // keep going
-				}
-			}
-			this.jpaWorkbenchs.clear();
-
+			this.disposeJpaWorkbenches();
 			// must be on UI thread...
 			if ((this.display != null) && ( ! this.display.isDisposed())) {
 				this.display.removeFilter(SWT.FocusIn, this.focusListener);
@@ -117,12 +109,12 @@ public class JptJpaUiPlugin
 			this.getJpaProjectManager().removeJavaEventListenerFlag(this.asyncEventListenerFlag);
 		} finally {
 			this.display = null;
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
 
-	// ********** JPA workbenchs **********
+	// ********** JPA workbenches **********
 
 	/**
 	 * Return the JPA workbench corresponding to the specified Eclipse workbench.
@@ -130,21 +122,43 @@ public class JptJpaUiPlugin
 	 * The preferred way to retrieve a JPA workbench is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * JpaWorkbench jpaWorkbench = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+	 * IWorkbench workbench = ...;
+	 * JpaWorkbench jpaWorkbench = PlatformTools.getAdapter(workbench, JpaWorkbench.class);
 	 * </pre>
 	 * @see org.eclipse.jpt.jpa.ui.internal.WorkbenchAdapterFactory#getJpaWorkbench(IWorkbench)
 	 */
-	public synchronized InternalJpaWorkbench getJpaWorkbench(IWorkbench workbench) {
-		InternalJpaWorkbench jpaWorkbench = this.jpaWorkbenchs.get(workbench);
-		if ((jpaWorkbench == null) && this.isActive()) {
+	public InternalJpaWorkbench getJpaWorkbench(IWorkbench workbench) {
+		synchronized (this.jpaWorkbenches) {
+			return this.getJpaWorkbench_(workbench);
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #jpaWorkbenches} is <code>synchronized</code>
+	 */
+	private InternalJpaWorkbench getJpaWorkbench_(IWorkbench workbench) {
+		InternalJpaWorkbench jpaWorkbench = this.jpaWorkbenches.get(workbench);
+		if ((jpaWorkbench == null) && this.isActive()) {  // no new workbenches can be built during "start" or "stop"...
 			jpaWorkbench = this.buildJpaWorkbench(workbench);
-			this.jpaWorkbenchs.put(workbench, jpaWorkbench);
+			this.jpaWorkbenches.put(workbench, jpaWorkbench);
 		}
 		return jpaWorkbench;
 	}
 
 	private InternalJpaWorkbench buildJpaWorkbench(IWorkbench workbench) {
 		return new InternalJpaWorkbench(workbench);
+	}
+
+	private void disposeJpaWorkbenches() {
+		// the list will not change during "stop"
+		for (InternalJpaWorkbench jpaWorkbench : this.jpaWorkbenches.values()) {
+			try {
+				jpaWorkbench.dispose();
+			} catch (Throwable ex) {
+				this.logError(ex);  // keep going
+			}
+		}
+		this.jpaWorkbenches.clear();
 	}
 
 
@@ -273,7 +287,7 @@ public class JptJpaUiPlugin
 		}
 	}
 
-	// ********** control is non dali listener listener flag **********
+	// ********** control is non-Dali listener flag **********
 
 	/**
 	 * This flag's value is determined by the current UI focus (i.e. whether the 

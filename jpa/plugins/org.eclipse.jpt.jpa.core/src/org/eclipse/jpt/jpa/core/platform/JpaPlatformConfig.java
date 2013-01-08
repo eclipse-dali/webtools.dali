@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.platform;
 
 import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -82,6 +83,11 @@ public interface JpaPlatformConfig {
 	 * config.
 	 */
 	String getPluginId();
+
+	/**
+	 * Build and return the config's JPA platform.
+	 */
+	JpaPlatform getJpaPlatform();
 
 	Filter<JpaPlatformConfig> DEFAULT_FILTER = new DefaultFilter();
 	/* CU private */ static class DefaultFilter

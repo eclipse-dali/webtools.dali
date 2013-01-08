@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.plugin;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.InternalJaxbWorkbench;
 import org.eclipse.ui.IWorkbench;
+import org.osgi.framework.BundleContext;
 
 /**
  * Dali JAXB UI plug-in.
@@ -21,8 +22,7 @@ import org.eclipse.ui.IWorkbench;
 public class JptJaxbUiPlugin
 	extends JptUIPlugin
 {
-	// NB: the plug-in must be synchronized whenever accessing any of this state
-	private final HashMap<IWorkbench, InternalJaxbWorkbench> jaxbWorkbenchs = new HashMap<IWorkbench, InternalJaxbWorkbench>();
+	private final Hashtable<IWorkbench, InternalJaxbWorkbench> jaxbWorkbenches = new Hashtable<IWorkbench, InternalJaxbWorkbench>();
 
 
 	// ********** singleton **********
@@ -49,23 +49,16 @@ public class JptJaxbUiPlugin
 	}
 
 	@Override
-	public void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			for (InternalJaxbWorkbench jaxbWorkbench : this.jaxbWorkbenchs.values()) {
-				try {
-					jaxbWorkbench.stop();
-				} catch (Throwable ex) {
-					this.logError(ex);  // keep going
-				}
-			}
-			this.jaxbWorkbenchs.clear();
+			this.disposeJaxbWorkbenches();
 		} finally {
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
 
-	// ********** JAXB workbenchs **********
+	// ********** JAXB workbenches **********
 
 	/**
 	 * Return the JAXB workbench corresponding to the specified Eclipse workbench.
@@ -73,20 +66,42 @@ public class JptJaxbUiPlugin
 	 * The preferred way to retrieve a JAXB workbench is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * JaxbWorkbench jaxbWorkbench = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+	 * IWorkbench workbench = ...;
+	 * JaxbWorkbench jaxbWorkbench = PlatformTools.getAdapter(workbench, JaxbWorkbench.class);
 	 * </pre>
 	 * @see org.eclipse.jpt.jaxb.ui.internal.WorkbenchAdapterFactory#getJaxbWorkbench(IWorkbench)
 	 */
-	public synchronized InternalJaxbWorkbench getJaxbWorkbench(IWorkbench workbench) {
-		InternalJaxbWorkbench jaxbWorkbench = this.jaxbWorkbenchs.get(workbench);
-		if ((jaxbWorkbench == null) && this.isActive()) {
+	public InternalJaxbWorkbench getJaxbWorkbench(IWorkbench workbench) {
+		synchronized (this.jaxbWorkbenches) {
+			return this.getJaxbWorkbench_(workbench);
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #jaxbWorkbenches} is <code>synchronized</code>
+	 */
+	private InternalJaxbWorkbench getJaxbWorkbench_(IWorkbench workbench) {
+		InternalJaxbWorkbench jaxbWorkbench = this.jaxbWorkbenches.get(workbench);
+		if ((jaxbWorkbench == null) && this.isActive()) {  // no new workbenches can be built during "start" or "stop"...
 			jaxbWorkbench = this.buildJaxbWorkbench(workbench);
-			this.jaxbWorkbenchs.put(workbench, jaxbWorkbench);
+			this.jaxbWorkbenches.put(workbench, jaxbWorkbench);
 		}
 		return jaxbWorkbench;
 	}
 
 	private InternalJaxbWorkbench buildJaxbWorkbench(IWorkbench workbench) {
 		return new InternalJaxbWorkbench(workbench);
+	}
+
+	private void disposeJaxbWorkbenches() {
+		// the list will not change during "stop"
+		for (InternalJaxbWorkbench jaxbWorkbench : this.jaxbWorkbenches.values()) {
+			try {
+				jaxbWorkbench.dispose();
+			} catch (Throwable ex) {
+				this.logError(ex);  // keep going
+			}
+		}
+		this.jaxbWorkbenches.clear();
 	}
 }

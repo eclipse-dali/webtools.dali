@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.plugin;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.core.internal.InternalJptWorkspace;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
+import org.osgi.framework.BundleContext;
 
 public class JptCommonCorePlugin
 	extends JptPlugin
 {
-	// NB: the plug-in must be synchronized whenever accessing any of this state
-	private final HashMap<IWorkspace, InternalJptWorkspace> jptWorkspaces = new HashMap<IWorkspace, InternalJptWorkspace>();
+	private final Hashtable<IWorkspace, InternalJptWorkspace> jptWorkspaces = new Hashtable<IWorkspace, InternalJptWorkspace>();
 
 
 	// ********** singleton **********
@@ -45,18 +45,12 @@ public class JptCommonCorePlugin
 	}
 
 	@Override
-	protected void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			for (InternalJptWorkspace jptWorkspace : this.jptWorkspaces.values()) {
-				try {
-					jptWorkspace.stop();
-				} catch (Throwable ex) {
-					this.logError(ex);  // keep going
-				}
-			}
+			// force the workspaces to be rebuilt if the plug-in is restarted
 			this.jptWorkspaces.clear();
 		} finally {
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
@@ -69,13 +63,23 @@ public class JptCommonCorePlugin
 	 * The preferred way to retrieve a Dali workspace is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * JptWorkspace jptWorkspace = (JptWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JptWorkspace.class)
+	 * IWorkspace workspace = ...;
+	 * JptWorkspace jptWorkspace = (JptWorkspace) workspace.getAdapter(JptWorkspace.class)
 	 * </pre>
 	 * @see org.eclipse.jpt.common.core.internal.WorkspaceAdapterFactory#getJptWorkspace(IWorkspace)
 	 */
-	public synchronized InternalJptWorkspace getJptWorkspace(IWorkspace workspace) {
+	public InternalJptWorkspace getJptWorkspace(IWorkspace workspace) {
+		synchronized (this.jptWorkspaces) {
+			return this.getJptWorkspace_(workspace);
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #jptWorkspaces} is <code>synchronized</code>
+	 */
+	private InternalJptWorkspace getJptWorkspace_(IWorkspace workspace) {
 		InternalJptWorkspace jptWorkspace = this.jptWorkspaces.get(workspace);
-		if ((jptWorkspace == null) && this.isActive()) {
+		if ((jptWorkspace == null) && this.isActive()) {  // no new workspaces can be built during "start" or "stop"...
 			jptWorkspace = this.buildJptWorkspace(workspace);
 			this.jptWorkspaces.put(workspace, jptWorkspace);
 		}

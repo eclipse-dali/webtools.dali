@@ -25,6 +25,7 @@ public class JptCoreMessages {
 	public static String NONE;
 
 	public static String BUILD_JPA_PROJECTS_JOB_NAME;
+	public static String DISPOSE_JPA_PROJECTS_JOB_NAME;
 	public static String GET_JPA_PROJECTS_JOB_NAME;
 	public static String GET_JPA_PROJECT_JOB_NAME;
 	public static String REBUILD_JPA_PROJECT_JOB_NAME;

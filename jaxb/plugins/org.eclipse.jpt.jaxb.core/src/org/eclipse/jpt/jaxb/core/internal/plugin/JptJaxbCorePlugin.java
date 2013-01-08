@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.plugin;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.jaxb.core.internal.InternalJaxbWorkspace;
+import org.osgi.framework.BundleContext;
 
 public class JptJaxbCorePlugin
 	extends JptPlugin
 {
-	// NB: the plug-in must be synchronized whenever accessing any of this state
-	private final HashMap<IWorkspace, InternalJaxbWorkspace> jaxbWorkspaces = new HashMap<IWorkspace, InternalJaxbWorkspace>();
+	private final Hashtable<IWorkspace, InternalJaxbWorkspace> jaxbWorkspaces = new Hashtable<IWorkspace, InternalJaxbWorkspace>();
 
 
 	// ********** singleton **********
@@ -45,18 +45,11 @@ public class JptJaxbCorePlugin
 	}
 
 	@Override
-	protected void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			for (InternalJaxbWorkspace jaxbWorkspace : this.jaxbWorkspaces.values()) {
-				try {
-					jaxbWorkspace.stop();
-				} catch (Throwable ex) {
-					this.logError(ex);  // keep going
-				}
-			}
-			this.jaxbWorkspaces.clear();
+			this.disposeJaxbWorkspaces();
 		} finally {
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
@@ -69,13 +62,23 @@ public class JptJaxbCorePlugin
 	 * The preferred way to retrieve a JAXB workspace is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * JaxbWorkspace jaxbWorkspace = (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class)
+	 * IWorkspace workspace = ...;
+	 * JaxbWorkspace jaxbWorkspace = (JaxbWorkspace) workspace.getAdapter(JaxbWorkspace.class)
 	 * </pre>
 	 * @see org.eclipse.jpt.jaxb.core.internal.WorkspaceAdapterFactory#getJaxbWorkspace(IWorkspace)
 	 */
-	public synchronized InternalJaxbWorkspace getJaxbWorkspace(IWorkspace workspace) {
+	public InternalJaxbWorkspace getJaxbWorkspace(IWorkspace workspace) {
+		synchronized (this.jaxbWorkspaces) {
+			return this.getJaxbWorkspace_(workspace);
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #jaxbWorkspaces} is <code>synchronized</code>
+	 */
+	private InternalJaxbWorkspace getJaxbWorkspace_(IWorkspace workspace) {
 		InternalJaxbWorkspace jaxbWorkspace = this.jaxbWorkspaces.get(workspace);
-		if ((jaxbWorkspace == null) && this.isActive()) {
+		if ((jaxbWorkspace == null) && this.isActive()) {  // no new workspaces can be built during "start" or "stop"...
 			jaxbWorkspace = this.buildJaxbWorkspace(workspace);
 			this.jaxbWorkspaces.put(workspace, jaxbWorkspace);
 		}
@@ -84,5 +87,17 @@ public class JptJaxbCorePlugin
 
 	private InternalJaxbWorkspace buildJaxbWorkspace(IWorkspace workspace) {
 		return new InternalJaxbWorkspace(workspace);
+	}
+
+	private void disposeJaxbWorkspaces() {
+		// the list will not change during "stop"
+		for (InternalJaxbWorkspace jaxbWorkspace : this.jaxbWorkspaces.values()) {
+			try {
+				jaxbWorkspace.dispose();
+			} catch (Throwable ex) {
+				this.logError(ex);  // keep going
+			}
+		}
+		this.jaxbWorkspaces.clear();
 	}
 }

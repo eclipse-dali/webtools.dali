@@ -112,6 +112,7 @@ public class ProjectAdapterFactory
 		/* class private */ static class Predicate
 			extends SimpleFilter<JpaProject, IProject>
 		{
+			private static final long serialVersionUID = 1L;
 			Predicate(IProject project) {
 				super(project);
 			}

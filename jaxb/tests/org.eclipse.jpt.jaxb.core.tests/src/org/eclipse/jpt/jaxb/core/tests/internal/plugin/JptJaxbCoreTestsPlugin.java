@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.osgi.framework.BundleContext;
 
 /**
  * Configure the core for testing:<ul>
@@ -41,8 +42,8 @@ public class JptJaxbCoreTestsPlugin
 	}
 
 	@Override
-	protected void start_() throws Exception {
-		super.start_();
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
 		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
 		ObjectTools.execute(jaxbProjectManager, "handleEventsSynchronously");
 		JptPlugin.FlushPreferences = false;

@@ -36,6 +36,7 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCommandExecutor;
@@ -161,14 +162,11 @@ public class InternalJaxbProjectManager
 				);
 
 	/* CU private */ class LocalExceptionHandler
-		implements ExceptionHandler
+	extends ExceptionHandlerAdapter
 	{
+		@Override
 		public void handleException(Throwable t) {
 			JptJaxbCorePlugin.instance().logError(t);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
 		}
 	}
 
@@ -225,7 +223,7 @@ public class InternalJaxbProjectManager
 	// ********** constructor **********
 
 	/**
-	 * Internal: called by {@link JptJUaxbCorePlugin Dali plug-in}.
+	 * Internal: called by {@link InternalJaxbWorkspace}.
 	 */
 	InternalJaxbProjectManager(JaxbWorkspace jaxbWorkspace) {
 		super();

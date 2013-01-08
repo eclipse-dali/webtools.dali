@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
+
 /**
  * This interface is to be implemented by a JPA vendor to extend Dali by
  * building a {@link JpaPlatform}.
@@ -31,7 +33,7 @@ package org.eclipse.jpt.jpa.core;
  */
 public interface JpaPlatformFactory {
 	/**
-	 * Build the JPA platform with the specified ID.
+	 * Build the JPA platform with the specified config.
 	 */
-	JpaPlatform buildJpaPlatform(String id);
+	JpaPlatform buildJpaPlatform(JpaPlatformConfig config);
 }

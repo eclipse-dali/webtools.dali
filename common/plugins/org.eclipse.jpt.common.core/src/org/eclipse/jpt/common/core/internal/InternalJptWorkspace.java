@@ -21,10 +21,9 @@ public class InternalJptWorkspace
 {
 	private final IWorkspace workspace;
 
-	// NB: the Dali workspace must be synchronized whenever accessing any of this state
-	private InternalJptResourceTypeManager resourceTypeManager;
-	private InternalLibraryValidatorManager libraryValidatorManager;
-	private InternalResourceLocatorManager resourceLocatorManager;
+	private final InternalJptResourceTypeManager resourceTypeManager;
+	private final InternalLibraryValidatorManager libraryValidatorManager;
+	private final InternalResourceLocatorManager resourceLocatorManager;
 
 
 	/**
@@ -34,19 +33,15 @@ public class InternalJptWorkspace
 	public InternalJptWorkspace(IWorkspace workspace) {
 		super();
 		this.workspace = workspace;
-	}
-
-	public IWorkspace getWorkspace() {
-		return this.workspace;
+		this.resourceTypeManager = this.buildResourceTypeManager();
+		this.libraryValidatorManager = this.buildLibraryValidatorManager();
+		this.resourceLocatorManager = this.buildResourceLocatorManager();
 	}
 
 
 	// ********** Dali resource type manager **********
 
-	public synchronized InternalJptResourceTypeManager getResourceTypeManager() {
-		if ((this.resourceTypeManager == null) && this.isActive()) {
-			this.resourceTypeManager = this.buildResourceTypeManager();
-		}
+	public InternalJptResourceTypeManager getResourceTypeManager() {
 		return this.resourceTypeManager;
 	}
 
@@ -57,10 +52,7 @@ public class InternalJptWorkspace
 
 	// ********** Dali library validator manager **********
 
-	public synchronized InternalLibraryValidatorManager getLibraryValidatorManager() {
-		if ((this.libraryValidatorManager == null) && this.isActive()) {
-			this.libraryValidatorManager = this.buildLibraryValidatorManager();
-		}
+	public InternalLibraryValidatorManager getLibraryValidatorManager() {
 		return this.libraryValidatorManager;
 	}
 
@@ -71,10 +63,7 @@ public class InternalJptWorkspace
 
 	// ********** Dali resource locator manager **********
 
-	public synchronized InternalResourceLocatorManager getResourceLocatorManager() {
-		if ((this.resourceLocatorManager == null) && this.isActive()) {
-			this.resourceLocatorManager = this.buildResourceLocatorManager();
-		}
+	public InternalResourceLocatorManager getResourceLocatorManager() {
 		return this.resourceLocatorManager;
 	}
 
@@ -85,18 +74,8 @@ public class InternalJptWorkspace
 
 	// ********** misc **********
 
-	private boolean isActive() {
-		return JptCommonCorePlugin.instance().isActive();
-	}
-
-	/**
-	 * Internal: Called <em>only</em> by the
-	 * {@link JptCommonCorePlugin#stop_() Dali plug-in}.
-	 */
-	public synchronized void stop() {
-		if (this.resourceTypeManager != null) {
-			this.resourceTypeManager = null;
-		}
+	public IWorkspace getWorkspace() {
+		return this.workspace;
 	}
 
 	@Override

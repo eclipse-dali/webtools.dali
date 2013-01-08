@@ -1,18 +1,16 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.wizards;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -113,7 +111,7 @@ public class JavaProjectWizardPage extends WizardPage {
 			String projectName = item.getText(0);
 			if( ! StringTools.isBlank(projectName)) {
 
-				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+				IProject project = this.javaProject.getProject().getWorkspace().getRoot().getProject(projectName);
 				this.setJavaProject(JavaCore.create(project));
 				this.validate();
 			}
@@ -169,7 +167,7 @@ public class JavaProjectWizardPage extends WizardPage {
 					return project.getName();
 				}
 			},
-			new String[0]);
+			StringTools.EMPTY_STRING_ARRAY);
 	}
 	
 	protected Iterable<IProject> getJavaProjects() {
@@ -187,7 +185,7 @@ public class JavaProjectWizardPage extends WizardPage {
 	}
 
 	protected Iterator<IProject> getProjects() {
-		return new ArrayIterator<IProject>(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+		return new ArrayIterator<IProject>(this.javaProject.getProject().getWorkspace().getRoot().getProjects());
 	}
 
 	// ********** inner classes **********

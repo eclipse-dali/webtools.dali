@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.plugin;
 
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
+import org.osgi.framework.BundleContext;
 
 /**
  * Configure the core for testing:<ul>
@@ -45,8 +46,8 @@ public class JptJpaEclipseLinkCoreTestsPlugin
 	}
 
 	@Override
-	protected void start_() throws Exception {
-		super.start_();
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
 		JptPlugin.FlushPreferences = false;
 	}
 

@@ -89,6 +89,12 @@ public interface JpaPlatform
 	 */
 	JpaFile buildJpaFile(JpaProject jpaProject, IFile file);
 
+	/**
+	 * Return the specified file's content type, as defined by various
+	 * extensions.
+	 */
+	IContentType getContentType(IFile file);
+
 
 	// ********** Java annotations **********
 
@@ -158,8 +164,8 @@ public interface JpaPlatform
 	// ********** database **********
 
 	/**
-	 * Return a connection repository that can be used to query the database
-	 * about database metadata.
+	 * Return a connection factory that can be used to query the database
+	 * about its metadata etc.
 	 */
 	ConnectionProfileFactory getConnectionProfileFactory();
 

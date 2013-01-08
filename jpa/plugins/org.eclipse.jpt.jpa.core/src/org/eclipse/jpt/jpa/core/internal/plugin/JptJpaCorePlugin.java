@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.plugin;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaWorkspace;
+import org.osgi.framework.BundleContext;
 
 /**
  * Dali JPA core plug-in.
@@ -21,8 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.InternalJpaWorkspace;
 public class JptJpaCorePlugin
 	extends JptPlugin
 {
-	// NB: the plug-in must be synchronized whenever accessing any of this state
-	private final HashMap<IWorkspace, InternalJpaWorkspace> jpaWorkspaces = new HashMap<IWorkspace, InternalJpaWorkspace>();
+	private final Hashtable<IWorkspace, InternalJpaWorkspace> jpaWorkspaces = new Hashtable<IWorkspace, InternalJpaWorkspace>();
 
 
 	// ********** singleton **********
@@ -49,18 +49,11 @@ public class JptJpaCorePlugin
 	}
 
 	@Override
-	protected void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			for (InternalJpaWorkspace jpaWorkspace : this.jpaWorkspaces.values()) {
-				try {
-					jpaWorkspace.stop();
-				} catch (Throwable ex) {
-					this.logError(ex);  // keep going
-				}
-			}
-			this.jpaWorkspaces.clear();
+			this.disposeJpaWorkspaces();
 		} finally {
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
@@ -92,13 +85,23 @@ public class JptJpaCorePlugin
 	 * The preferred way to retrieve a JPA workspace is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * JpaWorkspace jpaWorkspace = (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class)
+	 * IWorkspace workspace = ...;
+	 * JpaWorkspace jpaWorkspace = (JpaWorkspace) workspace.getAdapter(JpaWorkspace.class)
 	 * </pre>
 	 * @see org.eclipse.jpt.jpa.core.internal.WorkspaceAdapterFactory#getJpaWorkspace(IWorkspace)
 	 */
-	public synchronized InternalJpaWorkspace getJpaWorkspace(IWorkspace workspace) {
+	public InternalJpaWorkspace getJpaWorkspace(IWorkspace workspace) {
+		synchronized (this.jpaWorkspaces) {
+			return this.getJpaWorkspace_(workspace);
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #jpaWorkspaces} is <code>synchronized</code>
+	 */
+	private InternalJpaWorkspace getJpaWorkspace_(IWorkspace workspace) {
 		InternalJpaWorkspace jpaWorkspace = this.jpaWorkspaces.get(workspace);
-		if ((jpaWorkspace == null) && this.isActive()) {
+		if ((jpaWorkspace == null) && this.isActive()) {  // no new workspaces can be built during "start" or "stop"...
 			jpaWorkspace = this.buildJpaWorkspace(workspace);
 			this.jpaWorkspaces.put(workspace, jpaWorkspace);
 		}
@@ -107,5 +110,21 @@ public class JptJpaCorePlugin
 
 	private InternalJpaWorkspace buildJpaWorkspace(IWorkspace workspace) {
 		return new InternalJpaWorkspace(workspace);
+	}
+
+	/**
+	 * This will suspend the current thread until all the JPA projects are
+	 * disposed etc.
+	 */
+	private void disposeJpaWorkspaces() {
+		// the list will not change during "stop"
+		for (InternalJpaWorkspace jpaWorkspace : this.jpaWorkspaces.values()) {
+			try {
+				jpaWorkspace.dispose();
+			} catch (Throwable ex) {
+				this.logError(ex);  // keep going
+			}
+		}
+		this.jpaWorkspaces.clear();
 	}
 }

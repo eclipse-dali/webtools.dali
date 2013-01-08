@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ResourceManager;
@@ -262,7 +261,7 @@ public class DatabaseGroup
 	}
 
 	private ConnectionProfileFactory getConnectionProfileFactory() {
-		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		return (ConnectionProfileFactory) this.jpaProject.getProject().getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 

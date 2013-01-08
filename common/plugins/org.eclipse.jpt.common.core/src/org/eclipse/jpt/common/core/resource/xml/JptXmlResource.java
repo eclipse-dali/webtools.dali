@@ -218,7 +218,8 @@ public class JptXmlResource
 	// ********** convenience methods **********
 	
 	public boolean fileExists() {
-		return this.getFile().exists();
+		IFile file = this.getFile();
+		return (file != null) && file.exists();
 	}
 	
 	public IFile getFile() {
@@ -236,8 +237,9 @@ public class JptXmlResource
 	
 	/**
 	 * Return the Eclipse file for the specified URI.
-	 * This URI is assumed to be absolute in the following format:
+	 * This URI is assumed to be absolute in the following format:<pre>
 	 *     platform:/resource/....
+	 * </pre>
 	 */
 	protected IFile getFile(URI fileURI) {
 		if ( ! WorkbenchResourceHelperBase.isPlatformResourceURI(fileURI)) {

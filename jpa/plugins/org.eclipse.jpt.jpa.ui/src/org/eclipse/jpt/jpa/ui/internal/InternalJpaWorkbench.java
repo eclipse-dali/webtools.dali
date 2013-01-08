@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,10 +26,9 @@ public class InternalJpaWorkbench
 {
 	private final IWorkbench workbench;
 
-	// NB: the JPA workbench must be synchronized whenever accessing any of this state
-	private InternalJpaPlatformUiManager jpaPlatformUiManager;
-	private JpaSelectionManager jpaSelectionManager;
-	private ResourceManager resourceManager;
+	private final InternalJpaPlatformUiManager jpaPlatformUiManager;
+	private volatile JpaSelectionManager jpaSelectionManager;
+	private final ResourceManager resourceManager;
 
 
 	/**
@@ -39,19 +38,14 @@ public class InternalJpaWorkbench
 	public InternalJpaWorkbench(IWorkbench workbench) {
 		super();
 		this.workbench = workbench;
-	}
-
-	public IWorkbench getWorkbench() {
-		return this.workbench;
+		this.jpaPlatformUiManager = this.buildJpaPlatformUiManager();
+		this.resourceManager = this.buildResourceManager();
 	}
 
 
 	// ********** JPA platform UI manager **********
 
-	public synchronized InternalJpaPlatformUiManager getJpaPlatformUiManager() {
-		if ((this.jpaPlatformUiManager == null) && this.isActive()) {
-			this.jpaPlatformUiManager = this.buildJpaPlatformUiManager();
-		}
+	public InternalJpaPlatformUiManager getJpaPlatformUiManager() {
 		return this.jpaPlatformUiManager;
 	}
 
@@ -62,7 +56,7 @@ public class InternalJpaWorkbench
 
 	// ********** JPA selection manager **********
 
-	public synchronized JpaSelectionManager getJpaSelectionManager() {
+	public JpaSelectionManager getJpaSelectionManager() {
 		return this.jpaSelectionManager;
 	}
 
@@ -72,7 +66,7 @@ public class InternalJpaWorkbench
 	 * @see org.eclipse.jpt.jpa.ui.internal.selection.JpaWorkbenchSelectionManager#dispose()
 	 * @see org.eclipse.jpt.jpa.ui.internal.selection.JpaWorkbenchSelectionManager#forWorkbench_(IWorkbench)
 	 */
-	public synchronized void setJpaSelectionManager(JpaSelectionManager jpaSelectionManager) {
+	public void setJpaSelectionManager(JpaSelectionManager jpaSelectionManager) {
 		this.jpaSelectionManager = jpaSelectionManager;
 	}
 
@@ -80,8 +74,7 @@ public class InternalJpaWorkbench
 	// ********** resource manager **********
 
 	public ResourceManager buildLocalResourceManager() {
-		ResourceManager rm = this.getResourceManager();
-		return (rm == null) ? null : new LocalResourceManager(rm);
+		return new LocalResourceManager(this.resourceManager);
 	}
 
 	/**
@@ -92,23 +85,12 @@ public class InternalJpaWorkbench
 	public synchronized ResourceManager getResourceManager(Control control) {
 		ResourceManager controlRM = (ResourceManager) control.getData(RESOURCE_MANAGER_KEY);
 		if (controlRM == null) {
-			ResourceManager rm = this.getResourceManager();
-			if (rm == null) {
-				return null;
-			}
-			controlRM = new LocalResourceManager(rm, control);
+			controlRM = new LocalResourceManager(this.resourceManager, control);
 			control.setData(RESOURCE_MANAGER_KEY, controlRM);
 		}
 		return controlRM;
 	}
 	private static final String RESOURCE_MANAGER_KEY = JptJpaUiPlugin.instance().getPluginID() + ".ResourceManager"; //$NON-NLS-1$
-
-	private synchronized ResourceManager getResourceManager() {
-		if ((this.resourceManager == null) && this.isActive()) {
-			this.resourceManager = this.buildResourceManager();
-		}
-		return this.resourceManager;
-	}
 
 	private ResourceManager buildResourceManager() {
 		return new LocalResourceManager(this.getParentResourceManager());
@@ -125,22 +107,17 @@ public class InternalJpaWorkbench
 
 	// ********** misc **********
 
-	private boolean isActive() {
-		return JptJpaUiPlugin.instance().isActive();
+	public IWorkbench getWorkbench() {
+		return this.workbench;
 	}
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJpaUiPlugin#stop_() Dali plug-in}.
+	 * {@link JptJpaUiPlugin#stop(org.osgi.framework.BundleContext)
+	 * Dali JPA UI plug-in}.
 	 */
-	public synchronized void stop() {
-		if (this.resourceManager != null) {
-			this.resourceManager.dispose();
-			this.resourceManager = null;
-		}
-		if (this.jpaPlatformUiManager != null) {
-			this.jpaPlatformUiManager = null;
-		}
+	public void dispose() {
+		this.resourceManager.dispose();
 	}
 
 	@Override

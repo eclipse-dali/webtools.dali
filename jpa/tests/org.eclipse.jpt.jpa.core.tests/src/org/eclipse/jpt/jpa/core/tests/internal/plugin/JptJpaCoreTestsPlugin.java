@@ -13,6 +13,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
+import org.osgi.framework.BundleContext;
 
 /**
  * Configure the core for testing:<ul>
@@ -40,8 +41,8 @@ public class JptJpaCoreTestsPlugin
 	}
 
 	@Override
-	protected void start_() throws Exception {
-		super.start_();
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
 		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
 		ObjectTools.execute(jpaProjectManager, "executeCommandsSynchronously");
 		JptPlugin.FlushPreferences = false;

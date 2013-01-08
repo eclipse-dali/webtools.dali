@@ -10,10 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
@@ -30,13 +28,11 @@ import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
@@ -47,7 +43,7 @@ import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 public class GenericJpaPlatform
 	implements JpaPlatform
 {
-	private final String id;
+	private final JpaPlatformConfig config;
 
 	private final Version jpaVersion;
 
@@ -62,9 +58,17 @@ public class GenericJpaPlatform
 	private final JPQLGrammar jpqlGrammar;
 
 
-	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JPQLGrammar jpqlGrammar) {
+	public GenericJpaPlatform(
+			JpaPlatformConfig config,
+			Version jpaVersion,
+			JpaFactory jpaFactory,
+			AnnotationProvider annotationProvider,
+			JpaPlatformProvider platformProvider,
+			JpaPlatformVariation jpaVariation,
+			JPQLGrammar jpqlGrammar
+	) {
 		super();
-		this.id = id;
+		this.config = config;
 		this.jpaVersion = jpaVersion;
 		this.jpaFactory = jpaFactory;
 		this.annotationProvider = annotationProvider;
@@ -77,19 +81,11 @@ public class GenericJpaPlatform
 	// ********** meta stuff **********
 
 	public String getId() {
-		return this.id;
+		return this.config.getId();
 	}
 
 	public JpaPlatformConfig getConfig() {
-		return this.getJpaPlatformManager().getJpaPlatformConfig(this.getId());
-	}
-
-	private JpaPlatformManager getJpaPlatformManager() {
-		return this.getJpaWorkspace().getJpaPlatformManager();
-	}
-
-	private JpaWorkspace getJpaWorkspace() {
-		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
+		return this.config;
 	}
 
 	public Version getJpaVersion() {
@@ -98,7 +94,7 @@ public class GenericJpaPlatform
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.id);
+		return ObjectTools.toString(this, this.getId());
 	}
 
 
@@ -123,32 +119,20 @@ public class GenericJpaPlatform
 		return (contentType == null) ? null : this.buildJpaFile(jpaProject, file, contentType);
 	}
 
-	//TODO make this a non-static method on JpaPlatform
-	//I have done this because our code PlatformTools.getContentType(IFile) opens an InputStream
-	//on the IFile in order to find the content type for our xml mapping files. This is expensive
-	//when called for every file in the project and is only needed for xml mapping files. For now
-	//I am attempting to find the content type just based on the file name first and short-circuiting
-	//if it is a .java or .class file. If we made this api on the JpaPlatform we could potentially
-	//check if it is XML content type and then only do the more expensive InputStream look-up
-	//in that case. Because we are extensible we can't be 100% certain that a "mapping file" 
-	//has xml content type so we would allow this to be overridable.
-	public static IContentType getContentType(IFile file) {
+	/**
+	 * Performance hook: {@link PlatformTools#getContentType(IFile)} gets the
+	 * file contents <em>every</em> time. Many of our files are Java files and
+	 * it is possible to determine a Java file's content type from the file
+	 * name; so do that here, before using {@link PlatformTools}.
+	 */
+	public IContentType getContentType(IFile file) {
 		IContentType contentType = Platform.getContentTypeManager().findContentTypeFor(file.getName());
 		if (contentType != null) {
 			if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 				return contentType;
 			}
-			if (contentType.equals(JAVA_CLASS_CONTENT_TYPE)) {
-				return contentType;
-			}
 		}
 		return PlatformTools.getContentType(file);
-	}
-	//TODO JptCommonCorePlugin.JAVA_CLASS_CONTENT_TYPE after API freeze
-	private static final IContentType JAVA_CLASS_CONTENT_TYPE = getContentType(JavaCore.PLUGIN_ID + ".javaClass");//$NON-NLS-1$
-	
-	private static IContentType getContentType(String contentType) {
-		return Platform.getContentTypeManager().getContentType(contentType);
 	}
 
 	protected JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType) {
@@ -240,7 +224,7 @@ public class GenericJpaPlatform
 	// ********** database **********
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
-		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		return this.config.getJpaPlatformManager().getJpaWorkspace().getConnectionProfileFactory();
 	}
 
 	public EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder() {
@@ -266,6 +250,6 @@ public class GenericJpaPlatform
 	// ********** Hermes integration **********
 
 	public JPQLGrammar getJpqlGrammar() {
-		return jpqlGrammar;
+		return this.jpqlGrammar;
 	}
 }

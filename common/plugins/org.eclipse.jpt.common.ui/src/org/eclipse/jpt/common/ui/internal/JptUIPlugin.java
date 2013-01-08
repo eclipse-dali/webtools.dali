@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 /**
  * Common Dali UI plug-in behavior:<ul>
@@ -52,20 +53,12 @@ public abstract class JptUIPlugin
 	// ********** plug-in lifecycle **********
 
 	@Override
-	protected void start_() throws Exception {
-		super.start_();
-	}
-
-	@Override
-	protected void stop_() throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		try {
-			if (this.dialogSettings != null) {
-				this.saveDialogSettings();
-			}
+			this.saveDialogSettings();
+			// it seems like we can leave 'dialogSettings' and 'preferenceStore' in place...
 		} finally {
-			this.preferenceStore = null;
-			this.dialogSettings = null;
-			super.stop_();
+			super.stop(context);
 		}
 	}
 
@@ -93,7 +86,7 @@ public abstract class JptUIPlugin
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getDialogSettings()
 	 */
 	public synchronized IDialogSettings getDialogSettings() {
-		if ((this.dialogSettings == null) && this.isActive()) {
+		if (this.dialogSettings == null) {
 			this.dialogSettings = this.buildDialogSettings();
 		}
 		return this.dialogSettings;
@@ -136,7 +129,16 @@ public abstract class JptUIPlugin
 	/**
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#saveDialogSettings()
 	 */
-	protected void saveDialogSettings() {
+	protected synchronized void saveDialogSettings() {
+		if (this.dialogSettings != null) {
+			this.saveDialogSettings_();
+		}
+	}
+
+	/**
+	 * Pre-condition: the dialog settings are not <code>null</code>
+	 */
+	protected void saveDialogSettings_() {
 		String settingsFileName = this.getDialogSettingsFileName();
 		if (settingsFileName != null) {
 			try {
@@ -152,7 +154,8 @@ public abstract class JptUIPlugin
 		if (stateLocation == null) {
 			return null;
 		}
-		return stateLocation.append(this.getSimpleDialogSettingsFileName()).toOSString();
+		IPath path = stateLocation.append(this.getSimpleDialogSettingsFileName());
+		return path.toOSString();
 	}
 
 	protected String getSimpleDialogSettingsFileName() {
@@ -197,7 +200,7 @@ public abstract class JptUIPlugin
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getPreferenceStore()
 	 */
 	public synchronized IPreferenceStore getPreferenceStore() {
-		if ((this.preferenceStore == null) && this.isActive()) {
+		if (this.preferenceStore == null) {
 			this.preferenceStore = this.buildPreferenceStore();
 		}
 		return this.preferenceStore;

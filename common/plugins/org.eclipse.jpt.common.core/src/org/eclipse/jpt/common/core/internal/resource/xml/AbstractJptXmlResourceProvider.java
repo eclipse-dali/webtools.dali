@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -169,7 +168,7 @@ public abstract class AbstractJptXmlResourceProvider
 	 * @param config - A configuration object used to specify options for creation of the resource
 	 */
 	public JptXmlResource createFileAndResource(Object config, IProgressMonitor monitor) throws CoreException {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspace workspace = this.project.getWorkspace();
 		IWorkspaceRunnable runnable = new CreateFileAndResourceWorkspaceRunnable(config);
 		workspace.run(runnable, this.project, IWorkspace.AVOID_UPDATE, monitor);
 		return this.resource;	
@@ -217,7 +216,7 @@ public abstract class AbstractJptXmlResourceProvider
 	}
 	
 	public IStatus validateEdit(Object context) {
-		IWorkspace work = ResourcesPlugin.getWorkspace();
+		IWorkspace work = this.project.getWorkspace();
 		IFile file = WorkbenchResourceHelper.getFile(this.resource);
 		if (file != null) {
 			IFile[] files = { file };

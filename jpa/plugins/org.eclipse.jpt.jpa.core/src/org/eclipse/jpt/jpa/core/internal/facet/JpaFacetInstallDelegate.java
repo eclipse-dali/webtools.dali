@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -71,13 +70,13 @@ public class JpaFacetInstallDelegate
 		}
 		String driverName = dataModel.getStringProperty(DB_DRIVER_NAME);
 		
-		IClasspathContainer container = this.getConnectionProfileFactory().buildDriverClasspathContainer(driverName);
+		IClasspathContainer container = this.getConnectionProfileFactory(javaProject.getProject()).buildDriverClasspathContainer(driverName);
 		IClasspathEntry entry = JavaCore.newContainerEntry(container.getPath());
 		this.addClasspathEntryToProject(entry, javaProject, monitor);
 	}
 	
-	private ConnectionProfileFactory getConnectionProfileFactory() {
-		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+	private ConnectionProfileFactory getConnectionProfileFactory(IProject project) {
+		return (ConnectionProfileFactory) project.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 	private void addClasspathEntryToProject(

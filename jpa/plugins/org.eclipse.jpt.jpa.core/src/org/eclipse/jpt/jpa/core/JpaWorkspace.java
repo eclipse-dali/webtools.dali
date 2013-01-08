@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2103 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 
 /**
  * The Dali JPA state corresponding to an {@link IWorkspace Eclipse workspace}.
@@ -49,4 +50,9 @@ public interface JpaWorkspace {
 	 * Return the manager for all the workspace's JPA projects.
 	 */
 	JpaProjectManager getJpaProjectManager();
+
+	/**
+	 * Return the workspace's connection profile factory.
+	 */
+	ConnectionProfileFactory getConnectionProfileFactory();
 }
