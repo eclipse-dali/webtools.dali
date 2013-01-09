@@ -22,7 +22,6 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
-import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -165,7 +164,10 @@ public class TableAssociationsWizardPage extends WizardPage {
 						hideAssociationDetail();
 					}
 				}
-			}	
+				if (associationList.selectedAssociationFigure == null) {
+					deleteAssociationLink.setEnabled(false);
+				}
+			}  
 		});
 		deleteAssociationLink.setEnabled(false);
 		
