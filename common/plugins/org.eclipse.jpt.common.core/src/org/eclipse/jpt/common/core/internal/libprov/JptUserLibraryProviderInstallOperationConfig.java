@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.libprov;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptWorkspace;
@@ -59,10 +59,6 @@ public abstract class JptUserLibraryProviderInstallOperationConfig
 	}
 
 	private IWorkspace getWorkspace() {
-		return this.getProject().getWorkspace();
-	}
-
-	private IProject getProject() {
-		return this.getFacetedProject().getProject();
+		return ResourcesPlugin.getWorkspace();
 	}
 }
