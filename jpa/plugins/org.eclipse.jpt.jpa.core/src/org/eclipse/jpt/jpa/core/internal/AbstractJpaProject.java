@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1254,6 +1254,12 @@ public abstract class AbstractJpaProject
 
 	/**
 	 * We recurse back here from {@link #processJavaDeltaChildren(IJavaElementDelta)}.
+	 * 
+	 * <br> <b>
+	 * This code has been copied and modified in InternalJpaProjectManager, so make sure
+	 * to make changes in both locations.
+	 * </b>
+	 * @see InternalJpaProjectManager#javaElementChanged(ElementChangedEvent)
 	 */
 	protected void processJavaDelta(IJavaElementDelta delta) {
 		switch (delta.getElement().getElementType()) {
@@ -1293,7 +1299,7 @@ public abstract class AbstractJpaProject
 	 * {@link IJavaElementDelta#getKind() kind} is
 	 * {@link IJavaElementDelta#CHANGED CHANGED}.)
 	 */
-	protected boolean deltaFlagIsSet(IJavaElementDelta delta, int flag) {
+	protected static boolean deltaFlagIsSet(IJavaElementDelta delta, int flag) {
 		return (delta.getKind() == IJavaElementDelta.CHANGED) &&
 				BitTools.flagIsSet(delta.getFlags(), flag);
 	}
@@ -1310,7 +1316,7 @@ public abstract class AbstractJpaProject
 		this.processJavaDeltaChildren(delta);
 
 		// a classpath change can have pretty far-reaching effects...
-		if (this.classpathHasChanged(delta)) {
+		if (classpathHasChanged(delta)) {
 			this.rebuild((IJavaProject) delta.getElement());
 		}
 	}
@@ -1380,8 +1386,8 @@ public abstract class AbstractJpaProject
 	 * pre-condition:
 	 * delta.getElement().getElementType() == IJavaElement.JAVA_PROJECT
 	 */
-	protected boolean classpathHasChanged(IJavaElementDelta delta) {
-		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
+	protected static boolean classpathHasChanged(IJavaElementDelta delta) {
+		return deltaFlagIsSet(delta, IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
 	}
 
 	protected void synchronizeWithJavaSource(Iterable<JavaResourceCompilationUnit> javaResourceCompilationUnits) {
@@ -1395,9 +1401,9 @@ public abstract class AbstractJpaProject
 		// process the Java package fragment root's package fragments
 		this.processJavaDeltaChildren(delta);
 
-		if (this.classpathEntryHasBeenAdded(delta)) {
+		if (classpathEntryHasBeenAdded(delta)) {
 			// TODO bug 277218
-		} else if (this.classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
+		} else if (classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
 			// TODO bug 277218
 		}
 	}
@@ -1406,16 +1412,16 @@ public abstract class AbstractJpaProject
 	 * pre-condition:
 	 * delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
 	 */
-	protected boolean classpathEntryHasBeenAdded(IJavaElementDelta delta) {
-		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_ADDED_TO_CLASSPATH);
+	protected static boolean classpathEntryHasBeenAdded(IJavaElementDelta delta) {
+		return deltaFlagIsSet(delta, IJavaElementDelta.F_ADDED_TO_CLASSPATH);
 	}
 
 	/**
 	 * pre-condition:
 	 * delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
 	 */
-	protected boolean classpathEntryHasBeenRemoved(IJavaElementDelta delta) {
-		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_REMOVED_FROM_CLASSPATH);
+	protected static boolean classpathEntryHasBeenRemoved(IJavaElementDelta delta) {
+		return deltaFlagIsSet(delta, IJavaElementDelta.F_REMOVED_FROM_CLASSPATH);
 	}
 
 	// ***** package fragment
@@ -1426,7 +1432,7 @@ public abstract class AbstractJpaProject
 
 	// ***** compilation unit
 	protected void processJavaCompilationUnitDelta(IJavaElementDelta delta) {
-		if (this.javaCompilationUnitDeltaIsRelevant(delta)) {
+		if (javaCompilationUnitDeltaIsRelevant(delta)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
 			for (JavaResourceCompilationUnit jrcu : this.getCombinedJavaResourceCompilationUnits()) {
 				if (jrcu.getCompilationUnit().equals(compilationUnit)) {
@@ -1439,7 +1445,7 @@ public abstract class AbstractJpaProject
 		// ignore the java compilation unit's children
 	}
 
-	protected boolean javaCompilationUnitDeltaIsRelevant(IJavaElementDelta delta) {
+	protected static boolean javaCompilationUnitDeltaIsRelevant(IJavaElementDelta delta) {
 		// ignore Java notification for ADDED or REMOVED;
 		// these are handled via resource notification
 		if (delta.getKind() != IJavaElementDelta.CHANGED) {
@@ -1457,7 +1463,7 @@ public abstract class AbstractJpaProject
 		// because the AST parser will log an exception for the missing file
 		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_RESOURCE)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
-			if ( ! this.compilationUnitResourceExists(compilationUnit)) {
+			if ( ! compilationUnitResourceExists(compilationUnit)) {
 				return false;
 			}
 		}
@@ -1465,7 +1471,7 @@ public abstract class AbstractJpaProject
 		return true;
 	}
 
-	protected boolean compilationUnitResourceExists(ICompilationUnit compilationUnit) {
+	protected static boolean compilationUnitResourceExists(ICompilationUnit compilationUnit) {
 		try {
 			return compilationUnit.getCorrespondingResource().exists();
 		} catch (JavaModelException ex) {
