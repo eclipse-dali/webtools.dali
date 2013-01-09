@@ -352,12 +352,19 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 
 			// Check to see if the position is within the general identification variable
 			Expression identificationVariable = expression.getIdentificationVariable();
-			String variable = identificationVariable.toActualText();
-			int length = variable.length();
+			int length = 0;
 
-			// The cursor is over the general identification variable
-			if (position <= offset + length + 1 /* DOT */) {
-				return;
+			if (!expression.hasVirtualIdentificationVariable()) {
+				String variable = identificationVariable.toActualText();
+				length = variable.length();
+
+				// The cursor is over the general identification variable
+				if (position <= offset + length + 1 /* DOT */) {
+					return;
+				}
+
+				// Dot between general identification variable and the first path
+				length++;
 			}
 
 			// Resolve the general identification variable
@@ -367,9 +374,6 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 			if (resolver == null) {
 				return;
 			}
-
-			// Dot between general identification variable and the first path
-			length++;
 
 			// Now traverse the path expression after the identification variable
 			for (int index = expression.hasVirtualIdentificationVariable() ? 0 : 1, count = expression.pathSize(); index < count; index++) {
