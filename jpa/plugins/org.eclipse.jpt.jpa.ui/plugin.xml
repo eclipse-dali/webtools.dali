@@ -179,8 +179,9 @@
 	           name="%JpaProposalCategory">
 		</proposalCategory>
 
+		<!-- activate = "false" to temporarily fix bug 386393  -->
 		<proposalComputer
-	       activate="true"
+	       activate="false"
 	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
@@ -189,9 +190,10 @@
 			</contentType>
 		</proposalComputer>
 		
-		<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XMl preferences  -->
+		<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XML preferences  -->
+		<!-- activate = "false" to temporarily fix bug 386393  -->
 		<proposalComputer 
-	       activate="true"
+	       activate="false"
 	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer">
