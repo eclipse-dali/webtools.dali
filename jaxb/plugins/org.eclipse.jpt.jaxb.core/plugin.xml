@@ -107,7 +107,7 @@
 			id="org.eclipse.jpt.jaxb.core.content.jaxbXmlContent"
 			name="%JAXB_XML_CONTENT"
 			base-type="org.eclipse.core.runtime.xml"
-			describer="org.eclipse.jpt.common.core.internal.content.IndeterminateContentDescriber"/>
+			describer="org.eclipse.jpt.common.core.internal.bundleexclude.IndeterminateContentDescriber"/>
 		
 		<!-- 
 			we don't use this file type internally, but we register it here to help 

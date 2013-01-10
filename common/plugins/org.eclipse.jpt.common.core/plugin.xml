@@ -132,6 +132,13 @@
 			namespace="org.eclipse.jpt.common.core"
 			properties="resourceTypeIsKindOf"
 			class="org.eclipse.jpt.common.core.internal.JptResourceTypeReferencePropertyTester"/>
+		
+		<propertyTester
+			id="org.eclipse.jpt.common.core.propertyTester.FacetedReferencingProjectsPropertyTester"
+			type="org.eclipse.core.resources.IResource"
+			namespace="org.eclipse.jpt.common.core"
+			properties="anyFacetedReferencingProjects"
+			class="org.eclipse.jpt.common.core.internal.bundleexclude.FacetedReferencingProjectsPropertyTester"/>
 
 	</extension>
 

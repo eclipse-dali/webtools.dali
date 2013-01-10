@@ -22,7 +22,7 @@
 	<!-- ***** expressions ***** -->
 
 	<extension point="org.eclipse.core.expressions.definitions">
-		<!-- A test for determining whether something adapts to an IProject and has the JPA facet.
+		<!-- A test for determining whether an IProject has the JPA facet.
 			Force activation of the wst facet plug-in containing the property tester.
 			Possible usage:
 			<adapt type="org.eclipse.core.resources.IProject">
@@ -35,7 +35,21 @@
 				value="jpt.jpa"
 				forcePluginActivation="true"/>
 		</definition>
-		
+		<!-- A test for determining whether an IResource has any referencing projects with the JPA facet.
+			Force activation of the org.eclipse.jpt.common.core plug-in containing the property tester.
+			Though in this case the property tester class is in a package that does not cause the plug-in to load.
+			So the class will be loaded, but the plug-in will not.
+			Possible usage:
+			<adapt type="org.eclipse.core.resources.IResource">
+				<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+			</adapt>
+		-->			
+		<definition id="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects">
+			<test
+				property="org.eclipse.jpt.common.core.anyFacetedReferencingProjects" 
+				value="jpt.jpa"
+				forcePluginActivation="true"/>
+		</definition>
 	</extension>
 
 	<!-- ***** adapters ***** -->
@@ -119,7 +133,7 @@
 			id="org.eclipse.jpt.jpa.core.content.jpaXmlContent"
 			name="%JPA_XML_CONTENT"
 			base-type="org.eclipse.core.runtime.xml"
-			describer="org.eclipse.jpt.common.core.internal.content.IndeterminateContentDescriber">
+			describer="org.eclipse.jpt.common.core.internal.bundleexclude.IndeterminateContentDescriber">
 		</content-type>
 		
 		<!-- persistence.xml -->
@@ -646,6 +660,9 @@
     		<enablement>
     			<with variable="element">
  	   				<instanceof value="org.eclipse.jdt.core.IType"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
     			</with>
     		</enablement>
     	</deleteParticipant>
@@ -660,6 +677,9 @@
                    		<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
                    		<instanceof value="org.eclipse.core.resources.IFolder"/>
                 	</or>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
            		</with>
         	</enablement>
      	</deleteParticipant>
@@ -670,13 +690,14 @@
     		name="%JPA_DELETE_MAPPING_FILE_PARTICIPANT_NAME">
         	<enablement>
  	           	<with variable="element">
-       				<and>
-	              		<instanceof value="org.eclipse.core.resources.IFile"/>
-	  					<test
-            				args="kindOf"
-            	 			property="org.eclipse.core.resources.contentTypeId"
-             				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
-	        		</and>
+              		<instanceof value="org.eclipse.core.resources.IFile"/>
+  					<test
+        				args="kindOf"
+        	 			property="org.eclipse.core.resources.contentTypeId"
+         				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
 	           	</with>
         	</enablement>
      	</deleteParticipant>
@@ -693,8 +714,10 @@
         	<enablement>
      			<with variable="element">
     				<instanceof value="org.eclipse.jdt.core.IType"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
     			</with>
-       	
         	</enablement>
      	</moveParticipant>
   	</extension>
@@ -710,7 +733,10 @@
     		<enablement>
     			<with variable="element">
     				<instanceof value="org.eclipse.jdt.core.IType"/>
-    			</with>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
+   				</with>
     		</enablement>
         </renameParticipant>
 
@@ -721,6 +747,9 @@
     		<enablement>
     			<with variable="element">
     				<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
     			</with>
     		</enablement>
         </renameParticipant>
@@ -732,6 +761,9 @@
     		<enablement>
     			<with variable="element">
                    	<instanceof value="org.eclipse.core.resources.IFolder"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
     			</with>
     		</enablement>
         </renameParticipant>
@@ -742,13 +774,14 @@
     		name="%JPA_RENAME_MAPPING_FILE_PARTICIPANT_NAME">
         	<enablement>
  	           	<with variable="element">
-       				<and>
-	              		<instanceof value="org.eclipse.core.resources.IFile"/>
-	  					<test
-            				args="kindOf"
-            	 			property="org.eclipse.core.resources.contentTypeId"
-             				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
-	        		</and>
+              		<instanceof value="org.eclipse.core.resources.IFile"/>
+  					<test
+        				args="kindOf"
+        	 			property="org.eclipse.core.resources.contentTypeId"
+         				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
 	           	</with>
         	</enablement>
         </renameParticipant>
@@ -764,13 +797,14 @@
     		name="%JPA_MOVE_MAPPING_FILE_PARTICIPANT_NAME">
         	<enablement>
  	           	<with variable="element">
-       				<and>
-	              		<instanceof value="org.eclipse.core.resources.IFile"/>
-	  					<test
-            				args="kindOf"
-            	 			property="org.eclipse.core.resources.contentTypeId"
-             				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
-	        		</and>
+              		<instanceof value="org.eclipse.core.resources.IFile"/>
+  					<test
+        				args="kindOf"
+        	 			property="org.eclipse.core.resources.contentTypeId"
+         				value="org.eclipse.jpt.jpa.core.content.mappingFile"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
 	           	</with>
         	</enablement>
         </moveParticipant>
@@ -782,6 +816,9 @@
         	<enablement>
     			<with variable="element">
                    	<instanceof value="org.eclipse.core.resources.IFolder"/>
+					<adapt type="org.eclipse.core.resources.IResource">
+						<reference definitionId="org.eclipse.jpt.jpa.reference.anyJpaFacetedReferencingProjects"/>
+					</adapt>
     			</with>
         	</enablement>
         </moveParticipant>
