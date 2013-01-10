@@ -364,7 +364,8 @@ class InternalJpaProjectManager
 
 	/* CU private */ void clearJpaProjects_(IProgressMonitor monitor) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: clear JPA projects"); //$NON-NLS-1$
-		for (JpaProject jpaProject : this.jpaProjects) {
+		// clone the collection to prevent concurrent modification exception
+		for (JpaProject jpaProject : this.getJpaProjects()) {
 			if (monitor.isCanceled()) {
 				JptJpaCorePlugin.instance().trace(TRACE_OPTION, "CANCEL: clear JPA projects: {0}", jpaProject.getName()); //$NON-NLS-1$
 				throw new OperationCanceledException();
