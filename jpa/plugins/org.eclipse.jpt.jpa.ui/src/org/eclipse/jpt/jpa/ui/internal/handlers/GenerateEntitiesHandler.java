@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
@@ -30,10 +32,10 @@ public class GenerateEntitiesHandler extends AbstractHandler
 		
 		if (selection instanceof IStructuredSelection) {
 			Object selectedObject = ((IStructuredSelection) selection).getFirstElement();
-			jpaProject = this.adaptSelection(selectedObject);
+			jpaProject = this.jpaProjectFromSelection(selectedObject);
 		} 
 		if (jpaProject != null) {
-			this.generateEntities(jpaProject, (IStructuredSelection)selection);
+			this.generateEntities(jpaProject, (IStructuredSelection) selection);
 		}	
 		return null;
 	}
@@ -42,8 +44,19 @@ public class GenerateEntitiesHandler extends AbstractHandler
         this.getJpaPlatformUi(project).generateEntities(project, selection);
 	}
 
-	private JpaProject adaptSelection(Object selectedObject) {
-		return PlatformTools.getAdapter(selectedObject, JpaProject.class);
+	protected IProject projectFromSelection(Object selection) {
+		if (selection instanceof IProject) { //IProject when selecting in the Project Explorer
+			return (IProject) selection;
+		}
+		if (selection instanceof IJavaProject) { //IJavaProject when selecting in the Package Explorer
+			return ((IJavaProject) selection).getProject();
+		}
+		return null;
+	}
+
+	private JpaProject jpaProjectFromSelection(Object selectedObject) {
+		IProject project = this.projectFromSelection(selectedObject);
+		return project == null ? null : PlatformTools.getAdapter(project, JpaProject.class);
 	}
 
 	private JpaPlatformUi getJpaPlatformUi(JpaProject project) {
