@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,8 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
@@ -852,9 +854,11 @@ class InternalJpaProjectManager
 	// ********** Java element changed **********
 
 	/* CU private */ void javaElementChanged(ElementChangedEvent event) {
-		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
-		JavaChangeEventHandlerCommand command = new JavaChangeEventHandlerCommand(event);
-		this.execute(command, JptCoreMessages.JAVA_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
+		if (this.handleJavaElementChangedEvent(event)) {
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
+			JavaChangeEventHandlerCommand command = new JavaChangeEventHandlerCommand(event);
+			this.execute(command, JptCoreMessages.JAVA_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
+		}
 	}
 
 	/* CU private */ class JavaChangeEventHandlerCommand
@@ -891,6 +895,113 @@ class InternalJpaProjectManager
 				JptJpaCorePlugin.instance().logError(ex);
 			}
 		}
+	}
+
+	/**
+	 * Check to see if we should even handle this particular java event. If it
+	 * needs to be handled then we will kick off our 'JPA Java Change Event Handler' job.
+	 * If any change in the event needs to be handled, we short-circuit out and
+	 * return true. Each JpaProject then makes the same checks to determine
+	 * which changes are of concern. We are trying to limit the number
+	 * of 'JPA Java Change Event Handler' jobs that are run.
+	 * <br> <b>
+	 * This code was copied and modified from AbstractJpaProject, so make sure
+	 * to make changes in both locations.
+	 * </b>
+	 * @see AbstractJpaProject#processJavaDelta(IJavaElementDelta)
+	 */
+	private boolean handleJavaElementChangedEvent(ElementChangedEvent event) {
+		return this.handleJavaDelta(event.getDelta());
+	}
+
+	/**
+	 * We recurse back here from {@link #handleJavaDeltaChildren(IJavaElementDelta)}.
+	 */
+	protected boolean handleJavaDelta(IJavaElementDelta delta) {
+		switch (delta.getElement().getElementType()) {
+			case IJavaElement.JAVA_MODEL :
+				return this.handleJavaModelDelta(delta);
+			case IJavaElement.JAVA_PROJECT :
+				return this.handleJavaProjectDelta(delta);
+			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
+				return this.handleJavaPackageFragmentRootDelta(delta);
+			case IJavaElement.PACKAGE_FRAGMENT :
+				return this.processJavaPackageFragmentDelta(delta);
+			case IJavaElement.COMPILATION_UNIT :
+				return this.handleJavaCompilationUnitDelta(delta);
+			default :
+				break; // ignore the elements inside a compilation unit
+		}
+		return false;
+	}
+
+	protected boolean handleJavaDeltaChildren(IJavaElementDelta delta) {
+		for (IJavaElementDelta child : delta.getAffectedChildren()) {
+			if (this.handleJavaDelta(child)) { // recurse 
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// ***** model
+	protected boolean handleJavaModelDelta(IJavaElementDelta delta) {
+		// process the Java model's projects
+		return this.handleJavaDeltaChildren(delta);
+	}
+
+	// ***** project
+	protected boolean handleJavaProjectDelta(IJavaElementDelta delta) {
+		// process the Java project's package fragment roots
+		boolean handle = this.handleJavaDeltaChildren(delta);
+		if (handle) {
+			//if any child needs to be handled, we're done
+			return handle;
+		}
+
+		// a classpath change can have pretty far-reaching effects...
+		if (AbstractJpaProject.classpathHasChanged(delta)) {
+			return true;
+		}
+		return false;
+	}
+
+	// ***** package fragment root
+	protected boolean handleJavaPackageFragmentRootDelta(IJavaElementDelta delta) {
+		// process the Java package fragment root's package fragments
+		boolean handle = this.handleJavaDeltaChildren(delta);
+		if (handle) {
+			//if any child needs to be handled, we're done
+			return handle;
+		}
+
+		if (AbstractJpaProject.classpathEntryHasBeenAdded(delta)) {
+			return true;
+			// TODO bug 277218
+		} else if (AbstractJpaProject.classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
+			return true;
+			// TODO bug 277218
+		}
+		return false;
+	}
+
+	// ***** package fragment
+	protected boolean processJavaPackageFragmentDelta(IJavaElementDelta delta) {
+		// process the java package fragment's compilation units
+		return this.handleJavaDeltaChildren(delta);
+	}
+
+	// ***** compilation unit
+	protected boolean handleJavaCompilationUnitDelta(IJavaElementDelta delta) {
+		if (this.javaCompilationUnitDeltaIsRelevant(delta)) {
+			return true;
+		}
+		// ignore the java compilation unit's children
+		return false;
+	}
+
+	protected boolean javaCompilationUnitDeltaIsRelevant(IJavaElementDelta delta) {
+		return AbstractJpaProject.javaCompilationUnitDeltaIsRelevant(delta);
 	}
 
 
