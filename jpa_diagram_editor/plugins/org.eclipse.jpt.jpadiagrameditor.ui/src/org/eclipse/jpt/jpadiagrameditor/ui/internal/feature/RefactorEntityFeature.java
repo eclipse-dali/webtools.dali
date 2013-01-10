@@ -39,11 +39,11 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.actions.SelectionDispatchAction;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -290,8 +290,8 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			if (!JavaResourceCompilationUnit.class.isInstance(rm))
 				return;
 			JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)rm;
-			JavaResourceAbstractType jrt = jrcu.getPrimaryType();		
-			newJptName = jrt.getTypeBinding().getQualifiedName();
+			IType type = jrcu.getCompilationUnit().findPrimaryType();
+			newJptName = type.getFullyQualifiedName();
 			s.release();
 			if ((ats == null) || hasNameAnnotation)
 				return;

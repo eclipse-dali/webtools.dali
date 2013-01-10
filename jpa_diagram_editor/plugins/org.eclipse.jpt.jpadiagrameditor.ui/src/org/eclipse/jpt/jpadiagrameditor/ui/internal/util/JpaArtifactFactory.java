@@ -871,11 +871,12 @@ public class JpaArtifactFactory {
 	 * @return a set of strings of all current annotation names of the given attribute.
 	 */
 	public HashSet<String> getAnnotationNames(JavaPersistentAttribute persistentAttribite) {
-		
-		JavaResourceAttribute jrpt = persistentAttribite.getResourceAttribute();
 		HashSet<String> res = new HashSet<String>();
-		for (Annotation annotation : jrpt.getAnnotations()) {
-			res.add(JPAEditorUtil.returnSimpleName(annotation.getAnnotationName()));
+		if(persistentAttribite != null) {
+			JavaResourceAttribute jrpt = persistentAttribite.getResourceAttribute();
+			for (Annotation annotation : jrpt.getAnnotations()) {
+				res.add(JPAEditorUtil.returnSimpleName(annotation.getAnnotationName()));
+			}
 		}
 		return res;
 	}	

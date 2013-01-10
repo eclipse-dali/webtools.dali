@@ -59,12 +59,12 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -1094,8 +1094,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				if (!JavaResourceCompilationUnit.class.isInstance(jrm))
 					continue;
 				JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)jrm;
-				JavaResourceAbstractType jrat = jrcu.getPrimaryType();
-				String name = jrat.getTypeBinding().getQualifiedName();
+				IType type = jrcu.getCompilationUnit().findPrimaryType();
+				if(type == null)
+					continue;
+				String name = type.getFullyQualifiedName();
 				
 				JpaProject jpaProject = jpaFile.getJpaProject();
 				PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);

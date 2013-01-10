@@ -233,7 +233,8 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 					String fqn = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa1);
 					if(isDeleteAttributeAllowed(jpt, fqn)){
 						JavaPersistentType embeddedJPT = jpaFactory.getContextPersistentType(jpt.getJpaProject(), fqn);
-						jpaFactory.deleteAttribute(embeddedJPT, attribName, getFeatureProvider());
+						if(embeddedJPT != null)
+							jpaFactory.deleteAttribute(embeddedJPT, attribName, getFeatureProvider());
 					}
 				}
 			}
