@@ -22,14 +22,17 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jst.common.project.facet.core.libprov.osgi.BundleReference;
 import org.eclipse.jst.common.project.facet.core.libprov.osgi.OsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryProviderInstallOperationConfig;
 import org.eclipse.osgi.service.resolver.VersionRange;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
@@ -160,6 +163,13 @@ public class LibraryValidatorTools {
 
 
 	// ********** misc **********
+
+	/**
+	 * Return the specified config's Java facet version.
+	 */
+	public static IProjectFacetVersion getJavaFacetVersion(JptLibraryProviderInstallOperationConfig config) {
+		return config.getFacetedProject().getProjectFacetVersion(JavaFacet.FACET);
+	}
 
 	private static IStatus buildErrorStatus(String message, Object... args) {
 		return JptCommonCorePlugin.instance().buildErrorStatus(message, args);

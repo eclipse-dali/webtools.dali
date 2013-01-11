@@ -29,8 +29,9 @@ import org.osgi.framework.Version;
 public class EclipseLinkLibraryValidatorTools {
 
 	/**
-	 * Validate that the version of EclipseLink on the specified config's
-	 * library classpath is within the specified version range.
+	 * Validate that there is a one and only one occurrence of EclipseLink
+	 * on the specified config's library classpath and that its version
+	 * is within the specified version range.
 	 */
 	public static IStatus validateEclipseLinkVersion(UserLibraryProviderInstallOperationConfig config, VersionRange versionRange) {
 		return validateEclipseLinkVersion(config.resolve(), versionRange);

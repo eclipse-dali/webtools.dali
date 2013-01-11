@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.libval;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.jaxb.core.internal.GenericJaxbPlatformDefinition;
@@ -33,12 +34,12 @@ public class JaxbJreLibraryValidator
 		}
 		
 		IProjectFacetVersion jaxbVersion = config.getProjectFacetVersion();
-		IProjectFacetVersion javaVersion = JaxbLibValUtil.getJavaVersion(jaxbConfig);
-		IProjectFacetVersion javaJaxbVersion = JaxbLibValUtil.findJavaJaxbVersion(jaxbConfig);
+		IProjectFacetVersion javaVersion = LibraryValidatorTools.getJavaFacetVersion(jaxbConfig);
+		IProjectFacetVersion javaJaxbVersion = JaxbLibraryValidatorTools.findJavaJaxbVersion(jaxbConfig);
 		
 		// dev-time portion of validation - error if actual java library does not support jaxb facet
 		
-		IProjectFacetVersion jreJaxbVersion = JaxbLibValUtil.findJreJaxbVersion(jaxbConfig);
+		IProjectFacetVersion jreJaxbVersion = JaxbLibraryValidatorTools.findJreJaxbVersion(jaxbConfig);
 		
 		// null here implies something prior to jaxb 2.1
 		if (jreJaxbVersion == null || jreJaxbVersion.compareTo(jaxbVersion) < 0) {

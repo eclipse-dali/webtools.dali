@@ -18,6 +18,7 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvider;
+import org.eclipse.jpt.jaxb.core.internal.libval.JaxbLibraryValidatorTools;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
@@ -73,7 +74,7 @@ public class JaxbTestCase
 	}
 
 	protected IProjectFacetVersion getProjectFacetVersion() {
-		return JaxbProject.FACET_VERSION_2_2;
+		return JaxbLibraryValidatorTools.FACET_VERSION_2_2;
 	}
 	
 	@Override

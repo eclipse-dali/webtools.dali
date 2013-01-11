@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.internal.libval.JaxbLibraryValidatorTools;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4.ELJaxb_2_4_PlatformDefinition;
@@ -25,7 +25,7 @@ public abstract class ELJaxbContextModelTestCase
 	
 	@Override
 	protected String getPlatformID() {
-		return this.getProjectFacetVersion().equals(JaxbProject.FACET_VERSION_2_1) ?
+		return this.getProjectFacetVersion().equals(JaxbLibraryValidatorTools.FACET_VERSION_2_1) ?
 				ELJaxb_2_1_PlatformDefinition.ID :
 				ELJaxb_2_4_PlatformDefinition.ID;
 	}

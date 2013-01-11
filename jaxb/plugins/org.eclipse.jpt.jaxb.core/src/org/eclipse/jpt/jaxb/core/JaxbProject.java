@@ -30,7 +30,6 @@ import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
 import org.eclipse.jpt.jaxb.core.utility.Synchronizer;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -69,30 +68,6 @@ public interface JaxbProject
 	 * The JAXB project facet.
 	 */
 	IProjectFacet FACET = ProjectFacetsManager.getProjectFacet(FACET_ID);
-
-	/**
-	 * The JAXB project facet version string 2.1.
-	 * <p>
-	 * Value: {@value}
-	 */
-	String FACET_VERSION_STRING_2_1 = "2.1"; //$NON-NLS-1$
-
-	/**
-	 * The JAXB project facet version 2.1.
-	 */
-	IProjectFacetVersion FACET_VERSION_2_1 = FACET.getVersion(FACET_VERSION_STRING_2_1);
-
-	/**
-	 * The JAXB project facet version string 2.2.
-	 * <p>
-	 * Value: {@value}
-	 */
-	String FACET_VERSION_STRING_2_2 = "2.2"; //$NON-NLS-1$
-
-	/**
-	 * The JAXB project facet version 2.2.
-	 */
-	IProjectFacetVersion FACET_VERSION_2_2 = FACET.getVersion(FACET_VERSION_STRING_2_2);
 
 
 	// ********** general **********
