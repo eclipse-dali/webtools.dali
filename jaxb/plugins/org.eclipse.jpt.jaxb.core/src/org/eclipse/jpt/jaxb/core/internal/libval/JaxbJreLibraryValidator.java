@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
+import org.eclipse.jpt.jaxb.core.internal.GenericJaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
@@ -27,7 +28,7 @@ public class JaxbJreLibraryValidator
 		JaxbLibraryProviderInstallOperationConfig jaxbConfig 
 				= (JaxbLibraryProviderInstallOperationConfig) config;
 		
-		if (! jaxbConfig.getJaxbPlatformConfig().getGroupConfig().getId().equals("eclipselink")) {  // TODO huh???
+		if (! jaxbConfig.getJaxbPlatformConfig().getGroupConfig().getId().equals(GenericJaxbPlatformDefinition.GROUP_ID)) {
 			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JreLibraryValidator_invalidPlatform);
 		}
 		
