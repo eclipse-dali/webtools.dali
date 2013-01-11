@@ -1,23 +1,26 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4;
 
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
-import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3.ELJaxb_2_3_PlatformDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.AbstractELJaxb_2_2_PlatformDefinition;
 
 
 public class ELJaxb_2_4_PlatformDefinition
-		extends  ELJaxb_2_3_PlatformDefinition {
+		extends AbstractELJaxb_2_2_PlatformDefinition {
 	
+	/**
+	 * See <code>org.eclipse.jpt.jaxb.eclipselink.core/plugin.xml:org.eclipse.jpt.jaxb.core.jaxbPlatforms</code>.
+	 */
+	public static final String ID = "eclipselink_2_4"; //$NON-NLS-1$
+
 	// singleton
 	private static final JaxbPlatformDefinition INSTANCE = new ELJaxb_2_4_PlatformDefinition();
 	
@@ -29,13 +32,13 @@ public class ELJaxb_2_4_PlatformDefinition
 	}
 	
 	
-	protected ELJaxb_2_4_PlatformDefinition() {
+	private ELJaxb_2_4_PlatformDefinition() {
 		super();
 	}
 	
 	
 	@Override
-	public JaxbPlatformConfig getConfig() {
-		return ELJaxbPlatform.VERSION_2_4;
+	protected String getConfigId() {
+		return ID;
 	}
 }

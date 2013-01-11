@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,7 +56,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
@@ -1177,7 +1176,7 @@ public abstract class AbstractJaxbProject
 			return;
 		}	
 		
-		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JaxbFacet.FACET);
+		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JaxbProject.FACET);
 		LibraryInstallDelegate lid = new LibraryInstallDelegate(facetedProject, facetVersion);
 		ILibraryProvider lp = lid.getLibraryProvider();
 		if (lid.getLibraryProviderOperationConfig() instanceof JaxbLibraryProviderInstallOperationConfig) {

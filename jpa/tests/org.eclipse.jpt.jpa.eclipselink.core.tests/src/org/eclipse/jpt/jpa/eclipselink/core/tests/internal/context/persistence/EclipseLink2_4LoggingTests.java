@@ -1,26 +1,24 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
-import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
 
-public class EclipseLink2_4LoggingTests extends EclipseLink2_0PersistenceUnitTestCase {
+public class EclipseLink2_4LoggingTests
+	extends EclipseLink2_0PersistenceUnitTestCase
+{
 	private Logging2_0 logging;
 
 	public static final String SQL_LOGGING_KEY = Logging2_0.ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL;
@@ -99,11 +97,8 @@ public class EclipseLink2_4LoggingTests extends EclipseLink2_0PersistenceUnitTes
 	}
 
 	@Override
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = super.buildJpaConfigDataModel();
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaProject2_0.FACET_VERSION_STRING);
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, EclipseLinkPlatform.VERSION_2_4);
-		return dataModel;
+	protected String getJpaPlatformID() {
+		return EclipseLink2_4JpaPlatformFactory.ID;
 	}
 	
 	// ********** behavior **********

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.libval;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
@@ -46,10 +46,10 @@ public class JaxbLibValUtil {
 		IProjectFacetVersion javaVersion = getJavaVersion(config);
 		
 		if (javaVersion == JavaFacet.VERSION_1_6) {
-			return JaxbFacet.VERSION_2_1;
+			return JaxbProject.FACET_VERSION_2_1;
 		}
 		else if (javaVersion == JavaFacet.VERSION_1_7) {
-			return JaxbFacet.VERSION_2_2;
+			return JaxbProject.FACET_VERSION_2_2;
 		}
 		
 		return null;
@@ -111,7 +111,7 @@ public class JaxbLibValUtil {
 			if (javaVersion != null) {
 				// all other versions except 1.7 and 1.6 have no corresponding version (as of yet)
 				if (javaVersion.startsWith(JavaCore.VERSION_1_7)) {
-					return JaxbFacet.VERSION_2_2;
+					return JaxbProject.FACET_VERSION_2_2;
 				}
 				// 1.6 must be further analyzed
 				if (! javaVersion.startsWith(JavaCore.VERSION_1_6)) {
@@ -146,7 +146,7 @@ public class JaxbLibValUtil {
 					
 					// short circuit for JAXB 2.2
 					if (foundJAXBPermission) {
-						return JaxbFacet.VERSION_2_2;
+						return JaxbProject.FACET_VERSION_2_2;
 					}
 				}
 				catch (IOException e) {}
@@ -162,7 +162,7 @@ public class JaxbLibValUtil {
 		}
 		
 		if (foundXmlSeeAlso) {
-			return JaxbFacet.VERSION_2_1;
+			return JaxbProject.FACET_VERSION_2_1;
 		}
 					
 		return null;

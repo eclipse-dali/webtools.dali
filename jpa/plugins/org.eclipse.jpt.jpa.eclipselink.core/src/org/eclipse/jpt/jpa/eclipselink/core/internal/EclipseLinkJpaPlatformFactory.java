@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,9 +32,19 @@ public class EclipseLinkJpaPlatformFactory
 	implements JpaPlatformFactory
 {
 	/**
+	 * See <code>org.eclipse.jpt.jpa.eclipselink.core/plugin.xml:org.eclipse.jpt.jpa.core.jpaPlatforms</code>.
+	 */
+	public static final String ID = "org.eclipse.eclipselink.platform"; //$NON-NLS-1$
+
+	/**
 	 * Version string for EclipseLink platform version 1.0
 	 */
 	public static final String VERSION = "1.0";  //$NON-NLS-1$
+
+	/**
+	 * See <code>org.eclipse.jpt.jpa.eclipselink.core/plugin.xml:org.eclipse.jpt.jpa.core.jpaPlatforms</code>.
+	 */
+	public static final String GROUP_ID = "eclipselink"; //$NON-NLS-1$
 
 
 	/**

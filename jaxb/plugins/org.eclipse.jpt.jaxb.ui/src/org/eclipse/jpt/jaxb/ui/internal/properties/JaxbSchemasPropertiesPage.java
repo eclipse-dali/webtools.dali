@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,6 +35,8 @@ import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -111,9 +113,9 @@ public class JaxbSchemasPropertiesPage
 	private final ModifiableCollectionValueModel<Schema> schemasSelectionModel;
 	
 	
-	public JaxbSchemasPropertiesPage(ResourceManager resourceManager) {
+	public JaxbSchemasPropertiesPage() {
 		super();
-		this.resourceManager = resourceManager;
+		this.resourceManager = this.buildResourceManager();
 		this.projectModel = new SimplePropertyValueModel<IProject>();
 		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
 		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
@@ -122,7 +124,14 @@ public class JaxbSchemasPropertiesPage
 		setDescription(JptJaxbUiMessages.SchemasPage_description);
 	}
 	
-	
+	private ResourceManager buildResourceManager() {
+		return new LocalResourceManager(this.getParentResourceManager());
+	}
+
+	private ResourceManager getParentResourceManager() {
+		return JFaceResources.getResources();
+	}
+
 	protected IProject getProject() {
 		return this.projectModel.getValue();
 	}
@@ -415,6 +424,12 @@ public class JaxbSchemasPropertiesPage
 	@Override
 	protected void performDefaults() {
 		this.trigger.reset();
+	}
+	
+	@Override
+	public void dispose() {
+		this.resourceManager.dispose();
+		super.dispose();
 	}
 	
 	

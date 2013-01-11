@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,8 +32,8 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
@@ -43,7 +43,6 @@ import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCom
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -475,7 +474,7 @@ public class InternalJaxbProjectManager
 
 	private IProjectFacetVersion getJaxbFacetVersion(IProject project) {
 		try {
-			return ProjectFacetsManager.create(project).getProjectFacetVersion(JaxbFacet.FACET);
+			return ProjectFacetsManager.create(project).getProjectFacetVersion(JaxbProject.FACET);
 		} catch (CoreException ex) {
 			JptJaxbCorePlugin.instance().logError(ex);
 			return null;
@@ -588,7 +587,7 @@ public class InternalJaxbProjectManager
 	/* private */ void checkForJaxbFacetTransition(IProject project) {
 		JaxbProject jaxbProject = this.getJaxbProject_(project);
 
-		if (JaxbFacet.isInstalled(project)) {
+		if (ProjectTools.hasFacet(project, JaxbProject.FACET_ID)) {
 			if (jaxbProject == null) {  // JAXB facet added
 				this.executeAfterEventsHandled(this.buildAddJaxbProjectCommand(project));
 			}
@@ -792,7 +791,7 @@ public class InternalJaxbProjectManager
 		private void processProject(IResourceProxy resourceProxy) {
 			if (resourceProxy.isAccessible()) {  // the project exists and is open
 				IProject project = (IProject) resourceProxy.requestResource();
-				if (JaxbFacet.isInstalled(project)) {
+				if (ProjectTools.hasFacet(project, JaxbProject.FACET_ID)) {
 					InternalJaxbProjectManager.this.addJaxbProject(project);
 				}
 			}
@@ -1042,7 +1041,7 @@ public class InternalJaxbProjectManager
 
 		private void processPreUninstallEvent(IProjectFacetActionEvent event) {
 			debug("Facet PRE_UNINSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
-			if (event.getProjectFacet().equals(JaxbFacet.FACET)) {
+			if (event.getProjectFacet().equals(JaxbProject.FACET)) {
 				InternalJaxbProjectManager.this.jaxbFacetedProjectPreUninstall(event);
 			}
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -50,11 +50,11 @@ public class GenericJaxbUserLibraryValidator
 			Set<String> classNames = new HashSet<String>();
 	
 			classNames.add("javax.xml.bind.annotation.XmlSeeAlso"); //$NON-NLS-1$
-			if (jaxbVersion.compareTo(JaxbFacet.VERSION_2_2) >= 0) {
+			if (jaxbVersion.compareTo(JaxbProject.FACET_VERSION_2_2) >= 0) {
 				classNames.add("javax.xml.bind.JAXBPermission"); //$NON-NLS-1$
 			}
 			
-			IStatus status = LibraryValidatorTools.validateClasspathEntries(jaxbConfig.resolve(), classNames);
+			IStatus status = LibraryValidatorTools.validateClasses(jaxbConfig, classNames);
 			
 			if (! status.isOK()) {
 				return status;

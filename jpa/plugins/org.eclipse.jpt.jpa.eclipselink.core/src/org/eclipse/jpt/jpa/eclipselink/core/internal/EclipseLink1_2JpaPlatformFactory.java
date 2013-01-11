@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,11 @@ import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 public class EclipseLink1_2JpaPlatformFactory
 	implements JpaPlatformFactory
 {
+	/**
+	 * See <code>org.eclipse.jpt.jpa.eclipselink.core/plugin.xml:org.eclipse.jpt.jpa.core.jpaPlatforms</code>.
+	 */
+	public static final String ID = "eclipselink1_2"; //$NON-NLS-1$
+
 	/**
 	 * Version string for EclipseLink platform version 1.2
 	 */

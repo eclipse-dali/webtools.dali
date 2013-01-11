@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
@@ -57,8 +56,12 @@ public class JaxbTestCase
 		return config;
 	}
 	
-	protected JaxbPlatformConfig getPlatformConfig() {
-		return this.getJaxbPlatformManager().getDefaultJaxbPlatformConfig(getProjectFacetVersion());
+	protected final JaxbPlatformConfig getPlatformConfig() {
+		return this.getJaxbPlatformManager().getJaxbPlatformConfig(getPlatformID());
+	}
+
+	protected String getPlatformID() {
+		return this.getJaxbPlatformManager().getDefaultJaxbPlatformConfig(getProjectFacetVersion()).getId();
 	}
 
 	protected JaxbPlatformManager getJaxbPlatformManager() {
@@ -70,7 +73,7 @@ public class JaxbTestCase
 	}
 
 	protected IProjectFacetVersion getProjectFacetVersion() {
-		return JaxbFacet.VERSION_2_2;
+		return JaxbProject.FACET_VERSION_2_2;
 	}
 	
 	@Override

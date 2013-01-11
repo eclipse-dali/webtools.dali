@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jaxb.core.internal.jaxb22.GenericJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -44,7 +45,7 @@ public class JaxbPreferences {
 	// ********** project JAXB platform ID **********
 
 	public static String getJaxbPlatformID(IProject project) {
-		return getJaxbPlatformID(project, GenericJaxbPlatform.VERSION_2_1.getId());
+		return getJaxbPlatformID(project, GenericJaxb_2_2_PlatformDefinition.ID);
 	}
 
 	private static String getJaxbPlatformID(IProject project, String def) {
@@ -189,7 +190,7 @@ public class JaxbPreferences {
 	private static Preferences getPreferences(IProject project) {
 		IFacetedProject facetedProject = getFacetedProject(project);
 		try {
-			return (facetedProject == null) ? null : facetedProject.getPreferences(JaxbFacet.FACET);
+			return (facetedProject == null) ? null : facetedProject.getPreferences(JaxbProject.FACET);
 		} catch (BackingStoreException ex) {
 			JptJaxbCorePlugin.instance().logError(ex);
 			return null;

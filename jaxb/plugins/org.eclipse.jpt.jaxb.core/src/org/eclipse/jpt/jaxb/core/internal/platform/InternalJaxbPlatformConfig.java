@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.platform;
 
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinitionFactory;
@@ -64,7 +64,7 @@ class InternalJaxbPlatformConfig
 	}
 
 	public boolean supportsJaxbFacetVersion(IProjectFacetVersion version) {
-		if ( ! version.getProjectFacet().equals(JaxbFacet.FACET)) {
+		if ( ! version.getProjectFacet().equals(JaxbProject.FACET)) {
 			throw new IllegalArgumentException(version.toString());
 		}
 		return (this.jaxbFacetVersion == null) || this.jaxbFacetVersion.equals(version);

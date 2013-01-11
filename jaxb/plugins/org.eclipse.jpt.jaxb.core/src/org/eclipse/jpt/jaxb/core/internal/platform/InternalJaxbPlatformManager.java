@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.InternalJaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
@@ -187,7 +187,7 @@ public class InternalJaxbPlatformManager
 		// JAXB facet version
 		String jaxbFacetVersionString = element.getAttribute(JAXB_FACET_VERSION_ATTRIBUTE);
 		if (jaxbFacetVersionString != null) {
-			IProjectFacetVersion jaxbFacetVersion = JaxbFacet.FACET.getVersion(jaxbFacetVersionString);
+			IProjectFacetVersion jaxbFacetVersion = JaxbProject.FACET.getVersion(jaxbFacetVersionString);
 			if (jaxbFacetVersion == null) {
 				this.logInvalidValue(element, JAXB_FACET_VERSION_ATTRIBUTE, jaxbFacetVersionString);
 				return null;
@@ -237,7 +237,7 @@ public class InternalJaxbPlatformManager
 	}
 
 	private Set<IProjectFacetVersion> getJaxbFacetVersions() {
-		return JaxbFacet.FACET.getVersions();
+		return JaxbProject.FACET.getVersions();
 	}
 
 	private void initializeDefaultPreference(IProjectFacetVersion jaxbFacetVersion) {

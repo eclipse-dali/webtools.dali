@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,18 +26,34 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jst.common.project.facet.core.libprov.osgi.BundleReference;
+import org.eclipse.jst.common.project.facet.core.libprov.osgi.OsgiBundlesLibraryProviderInstallOperationConfig;
+import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryProviderInstallOperationConfig;
+import org.eclipse.osgi.service.resolver.VersionRange;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 /**
  * {@link org.eclipse.jpt.common.core.libval.LibraryValidator} utility methods.
  */
 public class LibraryValidatorTools {
 
+	// ********** libraries **********
+
+	/**
+	 * Validate whether all the specified classes can be found in the specified
+	 * config's library classpath entries.
+	 */
+	public static IStatus validateClasses(UserLibraryProviderInstallOperationConfig config, Iterable<String> classNames) {
+		return validateClassesInClasspathEntries(config.resolve(), classNames);
+	}
+
 	/**
 	 * Validate whether all the specified classes can be found in the specified
 	 * library classpath entries.
 	 */
-	public static IStatus validateClasspathEntries(Iterable<IClasspathEntry> libraryClasspathEntries, Iterable<String> classNames) {
-		return validatePaths(new TransformationIterable<IClasspathEntry, IPath>(libraryClasspathEntries, CLASSPATH_ENTRY_PATH_TRANSFORMER), classNames);
+	private static IStatus validateClassesInClasspathEntries(Iterable<IClasspathEntry> libraryClasspathEntries, Iterable<String> classNames) {
+		return validateClassesInLibraries(new TransformationIterable<IClasspathEntry, IPath>(libraryClasspathEntries, CLASSPATH_ENTRY_PATH_TRANSFORMER), classNames);
 	}
 
 	private static final Transformer<IClasspathEntry, IPath> CLASSPATH_ENTRY_PATH_TRANSFORMER = new ClasspathEntryPathTransformer();
@@ -54,7 +70,7 @@ public class LibraryValidatorTools {
 	 * Validate whether all the specified classes can be found in the JARs at
 	 * the specified library paths.
 	 */
-	public static IStatus validatePaths(Iterable<IPath> libraryPaths, Iterable<String> classNames) {
+	private static IStatus validateClassesInLibraries(Iterable<IPath> libraryPaths, Iterable<String> classNames) {
 		HashMap<String, Boolean> flags = new HashMap<String, Boolean>();
 		HashMap<String, String> classFileNameToClassName = new HashMap<String, String>();
 		for (String className : CollectionTools.set(classNames)) {
@@ -70,7 +86,7 @@ public class LibraryValidatorTools {
 		for (Map.Entry<String, Boolean> entry : flags.entrySet()) {
 			if ( ! entry.getValue().booleanValue()) {
 				String className = classFileNameToClassName.get(entry.getKey());
-				return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND, className);
+				return buildErrorStatus(JptCommonCoreMessages.USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND, className);
 			}
 		}
 		return Status.OK_STATUS;
@@ -108,5 +124,44 @@ public class LibraryValidatorTools {
 				}
 			}
 		}
+	}
+
+
+	// ********** OSGi **********
+
+	/**
+	 * Validate the specified config's OSGi bundles against the specified
+	 * bundle version range.
+	 */
+	public static IStatus validateBundleVersions(OsgiBundlesLibraryProviderInstallOperationConfig config, Map<String, VersionRange> bundleVersionRanges) {
+		// gather up the config bundles, keyed by name
+		HashMap<String, Bundle> configBundles = new HashMap<String, Bundle>();
+		for (BundleReference bundleRef : config.getBundleReferences()) {
+			Bundle bundle = bundleRef.getBundle();
+			configBundles.put(bundle.getSymbolicName(), bundle);
+		}
+
+		for (Map.Entry<String, VersionRange> entry : bundleVersionRanges.entrySet()) {
+			String bundleName = entry.getKey();
+			Bundle configBundle = configBundles.get(bundleName);
+			if (configBundle == null) {
+				return buildErrorStatus(JptCommonCoreMessages.OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND, bundleName);
+			}
+
+			Version configBundleVersion = configBundle.getVersion();
+			VersionRange versionRange = entry.getValue();
+			if ( ! versionRange.isIncluded(configBundleVersion)) {
+				return buildErrorStatus(JptCommonCoreMessages.OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION, bundleName);
+			}
+		}
+
+		return Status.OK_STATUS;
+	}
+
+
+	// ********** misc **********
+
+	private static IStatus buildErrorStatus(String message, Object... args) {
+		return JptCommonCorePlugin.instance().buildErrorStatus(message, args);
 	}
 }

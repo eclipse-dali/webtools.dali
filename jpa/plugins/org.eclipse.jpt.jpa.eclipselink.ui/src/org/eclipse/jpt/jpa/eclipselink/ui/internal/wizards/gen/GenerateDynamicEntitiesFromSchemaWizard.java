@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,14 +28,13 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
-import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.GenerateEntitiesFromSchemaWizard;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.PromptJPAProjectWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TableAssociationsWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TablesSelectorWizardPage;
-import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -123,12 +122,9 @@ public class GenerateDynamicEntitiesFromSchemaWizard
 	}
 
 	@Override
-	protected boolean projectIsValidSelection(JpaProject jpaProject) {
-		if(jpaProject == null) {
-			return false;
-		}
-		return jpaProject.getJpaPlatform().getConfig().getGroupConfig().getId().
-			equals(EclipseLinkPlatform.GROUP.getId());
+	protected boolean projectIsValidSelection(JpaProject jpaProj) {
+		return super.projectIsValidSelection(jpaProj) &&
+				jpaProj.getJpaPlatform().getConfig().getGroupConfig().getId().equals(EclipseLinkJpaPlatformFactory.GROUP_ID);
 	}
 	
 	@Override

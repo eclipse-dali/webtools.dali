@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal;
 
 import java.util.HashMap;
@@ -15,10 +15,16 @@ import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 
 
-public abstract class AbstractELJaxbPlatformDefinition
+public abstract class ELJaxbPlatformDefinition
 		extends AbstractJaxbPlatformDefinition {
 	
-	protected AbstractELJaxbPlatformDefinition() {
+	/**
+	 * See <code>org.eclipse.jpt.jaxb.eclipselink.core/plugin.xml:org.eclipse.jpt.jaxb.core.jaxbPlatforms</code>.
+	 */
+	public static final String GROUP_ID = "eclipselink"; //$NON-NLS-1$
+
+
+	protected ELJaxbPlatformDefinition() {
 		super();
 	}
 	
@@ -33,6 +39,7 @@ public abstract class AbstractELJaxbPlatformDefinition
 	}
 	
 	@Override
+	@SuppressWarnings("nls")
 	protected Map<String, String> buildJavaToSchemaTypes() {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("java.sql.Date", "date");

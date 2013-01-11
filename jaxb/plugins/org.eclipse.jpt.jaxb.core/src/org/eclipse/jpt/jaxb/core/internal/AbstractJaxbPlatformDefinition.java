@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,14 +13,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 
 /**
  * All the state in the JAXB platform definition should be "static" 
@@ -52,6 +56,25 @@ public abstract class AbstractJaxbPlatformDefinition
 	}
 	
 	
+	public final JaxbPlatformConfig getConfig() {
+		return this.getJaxbPlatformConfig(this.getConfigId());
+	}
+	
+	protected abstract String getConfigId();
+	
+	private JaxbPlatformConfig getJaxbPlatformConfig(String platformID) {
+		return getJaxbPlatformManager().getJaxbPlatformConfig(platformID);
+	}
+
+	private JaxbPlatformManager getJaxbPlatformManager() {
+		return getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
+
 	// ***** platform-y things *****
 	
 	public String getSchemaTypeMapping(String javaTypeName) {
@@ -63,7 +86,7 @@ public abstract class AbstractJaxbPlatformDefinition
 	}
 	
 	protected Map<String, String> buildJavaToSchemaTypes() {
-		return Collections.EMPTY_MAP;
+		return Collections.emptyMap();
 	}
 	
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,6 @@ public class GenericJpaUserLibraryValidator
 		if (config.getProjectFacetVersion().compareTo(JpaProject2_1.FACET_VERSION) >= 0) {
 			classNames.add("javax.persistence.Convert"); //$NON-NLS-1$
 		}
-		return LibraryValidatorTools.validateClasspathEntries(jpaConfig.resolve(), classNames);
+		return LibraryValidatorTools.validateClasses(jpaConfig, classNames);
 	}
 }
