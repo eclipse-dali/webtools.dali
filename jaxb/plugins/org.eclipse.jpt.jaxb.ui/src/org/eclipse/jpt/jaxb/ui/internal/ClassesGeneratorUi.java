@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -29,12 +30,14 @@ import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
 
@@ -173,15 +176,22 @@ public class ClassesGeneratorUi {
 	
 	/* may be null */
 	private JaxbProject getJaxbProject() {
-		return this.getJaxbProjectManager().getJaxbProject(this.javaProject.getProject());
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+		return (jaxbProjectManager == null) ? null : jaxbProjectManager.getJaxbProject(this.javaProject.getProject());
 	}
 	
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
 	}
 
 	private boolean isOverwritingClasses(ClassesGeneratorOptions generatorOptions) {

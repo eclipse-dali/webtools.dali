@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -49,14 +49,16 @@ public class ResourceAdapterFactory
 	}
 	
 	private JaxbPlatformConfig getJaxbPlatformConfig(IResource resource) {
-		return this.getJaxbPlatformManager().getJaxbPlatformConfig(JaxbPreferences.getJaxbPlatformID(resource.getProject()));
+		JaxbPlatformManager jpaPlatformManager = this.getJaxbPlatformManager(resource.getWorkspace());
+		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJaxbPlatformConfig(JaxbPreferences.getJaxbPlatformID(resource.getProject()));
 	}
 
-	private JaxbPlatformManager getJaxbPlatformManager() {
-		return getJaxbWorkspace().getJaxbPlatformManager();
+	private JaxbPlatformManager getJaxbPlatformManager(IWorkspace workspace) {
+		JaxbWorkspace jpaWorkspace = this.getJaxbWorkspace(workspace);
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJaxbPlatformManager();
 	}
 
-	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	private JaxbWorkspace getJaxbWorkspace(IWorkspace workspace) {
+		return (JaxbWorkspace) workspace.getAdapter(JaxbWorkspace.class);
 	}
 }

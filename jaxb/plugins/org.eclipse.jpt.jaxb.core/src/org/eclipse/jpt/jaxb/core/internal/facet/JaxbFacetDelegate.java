@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,7 +50,10 @@ public abstract class JaxbFacetDelegate
 		subMonitor.worked(1);
 		
 		// defaults settings
-		this.getJaxbPlatformManager().setDefaultJaxbPlatformConfig(fv, platformConfig);
+		JaxbPlatformManager jaxbPlatformManager = this.getJaxbPlatformManager();
+		if (jaxbPlatformManager != null) {
+			jaxbPlatformManager.setDefaultJaxbPlatformConfig(fv, platformConfig);
+		}
 		subMonitor.worked(1);
 		
 		//Delegate to LibraryInstallDelegate to configure the project classpath
@@ -60,11 +63,13 @@ public abstract class JaxbFacetDelegate
 	}
 
 	protected JaxbPlatformManager getJaxbPlatformManager() {
-		return this.getJaxbWorkspace().getJaxbPlatformManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : this.getJaxbWorkspace().getJaxbPlatformManager();
 	}
 
 	protected JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : this.getJaxbWorkspace().getJaxbProjectManager();
 	}
 
 	protected JaxbWorkspace getJaxbWorkspace() {

@@ -13,11 +13,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -99,7 +101,8 @@ public abstract class JaxbFacetDataModelProvider
 	}
 	
 	protected JaxbPlatformConfig getDefaultPlatformConfig() {
-		return this.getJaxbPlatformManager().getDefaultJaxbPlatformConfig(getProjectFacetVersion());
+		JaxbPlatformManager jaxbPlatformManager  = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager == null) ? null : jaxbPlatformManager.getDefaultJaxbPlatformConfig(getProjectFacetVersion());
 	}
 	
 	protected LibraryInstallDelegate getDefaultLibraryInstallDelegate() {
@@ -204,20 +207,30 @@ public abstract class JaxbFacetDataModelProvider
 	}
 	
 	protected Iterable<JaxbPlatformConfig> buildValidPlatformConfigs() {
-		return new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformManager().getJaxbPlatformConfigs()) {
+		return new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformConfigs()) {
 			@Override
 			protected boolean accept(JaxbPlatformConfig o) {
 				return o.supportsJaxbFacetVersion(getProjectFacetVersion());
 			}
 		};
 	}
+
+	protected Iterable<JaxbPlatformConfig> getJaxbPlatformConfigs() {
+		JaxbPlatformManager jaxbPlatformManager  = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager != null) ? jaxbPlatformManager.getJaxbPlatformConfigs() : IterableTools.<JaxbPlatformConfig>emptyIterable();
+	}
 	
 	protected JaxbPlatformManager getJaxbPlatformManager() {
-		return this.getJaxbWorkspace().getJaxbPlatformManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbPlatformManager();
 	}
 
 	protected JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		return (JaxbWorkspace) this.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
+	protected IWorkspace getWorkspace() {
+		return ResourcesPlugin.getWorkspace();
 	}
 
 	@Override

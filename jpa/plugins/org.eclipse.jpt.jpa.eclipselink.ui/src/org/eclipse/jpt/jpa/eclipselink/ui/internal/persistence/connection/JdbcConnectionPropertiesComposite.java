@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Comparator;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -21,6 +20,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -31,11 +31,13 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.osgi.util.NLS;
@@ -44,6 +46,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
@@ -265,7 +268,8 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		}
 
 		String name = (String) dialog.getResult()[0];
-		ConnectionProfile cp = this.getConnectionProfileFactory().buildConnectionProfile(name);
+		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
+		ConnectionProfile cp = (factory == null) ? null : factory.buildConnectionProfile(name);
 
 		Connection connection = getSubject();
 		connection.setUrl((cp == null) ? "" : cp.getURL());
@@ -279,7 +283,17 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		// take the settings from it (user, password, etc.) and give them
 		// to the EclipseLink connection, so we go
 		// to the db plug-in directly to get the factory
-		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getConnectionProfileFactory();
+	}
+
+	private JpaWorkspace getJpaWorkspace() {
+		JpaWorkbench jpaWorkbench = this.getJpaWorkbench();
+		return (jpaWorkbench == null) ? null : jpaWorkbench.getJpaWorkspace();
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
 	}
 
 	// broaden access a bit
@@ -344,7 +358,8 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		}
 
 		private Iterable<String> getConnectionProfileNames() {
-			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().getConnectionProfileNames();
+			ConnectionProfileFactory factory = JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory();
+			return (factory == null) ? IterableTools.<String>emptyIterable() : factory.getConnectionProfileNames();
 		}
 
 		@Override

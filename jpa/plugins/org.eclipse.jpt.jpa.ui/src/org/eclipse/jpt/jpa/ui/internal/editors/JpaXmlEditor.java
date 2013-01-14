@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
@@ -144,9 +146,14 @@ public class JpaXmlEditor
 	@Override
 	protected FormToolkit createToolkit(Display display) {
 		FormToolkit toolkit = super.createToolkit(display);
-		this.resourceManager = this.getJpaWorkbench().buildLocalResourceManager();
+		this.resourceManager = this.buildResourceManager();
 		this.widgetFactory = new FormWidgetFactory(toolkit);
 		return toolkit;
+	}
+
+	private ResourceManager buildResourceManager() {
+		JpaWorkbench jpaWorkbench = this.getJpaWorkbench();
+		return (jpaWorkbench != null) ? jpaWorkbench.buildLocalResourceManager() : new LocalResourceManager(JFaceResources.getResources(this.getWorkbench().getDisplay()));
 	}
 
 	private JpaWorkbench getJpaWorkbench() {

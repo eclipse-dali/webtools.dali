@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,7 +67,10 @@ public abstract class JpaFacetActionDelegate
 		subMonitor.worked(1);
 		
 		// defaults settings
-		this.getJpaPlatformManager(project).setDefaultJpaPlatformConfig(fv, platformConfig);
+		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager(project);
+		if (jpaPlatformManager != null) {
+			jpaPlatformManager.setDefaultJpaPlatformConfig(fv, platformConfig);
+		}
 		subMonitor.worked(1);
 		
 		//Delegate to LibraryInstallDelegate to configure the project classpath
@@ -75,7 +78,8 @@ public abstract class JpaFacetActionDelegate
 	}
 
 	protected JpaPlatformManager getJpaPlatformManager(IProject project) {
-		return this.getJpaWorkspace(project).getJpaPlatformManager();
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace(project);
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaPlatformManager();
 	}
 
 	protected JpaWorkspace getJpaWorkspace(IProject project) {

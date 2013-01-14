@@ -63,7 +63,7 @@ public class JptJpaDbPlugin
 	 * The preferred way to retrieve a connection profile factory is via the
 	 * Eclipse adapter framework:
 	 * <pre>
-	 * IWorkspace workspace = ...;
+	 * IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	 * ConnectionProfileFactory factory = (ConnectionProfileFactory) workspace.getAdapter(ConnectionProfileFactory.class)
 	 * </pre>
 	 * @see org.eclipse.jpt.jpa.db.internal.WorkspaceAdapterFactory#getConnectionProfileFactory(IWorkspace)

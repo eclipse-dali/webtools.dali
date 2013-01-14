@@ -63,7 +63,7 @@ public class JptCommonCorePlugin
 	 * The preferred way to retrieve a Dali workspace is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * IWorkspace workspace = ...;
+	 * IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	 * JptWorkspace jptWorkspace = (JptWorkspace) workspace.getAdapter(JptWorkspace.class)
 	 * </pre>
 	 * @see org.eclipse.jpt.common.core.internal.WorkspaceAdapterFactory#getJptWorkspace(IWorkspace)

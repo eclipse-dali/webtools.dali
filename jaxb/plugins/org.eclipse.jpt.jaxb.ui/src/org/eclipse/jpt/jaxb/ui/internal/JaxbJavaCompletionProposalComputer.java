@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.CompletionContext;
@@ -34,7 +34,9 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
+import org.eclipse.ui.PlatformUI;
 
 
 public class JaxbJavaCompletionProposalComputer
@@ -106,7 +108,7 @@ public class JaxbJavaCompletionProposalComputer
 			return Collections.emptyList();
 		}
 		
-		JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(file.getProject());
+		JaxbProject jaxbProject = this.getJaxbProject(file.getProject());
 		if (jaxbProject == null) {
 			return Collections.emptyList();
 		}
@@ -181,12 +183,23 @@ public class JaxbJavaCompletionProposalComputer
 		// do nothing
 	}
 
+	private JaxbProject getJaxbProject(IProject project) {
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+		return (jaxbProjectManager == null) ? null : jaxbProjectManager.getJaxbProject(project);
+	}
+	
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
 	}
 
 	private Filter<String> buildPrefixFilter(char[] prefix) {

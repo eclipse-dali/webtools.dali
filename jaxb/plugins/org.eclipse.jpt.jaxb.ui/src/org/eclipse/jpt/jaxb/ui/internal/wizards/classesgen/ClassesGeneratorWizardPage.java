@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -36,7 +35,6 @@ import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TrayDialog;
-import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -50,17 +48,20 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -458,25 +459,42 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	}
 
 	private boolean projectPlatformIsJaxb() {
-		return this.getJaxbProjectManager().getJaxbProject(this.getJavaProject().getProject()) != null;
+		return this.getJaxbProject() != null;
+	}
+
+	private JaxbPlatformConfig getJaxbPlatformConfig(String jaxbPlatformID) {
+		JaxbPlatformManager jaxbPlatformManager = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager == null) ? null : jaxbPlatformManager.getJaxbPlatformConfig(jaxbPlatformID);
 	}
 
 	private JaxbPlatformManager getJaxbPlatformManager() {
-		return this.getJaxbWorkspace().getJaxbPlatformManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbPlatformManager();
 	}
 
+	private JaxbProject getJaxbProject() {
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+		return (jaxbProjectManager == null) ? null : jaxbProjectManager.getJaxbProject(getJavaProject().getProject());
+	}
+	
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
 	}
 
 	// huh? why is this here???
 	private boolean projectJaxbPlatformIsEclipseLink() {
 		String jaxbPlatformID = JaxbPreferences.getJaxbPlatformID(this.getJavaProject().getProject());
-		JaxbPlatformConfig jaxbPlatformConfig = this.getJaxbPlatformManager().getJaxbPlatformConfig(jaxbPlatformID);
+		JaxbPlatformConfig jaxbPlatformConfig = this.getJaxbPlatformConfig(jaxbPlatformID);
 		JaxbPlatformGroupConfig jaxbPlatformGroupConfig = (jaxbPlatformConfig == null) ? null : jaxbPlatformConfig.getGroupConfig();
 		return (jaxbPlatformGroupConfig != null) && jaxbPlatformGroupConfig.getId().equals(ECLIPSELINK_PLATFORM_GROUP_ID);
 	}

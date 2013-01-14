@@ -46,6 +46,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
@@ -72,6 +73,7 @@ import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.SelectFileOrXMLCatalogIdPanel;
 import org.eclipse.swt.SWT;
@@ -88,6 +90,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
@@ -408,17 +411,26 @@ public class JaxbSchemasPropertiesPage
 	void performOk_(IProgressMonitor monitor) throws CoreException {
 		if (this.schemasModel.hasChanges()) {
 			this.trigger.accept();
-			this.getJaxbProjectManager().rebuildJaxbProject(getProject());
+			JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+			if (jaxbProjectManager != null) {
+				jaxbProjectManager.rebuildJaxbProject(getProject());
+			}
 			getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}
 	}
 
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
 	}
 	
 	@Override

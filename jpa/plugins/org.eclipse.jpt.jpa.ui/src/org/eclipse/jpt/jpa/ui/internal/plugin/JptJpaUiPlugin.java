@@ -122,7 +122,7 @@ public class JptJpaUiPlugin
 	 * The preferred way to retrieve a JPA workbench is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * IWorkbench workbench = ...;
+	 * IWorkbench workbench = PlatformUI.getWorkbench();
 	 * JpaWorkbench jpaWorkbench = PlatformTools.getAdapter(workbench, JpaWorkbench.class);
 	 * </pre>
 	 * @see org.eclipse.jpt.jpa.ui.internal.WorkbenchAdapterFactory#getJpaWorkbench(IWorkbench)

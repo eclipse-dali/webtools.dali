@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.core.libval.LibraryValidatorManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderInstallOperationConfig;
@@ -71,7 +72,12 @@ public class JaxbJreLibraryProviderInstallOperationConfig
 	}
 
 	private JptWorkspace getJptWorkspace() {
-		return (JptWorkspace) this.getWorkspace().getAdapter(JptWorkspace.class);
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJptWorkspace();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) this.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 
 	private IWorkspace getWorkspace() {

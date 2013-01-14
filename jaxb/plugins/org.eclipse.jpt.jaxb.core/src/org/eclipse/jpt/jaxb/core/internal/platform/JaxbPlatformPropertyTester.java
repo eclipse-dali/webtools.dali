@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,26 +36,29 @@ public class JaxbPlatformPropertyTester
 	
 	private boolean test(JaxbPlatformConfig platformConfig, String property, Object expectedValue) {
 		if (property.equals(JAXB_PLATFORM)) {
-			JaxbPlatformConfig expected = this.getJaxbPlatformConfig(expectedValue);
+			JaxbPlatformConfig expected = this.getJaxbPlatformConfig((String) expectedValue);
 			return ObjectTools.equals(platformConfig, expected);
 		}
 		if (property.equals(JAXB_PLATFORM_GROUP)) {
-			JaxbPlatformGroupConfig expected = this.getJaxbPlatformGroupConfig(expectedValue);
+			JaxbPlatformGroupConfig expected = this.getJaxbPlatformGroupConfig((String) expectedValue);
 			return ObjectTools.equals(platformConfig.getGroupConfig(), expected);
 		}
 		return false;
 	}
 
-	private JaxbPlatformConfig getJaxbPlatformConfig(Object id) {
-		return this.getJaxbPlatformManager().getJaxbPlatformConfig((String) id);
+	private JaxbPlatformConfig getJaxbPlatformConfig(String id) {
+		JaxbPlatformManager jaxbPlatformManager = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager == null) ? null : jaxbPlatformManager.getJaxbPlatformConfig(id);
 	}
 
-	private JaxbPlatformGroupConfig getJaxbPlatformGroupConfig(Object id) {
-		return this.getJaxbPlatformManager().getJaxbPlatformGroupConfig((String) id);
+	private JaxbPlatformGroupConfig getJaxbPlatformGroupConfig(String id) {
+		JaxbPlatformManager jaxbPlatformManager = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager == null) ? null : jaxbPlatformManager.getJaxbPlatformGroupConfig(id);
 	}
 
 	private JaxbPlatformManager getJaxbPlatformManager() {
-		return getJaxbWorkspace().getJaxbPlatformManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbPlatformManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.ui.internal.navigator;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -21,6 +20,7 @@ import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
@@ -32,7 +32,10 @@ import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This extension of navigator content provider delegates to the platform UI
@@ -47,6 +50,7 @@ import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 public class JaxbNavigatorContentProvider
 	extends NavigatorContentProvider
 {
+	private final JaxbProjectManager jaxbProjectManager;
 	private final CollectionChangeListener jaxbProjectListener;
 	
 	private StructuredViewer viewer;
@@ -55,7 +59,10 @@ public class JaxbNavigatorContentProvider
 	public JaxbNavigatorContentProvider() {
 		super();
 		this.jaxbProjectListener = this.buildJaxbProjectListener();
-		this.getJaxbProjectManager().addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		this.jaxbProjectManager = this.getJaxbProjectManager();
+		if (this.jaxbProjectManager != null) {
+			this.jaxbProjectManager.addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		}
 	}
 	
 	protected CollectionChangeListener buildJaxbProjectListener() {
@@ -93,7 +100,7 @@ public class JaxbNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(project);
+				JaxbProject jaxbProject = this.getJaxbProject(project);
 				if (jaxbProject != null) {
 					JaxbPlatformUi platformUi = (JaxbPlatformUi) jaxbProject.getPlatform().getAdapter(JaxbPlatformUi.class);
 					return platformUi != null;
@@ -103,13 +110,17 @@ public class JaxbNavigatorContentProvider
 		return false;
 	}
 
+	protected JaxbProject getJaxbProject(IProject project) {
+		return (this.jaxbProjectManager == null) ? null : this.jaxbProjectManager.getJaxbProject(project);
+	}
+
 	@Override
 	protected Object[] getChildren_(Object parentElement) {
 		if (parentElement instanceof IAdaptable) {
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(project);
+				JaxbProject jaxbProject = this.getJaxbProject(project);
 				if (jaxbProject != null) {
 					JaxbPlatformUi platformUi =  (JaxbPlatformUi) jaxbProject.getPlatform().getAdapter(JaxbPlatformUi.class);
 					if (platformUi != null) {
@@ -124,15 +135,27 @@ public class JaxbNavigatorContentProvider
 	@Override
 	public void dispose() {
 		super.dispose();
-		this.getJaxbProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		if (this.jaxbProjectManager != null) {
+			this.jaxbProjectManager.removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		}
 	}
 	
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(this.getWorkbench(), JaxbWorkbench.class);
+	}
+
+	private IWorkbench getWorkbench() {
+		return PlatformUI.getWorkbench();
 	}
 
 	

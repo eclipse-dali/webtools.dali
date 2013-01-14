@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.platform;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
@@ -49,14 +49,16 @@ public class ResourceAdapterFactory
 	}
 	
 	private JpaPlatformConfig getJpaPlatformConfig(IResource resource) {
-		return this.getJpaPlatformManager().getJpaPlatformConfig(JpaPreferences.getJpaPlatformID(resource.getProject()));
+		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager(resource.getWorkspace());
+		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(JpaPreferences.getJpaPlatformID(resource.getProject()));
 	}
 
-	private JpaPlatformManager getJpaPlatformManager() {
-		return this.getJpaWorkspace().getJpaPlatformManager();
+	private JpaPlatformManager getJpaPlatformManager(IWorkspace workspace) {
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace(workspace);
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaPlatformManager();
 	}
 
-	private JpaWorkspace getJpaWorkspace() {
-		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
+	private JpaWorkspace getJpaWorkspace(IWorkspace workspace) {
+		return (JpaWorkspace) workspace.getAdapter(JpaWorkspace.class);
 	}
 }

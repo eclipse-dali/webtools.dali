@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.properties;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Treat the JAXB project as an "aspect" of the Eclipse project (IProject);
@@ -36,11 +38,13 @@ class JaxbProjectModel
 	 * In that case, the preference change occurs before we actually have another project,
 	 * so we must listen to the projects manager
 	 */
+	private final JaxbProjectManager jaxbProjectManager;
 	private final CollectionChangeListener projectManagerListener;
 	
 	
 	JaxbProjectModel(PropertyValueModel<IProject> projectModel) {
 		super(projectModel);
+		this.jaxbProjectManager = this.getJaxbProjectManager();
 		this.projectManagerListener = buildProjectManagerListener();
 	}
 	
@@ -62,28 +66,34 @@ class JaxbProjectModel
 	
 	@Override
 	protected void engageSubject_() {
-		this.getJaxbProjectManager().addCollectionChangeListener(
-					JaxbProjectManager.JAXB_PROJECTS_COLLECTION, 
-					this.projectManagerListener);
+		if (this.jaxbProjectManager != null) {
+			this.jaxbProjectManager.addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.projectManagerListener);
+		}
 	}
 	
 	@Override
 	protected void disengageSubject_() {
-		this.getJaxbProjectManager().removeCollectionChangeListener(
-					JaxbProjectManager.JAXB_PROJECTS_COLLECTION, 
-					this.projectManagerListener);
+		if (this.jaxbProjectManager != null) {
+			this.jaxbProjectManager.removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.projectManagerListener);
+		}
 	}
 	
 	@Override
 	protected JaxbProject buildValue_() {
-		return this.getJaxbProjectManager().getJaxbProject(this.subject);
+		return (this.jaxbProjectManager == null) ? null : this.jaxbProjectManager.getJaxbProject(this.subject);
 	}
 
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
 	}
 }

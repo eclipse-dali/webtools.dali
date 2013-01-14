@@ -63,11 +63,13 @@ public abstract class AbstractJaxbPlatformDefinition
 	protected abstract String getConfigId();
 	
 	private JaxbPlatformConfig getJaxbPlatformConfig(String platformID) {
-		return getJaxbPlatformManager().getJaxbPlatformConfig(platformID);
+		JaxbPlatformManager jaxbPlatformManager = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager == null) ? null : jaxbPlatformManager.getJaxbPlatformConfig(platformID);
 	}
 
 	private JaxbPlatformManager getJaxbPlatformManager() {
-		return getJaxbWorkspace().getJaxbPlatformManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbPlatformManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {

@@ -24,6 +24,7 @@ import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -208,7 +209,12 @@ public class DatabaseGroup
 	}
 
 	private SortedSet<String> buildSortedConnectionProfileNames() {
-		return CollectionTools.sortedSet(this.getConnectionProfileFactory().getConnectionProfileNames());
+		return CollectionTools.sortedSet(this.getConnectionProfileNames());
+	}
+
+	private Iterable<String> getConnectionProfileNames() {
+		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
+		return (factory != null) ? factory.getConnectionProfileNames() : IterableTools.<String>emptyIterable();
 	}
 
 	/**
@@ -257,11 +263,12 @@ public class DatabaseGroup
 	}
 
 	private ConnectionProfile buildConnectionProfile(String name) {
-		return this.getConnectionProfileFactory().buildConnectionProfile(name);
+		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
+		return (factory == null) ? null : factory.buildConnectionProfile(name);
 	}
 
 	private ConnectionProfileFactory getConnectionProfileFactory() {
-		return (ConnectionProfileFactory) this.jpaProject.getProject().getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		return this.jpaProject.getJpaProjectManager().getJpaWorkspace().getConnectionProfileFactory();
 	}
 
 

@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
@@ -42,6 +43,7 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -53,6 +55,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -221,13 +224,18 @@ public class JaxbProjectPropertiesPage
 	
 	private CollectionValueModel<JaxbPlatformConfig> buildRegistryPlatformsModel() {
 		Iterable<JaxbPlatformConfig> enabledPlatforms = 
-			new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformManager().getJaxbPlatformConfigs()) {
+			new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformConfigs()) {
 				@Override
 				protected boolean accept(JaxbPlatformConfig o) {
 					return o.supportsJaxbFacetVersion(getProjectFacetVersion());
 				}
 			};
 		return new StaticCollectionValueModel<JaxbPlatformConfig>(enabledPlatforms);
+	}
+
+	private Iterable<JaxbPlatformConfig> getJaxbPlatformConfigs() {
+		JaxbPlatformManager jaxbPlatformManager = this.getJaxbPlatformManager();
+		return (jaxbPlatformManager != null) ? jaxbPlatformManager.getJaxbPlatformConfigs() : IterableTools.<JaxbPlatformConfig>emptyIterable();
 	}
 	
 	private static final Comparator<JaxbPlatformConfig> JAXB_PLATFORM_CONFIG_COMPARATOR =
@@ -256,7 +264,10 @@ public class JaxbProjectPropertiesPage
 	@Override
 	protected void rebuildProject() {
 		// if the JAXB platform is changed, we need to completely rebuild the JAXB project
-		this.getJaxbProjectManager().rebuildJaxbProject(getProject());
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+		if (jaxbProjectManager != null) {
+			jaxbProjectManager.rebuildJaxbProject(getProject());
+		}
 	}
 	
 	@Override
@@ -267,15 +278,22 @@ public class JaxbProjectPropertiesPage
 	}
 	
 	private JaxbPlatformManager getJaxbPlatformManager() {
-		return getJaxbWorkspace().getJaxbPlatformManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbPlatformManager();
 	}
 
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+		JaxbWorkbench jaxbWorkbench = this.getJaxbWorkbench();
+		return (jaxbWorkbench == null) ? null : jaxbWorkbench.getJaxbWorkspace();
+	}
+
+	private JaxbWorkbench getJaxbWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
 	}
 
 	

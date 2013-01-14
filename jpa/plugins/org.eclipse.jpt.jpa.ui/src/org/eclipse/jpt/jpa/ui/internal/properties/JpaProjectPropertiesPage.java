@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -26,6 +25,7 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
@@ -87,6 +87,7 @@ import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
@@ -604,7 +605,7 @@ public class JpaProjectPropertiesPage
 	private CollectionValueModel<JpaPlatformConfig> buildEnabledJpaPlatformConfigsModel() {
 		return new StaticCollectionValueModel<JpaPlatformConfig>(
 				new FilteringIterable<JpaPlatformConfig>(
-					getJpaPlatformManager().getJpaPlatformConfigs(),
+					getJpaPlatformConfigs(),
 					new JpaPlatformConfigFilter()
 				)
 			);
@@ -644,12 +645,28 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
+	/* CU private */ static ConnectionProfileFactory getConnectionProfileFactory() {
+		JpaWorkspace jpaWorkspace = getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getConnectionProfileFactory();
+	}
+
+	/* CU private */ static Iterable<JpaPlatformConfig> getJpaPlatformConfigs() {
+		JpaPlatformManager jpaPlatformManager = getJpaPlatformManager();
+		return (jpaPlatformManager != null) ? jpaPlatformManager.getJpaPlatformConfigs() : IterableTools.<JpaPlatformConfig>emptyIterable();
+	}
+
 	/* CU private */ static JpaPlatformManager getJpaPlatformManager() {
-		return getJpaWorkspace().getJpaPlatformManager();
+		JpaWorkspace jpaWorkspace = getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaPlatformManager();
 	}
 
 	/* CU private */ static JpaWorkspace getJpaWorkspace() {
-		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
+		JpaWorkbench jpaWorkbench = getJpaWorkbench();
+		return (jpaWorkbench == null) ? null : jpaWorkbench.getJpaWorkspace();
+	}
+
+	/* CU private */ static JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
 	}
 
 
@@ -1027,11 +1044,8 @@ public class JpaProjectPropertiesPage
 
 		@Override
 		protected ConnectionProfile transform_(String connectionName) {
-			return this.getConnectionProfileFactory().buildConnectionProfile(connectionName);
-		}
-
-		private ConnectionProfileFactory getConnectionProfileFactory() {
-			return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+			ConnectionProfileFactory factory = getConnectionProfileFactory();
+			return (factory == null) ? null : factory.buildConnectionProfile(connectionName);
 		}
 	}
 
@@ -1052,7 +1066,8 @@ public class JpaProjectPropertiesPage
 		@Override
 		protected JpaPlatformConfig buildValue_() {
 			String jpaPlatformID = JpaPreferences.getJpaPlatformID(this.subject.getProject());
-			return getJpaPlatformManager().getJpaPlatformConfig(jpaPlatformID);
+			JpaPlatformManager jpaPlatformManager = getJpaPlatformManager();
+			return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(jpaPlatformID);
 		}
 
 		@Override
@@ -1095,10 +1110,12 @@ public class JpaProjectPropertiesPage
 		extends AbstractCollectionValueModel
 		implements CollectionValueModel<String>
 	{
+		private final ConnectionProfileFactory connectionProfileFactory;
 		private final ConnectionProfileListener connectionProfileListener;
 
 		ConnectionChoicesModel() {
 			super();
+			this.connectionProfileFactory = getConnectionProfileFactory();
 			this.connectionProfileListener = new LocalConnectionProfileListener();
 		}
 
@@ -1134,7 +1151,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		private Iterable<String> getConnectionProfileNames() {
-			return this.getConnectionProfileFactory().getConnectionProfileNames();
+			return (this.connectionProfileFactory != null) ? this.connectionProfileFactory.getConnectionProfileNames() : IterableTools.<String>emptyIterable();
 		}
 
 		public int size() {
@@ -1143,16 +1160,16 @@ public class JpaProjectPropertiesPage
 
 		@Override
 		protected void engageModel() {
-			this.getConnectionProfileFactory().addConnectionProfileListener(this.connectionProfileListener);
+			if (this.connectionProfileFactory != null) {
+				this.connectionProfileFactory.addConnectionProfileListener(this.connectionProfileListener);
+			}
 		}
 
 		@Override
 		protected void disengageModel() {
-			this.getConnectionProfileFactory().removeConnectionProfileListener(this.connectionProfileListener);
-		}
-
-		private ConnectionProfileFactory getConnectionProfileFactory() {
-			return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+			if (this.connectionProfileFactory != null) {
+				this.connectionProfileFactory.removeConnectionProfileListener(this.connectionProfileListener);
+			}
 		}
 	}
 

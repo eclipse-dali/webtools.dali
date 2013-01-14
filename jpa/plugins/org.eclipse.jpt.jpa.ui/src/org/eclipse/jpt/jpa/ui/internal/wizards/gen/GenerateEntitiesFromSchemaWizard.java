@@ -25,6 +25,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -99,7 +101,8 @@ public class GenerateEntitiesFromSchemaWizard
 	}
 
 	protected ResourceManager buildResourceManager() {
-		return this.getJpaWorkbench().buildLocalResourceManager();
+		JpaWorkbench jpaWorkbench = this.getJpaWorkbench();
+		return (jpaWorkbench != null) ? jpaWorkbench.buildLocalResourceManager() : new LocalResourceManager(JFaceResources.getResources(this.getWorkbench().getDisplay()));
 	}
 
 	protected JpaWorkbench getJpaWorkbench() {

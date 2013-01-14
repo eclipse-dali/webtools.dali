@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 
@@ -43,6 +44,11 @@ public interface JpaWorkbench {
 	 * Return the corresponding Eclipse workbench.
 	 */
 	IWorkbench getWorkbench();
+
+	/**
+	 * Return the workbench's JPA workspace.
+	 */
+	JpaWorkspace getJpaWorkspace();
 
 	/**
 	 * Return the manager for the workbench's JPA platform UIs.

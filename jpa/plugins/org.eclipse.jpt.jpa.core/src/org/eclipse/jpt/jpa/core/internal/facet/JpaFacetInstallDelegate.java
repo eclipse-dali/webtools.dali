@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -70,13 +71,18 @@ public class JpaFacetInstallDelegate
 		}
 		String driverName = dataModel.getStringProperty(DB_DRIVER_NAME);
 		
-		IClasspathContainer container = this.getConnectionProfileFactory(javaProject.getProject()).buildDriverClasspathContainer(driverName);
+		ConnectionProfileFactory factory = this.getConnectionProfileFactory(javaProject.getProject());
+		if (factory == null) {
+			return;
+		}
+		IClasspathContainer container = factory.buildDriverClasspathContainer(driverName);
 		IClasspathEntry entry = JavaCore.newContainerEntry(container.getPath());
 		this.addClasspathEntryToProject(entry, javaProject, monitor);
 	}
 	
 	private ConnectionProfileFactory getConnectionProfileFactory(IProject project) {
-		return (ConnectionProfileFactory) project.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace(project);
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getConnectionProfileFactory();
 	}
 
 	private void addClasspathEntryToProject(

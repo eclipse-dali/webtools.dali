@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,7 +108,7 @@ public class JaxbValidator
 	}
 
 	private Iterable<IMessage> buildValidationMessages(IReporter reporter, IProject project) {
-		JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(project);
+		JaxbProject jaxbProject = this.getJaxbProject(project);
 		if (jaxbProject != null) {
 			return jaxbProject.getValidationMessages(reporter);
 		}
@@ -119,8 +119,14 @@ public class JaxbValidator
 						project));
 	}
 
+	private JaxbProject getJaxbProject(IProject project) {
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+		return (jaxbProjectManager == null) ? null : jaxbProjectManager.getJaxbProject(project);
+	}
+
 	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace();
+		return (jaxbWorkspace == null) ? null : this.getJaxbWorkspace().getJaxbProjectManager();
 	}
 
 	private JaxbWorkspace getJaxbWorkspace() {

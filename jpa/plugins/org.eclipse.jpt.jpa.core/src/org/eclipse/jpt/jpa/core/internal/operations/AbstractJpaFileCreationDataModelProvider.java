@@ -69,11 +69,13 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 			return null;
 		}
 		String jpaPlatformID = JpaPreferences.getJpaPlatformID(project);
-		return this.getJpaPlatformManager().getJpaPlatform(jpaPlatformID);
+		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager();
+		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatform(jpaPlatformID);
 	}
 
 	protected JpaPlatformManager getJpaPlatformManager() {
-		return this.getJpaWorkspace().getJpaPlatformManager();
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaPlatformManager();
 	}
 
 	protected JpaWorkspace getJpaWorkspace() {
@@ -90,14 +92,12 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		if (! status.isOK()) {
 			return status;
 		}
-		IContainer container = getContainer();
-		IProject project = (container == null) ? null : container.getProject();
+		IContainer container = this.getContainer();
+		IProject project = container.getProject();
 		if ( ! ProjectTools.hasFacet(project, JpaProject.FACET)) {
-			// verifies project has jpa facet
 			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_NOT_JPA);
 		}
 		if (! hasSupportedPlatform(project)) {
-			// verifies project has platform that supports this file type
 			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
 		}
 		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);

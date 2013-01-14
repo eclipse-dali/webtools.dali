@@ -85,7 +85,7 @@ public class JptJpaCorePlugin
 	 * The preferred way to retrieve a JPA workspace is via the Eclipse
 	 * adapter framework:
 	 * <pre>
-	 * IWorkspace workspace = ...;
+	 * IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	 * JpaWorkspace jpaWorkspace = (JpaWorkspace) workspace.getAdapter(JpaWorkspace.class)
 	 * </pre>
 	 * @see org.eclipse.jpt.jpa.core.internal.WorkspaceAdapterFactory#getJpaWorkspace(IWorkspace)

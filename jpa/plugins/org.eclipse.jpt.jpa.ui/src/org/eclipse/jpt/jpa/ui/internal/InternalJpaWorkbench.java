@@ -9,10 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.platform.InternalJpaPlatformUiManager;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -26,6 +29,7 @@ public class InternalJpaWorkbench
 {
 	private final IWorkbench workbench;
 
+	private final JpaWorkspace jpaWorkspace;
 	private final InternalJpaPlatformUiManager jpaPlatformUiManager;
 	private volatile JpaSelectionManager jpaSelectionManager;
 	private final ResourceManager resourceManager;
@@ -38,8 +42,20 @@ public class InternalJpaWorkbench
 	public InternalJpaWorkbench(IWorkbench workbench) {
 		super();
 		this.workbench = workbench;
+		this.jpaWorkspace = this.buildJpaWorkspace();
 		this.jpaPlatformUiManager = this.buildJpaPlatformUiManager();
 		this.resourceManager = this.buildResourceManager();
+	}
+
+
+	// ********** JPA platform UI manager **********
+
+	public JpaWorkspace getJpaWorkspace() {
+		return this.jpaWorkspace;
+	}
+
+	private JpaWorkspace buildJpaWorkspace() {
+		return (JpaWorkspace) this.getWorkspace().getAdapter(JpaWorkspace.class);
 	}
 
 
@@ -109,6 +125,13 @@ public class InternalJpaWorkbench
 
 	public IWorkbench getWorkbench() {
 		return this.workbench;
+	}
+
+	private IWorkspace getWorkspace() {
+		// I would like to think the workbench held a reference to the workspace;
+		// but it just uses hard-coded references to singletons :-(
+		// (e.g. IDEWorkbenchPlugin.getPluginWorkspace())
+		return ResourcesPlugin.getWorkspace();
 	}
 
 	/**

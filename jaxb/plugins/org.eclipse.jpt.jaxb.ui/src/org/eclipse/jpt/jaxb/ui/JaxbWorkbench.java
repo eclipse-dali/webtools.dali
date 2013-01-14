@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui;
 
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
 import org.eclipse.ui.IWorkbench;
 
@@ -42,6 +43,11 @@ public interface JaxbWorkbench {
 	 * Return the corresponding Eclipse workbench.
 	 */
 	IWorkbench getWorkbench();
+
+	/**
+	 * Return the workbench's JAXB workspace.
+	 */
+	JaxbWorkspace getJaxbWorkspace();
 
 	/**
 	 * Return the manager for the workspace's JAXB platform UIs.

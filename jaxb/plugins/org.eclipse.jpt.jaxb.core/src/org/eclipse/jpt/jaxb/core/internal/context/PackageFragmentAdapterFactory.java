@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -18,7 +19,7 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 
 
-public class JaxbPackageAdapterFactory
+public class PackageFragmentAdapterFactory
 		implements IAdapterFactory {
 	
 	private static final Class<?>[] ADAPTER_LIST = new Class[] { JaxbPackage.class };
@@ -43,15 +44,21 @@ public class JaxbPackageAdapterFactory
 	}
 	
 	private JaxbPackage getJaxbPackage(IPackageFragment packageFragment) {
-		JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(packageFragment.getJavaProject().getProject());
+		JaxbProject jaxbProject = this.getJaxbProject(packageFragment.getJavaProject().getProject());
 		return (jaxbProject == null) ? null : jaxbProject.getContextRoot().getPackage(packageFragment.getElementName());
 	}
 
-	private JaxbProjectManager getJaxbProjectManager() {
-		return this.getJaxbWorkspace().getJaxbProjectManager();
+	private JaxbProject getJaxbProject(IProject project) {
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager(project.getWorkspace());
+		return (jaxbProjectManager == null) ? null : jaxbProjectManager.getJaxbProject(project);
 	}
 
-	private JaxbWorkspace getJaxbWorkspace() {
-		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	private JaxbProjectManager getJaxbProjectManager(IWorkspace workspace) {
+		JaxbWorkspace jaxbWorkspace = this.getJaxbWorkspace(workspace);
+		return (jaxbWorkspace == null) ? null : jaxbWorkspace.getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace(IWorkspace workspace) {
+		return (JaxbWorkspace) workspace.getAdapter(JaxbWorkspace.class);
 	}
 }

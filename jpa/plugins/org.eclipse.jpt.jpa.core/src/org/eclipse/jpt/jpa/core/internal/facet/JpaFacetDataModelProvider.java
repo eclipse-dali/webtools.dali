@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
@@ -454,7 +455,8 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected Iterable<JpaPlatformConfig> buildValidPlatformConfigs() {
-		return this.getJpaPlatformManager().getJpaPlatformConfigs(this.getProjectFacetVersion());
+		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager();
+		return (jpaPlatformManager != null) ? jpaPlatformManager.getJpaPlatformConfigs(this.getProjectFacetVersion()) : IterableTools.<JpaPlatformConfig>emptyIterable();
 	}
 	
 	protected static final Comparator<DataModelPropertyDescriptor> DESCRIPTOR_COMPARATOR =
@@ -609,18 +611,20 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected ConnectionProfile buildConnectionProfile(String name) {
-		return this.getConnectionProfileFactory().buildConnectionProfile(name, DatabaseIdentifierAdapter.Default.instance());
+		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
+		return (factory == null) ? null : factory.buildConnectionProfile(name, DatabaseIdentifierAdapter.Default.instance());
 	}
 	
 	protected Iterable<String> getConnectionProfileNames() {
-		return this.getConnectionProfileFactory().getConnectionProfileNames();
+		ConnectionProfileFactory factory = this.getConnectionProfileFactory();
+		return (factory == null) ? IterableTools.<String>emptyIterable() : factory.getConnectionProfileNames();
 	}
 	
 	protected ConnectionProfileFactory getConnectionProfileFactory() {
-		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
-		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getConnectionProfileFactory();
 	}
-	
+
 	
 	// ********** validation **********
 	
@@ -700,7 +704,8 @@ public abstract class JpaFacetDataModelProvider
 	// ********** misc **********
 	
 	protected JpaPlatformManager getJpaPlatformManager() {
-		return this.getJpaWorkspace().getJpaPlatformManager();
+		JpaWorkspace jpaWorkspace = this.getJpaWorkspace();
+		return (jpaWorkspace == null) ? null : jpaWorkspace.getJpaPlatformManager();
 	}
 
 	protected JpaWorkspace getJpaWorkspace() {

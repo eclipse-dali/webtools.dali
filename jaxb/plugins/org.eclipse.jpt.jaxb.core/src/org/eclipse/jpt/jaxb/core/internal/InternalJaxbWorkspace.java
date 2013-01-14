@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.platform.InternalJaxbPlatformManager;
@@ -19,6 +20,7 @@ public class InternalJaxbWorkspace
 {
 	private final IWorkspace workspace;
 
+	private final JptWorkspace jptWorkspace;
 	private final InternalJaxbPlatformManager jaxbPlatformManager;
 	private final InternalJaxbProjectManager jaxbProjectManager;
 
@@ -31,9 +33,21 @@ public class InternalJaxbWorkspace
 	public InternalJaxbWorkspace(IWorkspace workspace) {
 		super();
 		this.workspace = workspace;
+		this.jptWorkspace = this.buildJptWorkspace();
 		this.jaxbPlatformManager = this.buildJaxbPlatformManager();
 		this.jaxbProjectManager = this.buildJaxbProjectManager();
 		this.jaxbProjectManager.start();
+	}
+
+
+	// ********** Dali workspace **********
+
+	public JptWorkspace getJptWorkspace() {
+		return this.jptWorkspace;
+	}
+
+	private JptWorkspace buildJptWorkspace() {
+		return (JptWorkspace) this.workspace.getAdapter(JptWorkspace.class);
 	}
 
 
