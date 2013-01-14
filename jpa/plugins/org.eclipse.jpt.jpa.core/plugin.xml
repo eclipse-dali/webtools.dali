@@ -35,7 +35,7 @@
 				value="jpt.jpa"
 				forcePluginActivation="true"/>
 		</definition>
-		<!-- A test for determining whether an IResource has any referencing projects with the JPA facet.
+		<!-- A test for determining whether an IResource's project or any referencing projects has the JPA facet.
 			Force activation of the org.eclipse.jpt.common.core plug-in containing the property tester.
 			Though in this case the property tester class is in a package that does not cause the plug-in to load.
 			So the class will be loaded, but the plug-in will not.

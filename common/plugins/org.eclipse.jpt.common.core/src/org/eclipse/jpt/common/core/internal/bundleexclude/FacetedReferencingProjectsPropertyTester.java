@@ -38,6 +38,9 @@ public final class FacetedReferencingProjectsPropertyTester
 			}
 			if (receiver instanceof IResource) {
 				try {
+					if (FacetedProjectFramework.hasProjectFacet(((IResource) receiver).getProject() , facetId, versionExpression)) {
+						return true;
+					}
 					for (IProject project : ((IResource) receiver).getProject().getReferencingProjects()) {
 						if (FacetedProjectFramework.hasProjectFacet(project, facetId, versionExpression)) {
 							return true;
