@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -112,7 +113,25 @@ public class JpaValidator
 	}
 
 	private Iterable<IMessage> buildValidationMessages_(IReporter reporter, IProject project) throws InterruptedException {
-		return this.getJpaProjectReference(project).buildValidationMessages(reporter);
+		JpaProject.Reference ref = this.getJpaProjectReference(project);
+		return (ref != null) ? ref.buildValidationMessages(reporter) : this.buildValidationFailedMessages(project);
+	}
+
+	/**
+	 * This can happen when validation is executed during workbench shutdown
+	 * (e.g. when the user "exits and saves")
+	 * and the Dali plug-ins have been "stopped" before this validator is invoked.
+	 */
+	private Iterable<IMessage> buildValidationFailedMessages(IProject project) {
+		return new SingleElementIterable<IMessage>(this.buildValidationFailedMessage(project));
+	}
+
+	private IMessage buildValidationFailedMessage(IProject project) {
+		return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JPA_VALIDATION_FAILED,
+					project
+				);
 	}
 
 	private JpaProject.Reference getJpaProjectReference(IProject project) {

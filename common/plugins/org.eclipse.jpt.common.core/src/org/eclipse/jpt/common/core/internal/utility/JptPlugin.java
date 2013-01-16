@@ -42,7 +42,7 @@ import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleReference;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -71,7 +71,7 @@ import org.osgi.util.tracker.ServiceTracker;
 public abstract class JptPlugin
 	implements BundleActivator
 {
-	private volatile BundleContext bundleContext;
+	private volatile Bundle bundle;
 
 	// NB: the plug-in must be synchronized whenever accessing any of this state
 	private ExceptionHandler exceptionHandler;
@@ -97,7 +97,7 @@ public abstract class JptPlugin
 	 * <strong>NB:</strong> Most state should be built lazily....
 	 */
 	public void start(BundleContext context) throws Exception {
-		this.bundleContext = context;
+		this.bundle = context.getBundle();
 		// make the instance available immediately; although nothing *should*
 		// retrieve it during start-up, as most state should be populated lazily...
 		this.setInstance(this);
@@ -824,7 +824,7 @@ public abstract class JptPlugin
 	/**
 	 * Log the specified message and exception with the specified severity
 	 * and code.
-	 * If the plug-in has {@link #getBundle() bundle}, log the information
+	 * If the plug-in has no {@link #getBundle() bundle}, log the information
 	 * to the appropriate Java system log (instead of the Eclise platform log).
 	 * Return the logged status.
 	 * @see IStatus#getSeverity()
@@ -837,7 +837,7 @@ public abstract class JptPlugin
 	/**
 	 * Log the specified message and exception with the specified severity
 	 * and code. Bind the message to the specified arguments.
-	 * If the plug-in has {@link #getBundle() bundle}, log the information
+	 * If the plug-in has no {@link #getBundle() bundle}, log the information
 	 * to the appropriate Java system log (instead of the Eclise platform log).
 	 * Return the logged status.
 	 * @see IStatus#getSeverity()
@@ -869,8 +869,8 @@ public abstract class JptPlugin
 	 * @see Platform#getLog(Bundle)
 	 */
 	public ILog getLog() {
-		Bundle bundle = this.getBundle();
-		return (bundle == null) ? null : Platform.getLog(bundle);
+		Bundle b = this.getBundle();
+		return (b == null) ? null : Platform.getLog(b);
 	}
 
 	/**
@@ -1478,11 +1478,15 @@ public abstract class JptPlugin
 	}
 
 	/**
-	 * @exception RuntimeException if the plug-in's {@link #bundleContext
-	 * bundle context} is missing or invalid
+	 * @exception RuntimeException if the plug-in's
+	 * bundle context is missing or invalid
 	 */
 	private ServiceTracker<DebugOptions, DebugOptions> buildDebugOptionsTracker_() {
-		ServiceTracker<DebugOptions, DebugOptions> tracker = new ServiceTracker<DebugOptions, DebugOptions>(this.bundleContext, DebugOptions.class, null);
+		Bundle b = this.getBundle();
+		if (b == null) {
+			return null;
+		}
+		ServiceTracker<DebugOptions, DebugOptions> tracker = new ServiceTracker<DebugOptions, DebugOptions>(b.getBundleContext(), DebugOptions.class, null);
 		tracker.open();
 		return tracker;
 	}
@@ -1785,7 +1789,7 @@ public abstract class JptPlugin
 	 * Return the plug-in's bundle.
 	 */
 	public Bundle getBundle() {
-		return (this.bundleContext != null) ? this.bundleContext.getBundle() : this.getBundle_();
+		return (this.bundle  != null) ? this.bundle : this.getBundle_();
 	}
 
 	/**
@@ -1793,8 +1797,9 @@ public abstract class JptPlugin
 	 * can still get the bundle from the classloader....
 	 */
 	private Bundle getBundle_() {
-		ClassLoader cl = this.getClass().getClassLoader();
-		return (cl instanceof BundleReference) ? ((BundleReference) cl).getBundle() : null;
+		return FrameworkUtil.getBundle(this.getClass());
+//		ClassLoader cl = this.getClass().getClassLoader();
+//		return (cl instanceof BundleReference) ? ((BundleReference) cl).getBundle() : null;
 	}
 
 	/**
@@ -1803,8 +1808,8 @@ public abstract class JptPlugin
 	 * @see Bundle#getSymbolicName()
 	 */
 	public String getPluginID() {
-		Bundle bundle = this.getBundle();
-		return (bundle == null) ? null : bundle.getSymbolicName();
+		Bundle b = this.getBundle();
+		return (b == null) ? null : b.getSymbolicName();
 	}
 
 	/**
@@ -1814,8 +1819,8 @@ public abstract class JptPlugin
 	 * Return <code>null</code> if the plug-in has no bundle.
 	 */
 	public final String getOriginalPluginID() {
-		Bundle bundle = this.getBundle();
-		return (bundle == null) ? null : this.getOriginalPluginID_();
+		Bundle b = this.getBundle();
+		return (b == null) ? null : this.getOriginalPluginID_();
 	}
 
 	/**
@@ -1829,7 +1834,7 @@ public abstract class JptPlugin
 	}
 
 	/**
-	 * Return whether the plug-in is active; i.e. it has been
+	 * Return whether the plug-in has a bundle and is active; i.e. it has been
 	 * {@link #start(BundleContext) started}.
 	 * <p>
 	 * <strong>NB:</strong> The plug-in is <em>not</em> active during the
@@ -1840,11 +1845,12 @@ public abstract class JptPlugin
 	 * @see Bundle#ACTIVE
 	 */
 	public boolean isActive() {
-		return this.getBundle().getState() == Bundle.ACTIVE;
+		Bundle b = this.getBundle();
+		return (b != null) && (b.getState() == Bundle.ACTIVE);
 	}
 
 	/**
-	 * Return whether the plug-in is inactive; i.e. it has been
+	 * Return whether the plug-in has no bundle or is inactive; i.e. it has been
 	 * {@link #stop(BundleContext) stopped} or not yet
 	 * {@link #start(BundleContext) started}.
 	 * <p>
@@ -1869,7 +1875,7 @@ public abstract class JptPlugin
 	}
 
 	/**
-	 * Return <code>null</code> if the plug-in has no corresponding bundle
+	 * Return <code>null</code> if the plug-in has no bundle
 	 * or if the platform is running with no data area (<code>-data @none</code>).
 	 * @see org.eclipse.core.runtime.Plugin#getStateLocation()
 	 * @see Platform#getStateLocation(Bundle)
@@ -1883,8 +1889,8 @@ public abstract class JptPlugin
 	}
 
 	protected IPath getStateLocation_() {
-		Bundle bundle = this.getBundle();
-		return (bundle == null) ? null : Platform.getStateLocation(bundle);
+		Bundle b = this.getBundle();
+		return (b == null) ? null : Platform.getStateLocation(b);
 	}
 
 	@Override
