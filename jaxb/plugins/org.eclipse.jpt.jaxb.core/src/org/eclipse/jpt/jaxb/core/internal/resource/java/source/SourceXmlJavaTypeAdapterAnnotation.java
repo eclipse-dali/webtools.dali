@@ -158,7 +158,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private void syncValue(String astValue) {
 		String old = this.value;
 		this.value = astValue;
-		this.suppressFQValueEventNotification |= ObjectTools.equals(old, astValue);
+		this.suppressFQValueEventNotification |= ! ObjectTools.equals(old, astValue);
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 	
@@ -206,7 +206,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private void syncType(String astType) {
 		String old = this.type;
 		this.type = astType;
-		this.suppressFQTypeEventNotification |= ObjectTools.equals(old, astType);
+		this.suppressFQTypeEventNotification |= ! ObjectTools.equals(old, astType);
 		this.firePropertyChanged(TYPE_PROPERTY, old, astType);
 	}
 	
