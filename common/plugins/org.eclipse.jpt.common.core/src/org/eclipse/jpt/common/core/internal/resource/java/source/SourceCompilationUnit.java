@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -150,6 +151,22 @@ public abstract class SourceCompilationUnit
 
 	public void synchronizeWithJavaSource() {
 		this.synchronizeWith(this.buildASTRoot());
+	}
+
+	public void synchronizeWithJavaSource(CompilationUnit astRoot) {
+		this.synchronizeWith(astRoot);
+	}
+
+	public void synchronizeWithJavaSourceIfNecessary() {
+		try {
+			if (this.compilationUnit.isConsistent()) {
+				return;
+			}
+		}
+		catch (JavaModelException e) {
+			JptCommonCorePlugin.instance().logError(e);
+		}
+		this.synchronizeWithJavaSource();
 	}
 
 	protected abstract void synchronizeWith(CompilationUnit astRoot);

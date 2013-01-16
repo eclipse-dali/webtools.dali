@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,6 +69,21 @@ public interface JavaResourceCompilationUnit
 	 * state with the Java source code etc.
 	 */
 	void synchronizeWithJavaSource();
+
+	/**
+	 * Call this method over {@link #synchronizeWithJavaSource()} if possible
+	 * It is more performant to pass an already build astRoot than to build
+	 * a new one. The passed in CompilationUnit must have resolved bindings.
+	 */
+	void synchronizeWithJavaSource(CompilationUnit astRoot);
+
+	/**
+	 * Checks {@link ICompilationUnit#isConsistent()} and if
+	 * true, does nothing. If false, calls synchronizeWithJavaSource()
+	 * which calls buildASTRoot(). Trying to avoid building astRoots
+	 * since that is expensive. 
+	 */
+	void synchronizeWithJavaSourceIfNecessary();
 
 	/**
 	 * Build an AST for the compilation unit with its bindings resolved.
