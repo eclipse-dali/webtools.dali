@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
@@ -1432,7 +1433,15 @@ public abstract class AbstractJpaProject
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
 			for (JavaResourceCompilationUnit jrcu : this.getCombinedJavaResourceCompilationUnits()) {
 				if (jrcu.getCompilationUnit().equals(compilationUnit)) {
-					jrcu.synchronizeWithJavaSource();
+					CompilationUnit astRoot = delta.getCompilationUnitAST(); //this will be null for POST_CHANGE jdt events
+					//I don't think we can guarantee hasResolvedBindings() is true, so check for this and don't pass it in if false.
+					if (astRoot != null && astRoot.getAST().hasResolvedBindings()) { 
+
+						jrcu.synchronizeWithJavaSource(astRoot);
+					}
+					else {
+						jrcu.synchronizeWithJavaSource();
+					}
 					// TODO ? this.resolveJavaTypes();  // might have new member types now...
 					break;  // there *shouldn't* be any more...
 				}
@@ -1456,16 +1465,22 @@ public abstract class AbstractJpaProject
 		}
 
 		// ignore when the compilation unit's resource is deleted;
-		// because the AST parser will log an exception for the missing file
-		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_RESOURCE)) {
+		// because the AST parser will log an exception for the missing file. 
+		// IJavaElementDelta.F_PRIMARY_RESOURCE is the only flag set when refactor
+		// renaming a type directly in the java editor when the file is modified..
+		// IJavaElementDelta.F_AST_AFFECTED is the only flag set when I refactor
+		// rename a type directly in the java editor and the file is *not* modified.
+		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_RESOURCE)
+			|| BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_AST_AFFECTED)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
-			if ( ! compilationUnitResourceExists(compilationUnit)) {
+			if ( !compilationUnitResourceExists(compilationUnit)) {
 				return false;
 			}
 		}
 
 		return true;
 	}
+
 
 	protected static boolean compilationUnitResourceExists(ICompilationUnit compilationUnit) {
 		try {
