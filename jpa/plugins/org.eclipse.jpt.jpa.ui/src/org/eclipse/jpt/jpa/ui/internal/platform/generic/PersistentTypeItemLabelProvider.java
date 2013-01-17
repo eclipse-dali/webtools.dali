@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,11 +63,13 @@ public class PersistentTypeItemLabelProvider
 	{
 		@Override
 		public ImageDescriptor transform(TypeMapping typeMapping) {
-			return this.getTypeMappingUiDefinition(typeMapping).getImageDescriptor();
+			MappingUiDefinition definition = this.getTypeMappingUiDefinition(typeMapping);
+			return (definition == null) ? null : definition.getImageDescriptor();
 		}
 
 		private MappingUiDefinition getTypeMappingUiDefinition(TypeMapping typeMapping) {
-			return this.getJpaPlatformUi(typeMapping).getTypeMappingUiDefinition(typeMapping.getResourceType(), typeMapping.getKey());
+			JpaPlatformUi ui = this.getJpaPlatformUi(typeMapping);
+			return (ui == null) ? null : ui.getTypeMappingUiDefinition(typeMapping.getResourceType(), typeMapping.getKey());
 		}
 
 		private JpaPlatformUi getJpaPlatformUi(TypeMapping typeMapping) {

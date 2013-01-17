@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -198,7 +198,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		}
 		else if(firstElement instanceof IResource) {
 			IProject project = ((IResource) firstElement).getProject();
-			return getJavaProjectFrom(project);
+			return findJavaProject(project);
 		}
 		else if(firstElement instanceof IJavaElement) {
 			return ((IJavaElement)firstElement).getJavaProject();
@@ -206,9 +206,14 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		return null;
     }
     
-	private IJavaProject getJavaProjectFrom(IProject project) {
-    	return ((IJavaElement) project.getAdapter(IJavaElement.class)).getJavaProject();
-    }
+	private IJavaProject findJavaProject(IProject project) {
+		IJavaElement javaElement = this.findJavaElement(project);
+		return (javaElement == null) ? null : javaElement.getJavaProject();
+	}
+
+	private IJavaElement findJavaElement(IResource resource) {
+		return (IJavaElement) resource.getAdapter(IJavaElement.class);
+	}
 
 	@Override
 	public void dispose() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,7 +42,15 @@ public class JpaFacetVersionChangeDelegate
 		}
 	}
 
-	protected void rebuildJpaProject_(IProject project) throws InterruptedException {
-		((JpaProject.Reference) project.getAdapter(JpaProject.Reference.class)).rebuild();
+	protected void rebuildJpaProject_(IProject project) throws InterruptedException, CoreException {
+		JpaProject.Reference ref = this.getJpaProjectReference(project);
+		if (ref == null) {
+			throw new CoreException(JptJpaCorePlugin.instance().buildStatus(IStatus.CANCEL, "Missing JPA project: " + project.getName())); //$NON-NLS-1$
+		}
+		ref.rebuild();
+	}
+
+	protected JpaProject.Reference getJpaProjectReference(IProject project) {
+		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,8 +70,12 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 		}
 
 		public void execute() {
-			JptXmlResource xmlResource = this.getOrmXmlResource();
-			EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) this.getJpaProject().
+			JpaProject jpaProject = this.getJpaProject();
+			if (jpaProject == null) {
+				return;
+			}
+			JptXmlResource xmlResource = this.getOrmXmlResource(jpaProject);
+			EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) jpaProject.
 					getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 			EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) entityMappings.
 					addPersistentType(this.typeMappingKey, this.model.getQualifiedJavaClassName());
@@ -132,10 +136,10 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 			// do nothing
 		}
 
-		protected JptXmlResource getOrmXmlResource() {
+		protected JptXmlResource getOrmXmlResource(JpaProject jpaProject) {
 			return this.model.isMappingXMLDefault() ?
-					this.getJpaProject().getDefaultOrmXmlResource() :
-						this.getJpaProject().getMappingFileXmlResource(new Path(this.model.getMappingXMLName()));
+					jpaProject.getDefaultOrmXmlResource() :
+					jpaProject.getMappingFileXmlResource(new Path(this.model.getMappingXMLName()));
 		}
 
 		protected JpaProject getJpaProject() {

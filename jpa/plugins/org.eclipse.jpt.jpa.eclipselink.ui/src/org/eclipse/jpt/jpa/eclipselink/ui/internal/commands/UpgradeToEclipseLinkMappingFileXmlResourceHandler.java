@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,9 +68,13 @@ public class UpgradeToEclipseLinkMappingFileXmlResourceHandler
 	}
 
 	protected static void upgradeToEclipseLinkMappingFile(JptXmlResource xmlResource) {
-		JpaProject jpaProject = getJpaProject(xmlResource.getFile().getProject());
-		String fileLocation = xmlResource.getFile().getRawLocation().toOSString();
+		IProject project = xmlResource.getFile().getProject();
+		JpaProject jpaProject = getJpaProject(project);
+		if (jpaProject == null) {
+			throw new IllegalStateException("Missing JPA project: " + project.getName()); //$NON-NLS-1$
+		}
 		String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(XmlEntityMappings.CONTENT_TYPE).getVersion();
+		String fileLocation = xmlResource.getFile().getRawLocation().toOSString();
 			
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {

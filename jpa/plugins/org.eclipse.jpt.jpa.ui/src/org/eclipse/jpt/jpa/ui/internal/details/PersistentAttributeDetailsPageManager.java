@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
@@ -88,7 +89,8 @@ public abstract class PersistentAttributeDetailsPageManager<A extends ReadOnlyPe
 	}
 
 	protected JpaComposite buildMappingComposite(PageBook pageBook, String key) {
-		return getJpaPlatformUi().buildAttributeMappingComposite(
+		JpaPlatformUi ui = this.getJpaPlatformUi();
+		return (ui == null) ? null : ui.buildAttributeMappingComposite(
 				this.getSubject().getResourceType(),
 				key,
 				pageBook,

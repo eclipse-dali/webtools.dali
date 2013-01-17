@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,11 +65,12 @@ public class PersistentAttributeItemLabelProvider
 		@Override
 		public ImageDescriptor transform(AttributeMapping attributeMapping) {
 			MappingUiDefinition definition = this.getAttributeMappingUiDefinition(attributeMapping);
-			return JptCommonUiImages.gray(definition.getImageDescriptor(), attributeMapping.getPersistentAttribute().isVirtual());
+			return (definition == null) ? null : JptCommonUiImages.gray(definition.getImageDescriptor(), attributeMapping.getPersistentAttribute().isVirtual());
 		}
 
 		private MappingUiDefinition getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
-			return this.getJpaPlatformUi(attributeMapping).getAttributeMappingUiDefinition(attributeMapping.getResourceType(), attributeMapping.getKey());
+			JpaPlatformUi ui = this.getJpaPlatformUi(attributeMapping);
+			return (ui == null) ? null : ui.getAttributeMappingUiDefinition(attributeMapping.getResourceType(), attributeMapping.getKey());
 		}
 
 		private JpaPlatformUi getJpaPlatformUi(AttributeMapping attributeMapping) {

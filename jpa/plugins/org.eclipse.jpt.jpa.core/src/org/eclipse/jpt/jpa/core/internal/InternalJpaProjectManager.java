@@ -151,7 +151,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 class InternalJpaProjectManager
 	extends AbstractModel
-	implements JpaProjectManager, JpaProject.Manager
+	implements JpaProject.Manager
 {
 	/**
 	 * The JPA workspace the JPA project manager corresponds to.

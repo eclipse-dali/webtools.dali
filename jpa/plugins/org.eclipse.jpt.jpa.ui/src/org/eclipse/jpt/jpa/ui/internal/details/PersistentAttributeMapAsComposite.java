@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.UnsupportedOrmAttributeMappingUiDefinition;
@@ -88,11 +90,13 @@ public class PersistentAttributeMapAsComposite
 	}
 	
 	protected Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions() {
-		return getJpaPlatformUi().getAttributeMappingUiDefinitions(getSubject());
+		JpaPlatformUi ui = this.getJpaPlatformUi();
+		return (ui != null) ? ui.getAttributeMappingUiDefinitions(getSubject()) : IterableTools.<MappingUiDefinition>emptyIterable();
 	}
 	
 	protected MappingUiDefinition getAttributeMappingUiDefinition() {
-		return getJpaPlatformUi().getAttributeMappingUiDefinition(getSubject().getResourceType(), getMappingKey());
+		JpaPlatformUi ui = this.getJpaPlatformUi();
+		return (ui == null) ? null : ui.getAttributeMappingUiDefinition(getSubject().getResourceType(), getMappingKey());
 	}
 	
 	@Override
@@ -102,7 +106,8 @@ public class PersistentAttributeMapAsComposite
 	
 	@Override
 	protected DefaultMappingUiDefinition getDefaultDefinition(String mappingKey) {
-		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getMapping().getResourceType(), mappingKey);
+		JpaPlatformUi ui = this.getJpaPlatformUi();
+		return (ui == null) ? null : ui.getDefaultAttributeMappingUiDefinition(getSubject().getMapping().getResourceType(), mappingKey);
 	}
 
 	@Override

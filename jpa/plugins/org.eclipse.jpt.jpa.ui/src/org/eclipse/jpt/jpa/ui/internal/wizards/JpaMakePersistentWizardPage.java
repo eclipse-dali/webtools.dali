@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,6 +54,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -445,16 +446,19 @@ public class JpaMakePersistentWizardPage
 	{
 		@Override
 		public String getText(Object element) {
-			return this.getMappingUiDefinition(element).getLabel();
+			MappingUiDefinition def = this.getMappingUiDefinition(element);
+			return (def == null) ? null : def.getLabel();
 		}
 
 		@Override
 		public Image getImage(Object element) {
-			return this.getResourceManager().createImage(this.getImageDescriptor(element));
+			ImageDescriptor descriptor = this.getImageDescriptor(element);
+			return (descriptor == null) ? null : this.getResourceManager().createImage(descriptor);
 		}
 
 		private ImageDescriptor getImageDescriptor(Object element) {
-			return this.getMappingUiDefinition(element).getImageDescriptor();
+			MappingUiDefinition def = this.getMappingUiDefinition(element);
+			return (def == null) ? null : def.getImageDescriptor();
 		}
 
 		private MappingUiDefinition getMappingUiDefinition(Object element) {
@@ -466,7 +470,8 @@ public class JpaMakePersistentWizardPage
 	}
 
 	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
-		return this.getJpaPlatformUi().getTypeMappingUiDefinition(this.jptResourceType, mappingKey);
+		JpaPlatformUi ui = this.getJpaPlatformUi();
+		return (ui == null) ? null : ui.getTypeMappingUiDefinition(this.jptResourceType, mappingKey);
 	}
 
 	protected Iterable<String> typeMappingKeys(Iterable<? extends MappingUiDefinition> mappingUiDefinitions) {
@@ -605,7 +610,8 @@ public class JpaMakePersistentWizardPage
 		}
 
 		protected Iterable<MappingUiDefinition> getTypeMappingUiDefinitions() {
-			return getJpaPlatformUi().getTypeMappingUiDefinitions(JpaMakePersistentWizardPage.this.jptResourceType);
+			JpaPlatformUi ui = JpaMakePersistentWizardPage.this.getJpaPlatformUi();
+			return (ui != null) ? ui.getTypeMappingUiDefinitions(JpaMakePersistentWizardPage.this.jptResourceType) : IterableTools.<MappingUiDefinition>emptyIterable();
 		}
 	}
 	
@@ -731,9 +737,13 @@ public class JpaMakePersistentWizardPage
 			if (monitor.isCanceled()) {
 				return;
 			}
+			JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
+			if (jpaProjectManager == null) {
+				return;
+			}
 			Command addToOrmXmlCommand = new AddToOrmXmlCommand(this.getEntityMappings(),this.selectedTypes, monitor);
 			try {
-				this.getJpaProjectManager().execute(addToOrmXmlCommand, SynchronousUiCommandExecutor.instance());
+				jpaProjectManager.execute(addToOrmXmlCommand, SynchronousUiCommandExecutor.instance());
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();  // skip save?
 				throw new RuntimeException(ex);
@@ -858,9 +868,13 @@ public class JpaMakePersistentWizardPage
 			if (persistenceUnit == null) {
 				return; //unlikely...
 			}
+			JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
+			if (jpaProjectManager == null) {
+				return;
+			}
 			Command annotateInJavaCommand = new AnnotateInJavaCommand(persistenceUnit, this.selectedTypes, this.listInPersistenceXml, monitor);
 			try {
-				this.getJpaProjectManager().execute(annotateInJavaCommand, SynchronousUiCommandExecutor.instance());
+				jpaProjectManager.execute(annotateInJavaCommand, SynchronousUiCommandExecutor.instance());
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();  // skip save?
 				throw new RuntimeException(ex);

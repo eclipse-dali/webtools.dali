@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -215,13 +215,18 @@ public class PersistenceUnitClassesComposite
 		}
 
 		private ImageDescriptor getImageDescriptor(JavaPersistentType persistentType) {
-			return (persistentType != null) ?
-					this.getTypeMappingUiDefinition(persistentType).getImageDescriptor() :
+			if (persistentType == null) {
+				return JptCommonUiImages.WARNING;
+			}
+			MappingUiDefinition def = this.getTypeMappingUiDefinition(persistentType);
+			return (def != null) ?
+					def.getImageDescriptor() :
 					JptCommonUiImages.WARNING;
 		}
 
 		private MappingUiDefinition getTypeMappingUiDefinition(JavaPersistentType persistentType) {
-			return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
+			JpaPlatformUi ui = this.getJpaPlatformUi(persistentType);
+			return (ui == null) ? null : ui.getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
 		}
 
 		private JpaPlatformUi getJpaPlatformUi(JavaPersistentType persistentType) {

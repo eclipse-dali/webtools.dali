@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
+* Copyright (c) 2010, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -112,7 +113,7 @@ public class DbwsGeneratorUi
 		if(webProject == null || StringTools.isBlank(builderXmlFile)) {
 			throw new NullPointerException();
 		}
-		this.javaProject = this.getJavaProjectFrom(webProject);
+		this.javaProject = this.findJavaProject(webProject);
 		if(this.javaProject == null) {
 			throw new RuntimeException(JptDbwsUiMessages.DbwsGeneratorUi_notJavaProject);
 		}
@@ -225,8 +226,13 @@ public class DbwsGeneratorUi
 		}
 	}
 		
-	private IJavaProject getJavaProjectFrom(IProject project) {
-		return ((IJavaElement) project.getAdapter(IJavaElement.class)).getJavaProject();
+	private IJavaProject findJavaProject(IProject project) {
+		IJavaElement javaElement = this.findJavaElement(project);
+		return (javaElement == null) ? null : javaElement.getJavaProject();
+	}
+
+	private IJavaElement findJavaElement(IResource resource) {
+		return (IJavaElement) resource.getAdapter(IJavaElement.class);
 	}
 
 	private Shell getCurrentShell() {

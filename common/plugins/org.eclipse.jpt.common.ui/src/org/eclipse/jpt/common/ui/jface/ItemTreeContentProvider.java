@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,14 +69,15 @@ public interface ItemTreeContentProvider
 
 
 	/**
-	 * A "null" item tree content provider that has no elements, parent,
-	 * or parent.
+	 * A <em>null</em> item tree content provider that returns
+	 * an empty array of elements, an empty array of children, and a
+	 * <code>null</code> parent.
 	 */
 	final class Null
 		implements ItemTreeContentProvider, Serializable
 	{
-		public static final ItemStructuredContentProvider INSTANCE = new Null();
-		public static ItemStructuredContentProvider instance() {
+		public static final ItemTreeContentProvider INSTANCE = new Null();
+		public static ItemTreeContentProvider instance() {
 			return INSTANCE;
 		}
 		// ensure single instance

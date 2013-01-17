@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2012 by SAP AG, Walldorf and others.
+ * Copyright (c) 2008, 2013 by SAP AG, Walldorf and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -261,11 +261,6 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	 * This method is intended for internal use only.  It will be used to validate 
 	 * the correctness of xml file location. 
 	 * This method will accept a null parameter. 
-	 * 
-	 * @see NewFilterClassDataModelProvider#validate(String)
-	 * 
-	 * @param xmlName
-	 * @return IStatus is the package name satisfies Java convention requirements
 	 */
 	private IStatus validateXmlName(String xmlName) {
 		if (getBooleanProperty(XML_SUPPORT)) {
@@ -276,7 +271,8 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 				if (ormXmlResource == null) {
 					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.INVALID_XML_NAME);
 				}
-				else if (getTargetJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
+				JpaProject jpaProject = this.getTargetJpaProject();
+				if ((jpaProject == null) || jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
 					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.MAPPING_FILE_NOT_LISTED_ERROR);
 				}
 			}
@@ -285,7 +281,8 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	}
 
 	protected JptXmlResource getOrmXmlResource(String xmlName) {
-		return getTargetJpaProject()== null ? null : getTargetJpaProject().getMappingFileXmlResource(new Path(xmlName));
+		JpaProject jpaProject = this.getTargetJpaProject();
+		return (jpaProject == null) ? null : jpaProject.getMappingFileXmlResource(new Path(xmlName));
 	}
 	
 	/**

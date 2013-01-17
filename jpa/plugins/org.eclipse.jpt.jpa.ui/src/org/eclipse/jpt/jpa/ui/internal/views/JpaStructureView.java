@@ -73,7 +73,8 @@ public class JpaStructureView
 	}
 
 	private Manager buildManager() {
-		return new Manager(this.getPageManager());
+		JpaViewManager.PageManager pageManager = this.getPageManager();
+		return (pageManager == null) ? null : new Manager(pageManager);
 	}
 
 	/**
@@ -143,6 +144,9 @@ public class JpaStructureView
 	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
 		IEditorPart editor = (IEditorPart) part;
+		if (this.manager == null) {
+			return null;
+		}
 		JpaEditorManager editorManager = this.manager.getEditorManager(editor);
 		if (editorManager == null) {
 			// if there is no editor manager corresponding to the current
@@ -166,13 +170,11 @@ public class JpaStructureView
 	public void dispose() {
 		super.dispose();
 		if (this.manager != null) {
-			this.dispose_();
+			this.manager.dispose();
 		}
-	}
-
-	private void dispose_() {
-		this.resourceManager.dispose();
-		this.manager.dispose();
+		if (this.resourceManager != null) {
+			this.resourceManager.dispose();
+		}
 	}
 
 	@Override

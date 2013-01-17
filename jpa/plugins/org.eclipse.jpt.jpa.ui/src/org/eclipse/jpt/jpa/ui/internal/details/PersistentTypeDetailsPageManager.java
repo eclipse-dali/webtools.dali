@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
@@ -117,7 +118,8 @@ public class PersistentTypeDetailsPageManager
 	}
 	
 	protected JpaComposite buildMappingComposite(PageBook pageBook, String key) {
-		return this.getJpaPlatformUi().buildTypeMappingComposite(
+		JpaPlatformUi ui = this.getJpaPlatformUi();
+		return (ui == null) ? null : ui.buildTypeMappingComposite(
 				this.getSubject().getResourceType(), 
 				key, 
 				this.buildMappingHolder(key), 

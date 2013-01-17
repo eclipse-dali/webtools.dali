@@ -20,6 +20,7 @@ public interface JpaValidationMessages {
 	
 	//Project
 	public static final String NO_JPA_PROJECT = "NO_JPA_PROJECT";
+	public static final String JPA_VALIDATION_FAILED = "JPA_VALIDATION_FAILED";
 	public static final String PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS = "PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS";
 	public static final String PERSISTENCE_NO_PERSISTENCE_UNIT = "PERSISTENCE_NO_PERSISTENCE_UNIT";
 	public static final String PERSISTENCE_XML_INVALID_CONTENT = "PERSISTENCE_XML_INVALID_CONTENT";

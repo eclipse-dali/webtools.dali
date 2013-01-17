@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 SAP AG, Walldorf and others. All rights reserved.
+ * Copyright (c) 2008, 2013 SAP AG, Walldorf and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -422,7 +422,10 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		}
 
 		protected void run() throws InterruptedException {
-			this.getJpaProjectManager().execute(this.command, SynchronousUiCommandExecutor.instance());
+			JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
+			if (jpaProjectManager != null) {
+				jpaProjectManager.execute(this.command, SynchronousUiCommandExecutor.instance());
+			}
 		}
 
 		protected JpaProjectManager getJpaProjectManager() {
@@ -447,8 +450,15 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		}
 
 		public void execute() {
-			JptXmlResource xmlResource = this.getOrmXmlResource();
-			EntityMappings entityMappings = (EntityMappings) this.getJpaProject().getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
+			JpaProject jpaProject = this.getJpaProject();
+			if (jpaProject == null) {
+				return;
+			}
+			JptXmlResource xmlResource = this.getOrmXmlResource(jpaProject);
+			if (xmlResource == null) {
+				return;
+			}
+			EntityMappings entityMappings = (EntityMappings) jpaProject.getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 			OrmPersistentType persistentType = entityMappings.addPersistentType(this.typeMappingKey, this.model.getQualifiedJavaClassName());
 
 			this.updatePersistentType(persistentType);
@@ -476,10 +486,10 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			}
 		}
 
-		protected JptXmlResource getOrmXmlResource() {
+		protected JptXmlResource getOrmXmlResource(JpaProject jpaProject) {
 			return this.model.isMappingXMLDefault() ?
-					this.getJpaProject().getDefaultOrmXmlResource() :
-					this.getJpaProject().getMappingFileXmlResource(new Path(this.model.getMappingXMLName()));
+					jpaProject.getDefaultOrmXmlResource() :
+					jpaProject.getMappingFileXmlResource(new Path(this.model.getMappingXMLName()));
 		}
 
 		protected AccessType getModelAccessType() {
@@ -487,7 +497,8 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			if ( ! this.model.isFieldAccess()) {
 				accessTypeString = PROPERTY;
 			}
-			return AccessType.fromOrmResourceModel(accessTypeString, getJpaProject().getJpaPlatform(), JavaSourceFileDefinition.instance().getResourceType());// TODO
+			JpaProject jpaProject = this.getJpaProject();
+			return (jpaProject == null) ? null : AccessType.fromOrmResourceModel(accessTypeString, jpaProject.getJpaPlatform(), JavaSourceFileDefinition.instance().getResourceType());// TODO
 		}
 
 		protected JpaProject getJpaProject() {
@@ -540,6 +551,9 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+				if (jpaProject == null) {
+					return Status.OK_STATUS;
+				}
 				JptXmlResource resource = jpaProject.getPersistenceXmlResource();
 				XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
 				EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();

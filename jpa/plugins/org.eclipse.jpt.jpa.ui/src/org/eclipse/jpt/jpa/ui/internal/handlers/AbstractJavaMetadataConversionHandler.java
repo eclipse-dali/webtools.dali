@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,11 +38,14 @@ public abstract class AbstractJavaMetadataConversionHandler
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		JpaProject jpaProject = this.convertSelectionToJpaProject(selection.getFirstElement());
 		if (jpaProject != null) {
-			this.convertJavaMetadata(jpaProject);
+			JpaPlatformUi ui = this.getJpaPlatformUi(jpaProject);
+			if (ui != null) {
+				this.convertJavaMetadata(ui, jpaProject);
+			}
 		}
 	}
 
-	protected abstract void convertJavaMetadata(JpaProject jpaProject);
+	protected abstract void convertJavaMetadata(JpaPlatformUi ui, JpaProject jpaProject);
 
 	protected JpaProject convertSelectionToJpaProject(Object sel) {
 		try {
@@ -84,10 +87,7 @@ public abstract class AbstractJavaMetadataConversionHandler
 		return (javaElement == null) ? null : javaElement.getJavaProject();
 	}
 
-	/**
-	 * Convenience method.
-	 */
-	protected JpaPlatformUi getJpaPlatformUi(JpaProject jpaProject) {
+	private JpaPlatformUi getJpaPlatformUi(JpaProject jpaProject) {
 		return (JpaPlatformUi) jpaProject.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 }

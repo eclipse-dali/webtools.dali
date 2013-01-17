@@ -224,6 +224,9 @@ public class JpaXmlEditor
 
 		JpaPlatform jpaPlatform = rootStructureNode.getJpaPlatform();
 		JpaPlatformUi jpaPlatformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
+		if (jpaPlatformUI == null) {
+			return;
+		}
 		ResourceUiDefinition definition = jpaPlatformUI.getResourceUiDefinition(resourceType);
 
 		ListIterable<JpaEditorPageDefinition> pageDefinitions = definition.getEditorPageDefinitions();

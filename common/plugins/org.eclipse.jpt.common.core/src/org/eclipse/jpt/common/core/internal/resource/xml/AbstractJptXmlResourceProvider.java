@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -83,18 +83,13 @@ public abstract class AbstractJptXmlResourceProvider
 	}
 	
 	protected URI buildFileUri(IPath resourcePath) {
-		URI resourceUri = null;
-		
-		if (resourcePath.isAbsolute()) {
-			resourceUri = URI.createPlatformResourceURI(resourcePath.toString(), false);
+		if ( ! resourcePath.isAbsolute()) {
+			resourcePath = this.getProjectResourceLocator().getResourcePath(resourcePath);
 		}
-		else {
-			IPath absolutePath = this.getProjectResourceLocator().getResourcePath(resourcePath);
-			resourceUri = URI.createPlatformResourceURI(absolutePath.toString(), false);
-		}
+		URI resourceURI = URI.createPlatformResourceURI(resourcePath.toString(), false);
 		
-		URIConverter uriConverter = getResourceSet().getURIConverter();
-		return uriConverter.normalize(resourceUri);
+		URIConverter uriConverter = this.getResourceSet().getURIConverter();
+		return uriConverter.normalize(resourceURI);
 	}
 	
 	protected ProjectResourceLocator getProjectResourceLocator() {

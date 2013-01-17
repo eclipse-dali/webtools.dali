@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2012 by SAP AG, Walldorf and others. 
+ * Copyright (c) 2008, 2013 by SAP AG, Walldorf and others. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -139,11 +139,6 @@ public class EntityClassWizardPage
 		return composite;
 	}
 
-	protected JpaProject getTargetJpaProject() {
-		IProject project = getProject();
-		return (project == null) ? null : this.getJpaProject(project);
-	}
-	
 	protected JpaProject getJpaProject(IProject project) {
 		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
@@ -340,6 +335,9 @@ public class EntityClassWizardPage
 			return;
 		}
 		JpaProject jpaProject = this.getJpaProject(project);
+		if (jpaProject == null) {
+			return;
+		}
 		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();

@@ -137,8 +137,10 @@ public class JpaDetailsView
 		this.pageBook.showPage(this.defaultPage);
 
 		this.manager = this.buildManager();
-		this.manager.getJpaSelectionModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
-		this.setJpaSelection(this.manager.getJpaSelectionModel().getValue());
+		if (this.manager != null) {
+			this.manager.getJpaSelectionModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
+			this.setJpaSelection(this.manager.getJpaSelectionModel().getValue());
+		}
 	}
 
 	private ResourceManager buildResourceManager() {
@@ -159,7 +161,8 @@ public class JpaDetailsView
 	}
 
 	private Manager buildManager() {
-		return new Manager(this.getPageManager());
+		JpaViewManager.PageManager pageManager = this.getPageManager();
+		return (pageManager == null) ? null : new Manager(pageManager);
 	}
 
 	/**
@@ -279,13 +282,6 @@ public class JpaDetailsView
 
 	@Override
 	public void dispose() {
-		if (this.manager != null) {
-			this.dispose_();
-		}
-		super.dispose();
-	}
-
-	private void dispose_() {
 		if (this.currentPageManager != null) {
 			this.currentPageManager.setSubject(null);
 			this.currentPageManager = null;
@@ -293,12 +289,20 @@ public class JpaDetailsView
 
 		this.pageManagers.clear();
 
-		this.manager.getJpaSelectionModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
-		this.manager.dispose();
+		if (this.manager != null) {
+			this.manager.getJpaSelectionModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
+			this.manager.dispose();
+		}
 
-		this.widgetFactory.dispose();
+		if (this.widgetFactory != null) {
+			this.widgetFactory.dispose();
+		}
 
-		this.resourceManager.dispose();
+		if (this.resourceManager != null) {
+			this.resourceManager.dispose();
+		}
+
+		super.dispose();
 	}
 
 	@Override

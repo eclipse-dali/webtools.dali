@@ -876,7 +876,10 @@ public class JpaProjectPropertiesPage
 	}
 
 	private void rebuildProject_() throws InterruptedException {
-		this.getJpaProjectReference().rebuild();
+		JpaProject.Reference ref = this.getJpaProjectReference();
+		if (ref != null) {
+			ref.rebuild();
+		}
 	}
 
 	private JpaProject.Reference getJpaProjectReference() {

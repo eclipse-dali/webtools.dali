@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,6 +43,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -436,13 +437,15 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * JPA project with 2.1 or above version, <code>false</code> - otherwise.
 	 */
 	protected boolean isProjectValid(IProject project) {
-		return (project.isAccessible() && ProjectTools.hasFacet(project, JpaProject.FACET) && this.getJpaPlatformGroupId(project).equals("eclipselink")
-				&& this.projectIsEclipseLink2_1Compatible(project));
+		return (project.isAccessible() &&
+				ProjectTools.hasFacet(project, JpaProject.FACET) &&
+				ObjectTools.equals(this.getJpaPlatformGroupId(project), "eclipselink") &&
+				this.projectIsEclipseLink2_1Compatible(project));
 	}
 
 	protected String getJpaPlatformGroupId(IProject project) {
 		JpaPlatformConfig config = (JpaPlatformConfig) project.getAdapter(JpaPlatformConfig.class);
-		return config.getGroupConfig().getId();
+		return (config == null) ? null : config.getGroupConfig().getId();
 	}
 
 	private boolean projectIsEclipseLink2_1Compatible(IProject project) {
