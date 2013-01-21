@@ -137,7 +137,7 @@ public final class JDTTools {
 		}
 		ArrayList<String> resolvedSuperTypeNames = new ArrayList<String>();
 		for (String superTypeName : nonResolvedSuperTypeNames) {
-			resolvedSuperTypeNames.add(resolveType(type, superTypeName));
+			resolvedSuperTypeNames.add(resolveType_(type, superTypeName));
 		}
 		return resolvedSuperTypeNames;
 	}
@@ -158,7 +158,7 @@ public final class JDTTools {
 	/**
 	 * Just grab the first candidate type.
 	 */
-	private static String resolveType(IType type, String className) throws JavaModelException {
+	private static String resolveType_(IType type, String className) throws JavaModelException {
 		String[][] resolvedClassNames = type.resolveType(className);
 		if (resolvedClassNames == null) {
 			return null;
@@ -175,6 +175,15 @@ public final class JDTTools {
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return null;
+		}
+	}
+	
+	public static String resolveType(IType type, String className) {
+		try {
+			return resolveType_(type, className);
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return null;	
 		}
 	}
 

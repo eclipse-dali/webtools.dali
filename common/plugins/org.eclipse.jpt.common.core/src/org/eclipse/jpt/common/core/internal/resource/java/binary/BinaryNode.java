@@ -37,7 +37,7 @@ public abstract class BinaryNode
 
 	@Override
 	public IFile getFile() {
-		return null;  // only BinaryPackageFragmentRoot has a file...
+		return null;  // only BinaryPackageFragmentRoot has a file... njh - perhaps a Binary node file should always resolve to the containing JAR resource?
 	}
 
 	public void update() {

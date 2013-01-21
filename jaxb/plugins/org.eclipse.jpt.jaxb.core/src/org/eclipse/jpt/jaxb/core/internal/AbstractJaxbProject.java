@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -36,6 +39,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -44,8 +49,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
@@ -101,6 +108,20 @@ public abstract class AbstractJaxbProject
 	extends AbstractJaxbNode
 	implements JaxbProject {
 	
+	//TODO this needs to move to some sort of JAXB util class, but not sure if there is one yet
+	private static final String[] XML_SCHEMA_BUILT_IN_DATA_TYPES = {
+		java.lang.String.class.getName(),
+		java.math.BigInteger.class.getName(),
+		java.math.BigDecimal.class.getName(),
+		javax.xml.namespace.QName.class.getName(),
+		javax.xml.datatype.XMLGregorianCalendar.class.getName(),
+		javax.xml.datatype.Duration.class.getName(),
+		java.lang.Object.class.getName(),
+		java.util.Date.class.getName(),
+		java.util.Calendar.class.getName(),
+
+	};
+	
 	/**
 	 * The Eclipse project corresponding to the JAXB project.
 	 */
@@ -125,15 +146,15 @@ public abstract class AbstractJaxbProject
 	 */
 	protected final Vector<JaxbFile> jaxbFiles = new Vector<JaxbFile>();
 
-//	/**
-//	 * The "external" Java resource compilation units (source). Populated upon demand.
-//	 */
-//	protected final Vector<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits = new Vector<JavaResourceCompilationUnit>();
-//
-//	/**
-//	 * The "external" Java resource persistent types (binary). Populated upon demand.
-//	 */
-//	protected final JavaResourcePersistentTypeCache externalJavaResourcePersistentTypeCache;
+	/**
+	 * The "external" Java resource compilation units (source). Populated upon demand.
+	 */
+	protected final Vector<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits = new Vector<JavaResourceCompilationUnit>();
+
+	/**
+	 * The "external" Java resource persistent types (binary). Populated upon demand.
+	 */
+	protected final JavaResourceTypeCache externalJavaResourceTypeCache;
 
 	/**
 	 * Resource models notify this listener when they change. A project update
@@ -203,7 +224,7 @@ public abstract class AbstractJaxbProject
 		InitialResourceProxyVisitor visitor = this.buildInitialResourceProxyVisitor();
 		visitor.visitProject(this.project);
 
-//		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
+		this.externalJavaResourceTypeCache = this.buildExternalJavaResourceTypeCache();
 
 		this.contextRoot = this.buildContextRoot();
 
@@ -214,9 +235,9 @@ public abstract class AbstractJaxbProject
 		// "update" the project before returning
 		this.setUpdateSynchronizer_(this.buildSynchronousUpdateSynchronizer());
 
-//		// start listening to this cache once the context model has been built
-//		// and all the external types are faulted in
-//		this.externalJavaResourcePersistentTypeCache.addResourceModelListener(this.resourceModelListener);
+		// start listening to this cache once the context model has been built
+		// and all the external types are faulted in
+		this.externalJavaResourceTypeCache.addResourceModelListener(this.resourceModelListener);
 	}
 
 	@Override
@@ -236,10 +257,10 @@ public abstract class AbstractJaxbProject
 	protected InitialResourceProxyVisitor buildInitialResourceProxyVisitor() {
 		return new InitialResourceProxyVisitor();
 	}
-//
-//	protected JavaResourcePersistentTypeCache buildExternalJavaResourcePersistentTypeCache() {
-//		return new BinaryPersistentTypeCache(this.jpaPlatform.getAnnotationProvider());
-//	}
+
+	protected JavaResourceTypeCache buildExternalJavaResourceTypeCache() {
+		return new BinaryTypeCache(this.jaxbPlatform.getAnnotationProvider());
+	}
 
 	protected JaxbContextRoot buildContextRoot() {
 		return this.getFactory().buildContextRoot(this);
@@ -277,19 +298,19 @@ public abstract class AbstractJaxbProject
 	}
 
 
-//	// ********** miscellaneous **********
-//
-//	/**
-//	 * Ignore changes to this collection. Adds can be ignored since they are triggered
-//	 * by requests that will, themselves, trigger updates (typically during the
-//	 * update of an object that calls a setter with the newly-created resource
-//	 * type). Deletes will be accompanied by manual updates.
-//	 */
-//	@Override
-//	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
-//		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-//		nonUpdateAspectNames.add(EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
-//	}
+	// ********** miscellaneous **********
+
+	/**
+	 * Ignore changes to this collection. Adds can be ignored since they are triggered
+	 * by requests that will, themselves, trigger updates (typically during the
+	 * update of an object that calls a setter with the newly-created resource
+	 * type). Deletes will be accompanied by manual updates.
+	 */
+	@Override
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+		nonUpdateAspectNames.add(EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
+	}
 
 
 	// ********** general queries **********
@@ -327,11 +348,10 @@ public abstract class AbstractJaxbProject
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceCompilationUnit> getCombinedJavaResourceCompilationUnits() {
-		return this.getInternalJavaResourceCompilationUnits();
-//		return new CompositeIterable<JavaResourceCompilationUnit>(
-//					this.getInternalJavaResourceCompilationUnits(),
-//					this.getExternalJavaResourceCompilationUnits()
-//				);
+		return new CompositeIterable<JavaResourceCompilationUnit>(
+					this.getInternalJavaResourceCompilationUnits(),
+					this.getExternalJavaResourceCompilationUnits()
+				);
 	}
 	
 	
@@ -451,120 +471,126 @@ public abstract class AbstractJaxbProject
 	}
 
 
-//	// ********** external Java resource persistent types (source or binary) **********
-//
-//	protected JavaResourcePersistentType buildPersistableExternalJavaResourcePersistentType(String typeName) {
-//		IType jdtType = this.findType(typeName);
-//		return (jdtType == null) ? null : this.buildPersistableExternalJavaResourcePersistentType(jdtType);
-//	}
-//
-//	protected IType findType(String typeName) {
-//		try {
-//			return this.getJavaProject().findType(typeName);
-//		} catch (JavaModelException ex) {
-//			return null;  // ignore exception?
-//		}
-//	}
-//
-//	protected JavaResourcePersistentType buildPersistableExternalJavaResourcePersistentType(IType jdtType) {
-//		JavaResourcePersistentType jrpt = this.buildExternalJavaResourcePersistentType(jdtType);
-//		return ((jrpt != null) && jrpt.isPersistable()) ? jrpt : null;
-//	}
-//
-//	protected JavaResourcePersistentType buildExternalJavaResourcePersistentType(IType jdtType) {
-//		return jdtType.isBinary() ?
-//				this.buildBinaryExternalJavaResourcePersistentType(jdtType) :
-//				this.buildSourceExternalJavaResourcePersistentType(jdtType);
-//	}
-//
-//	protected JavaResourcePersistentType buildBinaryExternalJavaResourcePersistentType(IType jdtType) {
-//		return this.externalJavaResourcePersistentTypeCache.addPersistentType(jdtType);
-//	}
-//
-//	protected JavaResourcePersistentType buildSourceExternalJavaResourcePersistentType(IType jdtType) {
-//		JavaResourceCompilationUnit jrcu = this.getExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
-//		String jdtTypeName = jdtType.getFullyQualifiedName('.');  // JDT member type names use '$'
-//		for (Iterator<JavaResourcePersistentType> stream = jrcu.persistentTypes(); stream.hasNext(); ) {
-//			JavaResourcePersistentType jrpt = stream.next();
-//			if (jrpt.getQualifiedName().equals(jdtTypeName)) {
-//				return jrpt;
-//			}
-//		}
-//		// we can get here if the project JRE is removed;
-//		// see SourceCompilationUnit#getPrimaryType(CompilationUnit)
-//		// bug 225332
-//		return null;
-//	}
-//
-//
-//	// ********** external Java resource persistent types (binary) **********
-//
-//	public JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache() {
-//		return this.externalJavaResourcePersistentTypeCache;
-//	}
-//
-//
-//	// ********** external Java resource compilation units (source) **********
-//
-//	public Iterator<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits() {
-//		return this.getExternalJavaResourceCompilationUnits().iterator();
-//	}
-//
-//	protected Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
-//		return new LiveCloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
-//	}
-//
-//	public int externalJavaResourceCompilationUnitsSize() {
-//		return this.externalJavaResourceCompilationUnits.size();
-//	}
-//
-//	/**
-//	 * Return the resource model compilation unit corresponding to the specified
-//	 * JDT compilation unit. If it does not exist, build it.
-//	 */
-//	protected JavaResourceCompilationUnit getExternalJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
-//		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
-//			if (jrcu.getCompilationUnit().equals(jdtCompilationUnit)) {
-//				// we will get here if the JRCU could not build its persistent type...
-//				return jrcu;
-//			}
-//		}
-//		return this.addExternalJavaResourceCompilationUnit(jdtCompilationUnit);
-//	}
-//
-//	/**
-//	 * Add an external Java resource compilation unit.
-//	 */
-//	protected JavaResourceCompilationUnit addExternalJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
-//		JavaResourceCompilationUnit jrcu = this.buildJavaResourceCompilationUnit(jdtCompilationUnit);
-//		this.addItemToCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
-//		jrcu.addResourceModelListener(this.resourceModelListener);
-//		return jrcu;
-//	}
-//
-//	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
-//		return new SourceTypeCompilationUnit(
-//					jdtCompilationUnit,
-//					this.jpaPlatform.getAnnotationProvider(),
-//					this.jpaPlatform.getAnnotationEditFormatter(),
-//					this.modifySharedDocumentCommandExecutor
-//				);
-//	}
-//
-//	protected boolean removeExternalJavaResourceCompilationUnit(IFile file) {
-//		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
-//			if (jrcu.getFile().equals(file)) {
-//				this.removeExternalJavaResourceCompilationUnit(jrcu);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	protected void removeExternalJavaResourceCompilationUnit(JavaResourceCompilationUnit jrcu) {
-//		jrcu.removeResourceModelListener(this.resourceModelListener);
-//		this.removeItemFromCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
-//	}
+	// ********** external Java resource persistent types (source or binary) **********
+
+	protected JavaResourceAbstractType buildExternalJavaResourceType(String typeName) {
+		//TODO typeName can be null in testing...need to look into this further.
+		if (typeName != null && ! typeIsBuiltInDataType(typeName)){
+			IType jdtType = this.findType(typeName);
+			return (jdtType == null) ? null : this.buildExternalJavaResourceType(jdtType);
+		}
+		return null;
+	}
+	
+	private boolean typeIsBuiltInDataType(String typeName){
+		return ArrayTools.contains(XML_SCHEMA_BUILT_IN_DATA_TYPES, typeName);
+	}
+
+	/**
+	 * If the Java project has a class named <code>Foo</code> in the default package,
+	 * {@link IJavaProject#findType(String)} will return the {@link IType}
+	 * corresponding to <code>Foo</code> if the named passed to it is <code>".Foo"</code>.
+	 * This is not what we are expecting! So we had to put in a check for any
+	 * type name beginning with <code>'.'</code>.
+	 * See JDT bug 377710.
+	 */
+	protected IType findType(String typeName) {
+		try {
+			return typeName.startsWith(".") ? null : this.getJavaProject().findType(typeName); //$NON-NLS-1$
+		} catch (JavaModelException ex) {
+			return null;  // ignore exception? resource exception was probably already logged by JDT
+		}
+	}
+
+	protected JavaResourceAbstractType buildExternalJavaResourceType(IType jdtType) {
+		return jdtType.isBinary() ?
+				this.buildBinaryExternalJavaResourceType(jdtType) :
+				this.buildSourceExternalJavaResourceType(jdtType);
+	}
+
+	protected JavaResourceAbstractType buildBinaryExternalJavaResourceType(IType jdtType) {
+		return this.externalJavaResourceTypeCache.addType(jdtType);
+	}
+
+	protected JavaResourceAbstractType buildSourceExternalJavaResourceType(IType jdtType) {
+		JavaResourceCompilationUnit jrcu = this.getExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
+		String jdtTypeName = jdtType.getFullyQualifiedName('.');  // JDT member type names use '$'
+		for (JavaResourceAbstractType jrat : jrcu.getTypes()) {
+			if (jrat.getTypeBinding().getQualifiedName().equals(jdtTypeName)) {
+				return jrat;
+			}
+		}
+		// we can get here if the project JRE is removed;
+		// see SourceCompilationUnit#getPrimaryType(CompilationUnit)
+		// bug 225332
+		return null;
+	}
+
+
+	// ********** external Java resource persistent types (binary) **********
+
+	public JavaResourceTypeCache getExternalJavaResourceTypeCache() {
+		return this.externalJavaResourceTypeCache;
+	}
+
+
+	// ********** external Java resource compilation units (source) **********
+
+	public Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
+		return new LiveCloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
+	}
+
+	public int getExternalJavaResourceCompilationUnitsSize() {
+		return this.externalJavaResourceCompilationUnits.size();
+	}
+
+	/**
+	 * Return the resource model compilation unit corresponding to the specified
+	 * JDT compilation unit. If it does not exist, build it.
+	 */
+	protected JavaResourceCompilationUnit getExternalJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
+		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
+			if (jrcu.getCompilationUnit().equals(jdtCompilationUnit)) {
+				// we will get here if the JRCU could not build its persistent type...
+				return jrcu;
+			}
+		}
+		return this.addExternalJavaResourceCompilationUnit(jdtCompilationUnit);
+	}
+
+	/**
+	 * Add an external Java resource compilation unit.
+	 */
+	protected JavaResourceCompilationUnit addExternalJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
+		JavaResourceCompilationUnit jrcu = this.buildJavaResourceCompilationUnit(jdtCompilationUnit);
+		this.addItemToCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
+		jrcu.addResourceModelListener(this.resourceModelListener);
+		return jrcu;
+	}
+
+	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
+		return new SourceTypeCompilationUnit(
+					jdtCompilationUnit,
+					this.jaxbPlatform.getAnnotationProvider(),
+					this.jaxbPlatform.getAnnotationEditFormatter(),
+					this.modifySharedDocumentCommandExecutor
+				);
+	}
+
+	protected boolean removeExternalJavaResourceCompilationUnit(IFile file) {
+		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
+			if (jrcu.getFile().equals(file)) {
+				this.removeExternalJavaResourceCompilationUnit(jrcu);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected void removeExternalJavaResourceCompilationUnit(JavaResourceCompilationUnit jrcu) {
+		jrcu.removeResourceModelListener(this.resourceModelListener);
+		this.removeItemFromCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
+	}
 
 
 	// ********** context model **********
@@ -774,9 +800,8 @@ public abstract class AbstractJaxbProject
 				return type;
 			}
 		}
-		return null;
-//		// if we don't have a type already, try to build new one from the project classpath
-//		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
+		// if we don't have a type already, try to build new one from the project classpath
+		return this.buildExternalJavaResourceType(typeName);
 	}
 	
 	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.AstNodeType astNodeType) {
@@ -804,17 +829,17 @@ public abstract class AbstractJaxbProject
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
 		return new CompositeIterable<JavaResourceNode.Root>(
-					this.getInternalJavaResourceCompilationUnits()/*,
-					this.getInternalJavaResourcePackageFragmentRoots(),
+					this.getInternalJavaResourceCompilationUnits(),
+//					this.getInternalJavaResourcePackageFragmentRoots(),
 					this.getExternalJavaResourceCompilationUnits(),
-					Collections.singleton(this.externalJavaResourcePersistentTypeCache)*/
+					Collections.singleton(this.externalJavaResourceTypeCache)
 				);
 	}
 
 	
 //	// ********** JARs **********
 //
-//	// TODO
+//	// TODO need to dermine if "listed" jar files have a place in JAXB tooling
 //	public JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName) {
 ////		return this.getJarResourcePackageFragmentRoot(this.convertToPlatformFile(jarFileName));
 //		return this.getJavaResourcePackageFragmentRoot(this.getProject().getFile(jarFileName));
@@ -1025,7 +1050,7 @@ public abstract class AbstractJaxbProject
 			this.synchronizeWithJavaSource(this.getInternalJavaResourceCompilationUnits());
 		} else {
 			// TODO see if changed project is on our classpath?
-			//this.synchronizeWithJavaSource(this.getExternalJavaResourceCompilationUnits());
+			this.synchronizeWithJavaSource(this.getExternalJavaResourceCompilationUnits());
 		}
 	}
 
@@ -1257,7 +1282,7 @@ public abstract class AbstractJaxbProject
 		if (delta.getResource().equals(this.getProject())) {
 			this.internalProjectChanged(delta);
 		} else {
-//			this.externalProjectChanged(delta);
+			this.externalProjectChanged(delta);
 		}
 	}
 
@@ -1330,86 +1355,86 @@ public abstract class AbstractJaxbProject
 		}
 	}
 
-//	protected void externalProjectChanged(IResourceDelta delta) {
-//		if (this.getJavaProject().isOnClasspath(delta.getResource())) {
-//			ResourceDeltaVisitor resourceDeltaVisitor = this.buildExternalResourceDeltaVisitor();
-//			resourceDeltaVisitor.visitDelta(delta);
-//			// force an "update" here since adding and/or removing an external Java type
-//			// will only trigger an "update" if the "resolve" causes something in the resource model to change
-//			if (resourceDeltaVisitor.encounteredSignificantChange()) {
-//				this.update();
-//				this.resolveExternalJavaTypes();
-//				this.resolveInternalJavaTypes();
-//			}
-//		}
-//	}
-//
-//	protected ResourceDeltaVisitor buildExternalResourceDeltaVisitor() {
-//		return new ResourceDeltaVisitor() {
-//			@Override
-//			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
-//				return AbstractJaxbProject.this.synchronizeExternalFiles(file, deltaKind);
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * external resource delta visitor callback
-//	 * Return true if an "external" Java resource compilation unit
-//	 * was added or removed.
-//	 */
-//	protected boolean synchronizeExternalFiles(IFile file, int deltaKind) {
-//		switch (deltaKind) {
-//			case IResourceDelta.ADDED :
-//				return this.externalFileAdded(file);
-//			case IResourceDelta.REMOVED :
-//				return this.externalFileRemoved(file);
-//			case IResourceDelta.CHANGED :
-//				break;  // ignore
-//			case IResourceDelta.ADDED_PHANTOM :
-//				break;  // ignore
-//			case IResourceDelta.REMOVED_PHANTOM :
-//				break;  // ignore
-//			default :
-//				break;  // only worried about added/removed/changed files
-//		}
-//
-//		return false;
-//	}
-//
-//	protected boolean externalFileAdded(IFile file) {
-//		IContentType contentType = PlatformTools.getContentType(file);
-//		if (contentType == null) {
-//			return false;
-//		}
-//		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-//			return true;
-//		}
-//		if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	protected boolean externalFileRemoved(IFile file) {
-//		IContentType contentType = PlatformTools.getContentType(file);
-//		if (contentType == null) {
-//			return false;
-//		}
-//		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-//			return this.removeExternalJavaResourceCompilationUnit(file);
-//		}
-//		if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
-//			return this.externalJavaResourcePersistentTypeCache.removePersistentTypes(file);
-//		}
-//		return false;
-//	}
-//
-//	protected void resolveExternalJavaTypes() {
-//		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
-//			jrcu.resolveTypes();
-//		}
-//	}
+	protected void externalProjectChanged(IResourceDelta delta) {
+		if (this.getJavaProject().isOnClasspath(delta.getResource())) {
+			ResourceDeltaVisitor resourceDeltaVisitor = this.buildExternalResourceDeltaVisitor();
+			resourceDeltaVisitor.visitDelta(delta);
+			// force an "update" here since adding and/or removing an external Java type
+			// will only trigger an "update" if the "resolve" causes something in the resource model to change
+			if (resourceDeltaVisitor.encounteredSignificantChange()) {
+				this.update();
+				this.resolveExternalJavaTypes();
+				this.resolveInternalJavaTypes();
+			}
+		}
+	}
+
+	protected ResourceDeltaVisitor buildExternalResourceDeltaVisitor() {
+		return new ResourceDeltaVisitor() {
+			@Override
+			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
+				return AbstractJaxbProject.this.synchronizeExternalFiles(file, deltaKind);
+			}
+		};
+	}
+
+	/**
+	 * external resource delta visitor callback
+	 * Return true if an "external" Java resource compilation unit
+	 * was added or removed.
+	 */
+	protected boolean synchronizeExternalFiles(IFile file, int deltaKind) {
+		switch (deltaKind) {
+			case IResourceDelta.ADDED :
+				return this.externalFileAdded(file);
+			case IResourceDelta.REMOVED :
+				return this.externalFileRemoved(file);
+			case IResourceDelta.CHANGED :
+				break;  // ignore
+			case IResourceDelta.ADDED_PHANTOM :
+				break;  // ignore
+			case IResourceDelta.REMOVED_PHANTOM :
+				break;  // ignore
+			default :
+				break;  // only worried about added/removed/changed files
+		}
+
+		return false;
+	}
+
+	protected boolean externalFileAdded(IFile file) {
+		IContentType contentType = PlatformTools.getContentType(file);
+		if (contentType == null) {
+			return false;
+		}
+		if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
+			return true;
+		}
+		if (contentType.equals(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE)) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean externalFileRemoved(IFile file) {
+		IContentType contentType = PlatformTools.getContentType(file);
+		if (contentType == null) {
+			return false;
+		}
+		if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
+			return this.removeExternalJavaResourceCompilationUnit(file);
+		}
+		if (contentType.equals(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE)) {
+			return this.externalJavaResourceTypeCache.removeTypes(file);
+		}
+		return false;
+	}
+
+	protected void resolveExternalJavaTypes() {
+		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
+			jrcu.resolveTypes();
+		}
+	}
 
 	// ***** resource delta visitors
 	/**

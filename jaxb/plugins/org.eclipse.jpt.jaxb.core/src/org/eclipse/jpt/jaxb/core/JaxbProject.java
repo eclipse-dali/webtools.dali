@@ -19,7 +19,9 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
@@ -131,33 +133,33 @@ public interface JaxbProject
 	JaxbFile getJaxbFile(IFile file);
 
 
-//	// ********** external Java resource compilation units **********
-//
-//	/** 
-//	 * ID string used when the JPA project's collection of external Java
-//	 * resource compilation units changes.
-//	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener)
-//	 */
-//	String EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION = "externalJavaResourceCompilationUnits"; //$NON-NLS-1$
-//
-//	/**
-//	 * Return the JPA project's external Java resource compilation units.
-//	 */
-//	Iterator<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits();
-//
-//	/**
-//	 * Return the size of the JPA project's external Java resource compilation units.
-//	 */
-//	int externalJavaResourceCompilationUnitsSize();
-//
-//
-//	// ********** external Java resource persistent types **********
-//
-//	/**
-//	 * Return the JPA project's external Java resource persistent type cache.
-//	 */
-//	JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache();
-//
+	// ********** external Java resource compilation units **********
+
+	/** 
+	 * ID string used when the JPA project's collection of external Java
+	 * resource compilation units changes.
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener)
+	 */
+	String EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION = "externalJavaResourceCompilationUnits"; //$NON-NLS-1$
+
+	/**
+	 * Return the JPA project's external Java resource compilation units.
+	 */
+	Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits();
+
+	/**
+	 * Return the size of the JPA project's external Java resource compilation units.
+	 */
+	int getExternalJavaResourceCompilationUnitsSize();
+
+
+	// ********** external Java resource persistent types **********
+
+	/**
+	 * Return the JPA project's external Java resource persistent type cache.
+	 */
+	JavaResourceTypeCache getExternalJavaResourceTypeCache();
+
 	
 	// ********** Java resources **********
 	

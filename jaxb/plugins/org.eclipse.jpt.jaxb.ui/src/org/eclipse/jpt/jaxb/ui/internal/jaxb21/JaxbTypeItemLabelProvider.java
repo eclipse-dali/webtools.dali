@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
@@ -44,7 +45,12 @@ public abstract class JaxbTypeItemLabelProvider<I extends JavaType>
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.item.getTypeName().getFullyQualifiedName());
 		sb.append(" - ");  //$NON-NLS-1$
-		sb.append(this.item.getResource().getFullPath().makeRelative());
+		//TODO if type is binary, there will be no underlying file.  Need to determine what correct behavior is for this case
+		//for now, avoid this part of the description for binary types
+		IResource resource = this.item.getResource();
+		if (resource != null) {
+			sb.append(resource.getFullPath().makeRelative());
+		}
 		return sb.toString();
 	}
 }
