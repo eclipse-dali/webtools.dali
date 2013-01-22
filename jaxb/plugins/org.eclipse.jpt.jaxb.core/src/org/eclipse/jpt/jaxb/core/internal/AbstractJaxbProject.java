@@ -108,20 +108,6 @@ public abstract class AbstractJaxbProject
 	extends AbstractJaxbNode
 	implements JaxbProject {
 	
-	//TODO this needs to move to some sort of JAXB util class, but not sure if there is one yet
-	private static final String[] XML_SCHEMA_BUILT_IN_DATA_TYPES = {
-		java.lang.String.class.getName(),
-		java.math.BigInteger.class.getName(),
-		java.math.BigDecimal.class.getName(),
-		javax.xml.namespace.QName.class.getName(),
-		javax.xml.datatype.XMLGregorianCalendar.class.getName(),
-		javax.xml.datatype.Duration.class.getName(),
-		java.lang.Object.class.getName(),
-		java.util.Date.class.getName(),
-		java.util.Calendar.class.getName(),
-
-	};
-	
 	/**
 	 * The Eclipse project corresponding to the JAXB project.
 	 */
@@ -475,15 +461,11 @@ public abstract class AbstractJaxbProject
 
 	protected JavaResourceAbstractType buildExternalJavaResourceType(String typeName) {
 		//TODO typeName can be null in testing...need to look into this further.
-		if (typeName != null && ! typeIsBuiltInDataType(typeName)){
+		if (typeName != null){
 			IType jdtType = this.findType(typeName);
 			return (jdtType == null) ? null : this.buildExternalJavaResourceType(jdtType);
 		}
 		return null;
-	}
-	
-	private boolean typeIsBuiltInDataType(String typeName){
-		return ArrayTools.contains(XML_SCHEMA_BUILT_IN_DATA_TYPES, typeName);
 	}
 
 	/**

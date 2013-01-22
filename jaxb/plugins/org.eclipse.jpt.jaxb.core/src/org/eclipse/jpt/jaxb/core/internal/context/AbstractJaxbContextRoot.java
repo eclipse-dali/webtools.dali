@@ -52,6 +52,9 @@ public abstract class AbstractJaxbContextRoot
 		extends AbstractJaxbContextNode
 		implements JaxbContextRoot {
 	
+	//TODO this needs to move to some sort of JAXB util class, but not sure if there is one yet
+	private static final String CORE_JAVA_TYPE_PACKAGE_PREFIX = "java";
+	
 	/* This object has no parent, so it must point to the JAXB project explicitly. */
 	protected final JaxbProject jaxbProject;
 	
@@ -171,7 +174,7 @@ public abstract class AbstractJaxbContextRoot
 					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
 						if (! StringTools.isBlank(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
 							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
-							if (referencedType != null) {
+							if (referencedType != null && ! typeIsCoreJavaType(referencedTypeName)) {
 								resourceTypesToProcess.add(referencedType);
 								referencedTypes.add(referencedType);
 							}
@@ -322,6 +325,10 @@ public abstract class AbstractJaxbContextRoot
 		else {
 			return buildJaxbClass((JavaResourceType) resourceType);
 		}
+	}
+	
+	private boolean typeIsCoreJavaType(String typeName){
+		return typeName.startsWith(CORE_JAVA_TYPE_PACKAGE_PREFIX);
 	}
 	
 	
