@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,6 +42,8 @@ public class JpaNavigatorItemContentProviderFactory
 	}
 
 	public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
+		// we hand JpaRootContextNodeModel differently because it can exist when the
+		// JPA facet is present by the JPA project may not yet be present...
 		if (item instanceof JpaRootContextNodeModel) {
 			return this.buildRootContextNodeModelProvider((JpaRootContextNodeModel) item, manager);
 		}
@@ -50,7 +52,7 @@ public class JpaNavigatorItemContentProviderFactory
 	}
 
 	protected ItemTreeContentProvider buildRootContextNodeModelProvider(JpaRootContextNodeModel item, Manager manager) {
-		return new RootContextNodeModelItemContentProvider(item, manager);
+		return new JpaRootContextNodeModelItemContentProvider(item, manager);
 	}
 
 	private ItemTreeContentProviderFactory getDelegate(Object element) {

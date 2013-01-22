@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
+import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 
 /**
  * The JPA project manager holds all the JPA projects in an Eclipse workspace
@@ -118,4 +119,16 @@ public interface JpaProjectManager
 	 * @see #addJavaEventListenerFlag(BooleanReference)
 	 */
 	void removeJavaEventListenerFlag(BooleanReference flag);
+
+
+	// ********** async event listener flags **********
+
+	/**
+	 * The name of the JPA faceted project framework settings file.
+	 * Listen for changes to this file to determine when the JPA facet is
+	 * added to or removed from a "faceted" project.
+	 * @see org.eclipse.jpt.common.core.internal.utility.ProjectTools#hasFacet(org.eclipse.core.resources.IProject, org.eclipse.wst.common.project.facet.core.IProjectFacet)
+	 * @see JpaProject#FACET
+	 */
+	String FACETED_PROJECT_FRAMEWORK_SETTINGS_FILE_NAME = FacetedProjectFramework.PLUGIN_ID + ".xml"; //$NON-NLS-1$
 }

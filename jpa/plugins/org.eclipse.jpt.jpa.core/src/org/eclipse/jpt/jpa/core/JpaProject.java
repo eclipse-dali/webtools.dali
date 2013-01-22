@@ -24,6 +24,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -128,6 +130,17 @@ public interface JpaProject
 	 * Return the root of the JPA project's context model.
 	 */
 	JpaRootContextNode getRootContextNode();
+
+	Transformer<JpaProject, JpaRootContextNode> ROOT_CONTEXT_NODE_TRANSFORMER = new RootContextNodeTransformer();
+
+	class RootContextNodeTransformer
+		extends AbstractTransformer<JpaProject, JpaRootContextNode>
+	{
+		@Override
+		protected JpaRootContextNode transform_(JpaProject jpaProject) {
+			return jpaProject.getRootContextNode();
+		}
+	}
 
 	/**
 	 * The JPA project has been removed from the JPA model. Clean up any

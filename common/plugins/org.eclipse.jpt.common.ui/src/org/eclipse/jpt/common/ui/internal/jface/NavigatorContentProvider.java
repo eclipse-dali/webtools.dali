@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,8 +29,8 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
 public abstract class NavigatorContentProvider
 	implements ICommonContentProvider
 {
-	protected final ResourceManager resourceManager;
-	protected TreeStateProvider delegate;
+	protected volatile ResourceManager resourceManager;
+	protected volatile ItemTreeStateProviderManager delegate;
 
 
 	/**
@@ -40,7 +40,6 @@ public abstract class NavigatorContentProvider
 	 */
 	protected NavigatorContentProvider() {
 		super();
-		this.resourceManager = this.buildResourceManager();
 	}
 
 	/**
@@ -56,10 +55,11 @@ public abstract class NavigatorContentProvider
 	 * here.
 	 */
 	public void init(ICommonContentExtensionSite config) {
+		this.resourceManager = this.buildResourceManager();
 		this.delegate = this.buildDelegate();
 	}
 
-	protected TreeStateProvider buildDelegate() {
+	protected ItemTreeStateProviderManager buildDelegate() {
 		return new ItemTreeStateProviderManager(
 				this.buildItemContentProviderFactory(),
 				this.buildItemLabelProviderFactory(),
@@ -97,12 +97,7 @@ public abstract class NavigatorContentProvider
 	}
 
 	/**
-	 * Return whether the specified element has children. This method handles
-	 * any element that is <em>not</em> handled by the {@link #delegate} but is
-	 * the parent of element(s) that <em>are</em> handled by the
-	 * {@link #delegate} (i.e. any third-party element that is to hold the
-	 * provider's elements; e.g. a project). Return <code>false</code> if the
-	 * element is to be handled by the {@link #delegate}.
+	 * @see #getChildren_(Object)
 	 */
 	protected abstract boolean hasChildren_(Object element);
 
@@ -118,6 +113,10 @@ public abstract class NavigatorContentProvider
 	 * {@link #delegate} (i.e. any third-party element that is to hold the
 	 * provider's elements; e.g. a project). Return <code>null</code> if the
 	 * element is to be handled by the {@link #delegate}.
+	 * <p>
+	 * We provide this hook for elements that are to be displayed even if their
+	 * corresponding model does not yet exist.
+	 * @see #hasChildren_(Object)
 	 */
 	protected abstract Object[] getChildren_(Object element);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -134,9 +133,6 @@ public class ProjectAdapterFactory
 	 * want to wait to retrieve a JPA root context node but wants to be notified
 	 * when it is available.
 	 * <p>
-	 * Subclass {@link TransformationPropertyValueModel} so we can
-	 * implement {@link org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel}.
-	 * <p>
 	 * <strong>NB:</strong> This model operates outside of all the other
 	 * activity synchronized by the JPA project manager; but that should be OK
 	 * since it will be kept synchronized with the JPA manager's collection of
@@ -147,22 +143,11 @@ public class ProjectAdapterFactory
 		implements JpaRootContextNodeModel
 	{
 		JpaRootContextNodeModelAdapter(JpaProjectModel jpaProjectsModel) {
-			super(jpaProjectsModel, TRANSFORMER);
+			super(jpaProjectsModel, JpaProject.ROOT_CONTEXT_NODE_TRANSFORMER);
 		}
 
 		public IProject getProject() {
 			return ((JpaProjectModel) this.valueModel).getProject();
-		}
-
-		private static final Transformer TRANSFORMER = new Transformer();
-
-		/* class private */ static class Transformer
-			extends AbstractTransformer<JpaProject, JpaRootContextNode>
-		{
-			@Override
-			protected JpaRootContextNode transform_(JpaProject jpaProject) {
-				return jpaProject.getRootContextNode();
-			}
 		}
 	}
 }

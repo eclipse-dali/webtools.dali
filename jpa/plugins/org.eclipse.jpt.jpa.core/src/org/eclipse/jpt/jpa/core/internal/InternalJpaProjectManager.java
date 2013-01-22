@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -39,6 +38,8 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.core.internal.utility.ResourceChangeAdapter;
+import org.eclipse.jpt.common.core.internal.utility.ResourceProxyVisitorAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.JobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
@@ -66,7 +67,6 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -190,12 +190,6 @@ class InternalJpaProjectManager
 	private static final int RESOURCE_CHANGE_EVENT_TYPES =
 			IResourceChangeEvent.POST_CHANGE |
 			IResourceChangeEvent.POST_BUILD;
-
-	/**
-	 * Listen for changes to this file to determine when the JPA facet is
-	 * added to or removed from a "faceted" project.
-	 */
-	private static final String FACETED_PROJECT_FRAMEWORK_SETTINGS_FILE_NAME = FacetedProjectFramework.PLUGIN_ID + ".xml"; //$NON-NLS-1$
 
 	/**
 	 * Listen for Java changes (unless the Dali UI is active).
@@ -1217,7 +1211,7 @@ class InternalJpaProjectManager
 	 * JPA project manager for each open Eclipse project that has a JPA facet.
 	 */
 	/* CU private */ class ResourceProxyVisitor
-		implements IResourceProxyVisitor
+		extends ResourceProxyVisitorAdapter
 	{
 		private final IProgressMonitor monitor;
 
@@ -1226,6 +1220,7 @@ class InternalJpaProjectManager
 			this.monitor = monitor;
 		}
 
+		@Override
 		public boolean visit(IResourceProxy resourceProxy) {
 			switch (resourceProxy.getType()) {
 				case IResource.ROOT :
@@ -1254,18 +1249,13 @@ class InternalJpaProjectManager
 				}
 			}
 		}
-
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
 	}
 
 
 	// ********** resource change listener **********
 
 	/* CU private */ class ResourceChangeListener
-		implements IResourceChangeListener
+		extends ResourceChangeAdapter
 	{
 		/**
 		 * PRE_UNINSTALL is the only facet event we use for
@@ -1278,6 +1268,7 @@ class InternalJpaProjectManager
 		 * <li>project clean
 		 * </ul>
 		 */
+		@Override
 		public void resourceChanged(IResourceChangeEvent event) {
 			switch (event.getType()) {
 				case IResourceChangeEvent.POST_CHANGE :
@@ -1425,11 +1416,6 @@ class InternalJpaProjectManager
 		private void processProjectPostCleanBuild(IProject project) {
 			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "\tProject CLEAN event: {0}", project.getName()); //$NON-NLS-1$
 			InternalJpaProjectManager.this.projectPostCleanBuild(project);
-		}
-
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
 		}
 	}
 

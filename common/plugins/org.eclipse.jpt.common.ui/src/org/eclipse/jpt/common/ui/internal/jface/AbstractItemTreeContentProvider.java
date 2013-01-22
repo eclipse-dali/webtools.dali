@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,8 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
  * 	   Return a {@link CollectionValueModel} that represents the item's children
  * </ul>
  * 
+ * @param <I> the type of the item for which the provider can supply children
+ * @param <C> the type of the item's children
  * @see StaticItemTreeContentProvider
  */
 public abstract class AbstractItemTreeContentProvider<I, C>
