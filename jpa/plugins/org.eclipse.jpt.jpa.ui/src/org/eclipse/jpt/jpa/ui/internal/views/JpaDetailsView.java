@@ -53,6 +53,11 @@ public class JpaDetailsView
 	extends ViewPart
 {
 	/**
+	 * View ID specified in <code>plugin.xml</code>.
+	 */
+	public static final String ID = "org.eclipse.jpt.ui.jpaDetailsView"; //$NON-NLS-1$
+
+	/**
 	 * The scrolled form that holds the {@link #pageBook page book}.
 	 * We need to force it to reflow whenever we change the page book's
 	 * current page.

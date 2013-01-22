@@ -45,6 +45,11 @@ public class JpaStructureView
 	extends PageBookView
 {
 	/**
+	 * View ID specified in <code>plugin.xml</code>.
+	 */
+	public static final String ID = "org.eclipse.jpt.ui.jpaStructureView"; //$NON-NLS-1$
+
+	/**
 	 * The manager is created when the view's control is
 	 * {@link #createPartControl(Composite) created}
 	 * and disposed, if necessary, when the view is
