@@ -37,17 +37,17 @@ public class SimpleProjectResourceLocator
 
 	public boolean resourceLocationIsValid(IContainer container) {
 		ResourceLocator resourceLocator = this.getResourceLocator();
-		return (resourceLocator != null) && resourceLocator.resourceLocationIsValid(this.project, container);
+		return (resourceLocator != null) && resourceLocator.locationIsValid(this.project, container);
 	}
 
 	public IContainer getDefaultResourceLocation() {
 		ResourceLocator resourceLocator = this.getResourceLocator();
-		return (resourceLocator == null) ? null : resourceLocator.getDefaultResourceLocation(this.project);
+		return (resourceLocator == null) ? null : resourceLocator.getDefaultLocation(this.project);
 	}
 
 	public IPath getResourcePath(IPath runtimePath) {
 		ResourceLocator resourceLocator = this.getResourceLocator();
-		return (resourceLocator == null) ? null : resourceLocator.getResourcePath(this.project, runtimePath);
+		return (resourceLocator == null) ? null : resourceLocator.getWorkspacePath(this.project, runtimePath);
 	}
 
 	public IPath getRuntimePath(IPath resourcePath) {

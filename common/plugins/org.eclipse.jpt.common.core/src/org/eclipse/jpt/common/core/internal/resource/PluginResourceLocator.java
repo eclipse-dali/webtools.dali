@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -24,15 +24,15 @@ public class PluginResourceLocator
 	extends SimpleJavaResourceLocator
 {
 	@Override
-	public IContainer getDefaultResourceLocation(IProject project) {
+	public IContainer getDefaultLocation(IProject project) {
 		IContainer bundleRoot = this.getBundleRoot(project);
 		return (bundleRoot != null) ?
 				bundleRoot.getFolder(META_INF_PATH) :
-				super.getDefaultResourceLocation(project);
+				super.getDefaultLocation(project);
 	}
 
 	@Override
-	public IPath getResourcePath(IProject project, IPath runtimePath) {
+	public IPath getWorkspacePath(IProject project, IPath runtimePath) {
 		IContainer bundleRoot = this.getBundleRoot(project);
 		if (bundleRoot != null) {
 			IPath resourcePath = bundleRoot.getFullPath().append(runtimePath);
@@ -40,7 +40,7 @@ public class PluginResourceLocator
 				return resourcePath;
 			}
 		}
-		return super.getResourcePath(project, runtimePath);
+		return super.getWorkspacePath(project, runtimePath);
 	}
 
 	@Override

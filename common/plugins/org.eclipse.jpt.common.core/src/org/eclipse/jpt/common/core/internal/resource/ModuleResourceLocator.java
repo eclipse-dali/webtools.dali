@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -28,12 +28,12 @@ public class ModuleResourceLocator
 	 * Return the folder representing the <code>META-INF</code> runtime location.
 	 */
 	@Override
-	public IContainer getDefaultResourceLocation(IProject project) {
+	public IContainer getDefaultLocation(IProject project) {
 		return this.getRootFolder(project).getFolder(META_INF_PATH).getUnderlyingFolder();
 	}
 	
 	@Override
-	public IPath getResourcePath(IProject project, IPath runtimePath) {
+	public IPath getWorkspacePath(IProject project, IPath runtimePath) {
 		return this.getRootFolder(project).getFile(runtimePath).getWorkspaceRelativePath();
 	}
 	

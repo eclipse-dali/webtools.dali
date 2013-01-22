@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -41,9 +41,9 @@ public class SimpleJavaResourceLocator
 	 * <li>in the non-Java resources, but not in the project output location
 	 * </ul>
 	 */
-	public boolean resourceLocationIsValid(IProject project, IContainer container) {
+	public boolean locationIsValid(IProject project, IContainer container) {
 		try {
-			return this.resourceLocationIsValid_(project, container);
+			return this.locationIsValid_(project, container);
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			// happens if the Java project does not exist
@@ -51,7 +51,7 @@ public class SimpleJavaResourceLocator
 		}
 	}
 
-	protected boolean resourceLocationIsValid_(IProject project, IContainer container) throws JavaModelException {
+	protected boolean locationIsValid_(IProject project, IContainer container) throws JavaModelException {
 		IJavaProject javaProject = this.getJavaProject(project);
 		if (javaProject.isOnClasspath(container)) {
 			return true;
@@ -87,9 +87,9 @@ public class SimpleJavaResourceLocator
 	 *     fragment root (source folder)
 	 * </ul>
 	 */
-	public IContainer getDefaultResourceLocation(IProject project) {
+	public IContainer getDefaultLocation(IProject project) {
 		try {
-			return this.getDefaultResourceLocation_(project);
+			return this.getDefaultLocation_(project);
 		} catch (Exception ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			// happens if the Java project does not exist or there is a problem with the
@@ -98,7 +98,7 @@ public class SimpleJavaResourceLocator
 		}
 	}
 
-	protected IContainer getDefaultResourceLocation_(IProject project) throws JavaModelException {
+	protected IContainer getDefaultLocation_(IProject project) throws JavaModelException {
 		IContainer defaultLocation = null;
 		for (IContainer sourceFolder : this.getSourceFolders(project)) {
 			IFolder metaInfFolder = sourceFolder.getFolder(META_INF_PATH);
@@ -117,16 +117,16 @@ public class SimpleJavaResourceLocator
 		return defaultLocation;
 	}
 
-	public IPath getResourcePath(IProject project, IPath runtimePath) {
+	public IPath getWorkspacePath(IProject project, IPath runtimePath) {
 		try {
-			return this.getResourcePath_(project, runtimePath);
+			return this.getWorkspacePath_(project, runtimePath);
 		} catch (Exception ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
 
-	protected IPath getResourcePath_(IProject project, IPath runtimePath) throws JavaModelException {
+	protected IPath getWorkspacePath_(IProject project, IPath runtimePath) throws JavaModelException {
 		IPath defaultResourcePath = null;
 		for (IContainer sourceFolder : this.getSourceFolders(project)) {
 			IPath resourcePath = sourceFolder.getFullPath().append(runtimePath);

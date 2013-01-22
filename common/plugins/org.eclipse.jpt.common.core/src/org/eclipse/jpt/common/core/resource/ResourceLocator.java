@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -34,18 +34,18 @@ public interface ResourceLocator {
 	 * Return whether the specified container is an acceptable (non-Java)
 	 * resource location for the specified project.
 	 */
-	boolean resourceLocationIsValid(IProject project, IContainer container);
+	boolean locationIsValid(IProject project, IContainer container);
 	
 	/**
 	 * Return the default location in which to create new (non-Java) resources.
 	 */
-	IContainer getDefaultResourceLocation(IProject project);
+	IContainer getDefaultLocation(IProject project);
 	
 	/**
 	 * Return the workspace relative absolute resource path best represented by
 	 * the specified runtime path for the specified project.
 	 */
-	IPath getResourcePath(IProject project, IPath runtimePath);
+	IPath getWorkspacePath(IProject project, IPath runtimePath);
 	
 	/**
 	 * Return the runtime path best represented by the specified workspace

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -26,7 +26,7 @@ public class WebModuleResourceLocator
 	 * location.
 	 */
 	@Override
-	public IContainer getDefaultResourceLocation(IProject project) {
+	public IContainer getDefaultLocation(IProject project) {
 		return this.getRootFolder(project).getFolder(WEB_META_INF_PATH).getUnderlyingFolder();
 	}
 
@@ -35,8 +35,8 @@ public class WebModuleResourceLocator
 	 * appended to the <code>WEB-INF/classes</code> location.
 	 */
 	@Override
-	public IPath getResourcePath(IProject project, IPath runtimePath) {
-		return super.getResourcePath(project, WEB_INF_CLASSES_PATH.append(runtimePath));
+	public IPath getWorkspacePath(IProject project, IPath runtimePath) {
+		return super.getWorkspacePath(project, WEB_INF_CLASSES_PATH.append(runtimePath));
 	}
 
 	/**
