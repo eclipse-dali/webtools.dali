@@ -140,6 +140,6 @@ public class JpaFacetInstallDelegate
 			JptJpaCorePlugin.instance().logError("No resource locator for project: " + project); //$NON-NLS-1$
 			return null;
 		}
-		return resourceLocator.getDefaultResourceLocation().getFullPath();
+		return resourceLocator.getDefaultLocation().getFullPath();
 	}
 }

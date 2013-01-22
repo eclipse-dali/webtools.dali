@@ -101,7 +101,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
 		}
 		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
-		if ( ! resourceLocator.resourceLocationIsValid(container)) {
+		if ( ! resourceLocator.locationIsValid(container)) {
 			return JptJpaCorePlugin.instance().buildWarningStatus(JptCoreMessages.VALIDATE_CONTAINER_QUESTIONABLE);
 		}
 		return Status.OK_STATUS;

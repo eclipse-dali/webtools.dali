@@ -84,7 +84,7 @@ public abstract class AbstractJptXmlResourceProvider
 	
 	protected URI buildFileUri(IPath resourcePath) {
 		if ( ! resourcePath.isAbsolute()) {
-			resourcePath = this.getProjectResourceLocator().getResourcePath(resourcePath);
+			resourcePath = this.getProjectResourceLocator().getWorkspacePath(resourcePath);
 		}
 		URI resourceURI = URI.createPlatformResourceURI(resourcePath.toString(), false);
 		

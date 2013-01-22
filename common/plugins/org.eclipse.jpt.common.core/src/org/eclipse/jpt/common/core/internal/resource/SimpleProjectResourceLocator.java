@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,17 +35,17 @@ public class SimpleProjectResourceLocator
 		this.project = project;
 	}
 
-	public boolean resourceLocationIsValid(IContainer container) {
+	public boolean locationIsValid(IContainer container) {
 		ResourceLocator resourceLocator = this.getResourceLocator();
 		return (resourceLocator != null) && resourceLocator.locationIsValid(this.project, container);
 	}
 
-	public IContainer getDefaultResourceLocation() {
+	public IContainer getDefaultLocation() {
 		ResourceLocator resourceLocator = this.getResourceLocator();
 		return (resourceLocator == null) ? null : resourceLocator.getDefaultLocation(this.project);
 	}
 
-	public IPath getResourcePath(IPath runtimePath) {
+	public IPath getWorkspacePath(IPath runtimePath) {
 		ResourceLocator resourceLocator = this.getResourceLocator();
 		return (resourceLocator == null) ? null : resourceLocator.getWorkspacePath(this.project, runtimePath);
 	}
@@ -56,7 +56,7 @@ public class SimpleProjectResourceLocator
 	}
 
 	public IFile getPlatformFile(IPath runtimePath) {
-		IPath sourcePath = this.getResourcePath(runtimePath);
+		IPath sourcePath = this.getWorkspacePath(runtimePath);
 		return (sourcePath == null) ? null : this.project.getWorkspace().getRoot().getFile(sourcePath);
 	}
 

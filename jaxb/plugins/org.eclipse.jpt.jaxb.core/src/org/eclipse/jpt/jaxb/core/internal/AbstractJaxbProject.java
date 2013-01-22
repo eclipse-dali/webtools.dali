@@ -440,7 +440,7 @@ public abstract class AbstractJaxbProject
 	
 	/* (non-java resource) file is in acceptable resource location */
 	protected boolean fileResourceLocationIsValid(IFile file) {
-		return this.getProjectResourceLocator().resourceLocationIsValid(file.getParent());
+		return this.getProjectResourceLocator().locationIsValid(file.getParent());
 	}
 
 	protected ProjectResourceLocator getProjectResourceLocator() {
