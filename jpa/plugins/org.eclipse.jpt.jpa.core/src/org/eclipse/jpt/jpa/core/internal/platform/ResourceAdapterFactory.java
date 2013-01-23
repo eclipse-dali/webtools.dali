@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.platform;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 
 /**
  * Factory to build Dali adapters for an {@link IResource}:<ul>
- * <li>{@link JpaPlatformConfig}
+ * <li>{@link org.eclipse.jpt.jpa.core.JpaPlatform.Config}
  * </ul>
  * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
@@ -27,7 +27,7 @@ public class ResourceAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-			JpaPlatformConfig.class
+			JpaPlatform.Config.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -42,13 +42,13 @@ public class ResourceAdapterFactory
 	}
 	
 	private Object getAdapter(IResource resource, Class<?> adapterType) {
-		if (adapterType == JpaPlatformConfig.class) {
+		if (adapterType == JpaPlatform.Config.class) {
 			return this.getJpaPlatformConfig(resource);
 		}
 		return null;
 	}
 	
-	private JpaPlatformConfig getJpaPlatformConfig(IResource resource) {
+	private JpaPlatform.Config getJpaPlatformConfig(IResource resource) {
 		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager(resource.getWorkspace());
 		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(JpaPreferences.getJpaPlatformID(resource.getProject()));
 	}

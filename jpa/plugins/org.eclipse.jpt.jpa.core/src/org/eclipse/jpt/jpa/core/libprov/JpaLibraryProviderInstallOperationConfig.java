@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.libprov;
 
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 
 
 public interface JpaLibraryProviderInstallOperationConfig 
@@ -25,7 +25,7 @@ public interface JpaLibraryProviderInstallOperationConfig
 	/** property of all jpa library provider install operation configs */
 	public static final String PROP_JPA_PLATFORM = "JPA_PLATFORM"; //$NON-NLS-1$
 	
-	JpaPlatformConfig getJpaPlatformConfig();
+	JpaPlatform.Config getJpaPlatformConfig();
 	
-	void setJpaPlatformConfig(JpaPlatformConfig jpaPlatformConfig);
+	void setJpaPlatformConfig(JpaPlatform.Config jpaPlatformConfig);
 }

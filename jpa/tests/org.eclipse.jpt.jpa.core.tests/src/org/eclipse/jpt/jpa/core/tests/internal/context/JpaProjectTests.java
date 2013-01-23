@@ -14,6 +14,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelPropertie
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -58,7 +58,7 @@ public class JpaProjectTests
 		return dataModel;
 	}
 
-	protected JpaPlatformConfig getJpaPlatformConfig() {
+	protected JpaPlatform.Config getJpaPlatformConfig() {
 		return this.getJpaPlatformManager().getJpaPlatformConfig(GenericJpaPlatformFactory.ID);
 	}
 

@@ -12,17 +12,17 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 
 public class XmlFileAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-		JpaPlatformConfig.class
+		JpaPlatform.Config.class
 	};
 
 	public Class<?>[] getAdapterList() {
@@ -37,13 +37,13 @@ public class XmlFileAdapterFactory
 	}
 	
 	private Object getAdapter(IResource resource, Class<?> adapterType) {
-		if (adapterType == JpaPlatformConfig.class) {
+		if (adapterType == JpaPlatform.Config.class) {
 			return this.getJpaPlatformConfig(resource);
 		}
 		return null;
 	}
 	
-	private JpaPlatformConfig getJpaPlatformConfig(IResource resource) {
+	private JpaPlatform.Config getJpaPlatformConfig(IResource resource) {
 		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager(resource.getWorkspace());
 		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(JpaPreferences.getJpaPlatformID(resource.getProject()));
 	}

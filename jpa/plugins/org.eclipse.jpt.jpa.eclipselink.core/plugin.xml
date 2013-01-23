@@ -17,7 +17,7 @@
 	<extension point="org.eclipse.core.expressions.definitions">
 		<!-- A test for determining whether something has an EclipseLink JPA platform.
 			Typical usage:
-			<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+			<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 				<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 			</adapt>
 		 -->
@@ -207,7 +207,7 @@
 							value="jpa-user-library-provider"/>
 					</with>
 					<with variable="config">
-						<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<adapt type = "org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 							<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
 								value="eclipselink"/>
 						</adapt>
@@ -226,7 +226,7 @@
 							value="eclipselink-bundles-library-provider"/>
 					</with>
 					<with variable="config">
-						<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<adapt type = "org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 							<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
 								value="eclipselink"/>
 						</adapt>

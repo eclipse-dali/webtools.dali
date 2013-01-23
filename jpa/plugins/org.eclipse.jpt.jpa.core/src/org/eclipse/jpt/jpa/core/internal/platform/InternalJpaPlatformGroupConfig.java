@@ -12,12 +12,11 @@ package org.eclipse.jpt.jpa.core.internal.platform;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 
 class InternalJpaPlatformGroupConfig
-	implements JpaPlatformGroupConfig
+	implements JpaPlatform.GroupConfig
 {
 	private final InternalJpaPlatformManager jpaPlatformManager;
 	private final String id;
@@ -59,8 +58,8 @@ class InternalJpaPlatformGroupConfig
 		this.platformConfigs.add(platform);
 	}
 
-	public Iterable<JpaPlatformConfig> getJpaPlatformConfigs() {
-		return new SuperIterableWrapper<JpaPlatformConfig>(this.platformConfigs);
+	public Iterable<JpaPlatform.Config> getJpaPlatformConfigs() {
+		return new SuperIterableWrapper<JpaPlatform.Config>(this.platformConfigs);
 	}
 
 	@Override

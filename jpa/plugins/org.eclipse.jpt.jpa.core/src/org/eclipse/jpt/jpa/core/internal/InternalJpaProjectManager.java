@@ -65,7 +65,6 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -681,7 +680,7 @@ class InternalJpaProjectManager
 		if (jpaFacetVersion == null) {
 			return null;
 		}
-		JpaPlatformConfig config = this.jpaWorkspace.getJpaPlatformManager().getDefaultJpaPlatformConfig(jpaFacetVersion);
+		JpaPlatform.Config config = this.jpaWorkspace.getJpaPlatformManager().getDefaultJpaPlatformConfig(jpaFacetVersion);
 		return (config == null) ? null : config.getId();
 	}
 

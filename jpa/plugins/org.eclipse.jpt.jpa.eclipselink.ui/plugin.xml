@@ -126,7 +126,7 @@
 					<adapt type="org.eclipse.core.resources.IResource">
 						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
-					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+					<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 					</adapt>
 				</and>
@@ -147,7 +147,7 @@
 					<adapt type="org.eclipse.core.resources.IResource">
 						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
-					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+					<adapt type = "org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 						<not> 
                         	<test 
@@ -211,7 +211,7 @@
 					</adapt>
 					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
 					this will result in true and properties page will appear for a non-eclipselink platform project  -->
-					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+					<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 					</adapt>
 				</and>
@@ -300,7 +300,7 @@
 						</adapt>
 						<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
 						this will result in true and the command will appear in the Quick Access  -->
-						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 						</adapt>
 					</iterate>
@@ -320,7 +320,7 @@
 						</adapt>
 						<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
 						this will result in true and the command will appear in the Quick Access  -->
-						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 						</adapt>
 					</iterate>
@@ -336,7 +336,7 @@
 				<iterate ifEmpty="false">
 					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
 					this will result in true and the command will appear in the Quick Access  -->
-					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+					<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 					</adapt>
 					<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
@@ -354,7 +354,7 @@
 				<iterate ifEmpty="false">
 					<!-- if the o.e.jpt.jpa.core plug-in is not loaded yet, 
 					this will result in true and the command will appear in the Quick Access  -->
-					<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+					<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 						<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 					</adapt>
 					<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
@@ -408,7 +408,7 @@
 						<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
 							<test property="org.eclipse.jpt.jpa.core.isGenericMappingFile"/>
 	           			</adapt>
-						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 						</adapt>
 					</iterate>
@@ -448,7 +448,7 @@
         				<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
         					<test property="org.eclipse.jpt.jpa.core.isGenericMappingFile"/>
                    	   	</adapt>
-						<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
+						<adapt type="org.eclipse.jpt.jpa.core.JpaPlatform$Config">
 							<reference definitionId="org.eclipse.jpt.jpa.eclipselink.reference.hasEclipseLinkJpaPlatform"/>
 						</adapt>
 					</iterate>

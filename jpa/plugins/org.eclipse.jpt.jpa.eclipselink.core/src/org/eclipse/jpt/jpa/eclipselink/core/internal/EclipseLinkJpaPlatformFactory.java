@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 
 /**
@@ -54,7 +53,7 @@ public class EclipseLinkJpaPlatformFactory
 		super();
 	}
 
-	public JpaPlatform buildJpaPlatform(JpaPlatformConfig config) {
+	public JpaPlatform buildJpaPlatform(JpaPlatform.Config config) {
 		return new GenericJpaPlatform(
 			config,
 			buildJpaVersion(),

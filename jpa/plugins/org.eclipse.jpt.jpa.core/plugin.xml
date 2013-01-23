@@ -96,28 +96,28 @@
 		<factory
 			adaptableType="org.eclipse.core.resources.IResource"
 			class="org.eclipse.jpt.jpa.core.internal.platform.ResourceAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
+			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
 		<!-- IJavaElement -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.jdt.core.IJavaElement"
 			class="org.eclipse.jpt.jpa.core.internal.platform.JavaElementAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
+			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
 		<!-- JpaLibraryProviderInstallOperationConfig -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig"
 			class="org.eclipse.jpt.jpa.core.internal.libprov.JpaLibraryProviderInstallOperationConfigAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
+			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
 		<!-- XmlFile -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.context.XmlFile"
 			class="org.eclipse.jpt.jpa.core.internal.XmlFileAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
+			<adapter type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"/>
 		</factory>
 
 	</extension>
@@ -229,7 +229,7 @@
 
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.JpaPlatform"
-			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"
+			type="org.eclipse.jpt.jpa.core.JpaPlatform$Config"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="jpaPlatform, jpaPlatformGroup"
 			class="org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformPropertyTester"/>

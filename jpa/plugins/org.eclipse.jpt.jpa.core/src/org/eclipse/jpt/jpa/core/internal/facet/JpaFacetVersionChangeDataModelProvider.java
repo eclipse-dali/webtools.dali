@@ -14,10 +14,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 
 public class JpaFacetVersionChangeDataModelProvider
 	extends JpaFacetDataModelProvider
@@ -56,7 +56,7 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** defaults **********************************************
 	
 	@Override
-	protected JpaPlatformConfig getDefaultPlatformConfig() {
+	protected JpaPlatform.Config getDefaultPlatformConfig() {
 		return getJpaProject().getJpaPlatform().getConfig();
 	}
 	
@@ -106,11 +106,11 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** valid property descriptors ****************************
 	
 	@Override
-	protected Iterable<JpaPlatformConfig> buildValidPlatformConfigs() {
+	protected Iterable<JpaPlatform.Config> buildValidPlatformConfigs() {
 		// add existing platform to list of choices
-		Iterable<JpaPlatformConfig> validPlatformConfigs = super.buildValidPlatformConfigs();
+		Iterable<JpaPlatform.Config> validPlatformConfigs = super.buildValidPlatformConfigs();
 		if (! IterableTools.contains(validPlatformConfigs, getDefaultPlatformConfig())) {
-			validPlatformConfigs = new CompositeIterable<JpaPlatformConfig>(getDefaultPlatformConfig(), validPlatformConfigs);
+			validPlatformConfigs = new CompositeIterable<JpaPlatform.Config>(getDefaultPlatformConfig(), validPlatformConfigs);
 		}
 		return validPlatformConfigs;
 	}

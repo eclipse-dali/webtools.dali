@@ -10,11 +10,10 @@ package org.eclipse.jpt.jpa.core.internal.platform;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 
 /**
- * Property tester for {@link JpaPlatformConfig}.
+ * Property tester for {@link org.eclipse.jpt.jpa.core.JpaPlatform.Config}.
  * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class JpaPlatformPropertyTester
@@ -24,19 +23,19 @@ public class JpaPlatformPropertyTester
 	public static final String JPA_PLATFORM_GROUP = "jpaPlatformGroup"; //$NON-NLS-1$
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (receiver instanceof JpaPlatformConfig) {
-			return this.test((JpaPlatformConfig) receiver, property, expectedValue);
+		if (receiver instanceof JpaPlatform.Config) {
+			return this.test((JpaPlatform.Config) receiver, property, expectedValue);
 		}
 		return false;
 	}
 	
-	private boolean test(JpaPlatformConfig config, String property, Object expectedValue) {
+	private boolean test(JpaPlatform.Config config, String property, Object expectedValue) {
 		if (property.equals(JPA_PLATFORM)) {
-			JpaPlatformConfig expected = config.getJpaPlatformManager().getJpaPlatformConfig((String) expectedValue);
+			JpaPlatform.Config expected = config.getJpaPlatformManager().getJpaPlatformConfig((String) expectedValue);
 			return ObjectTools.equals(config, expected);
 		}
 		if (property.equals(JPA_PLATFORM_GROUP)) {
-			JpaPlatformGroupConfig expected = config.getJpaPlatformManager().getJpaPlatformGroupConfig((String) expectedValue);
+			JpaPlatform.GroupConfig expected = config.getJpaPlatformManager().getJpaPlatformGroupConfig((String) expectedValue);
 			return ObjectTools.equals(config.getGroupConfig(), expected);
 		}
 		return false;

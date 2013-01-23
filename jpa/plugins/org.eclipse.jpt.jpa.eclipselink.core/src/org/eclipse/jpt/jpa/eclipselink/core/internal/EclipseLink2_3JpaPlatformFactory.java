@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_3;
@@ -44,7 +43,7 @@ public class EclipseLink2_3JpaPlatformFactory
 		super();
 	}
 
-	public JpaPlatform buildJpaPlatform(JpaPlatformConfig config) {
+	public JpaPlatform buildJpaPlatform(JpaPlatform.Config config) {
 		return new GenericJpaPlatform(
 			config,
 			buildJpaVersion(),

@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiManager;
@@ -220,7 +219,7 @@ public class InternalJpaPlatformUiManager
 		return this.getJpaPlatformConfig(jpaPlatformID) == null;
 	}
 
-	private JpaPlatformConfig getJpaPlatformConfig(String jpaPlatformID) {
+	private JpaPlatform.Config getJpaPlatformConfig(String jpaPlatformID) {
 		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager();
 		return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(jpaPlatformID);
 	}

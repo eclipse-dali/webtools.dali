@@ -13,9 +13,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -44,7 +44,7 @@ public abstract class JpaFacetActionDelegate
 		IDataModel dataModel = (IDataModel) config;
 		
 		// project settings
-		JpaPlatformConfig platformConfig = (JpaPlatformConfig) dataModel.getProperty(PLATFORM);
+		JpaPlatform.Config platformConfig = (JpaPlatform.Config) dataModel.getProperty(PLATFORM);
 		JpaPreferences.setJpaPlatformID(project, platformConfig.getId());
 		subMonitor.worked(1);
 		

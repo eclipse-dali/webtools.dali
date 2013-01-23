@@ -14,10 +14,10 @@ import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectBase;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -56,7 +56,7 @@ public class RuntimeChangedListener
 		return (jpaProject == null) ? null : jpaProject.getJpaPlatform().getId();
 	}
 	
-	protected JpaPlatformConfig getJpaPlatformConfig(IProject project) {
+	protected JpaPlatform.Config getJpaPlatformConfig(IProject project) {
 		JpaProject jpaProject = this.getJpaProject(project);
 		return (jpaProject == null) ? null : jpaProject.getJpaPlatform().getConfig();
 	}

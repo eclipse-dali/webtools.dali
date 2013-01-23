@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,13 +14,11 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 class InternalJpaPlatformConfig
-	implements JpaPlatformConfig
+	implements JpaPlatform.Config
 {
 	private final InternalJpaPlatformManager jpaPlatformManager;
 	private final String id;
@@ -55,7 +53,7 @@ class InternalJpaPlatformConfig
 		return this.label;
 	}
 
-	public String getFactoryClassName() {
+	String getFactoryClassName() {
 		return this.factoryClassName;
 	}
 
@@ -70,6 +68,11 @@ class InternalJpaPlatformConfig
 		return (this.jpaFacetVersion == null) || this.jpaFacetVersion.equals(version);
 	}
 
+	/**
+	 * Return whether the config's JPA platform can be used as the default
+	 * JPA platform for its {@link #supportsJpaFacetVersion(IProjectFacetVersion)
+	 * supported JPA facet versions}.
+	 */
 	public boolean isDefault() {
 		return this.default_;
 	}
@@ -78,7 +81,7 @@ class InternalJpaPlatformConfig
 		this.default_ = default_;
 	}
 
-	public JpaPlatformGroupConfig getGroupConfig() {
+	public JpaPlatform.GroupConfig getGroupConfig() {
 		return this.group;
 	}
 

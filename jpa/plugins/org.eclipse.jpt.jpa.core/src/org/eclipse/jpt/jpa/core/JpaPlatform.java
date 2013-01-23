@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,13 +15,15 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -61,7 +63,7 @@ public interface JpaPlatform
 	 * Return the JPA platform's config (i.e. the config defined by
 	 * the JPA platform's plug-in extension).
 	 */
-	JpaPlatformConfig getConfig();
+	Config getConfig();
 
 	/**
 	 * Return the JPA platform's version.
@@ -195,6 +197,8 @@ public interface JpaPlatform
 	JPQLGrammar getJpqlGrammar();
 
 
+	// ********** JPA platform version **********
+
 	interface Version {
 		/**
 		 * Return the platform's version.
@@ -215,5 +219,120 @@ public interface JpaPlatform
 		 * @see JpaProject2_0#FACET_VERSION_STRING
 		 */
 		boolean isCompatibleWithJpaVersion(String jpaVersion);
+	}
+
+
+	// ********** JPA platform config **********
+
+	/**
+	 * Metadata that describes a JPA platform as defined in an
+	 * extension to the <code>org.eclipse.jpt.jpa.core.jpaPlatforms</code>
+	 * extension point.
+	 * <p>
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:jpaPlatforms</code>.
+	 * <p>
+	 * Not intended to be implemented by clients.
+	 */
+	public interface Config {
+		/**
+		 * Return the config's manager.
+		 */
+		JpaPlatformManager getJpaPlatformManager();
+
+		/**
+		 * Return the config's extension-supplied ID.
+		 * This is unique among all the JPA platform configs.
+		 */
+		String getId();
+
+		/**
+		 * Return the config's extension-supplied label.
+		 */
+		String getLabel();
+
+		/**
+		 * Return whether the config's JPA platform supports the specified
+		 * JPA facet version. If the extension specifies a JPA facet version, it
+		 * must be the same as the specified JPA facet version. If the extension
+		 * does <em>not</em> specify a JPA facet verion, the config's JPA
+		 * platform supports all JPA facet versions.
+		 * @exception IllegalArgumentException if the specified facet version is
+		 * not for a JPA facet
+		 */
+		boolean supportsJpaFacetVersion(IProjectFacetVersion jpaFacetVersion);
+
+		/**
+		 * Return whether the config's JPA platform can be used as the default
+		 * JPA platform for its {@link #supportsJpaFacetVersion(IProjectFacetVersion)
+		 * supported JPA facet versions}.
+		 */
+		boolean isDefault();
+
+		/**
+		 * Return config's group config.
+		 */
+		GroupConfig getGroupConfig();
+
+		/**
+		 * Return the ID of the plug-in that contributed the JPA platform
+		 * config.
+		 */
+		String getPluginId();
+
+		/**
+		 * Build and return the config's JPA platform.
+		 */
+		JpaPlatform getJpaPlatform();
+
+		Filter<Config> DEFAULT_FILTER = new DefaultFilter();
+		/* CU private */ static class DefaultFilter
+			extends Filter.Adapter<Config>
+		{
+			@Override
+			public boolean accept(Config config) {
+				return config.isDefault();
+			}
+		}
+	}
+
+
+	// ********** JPA platform config **********
+
+	/**
+	 * Metadata that describes a JPA platform group as defined in an
+	 * extension to the <code>org.eclipse.jpt.jpa.core.jpaPlatforms</code>
+	 * extension point.
+	 * <p>
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:jpaPlatforms</code>.
+	 * <p>
+	 * Not intended to be implemented by clients.
+	 */
+	interface GroupConfig {
+		/**
+		 * Return the config's manager.
+		 */
+		JpaPlatformManager getJpaPlatformManager();
+	
+		/**
+		 * Return the JPA platform group config's extension-supplied ID.
+		 * This is unique among all the JPA platform group configs.
+		 */
+		String getId();
+	
+		/**
+		 * Return the JPA platform group config's extension-supplied label.
+		 */
+		String getLabel();
+	
+		/**
+		 * Return the JPA platform configs that belong to the group.
+		 */
+		Iterable<JpaPlatform.Config> getJpaPlatformConfigs();
+	
+		/**
+		 * Return the ID of the plug-in that contributed the JPA platform group
+		 * config.
+		 */
+		String getPluginId();
 	}
 }

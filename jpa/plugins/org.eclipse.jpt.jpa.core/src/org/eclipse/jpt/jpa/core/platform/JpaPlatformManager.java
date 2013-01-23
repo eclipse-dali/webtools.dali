@@ -28,7 +28,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see JpaPlatform
- * @see JpaPlatformConfig
+ * @see org.eclipse.jpt.jpa.core.JpaPlatform.Config
  * @version 3.0
  * @since 3.0
  */
@@ -52,12 +52,12 @@ public interface JpaPlatformManager {
 	/**
 	 * Return all the JPA platform group configs.
 	 */
-	Iterable<JpaPlatformGroupConfig> getJpaPlatformGroupConfigs();
+	Iterable<JpaPlatform.GroupConfig> getJpaPlatformGroupConfigs();
 
 	/**
 	 * Return the JPA platform group config for the specified ID.
 	 */
-	JpaPlatformGroupConfig getJpaPlatformGroupConfig(String groupID);
+	JpaPlatform.GroupConfig getJpaPlatformGroupConfig(String groupID);
 
 
 	// ********** JPA platform configs **********
@@ -65,18 +65,18 @@ public interface JpaPlatformManager {
 	/**
 	 * Return all the JPA platform configs.
 	 */
-	Iterable<JpaPlatformConfig> getJpaPlatformConfigs();
+	Iterable<JpaPlatform.Config> getJpaPlatformConfigs();
 
 	/**
 	 * Return the JPA platform config for the specified ID.
 	 */
-	JpaPlatformConfig getJpaPlatformConfig(String jpaPlatformID);
+	JpaPlatform.Config getJpaPlatformConfig(String jpaPlatformID);
 
 	/**
 	 * Return the JPA platform configs that support the specified
 	 * JPA facet version.
 	 */
-	Iterable<JpaPlatformConfig> getJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion);
+	Iterable<JpaPlatform.Config> getJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion);
 
 
 	// ********** default JPA platform config **********
@@ -85,12 +85,12 @@ public interface JpaPlatformManager {
 	 * Return the JPA platform config that is the workspace's default for
 	 * the specified JPA facet version.
 	 */
-	JpaPlatformConfig getDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion);
+	JpaPlatform.Config getDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion);
 
 	/**
 	 * Set the workspace's default JPA platform config for the specified
 	 * JPA facet version.
 	 * @see #getDefaultJpaPlatformConfig(IProjectFacetVersion)
 	 */
-	void setDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion, JpaPlatformConfig config);
+	void setDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion, JpaPlatform.Config config);
 }

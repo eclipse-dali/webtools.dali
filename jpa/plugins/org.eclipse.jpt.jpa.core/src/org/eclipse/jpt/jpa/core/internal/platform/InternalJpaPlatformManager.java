@@ -30,8 +30,6 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -241,7 +239,7 @@ public class InternalJpaPlatformManager
 	}
 
 	private void initializeDefaultPreference(IProjectFacetVersion jpaFacetVersion) {
-		JpaPlatformConfig config = this.buildDefaultJpaPlatformConfig(jpaFacetVersion);
+		JpaPlatform.Config config = this.buildDefaultJpaPlatformConfig(jpaFacetVersion);
 		if (config != null) {
 			this.getPlugin().setDefaultPreference(this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion), config.getId());
 		}
@@ -253,13 +251,13 @@ public class InternalJpaPlatformManager
 	 * config if none are registered. Log an error and return
 	 * <code>null</code> if the specified JPA facet version is invalid.
 	 */
-	private JpaPlatformConfig buildDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion) {
-		JpaPlatformConfig config = this.selectJpaPlatformConfig(this.getDefaultJpaPlatformConfigs(), jpaFacetVersion);
+	private JpaPlatform.Config buildDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion) {
+		InternalJpaPlatformConfig config = this.selectJpaPlatformConfig(this.getDefaultJpaPlatformConfigs(), jpaFacetVersion);
 		if (config != null) {
 			return config;
 		}
 
-		config = this.selectJpaPlatformConfig(this.getInternalJpaPlatformConfigs(), jpaFacetVersion);
+		config = this.selectJpaPlatformConfig(this.getDaliJpaPlatformConfigs(), jpaFacetVersion);
 		if (config != null) {
 			return config;
 		}
@@ -293,35 +291,43 @@ public class InternalJpaPlatformManager
 
 	// ********** JPA platform group configs **********
 
-	public Iterable<JpaPlatformGroupConfig> getJpaPlatformGroupConfigs() {
-		return new SuperIterableWrapper<JpaPlatformGroupConfig>(this.jpaPlatformGroupConfigs.values());
+	public Iterable<JpaPlatform.GroupConfig> getJpaPlatformGroupConfigs() {
+		return new SuperIterableWrapper<JpaPlatform.GroupConfig>(this.jpaPlatformGroupConfigs.values());
 	}
 
-	public JpaPlatformGroupConfig getJpaPlatformGroupConfig(String groupID) {
+	public JpaPlatform.GroupConfig getJpaPlatformGroupConfig(String groupID) {
 		return this.jpaPlatformGroupConfigs.get(groupID);
 	}
 
 
 	// ********** JPA platform configs **********
 
-	public Iterable<JpaPlatformConfig> getJpaPlatformConfigs() {
-		return new SuperIterableWrapper<JpaPlatformConfig>(this.jpaPlatformConfigs.values());
+	public Iterable<JpaPlatform.Config> getJpaPlatformConfigs() {
+		return new SuperIterableWrapper<JpaPlatform.Config>(this.getInternalJpaPlatformConfigs());
 	}
 
-	public JpaPlatformConfig getJpaPlatformConfig(String jpaPlatformID) {
+	private Iterable<InternalJpaPlatformConfig> getInternalJpaPlatformConfigs() {
+		return this.jpaPlatformConfigs.values();
+	}
+
+	public JpaPlatform.Config getJpaPlatformConfig(String jpaPlatformID) {
 		return this.jpaPlatformConfigs.get(jpaPlatformID);
 	}
 
-	public Iterable<JpaPlatformConfig> getJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion) {
-		return this.selectJpaPlatformConfigs(this.getJpaPlatformConfigs(), jpaFacetVersion);
+	public Iterable<JpaPlatform.Config> getJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion) {
+		return new SuperIterableWrapper<JpaPlatform.Config>(this.getInternalJpaPlatformConfigs(jpaFacetVersion));
+	}
+
+	private Iterable<InternalJpaPlatformConfig> getInternalJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion) {
+		return this.selectJpaPlatformConfigs(this.getInternalJpaPlatformConfigs(), jpaFacetVersion);
 	}
 
 	/**
 	 * Return the first config among those specified that supports the
 	 * specified JPA facet version.
 	 */
-	private JpaPlatformConfig selectJpaPlatformConfig(Iterable<JpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
-		Iterator<JpaPlatformConfig> stream = this.selectJpaPlatformConfigs(configs, jpaFacetVersion).iterator();
+	private InternalJpaPlatformConfig selectJpaPlatformConfig(Iterable<InternalJpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
+		Iterator<InternalJpaPlatformConfig> stream = this.selectJpaPlatformConfigs(configs, jpaFacetVersion).iterator();
 		return stream.hasNext() ? stream.next() : null;
 	}
 
@@ -329,16 +335,16 @@ public class InternalJpaPlatformManager
 	 * Return the JPA platform configs among those specified that support
 	 * the specified facet version.
 	 */
-	private Iterable<JpaPlatformConfig> selectJpaPlatformConfigs(Iterable<JpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
-		return new FilteringIterable<JpaPlatformConfig>(configs, this.buildJpaPlatformConfigFilter(jpaFacetVersion));
+	private Iterable<InternalJpaPlatformConfig> selectJpaPlatformConfigs(Iterable<InternalJpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
+		return new FilteringIterable<InternalJpaPlatformConfig>(configs, this.buildJpaPlatformConfigFilter(jpaFacetVersion));
 	}
 
-	private Filter<JpaPlatformConfig> buildJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
+	private Filter<InternalJpaPlatformConfig> buildJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
 		return new FacetVersionJpaPlatformConfigFilter(jpaFacetVersion);
 	}
 
 	/* CU private */ static class FacetVersionJpaPlatformConfigFilter
-		extends Filter.Adapter<JpaPlatformConfig>
+		extends Filter.Adapter<InternalJpaPlatformConfig>
 	{
 		private final IProjectFacetVersion jpaFacetVersion;
 		FacetVersionJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
@@ -346,7 +352,7 @@ public class InternalJpaPlatformManager
 			this.jpaFacetVersion = jpaFacetVersion;
 		}
 		@Override
-		public boolean accept(JpaPlatformConfig config) {
+		public boolean accept(InternalJpaPlatformConfig config) {
 			return config.supportsJpaFacetVersion(this.jpaFacetVersion);
 		}
 	}
@@ -354,31 +360,31 @@ public class InternalJpaPlatformManager
 	/**
 	 * "Default" platforms (i.e. third-party platforms flagged as "default").
 	 */
-	private Iterable<JpaPlatformConfig> getDefaultJpaPlatformConfigs() {
-		return new FilteringIterable<JpaPlatformConfig>(this.getJpaPlatformConfigs(), JpaPlatformConfig.DEFAULT_FILTER);
+	private Iterable<InternalJpaPlatformConfig> getDefaultJpaPlatformConfigs() {
+		return new FilteringIterable<InternalJpaPlatformConfig>(this.getInternalJpaPlatformConfigs(), JpaPlatform.Config.DEFAULT_FILTER);
 	}
 
 	/**
-	 * "Internal" (i.e. Dali-defined generic) platforms.
+	 * Dali-defined "generic" platforms.
 	 */
-	private Iterable<JpaPlatformConfig> getInternalJpaPlatformConfigs() {
-		return new FilteringIterable<JpaPlatformConfig>(this.getJpaPlatformConfigs(), this.buildInternalJpaPlatformConfigFilter());
+	private Iterable<InternalJpaPlatformConfig> getDaliJpaPlatformConfigs() {
+		return new FilteringIterable<InternalJpaPlatformConfig>(this.getInternalJpaPlatformConfigs(), this.buildDaliJpaPlatformConfigFilter());
 	}
 
-	private Filter<JpaPlatformConfig> buildInternalJpaPlatformConfigFilter() {
-		return new InternalJpaPlatformConfigFilter(this.getPluginID());
+	private Filter<InternalJpaPlatformConfig> buildDaliJpaPlatformConfigFilter() {
+		return new DaliJpaPlatformConfigFilter(this.getPluginID());
 	}
 
-	/* CU private */ static class InternalJpaPlatformConfigFilter
-		extends Filter.Adapter<JpaPlatformConfig>
+	/* CU private */ static class DaliJpaPlatformConfigFilter
+		extends Filter.Adapter<InternalJpaPlatformConfig>
 	{
 		private final String prefix;
-		InternalJpaPlatformConfigFilter(String prefix) {
+		DaliJpaPlatformConfigFilter(String prefix) {
 			super();
 			this.prefix = prefix;
 		}
 		@Override
-		public boolean accept(JpaPlatformConfig config) {
+		public boolean accept(InternalJpaPlatformConfig config) {
 			return config.getFactoryClassName().startsWith(this.prefix);
 		}
 	}
@@ -386,13 +392,13 @@ public class InternalJpaPlatformManager
 
 	// ********** default JPA platform config **********
 
-	public JpaPlatformConfig getDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion) {
+	public JpaPlatform.Config getDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion) {
 		String key = this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion);
 		String id = this.getPlugin().getPreference(key);
 		return (id == null) ? null : this.getJpaPlatformConfig(id);
 	}
 
-	public void setDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion, JpaPlatformConfig config) {
+	public void setDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion, JpaPlatform.Config config) {
 		String key = this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion);
 		this.getPlugin().setPreference(key, config.getId());
 	}

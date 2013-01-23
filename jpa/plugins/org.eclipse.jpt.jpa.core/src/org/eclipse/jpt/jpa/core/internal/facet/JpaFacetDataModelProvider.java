@@ -22,12 +22,12 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -103,8 +103,8 @@ public abstract class JpaFacetDataModelProvider
 		return (IRuntime) this.getProperty(RUNTIME);
 	}
 	
-	protected JpaPlatformConfig getPlatformConfig() {
-		return (JpaPlatformConfig) getProperty(PLATFORM);
+	protected JpaPlatform.Config getPlatformConfig() {
+		return (JpaPlatform.Config) getProperty(PLATFORM);
 	}
 	
 	protected LibraryInstallDelegate getLibraryInstallDelegate() {
@@ -201,7 +201,7 @@ public abstract class JpaFacetDataModelProvider
 		return super.getDefaultProperty(propertyName);
 	}
 	
-	protected abstract JpaPlatformConfig getDefaultPlatformConfig();
+	protected abstract JpaPlatform.Config getDefaultPlatformConfig();
 	
 	protected LibraryInstallDelegate getDefaultLibraryProvider() {
 		// delegate itself changes only when facet version changes
@@ -227,7 +227,7 @@ public abstract class JpaFacetDataModelProvider
 		}
 		
 		Map<String, Object> customEnablementVariables = new HashMap<String, Object>();
-		JpaPlatformConfig jpaPlatformConfig = getPlatformConfig();
+		JpaPlatform.Config jpaPlatformConfig = getPlatformConfig();
 		String jpaPlatformId = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
 		customEnablementVariables.put(
 					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformId);
@@ -391,7 +391,7 @@ public abstract class JpaFacetDataModelProvider
 		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
 		
 		if (lid != null) {
-			JpaPlatformConfig jpaPlatformConfig = getPlatformConfig();
+			JpaPlatform.Config jpaPlatformConfig = getPlatformConfig();
 			String jpaPlatformId = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
 			
 			lid.setEnablementContextVariable(
@@ -443,20 +443,20 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		Iterable<JpaPlatformConfig> validPlatformConfigs = buildValidPlatformConfigs();
+		Iterable<JpaPlatform.Config> validPlatformConfigs = buildValidPlatformConfigs();
 		Iterable<DataModelPropertyDescriptor> validPlatformDescriptors =
-				new TransformationIterable<JpaPlatformConfig, DataModelPropertyDescriptor>(validPlatformConfigs) {
+				new TransformationIterable<JpaPlatform.Config, DataModelPropertyDescriptor>(validPlatformConfigs) {
 					@Override
-					protected DataModelPropertyDescriptor transform(JpaPlatformConfig config) {
+					protected DataModelPropertyDescriptor transform(JpaPlatform.Config config) {
 						return buildPlatformDescriptor(config);
 					}
 				};
 		return ArrayTools.sort(ArrayTools.array(validPlatformDescriptors, EMPTY_DMPD_ARRAY), DESCRIPTOR_COMPARATOR);
 	}
 	
-	protected Iterable<JpaPlatformConfig> buildValidPlatformConfigs() {
+	protected Iterable<JpaPlatform.Config> buildValidPlatformConfigs() {
 		JpaPlatformManager jpaPlatformManager = this.getJpaPlatformManager();
-		return (jpaPlatformManager != null) ? jpaPlatformManager.getJpaPlatformConfigs(this.getProjectFacetVersion()) : IterableTools.<JpaPlatformConfig>emptyIterable();
+		return (jpaPlatformManager != null) ? jpaPlatformManager.getJpaPlatformConfigs(this.getProjectFacetVersion()) : IterableTools.<JpaPlatform.Config>emptyIterable();
 	}
 	
 	protected static final Comparator<DataModelPropertyDescriptor> DESCRIPTOR_COMPARATOR =
@@ -547,7 +547,7 @@ public abstract class JpaFacetDataModelProvider
 		return super.getPropertyDescriptor(propertyName);
 	}
 	
-	protected DataModelPropertyDescriptor buildPlatformDescriptor(JpaPlatformConfig platformConfig) {
+	protected DataModelPropertyDescriptor buildPlatformDescriptor(JpaPlatform.Config platformConfig) {
 		return new DataModelPropertyDescriptor(platformConfig, platformConfig.getLabel());
 	}
 	

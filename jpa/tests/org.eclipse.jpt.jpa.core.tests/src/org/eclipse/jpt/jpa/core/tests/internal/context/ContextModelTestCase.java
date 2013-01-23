@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -102,7 +102,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	// most tests use the basic generic platform
-	protected final JpaPlatformConfig getJpaPlatformConfig() {
+	protected final JpaPlatform.Config getJpaPlatformConfig() {
 		return this.getJpaPlatformManager().getJpaPlatformConfig(this.getJpaPlatformID());
 	}
 

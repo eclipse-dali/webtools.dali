@@ -46,8 +46,8 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -444,7 +444,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	}
 
 	protected String getJpaPlatformGroupId(IProject project) {
-		JpaPlatformConfig config = (JpaPlatformConfig) project.getAdapter(JpaPlatformConfig.class);
+		JpaPlatform.Config config = (JpaPlatform.Config) project.getAdapter(JpaPlatform.Config.class);
 		return (config == null) ? null : config.getGroupConfig().getId();
 	}
 

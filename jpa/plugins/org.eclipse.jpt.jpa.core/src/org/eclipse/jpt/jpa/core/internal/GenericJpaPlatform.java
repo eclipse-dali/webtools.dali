@@ -32,7 +32,6 @@ import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
@@ -43,7 +42,7 @@ import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 public class GenericJpaPlatform
 	implements JpaPlatform
 {
-	private final JpaPlatformConfig config;
+	private final JpaPlatform.Config config;
 
 	private final Version jpaVersion;
 
@@ -59,7 +58,7 @@ public class GenericJpaPlatform
 
 
 	public GenericJpaPlatform(
-			JpaPlatformConfig config,
+			JpaPlatform.Config config,
 			Version jpaVersion,
 			JpaFactory jpaFactory,
 			AnnotationProvider annotationProvider,
@@ -84,7 +83,7 @@ public class GenericJpaPlatform
 		return this.config.getId();
 	}
 
-	public JpaPlatformConfig getConfig() {
+	public JpaPlatform.Config getConfig() {
 		return this.config;
 	}
 

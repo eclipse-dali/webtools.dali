@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.libprov;
 
 import org.eclipse.jpt.common.core.internal.libprov.JptUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 
 public class JpaUserLibraryProviderInstallOperationConfig
 		extends JptUserLibraryProviderInstallOperationConfig
 		implements JpaLibraryProviderInstallOperationConfig {
 	
-	private JpaPlatformConfig jpaPlatformConfig;
+	private JpaPlatform.Config jpaPlatformConfig;
 	
 	
 	public JpaUserLibraryProviderInstallOperationConfig() {
@@ -25,12 +25,12 @@ public class JpaUserLibraryProviderInstallOperationConfig
 	}
 	
 	
-	public JpaPlatformConfig getJpaPlatformConfig() {
+	public JpaPlatform.Config getJpaPlatformConfig() {
 		return this.jpaPlatformConfig;
 	}
 	
-	public void setJpaPlatformConfig(JpaPlatformConfig jpaPlatformConfig) {
-		JpaPlatformConfig old = this.jpaPlatformConfig;
+	public void setJpaPlatformConfig(JpaPlatform.Config jpaPlatformConfig) {
+		JpaPlatform.Config old = this.jpaPlatformConfig;
 		this.jpaPlatformConfig = jpaPlatformConfig;
 		notifyListeners(PROP_JPA_PLATFORM, old, jpaPlatformConfig);
 	}
