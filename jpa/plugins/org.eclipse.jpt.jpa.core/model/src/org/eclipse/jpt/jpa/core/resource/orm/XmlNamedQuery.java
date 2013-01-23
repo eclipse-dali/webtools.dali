@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,6 +42,12 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery#getQuery <em>Query</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlNamedQuery()
  * @model kind="class"
@@ -91,26 +97,6 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String QUERY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
-	protected String query = QUERY_EDEFAULT;
-
-	/**
 	 * The cached value of the '{@link #getHints() <em>Hints</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -135,6 +121,26 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 	 * @ordered
 	 */
 	protected LockModeType_2_0 lockMode = LOCK_MODE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getQuery()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String QUERY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getQuery()
+	 * @generated
+	 * @ordered
+	 */
+	protected String query = QUERY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -237,7 +243,7 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQuery_Query()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlNamedQuery_Query()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -353,12 +359,12 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 				return getDescription();
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				return getName();
-			case OrmPackage.XML_NAMED_QUERY__QUERY:
-				return getQuery();
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return getHints();
 			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
 				return getLockMode();
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
+				return getQuery();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -380,15 +386,15 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.XML_NAMED_QUERY__QUERY:
-				setQuery((String)newValue);
-				return;
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				getHints().clear();
 				getHints().addAll((Collection<? extends XmlQueryHint>)newValue);
 				return;
 			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
 				setLockMode((LockModeType_2_0)newValue);
+				return;
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
+				setQuery((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -410,14 +416,14 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.XML_NAMED_QUERY__QUERY:
-				setQuery(QUERY_EDEFAULT);
-				return;
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				getHints().clear();
 				return;
 			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
 				setLockMode(LOCK_MODE_EDEFAULT);
+				return;
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
+				setQuery(QUERY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -437,12 +443,12 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.XML_NAMED_QUERY__QUERY:
-				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return hints != null && !hints.isEmpty();
 			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
 				return lockMode != LOCK_MODE_EDEFAULT;
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
+				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -500,10 +506,10 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 		result.append(description);
 		result.append(", name: ");
 		result.append(name);
-		result.append(", query: ");
-		result.append(query);
 		result.append(", lockMode: ");
 		result.append(lockMode);
+		result.append(", query: ");
+		result.append(query);
 		result.append(')');
 		return result.toString();
 	}
@@ -635,7 +641,7 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 	}
 
 	protected static Translator buildQueryTranslator() {
-		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlQuery_Query());
+		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlNamedQuery_Query());
 	}
 
 	protected static Translator buildLockModeTranslator() {

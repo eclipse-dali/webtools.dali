@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOneToOne_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlOneToOne_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -44,7 +49,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping, XmlPrimaryKeyJoinColumnContainer, XmlOneToOne_2_0
+public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping, XmlPrimaryKeyJoinColumnContainer, XmlOneToOne_2_0, XmlOneToOne_2_1
 {
 
 	/**
@@ -92,6 +97,34 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @ordered
 	 */
 	protected Boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyConverts() <em>Map Key Converts</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyConverts()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConvert_2_1> mapKeyConverts;
+	/**
+	 * The cached value of the '{@link #getPrimaryKeyForeignKey() <em>Primary Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKeyForeignKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlForeignKey_2_1 primaryKeyForeignKey;
+	/**
+	 * The cached value of the '{@link #getForeignKey() <em>Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getForeignKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlForeignKey_2_1 foreignKey;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -185,6 +218,149 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Map Key Converts</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Converts</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Converts</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToOne_2_1_MapKeyConverts()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConvert_2_1> getMapKeyConverts()
+	{
+		if (mapKeyConverts == null)
+		{
+			mapKeyConverts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS);
+		}
+		return mapKeyConverts;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Primary Key Foreign Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Primary Key Foreign Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToOne_2_1_PrimaryKeyForeignKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlForeignKey_2_1 getPrimaryKeyForeignKey()
+	{
+		return primaryKeyForeignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey, NotificationChain msgs)
+	{
+		XmlForeignKey_2_1 oldPrimaryKeyForeignKey = primaryKeyForeignKey;
+		primaryKeyForeignKey = newPrimaryKeyForeignKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, oldPrimaryKeyForeignKey, newPrimaryKeyForeignKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne#getPrimaryKeyForeignKey <em>Primary Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Primary Key Foreign Key</em>' containment reference.
+	 * @see #getPrimaryKeyForeignKey()
+	 * @generated
+	 */
+	public void setPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey)
+	{
+		if (newPrimaryKeyForeignKey != primaryKeyForeignKey)
+		{
+			NotificationChain msgs = null;
+			if (primaryKeyForeignKey != null)
+				msgs = ((InternalEObject)primaryKeyForeignKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, null, msgs);
+			if (newPrimaryKeyForeignKey != null)
+				msgs = ((InternalEObject)newPrimaryKeyForeignKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, null, msgs);
+			msgs = basicSetPrimaryKeyForeignKey(newPrimaryKeyForeignKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, newPrimaryKeyForeignKey, newPrimaryKeyForeignKey));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Foreign Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Foreign Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Foreign Key</em>' containment reference.
+	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToOne_2_1_ForeignKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlForeignKey_2_1 getForeignKey()
+	{
+		return foreignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	{
+		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		foreignKey = newForeignKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY, oldForeignKey, newForeignKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne#getForeignKey <em>Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Foreign Key</em>' containment reference.
+	 * @see #getForeignKey()
+	 * @generated
+	 */
+	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	{
+		if (newForeignKey != foreignKey)
+		{
+			NotificationChain msgs = null;
+			if (foreignKey != null)
+				msgs = ((InternalEObject)foreignKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY, null, msgs);
+			if (newForeignKey != null)
+				msgs = ((InternalEObject)newForeignKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY, null, msgs);
+			msgs = basicSetForeignKey(newForeignKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY, newForeignKey, newForeignKey));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn}.
 	 * <!-- begin-user-doc -->
@@ -219,6 +395,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS:
+				return ((InternalEList<?>)getMapKeyConverts()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				return basicSetPrimaryKeyForeignKey(null, msgs);
+			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
+				return basicSetForeignKey(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -239,6 +421,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				return getPrimaryKeyJoinColumns();
 			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				return getOrphanRemoval();
+			case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS:
+				return getMapKeyConverts();
+			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				return getPrimaryKeyForeignKey();
+			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
+				return getForeignKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -264,6 +452,16 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				setOrphanRemoval((Boolean)newValue);
 				return;
+			case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS:
+				getMapKeyConverts().clear();
+				getMapKeyConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				setPrimaryKeyForeignKey((XmlForeignKey_2_1)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
+				setForeignKey((XmlForeignKey_2_1)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -287,6 +485,15 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
 				return;
+			case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS:
+				getMapKeyConverts().clear();
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				setPrimaryKeyForeignKey((XmlForeignKey_2_1)null);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
+				setForeignKey((XmlForeignKey_2_1)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -307,6 +514,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
 			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
+			case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS:
+				return mapKeyConverts != null && !mapKeyConverts.isEmpty();
+			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				return primaryKeyForeignKey != null;
+			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
+				return foreignKey != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -350,6 +563,16 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOneToOne_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS: return OrmV2_1Package.XML_ONE_TO_ONE_21__MAP_KEY_CONVERTS;
+				case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY: return OrmV2_1Package.XML_ONE_TO_ONE_21__PRIMARY_KEY_FOREIGN_KEY;
+				case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY: return OrmV2_1Package.XML_ONE_TO_ONE_21__FOREIGN_KEY;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -389,6 +612,16 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			switch (baseFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOneToOne_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_ONE_TO_ONE_21__MAP_KEY_CONVERTS: return OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS;
+				case OrmV2_1Package.XML_ONE_TO_ONE_21__PRIMARY_KEY_FOREIGN_KEY: return OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY;
+				case OrmV2_1Package.XML_ONE_TO_ONE_21__FOREIGN_KEY: return OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY;
 				default: return -1;
 			}
 		}
@@ -447,7 +680,9 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			buildMapsIdTranslator(),
 			buildIdTranslator(),
 			buildPrimaryKeyJoinColumnTranslator(),
+			buildPrimaryKeyForeignKeyTranslator(),
 			buildJoinColumnTranslator(),
+			buildForeignKeyTranslator(),
 			buildJoinTableTranslator(),
 			buildCascadeTranslator()
 		};
@@ -464,6 +699,15 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
 		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlPrimaryKeyJoinColumnContainer_PrimaryKeyJoinColumns());
 	}
+	
+	protected static Translator buildForeignKeyTranslator() {
+		return XmlForeignKey.buildTranslator(JPA2_1.FOREIGN_KEY, OrmV2_1Package.eINSTANCE.getXmlOneToOne_2_1_ForeignKey());
+	}
+	
+	protected static Translator buildPrimaryKeyForeignKeyTranslator() {
+		return XmlForeignKey.buildTranslator(JPA2_1.PRIMARY_KEY_FOREIGN_KEY, OrmV2_1Package.eINSTANCE.getXmlOneToOne_2_1_PrimaryKeyForeignKey());
+	}
+	
 
 	// ********** content assist ***************
 	

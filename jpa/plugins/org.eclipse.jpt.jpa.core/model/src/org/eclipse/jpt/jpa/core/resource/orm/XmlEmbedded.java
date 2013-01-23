@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlEmbedded_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEmbedded_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -38,7 +42,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
+public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0, XmlEmbedded_2_1
 {
 	/**
 	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
@@ -49,6 +53,16 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 	 * @ordered
 	 */
 	protected EList<XmlAssociationOverride> associationOverrides;
+
+	/**
+	 * The cached value of the '{@link #getConverts() <em>Converts</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverts()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConvert_2_1> converts;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -95,6 +109,29 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Converts</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converts</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converts</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEmbedded_2_1_Converts()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConvert_2_1> getConverts()
+	{
+		if (converts == null)
+		{
+			converts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_EMBEDDED__CONVERTS);
+		}
+		return converts;
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -106,6 +143,8 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 		{
 			case OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_EMBEDDED__CONVERTS:
+				return ((InternalEList<?>)getConverts()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -122,6 +161,8 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 		{
 			case OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES:
 				return getAssociationOverrides();
+			case OrmPackage.XML_EMBEDDED__CONVERTS:
+				return getConverts();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -141,6 +182,10 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 				getAssociationOverrides().clear();
 				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
 				return;
+			case OrmPackage.XML_EMBEDDED__CONVERTS:
+				getConverts().clear();
+				getConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -158,6 +203,9 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 			case OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				return;
+			case OrmPackage.XML_EMBEDDED__CONVERTS:
+				getConverts().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -174,6 +222,8 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 		{
 			case OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES:
 				return associationOverrides != null && !associationOverrides.isEmpty();
+			case OrmPackage.XML_EMBEDDED__CONVERTS:
+				return converts != null && !converts.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -198,6 +248,14 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 		{
 			switch (derivedFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEmbedded_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_EMBEDDED__CONVERTS: return OrmV2_1Package.XML_EMBEDDED_21__CONVERTS;
 				default: return -1;
 			}
 		}
@@ -227,6 +285,14 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEmbedded_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_EMBEDDED_21__CONVERTS: return OrmPackage.XML_EMBEDDED__CONVERTS;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -246,11 +312,17 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0
 			buildNameTranslator(),
 			buildAccessTranslator(),
 			buildAttributeOverrideTranslator(),
-			buildAssociationOverrideTranslator()
+			buildAssociationOverrideTranslator(),
+			buildConvertTranslator()
 		};
 	}
 	
 	protected static Translator buildAssociationOverrideTranslator() {
 		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
+	
+	protected static Translator buildConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlEmbedded_2_1_Converts());
+	}
+
 }

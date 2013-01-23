@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlTableGenerator_2_1;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -53,7 +57,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
+public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator, XmlTableGenerator_2_1
 {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -134,6 +138,16 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 	 * @ordered
 	 */
 	protected Integer allocationSize = ALLOCATION_SIZE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getIndexes() <em>Indexes</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIndexes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlIndex_2_1> indexes;
 
 	/**
 	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
@@ -637,6 +651,29 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Indexes</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTableGenerator_2_1_Indexes()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlIndex_2_1> getIndexes()
+	{
+		if (indexes == null)
+		{
+			indexes = new EObjectContainmentEList<XmlIndex_2_1>(XmlIndex_2_1.class, this, OrmPackage.XML_TABLE_GENERATOR__INDEXES);
+		}
+		return indexes;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint}.
 	 * <!-- begin-user-doc -->
@@ -669,6 +706,8 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_TABLE_GENERATOR__INDEXES:
+				return ((InternalEList<?>)getIndexes()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS:
 				return ((InternalEList<?>)getUniqueConstraints()).basicRemove(otherEnd, msgs);
 		}
@@ -693,6 +732,8 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 				return getInitialValue();
 			case OrmPackage.XML_TABLE_GENERATOR__ALLOCATION_SIZE:
 				return getAllocationSize();
+			case OrmPackage.XML_TABLE_GENERATOR__INDEXES:
+				return getIndexes();
 			case OrmPackage.XML_TABLE_GENERATOR__TABLE:
 				return getTable();
 			case OrmPackage.XML_TABLE_GENERATOR__CATALOG:
@@ -733,6 +774,10 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 				return;
 			case OrmPackage.XML_TABLE_GENERATOR__ALLOCATION_SIZE:
 				setAllocationSize((Integer)newValue);
+				return;
+			case OrmPackage.XML_TABLE_GENERATOR__INDEXES:
+				getIndexes().clear();
+				getIndexes().addAll((Collection<? extends XmlIndex_2_1>)newValue);
 				return;
 			case OrmPackage.XML_TABLE_GENERATOR__TABLE:
 				setTable((String)newValue);
@@ -782,6 +827,9 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 			case OrmPackage.XML_TABLE_GENERATOR__ALLOCATION_SIZE:
 				setAllocationSize(ALLOCATION_SIZE_EDEFAULT);
 				return;
+			case OrmPackage.XML_TABLE_GENERATOR__INDEXES:
+				getIndexes().clear();
+				return;
 			case OrmPackage.XML_TABLE_GENERATOR__TABLE:
 				setTable(TABLE_EDEFAULT);
 				return;
@@ -825,6 +873,8 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 				return INITIAL_VALUE_EDEFAULT == null ? initialValue != null : !INITIAL_VALUE_EDEFAULT.equals(initialValue);
 			case OrmPackage.XML_TABLE_GENERATOR__ALLOCATION_SIZE:
 				return ALLOCATION_SIZE_EDEFAULT == null ? allocationSize != null : !ALLOCATION_SIZE_EDEFAULT.equals(allocationSize);
+			case OrmPackage.XML_TABLE_GENERATOR__INDEXES:
+				return indexes != null && !indexes.isEmpty();
 			case OrmPackage.XML_TABLE_GENERATOR__TABLE:
 				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
 			case OrmPackage.XML_TABLE_GENERATOR__CATALOG:
@@ -841,6 +891,44 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlTableGenerator_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_TABLE_GENERATOR__INDEXES: return OrmV2_1Package.XML_TABLE_GENERATOR_21__INDEXES;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlTableGenerator_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_TABLE_GENERATOR_21__INDEXES: return OrmPackage.XML_TABLE_GENERATOR__INDEXES;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -901,7 +989,8 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 			buildInitialValueTranslator(),
 			buildAllocationSizeTranslator(),
 			buildDescriptionTranslator(),
-			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
+			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints()),
+			buildIndexesTranslator()
 		};
 	}
 	
@@ -943,6 +1032,10 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator
 	
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlGenerator_2_0_Description());
+	}
+	
+	protected static Translator buildIndexesTranslator() {
+		return XmlIndex.buildTranslator(JPA2_1.INDEX, OrmV2_1Package.eINSTANCE.getXmlTableGenerator_2_1_Indexes());
 	}
 
 	// ************* content assist ***************

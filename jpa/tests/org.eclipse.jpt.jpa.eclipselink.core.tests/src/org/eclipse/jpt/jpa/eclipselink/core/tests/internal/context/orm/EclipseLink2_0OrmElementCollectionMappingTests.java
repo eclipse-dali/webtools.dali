@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,11 +52,14 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -1623,16 +1626,19 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		XmlConvertibleMapping elementCollectionResource = (XmlConvertibleMapping) getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		XmlConvertibleMapping_2_1 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		XmlConvert xmlConvert = (XmlConvert) elementCollectionResource.getConvert();
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("address").getMapping();
 		
 		assertNull(ormElementCollectionMapping.getConverter().getType());
-		assertEquals(null, elementCollectionResource.getConvert());
+		assertEquals(null, xmlConvert);
 				
 		//set lob in the resource model, verify context model updated
-		elementCollectionResource.setConvert("myConvert");
+		xmlConvert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
+		xmlConvert.setConvert("myConvert");
+		elementCollectionResource.setConvert(xmlConvert);
 		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
-		assertEquals("myConvert", elementCollectionResource.getConvert());
+		assertEquals("myConvert", ((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).getConverterName());
 
 		//set lob to null in the resource model
 		elementCollectionResource.setConvert(null);
@@ -1675,18 +1681,19 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("elementCollection"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		XmlConvertibleMapping elementCollectionResource = (XmlConvertibleMapping) getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
-	
+		XmlConvertibleMapping elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		XmlConvert xmlConvert = (XmlConvert) elementCollectionResource.getConvert();
 		assertNull(ormElementCollectionMapping.getConverter().getType());
-		assertEquals(null, elementCollectionResource.getConvert());
+		assertEquals(null, xmlConvert);
 				
 		//set lob in the context model, verify resource model updated
 		ormElementCollectionMapping.setConverter(EclipseLinkConvert.class);
-		assertEquals("none", elementCollectionResource.getConvert());
+		xmlConvert = (XmlConvert) elementCollectionResource.getConvert();
+		assertEquals("none", xmlConvert.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals("bar", elementCollectionResource.getConvert());
+		assertEquals("bar", xmlConvert.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
 		assertEquals("bar", ((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).getSpecifiedConverterName());
 

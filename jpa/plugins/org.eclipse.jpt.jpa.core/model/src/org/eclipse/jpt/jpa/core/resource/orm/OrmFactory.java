@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2012  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -89,6 +89,8 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_COLLECTION_TABLE: return (EObject)createXmlCollectionTable();
 			case OrmPackage.XML_COLUMN: return (EObject)createXmlColumn();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
+			case OrmPackage.CONSTRUCTOR_RESULT: return (EObject)createConstructorResult();
+			case OrmPackage.XML_CONVERT: return (EObject)createXmlConvert();
 			case OrmPackage.XML_CONVERTER: return (EObject)createXmlConverter();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN: return (EObject)createXmlDiscriminatorColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION: return (EObject)createXmlElementCollection();
@@ -101,8 +103,10 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
+			case OrmPackage.XML_FOREIGN_KEY: return (EObject)createXmlForeignKey();
 			case OrmPackage.XML_GENERATED_VALUE: return (EObject)createXmlGeneratedValue();
 			case OrmPackage.XML_ID: return (EObject)createXmlId();
+			case OrmPackage.XML_INDEX: return (EObject)createXmlIndex();
 			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
 			case OrmPackage.XML_JOIN_COLUMN: return (EObject)createXmlJoinColumn();
 			case OrmPackage.XML_JOIN_TABLE: return (EObject)createXmlJoinTable();
@@ -111,8 +115,12 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case OrmPackage.MAP_KEY: return (EObject)createMapKey();
 			case OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
+			case OrmPackage.XML_NAMED_ATTRIBUTE_NODE: return (EObject)createXmlNamedAttributeNode();
+			case OrmPackage.XML_NAMED_ENTITY_GRAPH: return (EObject)createXmlNamedEntityGraph();
+			case OrmPackage.XML_NAMED_SUBGRAPH: return (EObject)createXmlNamedSubgraph();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY: return (EObject)createXmlNamedNativeQuery();
 			case OrmPackage.XML_NAMED_QUERY: return (EObject)createXmlNamedQuery();
+			case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedStoredProcedureQuery();
 			case OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
 			case OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
 			case OrmPackage.XML_ORDER_COLUMN: return (EObject)createXmlOrderColumn();
@@ -129,7 +137,8 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
 			case OrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
 			case OrmPackage.XML_SEQUENCE_GENERATOR: return (EObject)createXmlSequenceGenerator();
-			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
+			case OrmPackage.XML_SQL_RESULT_SET_MAPPING: return (EObject)createXmlSqlResultSetMapping();
+			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER: return (EObject)createXmlStoredProcedureParameter();
 			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case OrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
 			case OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
@@ -298,6 +307,28 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ConstructorResult createConstructorResult()
+	{
+		ConstructorResult constructorResult = new ConstructorResult();
+		return constructorResult;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlConvert createXmlConvert()
+	{
+		XmlConvert xmlConvert = new XmlConvert();
+		return xmlConvert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlConverter createXmlConverter()
 	{
 		XmlConverter xmlConverter = new XmlConverter();
@@ -430,6 +461,17 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlForeignKey createXmlForeignKey()
+	{
+		XmlForeignKey xmlForeignKey = new XmlForeignKey();
+		return xmlForeignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlGeneratedValue createXmlGeneratedValue()
 	{
 		XmlGeneratedValue xmlGeneratedValue = new XmlGeneratedValue();
@@ -445,6 +487,17 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlId xmlId = new XmlId();
 		return xmlId;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlIndex createXmlIndex()
+	{
+		XmlIndex xmlIndex = new XmlIndex();
+		return xmlIndex;
 	}
 
 	/**
@@ -540,6 +593,39 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlNamedAttributeNode createXmlNamedAttributeNode()
+	{
+		XmlNamedAttributeNode xmlNamedAttributeNode = new XmlNamedAttributeNode();
+		return xmlNamedAttributeNode;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedEntityGraph createXmlNamedEntityGraph()
+	{
+		XmlNamedEntityGraph xmlNamedEntityGraph = new XmlNamedEntityGraph();
+		return xmlNamedEntityGraph;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedSubgraph createXmlNamedSubgraph()
+	{
+		XmlNamedSubgraph xmlNamedSubgraph = new XmlNamedSubgraph();
+		return xmlNamedSubgraph;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlNamedNativeQuery createXmlNamedNativeQuery()
 	{
 		XmlNamedNativeQuery xmlNamedNativeQuery = new XmlNamedNativeQuery();
@@ -555,6 +641,28 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlNamedQuery xmlNamedQuery = new XmlNamedQuery();
 		return xmlNamedQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedStoredProcedureQuery createXmlNamedStoredProcedureQuery()
+	{
+		XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery = new XmlNamedStoredProcedureQuery();
+		return xmlNamedStoredProcedureQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlStoredProcedureParameter createXmlStoredProcedureParameter()
+	{
+		XmlStoredProcedureParameter xmlStoredProcedureParameter = new XmlStoredProcedureParameter();
+		return xmlStoredProcedureParameter;
 	}
 
 	/**
@@ -738,10 +846,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SqlResultSetMapping createSqlResultSetMapping()
+	public XmlSqlResultSetMapping createXmlSqlResultSetMapping()
 	{
-		SqlResultSetMapping sqlResultSetMapping = new SqlResultSetMapping();
-		return sqlResultSetMapping;
+		XmlSqlResultSetMapping xmlSqlResultSetMapping = new XmlSqlResultSetMapping();
+		return xmlSqlResultSetMapping;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle. 
+ *  Copyright (c) 2010, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -12,7 +12,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlSqlResultSetMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
@@ -45,11 +45,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer, XmlAttributeOverrideContainer, XmlFetchGroupContainer_2_1, XmlGeneratorContainer, XmlQueryContainer, org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryContainer, XmlTypeMapping_2_1
+public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer, XmlAttributeOverrideContainer, XmlFetchGroupContainer_2_1, XmlGeneratorContainer, XmlQueryContainer, XmlTypeMapping_2_1
 {
 	/**
 	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlSqlResultSetMapping}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Sql Result Set Mappings</em>' containment reference list isn't clear,
@@ -61,7 +61,7 @@ public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<SqlResultSetMapping> getSqlResultSetMappings();
+	EList<XmlSqlResultSetMapping> getSqlResultSetMappings();
 
 	/**
 	 * Returns the value of the '<em><b>Query Redirectors</b></em>' containment reference.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm;
 
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -34,10 +35,9 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConvertibleMapping()
  * @model kind="class" interface="true" abstract="true"
- * @extends EBaseObject
  * @generated
  */
-public interface XmlConvertibleMapping extends EBaseObject
+public interface XmlConvertibleMapping extends XmlConvertibleMapping_2_1
 {
 	/**
 	 * Returns the value of the '<em><b>Lob</b></em>' attribute.

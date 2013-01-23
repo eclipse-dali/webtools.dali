@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2012 Oracle. 
+ *  Copyright (c) 2009, 2013 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -32,6 +32,12 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOrderable_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlElementCollection_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -45,8 +51,18 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlElementCollection extends AbstractXmlAttributeMapping implements XmlElementCollection_2_0
+public class XmlElementCollection extends AbstractXmlAttributeMapping implements XmlElementCollection_2_0, XmlElementCollection_2_1
 {
+	/**
+	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlConvert_2_1 convert;
+
 	/**
 	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -288,6 +304,36 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected XmlCollectionTable collectionTable;
 
 	/**
+	 * The cached value of the '{@link #getMapKeyConverts() <em>Map Key Converts</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyConverts()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConvert_2_1> mapKeyConverts;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyForeignKey() <em>Map Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyForeignKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlForeignKey_2_1 mapKeyForeignKey;
+
+	/**
+	 * The cached value of the '{@link #getConverts() <em>Converts</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverts()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConvert_2_1> converts;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -306,6 +352,66 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_ELEMENT_COLLECTION;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Convert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Convert</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Convert</em>' containment reference.
+	 * @see #setConvert(XmlConvert_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConvertibleMapping_2_1_Convert()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlConvert_2_1 getConvert()
+	{
+		return convert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetConvert(XmlConvert_2_1 newConvert, NotificationChain msgs)
+	{
+		XmlConvert_2_1 oldConvert = convert;
+		convert = newConvert;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ELEMENT_COLLECTION__CONVERT, oldConvert, newConvert);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection#getConvert <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Convert</em>' containment reference.
+	 * @see #getConvert()
+	 * @generated
+	 */
+	public void setConvert(XmlConvert_2_1 newConvert)
+	{
+		if (newConvert != convert)
+		{
+			NotificationChain msgs = null;
+			if (convert != null)
+				msgs = ((InternalEObject)convert).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ELEMENT_COLLECTION__CONVERT, null, msgs);
+			if (newConvert != null)
+				msgs = ((InternalEObject)newConvert).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ELEMENT_COLLECTION__CONVERT, null, msgs);
+			msgs = basicSetConvert(newConvert, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ELEMENT_COLLECTION__CONVERT, newConvert, newConvert));
 	}
 
 	/**
@@ -1056,6 +1162,112 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Map Key Converts</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Converts</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Converts</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlElementCollection_2_1_MapKeyConverts()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConvert_2_1> getMapKeyConverts()
+	{
+		if (mapKeyConverts == null)
+		{
+			mapKeyConverts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS);
+		}
+		return mapKeyConverts;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Map Key Foreign Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Foreign Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Foreign Key</em>' containment reference.
+	 * @see #setMapKeyForeignKey(XmlForeignKey_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlElementCollection_2_1_MapKeyForeignKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlForeignKey_2_1 getMapKeyForeignKey()
+	{
+		return mapKeyForeignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetMapKeyForeignKey(XmlForeignKey_2_1 newMapKeyForeignKey, NotificationChain msgs)
+	{
+		XmlForeignKey_2_1 oldMapKeyForeignKey = mapKeyForeignKey;
+		mapKeyForeignKey = newMapKeyForeignKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY, oldMapKeyForeignKey, newMapKeyForeignKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection#getMapKeyForeignKey <em>Map Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key Foreign Key</em>' containment reference.
+	 * @see #getMapKeyForeignKey()
+	 * @generated
+	 */
+	public void setMapKeyForeignKey(XmlForeignKey_2_1 newMapKeyForeignKey)
+	{
+		if (newMapKeyForeignKey != mapKeyForeignKey)
+		{
+			NotificationChain msgs = null;
+			if (mapKeyForeignKey != null)
+				msgs = ((InternalEObject)mapKeyForeignKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY, null, msgs);
+			if (newMapKeyForeignKey != null)
+				msgs = ((InternalEObject)newMapKeyForeignKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY, null, msgs);
+			msgs = basicSetMapKeyForeignKey(newMapKeyForeignKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY, newMapKeyForeignKey, newMapKeyForeignKey));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Converts</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converts</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converts</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlElementCollection_2_1_Converts()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConvert_2_1> getConverts()
+	{
+		if (converts == null)
+		{
+			converts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS);
+		}
+		return converts;
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1065,6 +1277,8 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
+				return basicSetConvert(null, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
 				return basicSetOrderColumn(null, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
@@ -1085,6 +1299,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return basicSetColumn(null, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				return basicSetCollectionTable(null, msgs);
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS:
+				return ((InternalEList<?>)getMapKeyConverts()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY:
+				return basicSetMapKeyForeignKey(null, msgs);
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS:
+				return ((InternalEList<?>)getConverts()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1099,6 +1319,8 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
+				return getConvert();
 			case OrmPackage.XML_ELEMENT_COLLECTION__LOB:
 				return isLob();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TEMPORAL:
@@ -1135,6 +1357,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				return getCollectionTable();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS:
+				return getMapKeyConverts();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY:
+				return getMapKeyForeignKey();
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS:
+				return getConverts();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1150,6 +1378,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
+				setConvert((XmlConvert_2_1)newValue);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__LOB:
 				setLob((Boolean)newValue);
 				return;
@@ -1208,6 +1439,17 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				setCollectionTable((XmlCollectionTable)newValue);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS:
+				getMapKeyConverts().clear();
+				getMapKeyConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY:
+				setMapKeyForeignKey((XmlForeignKey_2_1)newValue);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS:
+				getConverts().clear();
+				getConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1222,6 +1464,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
+				setConvert((XmlConvert_2_1)null);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__LOB:
 				setLob(LOB_EDEFAULT);
 				return;
@@ -1276,6 +1521,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				setCollectionTable((XmlCollectionTable)null);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS:
+				getMapKeyConverts().clear();
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY:
+				setMapKeyForeignKey((XmlForeignKey_2_1)null);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS:
+				getConverts().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1290,6 +1544,8 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
+				return convert != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__LOB:
 				return lob != LOB_EDEFAULT;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TEMPORAL:
@@ -1326,6 +1582,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return column != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				return collectionTable != null;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS:
+				return mapKeyConverts != null && !mapKeyConverts.isEmpty();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY:
+				return mapKeyForeignKey != null;
+			case OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS:
+				return converts != null && !converts.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1338,6 +1600,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__CONVERT: return OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (derivedFeatureID)
@@ -1412,6 +1682,16 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlElementCollection_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS: return OrmV2_1Package.XML_ELEMENT_COLLECTION_21__MAP_KEY_CONVERTS;
+				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY: return OrmV2_1Package.XML_ELEMENT_COLLECTION_21__MAP_KEY_FOREIGN_KEY;
+				case OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS: return OrmV2_1Package.XML_ELEMENT_COLLECTION_21__CONVERTS;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1423,6 +1703,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT: return OrmPackage.XML_ELEMENT_COLLECTION__CONVERT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (baseFeatureID)
@@ -1494,6 +1782,16 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__COLUMN;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLLECTION_TABLE: return OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlElementCollection_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_ELEMENT_COLLECTION_21__MAP_KEY_CONVERTS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERTS;
+				case OrmV2_1Package.XML_ELEMENT_COLLECTION_21__MAP_KEY_FOREIGN_KEY: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_FOREIGN_KEY;
+				case OrmV2_1Package.XML_ELEMENT_COLLECTION_21__CONVERTS: return OrmPackage.XML_ELEMENT_COLLECTION__CONVERTS;
 				default: return -1;
 			}
 		}
@@ -1588,14 +1886,17 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
 			buildMapKeyAttributeOverrideTranslator(),
+			buildMapKeyConvertTranslator(),
 			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),
 			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),
+			buildMapKeyForeignKeyTranslator(),
 			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
+			buildConvertTranslator(),
 			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable())
 		};
 	}
@@ -1658,6 +1959,18 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {
 		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides());
+	}
+
+	protected static Translator buildMapKeyForeignKeyTranslator() {
+		return XmlForeignKey.buildTranslator(JPA2_1.MAP_KEY_FOREIGN_KEY, OrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_MapKeyForeignKey());
+	}
+
+	protected static Translator buildMapKeyConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.MAP_KEY_CONVERT, OrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_MapKeyConverts());
+	}
+	
+	protected static Translator buildConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_Converts());
 	}
 
 

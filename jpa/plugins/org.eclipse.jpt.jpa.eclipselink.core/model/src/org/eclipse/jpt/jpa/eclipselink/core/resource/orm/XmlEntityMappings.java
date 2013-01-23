@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlSqlResultSetMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -84,7 +84,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings implements XmlEntityMappings_2_1, XmlEntityMappings_2_2, XmlEntityMappings_2_3, XmlEntityMappings_2_4, XmlConverterContainer, XmlQueryContainer
+public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings implements XmlEntityMappings_2_1, XmlEntityMappings_2_2, XmlEntityMappings_2_3, XmlEntityMappings_2_4, XmlConverterContainer
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -275,16 +275,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
-
-	/**
-	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNamedStoredProcedureQueries()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -782,29 +772,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Named Stored Procedure Queries</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer_NamedStoredProcedureQueries()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlNamedStoredProcedureQuery> getNamedStoredProcedureQueries()
-	{
-		if (namedStoredProcedureQueries == null)
-		{
-			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery>(XmlNamedStoredProcedureQuery.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES);
-		}
-		return namedStoredProcedureQueries;
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -852,8 +819,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
-				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -906,8 +871,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS:
 				return getStructConverters();
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
-				return getNamedStoredProcedureQueries();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -998,10 +961,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
-				getNamedStoredProcedureQueries().clear();
-				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1073,9 +1032,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
-				getNamedStoredProcedureQueries().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1128,8 +1084,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
-				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1203,14 +1157,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlQueryContainer.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES;
-				default: return -1;
-			}
-		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1280,14 +1226,6 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlQueryContainer.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES;
 				default: return -1;
 			}
 		}
@@ -1383,13 +1321,13 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			XmlUnionPartitioning.buildTranslator(EclipseLink2_2.UNION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_UnionPartitioning()),
 			XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
 			XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
-			XmlNamedStoredProcedureQuery.buildTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY, EclipseLinkOrmPackage.eINSTANCE.getXmlQueryContainer_NamedStoredProcedureQueries()),
+			XmlNamedStoredProcedureQuery.buildTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY, OrmV2_1Package.eINSTANCE.getXmlQueryContainer_2_1_NamedStoredProcedureQueries()),
 			XmlNamedStoredFunctionQuery.buildTranslator(EclipseLink2_3.NAMED_STORED_FUNCTION_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_NamedStoredFunctionQueries()),
 			XmlNamedPlsqlStoredProcedureQuery.buildTranslator(EclipseLink2_3.NAMED_PLSQL_STORED_PROCEDURE_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_NamedPlsqlStoredProcedureQueries()),
 			XmlNamedPlsqlStoredFunctionQuery.buildTranslator(EclipseLink2_3.NAMED_PLSQL_STORED_FUNCTION_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_NamedPlsqlStoredFunctionQueries()),
 			XmlPlsqlRecord.buildTranslator(EclipseLink2_3.PLSQL_RECORD, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_PlsqlRecords()),
 			XmlPlsqlTable.buildTranslator(EclipseLink2_3.PLSQL_TABLE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_PlsqlTables()),
-			SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
+			XmlSqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
 			XmlMappedSuperclass.buildTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
 			XmlEntity.buildTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
 			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),

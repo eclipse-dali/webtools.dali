@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
-import org.eclipse.jpt.common.core.utility.TextRange;
-
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
@@ -358,15 +356,15 @@ public class XmlConverter extends EBaseObjectImpl implements XmlConverter_2_1
 	}
 	
 	protected static Translator buildAutoApplyTranslator() {
-		return new BooleanTranslator(JPA2_1.CONVERTER__AUTO_APPLY, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_AutoApply(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA2_1.AUTO_APPLY, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_AutoApply(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA2_1.CONVERTER__DESCRIPTION, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_Description());
+		return new Translator(JPA.DESCRIPTION, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_Description());
 	}
 	
 	protected static Translator buildClassTranslator() {
-		return new Translator(JPA2_1.CONVERTER__CLASS, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_ClassName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.CLASS, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlConverter

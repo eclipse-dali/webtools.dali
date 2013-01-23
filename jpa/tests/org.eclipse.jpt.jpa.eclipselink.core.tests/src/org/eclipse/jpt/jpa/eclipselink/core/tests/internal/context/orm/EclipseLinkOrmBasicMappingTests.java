@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
@@ -311,15 +313,18 @@ public class EclipseLinkOrmBasicMappingTests
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = (XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
+		XmlConvert xmlConvert = (XmlConvert) basicResource.getConvert();
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(ormBasicMapping.getConverter().getType());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, xmlConvert);
 				
 		//set lob in the resource model, verify context model updated
-		basicResource.setConvert("myConvert");
+		xmlConvert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
+		xmlConvert.setConvert("myConvert");
+		basicResource.setConvert(xmlConvert);
 		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
-		assertEquals("myConvert", basicResource.getConvert());
+		assertEquals("myConvert", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverterName());
 
 		//set lob to null in the resource model
 		basicResource.setConvert(null);
@@ -363,17 +368,19 @@ public class EclipseLinkOrmBasicMappingTests
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = (XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
+		XmlConvert xmlConvert = (XmlConvert) basicResource.getConvert();
 	
 		assertNull(ormBasicMapping.getConverter().getType());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, xmlConvert);
 				
 		//set lob in the context model, verify resource model updated
 		ormBasicMapping.setConverter(EclipseLinkConvert.class);
-		assertEquals("none", basicResource.getConvert());
+		xmlConvert = (XmlConvert) basicResource.getConvert();
+		assertEquals("none", xmlConvert.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormBasicMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals("bar", basicResource.getConvert());
+		assertEquals("bar", xmlConvert.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
 		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
 

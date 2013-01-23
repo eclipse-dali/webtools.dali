@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 
 /**
  * JPA 2.1 orm.xml-related stuff (elements, attributes etc.)
@@ -26,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.JPA;
  */
 @SuppressWarnings("nls")
 public interface JPA2_1
-	extends JPA
+	extends JPA2_0
 {
 	String SCHEMA_NAMESPACE = JPA.SCHEMA_NAMESPACE;
 	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/orm_2_1.xsd";
@@ -34,8 +35,32 @@ public interface JPA2_1
 	
 	// JPA 2.1 specific nodes
 
+	String ATTRIBUTE_NAME = "attribute-name";
+	String AUTO_APPLY = "auto-apply";
+	String COLUMN_LIST = "column-list";
+	String CONSTRUCTOR_RESULT = "constructor-result";
+	String CONVERT = "convert";
 	String CONVERTER = "converter";
-		String CONVERTER__AUTO_APPLY = "auto-apply";
-		String CONVERTER__CLASS = "class";
-		String CONVERTER__DESCRIPTION = "description";
+	String DISABLE_CONVERSION = "disable-conversion";
+	String DISABLE_FOREIGN_KEY = "disable-foreign-key";
+	String FOREIGN_KEY = "foreign-key";
+	String FOREIGN_KEY_DEFINITION = "foreign-key-definition";
+	String INCLUDE_ALL_ATTRIBUTES = "include-all-attributes";
+	String INDEX = "index";
+	String INVERSE_FOREIGN_KEY = "inverse-foreign-key";
+	String KEY_SUBGRAPH = "key-subgraph";
+	String MAP_KEY_CONVERT = "map-key-convert";
+	String MAP_KEY_FOREIGN_KEY = "map-key-foreign-key";
+	String NAMED_ATTRIBUTE_NODE = "named-attribute-node";
+	String NAMED_ENTITY_GRAPH = "named-entity-graph";
+	String NAMED_STORED_PROCEDURE_QUERY = "named-stored-procedure-query";
+	String PARAMETER = "parameter";
+	String PARAMETER_MODE = "parameter-mode";
+	String PROCEDURE_NAME = "procedure-name";
+	String PRIMARY_KEY_FOREIGN_KEY = "primary-key-foreign-key";
+	String RESULT_CLASS = "result-class";
+	String RESULT_SET_MAPPING = "result-set-mapping";
+	String SUBCLASS_SUBGRAPH = "subclass-subgraph";
+	String SUBGRAPH = "subgraph";
+
 }

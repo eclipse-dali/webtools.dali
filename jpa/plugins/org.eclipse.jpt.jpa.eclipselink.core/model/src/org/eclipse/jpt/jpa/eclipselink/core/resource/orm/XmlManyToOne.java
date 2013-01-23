@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,11 +20,16 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToOne_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
@@ -43,6 +48,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLinkOrmV2_5Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.XmlManyToOne_2_5;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -66,7 +73,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne implements XmlManyToOne_2_1, XmlManyToOne_2_2, XmlManyToOne_2_4, XmlAttributeMapping, XmlJoinFetch
+public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne implements XmlManyToOne_2_1, XmlManyToOne_2_2, XmlManyToOne_2_4, XmlAttributeMapping, XmlJoinFetch, XmlManyToOne_2_5
 {
 	/**
 	 * The cached value of the '{@link #getBatchFetch() <em>Batch Fetch</em>}' containment reference.
@@ -263,6 +270,26 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 	 * @ordered
 	 */
 	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKeyJoinColumns()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns;
+
+	/**
+	 * The cached value of the '{@link #getPrimaryKeyForeignKey() <em>Primary Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKeyForeignKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlForeignKey_2_1 primaryKeyForeignKey;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -957,6 +984,89 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Primary Key Join Columns</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrimaryKeyJoinColumnContainer_PrimaryKeyJoinColumns()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns()
+	{
+		if (primaryKeyJoinColumns == null)
+		{
+			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS);
+		}
+		return primaryKeyJoinColumns;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Primary Key Foreign Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Primary Key Foreign Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOne_2_5_PrimaryKeyForeignKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlForeignKey_2_1 getPrimaryKeyForeignKey()
+	{
+		return primaryKeyForeignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey, NotificationChain msgs)
+	{
+		XmlForeignKey_2_1 oldPrimaryKeyForeignKey = primaryKeyForeignKey;
+		primaryKeyForeignKey = newPrimaryKeyForeignKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, oldPrimaryKeyForeignKey, newPrimaryKeyForeignKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToOne#getPrimaryKeyForeignKey <em>Primary Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Primary Key Foreign Key</em>' containment reference.
+	 * @see #getPrimaryKeyForeignKey()
+	 * @generated
+	 */
+	public void setPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey)
+	{
+		if (newPrimaryKeyForeignKey != primaryKeyForeignKey)
+		{
+			NotificationChain msgs = null;
+			if (primaryKeyForeignKey != null)
+				msgs = ((InternalEObject)primaryKeyForeignKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, null, msgs);
+			if (newPrimaryKeyForeignKey != null)
+				msgs = ((InternalEObject)newPrimaryKeyForeignKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, null, msgs);
+			msgs = basicSetPrimaryKeyForeignKey(newPrimaryKeyForeignKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY, newPrimaryKeyForeignKey, newPrimaryKeyForeignKey));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1108,6 +1218,10 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				return basicSetPrimaryKeyForeignKey(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1154,6 +1268,10 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__JOIN_FETCH:
 				return getJoinFetch();
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				return getPrimaryKeyJoinColumns();
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				return getPrimaryKeyForeignKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1219,6 +1337,13 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__JOIN_FETCH:
 				setJoinFetch((XmlJoinFetchType)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				getPrimaryKeyJoinColumns().clear();
+				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				setPrimaryKeyForeignKey((XmlForeignKey_2_1)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1281,6 +1406,12 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__JOIN_FETCH:
 				setJoinFetch(JOIN_FETCH_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				getPrimaryKeyJoinColumns().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				setPrimaryKeyForeignKey((XmlForeignKey_2_1)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1327,6 +1458,10 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__JOIN_FETCH:
 				return joinFetch != JOIN_FETCH_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
+				return primaryKeyForeignKey != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1415,6 +1550,22 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_MANY_TO_ONE__JOIN_FETCH: return EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPrimaryKeyJoinColumnContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS: return OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN_CONTAINER__PRIMARY_KEY_JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToOne_2_5.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY: return EclipseLinkOrmV2_5Package.XML_MANY_TO_ONE_25__PRIMARY_KEY_FOREIGN_KEY;
 				default: return -1;
 			}
 		}
@@ -1508,6 +1659,22 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPrimaryKeyJoinColumnContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN_CONTAINER__PRIMARY_KEY_JOIN_COLUMNS: return EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToOne_2_5.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_5Package.XML_MANY_TO_ONE_25__PRIMARY_KEY_FOREIGN_KEY: return EclipseLinkOrmPackage.XML_MANY_TO_ONE__PRIMARY_KEY_FOREIGN_KEY;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1563,7 +1730,10 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 			buildAccessTranslator(),
 			buildMapsIdTranslator(),
 			buildIdTranslator(),
+			buildPrimaryKeyJoinColumnTranslator(),
+			buildPrimaryKeyForeignKeyTranslator(),
 			buildJoinColumnTranslator(),
+			buildForeignKeyTranslator(),
 			buildJoinTableTranslator(),
 			buildJoinFieldTranslator(),
 			buildCascadeTranslator(),
@@ -1618,6 +1788,14 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 
 	protected static Translator buildJoinFieldTranslator() {
 		return XmlJoinField.buildTranslator(EclipseLink2_4.JOIN_FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlManyToOne_2_4_JoinFields());
+	}
+	
+	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlPrimaryKeyJoinColumnContainer_PrimaryKeyJoinColumns());
+	}
+	
+	protected static Translator buildPrimaryKeyForeignKeyTranslator() {
+		return XmlForeignKey.buildTranslator(JPA2_1.PRIMARY_KEY_FOREIGN_KEY, EclipseLinkOrmV2_5Package.eINSTANCE.getXmlManyToOne_2_5_PrimaryKeyForeignKey());
 	}
 	
 	// ******** virtual attribute ************

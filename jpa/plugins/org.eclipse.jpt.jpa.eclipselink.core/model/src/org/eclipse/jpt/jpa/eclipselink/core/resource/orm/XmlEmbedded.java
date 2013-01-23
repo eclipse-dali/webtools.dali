@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
@@ -541,6 +543,7 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 			buildAttributeTypeTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
+			buildConvertTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator(),
 			buildFieldTranslator()
@@ -561,6 +564,10 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 
 	protected static Translator buildFieldTranslator() {
 		return XmlField.buildTranslator(EclipseLink2_4.FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEmbedded_2_4_Field());
+	}
+	
+	protected static Translator buildConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlEmbedded_2_1_Converts());
 	}
 	
 	// ******** virtual attribute ************

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
@@ -131,26 +131,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
-
-	/**
-	 * The default value of the '{@link #getMapKeyConvert() <em>Map Key Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String MAP_KEY_CONVERT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyConvert() <em>Map Key Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected String mapKeyConvert = MAP_KEY_CONVERT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getBatchFetch() <em>Batch Fetch</em>}' containment reference.
@@ -448,41 +428,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			mapKeyAssociationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES);
 		}
 		return mapKeyAssociationOverrides;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Convert</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Convert</em>' attribute.
-	 * @see #setMapKeyConvert(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCollectionMapping_2_0_MapKeyConvert()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getMapKeyConvert()
-	{
-		return mapKeyConvert;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToMany#getMapKeyConvert <em>Map Key Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map Key Convert</em>' attribute.
-	 * @see #getMapKeyConvert()
-	 * @generated
-	 */
-	public void setMapKeyConvert(String newMapKeyConvert)
-	{
-		String oldMapKeyConvert = mapKeyConvert;
-		mapKeyConvert = newMapKeyConvert;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT, oldMapKeyConvert, mapKeyConvert));
 	}
 
 	/**
@@ -1431,8 +1376,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTERS:
 				return getStructConverters();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
-				return getMapKeyConvert();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
 				return getBatchFetch();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PARTITIONING:
@@ -1501,9 +1444,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
-				setMapKeyConvert((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)newValue);
@@ -1587,9 +1527,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
-				setMapKeyConvert(MAP_KEY_CONVERT_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)null);
 				return;
@@ -1665,8 +1602,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
-				return MAP_KEY_CONVERT_EDEFAULT == null ? mapKeyConvert != null : !MAP_KEY_CONVERT_EDEFAULT.equals(mapKeyConvert);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
 				return batchFetch != null;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PARTITIONING:
@@ -1743,7 +1678,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT: return EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT;
 				default: return -1;
 			}
 		}
@@ -1875,7 +1809,6 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT;
 				default: return -1;
 			}
 		}
@@ -1980,9 +1913,7 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mapKeyConvert: ");
-		result.append(mapKeyConvert);
-		result.append(", partitioned: ");
+		result.append(" (partitioned: ");
 		result.append(partitioned);
 		result.append(", cascadeOnDelete: ");
 		result.append(cascadeOnDelete);
@@ -2060,7 +1991,7 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 	}
 	
 	protected static Translator buildMapKeyConvertTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
+		return XmlConvert.buildTranslator(JPA2_1.MAP_KEY_CONVERT, OrmV2_1Package.eINSTANCE.getXmlManyToMany_2_1_MapKeyConverts());
 	}
 	
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {

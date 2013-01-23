@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlQuery_2_0;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQuery#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQuery#getQuery <em>Query</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQuery#getHints <em>Hints</em>}</li>
  * </ul>
  * </p>
@@ -66,45 +65,6 @@ public interface XmlQuery extends XmlQuery_2_0
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Query</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Query</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Query</em>' attribute.
-	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQuery_Query()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	String getQuery();
-
-	String getActualQuery();
-
-	/**
-	 * Returns the value of the '<em><b>Query</b></em>' element, including the whitespace before the
-	 * JPQL query.
-	 */
-	int getQueryOffset();
-
-	/**
-	 * Determines whether the JPQL query is inside a CDATA section.
-	 */
-	boolean isQueryInsideCDATASection();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQuery#getQuery <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Query</em>' attribute.
-	 * @see #getQuery()
-	 * @generated
-	 */
-	void setQuery(String value);
-
-	/**
 	 * Returns the value of the '<em><b>Hints</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint}.
 	 * <!-- begin-user-doc -->
@@ -121,6 +81,4 @@ public interface XmlQuery extends XmlQuery_2_0
 	EList<XmlQueryHint> getHints();
 
 	TextRange getNameTextRange();
-
-	TextRange getQueryTextRange();
 }

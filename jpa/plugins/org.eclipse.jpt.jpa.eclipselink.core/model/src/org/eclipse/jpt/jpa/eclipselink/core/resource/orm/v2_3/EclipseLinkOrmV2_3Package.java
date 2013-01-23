@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLinkOrmV2_5Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -260,13 +261,22 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_ARRAY_23__STRUCT_CONVERTERS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS;
 
 	/**
+	 * The feature id for the '<em><b>Convert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__CONVERT = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Lob</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23__LOB = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 0;
+	public static final int XML_ARRAY_23__LOB = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
@@ -275,7 +285,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23__TEMPORAL = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 1;
+	public static final int XML_ARRAY_23__TEMPORAL = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
@@ -284,7 +294,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23__ENUMERATED = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 2;
+	public static final int XML_ARRAY_23__ENUMERATED = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -293,7 +303,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23__COLUMN = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 3;
+	public static final int XML_ARRAY_23__COLUMN = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Database Type</b></em>' attribute.
@@ -302,7 +312,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23__DATABASE_TYPE = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 4;
+	public static final int XML_ARRAY_23__DATABASE_TYPE = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
@@ -311,7 +321,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23__TARGET_CLASS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 5;
+	public static final int XML_ARRAY_23__TARGET_CLASS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Xml Array 23</em>' class.
@@ -320,7 +330,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23_FEATURE_COUNT = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 6;
+	public static final int XML_ARRAY_23_FEATURE_COUNT = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Structures</b></em>' containment reference list.
@@ -1050,6 +1060,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		EclipseLinkOrmV2_1Package theEclipseLinkOrmV2_1Package = (EclipseLinkOrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) instanceof EclipseLinkOrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) : EclipseLinkOrmV2_1Package.eINSTANCE);
 		EclipseLinkOrmV2_2Package theEclipseLinkOrmV2_2Package = (EclipseLinkOrmV2_2Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) instanceof EclipseLinkOrmV2_2Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) : EclipseLinkOrmV2_2Package.eINSTANCE);
 		EclipseLinkOrmV2_4Package theEclipseLinkOrmV2_4Package = (EclipseLinkOrmV2_4Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) instanceof EclipseLinkOrmV2_4Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) : EclipseLinkOrmV2_4Package.eINSTANCE);
+		EclipseLinkOrmV2_5Package theEclipseLinkOrmV2_5Package = (EclipseLinkOrmV2_5Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) instanceof EclipseLinkOrmV2_5Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) : EclipseLinkOrmV2_5Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_3Package.createPackageContents();
@@ -1059,6 +1070,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		theEclipseLinkOrmV2_1Package.createPackageContents();
 		theEclipseLinkOrmV2_2Package.createPackageContents();
 		theEclipseLinkOrmV2_4Package.createPackageContents();
+		theEclipseLinkOrmV2_5Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_3Package.initializePackageContents();
@@ -1068,6 +1080,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		theEclipseLinkOrmV2_1Package.initializePackageContents();
 		theEclipseLinkOrmV2_2Package.initializePackageContents();
 		theEclipseLinkOrmV2_4Package.initializePackageContents();
+		theEclipseLinkOrmV2_5Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_3Package.freeze();

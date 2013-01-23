@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,12 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkConvertValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 
 public class OrmEclipseLinkConvert
 	extends AbstractOrmConverter
@@ -32,7 +34,7 @@ public class OrmEclipseLinkConvert
 
 	public OrmEclipseLinkConvert(OrmAttributeMapping parent, OrmConverter.Owner owner) {
 		super(parent, owner);
-		this.specifiedConverterName = this.getXmlConvertibleMapping().getConvert();
+		this.specifiedConverterName = this.getXmlConvert() != null ? this.getXmlConvert().getConvert() : null;
 	}
 
 
@@ -46,7 +48,7 @@ public class OrmEclipseLinkConvert
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedConverterName_(this.getXmlConvertibleMapping().getConvert());
+		this.setSpecifiedConverterName_(this.getXmlConvert() != null ? this.getXmlConvert().getConvert() : null);
 	}
 
 	// ********** converter name **********
@@ -61,7 +63,12 @@ public class OrmEclipseLinkConvert
 
 	public void setSpecifiedConverterName(String name) {
 		this.setSpecifiedConverterName_(name);
-		this.getXmlConvertibleMapping().setConvert(name);
+		if (name == null) {
+			this.getXmlConvertibleMapping().setConvert(null);
+		}
+		else {
+			this.getXmlConvert().setConvert(name);
+		}
 	}
 
 	protected void setSpecifiedConverterName_(String name) {
@@ -77,18 +84,29 @@ public class OrmEclipseLinkConvert
 
 	// ********** misc **********
 
-	protected XmlConvertibleMapping getXmlConvertibleMapping() {
+	protected XmlConvertibleMapping_2_1 getXmlConvertibleMapping() {
 		// cast to EclipseLink type
-		return (XmlConvertibleMapping) super.getXmlAttributeMapping();
+		return (XmlConvertibleMapping_2_1) super.getXmlAttributeMapping();
 	}
 
+	protected XmlConvert getXmlConvert() {
+		return ((XmlConvert) this.getXmlConvertibleMapping().getConvert());
+	}
+	
 	public Class<? extends Converter> getType() {
 		return EclipseLinkConvert.class;
 	}
 
 	public void initialize() {
 		this.specifiedConverterName = DEFAULT_CONVERTER_NAME;
-		this.getXmlConvertibleMapping().setConvert(this.specifiedConverterName);
+		if (this.getXmlConvert() == null) {
+			XmlConvert convert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
+			convert.setConvert(this.specifiedConverterName);
+			this.getXmlConvertibleMapping().setConvert(convert);
+		}
+		else {
+			this.getXmlConvert().setConvert(this.specifiedConverterName);
+		}
 	}
 
 
@@ -96,7 +114,7 @@ public class OrmEclipseLinkConvert
 	
 	@Override
 	protected TextRange getXmlValidationTextRange() {
-		return this.getXmlConvertibleMapping().getConvertTextRange();
+		return this.getXmlConvert() == null ? getXmlConvertibleMapping().getValidationTextRange() : getXmlConvert().getConvertTextRange();
 	}
 
 	// ********** completion proposals **********
@@ -114,7 +132,7 @@ public class OrmEclipseLinkConvert
 	}
 
 	protected boolean convertValueTouches(int pos) {
-		return this.getXmlConvertibleMapping().convertTouches(pos);
+		return this.getXmlConvert() == null ? false : this.getXmlConvert().convertTouches(pos);
 	}
 
 	/**
@@ -146,12 +164,13 @@ public class OrmEclipseLinkConvert
 		}
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
-			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return (xmlMapping.getConvert() == null) ? null : new OrmEclipseLinkConvert(parent, this);
+			XmlConvertibleMapping_2_1 xmlMapping = (XmlConvertibleMapping_2_1) parent.getXmlAttributeMapping();
+			XmlConvert xmlConvert = (XmlConvert) xmlMapping.getConvert();
+			return (xmlConvert == null) ? null : new OrmEclipseLinkConvert(parent, this);
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
-			return ((XmlConvertibleMapping) xmlMapping).getConvert() != null;
+			return ((XmlConvertibleMapping_2_1) xmlMapping).getConvert() != null;
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
@@ -159,7 +178,7 @@ public class OrmEclipseLinkConvert
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
-			((XmlConvertibleMapping) xmlMapping).setConvert(null);
+			((XmlConvertibleMapping_2_1) xmlMapping).setConvert(null);
 		}
 
 		public JptValidator buildValidator(Converter converter) {

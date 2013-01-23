@@ -135,6 +135,8 @@
     <genClasses ecoreClass="orm.ecore#//ColumnResult">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ColumnResult/name"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//ConstructorResult"/>
+    <genClasses ecoreClass="orm.ecore#//XmlConvert"/>
     <genClasses ecoreClass="orm.ecore#//XmlConverter"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlConvertibleMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/lob"/>
@@ -199,6 +201,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//FieldResult/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//FieldResult/column"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlForeignKey"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlGeneratedValue">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlGeneratedValue/generator"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlGeneratedValue/strategy"/>
@@ -218,6 +221,7 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlIdClassContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlIdClassContainer/idClass"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlIndex"/>
     <genClasses ecoreClass="orm.ecore#//Inheritance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Inheritance/strategy"/>
     </genClasses>
@@ -245,11 +249,18 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedSuperclass/excludeSuperclassListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMappedSuperclass/entityListeners"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlNamedAttributeNode"/>
+    <genClasses ecoreClass="orm.ecore#//XmlNamedEntityGraph"/>
+    <genClasses ecoreClass="orm.ecore#//XmlNamedSubgraph"/>
     <genClasses ecoreClass="orm.ecore#//XmlNamedNativeQuery">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedNativeQuery/query"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedNativeQuery/resultClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedNativeQuery/resultSetMapping"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlNamedQuery"/>
+    <genClasses ecoreClass="orm.ecore#//XmlNamedQuery">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedQuery/query"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlNamedStoredProcedureQuery"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlNullAttributeMapping"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToMany"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToOne"/>
@@ -286,7 +297,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlQuery">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQuery/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQuery/query"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlQuery/hints"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlQueryContainer">
@@ -303,11 +313,12 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlSequenceGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlSequenceGenerator/sequenceName"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//SqlResultSetMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SqlResultSetMapping/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/entityResults"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/columnResults"/>
+    <genClasses ecoreClass="orm.ecore#//XmlSqlResultSetMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlSqlResultSetMapping/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlSqlResultSetMapping/entityResults"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlSqlResultSetMapping/columnResults"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlStoredProcedureParameter"/>
     <genClasses ecoreClass="orm.ecore#//XmlTable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlTableGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTableGenerator/table"/>
@@ -442,15 +453,138 @@
     </nestedGenPackages>
     <nestedGenPackages prefix="OrmV2_1" basePackage="org.eclipse.jpt.jpa.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" ecorePackage="orm.ecore#//v2_1">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//v2_1/ParameterMode_2_1">
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ParameterMode_2_1/IN"/>
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ParameterMode_2_1/INOUT"/>
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ParameterMode_2_1/OUT"/>
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ParameterMode_2_1/REF_CURSOR"/>
+      </genEnums>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/ColumnResult_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/ColumnResult_2_1/className"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/ConstructorResult_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/ConstructorResult_2_1/targetClass"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference orm.ecore#//v2_1/ConstructorResult_2_1/columnResults"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlAssociationOverride_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlAssociationOverride_2_1/foreignKey"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlCollectionTable_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlCollectionTable_2_1/foreignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlCollectionTable_2_1/indexes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConvert_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConvert_2_1/description"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConvert_2_1/converter"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConvert_2_1/attributeName"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConvert_2_1/disableConversion"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConverter_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/description"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/className"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/autoApply"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlEntityMappings_2_1"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConverterContainer_2_1">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlConverterContainer_2_1/converters"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConvertibleMapping_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlConvertibleMapping_2_1/convert"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlElementCollection_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlElementCollection_2_1/mapKeyConverts"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlElementCollection_2_1/mapKeyForeignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlElementCollection_2_1/converts"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlEmbedded_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlEmbedded_2_1/converts"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlEntity_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlEntity_2_1/primaryKeyForeignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlEntity_2_1/converts"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlEntity_2_1/namedEntityGraphs"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlEntityMappings_2_1"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlForeignKey_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/description"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/foreignKeyDefinition"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/disableForeignKey"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlIndex_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlIndex_2_1/description"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlIndex_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlIndex_2_1/columnList"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlIndex_2_1/unique"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlJoinTable_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlJoinTable_2_1/foreignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlJoinTable_2_1/inverseForeignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlJoinTable_2_1/indexes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlManyToMany_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlManyToMany_2_1/mapKeyConverts"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlManyToMany_2_1/mapKeyForeignKey"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlManyToOne_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlManyToOne_2_1/foreignKey"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlNamedAttributeNode_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedAttributeNode_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedAttributeNode_2_1/subgraph"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedAttributeNode_2_1/keySubgraph"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlNamedEntityGraph_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlNamedEntityGraph_2_1/namedAttributeNodes"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlNamedEntityGraph_2_1/subgraphs"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlNamedEntityGraph_2_1/subclassSubgraphs"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedEntityGraph_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedEntityGraph_2_1/includeAllAttributes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlNamedStoredProcedureQuery_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedStoredProcedureQuery_2_1/resultClasses"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedStoredProcedureQuery_2_1/resultSetMappings"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedStoredProcedureQuery_2_1/procedureName"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlNamedStoredProcedureQuery_2_1/parameters"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlNamedSubgraph_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlNamedSubgraph_2_1/namedAttributeNodes"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedSubgraph_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlNamedSubgraph_2_1/className"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlOneToMany_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlOneToMany_2_1/mapKeyConverts"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlOneToMany_2_1/mapKeyForeignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlOneToMany_2_1/foreignKey"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlOneToOne_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlOneToOne_2_1/mapKeyConverts"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlOneToOne_2_1/primaryKeyForeignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlOneToOne_2_1/foreignKey"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlQueryContainer_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlQueryContainer_2_1/namedStoredProcedureQueries"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlSecondaryTable_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlSecondaryTable_2_1/primaryKeyForeignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlSecondaryTable_2_1/indexes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/description"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/parameterMode"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/className"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlSqlResultSetMapping_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlSqlResultSetMapping_2_1/constructorResults"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlTable_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlTable_2_1/indexes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlTableGenerator_2_1">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_1/XmlTableGenerator_2_1/indexes"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

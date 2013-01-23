@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,6 +41,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery#getQuery <em>Query</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery#getResultClass <em>Result Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery#getResultSetMapping <em>Result Set Mapping</em>}</li>
  * </ul>
@@ -94,6 +95,16 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 	protected String name = NAME_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getHints() <em>Hints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getHints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlQueryHint> hints;
+
+	/**
 	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -112,16 +123,6 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 	 * @ordered
 	 */
 	protected String query = QUERY_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getHints() <em>Hints</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getHints()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlQueryHint> hints;
 
 	/**
 	 * The default value of the '{@link #getResultClass() <em>Result Class</em>}' attribute.
@@ -334,7 +335,7 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQuery_Query()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlNamedNativeQuery_Query()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -412,10 +413,10 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 				return getDescription();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__NAME:
 				return getName();
-			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
-				return getQuery();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__HINTS:
 				return getHints();
+			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
+				return getQuery();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__RESULT_CLASS:
 				return getResultClass();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
@@ -441,12 +442,12 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
-				setQuery((String)newValue);
-				return;
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__HINTS:
 				getHints().clear();
 				getHints().addAll((Collection<? extends XmlQueryHint>)newValue);
+				return;
+			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
+				setQuery((String)newValue);
 				return;
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__RESULT_CLASS:
 				setResultClass((String)newValue);
@@ -474,11 +475,11 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
-				setQuery(QUERY_EDEFAULT);
-				return;
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__HINTS:
 				getHints().clear();
+				return;
+			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
+				setQuery(QUERY_EDEFAULT);
 				return;
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__RESULT_CLASS:
 				setResultClass(RESULT_CLASS_EDEFAULT);
@@ -504,10 +505,10 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
-				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__HINTS:
 				return hints != null && !hints.isEmpty();
+			case OrmPackage.XML_NAMED_NATIVE_QUERY__QUERY:
+				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__RESULT_CLASS:
 				return RESULT_CLASS_EDEFAULT == null ? resultClass != null : !RESULT_CLASS_EDEFAULT.equals(resultClass);
 			case OrmPackage.XML_NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
@@ -637,7 +638,7 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 	}
 
 	protected static Translator buildQueryTranslator() {
-		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlQuery_Query());
+		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlNamedNativeQuery_Query());
 	}
 
 	protected static Translator buildHintTranslator() {

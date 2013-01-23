@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,14 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlEntity_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntity_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedEntityGraph_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -61,8 +69,18 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0, XmlIdClassContainer
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0, XmlIdClassContainer, XmlEntity_2_1
 {
+
+	/**
+	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredProcedureQuery_2_1> namedStoredProcedureQueries;
 
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
@@ -225,6 +243,36 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	protected XmlClassReference idClass;
 
 	/**
+	 * The cached value of the '{@link #getPrimaryKeyForeignKey() <em>Primary Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKeyForeignKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlForeignKey_2_1 primaryKeyForeignKey;
+
+	/**
+	 * The cached value of the '{@link #getConverts() <em>Converts</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverts()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConvert_2_1> converts;
+
+	/**
+	 * The cached value of the '{@link #getNamedEntityGraphs() <em>Named Entity Graphs</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedEntityGraphs()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedEntityGraph_2_1> namedEntityGraphs;
+
+	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -322,7 +370,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<SqlResultSetMapping> sqlResultSetMappings;
+	protected EList<XmlSqlResultSetMapping> sqlResultSetMappings;
 
 	/**
 	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
@@ -401,6 +449,29 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_ENTITY;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Stored Procedure Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQueryContainer_2_1_NamedStoredProcedureQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedStoredProcedureQuery_2_1> getNamedStoredProcedureQueries()
+	{
+		if (namedStoredProcedureQueries == null)
+		{
+			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery_2_1>(XmlNamedStoredProcedureQuery_2_1.class, this, OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES);
+		}
+		return namedStoredProcedureQueries;
 	}
 
 	/**
@@ -602,6 +673,112 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__ID_CLASS, newIdClass, newIdClass));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Primary Key Foreign Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Primary Key Foreign Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_2_1_PrimaryKeyForeignKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlForeignKey_2_1 getPrimaryKeyForeignKey()
+	{
+		return primaryKeyForeignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey, NotificationChain msgs)
+	{
+		XmlForeignKey_2_1 oldPrimaryKeyForeignKey = primaryKeyForeignKey;
+		primaryKeyForeignKey = newPrimaryKeyForeignKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY, oldPrimaryKeyForeignKey, newPrimaryKeyForeignKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlEntity#getPrimaryKeyForeignKey <em>Primary Key Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Primary Key Foreign Key</em>' containment reference.
+	 * @see #getPrimaryKeyForeignKey()
+	 * @generated
+	 */
+	public void setPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey)
+	{
+		if (newPrimaryKeyForeignKey != primaryKeyForeignKey)
+		{
+			NotificationChain msgs = null;
+			if (primaryKeyForeignKey != null)
+				msgs = ((InternalEObject)primaryKeyForeignKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY, null, msgs);
+			if (newPrimaryKeyForeignKey != null)
+				msgs = ((InternalEObject)newPrimaryKeyForeignKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY, null, msgs);
+			msgs = basicSetPrimaryKeyForeignKey(newPrimaryKeyForeignKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY, newPrimaryKeyForeignKey, newPrimaryKeyForeignKey));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Converts</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converts</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converts</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_2_1_Converts()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConvert_2_1> getConverts()
+	{
+		if (converts == null)
+		{
+			converts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ENTITY__CONVERTS);
+		}
+		return converts;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Entity Graphs</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedEntityGraph_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Entity Graphs</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Entity Graphs</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_2_1_NamedEntityGraphs()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedEntityGraph_2_1> getNamedEntityGraphs()
+	{
+		if (namedEntityGraphs == null)
+		{
+			namedEntityGraphs = new EObjectContainmentEList<XmlNamedEntityGraph_2_1>(XmlNamedEntityGraph_2_1.class, this, OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS);
+		}
+		return namedEntityGraphs;
 	}
 
 	/**
@@ -927,7 +1104,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 
 	/**
 	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlSqlResultSetMapping}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Sql Result Set Mappings</em>' containment reference list isn't clear,
@@ -939,11 +1116,11 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<SqlResultSetMapping> getSqlResultSetMappings()
+	public EList<XmlSqlResultSetMapping> getSqlResultSetMappings()
 	{
 		if (sqlResultSetMappings == null)
 		{
-			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS);
+			sqlResultSetMappings = new EObjectContainmentEList<XmlSqlResultSetMapping>(XmlSqlResultSetMapping.class, this, OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS);
 		}
 		return sqlResultSetMappings;
 	}
@@ -1589,6 +1766,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
@@ -1617,6 +1796,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ID_CLASS:
 				return basicSetIdClass(null, msgs);
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
+				return basicSetPrimaryKeyForeignKey(null, msgs);
+			case OrmPackage.XML_ENTITY__CONVERTS:
+				return ((InternalEList<?>)getConverts()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS:
+				return ((InternalEList<?>)getNamedEntityGraphs()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
@@ -1645,6 +1830,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return getNamedStoredProcedureQueries();
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
@@ -1675,6 +1862,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getCacheable();
 			case OrmPackage.XML_ENTITY__ID_CLASS:
 				return getIdClass();
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
+				return getPrimaryKeyForeignKey();
+			case OrmPackage.XML_ENTITY__CONVERTS:
+				return getConverts();
+			case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS:
+				return getNamedEntityGraphs();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1712,6 +1905,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery_2_1>)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				getNamedQueries().clear();
 				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
@@ -1761,6 +1958,17 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__ID_CLASS:
 				setIdClass((XmlClassReference)newValue);
 				return;
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
+				setPrimaryKeyForeignKey((XmlForeignKey_2_1)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__CONVERTS:
+				getConverts().clear();
+				getConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS:
+				getNamedEntityGraphs().clear();
+				getNamedEntityGraphs().addAll((Collection<? extends XmlNamedEntityGraph_2_1>)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
 				return;
@@ -1786,7 +1994,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
-				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
+				getSqlResultSetMappings().addAll((Collection<? extends XmlSqlResultSetMapping>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners((Boolean)newValue);
@@ -1811,6 +2019,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				return;
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				getNamedQueries().clear();
 				return;
@@ -1855,6 +2066,15 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__ID_CLASS:
 				setIdClass((XmlClassReference)null);
+				return;
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
+				setPrimaryKeyForeignKey((XmlForeignKey_2_1)null);
+				return;
+			case OrmPackage.XML_ENTITY__CONVERTS:
+				getConverts().clear();
+				return;
+			case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS:
+				getNamedEntityGraphs().clear();
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
@@ -1903,6 +2123,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
@@ -1933,6 +2155,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 			case OrmPackage.XML_ENTITY__ID_CLASS:
 				return idClass != null;
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
+				return primaryKeyForeignKey != null;
+			case OrmPackage.XML_ENTITY__CONVERTS:
+				return converts != null && !converts.isEmpty();
+			case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS:
+				return namedEntityGraphs != null && !namedEntityGraphs.isEmpty();
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1967,6 +2195,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlQueryContainer_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES: return OrmV2_1Package.XML_QUERY_CONTAINER_21__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlQueryContainer.class)
 		{
 			switch (derivedFeatureID)
@@ -2038,6 +2274,16 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY: return OrmV2_1Package.XML_ENTITY_21__PRIMARY_KEY_FOREIGN_KEY;
+				case OrmPackage.XML_ENTITY__CONVERTS: return OrmV2_1Package.XML_ENTITY_21__CONVERTS;
+				case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS: return OrmV2_1Package.XML_ENTITY_21__NAMED_ENTITY_GRAPHS;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -2049,6 +2295,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlQueryContainer_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_QUERY_CONTAINER_21__NAMED_STORED_PROCEDURE_QUERIES: return OrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlQueryContainer.class)
 		{
 			switch (baseFeatureID)
@@ -2120,6 +2374,16 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_ENTITY_21__PRIMARY_KEY_FOREIGN_KEY: return OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY;
+				case OrmV2_1Package.XML_ENTITY_21__CONVERTS: return OrmPackage.XML_ENTITY__CONVERTS;
+				case OrmV2_1Package.XML_ENTITY_21__NAMED_ENTITY_GRAPHS: return OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -2177,6 +2441,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			buildTableTranslator(),
 			buildSecondaryTableTranslator(),
 			buildPrimaryKeyJoinColumnTranslator(),
+			buildPrimaryKeyForeignKeyTranslator(),
 			buildIdClassTranslator(),
 			buildInheritanceTranslator(),
 			buildDiscriminatorValueTranslator(),
@@ -2185,6 +2450,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			buildTableGeneratorTranslator(),
 			buildNamedQueryTranslator(),
 			buildNamedNativeQueryTranslator(),
+			buildNamedStoredProcedureQueryTranslator(),
 			buildSqlResultSetMappingTranslator(),
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
@@ -2198,6 +2464,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			PostLoad.buildTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
+			buildConvertTranslator(),
+			buildNamedEntityGraphTranslator(),
 			Attributes.buildTranslator()
 		};
 	}
@@ -2254,8 +2522,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 		return XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries());
 	}
 	
+	protected static Translator buildNamedStoredProcedureQueryTranslator() {
+		return XmlNamedStoredProcedureQuery.buildTranslator(JPA2_1.NAMED_STORED_PROCEDURE_QUERY, OrmV2_1Package.eINSTANCE.getXmlQueryContainer_2_1_NamedStoredProcedureQueries());
+	}
+	
 	protected static Translator buildSqlResultSetMappingTranslator() {
-		return SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntity_SqlResultSetMappings());
+		return XmlSqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntity_SqlResultSetMappings());
 	}
 	
 	protected static Translator buildExcludeDefaultListenersTranslator() {
@@ -2304,5 +2576,17 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	
 	protected static Translator buildAssociationOverrideTranslator() {
 		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
+	}
+	
+	protected static Translator buildConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlEntity_2_1_Converts());
+	}
+	
+	protected static Translator buildPrimaryKeyForeignKeyTranslator() {
+		return XmlForeignKey.buildTranslator(JPA2_1.PRIMARY_KEY_FOREIGN_KEY, OrmV2_1Package.eINSTANCE.getXmlEntity_2_1_PrimaryKeyForeignKey());
+	}
+	
+	protected static Translator buildNamedEntityGraphTranslator() {
+		return XmlNamedEntityGraph.buildTranslator(JPA2_1.NAMED_ENTITY_GRAPH, OrmV2_1Package.eINSTANCE.getXmlEntity_2_1_NamedEntityGraphs());
 	}
 }

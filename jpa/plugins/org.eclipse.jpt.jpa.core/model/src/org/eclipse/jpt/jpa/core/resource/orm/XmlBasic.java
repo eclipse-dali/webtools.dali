@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
@@ -56,6 +60,16 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 	 * @ordered
 	 */
 	protected XmlColumn column;
+
+	/**
+	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlConvert_2_1 convert;
 
 	/**
 	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
@@ -338,6 +352,66 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Convert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Convert</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Convert</em>' containment reference.
+	 * @see #setConvert(XmlConvert_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConvertibleMapping_2_1_Convert()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlConvert_2_1 getConvert()
+	{
+		return convert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetConvert(XmlConvert_2_1 newConvert, NotificationChain msgs)
+	{
+		XmlConvert_2_1 oldConvert = convert;
+		convert = newConvert;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__CONVERT, oldConvert, newConvert);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlBasic#getConvert <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Convert</em>' containment reference.
+	 * @see #getConvert()
+	 * @generated
+	 */
+	public void setConvert(XmlConvert_2_1 newConvert)
+	{
+		if (newConvert != convert)
+		{
+			NotificationChain msgs = null;
+			if (convert != null)
+				msgs = ((InternalEObject)convert).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_BASIC__CONVERT, null, msgs);
+			if (newConvert != null)
+				msgs = ((InternalEObject)newConvert).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_BASIC__CONVERT, null, msgs);
+			msgs = basicSetConvert(newConvert, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__CONVERT, newConvert, newConvert));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Fetch</b></em>' attribute.
 	 * The default value is <code>"LAZY"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.FetchType}.
@@ -423,6 +497,8 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 		{
 			case OrmPackage.XML_BASIC__COLUMN:
 				return basicSetColumn(null, msgs);
+			case OrmPackage.XML_BASIC__CONVERT:
+				return basicSetConvert(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -439,6 +515,8 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 		{
 			case OrmPackage.XML_BASIC__COLUMN:
 				return getColumn();
+			case OrmPackage.XML_BASIC__CONVERT:
+				return getConvert();
 			case OrmPackage.XML_BASIC__LOB:
 				return isLob();
 			case OrmPackage.XML_BASIC__TEMPORAL:
@@ -465,6 +543,9 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 		{
 			case OrmPackage.XML_BASIC__COLUMN:
 				setColumn((XmlColumn)newValue);
+				return;
+			case OrmPackage.XML_BASIC__CONVERT:
+				setConvert((XmlConvert_2_1)newValue);
 				return;
 			case OrmPackage.XML_BASIC__LOB:
 				setLob((Boolean)newValue);
@@ -498,6 +579,9 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 			case OrmPackage.XML_BASIC__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
+			case OrmPackage.XML_BASIC__CONVERT:
+				setConvert((XmlConvert_2_1)null);
+				return;
 			case OrmPackage.XML_BASIC__LOB:
 				setLob(LOB_EDEFAULT);
 				return;
@@ -529,6 +613,8 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 		{
 			case OrmPackage.XML_BASIC__COLUMN:
 				return column != null;
+			case OrmPackage.XML_BASIC__CONVERT:
+				return convert != null;
 			case OrmPackage.XML_BASIC__LOB:
 				return lob != LOB_EDEFAULT;
 			case OrmPackage.XML_BASIC__TEMPORAL:
@@ -559,6 +645,14 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_BASIC__CONVERT: return OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (derivedFeatureID)
@@ -585,6 +679,14 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 			switch (baseFeatureID)
 			{
 				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.XML_BASIC__COLUMN;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT: return OrmPackage.XML_BASIC__CONVERT;
 				default: return -1;
 			}
 		}
@@ -657,7 +759,8 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 			buildColumnTranslator(), 
 			buildLobTranslator(),
 			buildTemporalTranslator(),
-			buildEnumeratedTranslator()
+			buildEnumeratedTranslator(),
+			buildConvertTranslator()
 		};
 	}
 	
@@ -684,4 +787,9 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 	protected static Translator buildEnumeratedTranslator() {
 		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
 	}
+	
+	protected static Translator buildConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlConvertibleMapping_2_1_Convert());
+	}
+
 }

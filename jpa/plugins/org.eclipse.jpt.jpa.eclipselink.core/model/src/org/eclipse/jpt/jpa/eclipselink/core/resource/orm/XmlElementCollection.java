@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2012 Oracle. 
+ *  Copyright (c) 2009, 2013 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
@@ -125,26 +125,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONVERT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected String convert = CONVERT_EDEFAULT;
-
-	/**
 	 * The cached value of the '{@link #getMapKeyAssociationOverrides() <em>Map Key Association Overrides</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -193,26 +173,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
-
-	/**
-	 * The default value of the '{@link #getMapKeyConvert() <em>Map Key Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String MAP_KEY_CONVERT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyConvert() <em>Map Key Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected String mapKeyConvert = MAP_KEY_CONVERT_EDEFAULT;
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -535,41 +495,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Convert</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Convert</em>' attribute.
-	 * @see #setConvert(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_Convert()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getConvert()
-	{
-		return convert;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection#getConvert <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Convert</em>' attribute.
-	 * @see #getConvert()
-	 * @generated
-	 */
-	public void setConvert(String newConvert)
-	{
-		String oldConvert = convert;
-		convert = newConvert;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT, oldConvert, convert));
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride}.
 	 * <!-- begin-user-doc -->
@@ -590,41 +515,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			mapKeyAssociationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES);
 		}
 		return mapKeyAssociationOverrides;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Convert</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Convert</em>' attribute.
-	 * @see #setMapKeyConvert(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCollectionMapping_2_0_MapKeyConvert()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getMapKeyConvert()
-	{
-		return mapKeyConvert;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection#getMapKeyConvert <em>Map Key Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map Key Convert</em>' attribute.
-	 * @see #getMapKeyConvert()
-	 * @generated
-	 */
-	public void setMapKeyConvert(String newMapKeyConvert)
-	{
-		String oldMapKeyConvert = mapKeyConvert;
-		mapKeyConvert = newMapKeyConvert;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT, oldMapKeyConvert, mapKeyConvert));
 	}
 
 	/**
@@ -1631,8 +1521,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return getProperties();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				return getAttributeType();
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
-				return getConvert();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return getMapKeyAssociationOverrides();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERTERS:
@@ -1643,8 +1531,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS:
 				return getStructConverters();
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
-				return getMapKeyConvert();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
 				return getJoinFetch();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
@@ -1702,9 +1588,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				setAttributeType((String)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
-				setConvert((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
 				getMapKeyAssociationOverrides().clear();
 				getMapKeyAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
@@ -1724,9 +1607,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
-				setMapKeyConvert((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
 				setJoinFetch((XmlJoinFetchType)newValue);
@@ -1799,9 +1679,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
-				setConvert(CONVERT_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
 				getMapKeyAssociationOverrides().clear();
 				return;
@@ -1816,9 +1693,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS:
 				getStructConverters().clear();
-				return;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
-				setMapKeyConvert(MAP_KEY_CONVERT_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
 				setJoinFetch(JOIN_FETCH_EDEFAULT);
@@ -1888,8 +1762,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
-				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return mapKeyAssociationOverrides != null && !mapKeyAssociationOverrides.isEmpty();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERTERS:
@@ -1900,8 +1772,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
-				return MAP_KEY_CONVERT_EDEFAULT == null ? mapKeyConvert != null : !MAP_KEY_CONVERT_EDEFAULT.equals(mapKeyConvert);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
 				return joinFetch != JOIN_FETCH_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
@@ -1970,14 +1840,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlMapKeyAssociationOverrideContainer_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -2008,7 +1870,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT: return EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT;
 				default: return -1;
 			}
 		}
@@ -2119,14 +1980,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlMapKeyAssociationOverrideContainer_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -2157,7 +2010,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT;
 				default: return -1;
 			}
 		}
@@ -2249,10 +2101,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (attributeType: ");
 		result.append(attributeType);
-		result.append(", convert: ");
-		result.append(convert);
-		result.append(", mapKeyConvert: ");
-		result.append(mapKeyConvert);
 		result.append(", joinFetch: ");
 		result.append(joinFetch);
 		result.append(", partitioned: ");
@@ -2285,10 +2133,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	@Override
 	public TextRange getTemporalTextRange() {
 		return getAttributeTextRange(JPA.TEMPORAL);
-	}
-	
-	public TextRange getConvertTextRange() {
-		return getElementTextRange(EclipseLink.CONVERT);
 	}
 	
 	public TextRange getJoinFetchTextRange() {
@@ -2324,18 +2168,19 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			buildMapKeyClassTranslator(),
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			buildMapKeyConvertTranslator(),
 			buildMapKeyAttributeOverrideTranslator(),
+			buildMapKeyConvertTranslator(),
 			buildMapKeyAssociationOverrideTranslator(),
 			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),
 			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),
+			buildMapKeyForeignKeyTranslator(),
 			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
-			buildConvertTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
+			buildConvertTranslator(),
 			XmlConverter.buildTranslator(EclipseLink.CONVERTER, OrmV2_1Package.eINSTANCE.getXmlConverterContainer_2_1_Converters()),
 			XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_TypeConverters()),
 			XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_ObjectTypeConverters()),
@@ -2359,13 +2204,13 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			XmlUnionPartitioning.buildTranslator(EclipseLink2_2.UNION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_UnionPartitioning()),
 		};
 	}
-	
+
 	protected static Translator buildMapKeyConvertTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
+		return XmlConvert.buildTranslator(JPA2_1.MAP_KEY_CONVERT, OrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_MapKeyConverts());
 	}
 	
 	protected static Translator buildConvertTranslator() {
-		return new Translator(EclipseLink.CONVERT, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertibleMapping_Convert());
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_Converts());
 	}
 	
 	protected static Translator buildPropertyTranslator() {
@@ -2413,15 +2258,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	}
 
 	// *********** content assist ************
-	
-	protected TextRange getConvertCodeAssistTextRange() {
-		return getElementCodeAssistTextRange(EclipseLink.CONVERT);
-	}
-
-	public boolean convertTouches(int pos) {
-		TextRange textRange = this.getConvertCodeAssistTextRange();
-		return (textRange != null) && (textRange.touches(pos));
-	}
 	
 	protected TextRange getAttributeTypeCodeAssistTextRange() {
 		return getAttributeCodeAssistTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);

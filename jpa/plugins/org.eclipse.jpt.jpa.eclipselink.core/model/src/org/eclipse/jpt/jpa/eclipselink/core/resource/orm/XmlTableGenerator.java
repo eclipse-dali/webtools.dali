@@ -261,7 +261,8 @@ public class XmlTableGenerator extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			buildInitialValueTranslator(),
 			buildAllocationSizeTranslator(),
 			buildDescriptionTranslator(),
-			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
+			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints()),
+			buildIndexesTranslator()
 		};
 	}
 

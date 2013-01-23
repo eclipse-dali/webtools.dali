@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
@@ -30,9 +29,13 @@ import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
@@ -50,7 +53,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttributeMapping, XmlArray_2_3, XmlConvertibleMapping
+public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttributeMapping, XmlArray_2_3
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -131,6 +134,16 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
+
+	/**
+	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlConvert_2_1 convert;
 
 	/**
 	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
@@ -233,26 +246,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @ordered
 	 */
 	protected String targetClass = TARGET_CLASS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONVERT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected String convert = CONVERT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -448,6 +441,66 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			structConverters = new EObjectContainmentEList<XmlStructConverter>(XmlStructConverter.class, this, EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS);
 		}
 		return structConverters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Convert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Convert</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Convert</em>' containment reference.
+	 * @see #setConvert(XmlConvert_2_1)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_2_1_Convert()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlConvert_2_1 getConvert()
+	{
+		return convert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetConvert(XmlConvert_2_1 newConvert, NotificationChain msgs)
+	{
+		XmlConvert_2_1 oldConvert = convert;
+		convert = newConvert;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ARRAY__CONVERT, oldConvert, newConvert);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray#getConvert <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Convert</em>' containment reference.
+	 * @see #getConvert()
+	 * @generated
+	 */
+	public void setConvert(XmlConvert_2_1 newConvert)
+	{
+		if (newConvert != convert)
+		{
+			NotificationChain msgs = null;
+			if (convert != null)
+				msgs = ((InternalEObject)convert).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ARRAY__CONVERT, null, msgs);
+			if (newConvert != null)
+				msgs = ((InternalEObject)newConvert).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ARRAY__CONVERT, null, msgs);
+			msgs = basicSetConvert(newConvert, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ARRAY__CONVERT, newConvert, newConvert));
 	}
 
 	/**
@@ -727,41 +780,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Convert</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Convert</em>' attribute.
-	 * @see #setConvert(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_Convert()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getConvert()
-	{
-		return convert;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray#getConvert <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Convert</em>' attribute.
-	 * @see #getConvert()
-	 * @generated
-	 */
-	public void setConvert(String newConvert)
-	{
-		String oldConvert = convert;
-		convert = newConvert;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ARRAY__CONVERT, oldConvert, convert));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -783,6 +801,8 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
+				return basicSetConvert(null, msgs);
 			case EclipseLinkOrmPackage.XML_ARRAY__COLUMN:
 				return basicSetColumn(null, msgs);
 		}
@@ -813,6 +833,8 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
+				return getConvert();
 			case EclipseLinkOrmPackage.XML_ARRAY__LOB:
 				return isLob();
 			case EclipseLinkOrmPackage.XML_ARRAY__TEMPORAL:
@@ -825,8 +847,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return getDatabaseType();
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				return getTargetClass();
-			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
-				return getConvert();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -868,6 +888,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
+				setConvert((XmlConvert_2_1)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__LOB:
 				setLob((Boolean)newValue);
 				return;
@@ -885,9 +908,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				setTargetClass((String)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
-				setConvert((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -924,6 +944,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			case EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
+				setConvert((XmlConvert_2_1)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__LOB:
 				setLob(LOB_EDEFAULT);
 				return;
@@ -941,9 +964,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
-				return;
-			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
-				setConvert(CONVERT_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -973,6 +993,8 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ARRAY__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
+				return convert != null;
 			case EclipseLinkOrmPackage.XML_ARRAY__LOB:
 				return lob != LOB_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ARRAY__TEMPORAL:
@@ -985,8 +1007,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return DATABASE_TYPE_EDEFAULT == null ? databaseType != null : !DATABASE_TYPE_EDEFAULT.equals(databaseType);
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
-			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
-				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1041,7 +1061,15 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				default: return -1;
 			}
 		}
-		if (baseClass == org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping.class)
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ARRAY__CONVERT: return OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (derivedFeatureID)
 			{
@@ -1065,14 +1093,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			{
 				case EclipseLinkOrmPackage.XML_ARRAY__DATABASE_TYPE: return EclipseLinkOrmV2_3Package.XML_ARRAY_23__DATABASE_TYPE;
 				case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS: return EclipseLinkOrmV2_3Package.XML_ARRAY_23__TARGET_CLASS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ARRAY__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
 				default: return -1;
 			}
 		}
@@ -1129,7 +1149,15 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				default: return -1;
 			}
 		}
-		if (baseClass == org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping.class)
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT: return EclipseLinkOrmPackage.XML_ARRAY__CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (baseFeatureID)
 			{
@@ -1153,14 +1181,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			{
 				case EclipseLinkOrmV2_3Package.XML_ARRAY_23__DATABASE_TYPE: return EclipseLinkOrmPackage.XML_ARRAY__DATABASE_TYPE;
 				case EclipseLinkOrmV2_3Package.XML_ARRAY_23__TARGET_CLASS: return EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT: return EclipseLinkOrmPackage.XML_ARRAY__CONVERT;
 				default: return -1;
 			}
 		}
@@ -1190,8 +1210,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 		result.append(databaseType);
 		result.append(", targetClass: ");
 		result.append(targetClass);
-		result.append(", convert: ");
-		result.append(convert);
 		result.append(')');
 		return result.toString();
 	}
@@ -1210,10 +1228,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	
 	public TextRange getTemporalTextRange() {
 		return getAttributeTextRange(JPA.TEMPORAL);
-	}
-
-	public TextRange getConvertTextRange() {
-		return getElementTextRange(EclipseLink.CONVERT);
 	}
 
 	public TextRange getAttributeTypeTextRange() {
@@ -1267,9 +1281,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	protected static Translator buildLobTranslator() {
 		return new EmptyTagBooleanTranslator(JPA.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
 	}
-
+	
 	protected static Translator buildConvertTranslator() {
-		return new Translator(EclipseLink.CONVERT, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertibleMapping_Convert());
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlConvertibleMapping_2_1_Convert());
 	}
 	
 	protected static Translator buildConverterTranslator() {
@@ -1309,16 +1323,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	}
 
 	// *********** content assist ************
-	
-	protected TextRange getConvertCodeAssistTextRange() {
-		return getElementCodeAssistTextRange(EclipseLink.CONVERT);
-	}
-
-	public boolean convertTouches(int pos) {
-		TextRange textRange = this.getConvertCodeAssistTextRange();
-		return (textRange != null) && (textRange.touches(pos));
-	}
-	
+		
 	protected TextRange getAttributeTypeCodeAssistTextRange() {
 		return getAttributeCodeAssistTextRange(EclipseLink2_3.ARRAY__ATTRIBUTE_TYPE);
 	}

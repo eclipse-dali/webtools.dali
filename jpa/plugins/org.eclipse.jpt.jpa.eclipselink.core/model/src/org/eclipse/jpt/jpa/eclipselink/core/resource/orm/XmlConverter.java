@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -270,10 +269,6 @@ public class XmlConverter extends org.eclipse.jpt.jpa.core.resource.orm.XmlConve
 	
 	protected static Translator buildNameTranslator() {
 		return new Translator(EclipseLink.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
-	}
-	
-	protected static Translator buildClassTranslator() {
-		return new Translator(EclipseLink.CONVERTER__CLASS, OrmV2_1Package.eINSTANCE.getXmlConverter_2_1_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
 

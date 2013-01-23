@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -333,6 +333,15 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_DERIVED_ID_20_FEATURE_COUNT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Convert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_20__CONVERT = OrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
 
 	/**
 	 * The feature id for the '<em><b>Lob</b></em>' attribute.

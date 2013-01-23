@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
@@ -54,7 +54,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion implements XmlVersion_2_2, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlConverterContainer
+public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion implements XmlVersion_2_2, XmlAttributeMapping, XmlMutable, XmlConverterContainer
 {
 	/**
 	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
@@ -125,26 +125,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * @ordered
 	 */
 	protected Boolean mutable = MUTABLE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONVERT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected String convert = CONVERT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
@@ -335,41 +315,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		mutable = newMutable;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_VERSION__MUTABLE, oldMutable, mutable));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Convert</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Convert</em>' attribute.
-	 * @see #setConvert(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_Convert()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getConvert()
-	{
-		return convert;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion#getConvert <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Convert</em>' attribute.
-	 * @see #getConvert()
-	 * @generated
-	 */
-	public void setConvert(String newConvert)
-	{
-		String oldConvert = convert;
-		convert = newConvert;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_VERSION__CONVERT, oldConvert, convert));
 	}
 
 	/**
@@ -595,8 +540,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				return getMutable();
-			case EclipseLinkOrmPackage.XML_VERSION__CONVERT:
-				return getConvert();
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERTERS:
 				return getConverters();
 			case EclipseLinkOrmPackage.XML_VERSION__TYPE_CONVERTERS:
@@ -635,9 +578,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				setMutable((Boolean)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_VERSION__CONVERT:
-				setConvert((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERTERS:
 				getConverters().clear();
@@ -684,9 +624,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_VERSION__CONVERT:
-				setConvert(CONVERT_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERTERS:
 				getConverters().clear();
 				return;
@@ -723,8 +660,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
-			case EclipseLinkOrmPackage.XML_VERSION__CONVERT:
-				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERTERS:
 				return converters != null && !converters.isEmpty();
 			case EclipseLinkOrmPackage.XML_VERSION__TYPE_CONVERTERS:
@@ -782,14 +717,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_VERSION__MUTABLE: return EclipseLinkOrmPackage.XML_MUTABLE__MUTABLE;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_VERSION__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
 				default: return -1;
 			}
 		}
@@ -862,14 +789,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT: return EclipseLinkOrmPackage.XML_VERSION__CONVERT;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterContainer_2_1.class)
 		{
 			switch (baseFeatureID)
@@ -906,18 +825,12 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		result.append(attributeType);
 		result.append(", mutable: ");
 		result.append(mutable);
-		result.append(", convert: ");
-		result.append(convert);
 		result.append(')');
 		return result.toString();
 	}
 	
 	public TextRange getMutableTextRange() {
 		return getAttributeTextRange(EclipseLink.MUTABLE);
-	}
-	
-	public TextRange getConvertTextRange() {
-		return getElementTextRange(EclipseLink.CONVERT);
 	}
 
 	public TextRange getAttributeTypeTextRange() {
@@ -958,12 +871,13 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		return new Translator(EclipseLink.MUTABLE, EclipseLinkOrmPackage.eINSTANCE.getXmlMutable_Mutable(), Translator.DOM_ATTRIBUTE);
 	}
 	
+//	is this now similar to the jpa 2.1 index?
 	protected static Translator buildIndexTranslator() {
 		return XmlIndex.buildTranslator(EclipseLink2_2.INDEX, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlVersion_2_2_Index());
 	}
 	
 	protected static Translator buildConvertTranslator() {
-		return new Translator(EclipseLink.CONVERT, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertibleMapping_Convert());
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlConvertibleMapping_2_1_Convert());
 	}
 	
 	protected static Translator buildConverterTranslator() {
@@ -995,15 +909,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	}
 
 	// *********** content assist ************
-	
-	protected TextRange getConvertCodeAssistTextRange() {
-		return getElementCodeAssistTextRange(EclipseLink.CONVERT);
-	}
-
-	public boolean convertTouches(int pos) {
-		TextRange textRange = this.getConvertCodeAssistTextRange();
-		return (textRange != null) && (textRange.touches(pos));
-	}
 	
 	protected TextRange getAttributeTypeCodeAssistTextRange() {
 		return getAttributeCodeAssistTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);

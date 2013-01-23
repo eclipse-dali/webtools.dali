@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2012  Oracle. 
+ *  Copyright (c) 2008, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -95,6 +95,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CLONE_COPY_POLICY: return (EObject)createXmlCloneCopyPolicy();
 			case EclipseLinkOrmPackage.XML_COLLECTION_TABLE: return (EObject)createXmlCollectionTable();
 			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE: return (EObject)createXmlConversionValue();
+			case EclipseLinkOrmPackage.XML_CONVERT: return (EObject)createXmlConvert();
 			case EclipseLinkOrmPackage.XML_CONVERTER: return (EObject)createXmlConverter();
 			case EclipseLinkOrmPackage.XML_COPY_POLICY: return (EObject)createXmlCopyPolicy();
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
@@ -373,6 +374,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlConversionValue xmlConversionValue = new XmlConversionValue();
 		return xmlConversionValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlConvert createXmlConvert()
+	{
+		XmlConvert xmlConvert = new XmlConvert();
+		return xmlConvert;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -46,8 +45,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected String name;
 
-	protected String query;
-
 	protected final ContextListContainer<OrmQueryHint, XmlQueryHint> hintContainer;
 
 
@@ -55,7 +52,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		super(parent);
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
-		this.query = this.xmlQuery.getQuery();
 		this.hintContainer = this.buildHintContainer();
 	}
 
@@ -65,7 +61,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.xmlQuery.getName());
-		this.setQuery_(this.xmlQuery.getQuery());
 		this.syncHints();
 	}
 
@@ -91,24 +86,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		String old = this.name;
 		this.name = name;
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
-	}
-
-
-	// ********** query **********
-
-	public String getQuery() {
-		return this.query;
-	}
-
-	public void setQuery(String query) {
-		this.setQuery_(query);
-		this.xmlQuery.setQuery(query);
-	}
-
-	protected void setQuery_(String query) {
-		String old = this.query;
-		this.query = query;
-		this.firePropertyChanged(QUERY_PROPERTY, old, query);
 	}
 
 
@@ -203,7 +180,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public void convertFrom(JavaQuery javaQuery) {
 		this.setName(javaQuery.getName());
-		this.setQuery(javaQuery.getQuery());
 		for (JavaQueryHint javaQueryHint : javaQuery.getHints()) {
 			this.addHint().convertFrom(javaQueryHint);
 		}
@@ -218,7 +194,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateName(messages);
-		this.validateQuery(queryHelper, messages, reporter);
 	}
 
 	protected void validateName(List<IMessage> messages) {
@@ -235,24 +210,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		}
 	}
 
-	protected void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		if (StringTools.isBlank(this.query)){
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
-					new String[] {this.name},
-					this,
-					this.getNameTextRange()
-				)
-			);
-		} else {
-			this.validateQuery_(queryHelper, messages, reporter);
-		}
-	}
-
-	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
-
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlQuery.getValidationTextRange();
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
@@ -260,10 +217,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public TextRange getNameTextRange() {
 		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
-	}
-
-	public List<TextRange> getQueryTextRanges() {
-		return Collections.singletonList(this.xmlQuery.getQueryTextRange());
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
@@ -274,7 +227,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected boolean isEquivalentTo(Query other) {
 		return ObjectTools.equals(this.name, other.getName()) &&
-				ObjectTools.equals(this.query, other.getQuery()) &&
 				this.hintsAreEquivalentTo(other);
 	}
 

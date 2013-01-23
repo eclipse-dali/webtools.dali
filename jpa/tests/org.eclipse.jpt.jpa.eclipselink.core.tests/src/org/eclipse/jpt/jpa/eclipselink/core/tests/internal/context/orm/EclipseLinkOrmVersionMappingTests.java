@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
@@ -311,28 +313,31 @@ public class EclipseLinkOrmVersionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
-		XmlVersion basicResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlVersion versionResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlConvert xmlConvert = (XmlConvert) versionResource.getConvert();
 		JavaVersionMapping javaVersionMapping = (JavaVersionMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(ormVersionMapping.getConverter().getType());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, xmlConvert);
 				
 		//set lob in the resource model, verify context model updated
-		basicResource.setConvert("myConvert");
+		xmlConvert = EclipseLinkOrmFactory.eINSTANCE.createXmlConvert();
+		xmlConvert.setConvert("myConvert");
+		versionResource.setConvert(xmlConvert);
 		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
-		assertEquals("myConvert", basicResource.getConvert());
+		assertEquals("myConvert", ((EclipseLinkConvert) ormVersionMapping.getConverter()).getConverterName());
 
 		//set lob to null in the resource model
-		basicResource.setConvert(null);
+		versionResource.setConvert(null);
 		assertNull(ormVersionMapping.getConverter().getType());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, versionResource.getConvert());
 		
 		
 		javaVersionMapping.setConverter(EclipseLinkConvert.class);
 		((EclipseLinkConvert) javaVersionMapping.getConverter()).setSpecifiedConverterName("foo");
 		
 		assertNull(ormVersionMapping.getConverter().getType());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, versionResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaVersionMapping.getConverter()).getSpecifiedConverterName());
 		
 		
@@ -342,18 +347,18 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getType());
 		assertEquals("foo", ((EclipseLinkConvert) virtualVersionMapping.getConverter()).getSpecifiedConverterName());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, versionResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaVersionMapping.getConverter()).getSpecifiedConverterName());
 		
 		((EclipseLinkConvert) javaVersionMapping.getConverter()).setSpecifiedConverterName("bar");
 		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getType());
 		assertEquals("bar", ((EclipseLinkConvert) virtualVersionMapping.getConverter()).getSpecifiedConverterName());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, versionResource.getConvert());
 		assertEquals("bar", ((EclipseLinkConvert) javaVersionMapping.getConverter()).getSpecifiedConverterName());
 
 		javaVersionMapping.setConverter(null);
 		assertNull(virtualVersionMapping.getConverter().getType());
-		assertNull(basicResource.getConvert());
+		assertNull(versionResource.getConvert());
 		assertNull(javaVersionMapping.getConverter().getType());
 	}
 	
@@ -364,29 +369,31 @@ public class EclipseLinkOrmVersionMappingTests
 		OrmPersistentAttribute ormPersistentAttribute = 
 			ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
-		XmlVersion basicResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlVersion versionResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlConvert xmlConvert = (XmlConvert) versionResource.getConvert();
 	
 		assertNull(ormVersionMapping.getConverter().getType());
-		assertNull(basicResource.getConvert());
+		assertNull(xmlConvert);
 				
 		//set lob in the context model, verify resource model updated
 		ormVersionMapping.setConverter(EclipseLinkConvert.class);
-		assertEquals("none", basicResource.getConvert());
+		xmlConvert = (XmlConvert) versionResource.getConvert();
+		assertEquals("none", xmlConvert.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormVersionMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals("bar", basicResource.getConvert());
+		assertEquals("bar", xmlConvert.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
 		assertEquals("bar", ((EclipseLinkConvert) ormVersionMapping.getConverter()).getSpecifiedConverterName());
 
 		((EclipseLinkConvert) ormVersionMapping.getConverter()).setSpecifiedConverterName(null);
 
 		assertNull(ormVersionMapping.getConverter().getType());
-		assertEquals(null, basicResource.getConvert());
+		assertEquals(null, versionResource.getConvert());
 
 		//set lob to false in the context model
 		ormVersionMapping.setConverter(null);
 		assertNull(ormVersionMapping.getConverter().getType());
-		assertNull(basicResource.getConvert());
+		assertNull(versionResource.getConvert());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2011  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLinkOrmV2_5Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -316,6 +317,7 @@ public class EclipseLinkOrmV1_1Package extends EPackageImpl
 		EclipseLinkOrmV2_2Package theEclipseLinkOrmV2_2Package = (EclipseLinkOrmV2_2Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) instanceof EclipseLinkOrmV2_2Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) : EclipseLinkOrmV2_2Package.eINSTANCE);
 		EclipseLinkOrmV2_3Package theEclipseLinkOrmV2_3Package = (EclipseLinkOrmV2_3Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) instanceof EclipseLinkOrmV2_3Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) : EclipseLinkOrmV2_3Package.eINSTANCE);
 		EclipseLinkOrmV2_4Package theEclipseLinkOrmV2_4Package = (EclipseLinkOrmV2_4Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) instanceof EclipseLinkOrmV2_4Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) : EclipseLinkOrmV2_4Package.eINSTANCE);
+		EclipseLinkOrmV2_5Package theEclipseLinkOrmV2_5Package = (EclipseLinkOrmV2_5Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) instanceof EclipseLinkOrmV2_5Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) : EclipseLinkOrmV2_5Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV1_1Package.createPackageContents();
@@ -325,6 +327,7 @@ public class EclipseLinkOrmV1_1Package extends EPackageImpl
 		theEclipseLinkOrmV2_2Package.createPackageContents();
 		theEclipseLinkOrmV2_3Package.createPackageContents();
 		theEclipseLinkOrmV2_4Package.createPackageContents();
+		theEclipseLinkOrmV2_5Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV1_1Package.initializePackageContents();
@@ -334,6 +337,7 @@ public class EclipseLinkOrmV1_1Package extends EPackageImpl
 		theEclipseLinkOrmV2_2Package.initializePackageContents();
 		theEclipseLinkOrmV2_3Package.initializePackageContents();
 		theEclipseLinkOrmV2_4Package.initializePackageContents();
+		theEclipseLinkOrmV2_5Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV1_1Package.freeze();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,10 @@ import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlAssociationOverride_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlAssociationOverride_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -42,7 +46,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverride, XmlJoinColumnContainer, XmlAssociationOverride_2_0
+public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverride, XmlJoinColumnContainer, XmlAssociationOverride_2_0, XmlAssociationOverride_2_1
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -103,6 +107,16 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 	 * @ordered
 	 */
 	protected String description = DESCRIPTION_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getForeignKey() <em>Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getForeignKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlForeignKey_2_1 foreignKey;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -181,6 +195,66 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 		description = newDescription;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION, oldDescription, description));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Foreign Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Foreign Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Foreign Key</em>' containment reference.
+	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlAssociationOverride_2_1_ForeignKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlForeignKey_2_1 getForeignKey()
+	{
+		return foreignKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	{
+		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		foreignKey = newForeignKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY, oldForeignKey, newForeignKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride#getForeignKey <em>Foreign Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Foreign Key</em>' containment reference.
+	 * @see #getForeignKey()
+	 * @generated
+	 */
+	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	{
+		if (newForeignKey != foreignKey)
+		{
+			NotificationChain msgs = null;
+			if (foreignKey != null)
+				msgs = ((InternalEObject)foreignKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY, null, msgs);
+			if (newForeignKey != null)
+				msgs = ((InternalEObject)newForeignKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY, null, msgs);
+			msgs = basicSetForeignKey(newForeignKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY, newForeignKey, newForeignKey));
 	}
 
 	/**
@@ -292,6 +366,8 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
+				return basicSetForeignKey(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -314,6 +390,8 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 				return getJoinTable();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION:
 				return getDescription();
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
+				return getForeignKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -342,6 +420,9 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
+				setForeignKey((XmlForeignKey_2_1)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -368,6 +449,9 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
+				setForeignKey((XmlForeignKey_2_1)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -390,6 +474,8 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 				return joinTable != null;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
+				return foreignKey != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -426,6 +512,14 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlAssociationOverride_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY: return OrmV2_1Package.XML_ASSOCIATION_OVERRIDE_21__FOREIGN_KEY;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -458,6 +552,14 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 			switch (baseFeatureID)
 			{
 				case OrmV2_0Package.XML_ASSOCIATION_OVERRIDE_20__DESCRIPTION: return OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverride_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_ASSOCIATION_OVERRIDE_21__FOREIGN_KEY: return OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY;
 				default: return -1;
 			}
 		}
@@ -499,6 +601,7 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 			buildNameTranslator(),
 			buildDescriptionTranslator(),
 			buildJoinColumnTranslator(),
+			buildForeignKeyTranslator(),
 			buildJoinTableTranslator()
 		};
 	}
@@ -518,6 +621,10 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 	protected static Translator buildJoinTableTranslator() {
 		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableContainer_JoinTable());
 	}
+	
+	protected static Translator buildForeignKeyTranslator() {
+		return XmlForeignKey.buildTranslator(JPA2_1.FOREIGN_KEY, OrmV2_1Package.eINSTANCE.getXmlAssociationOverride_2_1_ForeignKey());
+	}	
 
 	// ************ content assist ***********
 	public TextRange getNameTextCodeAssistRange() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle. 
+ *  Copyright (c) 2010, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLinkOrmV2_5Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -520,13 +521,22 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS_21__TABLE_GENERATOR = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_21__NAMED_STORED_PROCEDURE_QUERIES = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_21__NAMED_QUERIES = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 4;
+	public static final int XML_MAPPED_SUPERCLASS_21__NAMED_QUERIES = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
@@ -535,16 +545,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_21__NAMED_NATIVE_QUERIES = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS_21__NAMED_STORED_PROCEDURE_QUERIES = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 6;
+	public static final int XML_MAPPED_SUPERCLASS_21__NAMED_NATIVE_QUERIES = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
@@ -943,6 +944,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		EclipseLinkOrmV2_2Package theEclipseLinkOrmV2_2Package = (EclipseLinkOrmV2_2Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) instanceof EclipseLinkOrmV2_2Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) : EclipseLinkOrmV2_2Package.eINSTANCE);
 		EclipseLinkOrmV2_3Package theEclipseLinkOrmV2_3Package = (EclipseLinkOrmV2_3Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) instanceof EclipseLinkOrmV2_3Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) : EclipseLinkOrmV2_3Package.eINSTANCE);
 		EclipseLinkOrmV2_4Package theEclipseLinkOrmV2_4Package = (EclipseLinkOrmV2_4Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) instanceof EclipseLinkOrmV2_4Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) : EclipseLinkOrmV2_4Package.eINSTANCE);
+		EclipseLinkOrmV2_5Package theEclipseLinkOrmV2_5Package = (EclipseLinkOrmV2_5Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) instanceof EclipseLinkOrmV2_5Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) : EclipseLinkOrmV2_5Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_1Package.createPackageContents();
@@ -952,6 +954,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		theEclipseLinkOrmV2_2Package.createPackageContents();
 		theEclipseLinkOrmV2_3Package.createPackageContents();
 		theEclipseLinkOrmV2_4Package.createPackageContents();
+		theEclipseLinkOrmV2_5Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_1Package.initializePackageContents();
@@ -961,6 +964,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		theEclipseLinkOrmV2_2Package.initializePackageContents();
 		theEclipseLinkOrmV2_3Package.initializePackageContents();
 		theEclipseLinkOrmV2_4Package.initializePackageContents();
+		theEclipseLinkOrmV2_5Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_1Package.freeze();
@@ -1575,7 +1579,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		xmlMappedSuperclass_2_1EClass.getESuperTypes().add(this.getXmlFetchGroupContainer_2_1());
 		xmlMappedSuperclass_2_1EClass.getESuperTypes().add(theOrmPackage.getXmlGeneratorContainer());
 		xmlMappedSuperclass_2_1EClass.getESuperTypes().add(theOrmPackage.getXmlQueryContainer());
-		xmlMappedSuperclass_2_1EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlQueryContainer());
 		xmlMappedSuperclass_2_1EClass.getESuperTypes().add(this.getXmlTypeMapping_2_1());
 		xmlOneToMany_2_1EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlBatchFetchHolder());
 		xmlOneToOne_2_1EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlBatchFetchHolder());
@@ -1614,7 +1617,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEClass(xmlManyToOne_2_1EClass, XmlManyToOne_2_1.class, "XmlManyToOne_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlMappedSuperclass_2_1EClass, XmlMappedSuperclass_2_1.class, "XmlMappedSuperclass_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMappedSuperclass_2_1_SqlResultSetMappings(), theOrmPackage.getSqlResultSetMapping(), null, "sqlResultSetMappings", null, 0, -1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_2_1_SqlResultSetMappings(), theOrmPackage.getXmlSqlResultSetMapping(), null, "sqlResultSetMappings", null, 0, -1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_2_1_QueryRedirectors(), theEclipseLinkOrmPackage.getXmlQueryRedirectors(), null, "queryRedirectors", null, 0, 1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_1EClass, XmlOneToMany_2_1.class, "XmlOneToMany_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

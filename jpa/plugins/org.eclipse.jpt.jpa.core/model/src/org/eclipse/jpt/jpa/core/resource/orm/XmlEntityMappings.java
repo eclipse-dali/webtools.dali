@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -72,6 +74,16 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContainer, XmlAccessHolder, XmlEntityMappings_2_1
 {
+	/**
+	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredProcedureQuery_2_1> namedStoredProcedureQueries;
+
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -240,7 +252,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<SqlResultSetMapping> sqlResultSetMappings;
+	protected EList<XmlSqlResultSetMapping> sqlResultSetMappings;
 
 	/**
 	 * The cached value of the '{@link #getMappedSuperclasses() <em>Mapped Superclasses</em>}' containment reference list.
@@ -291,6 +303,29 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_ENTITY_MAPPINGS;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Stored Procedure Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlQueryContainer_2_1_NamedStoredProcedureQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedStoredProcedureQuery_2_1> getNamedStoredProcedureQueries()
+	{
+		if (namedStoredProcedureQueries == null)
+		{
+			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery_2_1>(XmlNamedStoredProcedureQuery_2_1.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES);
+		}
+		return namedStoredProcedureQueries;
 	}
 
 	/**
@@ -645,7 +680,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 
 	/**
 	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlSqlResultSetMapping}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Sql Result Set Mappings</em>' containment reference list isn't clear,
@@ -657,11 +692,11 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<SqlResultSetMapping> getSqlResultSetMappings()
+	public EList<XmlSqlResultSetMapping> getSqlResultSetMappings()
 	{
 		if (sqlResultSetMappings == null)
 		{
-			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS);
+			sqlResultSetMappings = new EObjectContainmentEList<XmlSqlResultSetMapping>(XmlSqlResultSetMapping.class, this, OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS);
 		}
 		return sqlResultSetMappings;
 	}
@@ -745,6 +780,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
@@ -779,6 +816,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
+				return getNamedStoredProcedureQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
@@ -824,6 +863,10 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery_2_1>)newValue);
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
@@ -864,7 +907,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
-				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
+				getSqlResultSetMappings().addAll((Collection<? extends XmlSqlResultSetMapping>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
 				getMappedSuperclasses().clear();
@@ -892,6 +935,9 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				return;
@@ -951,6 +997,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
+				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
@@ -994,6 +1042,14 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlQueryContainer_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES: return OrmV2_1Package.XML_QUERY_CONTAINER_21__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlQueryContainer.class)
 		{
 			switch (derivedFeatureID)
@@ -1037,6 +1093,14 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlQueryContainer_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_QUERY_CONTAINER_21__NAMED_STORED_PROCEDURE_QUERIES: return OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlQueryContainer.class)
 		{
 			switch (baseFeatureID)
@@ -1179,7 +1243,8 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 			XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
 			XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
 			XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
-			SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
+			XmlNamedStoredProcedureQuery.buildTranslator(JPA2_1.NAMED_STORED_PROCEDURE_QUERY, OrmV2_1Package.eINSTANCE.getXmlQueryContainer_2_1_NamedStoredProcedureQueries()),
+			XmlSqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
 			XmlMappedSuperclass.buildTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
 			XmlEntity.buildTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
 			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),

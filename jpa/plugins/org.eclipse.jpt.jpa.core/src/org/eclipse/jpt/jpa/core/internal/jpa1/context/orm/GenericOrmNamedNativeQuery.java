@@ -9,14 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import java.util.Collections;
 import java.util.List;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,6 +34,9 @@ public class GenericOrmNamedNativeQuery
 	extends AbstractOrmQuery<XmlNamedNativeQuery>
 	implements OrmNamedNativeQuery
 {
+
+	protected String query;
+
 	protected String resultClass;
 	protected String fullyQualifiedResultClass;
 
@@ -37,6 +45,7 @@ public class GenericOrmNamedNativeQuery
 
 	public GenericOrmNamedNativeQuery(JpaContextNode parent, XmlNamedNativeQuery xmlNamedNativeQuery) {
 		super(parent, xmlNamedNativeQuery);
+		this.query = this.xmlQuery.getQuery();
 		this.resultClass = xmlNamedNativeQuery.getResultClass();
 		this.resultSetMapping = xmlNamedNativeQuery.getResultSetMapping();
 	}
@@ -47,13 +56,33 @@ public class GenericOrmNamedNativeQuery
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
+		this.setQuery_(this.xmlQuery.getQuery());
 		this.setResultClass_(this.xmlQuery.getResultClass());
 		this.setResultSetMapping_(this.xmlQuery.getResultSetMapping());
 	}
+
 	@Override
 	public void update() {
 		super.update();
 		this.setFullyQualifiedResultClass(this.buildFullyQualifiedResultClass());
+	}
+
+
+	// ********** query **********
+
+	public String getQuery() {
+		return this.query;
+	}
+
+	public void setQuery(String query) {
+		this.setQuery_(query);
+		this.xmlQuery.setQuery(query);
+	}
+
+	protected void setQuery_(String query) {
+		String old = this.query;
+		this.query = query;
+		this.firePropertyChanged(QUERY_PROPERTY, old, query);
 	}
 
 
@@ -110,19 +139,41 @@ public class GenericOrmNamedNativeQuery
 		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, resultSetMapping);
 	}
 
+
 	// ********** metadata conversion **********
 	
 	public void convertFrom(JavaNamedNativeQuery javaQuery) {
 		super.convertFrom(javaQuery);
+		this.setQuery(javaQuery.getQuery());
 		this.setResultClass(javaQuery.getResultClass());
 		this.setResultSetMapping(javaQuery.getResultSetMapping());
 	}
 
+
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		// nothing yet
+	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateQuery(queryHelper, messages, reporter);
+	}
+
+	protected void validateQuery(@SuppressWarnings("unused") JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+		if (StringTools.isBlank(this.query)){
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+					new String[] {this.name},
+					this,
+					this.getNameTextRange()
+				)
+			);
+		}
+	}
+
+	public List<TextRange> getQueryTextRanges() {
+		return Collections.singletonList(this.xmlQuery.getQueryTextRange());
 	}
 
 	@Override
@@ -132,7 +183,8 @@ public class GenericOrmNamedNativeQuery
 	}
 	
 	protected boolean isEquivalentTo(NamedNativeQuery other) {
-		return ObjectTools.equals(this.resultClass, other.getResultClass()) &&
+		return ObjectTools.equals(this.query, other.getQuery()) &&
+				ObjectTools.equals(this.resultClass, other.getResultClass()) &&
 				ObjectTools.equals(this.resultSetMapping, other.getResultSetMapping());
 	}
 

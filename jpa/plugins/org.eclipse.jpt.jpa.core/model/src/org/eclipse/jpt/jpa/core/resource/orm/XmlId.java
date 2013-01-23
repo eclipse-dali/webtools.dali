@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -53,6 +56,15 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 	 * @ordered
 	 */
 	protected XmlColumn column;
+	/**
+	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlConvert_2_1 convert;
 	/**
 	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -207,6 +219,66 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__COLUMN, newColumn, newColumn));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Convert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Convert</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Convert</em>' containment reference.
+	 * @see #setConvert(XmlConvert_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConvertibleMapping_2_1_Convert()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlConvert_2_1 getConvert()
+	{
+		return convert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetConvert(XmlConvert_2_1 newConvert, NotificationChain msgs)
+	{
+		XmlConvert_2_1 oldConvert = convert;
+		convert = newConvert;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__CONVERT, oldConvert, newConvert);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlId#getConvert <em>Convert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Convert</em>' containment reference.
+	 * @see #getConvert()
+	 * @generated
+	 */
+	public void setConvert(XmlConvert_2_1 newConvert)
+	{
+		if (newConvert != convert)
+		{
+			NotificationChain msgs = null;
+			if (convert != null)
+				msgs = ((InternalEObject)convert).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID__CONVERT, null, msgs);
+			if (newConvert != null)
+				msgs = ((InternalEObject)newConvert).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID__CONVERT, null, msgs);
+			msgs = basicSetConvert(newConvert, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__CONVERT, newConvert, newConvert));
 	}
 
 	/**
@@ -512,6 +584,8 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 		{
 			case OrmPackage.XML_ID__COLUMN:
 				return basicSetColumn(null, msgs);
+			case OrmPackage.XML_ID__CONVERT:
+				return basicSetConvert(null, msgs);
 			case OrmPackage.XML_ID__SEQUENCE_GENERATOR:
 				return basicSetSequenceGenerator(null, msgs);
 			case OrmPackage.XML_ID__TABLE_GENERATOR:
@@ -534,6 +608,8 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 		{
 			case OrmPackage.XML_ID__COLUMN:
 				return getColumn();
+			case OrmPackage.XML_ID__CONVERT:
+				return getConvert();
 			case OrmPackage.XML_ID__LOB:
 				return isLob();
 			case OrmPackage.XML_ID__TEMPORAL:
@@ -562,6 +638,9 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 		{
 			case OrmPackage.XML_ID__COLUMN:
 				setColumn((XmlColumn)newValue);
+				return;
+			case OrmPackage.XML_ID__CONVERT:
+				setConvert((XmlConvert_2_1)newValue);
 				return;
 			case OrmPackage.XML_ID__LOB:
 				setLob((Boolean)newValue);
@@ -598,6 +677,9 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 			case OrmPackage.XML_ID__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
+			case OrmPackage.XML_ID__CONVERT:
+				setConvert((XmlConvert_2_1)null);
+				return;
 			case OrmPackage.XML_ID__LOB:
 				setLob(LOB_EDEFAULT);
 				return;
@@ -632,6 +714,8 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 		{
 			case OrmPackage.XML_ID__COLUMN:
 				return column != null;
+			case OrmPackage.XML_ID__CONVERT:
+				return convert != null;
 			case OrmPackage.XML_ID__LOB:
 				return lob != LOB_EDEFAULT;
 			case OrmPackage.XML_ID__TEMPORAL:
@@ -661,6 +745,14 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 			switch (derivedFeatureID)
 			{
 				case OrmPackage.XML_ID__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ID__CONVERT: return OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT;
 				default: return -1;
 			}
 		}
@@ -699,6 +791,14 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 			switch (baseFeatureID)
 			{
 				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.XML_ID__COLUMN;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_CONVERTIBLE_MAPPING_21__CONVERT: return OrmPackage.XML_ID__CONVERT;
 				default: return -1;
 			}
 		}

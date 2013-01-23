@@ -109,14 +109,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConversionValue/dataValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConversionValue/objectValue"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConvert">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConvert/convert"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConverter"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConverterContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/typeConverters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/objectTypeConverters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/structConverters"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConvertibleMapping">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConvertibleMapping/convert"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCopyPolicy">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCopyPolicy/class"/>
@@ -179,13 +179,9 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNamedPlsqlStoredProcedureQuery"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNamedStoredFunctionQuery"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/resultClass"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/resultSetMapping"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/procedureName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/returnsResultSet"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/hints"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/multipleResultSets"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/callByIndex"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNoSql"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlObjectTypeConverter">
@@ -221,9 +217,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlPropertyContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlPropertyContainer/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlQueryContainer">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlQueryContainer/namedStoredProcedureQueries"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlQueryRedirectors"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlRangePartitioning"/>
@@ -299,9 +292,7 @@
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/READ_WRITE"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/EXCEPTION"/>
       </genEnums>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0/mapKeyConvert"/>
-      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlElementCollection_2_0"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlEntity_2_0">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlEntity_2_0/cacheInterceptor"/>
@@ -514,7 +505,7 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="EclipseLinkOrmV2_3" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
-        disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipselinkOrmV2_3"
+        disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipseLinkOrmV2_3"
         ecorePackage="eclipselink_orm.ecore#//v2_3">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_3/MultitenantType">
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/MultitenantType/SINGLE_TABLE"/>
@@ -593,7 +584,7 @@
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="EclipseLinkOrmV2_4" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
-        disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipselinkOrmV2_4"
+        disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipseLinkOrmV2_4"
         ecorePackage="eclipselink_orm.ecore#//v2_4">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_4/DatabaseChangeNotificationType">
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_4/DatabaseChangeNotificationType/NONE"/>
@@ -679,6 +670,13 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlTenantTableDiscriminator_2_4/type"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlUuidGenerator_2_4"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="EclipseLinkOrmV2_5" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
+        disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipseLinkOrmV2_5"
+        ecorePackage="eclipselink_orm.ecore#//v2_5">
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_5/XmlManyToOne_2_5">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_5/XmlManyToOne_2_5/primaryKeyForeignKey"/>
+      </genClasses>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>

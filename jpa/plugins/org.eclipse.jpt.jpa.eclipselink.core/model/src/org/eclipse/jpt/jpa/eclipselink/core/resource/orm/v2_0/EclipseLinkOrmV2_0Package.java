@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2011  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLinkOrmV2_5Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -160,22 +161,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_COLLECTION_MAPPING_20__STRUCT_CONVERTERS = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20_FEATURE_COUNT + 4;
-
-	/**
 	 * The number of structural features of the '<em>Xml Collection Mapping 20</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLLECTION_MAPPING_20_FEATURE_COUNT = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20_FEATURE_COUNT + 5;
+	public static final int XML_COLLECTION_MAPPING_20_FEATURE_COUNT = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0 <em>Xml Element Collection 20</em>}' class.
@@ -233,49 +225,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20__ATTRIBUTE_TYPE = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 
 	/**
-	 * The feature id for the '<em><b>Lob</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__LOB = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__TEMPORAL = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__ENUMERATED = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__CONVERT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
@@ -284,7 +240,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_ELEMENT_COLLECTION_20__CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
@@ -293,7 +249,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__TYPE_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_ELEMENT_COLLECTION_20__TYPE_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
@@ -302,7 +258,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__OBJECT_TYPE_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+	public static final int XML_ELEMENT_COLLECTION_20__OBJECT_TYPE_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
@@ -311,16 +267,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__STRUCT_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+	public static final int XML_ELEMENT_COLLECTION_20__STRUCT_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Xml Element Collection 20</em>' class.
@@ -329,7 +276,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+	public static final int XML_ELEMENT_COLLECTION_20_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlEntity_2_0 <em>Xml Entity 20</em>}' class.
@@ -422,15 +369,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY_20__STRUCT_CONVERTERS = XML_COLLECTION_MAPPING_20__STRUCT_CONVERTERS;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CONVERT = XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To Many 20</em>' class.
@@ -532,15 +470,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY_20__STRUCT_CONVERTERS = XML_COLLECTION_MAPPING_20__STRUCT_CONVERTERS;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CONVERT = XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To Many 20</em>' class.
@@ -800,6 +729,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		EclipseLinkOrmV2_2Package theEclipseLinkOrmV2_2Package = (EclipseLinkOrmV2_2Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) instanceof EclipseLinkOrmV2_2Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) : EclipseLinkOrmV2_2Package.eINSTANCE);
 		EclipseLinkOrmV2_3Package theEclipseLinkOrmV2_3Package = (EclipseLinkOrmV2_3Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) instanceof EclipseLinkOrmV2_3Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) : EclipseLinkOrmV2_3Package.eINSTANCE);
 		EclipseLinkOrmV2_4Package theEclipseLinkOrmV2_4Package = (EclipseLinkOrmV2_4Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) instanceof EclipseLinkOrmV2_4Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) : EclipseLinkOrmV2_4Package.eINSTANCE);
+		EclipseLinkOrmV2_5Package theEclipseLinkOrmV2_5Package = (EclipseLinkOrmV2_5Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) instanceof EclipseLinkOrmV2_5Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_5Package.eNS_URI) : EclipseLinkOrmV2_5Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_0Package.createPackageContents();
@@ -809,6 +739,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		theEclipseLinkOrmV2_2Package.createPackageContents();
 		theEclipseLinkOrmV2_3Package.createPackageContents();
 		theEclipseLinkOrmV2_4Package.createPackageContents();
+		theEclipseLinkOrmV2_5Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_0Package.initializePackageContents();
@@ -818,6 +749,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		theEclipseLinkOrmV2_2Package.initializePackageContents();
 		theEclipseLinkOrmV2_3Package.initializePackageContents();
 		theEclipseLinkOrmV2_4Package.initializePackageContents();
+		theEclipseLinkOrmV2_5Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_0Package.freeze();
@@ -840,20 +772,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public EClass getXmlCollectionMapping_2_0()
 	{
 		return xmlCollectionMapping_2_0EClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0#getMapKeyConvert <em>Map Key Convert</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Map Key Convert</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0#getMapKeyConvert()
-	 * @see #getXmlCollectionMapping_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlCollectionMapping_2_0_MapKeyConvert()
-	{
-		return (EAttribute)xmlCollectionMapping_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1191,7 +1109,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 		// Create classes and their features
 		xmlCollectionMapping_2_0EClass = createEClass(XML_COLLECTION_MAPPING_20);
-		createEAttribute(xmlCollectionMapping_2_0EClass, XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT);
 
 		xmlElementCollection_2_0EClass = createEClass(XML_ELEMENT_COLLECTION_20);
 
@@ -1251,9 +1168,9 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 		// Obtain other dependent packages
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
-		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI);
+		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -1263,7 +1180,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlCollectionMapping_2_0EClass.getESuperTypes().add(this.getXmlMapKeyAssociationOverrideContainer_2_0());
 		xmlCollectionMapping_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterContainer());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlAttributeMapping());
-		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertibleMapping());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 		xmlMappedSuperclass_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlCacheable_2_0());
@@ -1271,7 +1187,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlCollectionMapping_2_0EClass, XmlCollectionMapping_2_0.class, "XmlCollectionMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlCollectionMapping_2_0_MapKeyConvert(), theXMLTypePackage.getString(), "mapKeyConvert", null, 0, 1, XmlCollectionMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_0EClass, XmlElementCollection_2_0.class, "XmlElementCollection_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1331,14 +1246,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_COLLECTION_MAPPING_20 = eINSTANCE.getXmlCollectionMapping_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Convert</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT = eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0 <em>Xml Element Collection 20</em>}' class.
