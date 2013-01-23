@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
@@ -60,8 +61,11 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 	@Override
 	public String getMetamodelTypeName() {
 		String targetTypeName = null;
-		JavaPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
+		JavaPersistentAttribute javaPersistentAttribute = this.getJavaPersistentAttribute();
 		if (javaPersistentAttribute != null) {
+			if(((PersistentType2_0)javaPersistentAttribute).getMetamodelType() == null) { // dynamic type
+				return null;
+			}
 			targetTypeName = javaPersistentAttribute.getMultiReferenceTargetTypeName();
 		}
 		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;

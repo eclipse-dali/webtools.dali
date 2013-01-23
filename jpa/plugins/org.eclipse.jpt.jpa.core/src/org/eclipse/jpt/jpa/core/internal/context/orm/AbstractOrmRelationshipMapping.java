@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
@@ -441,7 +441,11 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	@Override
 	public String getMetamodelTypeName() {
-		return (this.fullyQualifiedTargetEntity != null) ? this.fullyQualifiedTargetEntity : MetamodelField.DEFAULT_TYPE_NAME;
+		PersistentType resolvedTargetType = this.getResolvedTargetType();
+		if(((PersistentType2_0)resolvedTargetType).getMetamodelType() == null) { // dynamic type
+			return null;
+		}
+		return resolvedTargetType.getName();
 	}
 	
 	

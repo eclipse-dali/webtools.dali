@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -2826,10 +2826,7 @@ public abstract class AbstractPersistenceUnit
 		// if we have persistent types with the same name in multiple locations,
 		// the last one we encounter wins (i.e. the classes in the orm.xml take
 		// precedence)
-		HashMap<String, PersistentType> allPersistentTypes = new HashMap<String, PersistentType>();
-		this.addPersistentTypesTo(this.getJarFilePersistentTypes(), allPersistentTypes);
-		this.addPersistentTypesTo(this.getClassRefPersistentTypes(), allPersistentTypes);
-		this.addPersistentTypesTo(this.getMappingFilePersistentTypes(), allPersistentTypes);
+		HashMap<String, PersistentType> allPersistentTypes = this.getPersistentTypesToSynchronizeMetamodel();
 
 		// build a list of the top-level types and a tree of their associated
 		// member types etc.
@@ -2926,6 +2923,20 @@ public abstract class AbstractPersistenceUnit
 			topLevelType.synchronizeMetamodel(memberTypeTree);
 		}
 		return Status.OK_STATUS;
+	}
+
+	/**
+	 * Gather up the persistent unit's types, eliminating duplicates;
+	 * if we have persistent types with the same name in multiple locations,
+	 * the last one we encounter wins (i.e. the classes in the orm.xml take
+	 * precedence)
+	 */
+	protected HashMap<String, PersistentType> getPersistentTypesToSynchronizeMetamodel() {
+		HashMap<String, PersistentType> allPersistentTypes = new HashMap<String, PersistentType>();
+		this.addPersistentTypesTo(this.getJarFilePersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getClassRefPersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getMappingFilePersistentTypes(), allPersistentTypes);
+		return allPersistentTypes;
 	}
 
 	protected MetamodelSourceType selectSourceType(Iterable<MetamodelSourceType> types, String typeName) {

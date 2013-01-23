@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1348,5 +1348,22 @@ public class EclipseLinkPersistenceUnit
 		}
 
 		return convertibleNodes;
+	}
+
+	// ********** metamodel **********
+
+	@Override
+	protected HashMap<String, PersistentType> getPersistentTypesToSynchronizeMetamodel() {
+		HashMap<String, PersistentType> allPersistentTypes = super.getPersistentTypesToSynchronizeMetamodel();
+		
+		this.removeDynamicTypes(allPersistentTypes);
+		return allPersistentTypes;
+	}
+
+	private void removeDynamicTypes(HashMap<String, PersistentType> persistentTypes) {
+		Iterator<String> dynamicTypeNames = this.getEclipseLinkDynamicPersistentTypeNames().iterator();
+		while(dynamicTypeNames.hasNext()) {
+			persistentTypes.remove(dynamicTypeNames.next());
+		}
 	}
 }

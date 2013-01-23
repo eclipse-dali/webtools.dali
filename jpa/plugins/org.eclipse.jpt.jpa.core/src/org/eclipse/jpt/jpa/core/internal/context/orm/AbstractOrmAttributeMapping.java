@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -409,13 +409,22 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	public MetamodelField getMetamodelField() {
 		// if we don't have a name we can't build a metamodel field...
 		String metamodelFieldName = this.getMetamodelFieldName();
-		return (metamodelFieldName == null) ? null :
-					new SimpleMetamodelField(
-						this.getMetamodelFieldModifiers(),
-						this.getMetamodelFieldTypeName(),
-						this.getMetamodelFieldTypeArgumentNames(),
-						metamodelFieldName
-					);
+		if(metamodelFieldName == null) {
+			return null;
+		}
+		MetamodelField result = null;
+		try {
+			result = new SimpleMetamodelField(
+				this.getMetamodelFieldModifiers(),
+				this.getMetamodelFieldTypeName(),
+				this.getMetamodelFieldTypeArgumentNames(),
+				metamodelFieldName
+			);
+		}
+		catch(IllegalMetamodelFieldTypeArgumentException e) {
+			// the target entity is dynamic
+		}
+		return result;
 	}
 
 	protected Iterable<String> getMetamodelFieldModifiers() {
@@ -442,7 +451,11 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	 * name if the "collection" is of type java.util.Map
 	 */
 	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
-		typeArgumentNames.add(this.getMetamodelTypeName());
+		String metamodelTypeName = this.getMetamodelTypeName();
+		if(metamodelTypeName == null) {		// the attribute is dynamic
+			throw this.buildIllegalMetamodelFieldTypeArgumentException();
+		}
+		typeArgumentNames.add(metamodelTypeName);
 	}
 
 	public String getMetamodelTypeName() {
@@ -453,6 +466,9 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.name;
 	}
 
+	protected IllegalMetamodelFieldTypeArgumentException buildIllegalMetamodelFieldTypeArgumentException() {
+		return new IllegalMetamodelFieldTypeArgumentException();
+	}
 
 	// ********** refactoring **********
 
