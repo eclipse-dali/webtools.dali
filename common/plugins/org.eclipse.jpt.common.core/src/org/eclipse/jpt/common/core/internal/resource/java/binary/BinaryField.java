@@ -69,7 +69,9 @@ final class BinaryField
 		}
 		
 		protected ITypeBinding createTypeBinding(IField field) {
-			return ((IVariableBinding) ASTTools.createBinding(field)).getType();
+			//ASTTools.createBinding(field) can return null in certain cases, such as for the $assertionsDisabled field in Integer
+			IVariableBinding binding = (IVariableBinding)ASTTools.createBinding(field);
+			return binding != null ? binding.getType() : null;
 		}
 		
 		public IField getElement() {

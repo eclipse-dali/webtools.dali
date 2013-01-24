@@ -56,7 +56,7 @@ public class ASTTools {
 
 	/**
 	 * Create an {@link IBinding} for the specified {@link IMember}
-	 * with its bindings resolved
+	 * with its bindings resolved.  May return null.
 	 */
 	public static IBinding createBinding(IMember member) {
 		ASTParser parser = newParser();
