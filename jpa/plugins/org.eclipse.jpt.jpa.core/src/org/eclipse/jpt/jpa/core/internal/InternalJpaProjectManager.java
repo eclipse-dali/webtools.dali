@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -39,7 +38,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.ResourceChangeAdapter;
-import org.eclipse.jpt.common.core.internal.utility.ResourceProxyVisitorAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.JobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
@@ -66,6 +64,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -269,35 +268,39 @@ class InternalJpaProjectManager
 	// ********** build JPA projects **********
 
 	/**
-	 * The JPA projects are built asynchronously in a job.
+	 * The JPA projects are built asynchronously in a set of jobs, one for each
+	 * project in the workspace that has the JPA facet.
 	 * Side-effect: {@link #jpaProjects} populated.
 	 */
 	private void buildJpaProjects() {
-		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build JPA projects"); //$NON-NLS-1$
-		BuildJpaProjectsCommand command = new BuildJpaProjectsCommand();
-		this.execute(command, JptCoreMessages.BUILD_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
+		for (IProject project : this.getWorkspaceRoot().getProjects()) {
+			if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
+				JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build JPA project: {0}", project.getName()); //$NON-NLS-1$
+				BuildJpaProjectCommand command = new BuildJpaProjectCommand(project);
+				this.execute(command, NLS.bind(JptCoreMessages.BUILD_JPA_PROJECT_JOB_NAME, project.getName()), project);
+			}
+		}
 	}
 
-	/* CU private */ class BuildJpaProjectsCommand
-		extends JobCommandAdapter
+	/* CU private */ class BuildJpaProjectCommand
+		extends CommandAdapter
 	{
+		private final IProject project;
+
+		BuildJpaProjectCommand(IProject project) {
+			super();
+			this.project = project;
+		}
+
 		@Override
-		public IStatus execute(IProgressMonitor monitor) {
-			InternalJpaProjectManager.this.buildJpaProjects_(monitor);
-			return Status.OK_STATUS;
+		public void execute() {
+			InternalJpaProjectManager.this.buildJpaProject_(this.project);
 		}
 	}
 
-	/* CU private */ void buildJpaProjects_(IProgressMonitor monitor) {
-		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: build JPA projects"); //$NON-NLS-1$
-		try {
-			this.getWorkspaceRoot().accept(new ResourceProxyVisitor(monitor), IResource.NONE);
-		} catch (Exception ex) {
-			// if we have a problem, leave the currently built JPA projects in
-			// place and keep executing (should be OK...)
-			JptJpaCorePlugin.instance().logError(ex);
-		}
-		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "end: build JPA projects"); //$NON-NLS-1$
+	/* CU private */ void buildJpaProject_(IProject project) {
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: build JPA project: {0}", project.getName()); //$NON-NLS-1$
+		this.addJpaProject(project);
 	}
 
 
@@ -417,7 +420,7 @@ class InternalJpaProjectManager
 	JpaProject waitToGetJpaProject(IProject project) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA project: {0}", project.getName()); //$NON-NLS-1$
 		GetJpaProjectCommand command = new GetJpaProjectCommand(project);
-		this.waitToExecute(command, JptCoreMessages.GET_JPA_PROJECT_JOB_NAME, project);
+		this.waitToExecute(command, NLS.bind(JptCoreMessages.GET_JPA_PROJECT_JOB_NAME, project.getName()), project);
 		return command.result;
 	}
 
@@ -497,7 +500,7 @@ class InternalJpaProjectManager
 	JpaProject rebuildJpaProject(IProject project) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
 		RebuildJpaProjectCommand command = new RebuildJpaProjectCommand(project);
-		this.waitToExecute(command, JptCoreMessages.REBUILD_JPA_PROJECT_JOB_NAME, project);
+		this.waitToExecute(command, NLS.bind(JptCoreMessages.REBUILD_JPA_PROJECT_JOB_NAME, project.getName()), project);
 		return command.result;
 	}
 
@@ -538,7 +541,7 @@ class InternalJpaProjectManager
 	Iterable<IMessage> buildValidationMessages(IProject project, IReporter reporter) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build validation messages: {0}", project.getName()); //$NON-NLS-1$
 		BuildValidationMessagesCommand command = new BuildValidationMessagesCommand(project, reporter);
-		this.waitToExecute(command, JptCoreMessages.BUILD_VALIDATION_MESSAGES_JOB_NAME, project);
+		this.waitToExecute(command, NLS.bind(JptCoreMessages.BUILD_VALIDATION_MESSAGES_JOB_NAME, project.getName()), project);
 		return command.result;
 	}
 
@@ -766,7 +769,7 @@ class InternalJpaProjectManager
 	/* CU private */ void projectPostCleanBuild(IProject project) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: post clean build: {0}", project.getName()); //$NON-NLS-1$
 		ProjectPostCleanBuildEventHandlerCommand command = new ProjectPostCleanBuildEventHandlerCommand(project);
-		this.execute(command, JptCoreMessages.PROJECT_POST_CLEAN_BUILD_EVENT_HANDLER_JOB_NAME, project);
+		this.execute(command, NLS.bind(JptCoreMessages.PROJECT_POST_CLEAN_BUILD_EVENT_HANDLER_JOB_NAME, project.getName()), project);
 	}
 
 	/* CU private */ class ProjectPostCleanBuildEventHandlerCommand
@@ -810,7 +813,7 @@ class InternalJpaProjectManager
 	/* CU private */ void checkForJpaFacetTransition(IProject project) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
 		FacetFileChangeEventHandlerCommand command = new FacetFileChangeEventHandlerCommand(project);
-		this.execute(command, JptCoreMessages.FACET_FILE_CHANGE_EVENT_HANDLER_JOB_NAME, project);
+		this.execute(command, NLS.bind(JptCoreMessages.FACET_FILE_CHANGE_EVENT_HANDLER_JOB_NAME, project.getName()), project);
 	}
 
 	/* CU private */ class FacetFileChangeEventHandlerCommand
@@ -1199,54 +1202,6 @@ class InternalJpaProjectManager
 			command.execute(monitor);
 		} else {
 			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "ignore: client command: {0}", command); //$NON-NLS-1$
-		}
-	}
-
-
-	// ********** resource proxy visitor **********
-
-	/**
-	 * Visit the workspace resource tree, adding a JPA project to the
-	 * JPA project manager for each open Eclipse project that has a JPA facet.
-	 */
-	/* CU private */ class ResourceProxyVisitor
-		extends ResourceProxyVisitorAdapter
-	{
-		private final IProgressMonitor monitor;
-
-		ResourceProxyVisitor(IProgressMonitor monitor) {
-			super();
-			this.monitor = monitor;
-		}
-
-		@Override
-		public boolean visit(IResourceProxy resourceProxy) {
-			switch (resourceProxy.getType()) {
-				case IResource.ROOT :
-					return true;  // all projects are in the "root"
-				case IResource.PROJECT :
-					this.processProject(resourceProxy);
-					return false;  // no nested projects
-				case IResource.FOLDER :
-					return false;  // ignore
-				case IResource.FILE :
-					return false;  // ignore
-				default :
-					return false;
-			}
-		}
-
-		private void processProject(IResourceProxy resourceProxy) {
-			if (this.monitor.isCanceled()) {
-				JptJpaCorePlugin.instance().trace(TRACE_OPTION, "CANCEL: resource proxy visitor: {0}", resourceProxy); //$NON-NLS-1$
-				throw new OperationCanceledException();
-			}
-			if (resourceProxy.isAccessible()) {  // the project exists and is open
-				IProject project = (IProject) resourceProxy.requestResource();
-				if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
-					InternalJpaProjectManager.this.addJpaProject(project);
-				}
-			}
 		}
 	}
 
