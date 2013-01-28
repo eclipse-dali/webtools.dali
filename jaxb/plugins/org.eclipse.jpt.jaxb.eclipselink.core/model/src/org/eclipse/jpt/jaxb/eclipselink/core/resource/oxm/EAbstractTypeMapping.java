@@ -2,7 +2,6 @@
  */
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
-import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -76,24 +75,14 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 	protected EXmlRootElement xmlRootElement;
 
 	/**
-	 * The default value of the '{@link #getXmlSeeAlso() <em>Xml See Also</em>}' attribute.
+	 * The cached value of the '{@link #getXmlSeeAlso() <em>Xml See Also</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getXmlSeeAlso()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final List<String> XML_SEE_ALSO_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getXmlSeeAlso() <em>Xml See Also</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlSeeAlso()
-	 * @generated
-	 * @ordered
-	 */
-	protected List<String> xmlSeeAlso = XML_SEE_ALSO_EDEFAULT;
+	protected EXmlSeeAlso xmlSeeAlso;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -272,38 +261,63 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Xml See Also</b></em>' attribute.
+	 * Returns the value of the '<em><b>Xml See Also</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Xml See Also</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml See Also</em>' attribute.
-	 * @see #setXmlSeeAlso(List)
+	 * @return the value of the '<em>Xml See Also</em>' containment reference.
+	 * @see #setXmlSeeAlso(EXmlSeeAlso)
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEAbstractTypeMapping_XmlSeeAlso()
-	 * @model dataType="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso" many="false"
+	 * @model containment="true"
 	 * @generated
 	 */
-	public List<String> getXmlSeeAlso()
+	public EXmlSeeAlso getXmlSeeAlso()
 	{
 		return xmlSeeAlso;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping#getXmlSeeAlso <em>Xml See Also</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml See Also</em>' attribute.
+	 * @generated
+	 */
+	public NotificationChain basicSetXmlSeeAlso(EXmlSeeAlso newXmlSeeAlso, NotificationChain msgs)
+	{
+		EXmlSeeAlso oldXmlSeeAlso = xmlSeeAlso;
+		xmlSeeAlso = newXmlSeeAlso;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO, oldXmlSeeAlso, newXmlSeeAlso);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping#getXmlSeeAlso <em>Xml See Also</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Xml See Also</em>' containment reference.
 	 * @see #getXmlSeeAlso()
 	 * @generated
 	 */
-	public void setXmlSeeAlso(List<String> newXmlSeeAlso)
+	public void setXmlSeeAlso(EXmlSeeAlso newXmlSeeAlso)
 	{
-		List<String> oldXmlSeeAlso = xmlSeeAlso;
-		xmlSeeAlso = newXmlSeeAlso;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO, oldXmlSeeAlso, xmlSeeAlso));
+		if (newXmlSeeAlso != xmlSeeAlso)
+		{
+			NotificationChain msgs = null;
+			if (xmlSeeAlso != null)
+				msgs = ((InternalEObject)xmlSeeAlso).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO, null, msgs);
+			if (newXmlSeeAlso != null)
+				msgs = ((InternalEObject)newXmlSeeAlso).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO, null, msgs);
+			msgs = basicSetXmlSeeAlso(newXmlSeeAlso, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO, newXmlSeeAlso, newXmlSeeAlso));
 	}
 
 	/**
@@ -320,6 +334,8 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 				return basicSetXmlType(null, msgs);
 			case OxmPackage.EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT:
 				return basicSetXmlRootElement(null, msgs);
+			case OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO:
+				return basicSetXmlSeeAlso(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -367,7 +383,7 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 				setXmlRootElement((EXmlRootElement)newValue);
 				return;
 			case OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO:
-				setXmlSeeAlso((List<String>)newValue);
+				setXmlSeeAlso((EXmlSeeAlso)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -393,7 +409,7 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 				setXmlRootElement((EXmlRootElement)null);
 				return;
 			case OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO:
-				setXmlSeeAlso(XML_SEE_ALSO_EDEFAULT);
+				setXmlSeeAlso((EXmlSeeAlso)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -416,7 +432,7 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 			case OxmPackage.EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT:
 				return xmlRootElement != null;
 			case OxmPackage.EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO:
-				return XML_SEE_ALSO_EDEFAULT == null ? xmlSeeAlso != null : !XML_SEE_ALSO_EDEFAULT.equals(xmlSeeAlso);
+				return xmlSeeAlso != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -434,8 +450,6 @@ public abstract class EAbstractTypeMapping extends EBaseObjectImpl implements EB
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (xmlTransient: ");
 		result.append(xmlTransient);
-		result.append(", xmlSeeAlso: ");
-		result.append(xmlSeeAlso);
 		result.append(')');
 		return result.toString();
 	}

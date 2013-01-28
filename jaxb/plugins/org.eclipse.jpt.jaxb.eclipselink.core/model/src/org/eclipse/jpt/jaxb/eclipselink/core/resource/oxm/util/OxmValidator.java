@@ -186,6 +186,8 @@ public class OxmValidator extends EObjectValidator
 				return validateEXmlSchema((EXmlSchema)value, diagnostics, context);
 			case OxmPackage.EXML_SCHEMA_TYPE:
 				return validateEXmlSchemaType((EXmlSchemaType)value, diagnostics, context);
+			case OxmPackage.EXML_SEE_ALSO:
+				return validateEXmlSeeAlso((EXmlSeeAlso)value, diagnostics, context);
 			case OxmPackage.EXML_TRANSFORMATION:
 				return validateEXmlTransformation((EXmlTransformation)value, diagnostics, context);
 			case OxmPackage.EXML_TRANSIENT:
@@ -210,8 +212,6 @@ public class OxmValidator extends EObjectValidator
 				return validateEXmlVirtualAccessMethodsSchema((EXmlVirtualAccessMethodsSchema)value, diagnostics, context);
 			case OxmPackage.EPROP_ORDER:
 				return validateEPropOrder((List<?>)value, diagnostics, context);
-			case OxmPackage.EXML_SEE_ALSO:
-				return validateEXmlSeeAlso((List<?>)value, diagnostics, context);
 			default:
 				return true;
 		}
@@ -622,6 +622,16 @@ public class OxmValidator extends EObjectValidator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean validateEXmlSeeAlso(EXmlSeeAlso eXmlSeeAlso, DiagnosticChain diagnostics, Map<Object, Object> context)
+	{
+		return validate_EveryDefaultConstraint((EObject)eXmlSeeAlso, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean validateEXmlTransformation(EXmlTransformation eXmlTransformation, DiagnosticChain diagnostics, Map<Object, Object> context)
 	{
 		return validate_EveryDefaultConstraint((EObject)eXmlTransformation, diagnostics, context);
@@ -748,42 +758,6 @@ public class OxmValidator extends EObjectValidator
 	{
 		boolean result = true;
 		for (Iterator<?> i = ePropOrder.iterator(); i.hasNext() && (result || diagnostics != null); )
-		{
-			Object item = i.next();
-			if (XMLTypePackage.Literals.STRING.isInstance(item))
-			{
-				result &= xmlTypeValidator.validateString((String)item, diagnostics, context);
-			}
-			else
-			{
-				result = false;
-				reportDataValueTypeViolation(XMLTypePackage.Literals.STRING, item, diagnostics, context);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateEXmlSeeAlso(List<?> eXmlSeeAlso, DiagnosticChain diagnostics, Map<Object, Object> context)
-	{
-		boolean result = validateEXmlSeeAlso_ItemType(eXmlSeeAlso, diagnostics, context);
-		return result;
-	}
-
-	/**
-	 * Validates the ItemType constraint of '<em>EXml See Also</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateEXmlSeeAlso_ItemType(List<?> eXmlSeeAlso, DiagnosticChain diagnostics, Map<Object, Object> context)
-	{
-		boolean result = true;
-		for (Iterator<?> i = eXmlSeeAlso.iterator(); i.hasNext() && (result || diagnostics != null); )
 		{
 			Object item = i.next();
 			if (XMLTypePackage.Literals.STRING.isInstance(item))

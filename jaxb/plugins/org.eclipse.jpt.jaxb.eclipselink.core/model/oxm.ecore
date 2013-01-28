@@ -7,7 +7,8 @@
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlRootElement" eType="#//EXmlRootElement"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlSeeAlso" eType="#//EXmlSeeAlso"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xmlSeeAlso" eType="#//EXmlSeeAlso"
+        containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EAbstractXmlNullPolicy" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xsiNilRepresentsNull" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -293,10 +294,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="EXmlSeeAlso" instanceClassName="java.util.List">
-    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-      <details key="itemType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
-    </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="EXmlSeeAlso">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EXmlTransformation" eSuperTypes="#//EJavaAttribute #//EAccessibleJavaAttribute #//EPropertyHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

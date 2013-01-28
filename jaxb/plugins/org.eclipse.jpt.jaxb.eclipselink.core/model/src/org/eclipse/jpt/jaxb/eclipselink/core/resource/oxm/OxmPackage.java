@@ -109,7 +109,7 @@ public class OxmPackage extends EPackageImpl
 	public static final int EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT = 2;
 
 	/**
-	 * The feature id for the '<em><b>Xml See Also</b></em>' attribute.
+	 * The feature id for the '<em><b>Xml See Also</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -378,7 +378,7 @@ public class OxmPackage extends EPackageImpl
 	public static final int EJAVA_TYPE__XML_ROOT_ELEMENT = EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT;
 
 	/**
-	 * The feature id for the '<em><b>Xml See Also</b></em>' attribute.
+	 * The feature id for the '<em><b>Xml See Also</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2085,7 +2085,7 @@ public class OxmPackage extends EPackageImpl
 	public static final int EXML_ENUM__XML_ROOT_ELEMENT = EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT;
 
 	/**
-	 * The feature id for the '<em><b>Xml See Also</b></em>' attribute.
+	 * The feature id for the '<em><b>Xml See Also</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2909,7 +2909,145 @@ public class OxmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlTransformation()
 	 * @generated
 	 */
-	public static final int EXML_TRANSFORMATION = 40;
+	public static final int EXML_TRANSFORMATION = 41;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlTransient <em>EXml Transient</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlTransient
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlTransient()
+	 * @generated
+	 */
+	public static final int EXML_TRANSIENT = 42;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType <em>EXml Type</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlType()
+	 * @generated
+	 */
+	public static final int EXML_TYPE = 43;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlValue <em>EXml Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlValue
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlValue()
+	 * @generated
+	 */
+	public static final int EXML_VALUE = 44;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethods <em>EXml Virtual Access Methods</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethods
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlVirtualAccessMethods()
+	 * @generated
+	 */
+	public static final int EXML_VIRTUAL_ACCESS_METHODS = 45;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlWriteTransformer <em>EXml Write Transformer</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlWriteTransformer
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlWriteTransformer()
+	 * @generated
+	 */
+	public static final int EXML_WRITE_TRANSFORMER = 46;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder <em>EXml Access Order</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlAccessOrder()
+	 * @generated
+	 */
+	public static final int EXML_ACCESS_ORDER = 47;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType <em>EXml Access Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlAccessType()
+	 * @generated
+	 */
+	public static final int EXML_ACCESS_TYPE = 48;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlMarshalNullRepresentation <em>EXml Marshal Null Representation</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlMarshalNullRepresentation
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlMarshalNullRepresentation()
+	 * @generated
+	 */
+	public static final int EXML_MARSHAL_NULL_REPRESENTATION = 49;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlNsForm <em>EXml Ns Form</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlNsForm
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlNsForm()
+	 * @generated
+	 */
+	public static final int EXML_NS_FORM = 50;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethodsSchema <em>EXml Virtual Access Methods Schema</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethodsSchema
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlVirtualAccessMethodsSchema()
+	 * @generated
+	 */
+	public static final int EXML_VIRTUAL_ACCESS_METHODS_SCHEMA = 51;
+
+	/**
+	 * The meta object id for the '<em>EProp Order</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see java.util.List
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEPropOrder()
+	 * @generated
+	 */
+	public static final int EPROP_ORDER = 52;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso <em>EXml See Also</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlSeeAlso()
+	 * @generated
+	 */
+	public static final int EXML_SEE_ALSO = 40;
+
+	/**
+	 * The feature id for the '<em><b>Classes</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EXML_SEE_ALSO__CLASSES = 0;
+
+	/**
+	 * The number of structural features of the '<em>EXml See Also</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EXML_SEE_ALSO_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Java Attribute</b></em>' attribute.
@@ -2984,16 +3122,6 @@ public class OxmPackage extends EPackageImpl
 	public static final int EXML_TRANSFORMATION_FEATURE_COUNT = EJAVA_ATTRIBUTE_FEATURE_COUNT + 5;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlTransient <em>EXml Transient</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlTransient
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlTransient()
-	 * @generated
-	 */
-	public static final int EXML_TRANSIENT = 41;
-
-	/**
 	 * The feature id for the '<em><b>Java Attribute</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3028,16 +3156,6 @@ public class OxmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int EXML_TRANSIENT_FEATURE_COUNT = EJAVA_ATTRIBUTE_FEATURE_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType <em>EXml Type</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlType()
-	 * @generated
-	 */
-	public static final int EXML_TYPE = 42;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3092,16 +3210,6 @@ public class OxmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int EXML_TYPE_FEATURE_COUNT = 5;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlValue <em>EXml Value</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlValue
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlValue()
-	 * @generated
-	 */
-	public static final int EXML_VALUE = 43;
 
 	/**
 	 * The feature id for the '<em><b>Java Attribute</b></em>' attribute.
@@ -3212,16 +3320,6 @@ public class OxmPackage extends EPackageImpl
 	public static final int EXML_VALUE_FEATURE_COUNT = EJAVA_ATTRIBUTE_FEATURE_COUNT + 9;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethods <em>EXml Virtual Access Methods</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethods
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlVirtualAccessMethods()
-	 * @generated
-	 */
-	public static final int EXML_VIRTUAL_ACCESS_METHODS = 44;
-
-	/**
 	 * The feature id for the '<em><b>Get Method</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3258,16 +3356,6 @@ public class OxmPackage extends EPackageImpl
 	public static final int EXML_VIRTUAL_ACCESS_METHODS_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlWriteTransformer <em>EXml Write Transformer</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlWriteTransformer
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlWriteTransformer()
-	 * @generated
-	 */
-	public static final int EXML_WRITE_TRANSFORMER = 45;
-
-	/**
 	 * The feature id for the '<em><b>Method</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3302,76 +3390,6 @@ public class OxmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int EXML_WRITE_TRANSFORMER_FEATURE_COUNT = EABSTRACT_XML_TRANSFORMER_FEATURE_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder <em>EXml Access Order</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlAccessOrder()
-	 * @generated
-	 */
-	public static final int EXML_ACCESS_ORDER = 46;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType <em>EXml Access Type</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlAccessType()
-	 * @generated
-	 */
-	public static final int EXML_ACCESS_TYPE = 47;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlMarshalNullRepresentation <em>EXml Marshal Null Representation</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlMarshalNullRepresentation
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlMarshalNullRepresentation()
-	 * @generated
-	 */
-	public static final int EXML_MARSHAL_NULL_REPRESENTATION = 48;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlNsForm <em>EXml Ns Form</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlNsForm
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlNsForm()
-	 * @generated
-	 */
-	public static final int EXML_NS_FORM = 49;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethodsSchema <em>EXml Virtual Access Methods Schema</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlVirtualAccessMethodsSchema
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlVirtualAccessMethodsSchema()
-	 * @generated
-	 */
-	public static final int EXML_VIRTUAL_ACCESS_METHODS_SCHEMA = 50;
-
-	/**
-	 * The meta object id for the '<em>EProp Order</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see java.util.List
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEPropOrder()
-	 * @generated
-	 */
-	public static final int EPROP_ORDER = 51;
-
-	/**
-	 * The meta object id for the '<em>EXml See Also</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see java.util.List
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlSeeAlso()
-	 * @generated
-	 */
-	public static final int EXML_SEE_ALSO = 52;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3658,6 +3676,13 @@ public class OxmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass eXmlSeeAlsoEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass eXmlTransformationEClass = null;
 
 	/**
@@ -3736,13 +3761,6 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EDataType ePropOrderEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType eXmlSeeAlsoEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -3883,17 +3901,17 @@ public class OxmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping#getXmlSeeAlso <em>Xml See Also</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping#getXmlSeeAlso <em>Xml See Also</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Xml See Also</em>'.
+	 * @return the meta object for the containment reference '<em>Xml See Also</em>'.
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping#getXmlSeeAlso()
 	 * @see #getEAbstractTypeMapping()
 	 * @generated
 	 */
-	public EAttribute getEAbstractTypeMapping_XmlSeeAlso()
+	public EReference getEAbstractTypeMapping_XmlSeeAlso()
 	{
-		return (EAttribute)eAbstractTypeMappingEClass.getEStructuralFeatures().get(3);
+		return (EReference)eAbstractTypeMappingEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -6903,18 +6921,31 @@ public class OxmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for data type '{@link java.util.List <em>EXml See Also</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso <em>EXml See Also</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EXml See Also</em>'.
-	 * @see java.util.List
-	 * @model instanceClass="java.util.List"
-	 *        extendedMetaData="itemType='http://www.eclipse.org/emf/2003/XMLType#string'"
+	 * @return the meta object for class '<em>EXml See Also</em>'.
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso
 	 * @generated
 	 */
-	public EDataType getEXmlSeeAlso()
+	public EClass getEXmlSeeAlso()
 	{
-		return eXmlSeeAlsoEDataType;
+		return eXmlSeeAlsoEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso#getClasses <em>Classes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Classes</em>'.
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso#getClasses()
+	 * @see #getEXmlSeeAlso()
+	 * @generated
+	 */
+	public EAttribute getEXmlSeeAlso_Classes()
+	{
+		return (EAttribute)eXmlSeeAlsoEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -6954,7 +6985,7 @@ public class OxmPackage extends EPackageImpl
 		createEAttribute(eAbstractTypeMappingEClass, EABSTRACT_TYPE_MAPPING__XML_TRANSIENT);
 		createEReference(eAbstractTypeMappingEClass, EABSTRACT_TYPE_MAPPING__XML_TYPE);
 		createEReference(eAbstractTypeMappingEClass, EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT);
-		createEAttribute(eAbstractTypeMappingEClass, EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO);
+		createEReference(eAbstractTypeMappingEClass, EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO);
 
 		eAbstractXmlNullPolicyEClass = createEClass(EABSTRACT_XML_NULL_POLICY);
 		createEAttribute(eAbstractXmlNullPolicyEClass, EABSTRACT_XML_NULL_POLICY__XSI_NIL_REPRESENTS_NULL);
@@ -7173,6 +7204,9 @@ public class OxmPackage extends EPackageImpl
 		createEAttribute(eXmlSchemaTypeEClass, EXML_SCHEMA_TYPE__NAMESPACE);
 		createEAttribute(eXmlSchemaTypeEClass, EXML_SCHEMA_TYPE__TYPE);
 
+		eXmlSeeAlsoEClass = createEClass(EXML_SEE_ALSO);
+		createEAttribute(eXmlSeeAlsoEClass, EXML_SEE_ALSO__CLASSES);
+
 		eXmlTransformationEClass = createEClass(EXML_TRANSFORMATION);
 		createEAttribute(eXmlTransformationEClass, EXML_TRANSFORMATION__OPTIONAL);
 		createEReference(eXmlTransformationEClass, EXML_TRANSFORMATION__XML_READ_TRANSFORMER);
@@ -7209,7 +7243,6 @@ public class OxmPackage extends EPackageImpl
 
 		// Create data types
 		ePropOrderEDataType = createEDataType(EPROP_ORDER);
-		eXmlSeeAlsoEDataType = createEDataType(EXML_SEE_ALSO);
 	}
 
 	/**
@@ -7320,7 +7353,7 @@ public class OxmPackage extends EPackageImpl
 		initEAttribute(getEAbstractTypeMapping_XmlTransient(), ecorePackage.getEBooleanObject(), "xmlTransient", null, 0, 1, EAbstractTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEAbstractTypeMapping_XmlType(), this.getEXmlType(), null, "xmlType", null, 0, 1, EAbstractTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEAbstractTypeMapping_XmlRootElement(), this.getEXmlRootElement(), null, "xmlRootElement", null, 0, 1, EAbstractTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEAbstractTypeMapping_XmlSeeAlso(), this.getEXmlSeeAlso(), "xmlSeeAlso", null, 0, 1, EAbstractTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEAbstractTypeMapping_XmlSeeAlso(), this.getEXmlSeeAlso(), null, "xmlSeeAlso", null, 0, 1, EAbstractTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eAbstractXmlNullPolicyEClass, EAbstractXmlNullPolicy.class, "EAbstractXmlNullPolicy", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEAbstractXmlNullPolicy_XsiNilRepresentsNull(), ecorePackage.getEBoolean(), "xsiNilRepresentsNull", null, 0, 1, EAbstractXmlNullPolicy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -7539,6 +7572,9 @@ public class OxmPackage extends EPackageImpl
 		initEAttribute(getEXmlSchemaType_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, EXmlSchemaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlSchemaType_Type(), ecorePackage.getEString(), "type", null, 0, 1, EXmlSchemaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(eXmlSeeAlsoEClass, EXmlSeeAlso.class, "EXmlSeeAlso", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEXmlSeeAlso_Classes(), ecorePackage.getEString(), "classes", null, 0, 1, EXmlSeeAlso.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(eXmlTransformationEClass, EXmlTransformation.class, "EXmlTransformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEXmlTransformation_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, EXmlTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEXmlTransformation_XmlReadTransformer(), this.getEXmlReadTransformer(), null, "xmlReadTransformer", null, 0, 1, EXmlTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -7593,7 +7629,6 @@ public class OxmPackage extends EPackageImpl
 
 		// Initialize data types
 		initEDataType(ePropOrderEDataType, List.class, "EPropOrder", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(eXmlSeeAlsoEDataType, List.class, "EXmlSeeAlso", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -7614,13 +7649,6 @@ public class OxmPackage extends EPackageImpl
 		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
 		addAnnotation
 		  (ePropOrderEDataType, 
-		   source, 
-		   new String[] 
-		   {
-			 "itemType", "http://www.eclipse.org/emf/2003/XMLType#string"
-		   });		
-		addAnnotation
-		  (eXmlSeeAlsoEDataType, 
 		   source, 
 		   new String[] 
 		   {
@@ -7677,12 +7705,12 @@ public class OxmPackage extends EPackageImpl
 		public static final EReference EABSTRACT_TYPE_MAPPING__XML_ROOT_ELEMENT = eINSTANCE.getEAbstractTypeMapping_XmlRootElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Xml See Also</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Xml See Also</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO = eINSTANCE.getEAbstractTypeMapping_XmlSeeAlso();
+		public static final EReference EABSTRACT_TYPE_MAPPING__XML_SEE_ALSO = eINSTANCE.getEAbstractTypeMapping_XmlSeeAlso();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractXmlNullPolicy <em>EAbstract Xml Null Policy</em>}' class.
@@ -9427,14 +9455,22 @@ public class OxmPackage extends EPackageImpl
 		public static final EDataType EPROP_ORDER = eINSTANCE.getEPropOrder();
 
 		/**
-		 * The meta object literal for the '<em>EXml See Also</em>' data type.
+		 * The meta object literal for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso <em>EXml See Also</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see java.util.List
+		 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso
 		 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlSeeAlso()
 		 * @generated
 		 */
-		public static final EDataType EXML_SEE_ALSO = eINSTANCE.getEXmlSeeAlso();
+		public static final EClass EXML_SEE_ALSO = eINSTANCE.getEXmlSeeAlso();
+
+		/**
+		 * The meta object literal for the '<em><b>Classes</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute EXML_SEE_ALSO__CLASSES = eINSTANCE.getEXmlSeeAlso_Classes();
 
 	}
 

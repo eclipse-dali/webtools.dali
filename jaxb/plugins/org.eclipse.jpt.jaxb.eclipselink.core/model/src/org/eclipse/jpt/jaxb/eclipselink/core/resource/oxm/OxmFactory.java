@@ -112,6 +112,7 @@ public class OxmFactory extends EFactoryImpl
 			case OxmPackage.EXML_ROOT_ELEMENT: return (EObject)createEXmlRootElement();
 			case OxmPackage.EXML_SCHEMA: return (EObject)createEXmlSchema();
 			case OxmPackage.EXML_SCHEMA_TYPE: return (EObject)createEXmlSchemaType();
+			case OxmPackage.EXML_SEE_ALSO: return (EObject)createEXmlSeeAlso();
 			case OxmPackage.EXML_TRANSFORMATION: return (EObject)createEXmlTransformation();
 			case OxmPackage.EXML_TRANSIENT: return (EObject)createEXmlTransient();
 			case OxmPackage.EXML_TYPE: return (EObject)createEXmlType();
@@ -145,8 +146,6 @@ public class OxmFactory extends EFactoryImpl
 				return createEXmlVirtualAccessMethodsSchemaFromString(eDataType, initialValue);
 			case OxmPackage.EPROP_ORDER:
 				return createEPropOrderFromString(eDataType, initialValue);
-			case OxmPackage.EXML_SEE_ALSO:
-				return createEXmlSeeAlsoFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -174,8 +173,6 @@ public class OxmFactory extends EFactoryImpl
 				return convertEXmlVirtualAccessMethodsSchemaToString(eDataType, instanceValue);
 			case OxmPackage.EPROP_ORDER:
 				return convertEPropOrderToString(eDataType, instanceValue);
-			case OxmPackage.EXML_SEE_ALSO:
-				return convertEXmlSeeAlsoToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -516,6 +513,17 @@ public class OxmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EXmlSeeAlso createEXmlSeeAlso()
+	{
+		EXmlSeeAlso eXmlSeeAlso = new EXmlSeeAlso();
+		return eXmlSeeAlso;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EXmlTransformation createEXmlTransformation()
 	{
 		EXmlTransformation eXmlTransformation = new EXmlTransformation();
@@ -709,41 +717,6 @@ public class OxmFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertEPropOrderToString(EDataType eDataType, Object instanceValue)
-	{
-		if (instanceValue == null) return null;
-		List<?> list = (List<?>)instanceValue;
-		if (list.isEmpty()) return "";
-		StringBuffer result = new StringBuffer();
-		for (Object item : list)
-		{
-			result.append(XMLTypeFactory.eINSTANCE.convertToString(XMLTypePackage.Literals.STRING, item));
-			result.append(' ');
-		}
-		return result.substring(0, result.length() - 1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public List<String> createEXmlSeeAlsoFromString(EDataType eDataType, String initialValue)
-	{
-		if (initialValue == null) return null;
-		List<String> result = new ArrayList<String>();
-		for (String item : split(initialValue))
-		{
-			result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.STRING, item));
-		}
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEXmlSeeAlsoToString(EDataType eDataType, Object instanceValue)
 	{
 		if (instanceValue == null) return null;
 		List<?> list = (List<?>)instanceValue;

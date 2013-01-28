@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
 import java.util.Collection;
-import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -20,7 +19,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -1144,6 +1142,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 			buildNameTranslator(),
 			buildXmlTransientTranslator(),
 			EXmlType.buildTranslator(),
+			EXmlSeeAlso.buildTranslator(),
 			new EJavaAttribute.JavaAttributesTranslator()
 		};
 	}

@@ -37,12 +37,11 @@
       <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlVirtualAccessMethodsSchema/ANY"/>
     </genEnums>
     <genDataTypes ecoreDataType="oxm.ecore#//EPropOrder"/>
-    <genDataTypes ecoreDataType="oxm.ecore#//EXmlSeeAlso"/>
     <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractTypeMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractTypeMapping/xmlTransient"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAbstractTypeMapping/xmlType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAbstractTypeMapping/xmlRootElement"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractTypeMapping/xmlSeeAlso"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference oxm.ecore#//EAbstractTypeMapping/xmlSeeAlso"/>
     </genClasses>
     <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractXmlNullPolicy">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlNullPolicy/xsiNilRepresentsNull"/>
@@ -259,6 +258,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchemaType/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchemaType/namespace"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchemaType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlSeeAlso">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSeeAlso/classes"/>
     </genClasses>
     <genClasses ecoreClass="oxm.ecore#//EXmlTransformation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlTransformation/optional"/>
