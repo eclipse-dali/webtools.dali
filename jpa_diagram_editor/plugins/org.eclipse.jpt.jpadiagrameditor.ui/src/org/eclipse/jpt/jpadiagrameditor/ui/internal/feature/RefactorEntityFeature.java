@@ -28,16 +28,12 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.ICustomContext;
-import org.eclipse.graphiti.features.context.IRemoveContext;
-import org.eclipse.graphiti.features.context.impl.AddContext;
-import org.eclipse.graphiti.features.context.impl.RemoveContext;
+import org.eclipse.graphiti.features.context.impl.LayoutContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
-import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
-import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.actions.SelectionDispatchAction;
@@ -59,14 +55,15 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.AddEntityContext;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPASolver;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchSite;
 
 
 public abstract class RefactorEntityFeature extends AbstractCustomFeature {
@@ -114,20 +111,15 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 	public void execute(ICustomContext context, SelectionDispatchAction action) {
 		PictogramElement pe = context.getInnerPictogramElement();
 		final ContainerShape pict = ((Shape)pe).getContainer();
-	    JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(pict);
-		
+	    final JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(pict);
 		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(jpt);
-
 		StructuredSelection sel = new StructuredSelection(cu);
-
-		final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
 		final PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 		final Semaphore s = new Semaphore(0);
 		final JPAProjectListener lsnr = new JPAProjectListener(s);
 		jpt.getJpaProject().addCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, lsnr);
 		ShowBusy showBusy = new ShowBusy(s);
 		JPASolver.ignoreEvents = true;
-		final String oldName = jpt.getName();
 		
 		try {
 			action.run(sel);
@@ -144,16 +136,14 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				remapEntity(oldName, pict, pu, rename, lsnr, dot, getFeatureProvider());
+				remapEntity(jpt, pict, pu, rename, lsnr, getFeatureProvider());
 			}
 		});
 	}
 	
-	public void execute(ICustomContext context, String newName, ICompilationUnit cu, JavaPersistentType jpt) {
-		final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
-		final String oldName = jpt.getName();
-		final Shape pict = (Shape)getFeatureProvider().getPictogramElementForBusinessObject(jpt);
-		jpt = (JavaPersistentType)getFeatureProvider().
+	public void execute(ICustomContext context, String newName, ICompilationUnit cu, JavaPersistentType originalJPT) {
+		final Shape pict = (Shape)getFeatureProvider().getPictogramElementForBusinessObject(originalJPT);
+		final JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().
 									getBusinessObjectForPictogramElement(pict);		
 		final PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 		final Semaphore s = new Semaphore(0);
@@ -169,72 +159,71 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				remapEntity(oldName, pict, pu, true, lsnr, dot, getFeatureProvider());
+				remapEntity(jpt, pict, pu, true, lsnr, getFeatureProvider());
 			}
 		});
 	}
 	
-	public static void remapEntity(final String oldName,
+	public static void remapEntity(final JavaPersistentType oldJPT,
 								   final Shape pict,
 								   final PersistenceUnit pu,
 								   final boolean rename,
 								   final JPAProjectListener lsnr,
-								   final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot,
 								   final IJPAEditorFeatureProvider fp) {
 		BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
 			public void run() {
-				// TODO figure out why this was necessary:
-				// pu.getJpaProject().updateAndWait();
-				final int x = pict.getGraphicsAlgorithm().getX();
-				final int y = pict.getGraphicsAlgorithm().getY();
-				final int width = pict.getGraphicsAlgorithm().getWidth();
-				final int height = pict.getGraphicsAlgorithm().getHeight();		
-				
-				final ContainerShape cs = Graphiti.getPeService().createContainerShape(fp.getDiagramTypeProvider().getDiagram(), 
-						true);
-				cs.setVisible(true);
-				
-				AddContext cont = new AddContext();
-				cont.setX(x);
-				cont.setY(y);
-				cont.setWidth(width);
-				cont.setHeight(height);
-				RoundedRectangle rect = AddJPAEntityFeature.createEntityRectangle(cont, cs, dot, fp.getDiagramTypeProvider().getDiagram()); 	
-				rect.setFilled(Boolean.TRUE);
-				
-				IRemoveContext ctx = new RemoveContext(pict); 
-				RemoveJPAEntityFeature ft = new RemoveJPAEntityFeature(fp, true);
-				
-				boolean primaryCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.PRIMARY_COLLAPSED));
-				boolean relationCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.RELATION_COLLAPSED));
-				boolean basicCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.BASIC_COLLAPSED));
+				fp.getDiagramTypeProvider().getDiagramEditor().selectPictogramElements(new PictogramElement[] {});				 
 
-				AddEntityContext addCtx = new AddEntityContext(primaryCollapsed, relationCollapsed, basicCollapsed);
 				String newJPTName = lsnr.getNewJPTName();
-				
 				JavaPersistentType newJPT = JpaArtifactFactory.instance().getJPT(newJPTName, pu);
-				if (! JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
-					JPAEditorUtil.createUnregisterEntityFromXMLJob(newJPT.getJpaProject(), oldName);
-				}									
+					
+				if(newJPT == null)
+					return;
+				
+				if (!JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
+					JPAEditorUtil.createUnregisterEntityFromXMLJob(newJPT.getJpaProject(), oldJPT.getName());
+					JPAEditorUtil.createRegisterEntityInXMLJob(newJPT.getJpaProject(), newJPTName);
+				}
+				
 				if (rename) {
 					String tableName = JPAEditorUtil.formTableName(newJPT);
 					JpaArtifactFactory.instance().setTableName(newJPT, tableName);
 				}
-				addCtx.setNewObject(newJPT);
-				addCtx.setTargetContainer(fp.getDiagramTypeProvider().getDiagram());
-				addCtx.setX(x);
-				addCtx.setY(y);
-				addCtx.setWidth(width);
-				addCtx.setHeight(height);
-				AddJPAEntityFeature ft1 = new AddJPAEntityFeature(fp, true);
-				ft.remove(ctx);
-				ft1.add(addCtx);
-				PictogramElement pe = fp.getPictogramElementForBusinessObject(newJPT);
-				fp.getDiagramTypeProvider().getDiagramEditor().setPictogramElementForSelection(pe);
-				Graphiti.getPeService().deletePictogramElement(cs);	
 				
-				if (! JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
-					JPAEditorUtil.createRegisterEntityInXMLJob(newJPT.getJpaProject(), newJPTName);
+				GraphicsUpdater.updateHeader((ContainerShape)pict, newJPT.getSimpleName());
+				linkNewElement(oldJPT, pict, fp, newJPT);
+				
+				for(JavaPersistentAttribute oldAttr : oldJPT.getAttributes()){
+					PictogramElement attrPict = fp.getPictogramElementForBusinessObject(oldAttr);
+					if(attrPict != null){
+						for(JavaPersistentAttribute newAttr : newJPT.getAttributes()){
+							if(newAttr.getName().equals(oldAttr.getName())){
+								linkNewElement(oldAttr, attrPict, fp, newAttr);
+							}
+						}
+					}
+				}
+
+				fp.getDiagramTypeProvider().getDiagramEditor().setPictogramElementForSelection(pict);
+				
+				IWorkbenchSite ws = ((IEditorPart)fp.getDiagramTypeProvider().getDiagramEditor()).getSite();
+		        ICompilationUnit cu = fp.getCompilationUnit(newJPT);
+		        fp.getJPAEditorUtil().formatCode(cu, ws);
+			}
+
+			private void linkNewElement(Object oldBO, PictogramElement pict,
+					IJPAEditorFeatureProvider fp, Object newBO) {
+				fp.link((ContainerShape)pict, newBO);
+				LayoutContext context = new LayoutContext((ContainerShape)pict);
+				fp.layoutIfPossible(context);
+				
+				String oldBoKey = fp.getKeyForBusinessObject(oldBO);
+				if(oldBoKey != null){
+					fp.remove(oldBoKey);
+				}
+				String newBoKey = fp.getKeyForBusinessObject(newBO);
+				if (fp.getBusinessObjectForKey(newBoKey) == null) {
+					fp.putKeyToBusinessObject(newBoKey, newBO);
 				}
 			}
 		});

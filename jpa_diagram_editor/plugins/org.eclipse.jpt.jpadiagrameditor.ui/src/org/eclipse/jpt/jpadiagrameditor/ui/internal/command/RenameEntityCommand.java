@@ -41,7 +41,9 @@ public class RenameEntityCommand implements Command {
 
 	public void execute() {
 		renameEntityClass(this.fp.getCompilationUnit(this.jpt), this.newEntityName);
-		this.jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		if(jpt.getResource() != null && jpt.getResource().exists()) {
+			this.jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		}
 	}
 	
 	private void renameEntityClass(ICompilationUnit cu, String newName) {
