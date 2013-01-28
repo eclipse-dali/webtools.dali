@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -52,31 +53,47 @@ public final class StringTools {
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(String... strings) {
-		int stringLength = 0;
-		for (String string : strings) {
-			stringLength += string.length();
-		}
-		StringBuilder sb = new StringBuilder(stringLength);
-		for (String string : strings) {
-			sb.append(string);
-		}
-		return sb.toString();
+		return concatenate(strings, EMPTY_STRING);
 	}
-
+	
+	/**
+	 * Return a concatenation of the specified strings inserting the given delimiter between them
+	 */
+	public static String concatenate(String[] strings, String delim) {
+		return concatenate(new ArrayIterable<String>(strings), delim);
+	}
+	
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(Iterable<String> strings) {
-		return concatenate(strings.iterator());
+		return concatenate(strings, EMPTY_STRING);
+	}
+	
+	/**
+	 * Return a concatenation of the specified strings inserting the given delimiter between them
+	 */
+	public static String concatenate(Iterable<String> strings, String delim) {
+		return concatenate(strings.iterator(), delim);
 	}
 
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(Iterator<String> strings) {
+		return concatenate(strings, EMPTY_STRING);
+	}
+	
+	/**
+	 * Return a concatenation of the specified strings inserting the given delimiter between them
+	 */
+	public static String concatenate(Iterator<String> strings, String delim) {
 		StringBuilder sb = new StringBuilder();
 		while (strings.hasNext()) {
 			sb.append(strings.next());
+			if (strings.hasNext()) {
+				sb.append(delim);
+			}
 		}
 		return sb.toString();
 	}

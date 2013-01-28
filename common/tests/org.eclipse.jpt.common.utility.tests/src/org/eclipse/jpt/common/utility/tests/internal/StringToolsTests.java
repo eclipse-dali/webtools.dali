@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 
 @SuppressWarnings("nls")
 public class StringToolsTests
@@ -712,5 +713,53 @@ public class StringToolsTests
 
 	private void verifyConvertToXmlElementCDATA(String s, String expected) {
 		assertEquals(expected, StringTools.convertToXmlElementCDATA(s));
+	}
+	
+	public void testConcatenate() throws Exception {
+		String[] array = new String[0];
+		Iterable<String> iterable = new ArrayIterable<String>(array);
+		
+		String result = "";
+		
+		assertEquals(result, StringTools.concatenate(array));
+		assertEquals(result, StringTools.concatenate(iterable));
+		assertEquals(result, StringTools.concatenate(iterable.iterator()));
+		
+		String delim = "";
+		result = "";
+		
+		assertEquals(result, StringTools.concatenate(array, delim));
+		assertEquals(result, StringTools.concatenate(iterable, delim));
+		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
+		
+		delim = ";";
+		result = "";
+		
+		assertEquals(result, StringTools.concatenate(array, delim));
+		assertEquals(result, StringTools.concatenate(iterable, delim));
+		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
+		
+		array = new String[] {"foo", "bar", "baz"};
+		iterable = new ArrayIterable<String>(array);
+		
+		result = "foobarbaz";
+		
+		assertEquals(result, StringTools.concatenate(array));
+		assertEquals(result, StringTools.concatenate(iterable));
+		assertEquals(result, StringTools.concatenate(iterable.iterator()));
+		
+		delim = "";
+		result = "foobarbaz";
+		
+		assertEquals(result, StringTools.concatenate(array, delim));
+		assertEquals(result, StringTools.concatenate(iterable, delim));
+		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
+		
+		delim = ";";
+		result = "foo;bar;baz";
+		
+		assertEquals(result, StringTools.concatenate(array, delim));
+		assertEquals(result, StringTools.concatenate(iterable, delim));
+		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
 	}
 }
