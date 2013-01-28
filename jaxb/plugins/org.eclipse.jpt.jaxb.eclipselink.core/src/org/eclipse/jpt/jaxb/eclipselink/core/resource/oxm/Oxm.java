@@ -72,6 +72,7 @@ public interface Oxm {
 	String XML_MAPPING_METADATA_COMPLETE = "xml-mapping-metadata-complete"; //$NON-NLS-1$
 	String XML_NULL_POLICY = "xml-null-policy"; //$NON-NLS-1$
 	String XML_SCHEMA = "xml-schema"; //$NON-NLS-1$
+	String XML_SEE_ALSO = "xml-see-also"; //$NON-NLS-1$
 	String XML_TRANSFORMATION = "xml-transformation"; //$NON-NLS-1$
 	String XML_TRANSIENT = "xml-transient"; //$NON-NLS-1$
 	String XML_TYPE = "xml-type"; //$NON-NLS-1$

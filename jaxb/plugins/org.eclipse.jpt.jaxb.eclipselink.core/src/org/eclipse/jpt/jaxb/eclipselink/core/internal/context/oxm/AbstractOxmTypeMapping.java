@@ -24,7 +24,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
-import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
@@ -36,7 +35,9 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlSeeAlso;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -63,6 +64,8 @@ public abstract class AbstractOxmTypeMapping
 	// qName - never null
 	protected JaxbQName qName;
 	
+	protected OxmXmlSeeAlso xmlSeeAlso;
+	
 	
 	public AbstractOxmTypeMapping(OxmXmlBindings parent, EAbstractTypeMapping eTypeMapping) {
 		super(parent);
@@ -70,7 +73,8 @@ public abstract class AbstractOxmTypeMapping
 		// 'javaType' is resolved in the update
 		initTypeName();
 		initXmlTransient();
-		this.qName = buildQName(); 
+		this.qName = buildQName();
+		initXmlSeeAlso();
 	}
 	
 	
@@ -87,6 +91,7 @@ public abstract class AbstractOxmTypeMapping
 		syncJavaType();
 		syncXmlTransient();
 		this.qName.synchronizeWithResourceModel();
+		syncXmlSeeAlso();
 	}
 	
 	@Override
@@ -96,6 +101,7 @@ public abstract class AbstractOxmTypeMapping
 		updateJavaType();
 		updateXmlTransient();
 		this.qName.update();
+		updateXmlSeeAlso();
 	}
 	
 	
@@ -291,19 +297,59 @@ public abstract class AbstractOxmTypeMapping
 	
 	// ***** xml see also *****
 	
-	public XmlSeeAlso getXmlSeeAlso() {
-		// TODO Auto-generated method stub
-		return null;
+	public OxmXmlSeeAlso getXmlSeeAlso() {
+		return this.xmlSeeAlso;
 	}
 	
-	public XmlSeeAlso addXmlSeeAlso() {
-		// TODO Auto-generated method stub
-		return null;
+	protected void setXmlSeeAlso_(OxmXmlSeeAlso xmlSeeAlso) {
+		OxmXmlSeeAlso old = this.xmlSeeAlso;
+		this.xmlSeeAlso = xmlSeeAlso;
+		firePropertyChanged(XML_SEE_ALSO_PROPERTY, old, xmlSeeAlso);
+	}
+	
+	public OxmXmlSeeAlso addXmlSeeAlso() {
+		EXmlSeeAlso eXmlSeeAlso = OxmFactory.eINSTANCE.createEXmlSeeAlso();
+		OxmXmlSeeAlso xmlSeeAlso = buildXmlSeeAlso(eXmlSeeAlso);
+		setXmlSeeAlso_(xmlSeeAlso);
+		this.eTypeMapping.setXmlSeeAlso(eXmlSeeAlso);
+		return xmlSeeAlso;
 	}
 	
 	public void removeXmlSeeAlso() {
-		// TODO Auto-generated method stub
-		
+		this.eTypeMapping.setXmlSeeAlso(null);
+		setXmlSeeAlso_(null);
+	}
+	
+	protected OxmXmlSeeAlso buildXmlSeeAlso(EXmlSeeAlso eXmlSeeAlso) {
+		return new OxmXmlSeeAlsoImpl(this, eXmlSeeAlso);
+	}
+	
+	protected void initXmlSeeAlso() {
+		EXmlSeeAlso eXmlSeeAlso = this.eTypeMapping.getXmlSeeAlso();
+		this.xmlSeeAlso = (eXmlSeeAlso == null) ? null : buildXmlSeeAlso(eXmlSeeAlso);
+	}
+	
+	protected void syncXmlSeeAlso() {
+		EXmlSeeAlso eXmlSeeAlso = this.eTypeMapping.getXmlSeeAlso();
+		if (eXmlSeeAlso != null) {
+			if (this.xmlSeeAlso != null) {
+				this.xmlSeeAlso.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlSeeAlso_(buildXmlSeeAlso(eXmlSeeAlso));
+			}
+		}
+		else {
+			if (this.xmlSeeAlso != null) {
+				setXmlSeeAlso_(null);
+			}
+		}
+	}
+	
+	protected void updateXmlSeeAlso() {
+		if (this.xmlSeeAlso != null) {
+			this.xmlSeeAlso.update();
+		}
 	}
 	
 	

@@ -58,4 +58,11 @@ public interface OxmTypeMapping
 	Boolean getSpecifiedXmlTransient();
 	
 	void setSpecifiedXmlTransient(Boolean newValue);
+	
+	
+	// ***** xml see also *****
+	
+	public OxmXmlSeeAlso getXmlSeeAlso();
+	
+	public OxmXmlSeeAlso addXmlSeeAlso();
 }

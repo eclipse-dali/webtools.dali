@@ -21,6 +21,7 @@ public class ELJaxbCoreOxmContextModelTests
 		suite.addTestSuite(OxmJavaTypeTests.class);
 		suite.addTestSuite(OxmXmlBindingsTests.class);
 		suite.addTestSuite(OxmXmlSchemaTests.class);
+		suite.addTestSuite(OxmXmlSeeAlsoTests.class);
 		return suite;
 	}
 	
