@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java;
 
 import java.util.List;
@@ -18,8 +18,10 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -495,18 +497,20 @@ public class XPath {
 				final String prefix, int pos) {
 			
 			if (getTextRange(context).includes(pos) || getNextStep() == null) {
-				return new TransformationIterable<String, String>(
-								new TransformationIterable<String, String>(
+				Transformer<String, String> transformer = new TransformerAdapter<String, String>() {
+					@Override
+					public String transform(String s) {
+						return StringTools.concatenate(prefix, s);
+					}
+				};
+				return IterableTools.transform(
+								IterableTools.transform(
 										new CompositeIterable<String>(
 												getTextProposals(context, previousType),
 												getAttributeProposals(context, previousType),
-												getElementProposals(context, previousType))) {
-									@Override
-									protected String transform(String o) {
-										return StringTools.concatenate(prefix, o);
-									}
-								},
-				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
+												getElementProposals(context, previousType)),
+										transformer),
+								StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 			}
 			
 			Step nextStep = getNextStep();
@@ -523,42 +527,17 @@ public class XPath {
 		}
 		
 		protected Iterable<String> getAttributeProposals(Context context, final XsdTypeDefinition xsdType) {
-			return new CompositeIterable<String>(
-					new CompositeIterable<String>(
-							new TransformationIterable<XmlNs, Iterable<String>>(getXmlNsInfos(context)) {
-								@Override
-								protected Iterable<String> transform(final XmlNs xmlns) {
-									return new TransformationIterable<String, String>(xsdType.getAttributeNames(xmlns.getNamespaceURI())) {
-										@Override
-										protected String transform(String o) {
-											return XPath.attributeXPath(xmlns.getPrefix(), o);
-										}
-									};
-								}
-							}),
-					new TransformationIterable<String, String>(xsdType.getAttributeNames("")) {
-						@Override
-						protected String transform(String o) {
-							return XPath.attributeXPath(null, o);
-						}
-					});
+			return IterableTools.compositeIterable(
+					IterableTools.compositeIterable(
+							IterableTools.transform(getXmlNsInfos(context), new XmlNsAttributeNamesTransformer(xsdType))),
+					IterableTools.transform(xsdType.getAttributeNames(StringTools.EMPTY_STRING), new AttributeNameTransformer(null)));
 		}
 		
 		protected Iterable<String> getElementProposals(Context context, final XsdTypeDefinition xsdType) {
-			return new CompositeIterable<String>(
-					new CompositeIterable<String>(
-							new TransformationIterable<XmlNs, Iterable<String>>(getXmlNsInfos(context)) {
-								@Override
-								protected Iterable<String> transform(final XmlNs xmlns) {
-									return new TransformationIterable<String, String>(xsdType.getElementNames(xmlns.getNamespaceURI(), false)) {
-										@Override
-										protected String transform(String o) {
-											return XPath.elementXPath(xmlns.getPrefix(), o);
-										}
-									};
-								}
-							}),
-					xsdType.getElementNames("", false));
+			return IterableTools.compositeIterable(
+					IterableTools.compositeIterable(
+							IterableTools.transform(getXmlNsInfos(context), new XmlNsElementNamesTransformer(xsdType))),
+					xsdType.getElementNames(StringTools.EMPTY_STRING, false));
 		}
 		
 		protected Iterable<XmlNs> getXmlNsInfos(Context context) {
@@ -618,5 +597,61 @@ public class XPath {
 		JaxbPackage getJaxbPackage();
 		
 		TextRange getTextRange();
+	}
+
+	public static class XmlNsAttributeNamesTransformer
+		extends TransformerAdapter<XmlNs, Iterable<String>>
+	{
+		protected final XsdTypeDefinition<?> xsdType;
+		public XmlNsAttributeNamesTransformer(XsdTypeDefinition<?> xsdType) {
+			super();
+			this.xsdType = xsdType;
+		}
+		@Override
+		public Iterable<String> transform(XmlNs xmlns) {
+			return IterableTools.transform(this.xsdType.getAttributeNames(xmlns.getNamespaceURI()), new AttributeNameTransformer(xmlns.getPrefix()));
+		}
+	}
+
+	public static class AttributeNameTransformer
+		extends TransformerAdapter<String, String>
+	{
+		protected final String prefix;
+		public AttributeNameTransformer(String prefix) {
+			super();
+			this.prefix = prefix;
+		}
+		@Override
+		public String transform(String localName) {
+			return XPath.attributeXPath(this.prefix, localName);
+		}
+	}
+
+	public static class XmlNsElementNamesTransformer
+		extends TransformerAdapter<XmlNs, Iterable<String>>
+	{
+		protected final XsdTypeDefinition<?> xsdType;
+		public XmlNsElementNamesTransformer(XsdTypeDefinition<?> xsdType) {
+			super();
+			this.xsdType = xsdType;
+		}
+		@Override
+		public Iterable<String> transform(XmlNs xmlns) {
+			return IterableTools.transform(this.xsdType.getElementNames(xmlns.getNamespaceURI(), false), new ElementNameTransformer(xmlns.getPrefix()));
+		}
+	}
+
+	public static class ElementNameTransformer
+		extends TransformerAdapter<String, String>
+	{
+		protected final String prefix;
+		public ElementNameTransformer(String prefix) {
+			super();
+			this.prefix = prefix;
+		}
+		@Override
+		public String transform(String localName) {
+			return XPath.elementXPath(this.prefix, localName);
+		}
 	}
 }

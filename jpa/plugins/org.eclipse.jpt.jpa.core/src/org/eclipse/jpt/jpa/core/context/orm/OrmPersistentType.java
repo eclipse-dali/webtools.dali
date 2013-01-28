@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.text.edits.DeleteEdit;
-import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * <code>orm.xml</code> persistent type
@@ -30,7 +29,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
  */
 public interface OrmPersistentType
-	extends PersistentType, PersistentType.Owner
+	extends PersistentType, PersistentType.Owner, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	// ********** covariant overrides **********
 
@@ -131,39 +130,6 @@ public interface OrmPersistentType
 	 * changed as specified.
 	 */
 	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
-
-
-	// ********** refactoring **********
-
-	/**
-	 * If this {@link #isFor(String)} the specified type,
-	 * create a text delete edit for deleting the type mapping element and
-	 * any text that precedes it.
-	 * Otherwise return an empty collection.
-	 */
-	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
-
-	/**
-	 * Create replace edits for renaming any references to
-	 * the specified original type to the specified new name.
-	 * The specified original type has not yet been renamed; and the specified
-	 * new name is a "simple" (unqualified) name.
-	 */
-	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-	/**
-	 * Create replace edits for moving any references to
-	 * the specified original type to the specified new package.
-	 * The specified original type has not yet been moved.
-	 */
-	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-	/**
-	 * Create replace edits for renaming any references to
-	 * the specified original package to the specified new name.
-	 * The specified original package has not yet been renamed.
-	 */
-	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 
 	// ********** misc **********

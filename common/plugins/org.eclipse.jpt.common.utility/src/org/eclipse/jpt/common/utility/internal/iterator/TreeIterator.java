@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.iterator;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -31,13 +30,13 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <E> the type of elements returned by the iterator
  * 
- * @see org.eclipse.jpt.common.utility.internal.iterable.TreeIterable
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#treeIterable(Iterable, Transformer)
  */
 public class TreeIterator<E>
 	implements Iterator<E>
 {
 	private final LinkedList<Iterator<? extends E>> iterators;
-	private final Transformer<E, Iterator<? extends E>> transformer;
+	private final Transformer<? super E, ? extends Iterator<? extends E>> transformer;
 	private Iterator<? extends E> currentIterator;
 
 
@@ -45,7 +44,7 @@ public class TreeIterator<E>
 	 * Construct an iterator that returns the nodes of a tree
 	 * with the specified roots and transformer.
 	 */
-	public TreeIterator(Iterator<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
+	public TreeIterator(Iterator<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
 		super();
 		if ((roots == null) || (transformer == null)) {
 			throw new NullPointerException();

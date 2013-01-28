@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,14 +11,14 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
-public class CompositeIterableTests extends TestCase {
-
+public class CompositeIterableTests
+	extends TestCase
+{
 	public CompositeIterableTests(String name) {
 		super(name);
 	}
@@ -51,7 +51,7 @@ public class CompositeIterableTests extends TestCase {
 		c1.add("2");
 		c1.add("3");
 
-		Iterable<String> composite = new CompositeIterable<String>(c1, "4");
+		Iterable<String> composite = IterableTools.add(c1, "4");
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -64,7 +64,7 @@ public class CompositeIterableTests extends TestCase {
 		c1.add("2");
 		c1.add("3");
 
-		Iterable<String> composite = new CompositeIterable<String>("0", c1);
+		Iterable<String> composite = IterableTools.insert("0", c1);
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -87,7 +87,7 @@ public class CompositeIterableTests extends TestCase {
 		Collection<Iterable<String>> collection = new ArrayList<Iterable<String>>();
 		collection.add(c1);
 		collection.add(c2);
-		Iterable<String> composite = new CompositeIterable<String>(collection);
+		Iterable<String> composite = IterableTools.compositeIterable(collection);
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);

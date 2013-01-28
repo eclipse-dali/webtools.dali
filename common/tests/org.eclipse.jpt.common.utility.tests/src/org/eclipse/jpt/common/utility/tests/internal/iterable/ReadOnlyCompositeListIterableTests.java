@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,16 +11,16 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ListListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.ReadOnlyCompositeListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 @SuppressWarnings("nls")
-public class ReadOnlyCompositeListIterableTests extends TestCase {
-
+public class ReadOnlyCompositeListIterableTests
+	extends TestCase
+{
 	public ReadOnlyCompositeListIterableTests(String name) {
 		super(name);
 	}
@@ -41,7 +41,7 @@ public class ReadOnlyCompositeListIterableTests extends TestCase {
 		ListIterable<String> li2 = new ListListIterable<String>(c2);
 
 		@SuppressWarnings("unchecked")
-		Iterable<String> composite = new ReadOnlyCompositeListIterable<String>(li1, li2);
+		Iterable<String> composite = IterableTools.readOnlyCompositeListIterable(new ListIterable[] { li1, li2 });
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -56,7 +56,7 @@ public class ReadOnlyCompositeListIterableTests extends TestCase {
 		c1.add("3");
 		ListIterable<String> li1 = new ListListIterable<String>(c1);
 
-		Iterable<String> composite = new ReadOnlyCompositeListIterable<String>(li1, "4");
+		Iterable<String> composite = IterableTools.addReadOnly(li1, "4");
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -70,7 +70,7 @@ public class ReadOnlyCompositeListIterableTests extends TestCase {
 		c1.add("3");
 		ListIterable<String> li1 = new ListListIterable<String>(c1);
 
-		Iterable<String> composite = new ReadOnlyCompositeListIterable<String>("0", li1);
+		Iterable<String> composite = IterableTools.insertReadOnly("0", li1);
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -120,8 +120,7 @@ public class ReadOnlyCompositeListIterableTests extends TestCase {
 		ListIterable<String> li2 = new ListListIterable<String>(c2);
 
 		@SuppressWarnings("unchecked")
-		Iterable<String> composite = new ReadOnlyCompositeListIterable<String>(li1, li2);
+		Iterable<String> composite = IterableTools.readOnlyCompositeListIterable(new ListIterable[] { li1, li2 });
 		assertNotNull(composite.toString());
 	}
-
 }

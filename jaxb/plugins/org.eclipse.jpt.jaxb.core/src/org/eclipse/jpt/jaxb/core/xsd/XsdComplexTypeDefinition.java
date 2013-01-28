@@ -1,18 +1,20 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDContentTypeCategory;
@@ -49,27 +51,27 @@ public class XsdComplexTypeDefinition
 	
 	@Override
 	public Iterable<String> getAttributeNames(String namespace) {
-		return new TransformationIterable<XsdAttributeUse, String>(getAttributeUses(namespace)) {
-				@Override
-				protected String transform(XsdAttributeUse attrUse) {
-					return attrUse.getXSDComponent().getAttributeDeclaration().getName();
-				}
-			};
+		return IterableTools.transform(getAttributeUses(namespace), XSD_ATTRIBUTE_USE_TRANSFORMER);
+	}
+
+	protected static final Transformer<XsdAttributeUse, String> XSD_ATTRIBUTE_USE_TRANSFORMER = new XsdAttributeUseTransformer();
+	public static class XsdAttributeUseTransformer
+		extends TransformerAdapter<XsdAttributeUse, String>
+	{
+		@Override
+		public String transform(XsdAttributeUse attrUse) {
+			return attrUse.getXSDComponent().getAttributeDeclaration().getName();
+		}
 	}
 	
 	protected Iterable<XsdAttributeUse> getAttributeUses(final String namespace) {
-		return new TransformationIterable<XSDAttributeUse, XsdAttributeUse>(
+		return IterableTools.transform(
 				new FilteringIterable<XSDAttributeUse>(getXSDComponent().getAttributeUses()) {
 					@Override
 					protected boolean accept(XSDAttributeUse attrUse) {
 						return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), namespace);
 					}
-				}) {
-			@Override
-			protected XsdAttributeUse transform(XSDAttributeUse attrUse) {
-				return (XsdAttributeUse) XsdUtil.getAdapter(attrUse);
-			}
-		};
+				}, XsdUtil.<XsdAttributeUse>adapterTransformer());
 	}
 	
 	@Override
@@ -84,27 +86,27 @@ public class XsdComplexTypeDefinition
 	
 	@Override
 	public Iterable<String> getElementNames(String namespace, boolean recurseChildren) {
-		return new TransformationIterable<XsdElementDeclaration, String>(getElementDeclarations(namespace, recurseChildren)) {
-				@Override
-				protected String transform(XsdElementDeclaration element) {
-					return element.getXSDComponent().getName();
-				}
-			};
+		return IterableTools.transform(getElementDeclarations(namespace, recurseChildren), XSD_ELEMENT_DECLARATION_TRANSFORMER);
+	}
+
+	protected static final Transformer<XsdElementDeclaration, String> XSD_ELEMENT_DECLARATION_TRANSFORMER = new XsdElementDeclarationTransformer();
+	public static class XsdElementDeclarationTransformer
+		extends TransformerAdapter<XsdElementDeclaration, String>
+	{
+		@Override
+		public String transform(XsdElementDeclaration element) {
+			return element.getXSDComponent().getName();
+		}
 	}
 	
 	protected Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace, boolean recurseChildren) {
-		return new TransformationIterable<XSDElementDeclaration, XsdElementDeclaration>(
+		return IterableTools.transform(
 				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations(recurseChildren)) {
 					@Override
 					protected boolean accept(XSDElementDeclaration element) {
 						return XsdUtil.namespaceEquals(element, namespace);
 					}
-				}) {
-			@Override
-			protected XsdElementDeclaration transform(XSDElementDeclaration element) {
-				return (XsdElementDeclaration) XsdUtil.getAdapter(element);
-			}
-		};
+				}, XsdUtil.<XsdElementDeclaration>adapterTransformer());
 	}
 	
 	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations(boolean recurseChildren) {

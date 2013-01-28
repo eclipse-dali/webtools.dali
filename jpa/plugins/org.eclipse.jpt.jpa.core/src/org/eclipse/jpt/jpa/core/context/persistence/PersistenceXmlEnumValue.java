@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
  * An enum that is used in the persistence.xml properties can implement this interface
@@ -29,5 +31,14 @@ public interface PersistenceXmlEnumValue
 	 * Return the value to be used in the property key/value pair
 	 */
 	String getPropertyValue();
-	
+
+	TransformerAdapter<Enum<?>, String> ENUM_NAME_TRANSFORMER = new EnumNameTransformer();
+	class EnumNameTransformer
+		extends TransformerAdapter<Enum<?>, String>
+	{
+		@Override
+		public String transform(Enum<?> e) {
+			return e.name();
+		}
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkTypeConverter;
-import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * EclipseLink <code>orm.xml</code> converter container
@@ -32,7 +30,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.1
  */
 public interface OrmEclipseLinkConverterContainer
-	extends EclipseLinkConverterContainer
+	extends EclipseLinkConverterContainer, TypeRefactoringParticipant
 {
 
 	ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters();
@@ -50,13 +48,6 @@ public interface OrmEclipseLinkConverterContainer
 	ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters();
 	OrmEclipseLinkTypeConverter addTypeConverter(int index);
 	OrmEclipseLinkTypeConverter addTypeConverter();
-
-
-	// ********** refactoring **********
-
-	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 
 	interface Owner {

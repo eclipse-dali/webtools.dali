@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,13 +28,13 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public class QueueIterator<E>
 	implements Iterator<E>
 {
-	private final Queue<E> queue;
+	private final Queue<? extends E> queue;
 
 
 	/**
 	 * Construct an iterator for the specified queue.
 	 */
-	public QueueIterator(Queue<E> queue) {
+	public QueueIterator(Queue<? extends E> queue) {
 		super();
 		if (queue == null) {
 			throw new NullPointerException();

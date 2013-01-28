@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
@@ -195,15 +195,18 @@ public abstract class JaxbFacetDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		Iterable<JaxbPlatformConfig> validPlatformConfigs = buildValidPlatformConfigs();
 		Iterable<DataModelPropertyDescriptor> validPlatformDescriptors =
-				new TransformationIterable<JaxbPlatformConfig, DataModelPropertyDescriptor>(validPlatformConfigs) {
-					@Override
-					protected DataModelPropertyDescriptor transform(JaxbPlatformConfig config) {
-						return buildPlatformDescriptor(config);
-					}
-				};
+				IterableTools.transform(buildValidPlatformConfigs(), new JaxbPlatformConfigTransformer());
 		return ArrayTools.sort(ArrayTools.array(validPlatformDescriptors, EMPTY_DMPD_ARRAY), DMPD_COMPARATOR);
+	}
+
+	public class JaxbPlatformConfigTransformer
+		extends TransformerAdapter<JaxbPlatformConfig, DataModelPropertyDescriptor>
+	{
+		@Override
+		public DataModelPropertyDescriptor transform(JaxbPlatformConfig config) {
+			return buildPlatformDescriptor(config);
+		}
 	}
 	
 	protected Iterable<JaxbPlatformConfig> buildValidPlatformConfigs() {

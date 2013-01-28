@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterable;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SubIteratorWrapper;
 
 /**
@@ -27,25 +26,9 @@ import org.eclipse.jpt.common.utility.internal.iterator.SubIteratorWrapper;
  * @see SubIteratorWrapper
  */
 public class SubIterableWrapper<E1, E2 extends E1>
-	implements Iterable<E2>
+	extends LateralIterableWrapper<E1, E2>
 {
-	private final Iterable<E1> iterable;
-
-
 	public SubIterableWrapper(Iterable<E1> iterable) {
-		super();
-		if (iterable == null) {
-			throw new NullPointerException();
-		}
-		this.iterable = iterable;
-	}
-
-	public Iterator<E2> iterator() {
-		return new SubIteratorWrapper<E1, E2>(this.iterable.iterator());
-	}
-
-	@Override
-	public String toString() {
-		return this.iterable.toString();
+		super(iterable);
 	}
 }

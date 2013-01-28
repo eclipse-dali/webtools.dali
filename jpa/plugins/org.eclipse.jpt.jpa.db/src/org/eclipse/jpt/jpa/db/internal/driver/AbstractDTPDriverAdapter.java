@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -429,20 +430,20 @@ abstract class AbstractDTPDriverAdapter
 	}
 
 	Iterator<Map<String, Object>> buildResultSetIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<Map<String, Object>>(resultSet, new ListResultSetIteratorAdapter(resultSet.getMetaData()));
+		return new ResultSetIterator<Map<String, Object>>(resultSet, new ListResultSetIteratorTransformer(resultSet.getMetaData()));
 	}
 
 	/**
 	 * Convert each row in the result set into a map whose key is the column
 	 * name and value is the column value.
 	 */
-	static class ListResultSetIteratorAdapter
-		implements ResultSetIterator.Adapter<Map<String, Object>>
+	static class ListResultSetIteratorTransformer
+		extends TransformerAdapter<ResultSet, Map<String, Object>>
 	{
 		private final int columnCount;
 		private final String[] columnNames;
 
-		ListResultSetIteratorAdapter(ResultSetMetaData rsMetaData) throws SQLException {
+		ListResultSetIteratorTransformer(ResultSetMetaData rsMetaData) throws SQLException {
 			super();
 			this.columnCount = rsMetaData.getColumnCount();
 			this.columnNames = new String[this.columnCount + 1];  // leave the zero slot empty

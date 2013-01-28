@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
@@ -36,11 +35,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
  * binary type
@@ -262,15 +260,18 @@ final class BinaryType
 	}
 	
 	private Iterable<JavaResourceField> buildFields() {
-		return new TransformationIterable<IField, JavaResourceField>(
-				new ArrayIterable<IField>(getFields(getElement()))) {
-			@Override
-			protected JavaResourceField transform(IField field) {
-				return buildField(field);
-			}
-		};
+		return IterableTools.transform(IterableTools.iterable(this.getFields(this.getElement())), new FieldTransformer());
 	}
 	
+	/* CU private */ class FieldTransformer
+		extends TransformerAdapter<IField, JavaResourceField>
+	{
+		@Override
+		public JavaResourceField transform(IField field) {
+			return BinaryType.this.buildField(field);
+		}
+	}
+
 	private IField[] getFields(IType type) {
 		try {
 			return type.getFields();
@@ -283,7 +284,7 @@ final class BinaryType
 	
 	private static final IField[] EMPTY_FIELD_ARRAY = new IField[0];
 	
-	private JavaResourceField buildField(IField jdtField) {
+	/* CU private */ JavaResourceField buildField(IField jdtField) {
 		return new BinaryField(this, jdtField);
 	}
 	
@@ -308,15 +309,18 @@ final class BinaryType
 	}
 	
 	private Iterable<JavaResourceMethod> buildMethods() {
-		return new TransformationIterable<IMethod, JavaResourceMethod>(
-				new ArrayIterable<IMethod>(getMethods(getElement()))) {
-			@Override
-			protected JavaResourceMethod transform(IMethod method) {
-				return buildMethod(method);
-			}
-		};
+		return IterableTools.transform(IterableTools.iterable(this.getMethods(this.getElement())), new MethodTransformer());
 	}
 	
+	/* CU private */ class MethodTransformer
+		extends TransformerAdapter<IMethod, JavaResourceMethod>
+	{
+		@Override
+		public JavaResourceMethod transform(IMethod method) {
+			return BinaryType.this.buildMethod(method);
+		}
+	}
+
 	private IMethod[] getMethods(IType type) {
 		try {
 			return type.getMethods();
@@ -328,7 +332,7 @@ final class BinaryType
 	
 	private static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
 	
-	private JavaResourceMethod buildMethod(IMethod jdtMethod) {
+	/* CU private */ JavaResourceMethod buildMethod(IMethod jdtMethod) {
 		return new BinaryMethod(this, jdtMethod);
 	}
 	
@@ -349,24 +353,24 @@ final class BinaryType
 	// ***** inherited field/method types *****
 	
 	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedFieldTypes(ITypeBinding typeBinding) {
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
+		Map<InheritedAttributeKey, JavaResourceTypeBinding> fieldTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
-			buildInheritedFieldTypes_(inheritedFieldTypes, scTypeBinding);
+			buildInheritedFieldTypes_(fieldTypes, scTypeBinding);
 			scTypeBinding = scTypeBinding.getSuperclass();
 		}
-		return inheritedFieldTypes;
+		return fieldTypes;
 	}
 	
 	private void buildInheritedFieldTypes_(
-			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
+			Map<InheritedAttributeKey, JavaResourceTypeBinding> fieldTypes, ITypeBinding typeBinding) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
-		IVariableBinding[] fields = typeBinding.getDeclaredFields();
-		for (IVariableBinding field : fields) {
+		IVariableBinding[] typeBindingFields = typeBinding.getDeclaredFields();
+		for (IVariableBinding field : typeBindingFields) {
 			String fieldName = field.getName();
-			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
+			fieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
 		}
 	}
 	
@@ -375,24 +379,24 @@ final class BinaryType
 	}
 	
 	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedMethodTypes(ITypeBinding typeBinding) {
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
+		Map<InheritedAttributeKey, JavaResourceTypeBinding> methodTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
-			buildInheritedMethodTypes_(inheritedMethodTypes, scTypeBinding);
+			buildInheritedMethodTypes_(methodTypes, scTypeBinding);
 			scTypeBinding = scTypeBinding.getSuperclass();
 		}
-		return inheritedMethodTypes;
+		return methodTypes;
 	}
 	
 	private void buildInheritedMethodTypes_(
-			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
+			Map<InheritedAttributeKey, JavaResourceTypeBinding> methodTypes, ITypeBinding typeBinding) {
 		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
-		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
-		for (IMethodBinding method : methods) {
+		IMethodBinding[] typeBindingMethods = typeBinding.getDeclaredMethods();
+		for (IMethodBinding method : typeBindingMethods) {
 			String methodName = method.getName();
-			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+			methodTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
 		}
 	}
 	

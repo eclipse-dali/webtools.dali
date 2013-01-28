@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 
 /**
  * Context <code>orm.xml</code> persistent <em>attribute</em>
@@ -28,7 +26,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
  */
 public interface OrmPersistentAttribute
-	extends PersistentAttribute, OrmReadOnlyPersistentAttribute
+	extends PersistentAttribute, OrmReadOnlyPersistentAttribute, TypeRefactoringParticipant
 {
 	/**
 	 * Return an <code>orm.xml</code> mapping since the attribute is
@@ -56,25 +54,4 @@ public interface OrmPersistentAttribute
 	 * effectively changing the attribute's name.
 	 */
 	void nameChanged(String oldName, String newName);
-
-
-	// ********** refactoring **********
-
-	/**
-	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
-	 */
-	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
-	 */
-	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-	/**
-	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
-	 * The originalPackage has not yet been renamed.
-	 */
-	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 }

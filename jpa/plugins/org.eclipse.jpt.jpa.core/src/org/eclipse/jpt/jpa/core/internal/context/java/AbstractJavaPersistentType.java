@@ -34,14 +34,11 @@ import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -408,13 +405,9 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
-		return new CompositeIterable<ReadOnlyPersistentAttribute>(
-				new TransformationIterable<PersistentType, Iterable<ReadOnlyPersistentAttribute>>(this.getInheritanceHierarchy()) {
-					@Override
-					protected Iterable<ReadOnlyPersistentAttribute> transform(PersistentType pt) {
-						return new SuperListIterableWrapper<ReadOnlyPersistentAttribute>(pt.getAttributes());
-					}
-				}
+		return IterableTools.compositeIterable(
+					this.getInheritanceHierarchy(),
+					PersistentType.ATTRIBUTES_TRANSFORMER
 			);
 	}
 
@@ -443,12 +436,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterable<String> convertToNames(Iterable<? extends ReadOnlyPersistentAttribute> attrs) {
-		return new TransformationIterable<ReadOnlyPersistentAttribute, String>(attrs) {
-			@Override
-			protected String transform(ReadOnlyPersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
+		return IterableTools.transform(attrs, ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
 	}
 
 	protected JavaPersistentAttribute buildField(JavaResourceField resourceField) {
@@ -871,44 +859,47 @@ public abstract class AbstractJavaPersistentType
 	// ********** inheritance **********
 
 	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return this.getInheritanceHierarchyOf(this);
+		return this.buildInheritanceHierarchy(this);
 	}
 
 	public Iterable<PersistentType> getAncestors() {
-		return this.getInheritanceHierarchyOf(this.superPersistentType);
+		return this.buildInheritanceHierarchy(this.superPersistentType);
 	}
 
-	protected Iterable<PersistentType> getInheritanceHierarchyOf(PersistentType start) {
+	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
 		// using a chain iterable to traverse up the inheritance tree
-		return new ChainIterable<PersistentType>(start) {
-			@Override
-			protected PersistentType nextLink(PersistentType persistentType) {
-				return persistentType.getSuperPersistentType();
-			}
-		};
+		return IterableTools.chainIterable(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
-		// keep track of visited resource types to kill cyclical inheritance
-		final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
-		return new ChainIterable<JavaResourceType>(this.resourceType) {
-			@Override
-			protected JavaResourceType nextLink(JavaResourceType currentLink) {
-				visitedResourceTypes.add(currentLink);
-				String superclassName = currentLink.getSuperclassQualifiedName();
-				if (superclassName == null) {
-					return null;
-				}
-				JavaResourceType nextLink = (JavaResourceType)
-						AbstractJavaPersistentType.this.getJpaProject().getJavaResourceType(
-								superclassName,
-								JavaResourceAbstractType.AstNodeType.TYPE);
-				if ((nextLink == null) || visitedResourceTypes.contains(nextLink)) {
-					return null;
-				}
-				return nextLink;
+		return IterableTools.chainIterable(this.resourceType, new SuperJavaResourceTypeTransformer());
+	}
+
+	/**
+	 * Transform a Java resource type into its super Java resource type.
+	 */
+	protected class SuperJavaResourceTypeTransformer
+		extends AbstractTransformer<JavaResourceType, JavaResourceType>
+	{
+		// keep track of visited resource types to prevent cyclical inheritance
+		private final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
+
+		@Override
+		protected JavaResourceType transform_(JavaResourceType jrt) {
+			this.visitedResourceTypes.add(jrt);
+			String superclassName = jrt.getSuperclassQualifiedName();
+			if (superclassName == null) {
+				return null;
 			}
-		};
+			JavaResourceType superJRT = AbstractJavaPersistentType.this.getJavaResourceType(superclassName);
+			return ((superJRT == null) || this.visitedResourceTypes.contains(superJRT)) ?
+				null :
+				superJRT;
+		}
+	}
+
+	protected JavaResourceType getJavaResourceType(String jrtName) {
+		return (JavaResourceType) this.getJpaProject().getJavaResourceType(jrtName, JavaResourceAbstractType.AstNodeType.TYPE);
 	}
 
 	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,18 +31,21 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
@@ -1038,16 +1041,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<Query> getTypeMappingQueries() {
-		return new CompositeIterable<Query>(this.getTypeMappingQueryLists());
-	}
-
-	protected Iterable<Iterable<Query>> getTypeMappingQueryLists() {
-		return new TransformationIterable<OrmTypeMapping, Iterable<Query>>(this.getTypeMappings()) {
-					@Override
-					protected Iterable<Query> transform(OrmTypeMapping typeMapping) {
-						return typeMapping.getQueries();
-					}
-				};
+		return IterableTools.compositeIterable(this.getTypeMappings(), TypeMapping.QUERIES_TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1060,25 +1054,11 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<Generator> getTypeMappingGenerators() {
-		return new CompositeIterable<Generator>(this.getTypeMappingGeneratorLists());
-	}
-
-	protected Iterable<Iterable<Generator>> getTypeMappingGeneratorLists() {
-		return new TransformationIterable<OrmTypeMapping, Iterable<Generator>>(this.getTypeMappings()) {
-					@Override
-					protected Iterable<Generator> transform(OrmTypeMapping typeMapping) {
-						return typeMapping.getGenerators();
-					}
-				};
+		return IterableTools.compositeIterable(this.getTypeMappings(), TypeMapping.GENERATORS_TRANSFORMER);
 	}
 
 	protected Iterable<OrmTypeMapping> getTypeMappings() {
-		return new TransformationIterable<OrmPersistentType, OrmTypeMapping>(this.getPersistentTypes()) {
-					@Override
-					protected OrmTypeMapping transform(OrmPersistentType persistentType) {
-						return persistentType.getMapping();
-					}
-				};
+		return IterableTools.subIterable(IterableTools.transform(this.getPersistentTypes(), PersistentType.MAPPING_TRANSFORMER));
 	}
 
 
@@ -1134,61 +1114,33 @@ public abstract class AbstractEntityMappings
 
 	// ********** refactoring **********
 
-	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
-		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<DeleteEdit>>(this.getPersistentTypes()) {
-				@Override
-				protected Iterable<DeleteEdit> transform(OrmPersistentType persistentType) {
-					return persistentType.createDeleteTypeEdits(type);
-				}
-			}
-		);
+	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
+		return IterableTools.compositeIterable(this.getPersistentTypes(), new DeleteTypeRefactoringParticipant.DeleteTypeEditsTransformer(type));
 	}
 
-	public Iterable<ReplaceEdit> createRenameTypeEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(this.getPersistentTypes()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
-					return persistentType.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(this.getPersistentTypes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
-	public Iterable<ReplaceEdit> createMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(this.getPersistentTypes()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
-					return persistentType.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(this.getPersistentTypes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 				this.createPersistentTypeRenamePackageEdits(originalPackage, newName),
 				this.createRenamePackageEdit(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createPersistentTypeRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(this.getPersistentTypes()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
-					return persistentType.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createPersistentTypeRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(this.getPersistentTypes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createRenamePackageEdit(final IPackageFragment originalPackage, final String newName) {
+	protected Iterable<ReplaceEdit> createRenamePackageEdit(IPackageFragment originalPackage, String newName) {
 		return ObjectTools.equals(this.package_, originalPackage.getElementName()) ?
 				new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createRenamePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 	
 	// ************ completion proposals**************

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,9 @@ import org.eclipse.datatools.enablement.jdt.classpath.DriverClasspathContainer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
@@ -65,12 +67,17 @@ public final class DTPConnectionProfileFactory
 	}
 
 	public Iterable<String> getConnectionProfileNames() {
-		return new TransformationIterable<IConnectionProfile, String>(this.getDTPConnectionProfiles()) {
-			@Override
-			protected String transform(IConnectionProfile dtpProfile) {
-				 return dtpProfile.getName();
-			}
-		};
+		return IterableTools.transform(this.getDTPConnectionProfiles(), DTP_CONNECTION_PROFILE_NAME_TRANSFORMER);
+	}
+
+	public static final Transformer<IConnectionProfile, String> DTP_CONNECTION_PROFILE_NAME_TRANSFORMER = new DTPConnectionProfileNameTransformer();
+	public static class DTPConnectionProfileNameTransformer
+		extends TransformerAdapter<IConnectionProfile, String>
+	{
+		@Override
+		public String transform(IConnectionProfile connectionProfile) {
+			return connectionProfile.getName();
+		}
 	}
 
 	private synchronized Iterable<IConnectionProfile> getDTPConnectionProfiles() {

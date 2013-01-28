@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,27 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
-import org.eclipse.text.edits.DeleteEdit;
-import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context model corresponding to the XML resource model {@link XmlPersistenceUnit},
@@ -46,7 +43,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
  */
 public interface PersistenceUnit
-	extends JpaStructureNode, PersistentTypeContainer
+	extends JpaStructureNode, PersistentTypeContainer, MappingFileRefactoringParticipant, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	/**
 	 * Covariant override.
@@ -65,6 +62,15 @@ public interface PersistenceUnit
 	 * Return the persistence unit's name.
 	 */
 	String getName();
+	Transformer<PersistenceUnit, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<PersistenceUnit, String>
+	{
+		@Override
+		public String transform(PersistenceUnit persistenceUnit) {
+			return persistenceUnit.getName();
+		}
+	}
 
 	/**
 	 * Set the persistence unit's name.
@@ -519,7 +525,7 @@ public interface PersistenceUnit
 	 * Simple property interface.
 	 */
 	interface Property
-		extends JpaContextNode
+		extends JpaContextNode, TypeRefactoringParticipant
 	{
 		PersistenceUnit getParent();
 
@@ -530,28 +536,17 @@ public interface PersistenceUnit
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 		String getValue();
 		void setValue(String value);
+		Transformer<Property, String> VALUE_TRANSFORMER = new ValueTransformer();
+		class ValueTransformer
+			extends TransformerAdapter<Property, String>
+		{
+			@Override
+			public String transform(Property property) {
+				return property.getValue();
+			}
+		}
 
 		XmlProperty getXmlProperty();
-
-		/**
-		 * Create ReplaceEdits for renaming the property value to the newName.
-		 * The originalType has not yet been renamed, the newName is the new short name.
-		 * If this value does not match the original type, then return an empty Iterable.
-		 */
-		Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-		/**
-		 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-		 * The originalType has not yet been moved.
-		 */
-		Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-		/**
-		 * Create ReplaceEdits for renaming the property value package to the newName.
-		 * The originalPackage has not yet been renamed.
-		 * If this value is not in the originalPackage, then return an empty Iterable.
-		 */
-		Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 	}
 
 
@@ -800,73 +795,4 @@ public interface PersistenceUnit
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
 	boolean validatesAgainstDatabase();
-
-
-	// ********** refactoring **********
-
-	/**
-	 * Create delete edits for deleting any references
-	 * to the specified (about to be deleted) type.
-	 * Return an empty collection if there are no references to the specified type.
-	 */
-	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
-
-	/**
-	 * Create replace edits for renaming any references to
-	 * the specified original type to the specified new name.
-	 * The specified original type has not yet been renamed; and the specified
-	 * new name is a "simple" (unqualified) name.
-	 */
-	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-	/**
-	 * Create replace edits for moving any references to
-	 * the specified original type to the specified new package.
-	 * The specified original type has not yet been moved.
-	 */
-	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-	/**
-	 * Create replace edits for renaming any references to
-	 * the specified original package to the specified new name.
-	 * The specified original package has not yet been renamed.
-	 */
-	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
-
-	/**
-	 * Create delete edits for deleting any references to the specified file
-	 * Return an empty collection if there are no references to the specified file.
-	 */
-	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
-
-	/**
-	 * Create replace edits for renaming any references to the specified
-	 * original folder to the specified new name.
-	 * The specified original folder has not yet been renamed.
-	 */
-	Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName);
-
-	/**
-	 * Create replace edits for renaming any references to the specifie original
-	 * file to the specified new name.
-	 * Return an empty collection if there are not any references.
-	 * The specified original file has not yet been renamed; and the specified
-	 * new name is a "simple" (unqualified) name.
-	 */
-	Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName);
-
-	/**
-	 * Create replace edits for moving any references to the specified
-	 * original file to the specified destination.
-	 * Return an empty collection if there are not any references.
-	 * The specified original file has not yet been moved.
-	 */
-	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath destination);
-
-	/**
-	 * Create replace edits for moving any references to the specified
-	 * original folder to the specified destination.
-	 * The specified destination already includes the original folder name.
-	 */
-	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath destination);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,8 +29,8 @@ import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -518,15 +518,13 @@ public class DelegatingTreeContentProviderUiTest
 		}
 
 		public Iterable<Child> getNestlessChildren() {
-			return new TransformationIterable<TreeNode, Child>(this.getChildren()) {
-						@Override
-						protected Child transform(TreeNode next) {
-							if (next instanceof Nest) {
-								return ((Nest) next).getChild();
-							}
-							return (Child) next;
-						}
-					};
+			Transformer<TreeNode, Child> transformer = new TransformerAdapter<TreeNode, Child>() {
+				@Override
+				public Child transform(TreeNode node) {
+					return (node instanceof Nest) ? ((Nest) node).getChild() : (Child) node;
+				}
+			};
+			return IterableTools.transform(this.getChildren(), transformer);
 		}
 	}
 

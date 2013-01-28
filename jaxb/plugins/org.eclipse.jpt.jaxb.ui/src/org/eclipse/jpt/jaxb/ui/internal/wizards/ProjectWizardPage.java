@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
+* Copyright (c) 2010, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,23 +10,22 @@
 package org.eclipse.jpt.jaxb.ui.internal.wizards;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
@@ -197,13 +196,8 @@ public class ProjectWizardPage extends WizardPage
 
 		private String[] getJavaProjectsNames() {
 			return ArrayTools.array(
-				new TransformationIterable<IProject, String>(this.getJavaProjects()) {
-					@Override
-					protected String transform(IProject project) {
-						return project.getName();
-					}
-				},
-				new String[0]);
+				IterableTools.transform(this.getJavaProjects(), ProjectTools.NAME_TRANSFORMER),
+				StringTools.EMPTY_STRING_ARRAY);
 		}
 		
 		private Iterable<IProject> getJavaProjects() {

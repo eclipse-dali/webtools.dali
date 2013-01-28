@@ -33,23 +33,20 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -369,7 +366,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	@SuppressWarnings("unchecked")
 	public ListIterable<OrmReadOnlyPersistentAttribute> getAttributes() {
-		return new CompositeListIterable<OrmReadOnlyPersistentAttribute>(this.getReadOnlySpecifiedAttributes(), this.getDefaultAttributes());
+		return IterableTools.compositeListIterable(this.getReadOnlySpecifiedAttributes(), this.getDefaultAttributes());
 	}
 
 	public int getAttributesSize() {
@@ -386,14 +383,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
-		return new CompositeIterable<ReadOnlyPersistentAttribute>(
-				new TransformationIterable<PersistentType, Iterable<ReadOnlyPersistentAttribute>>(this.getInheritanceHierarchy()) {
-					@Override
-					protected Iterable<ReadOnlyPersistentAttribute> transform(PersistentType pt) {
-						return new SuperListIterableWrapper<ReadOnlyPersistentAttribute>(pt.getAttributes());
-					}
-				}
-			);
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), PersistentType.ATTRIBUTES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllAttributeNames() {
@@ -420,12 +410,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<String> convertToNames(Iterable<? extends ReadOnlyPersistentAttribute> attributes) {
-		return new TransformationIterable<ReadOnlyPersistentAttribute, String>(attributes) {
-			@Override
-			protected String transform(ReadOnlyPersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
+		return IterableTools.transform(attributes, ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
 	}
 	
 	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
@@ -1036,21 +1021,16 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** inheritance **********
 
 	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return this.getInheritanceHierarchyOf(this);
+		return this.buildInheritanceHierarchy(this);
 	}
 
 	public Iterable<PersistentType> getAncestors() {
-		return this.getInheritanceHierarchyOf(this.superPersistentType);
+		return this.buildInheritanceHierarchy(this.superPersistentType);
 	}
 
-	protected Iterable<PersistentType> getInheritanceHierarchyOf(PersistentType start) {
+	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
 		// using a chain iterable to traverse up the inheritance tree
-		return new ChainIterable<PersistentType>(start) {
-			@Override
-			protected PersistentType nextLink(PersistentType persistentType) {
-				return persistentType.getSuperPersistentType();
-			}
-		};
+		return IterableTools.chainIterable(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 
@@ -1195,8 +1175,8 @@ public abstract class SpecifiedOrmPersistentType
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
 		return this.isFor(type.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<DeleteEdit>(this.mapping.createDeleteEdit()) :
-				EmptyIterable.<DeleteEdit>instance();
+				IterableTools.singletonIterable(this.mapping.createDeleteEdit()) :
+				IterableTools.<DeleteEdit>emptyIterable();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1207,15 +1187,8 @@ public abstract class SpecifiedOrmPersistentType
 			);
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenameTypeEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(this.getSpecifiedAttributes()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
-					return persistentAttribute.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenameTypeEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1226,15 +1199,8 @@ public abstract class SpecifiedOrmPersistentType
 			);
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedAttributesMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(this.getSpecifiedAttributes()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
-					return persistentAttribute.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1245,15 +1211,8 @@ public abstract class SpecifiedOrmPersistentType
 			);
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(this.getSpecifiedAttributes()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
-					return persistentAttribute.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 

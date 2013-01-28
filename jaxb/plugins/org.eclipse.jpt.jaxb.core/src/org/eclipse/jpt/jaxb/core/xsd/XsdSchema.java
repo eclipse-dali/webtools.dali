@@ -1,17 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -35,55 +36,29 @@ public class XsdSchema
 	public Iterable<String> getNamespaces() {
 		Iterable<String> result = new SnapshotCloneIterable(getXSDSchema().getQNamePrefixToNamespaceMap().values());
 		if (StringTools.isBlank(getXSDSchema().getTargetNamespace())) {
-			result = new CompositeIterable<String>("", result);
+			result = IterableTools.insert("", result);
 		}
 		return result;
 	}
 	
 	public Iterable<XsdTypeDefinition> getAllTypeDefinitions() {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getAllXSDTypeDefinitions()) {
-			@Override
-			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
-				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getAllXSDTypeDefinitions(), XsdUtil.<XsdTypeDefinition>adapterTransformer());
 	}
 	
 	public Iterable<XsdTypeDefinition> getDeclaredTypeDefinitions() {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getDeclaredXSDTypeDefinitions()) {
-			@Override
-			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
-				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getDeclaredXSDTypeDefinitions(), XsdUtil.<XsdTypeDefinition>adapterTransformer());
 	}
 	
 	public Iterable<XsdTypeDefinition> getBuiltInTypeDefinitions() {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getBuiltInXSDTypeDefinitions()) {
-			@Override
-			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
-				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getBuiltInXSDTypeDefinitions(), XsdUtil.<XsdTypeDefinition>adapterTransformer());
 	}
 	
 	public Iterable<XsdTypeDefinition> getTypeDefinitions(final String namespace) {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getXSDTypeDefinitions(namespace)) {
-			@Override
-			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
-				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getXSDTypeDefinitions(namespace), XsdUtil.<XsdTypeDefinition>adapterTransformer());
 	}
 	
 	public Iterable<XsdSimpleTypeDefinition> getSimpleTypeDefinitions(final String namespace) {
-		return new TransformationIterable<XSDSimpleTypeDefinition, XsdSimpleTypeDefinition>(
-				getXSDSimpleTypeDefinitions(namespace)) {
-			@Override
-			protected XsdSimpleTypeDefinition transform(XSDSimpleTypeDefinition o) {
-				return (XsdSimpleTypeDefinition) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getXSDSimpleTypeDefinitions(namespace), XsdUtil.<XsdSimpleTypeDefinition>adapterTransformer());
 	}
 	
 	/**
@@ -128,42 +103,27 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions(String namespace) {
-		return new TransformationIterable<XSDTypeDefinition, XSDSimpleTypeDefinition>(
+		return IterableTools.subIterable(
 			new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions(namespace)) {
 				@Override
 				protected boolean accept(XSDTypeDefinition o) {
 					return o instanceof XSDSimpleTypeDefinition;
 				}
-			}) {
-			@Override
-			protected XSDSimpleTypeDefinition transform(XSDTypeDefinition o) {
-				return (XSDSimpleTypeDefinition) o;
-			}
-		};
+			});
 	}
 	
 	public Iterable<XsdElementDeclaration> getElementDeclarations() {
-		return new TransformationIterable<XSDElementDeclaration, XsdElementDeclaration>(getXSDElementDeclarations()) {
-			@Override
-			protected XsdElementDeclaration transform(XSDElementDeclaration o) {
-				return (XsdElementDeclaration) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getXSDElementDeclarations(), XsdUtil.<XsdElementDeclaration>adapterTransformer());
 	}
 	
 	public Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace) {
-		return new TransformationIterable<XSDElementDeclaration, XsdElementDeclaration>(
+		return IterableTools.transform(
 				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations()) {
 					@Override
 					protected boolean accept(XSDElementDeclaration o) {
 						return XsdUtil.namespaceEquals(o, namespace);
 					}
-				}) {
-			@Override
-			protected XsdElementDeclaration transform(XSDElementDeclaration o) {
-				return (XsdElementDeclaration) XsdUtil.getAdapter(o);
-			}
-		};
+				}, XsdUtil.<XsdElementDeclaration>adapterTransformer());
 	}
 	
 	public XsdElementDeclaration getElementDeclaration(String namespace, String name) {
@@ -184,35 +144,20 @@ public class XsdSchema
 	}
 	
 	public Iterable<String> getTypeNameProposals(String namespace) {
-		return new TransformationIterable<String, String>(
-					new TransformationIterable<XsdTypeDefinition, String>(this.getTypeDefinitions(namespace)) {
-						@Override
-						protected String transform(XsdTypeDefinition o) {
-							return o.getName();
-						}
-					},
+		return IterableTools.transform(
+					IterableTools.transform(this.getTypeDefinitions(namespace), XsdTypeDefinition.NAME_TRANSFORMER),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public Iterable<String> getSimpleTypeNameProposals(String namespace) {
-		return new TransformationIterable<String, String>(
-						new TransformationIterable<XsdSimpleTypeDefinition, String>(this.getSimpleTypeDefinitions(namespace)) {
-							@Override
-							protected String transform(XsdSimpleTypeDefinition o) {
-								return o.getName();
-							}
-						},
+		return IterableTools.transform(
+						IterableTools.transform(this.getSimpleTypeDefinitions(namespace), XsdTypeDefinition.NAME_TRANSFORMER),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public Iterable<String> getElementNameProposals(String namespace) {
-		return new TransformationIterable<String, String>(
-						new TransformationIterable<XsdElementDeclaration, String>(this.getElementDeclarations(namespace)) {
-							@Override
-							protected String transform(XsdElementDeclaration o) {
-								return o.getName();
-							}
-						},
+		return IterableTools.transform(
+						IterableTools.transform(this.getElementDeclarations(namespace), XsdFeature.NAME_TRANSFORMER),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 }

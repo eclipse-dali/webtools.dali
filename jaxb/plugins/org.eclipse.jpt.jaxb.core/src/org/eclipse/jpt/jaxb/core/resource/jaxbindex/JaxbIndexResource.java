@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 public interface JaxbIndexResource
@@ -31,4 +33,13 @@ public interface JaxbIndexResource
 	String getPackageName();
 	
 	Iterable<String> getFullyQualifiedClassNames();
+	Transformer<JaxbIndexResource, Iterable<String>> CLASS_NAMES_TRANSFORMER = new ClassNamesTransformer();
+	class ClassNamesTransformer
+		extends TransformerAdapter<JaxbIndexResource, Iterable<String>>
+	{
+		@Override
+		public Iterable<String> transform(JaxbIndexResource jaxbIndexResource) {
+			return jaxbIndexResource.getFullyQualifiedClassNames();
+		}
+	}
 }

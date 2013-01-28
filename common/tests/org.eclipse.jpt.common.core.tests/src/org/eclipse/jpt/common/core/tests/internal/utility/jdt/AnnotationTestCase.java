@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,6 +54,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 /**
@@ -586,6 +587,20 @@ public abstract class AnnotationTestCase
 		StringLiteral stringLiteral = ast.newStringLiteral();
 		stringLiteral.setLiteralValue(value);
 		return stringLiteral;
+	}
+
+	public class StringTypeLiteralTransformer
+		extends TransformerAdapter<String, TypeLiteral>
+	{
+		protected final AST ast;
+		public StringTypeLiteralTransformer(AST ast) {
+			super();
+			this.ast = ast;
+		}
+		@Override
+		public TypeLiteral transform(String string) {
+			return AnnotationTestCase.this.newTypeLiteral(this.ast, string);
+		}
 	}
 
 	protected TypeLiteral newTypeLiteral(AST ast, String typeName) {

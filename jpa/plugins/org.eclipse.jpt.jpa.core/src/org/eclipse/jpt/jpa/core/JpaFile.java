@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A JPA Project contains JPA files for all files in the project that
@@ -56,6 +58,15 @@ public interface JpaFile
 	 * compilation unit, a JPA XML resource, or a JPA package fragment root (JAR).
 	 */
 	JptResourceModel getResourceModel();
+	Transformer<JpaFile, JptResourceModel> RESOURCE_MODEL_TRANSFORMER = new ResourceModelTransformer();
+	class ResourceModelTransformer
+		extends TransformerAdapter<JpaFile, JptResourceModel>
+	{
+		@Override
+		public JptResourceModel transform(JpaFile jpaFile) {
+			return jpaFile.getResourceModel();
+		}
+	}
 	
 	/**
 	 * Convenience method. Return the resource model corresponding to the JPA

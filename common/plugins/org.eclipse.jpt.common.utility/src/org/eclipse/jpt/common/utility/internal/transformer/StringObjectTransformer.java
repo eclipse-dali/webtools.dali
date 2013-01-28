@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * Transform an object into the string returned by its {@link Object#toString()}
  * method. A <code>null</code> object is transformed into <code>null</code>.
  * 
- * @param <T> the type of the object passed to the transformer
+ * @param <I> input: the type of the object passed to the transformer
  */
-public final class StringObjectTransformer<T>
-	extends AbstractTransformer<T, String>
+public final class StringObjectTransformer<I>
+	extends AbstractTransformer<I, String>
 	implements Serializable
 {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -36,7 +36,7 @@ public final class StringObjectTransformer<T>
 	}
 
 	@Override
-	protected String transform_(T o) {
+	protected String transform_(I o) {
 		return o.toString();
 	}
 

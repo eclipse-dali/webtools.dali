@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,45 +18,25 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class TransformationIterableTests extends TestCase {
-
+public class TransformationIterableTests
+	extends TestCase
+{
 	public TransformationIterableTests(String name) {
 		super(name);
 	}
 
-	public void testTransform1() {
+	public void testTransform() {
 		int i = 1;
-		for (Integer integer : this.buildIterable1()) {
+		for (Integer integer : this.buildIterable()) {
 			assertEquals(i++, integer.intValue());
 		}
 	}
 
-	private Iterable<Integer> buildIterable1() {
-		return this.buildTransformationIterable1(this.buildNestedIterable());
+	private Iterable<Integer> buildIterable() {
+		return this.buildTransformationIterable(this.buildNestedIterable());
 	}
 
-	private Iterable<Integer> buildTransformationIterable1(Iterable<String> nestedIterable) {
-		// transform each string into an integer with a value of the string's length
-		return new TransformationIterable<String, Integer>(nestedIterable) {
-			@Override
-			protected Integer transform(String next) {
-				return new Integer(next.length());
-			}
-		};
-	}
-
-	public void testTransform2() {
-		int i = 1;
-		for (Integer integer : this.buildIterable2()) {
-			assertEquals(i++, integer.intValue());
-		}
-	}
-
-	private Iterable<Integer> buildIterable2() {
-		return this.buildTransformationIterable2(this.buildNestedIterable());
-	}
-
-	private Iterable<Integer> buildTransformationIterable2(Iterable<String> nestedIterable) {
+	private Iterable<Integer> buildTransformationIterable(Iterable<String> nestedIterable) {
 		// transform each string into an integer with a value of the string's length
 		return new TransformationIterable<String, Integer>(nestedIterable, this.buildTransformer());
 	}
@@ -84,11 +64,11 @@ public class TransformationIterableTests extends TestCase {
 	}
 
 	public void testToString() {
-		assertNotNull(this.buildIterable1().toString());
+		assertNotNull(this.buildIterable().toString());
 	}
 
 	public void testMissingTransformer() {
-		Iterable<Integer> iterable = new TransformationIterable<String, Integer>(this.buildNestedIterable());
+		Iterable<Integer> iterable = new TransformationIterable<String, Integer>(this.buildNestedIterable(), Transformer.Disabled.<String, Integer>instance());
 		boolean exCaught = false;
 		try {
 			int i = 1;

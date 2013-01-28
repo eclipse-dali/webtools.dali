@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -110,7 +109,7 @@ public class ListCollectionValueModelAdapter<E>
 
 	public Iterator<E> iterator() {
 		// try to prevent backdoor modification of the list
-		return new ReadOnlyIterator<E>(this.collection);
+		return IteratorTools.readOnlyIterator(this.collection.iterator());
 	}
 
 	public int size() {

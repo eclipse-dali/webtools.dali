@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -110,7 +109,7 @@ public class JpaFacetVersionChangeDataModelProvider
 		// add existing platform to list of choices
 		Iterable<JpaPlatform.Config> validPlatformConfigs = super.buildValidPlatformConfigs();
 		if (! IterableTools.contains(validPlatformConfigs, getDefaultPlatformConfig())) {
-			validPlatformConfigs = new CompositeIterable<JpaPlatform.Config>(getDefaultPlatformConfig(), validPlatformConfigs);
+			validPlatformConfigs = IterableTools.insert(getDefaultPlatformConfig(), validPlatformConfigs);
 		}
 		return validPlatformConfigs;
 	}

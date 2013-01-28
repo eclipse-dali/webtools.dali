@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * JPA attribute mapping.
@@ -35,6 +38,15 @@ public interface AttributeMapping
 	 * associated attribute.
 	 */
 	String getName();
+	Transformer<AttributeMapping, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<AttributeMapping, String>
+	{
+		@Override
+		public String transform(AttributeMapping mapping) {
+			return mapping.getName();
+		}
+	}
 
 	/**
 	 * Return whether the mapping is its attribute's <em>default</em> mapping
@@ -104,6 +116,15 @@ public interface AttributeMapping
 	 * Typically only ID mappings have generators.
 	 */
 	Iterable<Generator> getGenerators();
+	Transformer<AttributeMapping, Iterable<Generator>> GENERATORS_TRANSFORMER = new GeneratorsTransformer();
+	class GeneratorsTransformer
+		extends TransformerAdapter<AttributeMapping, Iterable<Generator>>
+	{
+		@Override
+		public Iterable<Generator> transform(AttributeMapping mapping) {
+			return mapping.getGenerators();
+		}
+	}
 
 
 	// ********** embedded mappings **********

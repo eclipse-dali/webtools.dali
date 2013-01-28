@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,7 +37,10 @@ import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Convenience methods for dealing with JDT ASTs.
@@ -115,15 +118,20 @@ public class ASTTools {
 	/**
 	 * If the specified expression is an array initializer, return an an iterable
 	 * on the types' fully qualfified names.
-	 * The results may include nulls.
+	 * The results may include <code>null</code>s.
 	 */
 	public static Iterable<String> resolveFullyQualifiedNames(Expression expression) {
-		return new TransformationIterable<ITypeBinding, String>(resolveTypeBindings(expression)) {
-			@Override
-			protected String transform(ITypeBinding o) {
-				return (o == null) ? null : o.getQualifiedName();
-			}
-		};
+		return IterableTools.transform(resolveTypeBindings(expression), TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER);
+	}
+
+	private static final Transformer<ITypeBinding, String> TYPE_BINDING_QUALIFIED_NAME_TRANSFORMER = new TypeBindingQualifiedNameTransformer();
+	/* CU private */ static class TypeBindingQualifiedNameTransformer
+		extends AbstractTransformer<ITypeBinding, String>
+	{
+		@Override
+		protected String transform_(ITypeBinding typeBinding) {
+			return typeBinding.getQualifiedName();
+		}
 	}
 
 	/**
@@ -151,12 +159,17 @@ public class ASTTools {
 	private static Iterable<ITypeBinding> resolveTypeBindings(ArrayInitializer arrayExpression) {
 		@SuppressWarnings("unchecked")
 		Iterable<Expression> expressions = arrayExpression.expressions();
-		return new TransformationIterable<Expression, ITypeBinding>(expressions) {
-			@Override
-			protected ITypeBinding transform(Expression expression) {
-				return resolveTypeBinding(expression);
-			}
-		};
+		return IterableTools.transform(expressions, EXPRESSION_TYPE_BINDING_TRANSFORMER);
+	}
+
+	private static final Transformer<Expression, ITypeBinding> EXPRESSION_TYPE_BINDING_TRANSFORMER = new ExpressionTypeBindingTransformer();
+	/* CU private */ static class ExpressionTypeBindingTransformer
+		extends TransformerAdapter<Expression, ITypeBinding>
+	{
+		@Override
+		public ITypeBinding transform(Expression expression) {
+			return resolveTypeBinding(expression);
+		}
 	}
 
 	public static MethodSignature buildMethodSignature(MethodDeclaration methodDeclaration) {

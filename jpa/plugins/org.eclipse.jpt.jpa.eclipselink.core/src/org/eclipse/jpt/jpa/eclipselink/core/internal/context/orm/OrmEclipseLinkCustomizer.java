@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkCustomizer
 	extends AbstractOrmXmlContextNode
-	implements EclipseLinkCustomizer
+	implements EclipseLinkCustomizer, TypeRefactoringParticipant
 {
 	protected String specifiedCustomizerClass;
 	protected String defaultCustomizerClass;
@@ -221,8 +221,8 @@ public class OrmEclipseLinkCustomizer
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return this.getXmlCustomizerClassRef() != null && this.isFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameTypeEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
@@ -231,14 +231,14 @@ public class OrmEclipseLinkCustomizer
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return this.getXmlCustomizerClassRef() != null && this.isFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.getXmlCustomizerClassRef() != null && this.isIn(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {

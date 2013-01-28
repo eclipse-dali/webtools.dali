@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -63,6 +65,16 @@ public class ProjectTools {
 			// problem reading the project metadata - assume facet does not exist and return 'false'
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
+		}
+	}
+
+	public static final Transformer<IProject, String> NAME_TRANSFORMER = new NameTransformer();
+	public static class NameTransformer
+		extends TransformerAdapter<IProject, String>
+	{
+		@Override
+		public String transform(IProject project) {
+			return project.getName();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.reference;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
 /**
@@ -26,6 +29,17 @@ public interface ObjectReference<V> {
 	 * Return the current value.
 	 */
 	V getValue();
+
+	@SuppressWarnings("rawtypes")
+	Transformer VALUE_TRANSFORMER = new ValueTransformer();
+	class ValueTransformer<V>
+		extends TransformerAdapter<ObjectReference<V>, V>
+	{
+		@Override
+		public V transform(ObjectReference<V> ref) {
+			return ref.getValue();
+		}
+	}
 
 	/**
 	 * Return whether the current value is equal to the specified value.

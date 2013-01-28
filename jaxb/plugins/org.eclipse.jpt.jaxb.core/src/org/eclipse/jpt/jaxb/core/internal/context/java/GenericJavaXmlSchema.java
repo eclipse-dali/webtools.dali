@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -272,14 +271,10 @@ public class GenericJavaXmlSchema
 	}
 	
 	protected Iterable<String> getNamespaceProposals() {
-		return new TransformationIterable<String, String>(
-						new TransformationIterable<SchemaEntry, String>(
-								getJaxbProject().getSchemaLibrary().getSchemaEntries()) {
-							@Override
-							protected String transform(SchemaEntry o) {
-								return o.getNamespace();
-							}
-						},
+		return IterableTools.transform(
+						IterableTools.transform(
+								getJaxbProject().getSchemaLibrary().getSchemaEntries(),
+								SchemaEntry.NAMESPACE_TRANSFORMER),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	

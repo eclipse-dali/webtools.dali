@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
@@ -1239,17 +1240,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** embedded mappings **********
 
-	public Iterable<String> getCandidateMapKeyNames() {
-		return new CompositeIterable<String>(this.getTargetEmbeddableNonTransientAttributeNamesLists());
-	}
-
 	/**
 	 * Return a list of lists; each nested list holds the names for one of the
 	 * embedded mapping's target embeddable type mapping's attribute mappings
 	 * (non-transient attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterable<Iterable<String>> getTargetEmbeddableNonTransientAttributeNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getTargetEmbeddableNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	public Iterable<String> getCandidateMapKeyNames() {
+		return IterableTools.compositeIterable(this.getTargetEmbeddableNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getTargetEmbeddableNonTransientAttributeMappings() {
@@ -1281,17 +1278,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return new TransformationIterable<String, String>(this.getEmbeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
 	}
 
-	protected Iterable<String> getEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return new CompositeIterable<String>(this.getEmbeddableOverridableMappingNamesLists(transformer));
-	}
-
 	/**
 	 * Return a list of lists; each nested list holds the names for one of the
 	 * embedded mapping's target embeddable type mapping's attribute mappings
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterable<Iterable<String>> getEmbeddableOverridableMappingNamesLists(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getEmbeddableAttributeMappings(), transformer);
+	protected Iterable<String> getEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return IterableTools.compositeIterable(this.getEmbeddableAttributeMappings(), transformer);
 	}
 
 	@Override

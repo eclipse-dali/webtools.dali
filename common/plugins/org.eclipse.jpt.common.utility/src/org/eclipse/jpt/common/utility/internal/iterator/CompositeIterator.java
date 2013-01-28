@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,7 @@ package org.eclipse.jpt.common.utility.internal.iterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 
 /**
  * A <code>CompositeIterator</code> wraps a collection
@@ -35,21 +33,6 @@ public class CompositeIterator<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct an iterator that returns all the elements held by the
-	 * specified iterables.
-	 */
-	public CompositeIterator(Iterable<? extends Iterable<? extends E>> iterables) {
-		this(
-			new TransformationIterator<Iterable<? extends E>, Iterator<? extends E>>(iterables.iterator()) {
-				@Override
-				protected Iterator<? extends E> transform(Iterable<? extends E> iterable) {
-					return iterable.iterator();
-				}
-			}
-		);
-	}
-
-	/**
 	 * Construct an iterator with the specified collection of iterators.
 	 */
 	public CompositeIterator(Iterator<? extends Iterator<? extends E>> iterators) {
@@ -58,54 +41,6 @@ public class CompositeIterator<E>
 			throw new NullPointerException();
 		}
 		this.iterators = iterators;
-	}
-
-	/**
-	 * Construct an iterator with the specified object prepended
-	 * to the specified iterable.
-	 */
-	public CompositeIterator(E object, Iterable<? extends E> iterable) {
-		this(object, iterable.iterator());
-	}
-
-	/**
-	 * Construct an iterator with the specified object prepended
-	 * to the specified iterator.
-	 */
-	@SuppressWarnings("unchecked")
-	public CompositeIterator(E object, Iterator<? extends E> iterator) {
-		this(new SingleElementIterator<E>(object), iterator);
-	}
-
-	/**
-	 * Construct an iterator with the specified object appended
-	 * to the specified iterable.
-	 */
-	public CompositeIterator(Iterable<? extends E> iterable, E object) {
-		this(iterable.iterator(), object);
-	}
-
-	/**
-	 * Construct an iterator with the specified object appended
-	 * to the specified iterator.
-	 */
-	@SuppressWarnings("unchecked")
-	public CompositeIterator(Iterator<? extends E> iterator, E object) {
-		this(iterator, new SingleElementIterator<E>(object));
-	}
-
-	/**
-	 * Construct an iterator with the specified iterables.
-	 */
-	public CompositeIterator(Iterable<? extends E>... iterables) {
-		this(new ArrayIterable<Iterable<? extends E>>(iterables));
-	}
-
-	/**
-	 * Construct an iterator with the specified iterators.
-	 */
-	public CompositeIterator(Iterator<? extends E>... iterators) {
-		this(new ArrayIterator<Iterator<? extends E>>(iterators));
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
@@ -31,10 +33,28 @@ public interface EclipseLinkConversionValue
 	String getDataValue();	
 	void setDataValue(String dataValue);
 		String DATA_VALUE_PROPERTY = "dataValue"; //$NON-NLS-1$
+	Transformer<EclipseLinkConversionValue, String> DATA_VALUE_TRANSFORMER = new DataValueTransformer();
+	class DataValueTransformer
+		extends TransformerAdapter<EclipseLinkConversionValue, String>
+	{
+		@Override
+		public String transform(EclipseLinkConversionValue conversionValue) {
+			return conversionValue.getDataValue();
+		}
+	}
 		
 	String getObjectValue();	
 	void setObjectValue(String objectValue);
 		String OBJECT_VALUE_PROPERTY = "objectValue"; //$NON-NLS-1$
+	Transformer<EclipseLinkConversionValue, String> OBJECT_VALUE_TRANSFORMER = new ObjectValueTransformer();
+	class ObjectValueTransformer
+		extends TransformerAdapter<EclipseLinkConversionValue, String>
+	{
+		@Override
+		public String transform(EclipseLinkConversionValue conversionValue) {
+			return conversionValue.getObjectValue();
+		}
+	}
 
 	/**
 	 * Return whether the conversion value has the same state as the specified

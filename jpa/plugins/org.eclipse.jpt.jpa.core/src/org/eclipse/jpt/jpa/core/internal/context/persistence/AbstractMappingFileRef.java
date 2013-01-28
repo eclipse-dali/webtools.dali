@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -314,39 +314,39 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
 		return (this.mappingFile != null) ?
 				this.mappingFile.createDeleteTypeEdits(type) :
-				EmptyIterable.<DeleteEdit>instance();
+				IterableTools.<DeleteEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return (this.mappingFile != null) ?
 				this.mappingFile.createRenameTypeEdits(originalType, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return (this.mappingFile != null) ?
 				this.mappingFile.createMoveTypeEdits(originalType, newPackage) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return (this.mappingFile != null) ?
 				this.mappingFile.createRenamePackageEdits(originalPackage, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName) {
 		return this.isFor(originalFile) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalFile, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameEdit(originalFile, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected abstract ReplaceEdit createRenameEdit(IFile originalFile, String newName);
 
 	public Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination) {
 		return this.isFor(originalFile) ?
-				new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalFile, runtineDestination)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createMoveEdit(originalFile, runtineDestination)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected abstract ReplaceEdit createMoveEdit(IFile originalFile, IPath runtineDestination);

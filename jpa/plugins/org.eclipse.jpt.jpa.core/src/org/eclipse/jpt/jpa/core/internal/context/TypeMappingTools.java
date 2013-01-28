@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -51,12 +50,7 @@ public class TypeMappingTools {
 	 * relationship mapping's "maps ID" setting).
 	 */
 	protected static Iterable<String> getMapsIdDerivedIdAttributeNames(TypeMapping typeMapping) {
-		return new TransformationIterable<MapsIdDerivedIdentityStrategy2_0, String>(getMapsIdDerivedIdentityStrategies(typeMapping)) {
-				@Override
-				protected String transform(MapsIdDerivedIdentityStrategy2_0 strategy) {
-					return strategy.getIdAttributeName();
-				}
-			};
+		return IterableTools.transform(getMapsIdDerivedIdentityStrategies(typeMapping), MapsIdDerivedIdentityStrategy2_0.ID_ATTRIBUTE_NAME_TRANSFORMER);
 	}
 
 	/**
@@ -64,12 +58,7 @@ public class TypeMappingTools {
 	 * for the specified type mapping.
 	 */
 	protected static Iterable<MapsIdDerivedIdentityStrategy2_0> getMapsIdDerivedIdentityStrategies(TypeMapping typeMapping) {
-		return new TransformationIterable<DerivedIdentity2_0, MapsIdDerivedIdentityStrategy2_0>(getMapsIdDerivedIdentities(typeMapping)) {
-			@Override
-			protected MapsIdDerivedIdentityStrategy2_0 transform(DerivedIdentity2_0 derivedIdentity) {
-				return derivedIdentity.getMapsIdDerivedIdentityStrategy();
-			}
-		};
+		return IterableTools.transform(getMapsIdDerivedIdentities(typeMapping), DerivedIdentity2_0.MAPS_ID_DERIVED_IDENTITY_STRATEGY_TRANSFORMER);
 	}
 
 	/**
@@ -90,12 +79,7 @@ public class TypeMappingTools {
 	 * type mapping.
 	 */
 	protected static Iterable<DerivedIdentity2_0> getDerivedIdentities(TypeMapping typeMapping) {
-		return new TransformationIterable<SingleRelationshipMapping2_0, DerivedIdentity2_0>(getSingleRelationshipMappings(typeMapping)) {
-			@Override
-			protected DerivedIdentity2_0 transform(SingleRelationshipMapping2_0 mapping) {
-				return mapping.getDerivedIdentity();
-			}
-		};
+		return IterableTools.transform(getSingleRelationshipMappings(typeMapping), SingleRelationshipMapping2_0.DERIVED_IDENTITY_TRANSFORMER);
 	}
 
 	/**

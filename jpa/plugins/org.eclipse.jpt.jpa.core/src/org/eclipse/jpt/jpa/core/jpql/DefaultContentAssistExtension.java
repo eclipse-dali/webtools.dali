@@ -1,15 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
- * which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
+ * terms of the Eclipse Public License v1.0 and Eclipse Distribution License
+ * v. 1.0, which accompanies this distribution.
+ * The Eclipse Public License is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ * The Eclipse Distribution License is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
- *
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql;
 
@@ -24,7 +24,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -221,15 +222,20 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 	}
 
 	protected Iterable<String> tableNames(Schema schema) {
-		return new TransformationIterable<String, String>(schema.getSortedTableIdentifiers()) {
-			@Override
-			protected String transform(String tableName) {
-				if (tableName.charAt(0) == TABLE_QUALIFIER) {
-					tableName = StringTools.undelimit(tableName, 1);
-				}
-				return tableName;
+		return IterableTools.transform(schema.getSortedTableIdentifiers(), TABLE_NAME_TRANSFORMER);
+	}
+
+	protected static final TransformerAdapter<String, String> TABLE_NAME_TRANSFORMER = new TableNameTransformer();
+	public static class TableNameTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String tableName) {
+			if (tableName.charAt(0) == TABLE_QUALIFIER) {
+				tableName = StringTools.undelimit(tableName, 1);
 			}
-		};
+			return tableName;
+		}
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
@@ -155,7 +157,19 @@ public class XsdUtil {
 	public static Object getAdapter(Notifier notifier) {
 		return adapterFactory.adapt(notifier);
 	}
-	
+	@SuppressWarnings("unchecked")
+	public static final <O> Transformer<Notifier, O> adapterTransformer() {
+		return (Transformer<Notifier, O>) ADAPTER_TRANSFORMER;
+	}
+	public static final Transformer<Notifier, Object> ADAPTER_TRANSFORMER = new AdapterTransformer();
+	public static class AdapterTransformer
+		extends TransformerAdapter<Notifier, Object>
+	{
+		@Override
+		public Object transform(Notifier notifier) {
+			return getAdapter(notifier);
+		}
+	}
 	
 	/**
 	 * The Factory for the XSD adapter model. It provides a create method for each

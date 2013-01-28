@@ -20,11 +20,12 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -161,12 +162,7 @@ public class JavaProjectWizardPage extends WizardPage {
 
 	private String[] getJavaProjectsNames() {
 		return ArrayTools.array(
-			new TransformationIterable<IProject, String>(this.getJavaProjects()) {
-				@Override
-				protected String transform(IProject project) {
-					return project.getName();
-				}
-			},
+			IterableTools.transform(this.getJavaProjects(), ProjectTools.NAME_TRANSFORMER),
 			StringTools.EMPTY_STRING_ARRAY);
 	}
 	

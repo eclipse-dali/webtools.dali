@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.HashSet;
@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -30,7 +29,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
@@ -500,17 +498,7 @@ public class GenericJavaClassMapping
 	// ***** included attributes *****
 	
 	public Iterable<JaxbPersistentAttribute> getIncludedAttributes() {
-		return new CompositeIterable<JaxbPersistentAttribute>(getIncludedAttributeSets());
-	}
-	
-	protected Iterable<Iterable<JaxbPersistentAttribute>> getIncludedAttributeSets() {
-		return new TransformationIterable<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>>(
-				getIncludedAttributesContainers()) {
-			@Override
-			protected Iterable<JaxbPersistentAttribute> transform(JaxbAttributesContainer attributesContainer) {
-				return attributesContainer.getAttributes();
-			}
-		};
+		return IterableTools.compositeIterable(getIncludedAttributesContainers(), JaxbAttributesContainer.ATTRIBUTES_TRANSFORMER);
 	}
 	
 	protected Iterable<JaxbAttributesContainer> getIncludedAttributesContainers() {
@@ -611,19 +599,9 @@ public class GenericJavaClassMapping
 	 * return those inherited attributes that are not included
 	 */
 	protected Iterable<JaxbPersistentAttribute> getOtherInheritedAttributes() {
-		return new CompositeIterable<JaxbPersistentAttribute>(
-				new TransformationIterable<JaxbClassMapping, Iterable<JaxbPersistentAttribute>>(
-						new ChainIterable<JaxbClassMapping>(getSuperclass()) {
-							@Override
-							protected JaxbClassMapping nextLink(JaxbClassMapping currentLink) {
-								return currentLink.getSuperclass();
-							}
-						}) {
-					@Override
-					protected Iterable<JaxbPersistentAttribute> transform(JaxbClassMapping o) {
-						return o.getAttributes();
-					}
-				});
+		return IterableTools.compositeIterable(
+						IterableTools.chainIterable(getSuperclass(), JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
+						JaxbClassMapping.ATTRIBUTES_TRANSFORMER);
 	}
 	
 	
@@ -671,14 +649,8 @@ public class GenericJavaClassMapping
 	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
 		return new CompositeIterable<String>(
 				super.getNonTransientReferencedXmlTypeNames(),
-				new SingleElementIterable(this.superclassName),
-				new CompositeIterable<String>(
-						new TransformationIterable<JaxbPersistentAttribute, Iterable<String>>(getAttributes()) {
-							@Override
-							protected Iterable<String> transform(JaxbPersistentAttribute o) {
-								return o.getMapping().getReferencedXmlTypeNames();
-							}
-						}));
+				new SingleElementIterable<String>(this.superclassName),
+				IterableTools.compositeIterable(getAttributeMappings(), JaxbAttributeMapping.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
 	}
 	
 	public JaxbAttributeMapping getXmlIdMapping() {
@@ -686,12 +658,7 @@ public class GenericJavaClassMapping
 				new FilteringIterable<XmlNamedNodeMapping>(
 						new SubIterableWrapper<JaxbAttributeMapping, XmlNamedNodeMapping>(
 								new FilteringIterable<JaxbAttributeMapping>(
-										new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(getAllAttributes()) {
-											@Override
-											protected JaxbAttributeMapping transform(JaxbPersistentAttribute o) {
-												return o.getMapping();
-											}
-										}) {
+										IterableTools.transform(getAllAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER)) {
 									@Override
 									protected boolean accept(JaxbAttributeMapping o) {
 										return (o.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
@@ -707,12 +674,7 @@ public class GenericJavaClassMapping
 	}
 	
 	protected Iterable<? extends JaxbAttributeMapping> getAttributeMappings() {
-		return new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(getAttributes()) {
-			@Override
-			protected JaxbAttributeMapping transform(JaxbPersistentAttribute attribute) {
-				return attribute.getMapping();
-			}
-		};
+		return IterableTools.transform(getAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER);
 	}
 	
 	
@@ -743,13 +705,10 @@ public class GenericJavaClassMapping
 	}
 	
 	protected Iterable<String> getPropProposals() {
-		return new TransformationIterable<String, String>(
-					new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
-						@Override
-						protected String transform(JaxbPersistentAttribute o) {
-							return o.getName();
-						}
-					},
+		return IterableTools.transform(
+				IterableTools.transform(
+						getAllLocallyDefinedAttributes(),
+						JaxbPersistentAttribute.NAME_TRANSFORMER),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	

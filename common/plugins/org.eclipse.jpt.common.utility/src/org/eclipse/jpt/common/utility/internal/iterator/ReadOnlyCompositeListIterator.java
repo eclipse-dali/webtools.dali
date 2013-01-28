@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterator;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * A <code>ReadOnlyCompositeListIterator</code> wraps a list
@@ -38,34 +33,6 @@ public class ReadOnlyCompositeListIterator<E>
 
 
 	/**
-	 * Construct a read-only list iterator with the specified list of lists.
-	 */
-	public ReadOnlyCompositeListIterator(List<? extends List<? extends E>> lists) {
-		this(
-			new TransformationListIterator<List<? extends E>, ListIterator<? extends E>>(lists.listIterator()) {
-				@Override
-				protected ListIterator<? extends E> transform(List<? extends E> list) {
-					return list.listIterator();
-				}
-			}
-		);
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified list of lists.
-	 */
-	public ReadOnlyCompositeListIterator(ListIterable<? extends ListIterable<? extends E>> iterables) {
-		this(
-			new TransformationListIterator<ListIterable<? extends E>, ListIterator<? extends E>>(iterables.iterator()) {
-				@Override
-				protected ListIterator<? extends E> transform(ListIterable<? extends E> iterable) {
-					return iterable.iterator();
-				}
-			}
-		);
-	}
-
-	/**
 	 * Construct a read-only list iterator with the specified list of
 	 * list iterators.
 	 */
@@ -76,77 +43,6 @@ public class ReadOnlyCompositeListIterator<E>
 		}
 		this.iterators = iterators;
 		this.nextIndex = 0;
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified object prepended
-	 * to the specified list.
-	 */
-	public ReadOnlyCompositeListIterator(E object, List<? extends E> list) {
-		this(object, list.listIterator());
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified object prepended
-	 * to the specified list.
-	 */
-	public ReadOnlyCompositeListIterator(E object, ListIterable<? extends E> iterable) {
-		this(object, iterable.iterator());
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified object prepended
-	 * to the specified iterator.
-	 */
-	@SuppressWarnings("unchecked")
-	public ReadOnlyCompositeListIterator(E object, ListIterator<? extends E> iterator) {
-		this(new SingleElementListIterator<E>(object), iterator);
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified object appended
-	 * to the specified list.
-	 */
-	public ReadOnlyCompositeListIterator(List<? extends E> list, E object) {
-		this(list.listIterator(), object);
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified object appended
-	 * to the specified list.
-	 */
-	public ReadOnlyCompositeListIterator(ListIterable<? extends E> iterable, E object) {
-		this(iterable.iterator(), object);
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified object appended
-	 * to the specified iterator.
-	 */
-	@SuppressWarnings("unchecked")
-	public ReadOnlyCompositeListIterator(ListIterator<? extends E> iterator, E object) {
-		this(iterator, new SingleElementListIterator<E>(object));
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified lists.
-	 */
-	public ReadOnlyCompositeListIterator(List<? extends E>... lists) {
-		this(Arrays.asList(lists));
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified lists.
-	 */
-	public ReadOnlyCompositeListIterator(ListIterable<? extends E>... iterables) {
-		this(new ArrayListIterable<ListIterable<? extends E>>(iterables));
-	}
-
-	/**
-	 * Construct a read-only list iterator with the specified list iterators.
-	 */
-	public ReadOnlyCompositeListIterator(ListIterator<? extends E>... iterators) {
-		this(new ArrayListIterator<ListIterator<? extends E>>(iterators));
 	}
 
 	public boolean hasNext() {

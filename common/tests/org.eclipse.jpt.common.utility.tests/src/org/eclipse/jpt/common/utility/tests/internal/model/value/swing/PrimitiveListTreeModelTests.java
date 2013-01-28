@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.PrimitiveListTreeModel;
@@ -149,7 +148,7 @@ public class PrimitiveListTreeModelTests extends TestCase {
 		}
 	
 		public ListIterator<String> names() {
-			return new ReadOnlyListIterator<String>(this.names);
+			return IteratorTools.readOnlyListIterator(this.names.listIterator());
 		}
 		public int namesSize() {
 			return this.names.size();

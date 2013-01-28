@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
@@ -102,12 +102,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private Iterable<String> convertToValues(Iterable<PersistenceUnit.Property> properties) {
-		return new TransformationIterable<PersistenceUnit.Property, String>(properties) {
-			@Override
-			protected String transform(PersistenceUnit.Property property) {
-				return property.getValue();
-			}
-		};
+		return IterableTools.transform(properties, PersistenceUnit.Property.VALUE_TRANSFORMER);
 	}
 
 	private void initializeEntitiesCustomizerClass(Set<PersistenceUnit.Property> descriptorCustomizerProperties) {
@@ -772,12 +767,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	public Iterable<String> getEntityNames() {
-		return new TransformationIterable<CustomizationEntity, String>(this.getEntities()) {
-			@Override
-			protected String transform(CustomizationEntity entity) {
-				return entity.getName();
-			}
-		};
+		return IterableTools.transform(this.getEntities(), CustomizationEntity.NAME_TRANSFORMER);
 	}
 
 	public int getEntitiesSize() {
@@ -796,22 +786,15 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			);
 	}
 
-	protected Iterable<ReplaceEdit> createSessionCustomizerRenameTypeEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
-					return property.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSessionCustomizerRenameTypeEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(this.getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createExceptionHandlerRenameTypeEdits(IType originalType, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		return (property != null) ?
 				property.createRenameTypeEdits(originalType, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -823,22 +806,15 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			);
 	}
 
-	protected Iterable<ReplaceEdit> createSessionCustomizerMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
-					return property.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSessionCustomizerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(this.getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	protected Iterable<ReplaceEdit> createExceptionHandlerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		return (property != null) ?
 				property.createMoveTypeEdits(originalType, newPackage) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -850,21 +826,14 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			);
 	}
 
-	protected Iterable<ReplaceEdit> createSessionCustomizerRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
-					return property.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSessionCustomizerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(this.getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createExceptionHandlerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		return (property != null) ?
 				property.createRenamePackageEdits(originalPackage, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 }

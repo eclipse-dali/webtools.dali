@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,6 @@ import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
@@ -33,6 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -169,14 +168,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
-	}
-
-	protected Iterable<Iterable<EclipseLinkConverter>> getAttributeMappingConverterLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<EclipseLinkConverter>>(
-				this.getAttributeMappings(),
-				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
-			);
+		return IterableTools.compositeIterable(this.getAttributeMappings(), EclipseLinkConvertibleMapping.ATTRIBUTE_MAPPING_CONVERTERS_TRANSFORMER);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,13 +28,13 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public class StackIterator<E>
 	implements Iterator<E>
 {
-	private final Stack<E> stack;
+	private final Stack<? extends E> stack;
 
 
 	/**
 	 * Construct an iterator for the specified stack.
 	 */
-	public StackIterator(Stack<E> stack) {
+	public StackIterator(Stack<? extends E> stack) {
 		super();
 		this.stack = stack;
 	}

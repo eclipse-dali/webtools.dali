@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,15 +17,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
@@ -35,6 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
@@ -154,16 +154,11 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getTypeMappingConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(this.getTypeMappingConverterLists());
+		return IterableTools.compositeIterable(this.getEclipseLinkTypeMappings(), EclipseLinkTypeMapping.CONVERTERS_TRANSFORMER);
 	}
 
-	protected Iterable<Iterable<EclipseLinkConverter>> getTypeMappingConverterLists() {
-		return new TransformationIterable<OrmTypeMapping, Iterable<EclipseLinkConverter>>(this.getTypeMappings()) {
-					@Override
-					protected Iterable<EclipseLinkConverter> transform(OrmTypeMapping typeMapping) {
-						return ((EclipseLinkTypeMapping) typeMapping).getConverters();
-					}
-				};
+	protected Iterable<EclipseLinkOrmTypeMapping> getEclipseLinkTypeMappings() {
+		return IterableTools.subIterable(this.getTypeMappings());
 	}
 
 

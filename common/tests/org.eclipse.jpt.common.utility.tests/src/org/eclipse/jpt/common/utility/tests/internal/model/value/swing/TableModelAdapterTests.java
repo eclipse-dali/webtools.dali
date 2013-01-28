@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,9 +35,12 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class TableModelAdapterTests extends TestCase {
+public class TableModelAdapterTests
+	extends TestCase
+{
 	private Crowd crowd;
 	TableModelEvent event;
 
@@ -459,12 +462,7 @@ public class TableModelAdapterTests extends TestCase {
 		}
 	
 		public Iterator<String> peopleNames() {
-			return new TransformationIterator<Person, String>(this.people.iterator()) {
-				@Override
-				protected String transform(Person person) {
-					return person.getName();
-				}
-			};
+			return new TransformationIterator<Person, String>(this.people.iterator(), Person.NAME_TRANSFORMER);
 		}
 	
 		public Person personNamed(String name) {
@@ -553,6 +551,11 @@ public class TableModelAdapterTests extends TestCase {
 			this.name = name;
 			this.firePropertyChanged(NAME_PROPERTY, old, name);
 		}
+		public static final Transformer<Person, String> NAME_TRANSFORMER = new Transformer<Person, String>() {
+			public String transform(Person person) {
+				return person.getName();
+			}
+		};
 	
 		public Date getBirthDate() {
 			return this.birthDate;

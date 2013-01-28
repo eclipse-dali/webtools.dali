@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -176,14 +176,13 @@ public class JpaDeleteMappingFileParticipant
 	}
 
 	private Iterable<DeleteEdit> createSpecifiedMappingFileRefDeleteEdits(final PersistenceUnit persistenceUnit) {
-		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<IFile, Iterable<DeleteEdit>>(this.mappingFiles.keySet()) {
-				@Override
-				protected Iterable<DeleteEdit> transform(IFile file) {
-					return persistenceUnit.createDeleteMappingFileEdits(file);
-				}
+		Transformer<IFile, Iterable<DeleteEdit>> transformer = new TransformerAdapter<IFile, Iterable<DeleteEdit>>() {
+			@Override
+			public Iterable<DeleteEdit> transform(IFile file) {
+				return persistenceUnit.createDeleteMappingFileEdits(file);
 			}
-		);
+		};
+		return IterableTools.compositeIterable(this.mappingFiles.keySet(), transformer);
 	}
 	
 	protected void addPersistenceXmlDeleteMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {

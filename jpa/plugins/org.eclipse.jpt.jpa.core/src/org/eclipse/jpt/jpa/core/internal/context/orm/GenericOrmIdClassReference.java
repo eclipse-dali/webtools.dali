@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -307,8 +306,8 @@ public class GenericOrmIdClassReference
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return (this.getXmlIdClassRef() != null) && this.isFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
@@ -321,14 +320,14 @@ public class GenericOrmIdClassReference
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return (this.getXmlIdClassRef() != null) && this.isFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return (this.getXmlIdClassRef() != null) && this.isIn(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {

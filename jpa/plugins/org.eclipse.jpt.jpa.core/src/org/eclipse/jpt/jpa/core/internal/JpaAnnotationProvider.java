@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 
 /**
@@ -44,52 +43,23 @@ public class JpaAnnotationProvider
 
 	
 	public Iterable<String> getAnnotationNames() {
-		return new TransformationIterable<AnnotationDefinition, String>(getAnnotationDefinitions()) {
-			@Override
-			protected String transform(AnnotationDefinition annotationDefinition) {
-				return annotationDefinition.getAnnotationName();
-			}
-		};
+		return IterableTools.transform(this.getAnnotationDefinitions(), AnnotationDefinition.ANNOTATION_NAME_TRANSFORMER);
 	}
 
 	public Iterable<String> getContainerAnnotationNames() {
-		return new TransformationIterable<NestableAnnotationDefinition, String>(getNestableAnnotationDefinitions()) {
-			@Override
-			protected String transform(NestableAnnotationDefinition annotationDefinition) {
-				return annotationDefinition.getContainerAnnotationName();
-			}
-		};
+		return IterableTools.transform(this.getNestableAnnotationDefinitions(), NestableAnnotationDefinition.CONTAINER_ANNOTATION_NAME_TRANSFORMER);
 	}
 
 	public Iterable<String> getNestableAnnotationNames() {
-		return new TransformationIterable<NestableAnnotationDefinition, String>(getNestableAnnotationDefinitions()) {
-			@Override
-			protected String transform(NestableAnnotationDefinition annotationDefinition) {
-				return annotationDefinition.getNestableAnnotationName();
-			}
-		};
+		return IterableTools.transform(this.getNestableAnnotationDefinitions(), NestableAnnotationDefinition.NESTABLE_ANNOTATION_NAME_TRANSFORMER);
 	}
 
 	protected Iterable<AnnotationDefinition> getAnnotationDefinitions() {
-		return new CompositeIterable<AnnotationDefinition> (
-			new TransformationIterable<JpaAnnotationDefinitionProvider, Iterable<AnnotationDefinition>>(this.annotationDefinitionProviders) {
-				@Override
-				protected Iterable<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
-					return annotationDefinitionProvider.getAnnotationDefinitions();
-				}
-			}
-		);
+		return IterableTools.compositeIterable(this.annotationDefinitionProviders, JpaAnnotationDefinitionProvider.ANNOTATION_DEFINITIONS_TRANSFORMER);
 	}
 
 	protected Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions() {
-		return new CompositeIterable<NestableAnnotationDefinition> (
-			new TransformationIterable<JpaAnnotationDefinitionProvider, Iterable<NestableAnnotationDefinition>>(this.annotationDefinitionProviders) {
-				@Override
-				protected Iterable<NestableAnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
-					return annotationDefinitionProvider.getNestableAnnotationDefinitions();
-				}
-			}
-		);
+		return IterableTools.compositeIterable(this.annotationDefinitionProviders, JpaAnnotationDefinitionProvider.NESTABLE_ANNOTATION_DEFINITIONS_TRANSFORMER);
 	}
 
 

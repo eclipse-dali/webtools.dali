@@ -16,7 +16,6 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ComparatorAdapter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -98,7 +97,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) node.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		Iterable<MappingUiDefinition> defs = (jpaPlatformUi != null) ? this.getSortedMappingUiDefinitions(jpaPlatformUi, node) : IterableTools.<MappingUiDefinition>emptyIterable();
 		DefaultMappingUiDefinition defaultDef = (jpaPlatformUi != null) ? this.getDefaultMappingUiDefinition(jpaPlatformUi, node) : null;
-		return (defaultDef == null) ? defs : new CompositeIterable<MappingUiDefinition>(defaultDef, defs);
+		return (defaultDef == null) ? defs : IterableTools.insert(defaultDef, defs);
 	}
 
 	protected Iterable<MappingUiDefinition> getSortedMappingUiDefinitions(JpaPlatformUi jpaPlatformUi, T node) {

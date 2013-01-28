@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,14 +13,14 @@ import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.Vector;
-
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class ChainIterableTests extends TestCase {
+public class ChainIterableTests
+	extends TestCase
+{
 	private final static Class<?>[] VECTOR_HIERARCHY = { Vector.class, AbstractList.class, AbstractCollection.class, Object.class };
 
 	public ChainIterableTests(String name) {
@@ -35,15 +35,8 @@ public class ChainIterableTests extends TestCase {
 		}
 	}
 
-	public void testLinker() {
-		int i = 0;
-		for (Class<?> clazz : new ChainIterable<Class<?>>(Vector.class, this.buildLinker())) {
-			assertEquals(VECTOR_HIERARCHY[i++], clazz);
-		}
-	}
-
 	public void testException() {
-		Iterable<Class<?>> iterable = new ChainIterable<Class<?>>(Vector.class);
+		Iterable<Class<?>> iterable = IterableTools.chainIterable(Vector.class, Transformer.Disabled.<Class<?>, Class<?>>instance());
 		Iterator<Class<?>> iterator = iterable.iterator();
 		boolean exCaught = false;
 		try {
@@ -60,25 +53,14 @@ public class ChainIterableTests extends TestCase {
 	}
 
 	private Iterable<Class<?>> buildIterable() {
-		return this.buildChainIterable(Vector.class);
+		return IterableTools.chainIterable(Vector.class, this.buildTransformer());
 	}
 
-	private Iterable<Class<?>> buildChainIterable(Class<?> startLink) {
-		// chain up the class's hierarchy
-		return new ChainIterable<Class<?>>(startLink) {
-			@Override
-			protected Class<?> nextLink(Class<?> currentLink) {
+	private Transformer<Class<?>, Class<?>> buildTransformer() {
+		return new Transformer<Class<?>, Class<?>>() {
+			public Class<?> transform(Class<?> currentLink) {
 				return currentLink.getSuperclass();
 			}
 		};
 	}
-
-	private ChainIterator.Linker<Class<?>> buildLinker() {
-		return new ChainIterator.Linker<Class<?>>() {
-			public Class<?> nextLink(Class<?> currentLink) {
-				return currentLink.getSuperclass();
-			}
-		};
-	}
-
 }

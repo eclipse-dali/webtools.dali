@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,13 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -26,13 +25,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValida
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
-import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	extends AbstractOrmXmlContextNode
-	implements EclipseLinkConverter
+	implements EclipseLinkConverter, TypeRefactoringParticipant
 {
 	protected final X xmlConverter;
 
@@ -92,15 +90,6 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	public char getEnclosingTypeSeparator() {
 		return '$';
 	}
-
-
-	// ********** refactoring **********
-
-	public abstract Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-	public abstract Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-	public abstract Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 
 	// ********** validation **********

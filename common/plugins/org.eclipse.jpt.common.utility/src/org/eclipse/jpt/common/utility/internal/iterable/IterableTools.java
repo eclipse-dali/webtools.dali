@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
@@ -23,11 +24,11 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.GraphIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -340,11 +341,11 @@ public final class IterableTools {
 
 	/**
 	 * Return a chain iterable that starts with the specified element and uses
-	 * the specified {@link org.eclipse.jpt.common.utility.internal.iterator.ChainIterator.Linker linker}.
+	 * the specified {@link Transformer transformer}.
 	 * @see ChainIterable
 	 */
-	public static <E> ChainIterable<E> chainIterable(E startLink, ChainIterator.Linker<E> linker) {
-		return new ChainIterable<E>(startLink, linker);
+	public static <E> ChainIterable<E> chainIterable(E first, Transformer<? super E, ? extends E> transformer) {
+		return new ChainIterable<E>(first, transformer);
 	}
 
 	/**
@@ -353,8 +354,8 @@ public final class IterableTools {
 	 * @see CompositeIterable
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> CompositeIterable<E> compositeIterable(E object, Iterable<? extends E> iterable) {
-		return compositeIterable(new Iterable[] { singletonIterable(object), iterable });
+	public static <E> CompositeIterable<E> insert(E object, Iterable<? extends E> iterable) {
+		return compositeIterable(singletonIterable(object), iterable);
 	}
 
 	/**
@@ -363,8 +364,8 @@ public final class IterableTools {
 	 * @see CompositeIterable
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> CompositeIterable<E> compositeIterable(Iterable<? extends E> iterable, E object) {
-		return compositeIterable(new Iterable[] { iterable, singletonIterable(object) });
+	public static <E> CompositeIterable<E> add(Iterable<? extends E> iterable, E object) {
+		return compositeIterable(iterable, singletonIterable(object));
 	}
 
 	/**
@@ -390,17 +391,8 @@ public final class IterableTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see CompositeIterable
 	 */
-	public static <P, E> CompositeIterable<E> compositeIterable(Iterable<? extends P> parents, Transformer<P, Iterable<? extends E>> childrenTransformer) {
+	public static <P, E> CompositeIterable<E> compositeIterable(Iterable<? extends P> parents, Transformer<? super P, ? extends Iterable<? extends E>> childrenTransformer) {
 		return compositeIterable(transform(parents, childrenTransformer));
-	}
-
-	/**
-	 * Return a list iterable that returns the specified object followed by the
-	 * elements in the specified list.
-	 * @see CompositeListIterable
-	 */
-	public static <E> CompositeListIterable<E> compositeListIterable(E object, List<E> list) {
-		return compositeListIterable(object, listIterable(list));
 	}
 
 	/**
@@ -409,36 +401,27 @@ public final class IterableTools {
 	 * @see CompositeListIterable
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> CompositeListIterable<E> compositeListIterable(E object, ListIterable<E> iterable) {
-		return compositeListIterable(new ListIterable[] { singletonListIterable(object), iterable });
-	}
-
-	/**
-	 * Return a list iterable that returns the elements in the specified list
-	 * followed by the specified object.
-	 * @see CompositeListIterable
-	 */
-	public static <E> CompositeListIterable<E> compositeListIterable(List<E> list, E object) {
-		return compositeListIterable(listIterable(list), object);
+	public static <E> CompositeListIterable<E> insert(E object, ListIterable<E> iterable) {
+		return compositeListIterable(singletonListIterable(object), iterable);
 	}
 
 	/**
 	 * Return a list iterable that returns the
-	 * elements in the specified lists.
+	 * elements in the specified iterable followed by the specified object.
 	 * @see CompositeListIterable
 	 */
-	public static <E> CompositeListIterable<E> compositeListIterable(List<E>... lists) {
-		return compositeListIterable(Arrays.asList(lists));
+	@SuppressWarnings("unchecked")
+	public static <E> CompositeListIterable<E> add(ListIterable<E> iterable, E object) {
+		return compositeListIterable(iterable, singletonListIterable(object));
 	}
 
 	/**
 	 * Return a list iterable that returns the
-	 * elements in the specified lists.
+	 * elements in the specified iterables.
 	 * @see CompositeListIterable
 	 */
-	public static <E> CompositeListIterable<E> compositeListIterable(List<? extends List<E>> lists) {
-		Transformer<List<E>, ListIterable<E>> transformer = listListIterableTransformer();
-		return compositeListIterable(transform(listIterable(lists), transformer));
+	public static <E> CompositeListIterable<E> compositeListIterable(ListIterable<E>... iterables) {
+		return compositeListIterable(listIterable(iterables));
 	}
 
 	/**
@@ -455,27 +438,8 @@ public final class IterableTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see CompositeListIterable
 	 */
-	public static <P, E> CompositeListIterable<E> compositeListIterable(ListIterable<? extends P> parents, Transformer<P, ListIterable<E>> childrenTransformer) {
+	public static <P, E> CompositeListIterable<E> compositeListIterable(ListIterable<? extends P> parents, Transformer<? super P, ? extends ListIterable<E>> childrenTransformer) {
 		return compositeListIterable(transform(parents, childrenTransformer));
-	}
-
-	/**
-	 * Return a list iterable that returns the
-	 * elements in the specified iterable followed by the specified object.
-	 * @see CompositeListIterable
-	 */
-	@SuppressWarnings("unchecked")
-	public static <E> CompositeListIterable<E> compositeListIterable(ListIterable<E> iterable, E object) {
-		return compositeListIterable(new ListIterable[] { iterable, singletonListIterable(object) });
-	}
-
-	/**
-	 * Return a list iterable that returns the
-	 * elements in the specified iterables.
-	 * @see CompositeListIterable
-	 */
-	public static <E> CompositeListIterable<E> compositeListIterable(ListIterable<E>... iterables) {
-		return compositeListIterable(listIterable(iterables));
 	}
 
 	/**
@@ -502,30 +466,40 @@ public final class IterableTools {
 	}
 
 	/**
+	 * Return an iterable that will return only the non-<code>null</code>
+	 * elements in the specified iterable.
+	 * @see FilteringIterable
+	 * @see NotNullFilter
+	 */
+	public static <E> FilteringIterable<E> notNulls(Iterable<? extends E> iterable) {
+		return filter(iterable, NotNullFilter.<E>instance());
+	}
+
+	/**
 	 * Return an iterable that will return the specified root element followed
-	 * by its children etc. as determined by the specified Mr. Rogers.
+	 * by its children etc. as determined by the specified transformer.
 	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graphIterable(E root, GraphIterator.MisterRogers<E> misterRogers) {
-		return new GraphIterable<E>(root, misterRogers);
+	public static <E> GraphIterable<E> graphIterable(E root, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return graphIterable(singletonIterable(root), transformer);
 	}
 
 	/**
 	 * Return an iterable that will return the specified root elements followed
-	 * by their children etc. as determined by the specified Mr. Rogers.
+	 * by their children etc. as determined by the specified transformer.
 	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graphIterable(E[] roots, GraphIterator.MisterRogers<E> misterRogers) {
-		return new GraphIterable<E>(roots, misterRogers);
+	public static <E> GraphIterable<E> graphIterable(E[] roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return graphIterable(Arrays.asList(roots), transformer);
 	}
 
 	/**
 	 * Return an iterable that will return the specified root elements followed
-	 * by their children etc. as determined by the specified Mr. Rogers.
+	 * by their children etc. as determined by the specified transformer.
 	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graphIterable(Iterable<E> roots, GraphIterator.MisterRogers<E> misterRogers) {
-		return new GraphIterable<E>(roots, misterRogers);
+	public static <E> GraphIterable<E> graphIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return new GraphIterable<E>(roots, transformer);
 	}
 
 	/**
@@ -556,7 +530,7 @@ public final class IterableTools {
 	 * Return an iterable on the specified queue.
 	 * @see Queue
 	 */
-	public static <E> QueueIterable<E> iterable(Queue<E> queue) {
+	public static <E> QueueIterable<E> iterable(Queue<? extends E> queue) {
 		return new QueueIterable<E>(queue);
 	}
 
@@ -564,7 +538,7 @@ public final class IterableTools {
 	 * Return an iterable on the specified stack.
 	 * @see Stack
 	 */
-	public static <E> StackIterable<E> iterable(Stack<E> stack) {
+	public static <E> StackIterable<E> iterable(Stack<? extends E> stack) {
 		return new StackIterable<E>(stack);
 	}
 
@@ -616,52 +590,6 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return a transformer that transforms a {@link List} into a
-	 * {@link ListIterable}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <E> Transformer<List<E>, ListIterable<E>> listListIterableTransformer() {
-		return LIST_LIST_ITERABLE_TRANSFORMER;
-	}
-
-	/**
-	 * A transformer that transforms a {@link List} into a
-	 * {@link ListIterable}.
-	 */
-	@SuppressWarnings("rawtypes")
-	public static final Transformer LIST_LIST_ITERABLE_TRANSFORMER = new ListListIterableTransformer();
-	/* CU private */ static class ListListIterableTransformer<E>
-		implements Transformer<List<E>, ListIterable<E>>
-	{
-		public ListIterable<E> transform(List<E> list) {
-			return listIterable(list);
-		}
-	}
-
-	/**
-	 * Return a transformer that transforms a {@link List} into a
-	 * read-only {@link ListIterable}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <E> Transformer<List<? extends E>, ListIterable<? extends E>> readOnlyListListIterableTransformer() {
-		return READ_ONLY_LIST_LIST_ITERABLE_TRANSFORMER;
-	}
-
-	/**
-	 * A transformer that transforms a {@link List} into a
-	 * read-only {@link ListIterable}.
-	 */
-	@SuppressWarnings("rawtypes")
-	public static final Transformer READ_ONLY_LIST_LIST_ITERABLE_TRANSFORMER = new ReadOnlyListListIterableTransformer();
-	/* CU private */ static class ReadOnlyListListIterableTransformer<E>
-		implements Transformer<List<? extends E>, ListIterable<? extends E>>
-	{
-		public ListIterable<? extends E> transform(List<? extends E> list) {
-			return listIterable(list);
-		}
-	}
-
-	/**
 	 * Return an iterable that clones the specified collection before returning
 	 * elements.
 	 * @see LiveCloneIterable
@@ -708,49 +636,31 @@ public final class IterableTools {
 
 	/**
 	 * Return a list iterable that returns the specified object followed by the
-	 * elements in the specified list.
-	 * @see ReadOnlyCompositeListIterable
-	 */
-	public static <E, T extends E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(E object, List<T> list) {
-		return readOnlyCompositeListIterable(object, listIterable(list));
-	}
-
-	/**
-	 * Return a list iterable that returns the specified object followed by the
 	 * elements in the specified iterable.
 	 * @see ReadOnlyCompositeListIterable
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(E object, ListIterable<? extends E> iterable) {
-		return readOnlyCompositeListIterable(new ListIterable[] { singletonListIterable(object), iterable });
-	}
-
-	/**
-	 * Return a list iterable that returns the elements in the specified list
-	 * followed by the specified object.
-	 * @see ReadOnlyCompositeListIterable
-	 */
-	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(List<E> list, E object) {
-		return readOnlyCompositeListIterable(listIterable(list), object);
+	public static <E> ReadOnlyCompositeListIterable<E> insertReadOnly(E object, ListIterable<? extends E> iterable) {
+		return readOnlyCompositeListIterable(singletonListIterable(object), iterable);
 	}
 
 	/**
 	 * Return a list iterable that returns the
-	 * elements in the specified lists.
+	 * elements in the specified iterable followed by the specified object.
 	 * @see ReadOnlyCompositeListIterable
 	 */
-	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(List<E>... lists) {
-		return readOnlyCompositeListIterable(Arrays.asList(lists));
+	@SuppressWarnings("unchecked")
+	public static <E> ReadOnlyCompositeListIterable<E> addReadOnly(ListIterable<? extends E> iterable, E object) {
+		return readOnlyCompositeListIterable(iterable, singletonListIterable(object));
 	}
 
 	/**
 	 * Return a list iterable that returns the
-	 * elements in the specified lists.
+	 * elements in the specified iterables.
 	 * @see ReadOnlyCompositeListIterable
 	 */
-	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(List<? extends List<? extends E>> lists) {
-		Transformer<List<? extends E>, ListIterable<? extends E>> transformer = readOnlyListListIterableTransformer();
-		return readOnlyCompositeListIterable(transform(listIterable(lists), transformer));
+	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(ListIterable<? extends E>... iterables) {
+		return readOnlyCompositeListIterable(listIterable(iterables));
 	}
 
 	/**
@@ -767,27 +677,8 @@ public final class IterableTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see ReadOnlyCompositeListIterable
 	 */
-	public static <P, E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(ListIterable<? extends P> parents, Transformer<P, ListIterable<? extends E>> childrenTransformer) {
+	public static <P, E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(ListIterable<? extends P> parents, Transformer<? super P, ? extends ListIterable<? extends E>> childrenTransformer) {
 		return readOnlyCompositeListIterable(transform(parents, childrenTransformer));
-	}
-
-	/**
-	 * Return a list iterable that returns the
-	 * elements in the specified iterable followed by the specified object.
-	 * @see ReadOnlyCompositeListIterable
-	 */
-	@SuppressWarnings("unchecked")
-	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(ListIterable<? extends E> iterable, E object) {
-		return readOnlyCompositeListIterable(new ListIterable[] { iterable, singletonListIterable(object) });
-	}
-
-	/**
-	 * Return a list iterable that returns the
-	 * elements in the specified iterables.
-	 * @see ReadOnlyCompositeListIterable
-	 */
-	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(ListIterable<? extends E>... iterables) {
-		return readOnlyCompositeListIterable(listIterable(iterables));
 	}
 
 	/**
@@ -812,7 +703,7 @@ public final class IterableTools {
 	 * @see SimultaneousIterable
 	 */
 	public static <E, I extends Iterable<E>> SimultaneousIterable<E> simultaneousIterable(I... iterables) {
-		return new SimultaneousIterable<E>(iterables);
+		return simultaneousIterable(iterable(iterables), iterables.length);
 	}
 
 	/**
@@ -839,7 +730,7 @@ public final class IterableTools {
 	 * @see SimultaneousListIterable
 	 */
 	public static <E, I extends ListIterable<E>> SimultaneousListIterable<E> simultaneousListIterable(I... iterables) {
-		return new SimultaneousListIterable<E>(iterables);
+		return simultaneousListIterable(iterable(iterables), iterables.length);
 	}
 
 	/**
@@ -923,18 +814,10 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return an iterable that converts the specified list's element type.
-	 * @see SubListIterableWrapper
-	 */
-	public static <E1, E2 extends E1> SubListIterableWrapper<E1, E2> subListIterable(List<E1> list) {
-		return new SubListIterableWrapper<E1, E2>(list);
-	}
-
-	/**
 	 * Return an iterable that converts the specified iterable's element type.
 	 * @see SubListIterableWrapper
 	 */
-	public static <E1, E2 extends E1> SubListIterableWrapper<E1, E2> subListIterable(ListIterable<E1> iterable) {
+	public static <E1, E2 extends E1> SubListIterableWrapper<E1, E2> subIterable(ListIterable<E1> iterable) {
 		return new SubListIterableWrapper<E1, E2>(iterable);
 	}
 
@@ -947,18 +830,10 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return an iterable that converts the specified list's element type.
-	 * @see SuperListIterableWrapper
-	 */
-	public static <E> SuperListIterableWrapper<E> superListIterable(List<? extends E> list) {
-		return new SuperListIterableWrapper<E>(list);
-	}
-
-	/**
 	 * Return an iterable that converts the specified iterable's element type.
 	 * @see SuperListIterableWrapper
 	 */
-	public static <E> SuperListIterableWrapper<E> superListIterable(ListIterable<? extends E> iterable) {
+	public static <E> SuperListIterableWrapper<E> superIterable(ListIterable<? extends E> iterable) {
 		return new SuperListIterableWrapper<E>(iterable);
 	}
 
@@ -967,17 +842,8 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see TransformationIterable
 	 */
-	public static <E1, E2> TransformationIterable<E1, E2> transform(Iterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationIterable<E1, E2> transform(Iterable<? extends E1> iterable, Transformer<? super E1, ? extends E2> transformer) {
 		return new TransformationIterable<E1, E2>(iterable, transformer);
-	}
-
-	/**
-	 * Return an iterable that will use the specified transformer to transform the
-	 * elements in the specified list.
-	 * @see TransformationListIterable
-	 */
-	public static <E1, E2, T extends E1> TransformationListIterable<E1, E2> transformationListIterable(List<T> list, Transformer<E1, ? extends E2> transformer) {
-		return new TransformationListIterable<E1, E2>(list, transformer);
 	}
 
 	/**
@@ -985,7 +851,7 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see TransformationListIterable
 	 */
-	public static <E1, E2> TransformationListIterable<E1, E2> transform(ListIterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2, T extends E1> TransformationListIterable<E1, E2> transform(ListIterable<T> iterable, Transformer<? super E1, ? extends E2> transformer) {
 		return new TransformationListIterable<E1, E2>(iterable, transformer);
 	}
 
@@ -994,8 +860,8 @@ public final class IterableTools {
 	 * with the specified root and transformer.
 	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> treeIterable(E root, Transformer<E, Iterator<? extends E>> transformer) {
-		return treeIterable(new SingleElementIterable<E>(root), transformer);
+	public static <E> TreeIterable<E> treeIterable(E root, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return treeIterable(singletonIterable(root), transformer);
 	}
 
 	/**
@@ -1003,8 +869,8 @@ public final class IterableTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> treeIterable(E[] roots, Transformer<E, Iterator<? extends E>> transformer) {
-		return treeIterable(new ArrayIterable<E>(roots), transformer);
+	public static <E> TreeIterable<E> treeIterable(E[] roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return treeIterable(iterable(roots), transformer);
 	}
 
 	/**
@@ -1012,8 +878,79 @@ public final class IterableTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> treeIterable(Iterable<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
+	public static <E> TreeIterable<E> treeIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
 		return new TreeIterable<E>(roots, transformer);
+	}
+
+
+	// ********** transformers **********
+
+	/**
+	 * Return a transformer that transforms an {@link Iterable} into its
+	 * corresponding {@link Iterator}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<Iterable<? extends E>, Iterator<E>> iteratorTransformer() {
+		return ITERATOR_TRANSFORMER;
+	}
+
+	/**
+	 * A transformer that transforms an {@link Iterable} into its
+	 * corresponding {@link Iterator}.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer ITERATOR_TRANSFORMER = new IteratorTransformer();
+
+	/**
+	 * A transformer that transforms an {@link Iterable} into its
+	 * corresponding {@link Iterator}.
+	 */
+	public static class IteratorTransformer<E>
+		extends TransformerAdapter<Iterable<? extends E>, Iterator<E>>
+	{
+		@Override
+		@SuppressWarnings("unchecked")
+		public Iterator<E> transform(Iterable<? extends E> iterable) {
+			return (Iterator<E>) iterable.iterator();
+		}
+	}
+
+	/**
+	 * Return a transformer that transforms a {@link ListIterable} into its
+	 * corresponding {@link ListIterator}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<ListIterable<E>, ListIterator<E>> listIteratorTransformer() {
+		return ListIterable.ITERATOR_TRANSFORMER;
+	}
+
+	/**
+	 * Return a transformer that transforms a {@link ListIterable} into a
+	 * <em>read-only</em> {@link ListIterator}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<ListIterable<? extends E>, ListIterator<? extends E>> readOnlyListIteratorTransformer() {
+		return READ_ONLY_LIST_ITERATOR_TRANSFORMER;
+	}
+
+	/**
+	 * A transformer that transforms a {@link ListIterable} into a
+	 * <em>read-only</em> {@link ListIterator}.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer READ_ONLY_LIST_ITERATOR_TRANSFORMER = new ReadOnlyListIteratorTransformer();
+
+	/**
+	 * A transformer that transforms a {@link ListIterable} into a
+	 * <em>read-only</em> {@link ListIterator}.
+	 */
+	public static class ReadOnlyListIteratorTransformer<E>
+		extends TransformerAdapter<ListIterable<? extends E>, ListIterator<? extends E>>
+	{
+		@Override
+		public ListIterator<? extends E> transform(ListIterable<? extends E> iterable) {
+			return IteratorTools.readOnlyListIterator(iterable.iterator());
+		}
 	}
 
 

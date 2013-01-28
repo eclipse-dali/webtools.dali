@@ -1,18 +1,20 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Represents a JAXB attribute (field/property).
@@ -53,6 +55,15 @@ public interface JaxbPersistentAttribute
 	 * new JaxbPersistentAttribute will be built if the name changes.
 	 */
 	String getName();
+	Transformer<JaxbPersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<JaxbPersistentAttribute, String>
+	{
+		@Override
+		public String transform(JaxbPersistentAttribute attribute) {
+			return attribute.getName();
+		}
+	}
 	
 	
 	// ***** resource attribute *****
@@ -87,10 +98,19 @@ public interface JaxbPersistentAttribute
 	/**
 	 * Return the attribute's mapping. This is never <code>null</code>
 	 * (although, it may be a <em>null</em> mapping).
-	 * Set the mapping via {@link PersistentAttribute#setMappingKey(String)}.
+	 * Set the mapping via {@link #setMappingKey(String)}.
 	 */
 	JaxbAttributeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+	Transformer<JaxbPersistentAttribute, JaxbAttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
+	class MappingTransformer
+		extends TransformerAdapter<JaxbPersistentAttribute, JaxbAttributeMapping>
+	{
+		@Override
+		public JaxbAttributeMapping transform(JaxbPersistentAttribute attribute) {
+			return attribute.getMapping();
+		}
+	}
 	
 	/**
 	 * Return the attribute's mapping key.

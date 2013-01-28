@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,6 +49,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
@@ -70,8 +71,9 @@ import org.eclipse.jpt.jpa.db.tests.internal.plugin.JptJpaDbTestsPlugin;
  * Base class for testing DTP wrappers on various databases.
  */
 @SuppressWarnings("nls")
-public abstract class DTPPlatformTests extends TestCase {
-
+public abstract class DTPPlatformTests
+	extends TestCase
+{
 	/**
 	 * The platform properties are loaded from a Java properties file in the
 	 * 'org.eclipse.jpt.jpa.db.tests/config' directory. Each database platform has
@@ -753,15 +755,15 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected Iterator<HashMap<String, Object>> buildResultSetIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorAdapter(resultSet.getMetaData()));
+		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorTransformer(resultSet.getMetaData()));
 	}
 
-	public static class MapResultSetIteratorAdapter
-		implements ResultSetIterator.Adapter<HashMap<String, Object>>
+	public static class MapResultSetIteratorTransformer
+		extends TransformerAdapter<ResultSet, HashMap<String, Object>>
 	{
 		private final int columnCount;
 		private final String[] columnNames;
-		public MapResultSetIteratorAdapter(ResultSetMetaData rsMetaData) throws SQLException {
+		public MapResultSetIteratorTransformer(ResultSetMetaData rsMetaData) throws SQLException {
 			super();
 			this.columnCount = rsMetaData.getColumnCount();
 			this.columnNames = new String[this.columnCount + 1];  // leave zero slot empty

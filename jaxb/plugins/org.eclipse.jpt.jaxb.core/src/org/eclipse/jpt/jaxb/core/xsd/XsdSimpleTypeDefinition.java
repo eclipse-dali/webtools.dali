@@ -1,17 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.xsd.XSDEnumerationFacet;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDVariety;
@@ -61,13 +63,7 @@ public class XsdSimpleTypeDefinition
 	 * If the type is of variety UNION, this will return the member types of the union
 	 */
 	public Iterable<XsdSimpleTypeDefinition> getMemberTypes() {
-		return new TransformationIterable<XSDSimpleTypeDefinition, XsdSimpleTypeDefinition>(
-				getXSDComponent().getMemberTypeDefinitions()) {
-			@Override
-			protected XsdSimpleTypeDefinition transform(XSDSimpleTypeDefinition o) {
-				return (XsdSimpleTypeDefinition) XsdUtil.getAdapter(o);
-			}
-		};
+		return IterableTools.transform(getXSDComponent().getMemberTypeDefinitions(), XsdUtil.<XsdSimpleTypeDefinition>adapterTransformer());
 	}
 	
 	@Override
@@ -95,13 +91,19 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	public Iterable<String> getEnumValueProposals() {
-		return new TransformationIterable<String, String>(
-					new TransformationIterable<XSDEnumerationFacet, String>(getXSDComponent().getEnumerationFacets()) {
-						@Override
-						protected String transform(XSDEnumerationFacet enumFacet) {
-							return enumFacet.getLexicalValue();
-						}
-					},
+		return IterableTools.transform(
+					IterableTools.transform(getXSDComponent().getEnumerationFacets(),
+							XSD_ENUMERATION_FACET_TRANSFORMER),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
+	}
+
+	protected static final Transformer<XSDEnumerationFacet, String> XSD_ENUMERATION_FACET_TRANSFORMER = new XSDEnumerationFacetTransformer();
+	public static class XSDEnumerationFacetTransformer
+		extends TransformerAdapter<XSDEnumerationFacet, String>
+	{
+		@Override
+		public String transform(XSDEnumerationFacet enumFacet) {
+			return enumFacet.getLexicalValue();
+		}
 	}
 }

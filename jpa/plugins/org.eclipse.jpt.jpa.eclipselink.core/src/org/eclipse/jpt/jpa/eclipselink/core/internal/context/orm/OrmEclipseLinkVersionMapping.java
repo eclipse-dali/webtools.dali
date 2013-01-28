@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -112,7 +113,7 @@ public class OrmEclipseLinkVersionMapping
 	 */
 	@Override
 	protected Iterable<OrmConverter.Adapter> getConverterAdapters() {
-		return new CompositeIterable<OrmConverter.Adapter>(OrmEclipseLinkConvert.Adapter.instance(), super.getConverterAdapters());
+		return IterableTools.insert(OrmEclipseLinkConvert.Adapter.instance(), super.getConverterAdapters());
 	}
 
 

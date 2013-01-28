@@ -475,12 +475,7 @@ public class JpaMakePersistentWizardPage
 	}
 
 	protected Iterable<String> typeMappingKeys(Iterable<? extends MappingUiDefinition> mappingUiDefinitions) {
-		return new TransformationIterable<MappingUiDefinition, String>(mappingUiDefinitions) {
-			@Override
-			protected String transform(MappingUiDefinition next) {
-				return next.getKey();
-			}
-		};
+		return IterableTools.transform(mappingUiDefinitions, MappingUiDefinition.KEY_TRANSFORMER);
 	}
 
 	protected void validate() {

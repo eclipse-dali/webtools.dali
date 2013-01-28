@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,9 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class CompositeCollectionValueModelTests extends TestCase {
+public class CompositeCollectionValueModelTests
+	extends TestCase
+{
 	private Neighborhood neighborhood;
 	private ModifiablePropertyValueModel<Neighborhood> neighborhoodHolder;
 
@@ -293,12 +295,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		}
 	
 		private Iterator<Iterator<Member>> membersIterators() {
-			return new TransformationIterator<Family, Iterator<Member>>(this.families()) {
-				@Override
-				protected Iterator<Member> transform(Family family) {
-					return family.members();
-				}
-			};
+			return new TransformationIterator<Family, Iterator<Member>>(this.families(), Family.MEMBERS_TRANSFORMER);
 		}
 	
 		public Member memberNamed(String familyName, String memberName) {
@@ -316,7 +313,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	/**
 	 * inner class
 	 */
-	public class Family extends AbstractModel {
+	public static class Family extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 		private Collection<Member> members = new ArrayList<Member>();
@@ -340,6 +337,11 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		public Iterator<Member> members() {
 			return this.members.iterator();
 		}
+		public static final Transformer<Family, Iterator<Member>> MEMBERS_TRANSFORMER = new Transformer<Family, Iterator<Member>>() {
+			public Iterator<Member> transform(Family family) {
+				return family.members();
+			}
+		};
 	
 		public Member addMember(String memberName) {
 			Member member = new Member(memberName);
@@ -371,7 +373,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	/**
 	 * inner class
 	 */
-	public class Member extends AbstractModel {
+	public static class Member extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 
@@ -394,7 +396,5 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		public void toString(StringBuilder sb) {
 			sb.append(this.name);
 		}
-
 	}
-
 }

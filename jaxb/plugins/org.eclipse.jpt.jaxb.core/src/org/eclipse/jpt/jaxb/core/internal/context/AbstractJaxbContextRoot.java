@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,13 +23,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -218,13 +217,7 @@ public abstract class AbstractJaxbContextRoot
 	 */
 	protected Set<String> calculateInitialPackageNames() {
 		return CollectionTools.set(
-				new TransformationIterable<JavaResourcePackage, String>(
-						getJaxbProject().getAnnotatedJavaResourcePackages()) {
-					@Override
-					protected String transform(JavaResourcePackage o) {
-						return o.getName();
-					}
-				});
+				IterableTools.transform(getJaxbProject().getAnnotatedJavaResourcePackages(), JavaResourcePackage.NAME_TRANSFORMER));
 	}
 	
 	/**
@@ -272,22 +265,24 @@ public abstract class AbstractJaxbContextRoot
 				});
 		CollectionTools.addAll(
 				set,
-				new FilteringIterable<JavaResourceAbstractType>(
-						new TransformationIterable<String, JavaResourceAbstractType>(
-								new CompositeIterable<String>(
-										new TransformationIterable<JaxbIndexResource, Iterable<String>>(getJaxbProject().getJaxbIndexResources()) {
-											@Override
-											protected Iterable<String>transform(JaxbIndexResource o) {
-												return o.getFullyQualifiedClassNames();
-											}
-										})) {
-							@Override
-							protected JavaResourceAbstractType transform(String o) {
-								return getJaxbProject().getJavaResourceType(o);
-							}
-						},
-						NotNullFilter.<JavaResourceAbstractType>instance()));
+				IterableTools.notNulls(
+						IterableTools.transform(
+								IterableTools.compositeIterable(
+										getJaxbProject().getJaxbIndexResources(), JaxbIndexResource.CLASS_NAMES_TRANSFORMER
+								),
+								new JavaResourceTypeTransformer()
+						)
+				)
+		);
 		return set;
+	}
+	protected class JavaResourceTypeTransformer
+		extends TransformerAdapter<String, JavaResourceAbstractType>
+	{
+		@Override
+		public JavaResourceAbstractType transform(String typeName) {
+			return getJaxbProject().getJavaResourceType(typeName);
+		}
 	}
 	
 	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate, boolean defaultMapped) {
@@ -495,14 +490,9 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	public Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage) {
-		return new FilteringIterable<XmlRegistry>(
-				new TransformationIterable<JavaClass, XmlRegistry>(getJavaClasses(jaxbPackage)) {
-					@Override
-					protected XmlRegistry transform(JavaClass o) {
-						return o.getXmlRegistry();
-					}
-				},
-				NotNullFilter.INSTANCE);
+		return IterableTools.notNulls(
+				IterableTools.transform(getJavaClasses(jaxbPackage), JavaClass.XML_REGISTRY_TRANSFORMER)
+			);
 	}
 	
 	public JavaTypeMapping getTypeMapping(String typeName) {

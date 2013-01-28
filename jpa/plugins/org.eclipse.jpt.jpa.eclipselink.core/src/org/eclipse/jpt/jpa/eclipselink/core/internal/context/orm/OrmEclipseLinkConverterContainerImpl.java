@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,11 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -425,48 +426,20 @@ public class OrmEclipseLinkConverterContainerImpl
 			this.createRenameCustomConverterEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createRenameObjectTypeConverterEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkObjectTypeConverter, Iterable<ReplaceEdit>>(getObjectTypeConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkObjectTypeConverter objectTypeConverter) {
-					return objectTypeConverter.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createRenameObjectTypeConverterEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(getObjectTypeConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createRenameTypeConverterEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkTypeConverter, Iterable<ReplaceEdit>>(getTypeConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkTypeConverter typeConverter) {
-					return typeConverter.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createRenameTypeConverterEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(getTypeConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createRenameStructConverterEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkStructConverter, Iterable<ReplaceEdit>>(getStructConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkStructConverter structConverter) {
-					return structConverter.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createRenameStructConverterEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(getStructConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createRenameCustomConverterEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkCustomConverter, Iterable<ReplaceEdit>>(getCustomConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkCustomConverter customConverter) {
-					return customConverter.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createRenameCustomConverterEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(getCustomConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -478,48 +451,20 @@ public class OrmEclipseLinkConverterContainerImpl
 			this.createMoveCustomConverterEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createMoveObjectTypeConverterEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkObjectTypeConverter, Iterable<ReplaceEdit>>(getObjectTypeConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkObjectTypeConverter objectTypeConverter) {
-					return objectTypeConverter.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createMoveObjectTypeConverterEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(getObjectTypeConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createMoveTypeConverterEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkTypeConverter, Iterable<ReplaceEdit>>(getTypeConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkTypeConverter typeConverter) {
-					return typeConverter.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createMoveTypeConverterEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(getTypeConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createMoveStructConverterEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkStructConverter, Iterable<ReplaceEdit>>(getStructConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkStructConverter structConverter) {
-					return structConverter.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createMoveStructConverterEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(getStructConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createMoveCustomConverterEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkCustomConverter, Iterable<ReplaceEdit>>(getCustomConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkCustomConverter customConverter) {
-					return customConverter.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createMoveCustomConverterEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(getCustomConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 
@@ -532,48 +477,20 @@ public class OrmEclipseLinkConverterContainerImpl
 			this.createCustomConverterRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createObjectTypeConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkObjectTypeConverter, Iterable<ReplaceEdit>>(getObjectTypeConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkObjectTypeConverter objectTypeConverter) {
-					return objectTypeConverter.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createObjectTypeConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(getObjectTypeConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createTypeConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkTypeConverter, Iterable<ReplaceEdit>>(getTypeConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkTypeConverter typeConverter) {
-					return typeConverter.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createTypeConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(getTypeConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createStructConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkStructConverter, Iterable<ReplaceEdit>>(getStructConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkStructConverter structConverter) {
-					return structConverter.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createStructConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(getStructConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createCustomConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmEclipseLinkCustomConverter, Iterable<ReplaceEdit>>(getCustomConverters()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkCustomConverter customConverter) {
-					return customConverter.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createCustomConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(getCustomConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 

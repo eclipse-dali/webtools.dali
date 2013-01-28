@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterable;
 
-import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SubListIteratorWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
@@ -29,29 +27,9 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @see SubListIteratorWrapper
  */
 public class SubListIterableWrapper<E1, E2 extends E1>
-	implements ListIterable<E2>
+	extends LateralListIterableWrapper<E1, E2>
 {
-	private final ListIterable<E1> iterable;
-
-
-	public SubListIterableWrapper(List<E1> list) {
-		this(new ListListIterable<E1>(list));
-	}
-
 	public SubListIterableWrapper(ListIterable<E1> iterable) {
-		super();
-		if (iterable == null) {
-			throw new NullPointerException();
-		}
-		this.iterable = iterable;
-	}
-
-	public ListIterator<E2> iterator() {
-		return new SubListIteratorWrapper<E1, E2>(this.iterable.iterator());
-	}
-
-	@Override
-	public String toString() {
-		return this.iterable.toString();
+		super(iterable);
 	}
 }

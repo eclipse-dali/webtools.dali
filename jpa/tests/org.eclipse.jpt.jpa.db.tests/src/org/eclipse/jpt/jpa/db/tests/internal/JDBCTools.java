@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 @SuppressWarnings("nls")
 public class JDBCTools {
@@ -76,7 +76,7 @@ public class JDBCTools {
 	}
 
 	public static Iterator<HashMap<String, Object>> buildMapIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorAdapter(buildColumnNames(resultSet)));
+		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorTransformer(buildColumnNames(resultSet)));
 	}
 
 	public static String[] buildColumnNames(ResultSet resultSet) throws SQLException {
@@ -87,9 +87,11 @@ public class JDBCTools {
 		return names;
 	}
 
-	public static class MapResultSetIteratorAdapter implements ResultSetIterator.Adapter<HashMap<String, Object>> {
+	public static class MapResultSetIteratorTransformer
+		extends TransformerAdapter<ResultSet, HashMap<String, Object>>
+	{
 		private final String[] columnNames;
-		public MapResultSetIteratorAdapter(String[] columnNames) {
+		public MapResultSetIteratorTransformer(String[] columnNames) {
 			super();
 			this.columnNames = columnNames;
 		}
@@ -101,5 +103,4 @@ public class JDBCTools {
 			return map;
 		}
 	}
-
 }

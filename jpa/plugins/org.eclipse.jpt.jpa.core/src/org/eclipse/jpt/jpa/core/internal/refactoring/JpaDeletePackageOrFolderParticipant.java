@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,9 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -157,16 +159,15 @@ public class JpaDeletePackageOrFolderParticipant
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Iterable<DeleteEdit> createPersistenceXmlDeleteEdits(final PersistenceUnit persistenceUnit) {
+		Transformer<IFile, Iterable<DeleteEdit>> transformer = new TransformerAdapter<IFile, Iterable<DeleteEdit>>() {
+			@Override
+			public Iterable<DeleteEdit> transform(IFile file) {
+				return persistenceUnit.createDeleteMappingFileEdits(file);
+			}
+		};
 		return new CompositeIterable<DeleteEdit>(
 				super.createPersistenceXmlDeleteEdits(persistenceUnit),
-				new CompositeIterable<DeleteEdit>(
-					new TransformationIterable<IFile, Iterable<DeleteEdit>>(this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject())) {
-						@Override
-						protected Iterable<DeleteEdit> transform(IFile file) {
-							return persistenceUnit.createDeleteMappingFileEdits(file);
-						}
-					}
-				)
+				IterableTools.compositeIterable(this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject()), transformer)
 			);
 	}
 
@@ -199,14 +200,17 @@ public class JpaDeletePackageOrFolderParticipant
 	}
 
 	protected Iterable<IFile> getPossibleMappingFilesInPackageFragments() {
-		return new CompositeIterable<IFile>(
-			new TransformationIterable<IPackageFragment, Iterable<IFile>>(this.packageFragments) {
-				@Override
-				protected Iterable<IFile> transform(IPackageFragment packageFragment) {
-					return getNonJavaFiles(packageFragment);
-				}
-			}
-		);
+		return IterableTools.compositeIterable(this.packageFragments, PACKAGE_FRAGMENT_NON_JAVA_FILES_TRANSFORMER);
+	}
+
+	protected static final Transformer<IPackageFragment, Iterable<IFile>> PACKAGE_FRAGMENT_NON_JAVA_FILES_TRANSFORMER = new PackageFragmentNonJavaFilesTransformer();
+	protected static class PackageFragmentNonJavaFilesTransformer
+		extends TransformerAdapter<IPackageFragment, Iterable<IFile>>
+	{
+		@Override
+		public Iterable<IFile> transform(IPackageFragment packageFragment) {
+			return getNonJavaFiles(packageFragment);
+		}
 	}
 
 	protected static Iterable<IFile> getNonJavaFiles(IPackageFragment packageFragment) {

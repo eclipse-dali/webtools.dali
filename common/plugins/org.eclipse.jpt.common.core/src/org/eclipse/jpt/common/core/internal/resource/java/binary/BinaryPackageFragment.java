@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,8 +24,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceClassFile;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
@@ -123,12 +123,8 @@ final class BinaryPackageFragment
 	}
 
 	public Iterable<JavaResourceAbstractType> getTypes() {
-		return new TransformationIterable<JavaResourceClassFile, JavaResourceAbstractType>(this.getClassFiles()) {
-			@Override
-			protected JavaResourceAbstractType transform(JavaResourceClassFile classFile) {
-				return classFile.getType();  // we only hold annotated types
-			}
-		};
+		// we hold only annotated types
+		return IterableTools.transform(this.getClassFiles(), JavaResourceClassFile.TYPE_TRANSFORMER);
 	}
 
 

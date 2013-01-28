@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Java source code or binary persistent member.
@@ -25,6 +28,15 @@ public interface JavaResourceMember
 	extends JavaResourceAnnotatedElement
 {
 	String getName();
+	Transformer<JavaResourceMember, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<JavaResourceMember, String>
+	{
+		@Override
+		public String transform(JavaResourceMember member) {
+			return member.getName();
+		}
+	}
 
 	// ********** annotations **********
 	

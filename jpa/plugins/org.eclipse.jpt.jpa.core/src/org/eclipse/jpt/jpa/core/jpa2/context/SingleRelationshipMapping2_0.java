@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.SingleRelationshipMapping;
 
 /**
@@ -27,4 +29,13 @@ public interface SingleRelationshipMapping2_0
 	extends SingleRelationshipMapping, RelationshipMapping2_0
 {
 	DerivedIdentity2_0 getDerivedIdentity();
+	Transformer<SingleRelationshipMapping2_0, DerivedIdentity2_0> DERIVED_IDENTITY_TRANSFORMER = new DerivedIdentityTransformer();
+	class DerivedIdentityTransformer
+		extends TransformerAdapter<SingleRelationshipMapping2_0, DerivedIdentity2_0>
+	{
+		@Override
+		public DerivedIdentity2_0 transform(SingleRelationshipMapping2_0 mapping) {
+			return mapping.getDerivedIdentity();
+		}
+	}
 }

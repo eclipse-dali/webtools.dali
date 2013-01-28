@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,8 @@ import java.util.Collection;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -85,16 +86,23 @@ public class JpaRenameTypeParticipant
 		return persistenceUnit.createRenameTypeEdits(this.getOriginalType(), this.getNewName());
 	}
 
-	private Iterable<ReplaceEdit> createPersistenceXmlReplaceNestedTypeEdits(final PersistenceUnit persistenceUnit) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<IType, Iterable<ReplaceEdit>>(this.nestedTypes) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(IType nestedType) {
-					String newName = getNewNameForNestedType(nestedType);
-					return persistenceUnit.createRenameTypeEdits(nestedType, newName);
-				}
-			}
-		);
+	private Iterable<ReplaceEdit> createPersistenceXmlReplaceNestedTypeEdits(PersistenceUnit persistenceUnit) {
+		return IterableTools.compositeIterable(this.nestedTypes, new PersistenceUnitNestedTypeRenameTypeEditsTransformer(persistenceUnit));
+	}
+
+	public class PersistenceUnitNestedTypeRenameTypeEditsTransformer
+		extends TransformerAdapter<IType, Iterable<ReplaceEdit>>
+	{
+		protected final PersistenceUnit persistenceUnit;
+		public PersistenceUnitNestedTypeRenameTypeEditsTransformer(PersistenceUnit persistenceUnit) {
+			super();
+			this.persistenceUnit = persistenceUnit;
+		}
+		@Override
+		public Iterable<ReplaceEdit> transform(IType nestedType) {
+			String newName = JpaRenameTypeParticipant.this.getNewNameForNestedType(nestedType);
+			return this.persistenceUnit.createRenameTypeEdits(nestedType, newName);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -110,15 +118,22 @@ public class JpaRenameTypeParticipant
 	}
 
 	private Iterable<ReplaceEdit> createMappingFileReplaceNestedTypeEdits(final MappingFileRef mappingFileRef) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<IType, Iterable<ReplaceEdit>>(this.nestedTypes) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(IType nestedType) {
-					String newName = getNewNameForNestedType(nestedType);
-					return mappingFileRef.createRenameTypeEdits(nestedType, newName);
-				}
-			}
-		);
+		return IterableTools.compositeIterable(this.nestedTypes, new MappingFileNestedTypeRenameTypeEditsTransformer(mappingFileRef));
+	}
+
+	public class MappingFileNestedTypeRenameTypeEditsTransformer
+		extends TransformerAdapter<IType, Iterable<ReplaceEdit>>
+	{
+		protected final MappingFileRef mappingFileRef;
+		public MappingFileNestedTypeRenameTypeEditsTransformer(MappingFileRef mappingFileRef) {
+			super();
+			this.mappingFileRef = mappingFileRef;
+		}
+		@Override
+		public Iterable<ReplaceEdit> transform(IType nestedType) {
+			String newName = JpaRenameTypeParticipant.this.getNewNameForNestedType(nestedType);
+			return this.mappingFileRef.createRenameTypeEdits(nestedType, newName);
+		}
 	}
 
 	protected String getNewName() {

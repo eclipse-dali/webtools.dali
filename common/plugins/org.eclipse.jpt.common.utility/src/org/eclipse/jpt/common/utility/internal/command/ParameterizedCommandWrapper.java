@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,9 +23,9 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public class ParameterizedCommandWrapper<T>
 	implements ParameterizedCommand<T>
 {
-	protected volatile ParameterizedCommand<T> command;
+	protected volatile ParameterizedCommand<? super T> command;
 
-	public ParameterizedCommandWrapper(ParameterizedCommand<T> command) {
+	public ParameterizedCommandWrapper(ParameterizedCommand<? super T> command) {
 		super();
 		if (command == null) {
 			throw new NullPointerException();
@@ -37,7 +37,7 @@ public class ParameterizedCommandWrapper<T>
 		this.command.execute(argument);
 	}
 
-	public void setCommand(ParameterizedCommand<T> command) {
+	public void setCommand(ParameterizedCommand<? super T> command) {
 		if (command == null) {
 			throw new NullPointerException();
 		}

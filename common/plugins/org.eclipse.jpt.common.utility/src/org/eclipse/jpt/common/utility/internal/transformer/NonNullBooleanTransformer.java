@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,16 +48,16 @@ public final class NonNullBooleanTransformer
 	 * value is <code>null</code>. Throw a {@link NullPointerException} if the
 	 * specified value is <code>null</code>.
 	 */
-	public static Transformer<Boolean, Boolean> valueOf(Boolean b) {
-		return valueOf(b.booleanValue());
+	public static Transformer<Boolean, Boolean> valueOf(Boolean nullValue) {
+		return valueOf(nullValue.booleanValue());
 	}
 
 	/**
 	 * Return a transformer that will return the {@link Boolean} corresponding
 	 * to the specified value if the original value is <code>null</code>.
 	 */
-	public static Transformer<Boolean, Boolean> valueOf(boolean b) {
-		return b ? TRUE : FALSE;
+	public static Transformer<Boolean, Boolean> valueOf(boolean nullValue) {
+		return nullValue ? TRUE : FALSE;
 	}
 
 	/**

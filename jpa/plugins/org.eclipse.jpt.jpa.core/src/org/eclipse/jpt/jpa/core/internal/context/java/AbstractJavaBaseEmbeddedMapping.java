@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -138,17 +138,13 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		return new TransformationIterable<String, String>(this.getEmbeddableAttributeMappingNames(transformer), this.buildQualifierTransformer());
 	}
 
-	protected Iterable<String> getEmbeddableAttributeMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return new CompositeIterable<String>(this.getEmbeddableAttributeMappingNamesLists(transformer));
-	}
-
 	/**
 	 * Return a list of lists; each nested list holds the names for one of the
 	 * embedded mapping's target embeddable type mapping's attribute mappings
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterable<Iterable<String>> getEmbeddableAttributeMappingNamesLists(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getEmbeddableAttributeMappings(), transformer);
+	protected Iterable<String> getEmbeddableAttributeMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return IterableTools.compositeIterable(this.getEmbeddableAttributeMappings(), transformer);
 	}
 
 	/**

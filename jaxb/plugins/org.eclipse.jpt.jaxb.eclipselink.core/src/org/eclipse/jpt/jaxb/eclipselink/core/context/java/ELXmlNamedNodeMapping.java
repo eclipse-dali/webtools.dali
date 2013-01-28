@@ -1,14 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 
 
@@ -61,4 +63,13 @@ public interface ELXmlNamedNodeMapping
 	 * (Trivial if this mapping has an XmlPath annotation)
 	 */
 	String getXPath();
+	Transformer<ELXmlNamedNodeMapping, String> X_PATH_TRANSFORMER = new XPathTransformer();
+	class XPathTransformer
+		extends TransformerAdapter<ELXmlNamedNodeMapping, String>
+	{
+		@Override
+		public String transform(ELXmlNamedNodeMapping mapping) {
+			return mapping.getXPath();
+		}
+	}
 }

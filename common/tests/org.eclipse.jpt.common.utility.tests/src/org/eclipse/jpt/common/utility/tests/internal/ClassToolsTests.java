@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class ClassToolsTests
@@ -280,20 +281,20 @@ public class ClassToolsTests
 	}
 
 	private Iterable<String> fieldNames(Iterable<Field> fields) {
-		return new TransformationIterable<Field, String>(fields) {
-			@Override
-			protected String transform(Field field) {
+		Transformer<Field, String> transformer = new Transformer<Field, String>() {
+			public String transform(Field field) {
 				return field.getName();
 			}
 		};
+		return new TransformationIterable<Field, String>(fields, transformer);
 	}
 
 	private Iterable<String> methodNames(Iterable<Method> methods) {
-		return new TransformationIterable<Method, String>(methods) {
-			@Override
-			protected String transform(Method method) {
+		Transformer<Method, String> transformer = new Transformer<Method, String>() {
+			public String transform(Method method) {
 				return method.getName();
 			}
 		};
+		return new TransformationIterable<Method, String>(methods, transformer);
 	}
 }

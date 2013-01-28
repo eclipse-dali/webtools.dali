@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,14 +35,14 @@ public class TreeIterable<E>
 	implements Iterable<E>
 {
 	private final Iterable<? extends E> roots;
-	private final Transformer<E, Iterator<? extends E>> transformer;
+	private final Transformer<? super E, ? extends Iterator<? extends E>> transformer;
 
 
 	/**
 	 * Construct an iterable containing the nodes of a tree with the specified roots
 	 * and midwife.
 	 */
-	public TreeIterable(Iterable<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
+	public TreeIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
 		super();
 		if ((roots == null) || (transformer == null)) {
 			throw new NullPointerException();
@@ -52,7 +52,7 @@ public class TreeIterable<E>
 	}
 
 	public Iterator<E> iterator() {
-		return IteratorTools.treeIterator(this.roots, this.transformer);
+		return IteratorTools.treeIterator(this.roots.iterator(), this.transformer);
 	}
 
 	@Override

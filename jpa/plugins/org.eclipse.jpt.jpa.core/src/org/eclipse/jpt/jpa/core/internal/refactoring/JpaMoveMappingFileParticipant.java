@@ -23,10 +23,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -191,14 +191,13 @@ public class JpaMoveMappingFileParticipant
 
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(final PersistenceUnit persistenceUnit) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<IFile, Iterable<ReplaceEdit>>(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject())) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(IFile mappingFile) {
-					return createPersistenceUnitReplaceEdits(persistenceUnit, mappingFile, (IFolder) getArguments(mappingFile).getDestination());
-				}
+		Transformer<IFile, Iterable<ReplaceEdit>> transformer = new TransformerAdapter<IFile, Iterable<ReplaceEdit>>() {
+			@Override
+			public Iterable<ReplaceEdit> transform(IFile mappingFile) {
+				return createPersistenceUnitReplaceEdits(persistenceUnit, mappingFile, (IFolder) getArguments(mappingFile).getDestination());
 			}
-		);
+		};
+		return IterableTools.compositeIterable(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject()), transformer);
 	}
 
 	protected Iterable<IFile> getOriginalFoldersOnClasspath(final JpaProject jpaProject) {

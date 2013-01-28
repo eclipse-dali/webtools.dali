@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.db.Schema;
 
@@ -58,8 +60,26 @@ public interface TypeMapping
 	JavaPersistentType getIdClass();
 
 	Iterable<Query> getQueries();
+	Transformer<TypeMapping, Iterable<Query>> QUERIES_TRANSFORMER = new QueriesTransformer();
+	class QueriesTransformer
+		extends AbstractTransformer<TypeMapping, Iterable<Query>>
+	{
+		@Override
+		protected Iterable<Query> transform_(TypeMapping mapping) {
+			return mapping.getQueries();
+		}
+	}
 
 	Iterable<Generator> getGenerators();
+	Transformer<TypeMapping, Iterable<Generator>> GENERATORS_TRANSFORMER = new GeneratorsTransformer();
+	class GeneratorsTransformer
+		extends AbstractTransformer<TypeMapping, Iterable<Generator>>
+	{
+		@Override
+		protected Iterable<Generator> transform_(TypeMapping mapping) {
+			return mapping.getGenerators();
+		}
+	}
 
 
 	// ********** inheritance **********

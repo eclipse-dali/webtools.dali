@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2012 Oracle. All rights reserved.
+* Copyright (c) 2008, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -30,6 +29,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -161,12 +161,7 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 	}
 
 	private Iterator<String> buildProfilers() {
-		return new TransformationIterator<Profiler, String>(IteratorTools.iterator(Profiler.values())) {
-			@Override
-			protected String transform(Profiler next) {
-				return next.name();
-			}
-		};
+		return IteratorTools.transform(IteratorTools.iterator(Profiler.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildProfilersCollectionHolder() {

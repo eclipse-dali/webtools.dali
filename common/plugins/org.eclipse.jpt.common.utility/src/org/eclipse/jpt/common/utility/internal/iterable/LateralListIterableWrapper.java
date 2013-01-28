@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterable;
 
-import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.LateralListIteratorWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -31,10 +30,6 @@ public class LateralListIterableWrapper<E1, E2>
 {
 	private final ListIterable<E1> iterable;
 
-
-	public LateralListIterableWrapper(List<E1> list) {
-		this(new ListListIterable<E1>(list));
-	}
 
 	public LateralListIterableWrapper(ListIterable<E1> iterable) {
 		super();

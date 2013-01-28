@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,8 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A <code>CompositeIterable</code> wraps an {@link Iterable}
@@ -42,26 +43,9 @@ public class CompositeIterable<E>
 	}
 
 	/**
-	 * Construct an iterable with the specified object prepended
-	 * to the specified iterable.
-	 */
-	@SuppressWarnings("unchecked")
-	public CompositeIterable(E object, Iterable<? extends E> iterable) {
-		this(new SingleElementIterable<E>(object), iterable);
-	}
-
-	/**
-	 * Construct an iterable with the specified object appended
-	 * to the specified iterable.
-	 */
-	@SuppressWarnings("unchecked")
-	public CompositeIterable(Iterable<? extends E> iterable, E object) {
-		this(iterable, new SingleElementIterable<E>(object));
-	}
-
-	/**
 	 * Construct an iterable with the specified iterables.
 	 */
+	// TODO remove
 	public CompositeIterable(Iterable<? extends E>... iterables) {
 		this(new ArrayIterable<Iterable<? extends E>>(iterables));
 	}
@@ -77,12 +61,8 @@ public class CompositeIterable<E>
 	 * iterator of iterators
 	 */
 	protected Iterator<? extends Iterator<? extends E>> iterators() {
-		return new TransformationIterator<Iterable<? extends E>, Iterator<? extends E>>(this.iterables()) {
-			@Override
-			protected Iterator<? extends E> transform(Iterable<? extends E> next) {
-				return next.iterator();
-			}
-		};
+		Transformer<Iterable<? extends E>, Iterator<E>> transformer = IterableTools.iteratorTransformer();
+		return IteratorTools.transform(this.iterables(), transformer);
 	}
 
 	/**

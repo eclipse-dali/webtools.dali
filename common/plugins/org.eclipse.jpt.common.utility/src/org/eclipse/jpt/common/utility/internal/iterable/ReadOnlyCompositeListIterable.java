@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,8 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.TransformationListIterator;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A <code>ReadOnlyCompositeListIterable</code> wraps a {@link ListIterable}
@@ -45,31 +45,6 @@ public class ReadOnlyCompositeListIterable<E>
 	}
 
 	/**
-	 * Construct a list iterable with the specified object prepended
-	 * to the specified list iterable.
-	 */
-	@SuppressWarnings("unchecked")
-	public ReadOnlyCompositeListIterable(E object, ListIterable<? extends E> iterable) {
-		this(new SingleElementListIterable<E>(object), iterable);
-	}
-
-	/**
-	 * Construct a list iterable with the specified object appended
-	 * to the specified list iterable.
-	 */
-	@SuppressWarnings("unchecked")
-	public ReadOnlyCompositeListIterable(ListIterable<? extends E> iterable, E object) {
-		this(iterable, new SingleElementListIterable<E>(object));
-	}
-
-	/**
-	 * Construct a list iterable with the specified list iterables.
-	 */
-	public ReadOnlyCompositeListIterable(ListIterable<? extends E>... iterables) {
-		this(new ArrayListIterable<ListIterable<? extends E>>(iterables));
-	}
-
-	/**
 	 * combined list iterators
 	 */
 	public ListIterator<E> iterator() {
@@ -80,12 +55,8 @@ public class ReadOnlyCompositeListIterable<E>
 	 * list iterator of list iterators
 	 */
 	protected ListIterator<? extends ListIterator<? extends E>> iterators() {
-		return new TransformationListIterator<ListIterable<? extends E>, ListIterator<? extends E>>(this.iterables()) {
-			@Override
-			protected ListIterator<? extends E> transform(ListIterable<? extends E> next) {
-				return next.iterator();
-			}
-		};
+		Transformer<ListIterable<? extends E>, ListIterator<? extends E>> transformer = IterableTools.readOnlyListIteratorTransformer();
+		return IteratorTools.transform(this.iterables(), transformer);
 	}
 
 	/**

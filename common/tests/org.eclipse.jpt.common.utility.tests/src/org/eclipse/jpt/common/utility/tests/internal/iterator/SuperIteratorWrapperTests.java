@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,9 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterator.SuperIteratorWrapper;
 
 @SuppressWarnings("nls")
-public class SuperIteratorWrapperTests extends TestCase {
-
+public class SuperIteratorWrapperTests
+	extends TestCase
+{
 	public SuperIteratorWrapperTests(String name) {
 		super(name);
 	}
@@ -34,7 +35,7 @@ public class SuperIteratorWrapperTests extends TestCase {
 		}
 		assertEquals("foobarbaz", concat);
 
-		Iterator<Object> iterator = new SuperIteratorWrapper<Object>(list);
+		Iterator<Object> iterator = new SuperIteratorWrapper<Object>(list.iterator());
 		concat = "";
 		while (iterator.hasNext()) {
 			Object next = iterator.next();

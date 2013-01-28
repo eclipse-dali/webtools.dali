@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.core.resource.java;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Java class file
@@ -32,6 +34,15 @@ public interface JavaResourceClassFile
 	 * Return the class file's type.
 	 */
 	JavaResourceAbstractType getType();
+	Transformer<JavaResourceClassFile, JavaResourceAbstractType> TYPE_TRANSFORMER = new TypeTransformer();
+	class TypeTransformer
+		extends TransformerAdapter<JavaResourceClassFile, JavaResourceAbstractType>
+	{
+		@Override
+		public JavaResourceAbstractType transform(JavaResourceClassFile classFile) {
+			return classFile.getType();
+		}
+	}
 
 
 	// ********** content types **********

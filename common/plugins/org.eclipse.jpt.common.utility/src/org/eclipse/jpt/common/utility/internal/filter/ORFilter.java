@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,12 +31,12 @@ public class ORFilter<T>
 	 * Construct a filter that will "accept" any object that is accept by
 	 * <em>any</em> one of the specified wrapped filters.
 	 */
-	public ORFilter(Filter<T>... filters) {
+	public ORFilter(Filter<? super T>... filters) {
 		super(filters);
 	}
 
 	public boolean accept(T o) {
-		for (Filter<T> filter : this.filters) {
+		for (Filter<? super T> filter : this.filters) {
 			if (filter.accept(o)) {
 				return true;
 			}

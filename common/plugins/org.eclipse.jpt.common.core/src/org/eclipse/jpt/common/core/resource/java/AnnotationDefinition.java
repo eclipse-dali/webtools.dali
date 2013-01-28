@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Used to build Annotations discovered in the Java source code.
@@ -35,6 +37,15 @@ public interface AnnotationDefinition
 	 * various #build...(...) methods.
 	 */
 	String getAnnotationName();
+	Transformer<AnnotationDefinition, String> ANNOTATION_NAME_TRANSFORMER = new AnnotationNameTransformer();
+	class AnnotationNameTransformer
+		extends TransformerAdapter<AnnotationDefinition, String>
+	{
+		@Override
+		public String transform(AnnotationDefinition def) {
+			return def.getAnnotationName();
+		}
+	}
 	
 	/**
 	 * Build and return an annotation for the specified annotated element.

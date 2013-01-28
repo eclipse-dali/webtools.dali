@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -86,13 +86,22 @@ public class CloneIteratorTests
 		assertTrue("UnsupportedOperationException not thrown", exCaught);
 	}
 
-	public void testRemoveEliminator() {
-		CloneIterator.Remover<String> eliminator = new CloneIterator.Remover<String>() {
+	public void testRemoveRemover() {
+		CloneIterator.Remover<String> remover = new CloneIterator.Remover<String>() {
 			public void remove(String element) {
 				CloneIteratorTests.this.originalCollection.remove(element);
 			}
 		};
-		this.verifyRemove(new CloneIterator<String>(this.originalCollection, eliminator));
+		this.verifyRemove(new CloneIterator<String>(this.originalCollection, remover));
+	}
+
+	public void testRemoveRemover_super() {
+		CloneIterator.Remover<Object> remover = new CloneIterator.Remover<Object>() {
+			public void remove(Object element) {
+				CloneIteratorTests.this.originalCollection.remove(element);
+			}
+		};
+		this.verifyRemove(new CloneIterator<String>(this.originalCollection, remover));
 	}
 
 	/**

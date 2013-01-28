@@ -45,7 +45,8 @@ import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
@@ -563,14 +564,19 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * Returns the names of the given list of elements
 	 */
 	private Iterable<String> getJavaElementNames(List<IJavaElement> elements) {
-		return new TransformationIterable<IJavaElement, String>(elements) {
-			@Override
-			protected String transform(IJavaElement element) {
-				return element.getElementName();
-			}
-		};
+		return IterableTools.transform(elements, JAVA_ELEMENT_NAME_TRANSFORMER);
 	}
-	
+
+	private static final Transformer<IJavaElement, String> JAVA_ELEMENT_NAME_TRANSFORMER = new JavaElementNameTransformer();
+	/* CU private */ static class JavaElementNameTransformer
+		extends TransformerAdapter<IJavaElement, String>
+	{
+		@Override
+		public String transform(IJavaElement element) {
+			return element.getElementName();
+		}
+	}
+
 	private IProject getSelectedProject() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window == null)

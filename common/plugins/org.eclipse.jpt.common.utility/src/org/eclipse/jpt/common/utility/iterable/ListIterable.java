@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.common.utility.iterable;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A <code>ListIterable</code> simply extends {@link Iterable}
@@ -30,4 +32,15 @@ public interface ListIterable<E>
 	 * Return a list iterator over a set of elements of type E.
 	 */
 	ListIterator<E> iterator();
+
+	@SuppressWarnings("rawtypes")
+	Transformer ITERATOR_TRANSFORMER = new IteratorTransformer();
+	class IteratorTransformer<E>
+		extends TransformerAdapter<ListIterable<E>, ListIterator<E>>
+	{
+		@Override
+		public ListIterator<E> transform(ListIterable<E> iterable) {
+			return iterable.iterator();
+		}
+	}
 }

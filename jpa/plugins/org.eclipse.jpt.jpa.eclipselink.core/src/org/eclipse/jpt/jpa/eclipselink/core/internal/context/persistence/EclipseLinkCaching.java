@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
@@ -572,12 +572,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public Iterable<String> getEntityNames() {
-		return new TransformationIterable<CachingEntity, String>(this.getEntities()) {
-			@Override
-			protected String transform(CachingEntity entity) {
-				return entity.getName();
-			}
-		};
+		return IterableTools.transform(this.getEntities(), CachingEntity.NAME_TRANSFORMER);
 	}
 
 	public int getEntitiesSize() {

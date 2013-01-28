@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,10 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.MappingFileDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
-import org.eclipse.text.edits.DeleteEdit;
-import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * JPA mapping file (typically <code>orm.xml</code>).
@@ -32,7 +28,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.1
  */
 public interface MappingFile
-	extends JpaStructureNode, PersistentTypeContainer
+	extends JpaStructureNode, PersistentTypeContainer, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	MappingFileRef getParent();
 
@@ -81,38 +77,6 @@ public interface MappingFile
 	 * file).
 	 */
 	Iterable<Generator> getMappingFileGenerators();
-
-
-	// ********** refactoring **********
-
-	/**
-	 * Create delete edits for deleting any references
-	 * to the specified (about to be deleted) type.
-	 * Return an empty collection if there are no references to the specified type.
-	 */
-	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
-
-	/**
-	 * Create replace edits for renaming any references to
-	 * the specified original type to the specified new name.
-	 * The specified original type has not yet been renamed; and the specified
-	 * new name is a "simple" (unqualified) name.
-	 */
-	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-	/**
-	 * Create replace edits for moving any references to
-	 * the specified original type to the specified new package.
-	 * The specified original type has not yet been moved.
-	 */
-	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-	/**
-	 * Create replace edits for renaming any references to
-	 * the specified original package to the specified new name.
-	 * The specified original package has not yet been renamed.
-	 */
-	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 
 	// ********** mapping file root **********

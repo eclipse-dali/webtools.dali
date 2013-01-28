@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
@@ -443,15 +443,17 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		Iterable<JpaPlatform.Config> validPlatformConfigs = buildValidPlatformConfigs();
-		Iterable<DataModelPropertyDescriptor> validPlatformDescriptors =
-				new TransformationIterable<JpaPlatform.Config, DataModelPropertyDescriptor>(validPlatformConfigs) {
-					@Override
-					protected DataModelPropertyDescriptor transform(JpaPlatform.Config config) {
-						return buildPlatformDescriptor(config);
-					}
-				};
+		Iterable<DataModelPropertyDescriptor> validPlatformDescriptors = IterableTools.transform(buildValidPlatformConfigs(), new JpaPlatformConfigTransformer());
 		return ArrayTools.sort(ArrayTools.array(validPlatformDescriptors, EMPTY_DMPD_ARRAY), DESCRIPTOR_COMPARATOR);
+	}
+
+	protected class JpaPlatformConfigTransformer
+		extends TransformerAdapter<JpaPlatform.Config, DataModelPropertyDescriptor>
+	{
+		@Override
+		public DataModelPropertyDescriptor transform(JpaPlatform.Config config) {
+			return buildPlatformDescriptor(config);
+		}
 	}
 	
 	protected Iterable<JpaPlatform.Config> buildValidPlatformConfigs() {

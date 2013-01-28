@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,29 +13,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
-public abstract class AbstractSimultaneousIterator<E, I extends Iterator<E>>
+public abstract class AbstractSimultaneousIterator<E, I extends Iterator<? extends E>>
 	implements Iterator<List<E>>
 {
-	/* private- */ protected final Iterable<? extends I> iterators;
-	/* private- */ protected final int iteratorsSize;  // hint
+	final Iterable<? extends I> iterators;
+	final int iteratorsSize;  // hint
 
 
 	/**
 	 * Construct a "simultaneous" iterator for the specified iterators.
 	 */
-	protected <T extends I> AbstractSimultaneousIterator(T... iterators) {
-		this(new ArrayIterable<I>(iterators), iterators.length);
-	}
-
-	/**
-	 * Construct a "simultaneous" iterator for the specified iterators.
-	 */
-	protected <T extends I> AbstractSimultaneousIterator(Iterable<T> iterators) {
+	<T extends I> AbstractSimultaneousIterator(Iterable<T> iterators) {
 		this(iterators, -1);
 	}
 
@@ -43,7 +34,7 @@ public abstract class AbstractSimultaneousIterator<E, I extends Iterator<E>>
 	 * Construct a "simultaneous" iterator for the specified iterators.
 	 * Use the specified size as a performance hint.
 	 */
-	protected <T extends I> AbstractSimultaneousIterator(Iterable<T> iterators, int iteratorsSize) {
+	<T extends I> AbstractSimultaneousIterator(Iterable<T> iterators, int iteratorsSize) {
 		super();
 		if (iterators == null) {
 			throw new NullPointerException();
@@ -75,7 +66,7 @@ public abstract class AbstractSimultaneousIterator<E, I extends Iterator<E>>
 		return result;
 	}
 
-	/* private- */ protected ArrayList<E> buildList() {
+	ArrayList<E> buildList() {
 		return (this.iteratorsSize < 0) ? new ArrayList<E>() : new ArrayList<E>(this.iteratorsSize);
 	}
 
@@ -88,7 +79,7 @@ public abstract class AbstractSimultaneousIterator<E, I extends Iterator<E>>
 		}
 	}
 
-	/* private- */ protected boolean iteratorsIsEmpty() {
+	boolean iteratorsIsEmpty() {
 		return IterableTools.isEmpty(this.iterators);
 	}
 

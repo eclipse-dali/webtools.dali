@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
@@ -30,9 +29,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
@@ -132,12 +129,7 @@ public class GenericContextRootTests
 			}
 		});
 
-		Iterable<String> packageNames = new TransformationIterable<JaxbPackage, String>(this.getContextRoot().getPackages()) {
-			@Override
-			protected String transform(JaxbPackage o) {
-				return o.getName();
-			}
-		};
+		Iterable<String> packageNames = IterableTools.transform(this.getContextRoot().getPackages(), JaxbPackage.NAME_TRANSFORMER);
 		assertEquals(2, this.getContextRoot().getPackagesSize());
 		assertTrue(IterableTools.contains(packageNames, PACKAGE_NAME));
 		assertTrue(IterableTools.contains(packageNames, "foo"));
@@ -180,12 +172,7 @@ public class GenericContextRootTests
 		Expression arrayInitializer = newArrayInitializer(
 				declaration.getAst(),
 				ArrayTools.array(
-						new TransformationIterable<String, TypeLiteral>(new ArrayIterable<String>(typeNames)) {
-							@Override
-							protected TypeLiteral transform(String o) {
-								return newTypeLiteral(declaration.getAst(), o);
-							}
-						},
+						IterableTools.transform(IterableTools.iterable(typeNames), new StringTypeLiteralTransformer(declaration.getAst())),
 						new Expression[0]));
 		addMemberValuePair(normalAnnotation, JAXB.XML_SEE_ALSO__VALUE, arrayInitializer);
 	}

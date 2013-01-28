@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.iterator;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -27,14 +26,6 @@ public class SynchronizedIterator<E>
 	/** Object to synchronize on. */
 	private final Object mutex;
 
-
-	public SynchronizedIterator(Iterable<? extends E> iterable) {
-		this(iterable.iterator());
-	}
-
-	public SynchronizedIterator(Iterable<? extends E> iterable, Object mutex) {
-		this(iterable.iterator(), mutex);
-	}
 
 	public SynchronizedIterator(Iterator<? extends E> iterator) {
 		super();
@@ -54,19 +45,19 @@ public class SynchronizedIterator<E>
 		this.mutex = mutex;
 	}
 
-	public synchronized boolean hasNext() {
+	public boolean hasNext() {
 		synchronized (this.mutex) {
 			return this.iterator.hasNext();
 		}
 	}
 
-	public synchronized E next() {
+	public E next() {
 		synchronized (this.mutex) {
 			return this.iterator.next();
 		}
 	}
 
-	public synchronized void remove() {
+	public void remove() {
 		synchronized (this.mutex) {
 			this.iterator.remove();
 		}

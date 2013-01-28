@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,15 +16,15 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * Convenience transformer that returns <code>null</code> for every
  * transformation.
  * 
- * @param <T1> the type of the object passed to the transformer
- * @param <T2> the type of the object returned by the transformer
+ * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object returned by the transformer
  * 
  * @see AbstractTransformer
  */
-public class TransformerAdapter<T1, T2>
-	implements Transformer<T1, T2>
+public class TransformerAdapter<I, O>
+	implements Transformer<I, O>
 {
-	public T2 transform(T1 o) {
+	public O transform(I o) {
 		return null;
 	}
 

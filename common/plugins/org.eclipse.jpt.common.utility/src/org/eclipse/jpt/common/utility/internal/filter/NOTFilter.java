@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public class NOTFilter<T>
 	implements Filter<T>, Cloneable, Serializable
 {
-	protected final Filter<T> filter;
+	protected final Filter<? super T> filter;
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class NOTFilter<T>
 	 * Construct a filter that will "accept" any object that is NOT accepted
 	 * by the specified wrapped filter.
 	 */
-	public NOTFilter(Filter<T> filter) {
+	public NOTFilter(Filter<? super T> filter) {
 		super();
 		if (filter == null) {
 			throw new NullPointerException();
@@ -43,7 +43,7 @@ public class NOTFilter<T>
 		return ! this.filter.accept(o);
 	}
 
-	public Filter<T> getFilter() {
+	public Filter<? super T> getFilter() {
 		return this.filter;
 	}
 

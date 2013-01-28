@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -296,7 +294,7 @@ public final class EnumerationTools {
 	 * Return the enumeration after it has been "sorted".
 	 */
 	public static <E> Enumeration<E> sort(Enumeration<? extends E> enumeration, Comparator<? super E> comparator) {
-		return ((Vector<E>) ListTools.sort(CollectionTools.vector(iterator(enumeration)), comparator)).elements();
+		return ListTools.sort(CollectionTools.vector(iterator(enumeration)), comparator).elements();
 	}
 
 	/**
@@ -304,7 +302,7 @@ public final class EnumerationTools {
 	 * The specified enumeration size is a performance hint.
 	 */
 	public static <E> Enumeration<E> sort(Enumeration<? extends E> enumeration, Comparator<? super E> comparator, int enumerationSize) {
-		return ((Vector<E>) ListTools.sort(CollectionTools.vector(iterator(enumeration), enumerationSize), comparator)).elements();
+		return ListTools.sort(CollectionTools.vector(iterator(enumeration), enumerationSize), comparator).elements();
 	}
 
 	/**

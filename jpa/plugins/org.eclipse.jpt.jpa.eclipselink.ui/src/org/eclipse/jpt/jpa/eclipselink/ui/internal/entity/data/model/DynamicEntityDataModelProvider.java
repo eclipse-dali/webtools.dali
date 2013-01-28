@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,7 +34,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -43,6 +44,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.NewDynamicEntityClassOperation;
@@ -295,12 +297,13 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	}
 
 	private Iterable<String> getMappingKeys(ArrayList<DynamicEntityField> fields) {
-		return new TransformationIterable<DynamicEntityField, String>(fields) {
+		Transformer<DynamicEntityField, String> transformer = new TransformerAdapter<DynamicEntityField, String>() {
 			@Override
-			protected String transform(DynamicEntityField field) {
+			public String transform(DynamicEntityField field) {
 				return field.getMappingType().getKey();
 			}
 		};
+		return IterableTools.transform(fields, transformer);
 	}
 
 	private boolean hasIDAndEmbeddedIDMappingDefined(Iterable<String> mappingKeys) {
@@ -600,12 +603,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 * Returns the names of the given list of IType
 	 */
 	private Iterable<String> getJavaTypeNames() {
-		return new TransformationIterable<IType, String>(this.getJavaTypes()) {
-			@Override
-			protected String transform(IType type) {
-				return type.getFullyQualifiedName();
-			}
-		};
+		return IterableTools.transform(this.getJavaTypes(), MappingTools.JDT_TYPE_NAME_TRANSFORMER);
 	}
 
 	/**

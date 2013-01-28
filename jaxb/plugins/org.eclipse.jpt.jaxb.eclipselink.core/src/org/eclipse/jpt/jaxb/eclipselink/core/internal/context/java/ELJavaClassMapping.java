@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -198,26 +197,16 @@ public class ELJavaClassMapping
 	// ***** misc *****
 	
 	public Iterable<String> getKeyXPaths() {
-		return new FilteringIterable(
-				new TransformationIterable<ELXmlNamedNodeMapping, String>(getAllKeyMappings()) {
-					@Override
-					protected String transform(ELXmlNamedNodeMapping o) {
-						return o.getXPath();
-					}
-				},
-				NotNullFilter.instance());
+		return IterableTools.filter(
+				IterableTools.transform(getAllKeyMappings(), ELXmlNamedNodeMapping.X_PATH_TRANSFORMER),
+				NotNullFilter.<String>instance());
 	}
 	
 	protected Iterable<ELXmlNamedNodeMapping> getAllKeyMappings() {
 		return new FilteringIterable<ELXmlNamedNodeMapping>(
 				new SubIterableWrapper<JaxbAttributeMapping, ELXmlNamedNodeMapping>(
 						new FilteringIterable<JaxbAttributeMapping>(
-								new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(getAllAttributes()) {
-									@Override
-									protected JaxbAttributeMapping transform(JaxbPersistentAttribute o) {
-										return o.getMapping();
-									}
-								}) {
+								IterableTools.transform(getAllAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER)) {
 							@Override
 							protected boolean accept(JaxbAttributeMapping o) {
 								return (o.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY

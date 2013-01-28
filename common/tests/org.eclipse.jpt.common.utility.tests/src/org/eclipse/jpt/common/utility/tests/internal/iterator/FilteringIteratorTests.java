@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,8 +21,9 @@ import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
 
 @SuppressWarnings("nls")
-public class FilteringIteratorTests extends TestCase {
-
+public class FilteringIteratorTests
+	extends TestCase
+{
 	private static final String PREFIX = "prefix";
 
 	public FilteringIteratorTests(String name) {
@@ -70,6 +71,12 @@ public class FilteringIteratorTests extends TestCase {
 
 	public void testAcceptNext() {
 		for (Iterator<String> stream = this.buildAcceptIterator(); stream.hasNext();) {
+			assertTrue("bogus accept", stream.next().startsWith(PREFIX));
+		}
+	}
+
+	public void testAcceptNext_super() {
+		for (Iterator<String> stream = this.buildSuperAcceptIterator(); stream.hasNext();) {
 			assertTrue("bogus accept", stream.next().startsWith(PREFIX));
 		}
 	}
@@ -142,6 +149,10 @@ public class FilteringIteratorTests extends TestCase {
 		return new FilteringIterator<String>(nestedIterator, filter);
 	}
 
+	private Iterator<String> buildSuperFilteredIterator(Iterator<String> nestedIterator, Filter<Object> filter) {
+		return new FilteringIterator<String>(nestedIterator, filter);
+	}
+
 	private Iterator<String> buildInnerFilteredIterator(Iterator<String> nestedIterator) {
 		return new FilteringIterator<String>(nestedIterator) {
 			@Override
@@ -182,6 +193,10 @@ public class FilteringIteratorTests extends TestCase {
 		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildAcceptFilter(PREFIX));
 	}
 
+	private Iterator<String> buildSuperAcceptIterator() {
+		return this.buildSuperFilteredIterator(this.buildNestedIterator(), this.buildSuperAcceptFilter(PREFIX));
+	}
+
 	private Iterator<String> buildInnerIterator() {
 		return this.buildInnerFilteredIterator(this.buildNestedIterator());
 	}
@@ -202,6 +217,17 @@ public class FilteringIteratorTests extends TestCase {
 			@Override
 			public boolean accept(String s) {
 				return s.startsWith(this.criterion);
+			}
+		};
+	}
+
+	private Filter<Object> buildSuperAcceptFilter(String prefix) {
+		return new SimpleFilter<Object, String>(prefix) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean accept(Object o) {
+				return o.toString().startsWith(this.criterion);
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ public class FilteringIterable<E>
 	implements Iterable<E>
 {
 	private final Iterable<? extends E> iterable;
-	private final Filter<E> filter;
+	private final Filter<? super E> filter;
 
 
 	/**
@@ -51,7 +51,7 @@ public class FilteringIterable<E>
 	 * Construct an iterable with the specified nested
 	 * iterable and filter.
 	 */
-	public FilteringIterable(Iterable<? extends E> iterable, Filter<E> filter) {
+	public FilteringIterable(Iterable<? extends E> iterable, Filter<? super E> filter) {
 		super();
 		if ((iterable == null) || (filter == null)) {
 			throw new NullPointerException();
@@ -60,7 +60,7 @@ public class FilteringIterable<E>
 		this.filter = filter;
 	}
 
-	protected Filter<E> buildDefaultFilter() {
+	protected Filter<? super E> buildDefaultFilter() {
 		return new DefaultFilter();
 	}
 

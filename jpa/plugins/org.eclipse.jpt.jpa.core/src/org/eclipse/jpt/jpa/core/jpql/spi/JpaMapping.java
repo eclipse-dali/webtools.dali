@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -13,14 +13,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql.spi;
 
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.BASIC;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ELEMENT_COLLECTION;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED_ID;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ID;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.TRANSIENT;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.VERSION;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -34,8 +45,6 @@ import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
-
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 
 /**
  * The concrete implementation of {@link IMapping} that is wrapping the design-time representation
@@ -99,17 +108,18 @@ public abstract class JpaMapping implements IMapping {
 	}
 
 	protected Iterable<ITypeDeclaration> buildGenericTypeDeclarations(JavaResourceAttribute resource) {
+		return (resource != null) ?
+				IterableTools.transform(resource.getTypeBinding().getTypeArgumentNames(), new TypeDeclarationTransformer()) :
+				IterableTools.<ITypeDeclaration>emptyIterable();
+	}
 
-		if (resource == null) {
-			return EmptyIterable.instance();
+	protected class TypeDeclarationTransformer
+		extends TransformerAdapter<String, ITypeDeclaration>
+	{
+		@Override
+		public ITypeDeclaration transform(String typeName) {
+			return getTypeRepository().getType(typeName).getTypeDeclaration();
 		}
-
-		return new TransformationIterable<String, ITypeDeclaration>(resource.getTypeBinding().getTypeArgumentNames()) {
-			@Override
-			protected ITypeDeclaration transform(String next) {
-				return getTypeRepository().getType(next).getTypeDeclaration();
-			}
-		};
 	}
 
 	protected IType buildType(boolean resolveRelationshipType) {

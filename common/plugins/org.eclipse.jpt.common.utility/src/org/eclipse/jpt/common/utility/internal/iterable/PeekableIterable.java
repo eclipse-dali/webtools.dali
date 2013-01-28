@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterable;
 
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.PeekableIterator;
 
 /**
@@ -47,7 +48,7 @@ public class PeekableIterable<E>
 	}
 
 	public PeekableIterator<E> iterator() {
-		return new PeekableIterator<E>(this.iterable);
+		return IteratorTools.peekableIterator(this.iterable.iterator());
 	}
 
 	@Override

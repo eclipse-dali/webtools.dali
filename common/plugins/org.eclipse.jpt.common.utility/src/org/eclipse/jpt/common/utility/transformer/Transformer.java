@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,25 +23,25 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @param <T1> the type of the object passed to the transformer
- * @param <T2> the type of the object returned by the transformer
+ * @param <I> input: the type of the object passed to the transformer
+ * @param <O> output: the type of the object returned by the transformer
  */
-public interface Transformer<T1, T2> {
+public interface Transformer<I, O> {
 
 	/**
 	 * Return the transformed object.
 	 * The semantics of "transform" is determined by the
 	 * contract between the client and the server.
 	 */
-	T2 transform(T1 o);
+	O transform(I input);
 
 
 	/**
 	 * A "non" transformer will perform no transformation at all;
 	 * it will simply return the object "untransformed".
 	 */
-	final class Non<S>
-		implements Transformer<S, S>, Serializable
+	final class Non<T>
+		implements Transformer<T, T>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Non();
@@ -54,7 +54,7 @@ public interface Transformer<T1, T2> {
 			super();
 		}
 		// simply return the object, unchanged
-		public S transform(S o) {
+		public T transform(T o) {
 			return o;
 		}
 		@Override
@@ -71,8 +71,8 @@ public interface Transformer<T1, T2> {
 	/**
 	 * A "null" transformer will always return <code>null</code>.
 	 */
-	final class Null<S1, S2>
-		implements Transformer<S1, S2>, Serializable
+	final class Null<I, O>
+		implements Transformer<I, O>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Null();
@@ -85,7 +85,7 @@ public interface Transformer<T1, T2> {
 			super();
 		}
 		// simply return null
-		public S2 transform(S1 o) {
+		public O transform(I o) {
 			return null;
 		}
 		@Override
@@ -105,8 +105,8 @@ public interface Transformer<T1, T2> {
 	 * where a transformer is optional and the default transformer should
 	 * not be used.
 	 */
-	final class Disabled<S1, S2>
-		implements Transformer<S1, S2>, Serializable
+	final class Disabled<I, O>
+		implements Transformer<I, O>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Disabled();
@@ -119,7 +119,7 @@ public interface Transformer<T1, T2> {
 			super();
 		}
 		// throw an exception
-		public S2 transform(S1 o) {
+		public O transform(I o) {
 			throw new UnsupportedOperationException();
 		}
 		@Override

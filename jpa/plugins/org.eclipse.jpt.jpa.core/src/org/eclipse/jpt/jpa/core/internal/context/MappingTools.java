@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -549,12 +549,7 @@ public final class MappingTools {
 	 * Returns the names of interfaces of the given project
 	 */
 	public static Iterable<String> getJavaInterfaceNames(IJavaProject javaProject) {
-		return new TransformationIterable<IType, String>(getJavaInterfaces(javaProject)) {
-			@Override
-			protected String transform(IType type) {
-				return type.getFullyQualifiedName();
-			}
-		};
+		return IterableTools.transform(getJavaInterfaces(javaProject), JDT_TYPE_NAME_TRANSFORMER);
 	}	
 	
 	/**
@@ -585,15 +580,9 @@ public final class MappingTools {
 	 * Returns the names of classes of the given project
 	 */
 	public static Iterable<String> getJavaClassNames(IJavaProject javaProject) {
-		return new TransformationIterable<IType, String>(getJavaClasses(javaProject)) {
-			@Override
-			protected String transform(IType type) {
-				return type.getFullyQualifiedName();
-			}
-		};
+		return IterableTools.transform(getJavaClasses(javaProject), JDT_TYPE_NAME_TRANSFORMER);
 	}
-		
-	
+
 	/**
 	 * Returns all the classes across the given project
 	 */
@@ -632,12 +621,7 @@ public final class MappingTools {
 	 * Returns the names of enums in the given project
 	 */
 	public static Iterable<String> getJavaEnumNames(IJavaProject javaProject) {
-		return new TransformationIterable<IType, String>(getJavaEnums(javaProject)) {
-			@Override
-			protected String transform(IType type) {
-				return type.getFullyQualifiedName();
-			}
-		};
+		return IterableTools.transform(getJavaEnums(javaProject), JDT_TYPE_NAME_TRANSFORMER);
 	}
 	
 	/**
@@ -724,6 +708,18 @@ public final class MappingTools {
 		CollectionTools.addAll(names, COLLECTION_TYPE_NAMES);
 		return names;
 	}
+
+	public static final Transformer<IType, String> JDT_TYPE_NAME_TRANSFORMER = new JdtTypeNameTransformer();
+
+	public static class JdtTypeNameTransformer
+		extends TransformerAdapter<IType, String>
+	{
+		@Override
+		public String transform(IType type) {
+			return type.getFullyQualifiedName();
+		}
+	}
+
 
 	// ********** constructor **********
 

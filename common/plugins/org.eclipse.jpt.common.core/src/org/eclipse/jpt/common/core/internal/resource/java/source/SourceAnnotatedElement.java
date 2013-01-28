@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -230,23 +230,9 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	// ********** combination annotations **********
 
 	private Iterable<NestableAnnotation> getNestableAnnotations() {
-		return new CompositeIterable<NestableAnnotation>(this.getNestableAnnotationLists());
+		return IterableTools.compositeIterable(this.getAnnotationContainers(), CombinationAnnotationContainer_.NESTED_ANNOTATIONS_TRANSFORMER);
 	}
 
-	private Iterable<Iterable<NestableAnnotation>> getNestableAnnotationLists() {
-		return new TransformationIterable<CombinationAnnotationContainer_, Iterable<NestableAnnotation>>(this.getAnnotationContainers(), ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER);
-	}
-
-	private static final Transformer<CombinationAnnotationContainer_, Iterable<NestableAnnotation>> ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER = new AnnotationContainerNestedAnnotationsTransformer();
-	/* CU private */ static final class AnnotationContainerNestedAnnotationsTransformer
-		extends TransformerAdapter<CombinationAnnotationContainer_, Iterable<NestableAnnotation>>
-	{
-		@Override
-		public Iterable<NestableAnnotation> transform(CombinationAnnotationContainer_ container) {
-			return container.getNestedAnnotations();
-		}
-	}
-	
 	private Iterable<CombinationAnnotationContainer> getAnnotationContainers() {
 		return new LiveCloneIterable<CombinationAnnotationContainer>(this.annotationContainers.values());
 	}
@@ -655,7 +641,18 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	 */
 	private interface CombinationAnnotationContainer_ {
 		Annotation getContainerAnnotation();
+
 		ListIterable<NestableAnnotation> getNestedAnnotations();
+		/* CU private */ static final Transformer<CombinationAnnotationContainer_, Iterable<NestableAnnotation>> NESTED_ANNOTATIONS_TRANSFORMER = new NestedAnnotationsTransformer();
+		/* CU private */ static final class NestedAnnotationsTransformer
+			extends TransformerAdapter<CombinationAnnotationContainer_, Iterable<NestableAnnotation>>
+		{
+			@Override
+			public Iterable<NestableAnnotation> transform(CombinationAnnotationContainer_ container) {
+				return container.getNestedAnnotations();
+			}
+		}
+
 		NestableAnnotation getNestedAnnotation(int index);
 	}
 

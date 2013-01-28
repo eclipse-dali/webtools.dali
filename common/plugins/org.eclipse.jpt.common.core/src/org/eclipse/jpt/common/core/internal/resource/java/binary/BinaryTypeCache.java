@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,10 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * cache used to hold binary "external" Java resource types
@@ -44,12 +46,17 @@ public final class BinaryTypeCache
 	// ********** JavaResourceNode.Root implementation **********
 
 	public Iterable<JavaResourceAbstractType> getTypes() {
-		return new TransformationIterable<Entry, JavaResourceAbstractType>(this.getEntries()) {
-			@Override
-			protected JavaResourceAbstractType transform(Entry entry) {
-				return entry.type;
-			}
-		};
+		return IterableTools.transform(this.getEntries(), ENTRY_TYPE_TRANSFORMER);
+	}
+
+	private static final Transformer<Entry, JavaResourceAbstractType> ENTRY_TYPE_TRANSFORMER = new EntryTypeTransformer();
+	/* CU private */ static class EntryTypeTransformer
+		extends TransformerAdapter<Entry, JavaResourceAbstractType>
+	{
+		@Override
+		public JavaResourceAbstractType transform(Entry entry) {
+			return entry.type;
+		}
 	}
 
 	private Iterable<Entry> getEntries() {

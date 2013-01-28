@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.value;
+
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 
 /**
  * Extend {@link ModifiablePropertyValueModel} to better support
@@ -40,6 +42,14 @@ public interface TreeNodeValueModel<T>
 	 * is the root.
 	 */
 	TreeNodeValueModel<T> parent();
+		class ParentTransformer<T>
+			extends AbstractTransformer<TreeNodeValueModel<T>, TreeNodeValueModel<T>>
+		{
+			@Override
+			protected TreeNodeValueModel<T> transform_(TreeNodeValueModel<T> treeNodeValueModel) {
+				return treeNodeValueModel.parent();
+			}
+		}
 
 	/**
 	 * Return the path to the node.

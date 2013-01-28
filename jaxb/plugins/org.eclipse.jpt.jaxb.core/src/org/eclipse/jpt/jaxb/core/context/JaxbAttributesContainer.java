@@ -1,13 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Holds the attributes represented by a particular JavaResourceType and XmlAccessType.
@@ -27,6 +30,15 @@ public interface JaxbAttributesContainer
 	// ***** attributes *****
 	
 	Iterable<JaxbPersistentAttribute> getAttributes();
+	Transformer<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
+	class AttributesTransformer
+		extends TransformerAdapter<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>>
+	{
+		@Override
+		public Iterable<JaxbPersistentAttribute> transform(JaxbAttributesContainer container) {
+			return container.getAttributes();
+		}
+	}
 	
 	int getAttributesSize();
 	

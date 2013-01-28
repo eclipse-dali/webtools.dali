@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.Map;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
@@ -373,10 +373,9 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		//TODO seems like we should have the Property stored in a SessionCustomizer object instead of having to go 
 		//find all of the Properties from the persistence unit.
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
-		if (property != null) {
-			return property.createRenameTypeEdits(originalType, newName);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createRenameTypeEdits(originalType, newName) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -386,10 +385,9 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 
 	protected Iterable<ReplaceEdit> createLoggerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
-		if (property != null) {
-			return property.createMoveTypeEdits(originalType, newPackage);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createMoveTypeEdits(originalType, newPackage) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -400,9 +398,8 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	protected Iterable<ReplaceEdit> createLoggerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		//find all of the Properties from the persistence unit.
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
-		if (property != null) {
-			return property.createRenamePackageEdits(originalPackage, newName);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createRenamePackageEdits(originalPackage, newName) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 }

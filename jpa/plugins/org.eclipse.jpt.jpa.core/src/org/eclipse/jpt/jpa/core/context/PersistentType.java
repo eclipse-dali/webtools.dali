@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,10 @@ package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 
 /**
@@ -39,6 +42,15 @@ public interface PersistentType
 	 */
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	Transformer<PersistentType, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<PersistentType, String>
+	{
+		@Override
+		public String transform(PersistentType pt) {
+			return pt.getName();
+		}
+	}
 
 	/**
 	 * Return the persistent type's simple name.
@@ -55,6 +67,15 @@ public interface PersistentType
 	 */
 	TypeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+	Transformer<PersistentType, TypeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
+	class MappingTransformer
+		extends TransformerAdapter<PersistentType, TypeMapping>
+	{
+		@Override
+		public TypeMapping transform(PersistentType pt) {
+			return pt.getMapping();
+		}
+	}
 
 	String getMappingKey();
 
@@ -69,7 +90,16 @@ public interface PersistentType
 	 * Return the persistent type's persistent attributes.
 	 */
 	ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes();
-	
+	Transformer<PersistentType, ListIterable<? extends ReadOnlyPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
+	class AttributesTransformer
+		extends TransformerAdapter<PersistentType, ListIterable<? extends ReadOnlyPersistentAttribute>>
+	{
+		@Override
+		public ListIterable<? extends ReadOnlyPersistentAttribute> transform(PersistentType type) {
+			return type.getAttributes();
+		}
+	}
+
 	/**
 	 * Return the number of the persistent type's persistent attributes.
 	 */
@@ -136,6 +166,15 @@ public interface PersistentType
 	 */
 	PersistentType getSuperPersistentType();
 		String SUPER_PERSISTENT_TYPE_PROPERTY = "superPersistentType"; //$NON-NLS-1$
+	Transformer<PersistentType, PersistentType> SUPER_PERSISTENT_TYPE_TRANSFORMER = new SuperPersistentTypeTransformer();
+	class SuperPersistentTypeTransformer
+		extends AbstractTransformer<PersistentType, PersistentType>
+	{
+		@Override
+		protected PersistentType transform_(PersistentType persistentType) {
+			return persistentType.getSuperPersistentType();
+		}
+	}
 
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,
@@ -174,6 +213,15 @@ public interface PersistentType
 	 * non-metadata-complete <code>orm.xml</code> persistent type.
 	 */
 	PersistentType getOverriddenPersistentType();
+	Transformer<PersistentType, PersistentType> OVERRIDDEN_PERSISTENT_TYPE_TRANSFORMER = new OverriddenPersistentTypeTransformer();
+	class OverriddenPersistentTypeTransformer
+		extends AbstractTransformer<PersistentType, PersistentType>
+	{
+		@Override
+		protected PersistentType transform_(PersistentType persistentType) {
+			return persistentType.getOverriddenPersistentType();
+		}
+	}
 
 
 	// ********** owner **********

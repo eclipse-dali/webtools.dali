@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 public abstract class CompoundFilter<T>
 	implements Filter<T>, Cloneable, Serializable
 {
-	protected Filter<T>[] filters;
+	protected Filter<? super T>[] filters;
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public abstract class CompoundFilter<T>
 	/**
 	 * Construct a compound filter for the specified list of filters.
 	 */
-	protected CompoundFilter(Filter<T>... filters) {
+	protected CompoundFilter(Filter<? super T>... filters) {
 		super();
 		if (filters == null) {
 			throw new NullPointerException();
@@ -42,7 +42,7 @@ public abstract class CompoundFilter<T>
 	/**
 	 * Return the filters.
 	 */
-	public Filter<T>[] getFilters() {
+	public Filter<? super T>[] getFilters() {
 		return this.filters;
 	}
 
@@ -75,7 +75,7 @@ public abstract class CompoundFilter<T>
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.appendHashCodeToString(sb, this);
 		sb.append('(');
-		for (Filter<T> filter : this.filters) {
+		for (Filter<? super T> filter : this.filters) {
 			sb.append(filter);
 			sb.append(' ');
 			sb.append(this.operatorString());

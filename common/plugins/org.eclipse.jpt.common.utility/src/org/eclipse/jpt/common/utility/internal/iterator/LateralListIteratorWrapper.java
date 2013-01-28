@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterator;
 
-import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Wrap a list iterator on elements of type <code>E1</code>, converting it into
@@ -32,14 +29,6 @@ public class LateralListIteratorWrapper<E1, E2>
 {
 	final ListIterator<E1> listIterator;
 
-
-	public LateralListIteratorWrapper(List<E1> list) {
-		this(list.listIterator());
-	}
-
-	public LateralListIteratorWrapper(ListIterable<E1> listIterable) {
-		this(listIterable.iterator());
-	}
 
 	public LateralListIteratorWrapper(ListIterator<E1> iterator) {
 		super();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 
 /**
@@ -33,7 +35,16 @@ public interface MapsIdDerivedIdentityStrategy2_0
 	 * the Child's primary key, the parent ID).
 	 */
 	String getIdAttributeName();
-	
+	Transformer<MapsIdDerivedIdentityStrategy2_0, String> ID_ATTRIBUTE_NAME_TRANSFORMER = new IdAttributeNameTransformer();
+	class IdAttributeNameTransformer
+		extends TransformerAdapter<MapsIdDerivedIdentityStrategy2_0, String>
+	{
+		@Override
+		public String transform(MapsIdDerivedIdentityStrategy2_0 strategy) {
+			return strategy.getIdAttributeName();
+		}
+	}
+
 	/**
 	 * String associated with changes to the specified ID attribute name property.
 	 */

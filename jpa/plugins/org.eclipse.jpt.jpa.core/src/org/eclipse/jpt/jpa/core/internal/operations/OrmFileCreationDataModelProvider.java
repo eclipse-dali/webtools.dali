@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -133,18 +133,21 @@ public class OrmFileCreationDataModelProvider
 			accessTypes[2] = accessPropertyDescriptor(AccessType.PROPERTY);
 			return accessTypes;
 		}
-		else if (propertyName.equals(PERSISTENCE_UNIT)) {
-			return ArrayTools.array(
-				new TransformationIterable<String, DataModelPropertyDescriptor>(new CompositeIterable<String>(null, getPersistenceUnitNames())) {
-					@Override
-					protected DataModelPropertyDescriptor transform(String next) {
-						return persistenceUnitPropertyDescriptor(next);
-					}
-				},
-				new DataModelPropertyDescriptor[0]);
+		if (propertyName.equals(PERSISTENCE_UNIT)) {
+			return ArrayTools.array(IterableTools.transform(IterableTools.<String>insert(null, getPersistenceUnitNames()), new DataModelPropertyDescriptorTransformer()),
+				EMPTY_DESCRIPTOR_ARRAY);
 		}
 		return super.getValidPropertyDescriptors(propertyName);
 	}
+	public class DataModelPropertyDescriptorTransformer
+		extends TransformerAdapter<String, DataModelPropertyDescriptor>
+	{
+		@Override
+		public DataModelPropertyDescriptor transform(String persistenceUnitName) {
+			return persistenceUnitPropertyDescriptor(persistenceUnitName);
+		}
+	}
+	protected static final DataModelPropertyDescriptor[] EMPTY_DESCRIPTOR_ARRAY = new DataModelPropertyDescriptor[0];
 	
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
@@ -158,17 +161,15 @@ public class OrmFileCreationDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor accessPropertyDescriptor(String accessType) {
-		if (accessType == null) {
-			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
-		}
-		return new DataModelPropertyDescriptor(accessType);
+		return (accessType == null) ?
+				new DataModelPropertyDescriptor(null, JptCoreMessages.NONE) :
+				new DataModelPropertyDescriptor(accessType);
 	}
 	
 	DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {
-		if (StringTools.isBlank(persistenceUnitName)) {
-			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
-		}
-		return new DataModelPropertyDescriptor(persistenceUnitName);
+		return StringTools.isBlank(persistenceUnitName) ?
+				new DataModelPropertyDescriptor(null, JptCoreMessages.NONE) :
+				new DataModelPropertyDescriptor(persistenceUnitName);
 	}
 	
 	
@@ -238,12 +239,7 @@ public class OrmFileCreationDataModelProvider
 	}
 	
 	protected Iterable<String> getPersistenceUnitNames() {
-		return new TransformationIterable<PersistenceUnit, String>(getPersistenceUnits()) {
-			@Override
-			protected String transform(PersistenceUnit next) {
-				return next.getName();
-			}
-		};
+		return IterableTools.transform(getPersistenceUnits(), PersistenceUnit.NAME_TRANSFORMER);
 	}
 
 	@Override

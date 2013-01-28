@@ -1,16 +1,18 @@
 /*******************************************************************************
-  * Copyright (c) 2010, 2012 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2010, 2013 Red Hat, Inc. and others.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * @author Dmitry Geraskov
@@ -36,4 +38,13 @@ public interface JavaResourcePackage
 	 */
 	String getName();
 	String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	Transformer<JavaResourcePackage, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<JavaResourcePackage, String>
+	{
+		@Override
+		public String transform(JavaResourcePackage pkg) {
+			return pkg.getName();
+		}
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jpt.common.core.AnnotationProvider;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
 
@@ -46,5 +48,13 @@ public interface JavaResourcePackageFragment
 	 * This is a convenience method that returns the JavaResourceTypes of the classFiles.
 	 */
 	Iterable<JavaResourceAbstractType> getTypes();
-
+	Transformer<JavaResourcePackageFragment, Iterable<JavaResourceAbstractType>> TYPES_TRANSFORMER = new TypesTransformer();
+	class TypesTransformer
+		extends TransformerAdapter<JavaResourcePackageFragment, Iterable<JavaResourceAbstractType>>
+	{
+		@Override
+		public Iterable<JavaResourceAbstractType> transform(JavaResourcePackageFragment jrpf) {
+			return jrpf.getTypes();
+		}
+	}
 }

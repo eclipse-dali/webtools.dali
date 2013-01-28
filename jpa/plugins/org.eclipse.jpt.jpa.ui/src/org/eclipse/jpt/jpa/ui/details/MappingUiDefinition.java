@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,12 +44,20 @@ public interface MappingUiDefinition {
 	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition#getKey()
 	 */
 	String getKey();
+	Transformer<MappingUiDefinition, String> KEY_TRANSFORMER = new KeyTransformer();
+	class KeyTransformer
+		extends AbstractTransformer<MappingUiDefinition, String>
+	{
+		@Override
+		public String transform_(MappingUiDefinition def) {
+			return def.getKey();
+		}
+	}
 
 	/**
 	 * Return a string corresponding to the mapping type.
 	 */
 	String getLabel();
-
 	Transformer<MappingUiDefinition, String> LABEL_TRANSFORMER = new LabelTransformer();
 	class LabelTransformer
 		extends AbstractTransformer<MappingUiDefinition, String>

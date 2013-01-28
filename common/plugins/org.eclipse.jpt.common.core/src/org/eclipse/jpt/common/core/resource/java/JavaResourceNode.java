@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Common interface for Java resource nodes (source code or binary).
@@ -40,6 +42,15 @@ public interface JavaResourceNode
 	 * (typically either a Java source code file or a JAR).
 	 */
 	IFile getFile();
+	Transformer<JavaResourceNode, IFile> FILE_TRANSFORMER = new FileTransformer();
+	class FileTransformer
+		extends TransformerAdapter<JavaResourceNode, IFile>
+	{
+		@Override
+		public IFile transform(JavaResourceNode table) {
+			return table.getFile();
+		}
+	}
 
 	/**
 	 * Return the root of the Java resource containment hierarchy
@@ -69,7 +80,16 @@ public interface JavaResourceNode
 		 */
 		Iterable<JavaResourceAbstractType> getTypes();
 			String TYPES_COLLECTION = "types"; //$NON-NLS-1$
-		
+		Transformer<Root, Iterable<JavaResourceAbstractType>> TYPES_TRANSFORMER = new TypesTransformer();
+		class TypesTransformer
+			extends TransformerAdapter<Root, Iterable<JavaResourceAbstractType>>
+		{
+			@Override
+			public Iterable<JavaResourceAbstractType> transform(Root root) {
+				return root.getTypes();
+			}
+		}
+
 		/**
 		 * Called (via a hook in change notification) whenever anything in the
 		 * Java resource model changes. Forwarded to listeners.

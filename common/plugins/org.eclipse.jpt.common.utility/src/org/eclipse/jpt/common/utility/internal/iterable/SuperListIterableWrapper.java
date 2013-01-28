@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterable;
 
-import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -32,10 +31,6 @@ public class SuperListIterableWrapper<E>
 {
 	private final ListIterable<? extends E> iterable;
 
-
-	public <T extends E> SuperListIterableWrapper(List<T> list) {
-		this(new ListListIterable<T>(list));
-	}
 
 	public SuperListIterableWrapper(ListIterable<? extends E> iterable) {
 		super();

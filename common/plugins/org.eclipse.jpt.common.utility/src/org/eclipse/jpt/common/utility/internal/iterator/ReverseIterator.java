@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,29 +34,15 @@ public class ReverseIterator<E>
 	/**
 	 * Construct a reverse iterator for the specified iterator.
 	 */
-	public ReverseIterator(Iterator<E> iterator) {
-		this((ArrayList<E>) ListTools.reverse(ListTools.list(iterator)));
+	public ReverseIterator(Iterator<? extends E> iterator) {
+		this(ListTools.reverse(ListTools.list(iterator)));
 	}
 
 	/**
 	 * Construct a reverse iterator for the specified iterator.
 	 */
-	public ReverseIterator(Iterator<E> iterator, int size) {
-		this((ArrayList<E>) ListTools.reverse(ListTools.list(iterator, size)));
-	}
-
-	/**
-	 * Construct a reverse iterator for the specified iterable.
-	 */
-	public ReverseIterator(Iterable<E> iterable) {
-		this((ArrayList<E>) ListTools.reverse(ListTools.list(iterable)));
-	}
-
-	/**
-	 * Construct a reverse iterator for the specified iterable.
-	 */
-	public ReverseIterator(Iterable<E> iterable, int size) {
-		this((ArrayList<E>) ListTools.reverse(ListTools.list(iterable, size)));
+	public ReverseIterator(Iterator<? extends E> iterator, int size) {
+		this(ListTools.reverse(ListTools.list(iterator, size)));
 	}
 
 	private ReverseIterator(ArrayList<E> reverseList) {

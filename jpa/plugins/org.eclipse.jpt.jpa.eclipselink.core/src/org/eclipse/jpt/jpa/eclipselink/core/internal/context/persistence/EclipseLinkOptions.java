@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 import java.util.Map;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
@@ -409,10 +409,9 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 
 	protected Iterable<ReplaceEdit> createEventListenerRenameTypeEdits(IType originalType, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
-		if (property != null) {
-			return property.createRenameTypeEdits(originalType, newName);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createRenameTypeEdits(originalType, newName) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -422,10 +421,9 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 
 	protected Iterable<ReplaceEdit> createEventListenerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
-		if (property != null) {
-			return property.createMoveTypeEdits(originalType, newPackage);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createMoveTypeEdits(originalType, newPackage) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -435,9 +433,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 
 	protected Iterable<ReplaceEdit> createEventListenerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
-		if (property != null) {
-			return property.createRenamePackageEdits(originalPackage, newName);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createRenamePackageEdits(originalPackage, newName) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 }

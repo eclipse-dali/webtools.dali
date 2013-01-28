@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -328,25 +329,25 @@ public class GenericOrmXml
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
 		return (this.root != null) ?
 				this.root.createDeleteTypeEdits(type) :
-				EmptyIterable.<DeleteEdit>instance();
+				IterableTools.<DeleteEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return (this.root != null) ?
 				this.root.createRenameTypeEdits(originalType, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return (this.root != null) ?
 				this.root.createMoveTypeEdits(originalType, newPackage) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return (this.root != null) ?
 				this.root.createRenamePackageEdits(originalPackage, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 

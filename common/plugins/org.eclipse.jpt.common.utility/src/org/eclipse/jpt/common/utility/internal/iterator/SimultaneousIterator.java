@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,19 +29,12 @@ import java.util.Iterator;
  * @see org.eclipse.jpt.common.utility.internal.iterable.SimultaneousIterable
  */
 public class SimultaneousIterator<E>
-	extends AbstractSimultaneousIterator<E, Iterator<E>>
+	extends AbstractSimultaneousIterator<E, Iterator<? extends E>>
 {
 	/**
 	 * Construct a "simultaneous" iterator for the specified iterators.
 	 */
-	public <I extends Iterator<E>> SimultaneousIterator(I... iterators) {
-		super(iterators);
-	}
-
-	/**
-	 * Construct a "simultaneous" iterator for the specified iterators.
-	 */
-	public <I extends Iterator<E>> SimultaneousIterator(Iterable<I> iterators) {
+	public <I extends Iterator<? extends E>> SimultaneousIterator(Iterable<I> iterators) {
 		super(iterators);
 	}
 
@@ -49,7 +42,7 @@ public class SimultaneousIterator<E>
 	 * Construct a "simultaneous" iterator for the specified iterators.
 	 * Use the specified size as a performance hint.
 	 */
-	public <I extends Iterator<E>> SimultaneousIterator(Iterable<I> iterators, int iteratorsSize) {
+	public <I extends Iterator<? extends E>> SimultaneousIterator(Iterable<I> iterators, int iteratorsSize) {
 		super(iterators, iteratorsSize);
 	}
 }

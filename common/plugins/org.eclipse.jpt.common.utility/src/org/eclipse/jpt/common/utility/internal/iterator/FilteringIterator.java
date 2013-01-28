@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,13 +35,13 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * 
  * @param <E> the type of elements to be filtered
  * 
- * @see org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#filter(Iterable, Filter)
  */
 public class FilteringIterator<E>
 	implements Iterator<E>
 {
 	private final Iterator<? extends E> iterator;
-	private final Filter<E> filter;
+	private final Filter<? super E> filter;
 	private E next;
 	private boolean done;
 
@@ -72,7 +72,7 @@ public class FilteringIterator<E>
 	 * Construct an iterator with the specified
 	 * iterable and filter.
 	 */
-	public FilteringIterator(Iterable<? extends E> iterable, Filter<E> filter) {
+	public FilteringIterator(Iterable<? extends E> iterable, Filter<? super E> filter) {
 		this(iterable.iterator(), filter);
 	}
 
@@ -80,7 +80,7 @@ public class FilteringIterator<E>
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<? extends E> iterator, Filter<E> filter) {
+	public FilteringIterator(Iterator<? extends E> iterator, Filter<? super E> filter) {
 		super();
 		if ((iterator == null) || (filter == null)) {
 			throw new NullPointerException();

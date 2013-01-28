@@ -33,6 +33,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -42,19 +43,22 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -66,6 +70,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
@@ -75,6 +80,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
@@ -498,7 +504,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ListIterable<MappingFileRef> getCombinedMappingFileRefs() {
-		return new CompositeListIterable<MappingFileRef>(
+		return IterableTools.insert(
 				this.impliedMappingFileRef,
 				this.getSpecifiedMappingFileRefs()
 			);
@@ -528,12 +534,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<MappingFile> getMappingFiles_() {
-		return new TransformationIterable<MappingFileRef, MappingFile>(this.getMappingFileRefs()) {
-			@Override
-			protected MappingFile transform(MappingFileRef ref) {
-				return ref.getMappingFile();
-			}
-		};
+		return IterableTools.transform(this.getMappingFileRefs(), MappingFileRef.MAPPING_FILE_TRANSFORMER);
 	}
 
 
@@ -1534,36 +1535,17 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<Generator> getMappingFileGenerators() {
-		return new CompositeIterable<Generator>(this.getMappingFileGeneratorLists());
-	}
-
-	protected Iterable<Iterable<Generator>> getMappingFileGeneratorLists() {
-		return new TransformationIterable<MappingFileRef, Iterable<Generator>>(this.getMappingFileRefs()) {
-					@Override
-					protected Iterable<Generator> transform(MappingFileRef mappingFileRef) {
-						return mappingFileRef.getMappingFileGenerators();
-					}
-				};
+		return IterableTools.compositeIterable(this.getMappingFileRefs(), MappingFileRef.MAPPING_FILE_GENERATORS_TRANSFORMER);
 	}
 
 	/**
 	 * Include "overridden" Java generators.
 	 */
 	protected Iterable<JavaGenerator> getAllJavaGenerators() {
-		return new CompositeIterable<JavaGenerator>(this.getAllJavaTypeMappingGeneratorLists());
+		return IterableTools.compositeIterable(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER);
 	}
 
-	protected Iterable<Iterable<JavaGenerator>> getAllJavaTypeMappingGeneratorLists() {
-		return new TransformationIterable<TypeMapping, Iterable<JavaGenerator>>(this.getAllJavaTypeMappingsUnique()) {
-					@Override
-					protected Iterable<JavaGenerator> transform(TypeMapping typeMapping) {
-						return new SubIterableWrapper<Generator, JavaGenerator>(this.transform_(typeMapping));
-					}
-					protected Iterable<Generator> transform_(TypeMapping typeMapping) {
-						return typeMapping.getGenerators();
-					}
-				};
-	}
+	protected static final Transformer<TypeMapping, Iterable<JavaGenerator>> TYPE_MAPPING_JAVA_GENERATORS_TRANSFORMER = TransformerTools.lateralTransformer(TypeMapping.GENERATORS_TRANSFORMER);
 
 	// ***** metadata conversion
 	public boolean hasConvertibleJavaGenerators() {
@@ -1635,44 +1617,20 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<Query> getMappingFileQueries() {
-		return new CompositeIterable<Query>(this.getMappingFileQueryLists());
-	}
-
-	protected Iterable<Iterable<Query>> getMappingFileQueryLists() {
-		return new TransformationIterable<MappingFileRef, Iterable<Query>>(this.getMappingFileRefs()) {
-					@Override
-					protected Iterable<Query> transform(MappingFileRef mappingFileRef) {
-						return mappingFileRef.getMappingFileQueries();
-					}
-				};
+		return IterableTools.compositeIterable(this.getMappingFileRefs(), MappingFileRef.MAPPING_FILE_QUERIES_TRANSFORMER);
 	}
 
 	/**
 	 * Include "overridden" Java queries.
 	 */
 	protected Iterable<JavaQuery> getAllJavaQueries() {
-		return new CompositeIterable<JavaQuery>(this.getAllJavaTypeMappingQueryLists());
+		return IterableTools.compositeIterable(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER);
 	}
 
-	protected Iterable<Iterable<JavaQuery>> getAllJavaTypeMappingQueryLists() {
-		return new TransformationIterable<TypeMapping, Iterable<JavaQuery>>(this.getAllJavaTypeMappingsUnique()) {
-					@Override
-					protected Iterable<JavaQuery> transform(TypeMapping typeMapping) {
-						return new SubIterableWrapper<Query, JavaQuery>(this.transform_(typeMapping));
-					}
-					protected Iterable<Query> transform_(TypeMapping typeMapping) {
-						return typeMapping.getQueries();
-					}
-				};
-	}
+	protected static final Transformer<TypeMapping, Iterable<JavaQuery>> TYPE_MAPPING_JAVA_QUERIES_TRANSFORMER = TransformerTools.lateralTransformer(TypeMapping.QUERIES_TRANSFORMER);
 
 	protected Iterable<TypeMapping> getAllJavaTypeMappingsUnique() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getAllJavaPersistentTypesUnique()) {
-					@Override
-					protected TypeMapping transform(PersistentType persistentType) {
-						return persistentType.getMapping();
-					}
-				};
+		return IterableTools.transform(this.getAllJavaPersistentTypesUnique(), PersistentType.MAPPING_TRANSFORMER);
 	}
 
 	// ***** metadata conversion
@@ -1716,14 +1674,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<PersistentType> getMappingFilePersistentTypes() {
-		return new CompositeIterable<PersistentType>(this.getMappingFilePersistentTypeLists());
-	}
-
-	protected Iterable<Iterable<? extends PersistentType>> getMappingFilePersistentTypeLists() {
-		return new TransformationIterable<PersistentTypeContainer, Iterable<? extends PersistentType>>(
-					this.getMappingFileRefs(),
-					PersistentTypeContainer.TRANSFORMER
-				);
+		return IterableTools.compositeIterable(this.getMappingFileRefs(), PersistentTypeContainer.TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1750,29 +1701,16 @@ public abstract class AbstractPersistenceUnit
 	 * @see #getClassRefPersistentTypes()
 	 */
 	protected Iterable<PersistentType> getClassRefPersistentTypes_() {
-		return new TransformationIterable<ClassRef, PersistentType>(this.getClassRefs()) {
-			@Override
-			protected PersistentType transform(ClassRef classRef) {
-				return classRef.getJavaPersistentType();
-			}
-		};
+		return IterableTools.transform(this.getClassRefs(), CLASS_REF_PERSISTENT_TYPE_TRANSFORMER);
 	}
+
+	protected static final Transformer<ClassRef, PersistentType> CLASS_REF_PERSISTENT_TYPE_TRANSFORMER = TransformerTools.superTransformer(ClassRef.JAVA_PERSISTENT_TYPE_TRANSFORMER);
 
 	/**
 	 * We only get <em>annotated</em> types from jar files.
 	 */
 	protected Iterable<PersistentType> getJarFilePersistentTypes() {
-		return new CompositeIterable<PersistentType>(this.getJarFilePersistentTypeLists());
-	}
-
-	/**
-	 * We only get <em>annotated</em> types from jar files.
-	 */
-	protected Iterable<Iterable<? extends PersistentType>> getJarFilePersistentTypeLists() {
-		return new TransformationIterable<PersistentTypeContainer, Iterable<? extends PersistentType>>(
-				this.getJarFileRefs(),
-				PersistentTypeContainer.TRANSFORMER
-			);
+		return IterableTools.compositeIterable(this.getJarFileRefs(), PersistentTypeContainer.TRANSFORMER);
 	}
 
 	public PersistentType getPersistentType(String typeName) {
@@ -1861,11 +1799,11 @@ public abstract class AbstractPersistenceUnit
 	 * Add the specified persistent types to
 	 * the specified map keyed by persistent type name.
 	 */
-	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType> persistentTypeMap) {
+	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType> map) {
 		for (PersistentType pt : persistentTypes) {
 			String ptName = pt.getName();
 			if (ptName != null) {
-				persistentTypeMap.put(ptName, pt);
+				map.put(ptName, pt);
 			}
 		}
 	}
@@ -1890,12 +1828,7 @@ public abstract class AbstractPersistenceUnit
 	 * @see #getMappingFileJavaPersistentTypes()
 	 */
 	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes_() {
-		return new TransformationIterable<PersistentType, PersistentType>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected PersistentType transform(PersistentType mappingFilePersistentType) {
-				return mappingFilePersistentType.getOverriddenPersistentType();
-			}
-		};
+		return IterableTools.transform(this.getMappingFilePersistentTypes(), PersistentType.OVERRIDDEN_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 
@@ -1936,12 +1869,7 @@ public abstract class AbstractPersistenceUnit
 
 	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...
 	protected Iterable<TypeMapping> getTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getPersistentTypes()) {
-				@Override
-				protected TypeMapping transform(PersistentType persistentType) {
-					return persistentType.getMapping();  // the mapping should never be null
-				}
-			};
+		return IterableTools.transform(this.getPersistentTypes(), PersistentType.MAPPING_TRANSFORMER);
 	}
 
 	/**
@@ -1976,12 +1904,7 @@ public abstract class AbstractPersistenceUnit
 	 * files (i.e. excluding the Java type mappings).
 	 */
 	protected Iterable<TypeMapping> getMappingFileTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected TypeMapping transform(PersistentType persistentType) {
-				return persistentType.getMapping();
-			}
-		};
+		return IterableTools.transform(this.getMappingFilePersistentTypes(), PersistentType.MAPPING_TRANSFORMER);
 	}
 
 	protected HashSet<String> convertToClassNames(Collection<? extends TypeMapping> typeMappings) {
@@ -2016,12 +1939,7 @@ public abstract class AbstractPersistenceUnit
 	 * @see #getJavaPersistentTypes()
 	 */
 	protected Iterable<TypeMapping> getJavaTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getJavaPersistentTypes()) {
-			@Override
-			protected TypeMapping transform(PersistentType persistentType) {
-				return persistentType.getMapping();
-			}
-		};
+		return IterableTools.transform(this.getJavaPersistentTypes(), PersistentType.MAPPING_TRANSFORMER);
 	}
 
 
@@ -2112,9 +2030,9 @@ public abstract class AbstractPersistenceUnit
 			if (sm.isCanceled()) {
 				return;
 			}
-			String name = mappedType.getFullyQualifiedName();
-			sm.subTask(NLS.bind(JptCoreMessages.MAKE_PERSISTENT_ANNOTATING_CLASS, name));
-			JavaResourceAbstractType type = this.getJpaProject().getJavaResourceType(name);
+			String typeName = mappedType.getFullyQualifiedName();
+			sm.subTask(NLS.bind(JptCoreMessages.MAKE_PERSISTENT_ANNOTATING_CLASS, typeName));
+			JavaResourceAbstractType type = this.getJpaProject().getJavaResourceType(typeName);
 			type.addAnnotation(this.getJavaTypeMappingDefinition(mappedType.getMappingKey()).getAnnotationName());
 			sm.worked(1);
 		}
@@ -2126,8 +2044,8 @@ public abstract class AbstractPersistenceUnit
 		Collection<XmlJavaClassRef> addedXmlClassRefs = new ArrayList<XmlJavaClassRef>();
 		Collection<ClassRef> addedClassRefs = new ArrayList<ClassRef>();
 		for (AbstractPersistenceUnit.MappedType mappedType : mappedTypes) {
-			String name = mappedType.getFullyQualifiedName();
-			XmlJavaClassRef xmlClassRef = this.buildXmlJavaClassRef(name);
+			String typeName = mappedType.getFullyQualifiedName();
+			XmlJavaClassRef xmlClassRef = this.buildXmlJavaClassRef(typeName);
 			addedXmlClassRefs.add(xmlClassRef);
 			addedClassRefs.add(this.buildClassRef(xmlClassRef));
 		}
@@ -2642,25 +2560,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
-		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<ClassRef, Iterable<DeleteEdit>>(this.getSpecifiedClassRefs()) {
-				@Override
-				protected Iterable<DeleteEdit> transform(ClassRef classRef) {
-					return classRef.createDeleteTypeEdits(type);
-				}
-			}
-		);
+		return IterableTools.compositeIterable(this.getSpecifiedClassRefs(), new DeleteTypeRefactoringParticipant.DeleteTypeEditsTransformer(type));
 	}
 
-	public Iterable<DeleteEdit> createDeleteMappingFileEdits(final IFile file) {
-		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<MappingFileRef, Iterable<DeleteEdit>>(this.getSpecifiedMappingFileRefs()) {
-				@Override
-				protected Iterable<DeleteEdit> transform(MappingFileRef mappingFileRef) {
-					return mappingFileRef.createDeleteMappingFileEdits(file);
-				}
-			}
-		);
+	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
+		return IterableTools.compositeIterable(this.getSpecifiedMappingFileRefs(), new MappingFileRefactoringParticipant.DeleteMappingFileEditsTransformer(file));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -2670,15 +2574,8 @@ public abstract class AbstractPersistenceUnit
 					this.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedClassRefRenameTypeEdits(final IType originalType, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<ClassRef, Iterable<ReplaceEdit>>(this.getSpecifiedClassRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(ClassRef classRef) {
-					return classRef.createRenameTypeEdits(originalType, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSpecifiedClassRefRenameTypeEdits(IType originalType, String newName) {
+		return IterableTools.compositeIterable(this.getSpecifiedClassRefs(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenameTypeEdits(IType originalType, String newName) {
@@ -2692,15 +2589,8 @@ public abstract class AbstractPersistenceUnit
 			this.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedClassRefMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<ClassRef, Iterable<ReplaceEdit>>(this.getSpecifiedClassRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(ClassRef classRef) {
-					return classRef.createMoveTypeEdits(originalType, newPackage);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSpecifiedClassRefMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return IterableTools.compositeIterable(this.getSpecifiedClassRefs(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
@@ -2715,15 +2605,8 @@ public abstract class AbstractPersistenceUnit
 			this.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedClassRefRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<ClassRef, Iterable<ReplaceEdit>>(this.getSpecifiedClassRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(ClassRef classRef) {
-					return classRef.createRenamePackageEdits(originalPackage, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createSpecifiedClassRefRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.compositeIterable(this.getSpecifiedClassRefs(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenamePackageEdits(IPackageFragment originalPackage, String newName) {
@@ -2734,56 +2617,28 @@ public abstract class AbstractPersistenceUnit
 		return this.createMappingFileRefRenameFolderEdits(originalFolder, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createMappingFileRefRenameFolderEdits(final IFolder originalFolder, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(this.getSpecifiedMappingFileRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
-					return mappingFileRef.createRenameFolderEdits(originalFolder, newName);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createMappingFileRefRenameFolderEdits(IFolder originalFolder, String newName) {
+		return IterableTools.compositeIterable(this.getSpecifiedMappingFileRefs(), new MappingFileRefactoringParticipant.RenameFolderEditsTransformer(originalFolder, newName));
 	}
 
-	public Iterable<ReplaceEdit> createRenameMappingFileEdits(final IFile originalFile, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(this.getMappingFileRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
-					return mappingFileRef.createRenameMappingFileEdits(originalFile, newName);
-				}
-			}
-		);
+	public Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName) {
+		return IterableTools.compositeIterable(this.getSpecifiedMappingFileRefs(), new MappingFileRefactoringParticipant.RenameMappingFileEditsTransformer(originalFile, newName));
 	}
 
 	public int findInsertLocationForMappingFileRef() {
 		return this.xmlPersistenceUnit.getLocationToInsertMappingFileRef();
 	}
 
-	public Iterable<ReplaceEdit> createMoveMappingFileEdits(final IFile originalFile, final IPath runtineDestination) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(this.getMappingFileRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
-					return mappingFileRef.createMoveMappingFileEdits(originalFile, runtineDestination);
-				}
-			}
-		);
+	public Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath destination) {
+		return IterableTools.compositeIterable(this.getMappingFileRefs(), new MappingFileRefactoringParticipant.MoveMappingFileEditsTransformer(originalFile, destination));
 	}
 
 	public Iterable<ReplaceEdit> createMoveFolderEdits(final IFolder originalFolder, final IPath runtimeDestination) {
 		return this.createMappingFileRefMoveFolderReplaceEdits(originalFolder, runtimeDestination);
 	}
 
-	protected Iterable<ReplaceEdit> createMappingFileRefMoveFolderReplaceEdits(final IFolder originalFolder, final IPath runtimeDestination) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(this.getSpecifiedMappingFileRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
-					return mappingFileRef.createMoveFolderEdits(originalFolder, runtimeDestination);
-				}
-			}
-		);
+	protected Iterable<ReplaceEdit> createMappingFileRefMoveFolderReplaceEdits(IFolder originalFolder, IPath destination) {
+		return IterableTools.compositeIterable(this.getMappingFileRefs(), new MappingFileRefactoringParticipant.MoveFolderEditsTransformer(originalFolder, destination));
 	}
 
 
@@ -2805,12 +2660,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<IFile> getGeneratedMetamodelFiles() {
-		return new TransformationIterable<JavaResourceAbstractType, IFile>(this.getGeneratedMetamodelTopLevelTypes()) {
-			@Override
-			protected IFile transform(JavaResourceAbstractType jrpt) {
-				return jrpt.getFile();
-			}
-		};
+		return IterableTools.transform(this.getGeneratedMetamodelTopLevelTypes(), JavaResourceNode.FILE_TRANSFORMER);
 	}
 
 	protected Iterable<JavaResourceAbstractType> getGeneratedMetamodelTopLevelTypes() {

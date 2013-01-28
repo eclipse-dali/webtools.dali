@@ -23,10 +23,9 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -213,15 +212,22 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		}
 	}
 
-	protected Iterable<DeleteEdit> createPersistenceXmlDeleteEdits(final PersistenceUnit persistenceUnit) {
-		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<IType, Iterable<DeleteEdit>>(this.getTypesOnClasspath(persistenceUnit.getJpaProject())) {
-				@Override
-				protected Iterable<DeleteEdit> transform(IType type) {
-					return persistenceUnit.createDeleteTypeEdits(type);
-				}
-			}
-		);
+	protected Iterable<DeleteEdit> createPersistenceXmlDeleteEdits(PersistenceUnit persistenceUnit) {
+		return IterableTools.compositeIterable(this.getTypesOnClasspath(persistenceUnit.getJpaProject()), new PersistenceUnitDeleteTypeEditsTransformer(persistenceUnit));
+	}
+
+	public static class PersistenceUnitDeleteTypeEditsTransformer
+		extends TransformerAdapter<IType, Iterable<DeleteEdit>>
+	{
+		protected final PersistenceUnit persistenceUnit;
+		public PersistenceUnitDeleteTypeEditsTransformer(PersistenceUnit persistenceUnit) {
+			super();
+			this.persistenceUnit = persistenceUnit;
+		}
+		@Override
+		public Iterable<DeleteEdit> transform(IType type) {
+			return this.persistenceUnit.createDeleteTypeEdits(type);
+		}
 	}
 
 	protected Iterable<IType> getTypesOnClasspath(final JpaProject jpaProject) {
@@ -250,15 +256,22 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		this.addEdits(textChange, deleteTypeEdits);
 	}
 
-	private Iterable<DeleteEdit> createMappingFileDeleteTypeEdits(final MappingFileRef mappingFileRef) {
-		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<IType, Iterable<DeleteEdit>>(this.getTypesOnClasspath(mappingFileRef.getJpaProject())) {
-				@Override
-				protected Iterable<DeleteEdit> transform(IType type) {
-					return mappingFileRef.createDeleteTypeEdits(type);
-				}
-			}
-		);
+	private Iterable<DeleteEdit> createMappingFileDeleteTypeEdits(MappingFileRef mappingFileRef) {
+		return IterableTools.compositeIterable(this.getTypesOnClasspath(mappingFileRef.getJpaProject()), new MappingFileDeleteTypeEditsTransformer(mappingFileRef));
+	}
+
+	public static class MappingFileDeleteTypeEditsTransformer
+		extends TransformerAdapter<IType, Iterable<DeleteEdit>>
+	{
+		protected final MappingFileRef mappingFileRef;
+		public MappingFileDeleteTypeEditsTransformer(MappingFileRef mappingFileRef) {
+			super();
+			this.mappingFileRef = mappingFileRef;
+		}
+		@Override
+		public Iterable<DeleteEdit> transform(IType type) {
+			return this.mappingFileRef.createDeleteTypeEdits(type);
+		}
 	}
 	
 	protected void addMappingFileDeleteTypeChange(IFile mappingFile, CompositeChange compositeChange) {

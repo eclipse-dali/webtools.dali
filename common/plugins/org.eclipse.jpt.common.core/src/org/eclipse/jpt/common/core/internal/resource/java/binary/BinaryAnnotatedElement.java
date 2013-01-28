@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMemberValuePair;
@@ -187,17 +186,14 @@ abstract class BinaryAnnotatedElement
 	// ********** combination annotations **********
 	
 	private Iterable<NestableAnnotation> getNestableAnnotations() {
-		return new CompositeIterable<NestableAnnotation>(this.getNestableAnnotationLists());
-	}
-	
-	private Iterable<Iterable<NestableAnnotation>> getNestableAnnotationLists() {
-		return new TransformationIterable<AnnotationContainer, Iterable<NestableAnnotation>>(this.getAnnotationContainers(), ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getAnnotationContainers(), ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER);
 	}
 	
 	private static final Transformer<AnnotationContainer, Iterable<NestableAnnotation>> ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER = new AnnotationContainerNestedAnnotationsTransformer();
 	
 	static final class AnnotationContainerNestedAnnotationsTransformer
-			extends TransformerAdapter<AnnotationContainer, Iterable<NestableAnnotation>> {
+			extends TransformerAdapter<AnnotationContainer, Iterable<NestableAnnotation>>
+	{
 		@Override
 		public Iterable<NestableAnnotation> transform(AnnotationContainer container) {
 			return container.getNestedAnnotations();

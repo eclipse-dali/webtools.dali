@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.core;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A JAXB Project contains JAXB files for all files in the project that
@@ -44,7 +46,16 @@ public interface JaxbFile
 	 * compilation unit, a JPA XML resource, or a JPA package fragment root (JAR).
 	 */
 	JptResourceModel getResourceModel();
-	
+	Transformer<JaxbFile, JptResourceModel> RESOURCE_MODEL_TRANSFORMER = new ResourceModelTransformer();
+	class ResourceModelTransformer
+		extends TransformerAdapter<JaxbFile, JptResourceModel>
+	{
+		@Override
+		public JptResourceModel transform(JaxbFile jaxbFile) {
+			return jaxbFile.getResourceModel();
+		}
+	}
+
 	/**
 	 * Convenience method. Return the resource model corresponding to the JPA
 	 * file if the file's content is a "kind-of" the specified content type;

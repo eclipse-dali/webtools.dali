@@ -69,12 +69,12 @@ import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -402,7 +402,7 @@ public abstract class AbstractJpaProject
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceCompilationUnit> getCombinedJavaResourceCompilationUnits() {
-		return new CompositeIterable<JavaResourceCompilationUnit>(
+		return IterableTools.compositeIterable(
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getExternalJavaResourceCompilationUnits()
 				);
@@ -861,12 +861,7 @@ public abstract class AbstractJpaProject
 	}
 
 	public Iterable<String> getTypeMappingAnnotationNames() {
-		return new TransformationIterable<JavaTypeMappingDefinition, String>(this.getJpaPlatform().getJavaTypeMappingDefinitions()) {
-			@Override
-			protected String transform(JavaTypeMappingDefinition o) {
-				return o.getAnnotationName();
-			}
-		};
+		return IterableTools.transform(this.getJpaPlatform().getJavaTypeMappingDefinitions(), JavaTypeMappingDefinition.ANNOTATION_NAME_TRANSFORMER);
 	}
 
 	/**
@@ -875,33 +870,15 @@ public abstract class AbstractJpaProject
 	 * <code>persistence.xml</code>
 	 */
 	protected Iterable<JavaResourceAbstractType> getInternalSourceJavaResourceTypes() {
-		return new CompositeIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypeLists());
-	}
-
-	/**
-	 * Return only those Java resource persistent types that are directly
-	 * part of the JPA project, ignoring those in JARs referenced in
-	 * <code>persistence.xml</code>
-	 */
-	protected Iterable<Iterable<JavaResourceAbstractType>> getInternalSourceJavaResourceTypeLists() {
-		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceAbstractType>>(this.getInternalJavaResourceCompilationUnits()) {
-			@Override
-			protected Iterable<JavaResourceAbstractType> transform(final JavaResourceCompilationUnit compilationUnit) {
-				return compilationUnit.getTypes();  // *all* the types in the compilation unit
-			}
-		};
+		// get *all* the types in each compilation unit
+		return IterableTools.compositeIterable(this.getInternalJavaResourceCompilationUnits(), JavaResourceNode.Root.TYPES_TRANSFORMER);
 	}
 
 	/**
 	 * Return the JPA project's resource compilation units.
 	 */
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
-		return new TransformationIterable<JpaFile, JavaResourceCompilationUnit>(this.getJavaSourceJpaFiles()) {
-			@Override
-			protected JavaResourceCompilationUnit transform(JpaFile jpaFile) {
-				return (JavaResourceCompilationUnit) jpaFile.getResourceModel();
-			}
-		};
+		return IterableTools.subIterable(IterableTools.transform(this.getJavaSourceJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**
@@ -938,25 +915,12 @@ public abstract class AbstractJpaProject
 	 * persistence.xml
 	 */
 	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
-		return new CompositeIterable<JavaResourceAbstractType>(this.getJavaResourceTypeSets());
-	}
-
-	/**
-	 * return *all* the Java resource persistent types, including those in JARs referenced in
-	 * persistence.xml
-	 */
-	protected Iterable<Iterable<JavaResourceAbstractType>> getJavaResourceTypeSets() {
-		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourceAbstractType>>(this.getJavaResourceNodeRoots()) {
-			@Override
-			protected Iterable<JavaResourceAbstractType> transform(final JavaResourceNode.Root root) {
-				return root.getTypes();  // *all* the types held by the root
-			}
-		};
+		return IterableTools.compositeIterable(this.getJavaResourceNodeRoots(), JavaResourceNode.Root.TYPES_TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
-		return new CompositeIterable<JavaResourceNode.Root>(
+		return IterableTools.compositeIterable(
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getInternalJavaResourcePackageFragmentRoots(),
 					this.getExternalJavaResourceCompilationUnits(),
@@ -977,19 +941,17 @@ public abstract class AbstractJpaProject
 	}
 
 	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
-		return new FilteringIterable<JavaResourcePackage>(
-				new TransformationIterable<JpaFile, JavaResourcePackage>(this.getPackageInfoSourceJpaFiles()) {
-				@Override
-				protected JavaResourcePackage transform(JpaFile jpaFile) {
-					return ((JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel()).getPackage();
-				}
-			})
-			{
-			@Override
-			protected boolean accept(JavaResourcePackage packageInfo) {
-				return packageInfo != null;
-			}
-		};
+		return IterableTools.notNulls(IterableTools.transform(this.getPackageInfoSourceJpaFiles(), JPA_FILE_JAVA_RESOURCE_PACKAGE_TRANSFORMER));
+	}
+
+	protected static final Transformer<JpaFile, JavaResourcePackage> JPA_FILE_JAVA_RESOURCE_PACKAGE_TRANSFORMER = new JpaFileJavaResourcePackageTransformer();
+	public static class JpaFileJavaResourcePackageTransformer
+		extends TransformerAdapter<JpaFile, JavaResourcePackage>
+	{
+		@Override
+		public JavaResourcePackage transform(JpaFile jpaFile) {
+			return ((JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel()).getPackage();
+		}
 	}
 
 	/**
@@ -1018,12 +980,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JavaResourcePackageFragmentRoot> getInternalJavaResourcePackageFragmentRoots() {
-		return new TransformationIterable<JpaFile, JavaResourcePackageFragmentRoot>(this.getJarJpaFiles()) {
-			@Override
-			protected JavaResourcePackageFragmentRoot transform(JpaFile jpaFile) {
-				return (JavaResourcePackageFragmentRoot) jpaFile.getResourceModel();
-			}
-		};
+		return IterableTools.subIterable(IterableTools.transform(this.getJarJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**
@@ -1201,19 +1158,24 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<String> getJavaSourceFolderNames_() throws JavaModelException {
-		return new TransformationIterable<IPackageFragmentRoot, String>(this.getJavaSourceFolders()) {
-			@Override
-			protected String transform(IPackageFragmentRoot pfr) {
-				try {
-					return this.transform_(pfr);
-				} catch (JavaModelException ex) {
-					return "Error: " + pfr.getPath(); //$NON-NLS-1$
-				}
+		return IterableTools.transform(this.getJavaSourceFolders(), PACKAGE_FRAGMENT_ROOT_PATH_TRANSFORMER);
+	}
+
+	protected static final Transformer<IPackageFragmentRoot, String> PACKAGE_FRAGMENT_ROOT_PATH_TRANSFORMER = new PackageFragmentRootPathTransformer();
+	public static class PackageFragmentRootPathTransformer
+		extends TransformerAdapter<IPackageFragmentRoot, String>
+	{
+		@Override
+		public String transform(IPackageFragmentRoot pfr) {
+			try {
+				return this.transform_(pfr);
+			} catch (JavaModelException ex) {
+				return "Error: " + pfr.getPath(); //$NON-NLS-1$
 			}
-			private String transform_(IPackageFragmentRoot pfr) throws JavaModelException {
-				return pfr.getUnderlyingResource().getProjectRelativePath().toString();
-			}
-		};
+		}
+		protected String transform_(IPackageFragmentRoot pfr) throws JavaModelException {
+			return pfr.getUnderlyingResource().getProjectRelativePath().toString();
+		}
 	}
 
 	protected Iterable<IPackageFragmentRoot> getJavaSourceFolders() throws JavaModelException {

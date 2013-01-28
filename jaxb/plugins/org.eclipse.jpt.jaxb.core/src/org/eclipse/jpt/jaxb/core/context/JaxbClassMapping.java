@@ -1,15 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
 public interface JaxbClassMapping
@@ -68,6 +70,16 @@ public interface JaxbClassMapping
 	String SUPERCLASS_PROPERTY = "superclass"; //$NON-NLS-1$
 	
 	JaxbClassMapping getSuperclass();
+
+	Transformer<JaxbClassMapping, JaxbClassMapping> SUPER_CLASS_TRANSFORMER = new SuperClassTransformer();
+	class SuperClassTransformer
+		extends AbstractTransformer<JaxbClassMapping, JaxbClassMapping>
+	{
+		@Override
+		protected JaxbClassMapping transform_(JaxbClassMapping mapping) {
+			return mapping.getSuperclass();
+		}
+	}
 	
 	
 	// ***** attributes *****
@@ -76,6 +88,16 @@ public interface JaxbClassMapping
 	 * Return the attributes defined on this class (not its superclass)
 	 */
 	Iterable<JaxbPersistentAttribute> getAttributes();
+
+	Transformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
+	class AttributesTransformer
+		extends AbstractTransformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>>
+	{
+		@Override
+		protected Iterable<JaxbPersistentAttribute> transform_(JaxbClassMapping mapping) {
+			return mapping.getAttributes();
+		}
+	}
 	
 	int getAttributesSize();
 	

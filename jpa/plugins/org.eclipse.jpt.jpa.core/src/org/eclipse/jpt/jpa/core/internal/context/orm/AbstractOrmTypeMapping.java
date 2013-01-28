@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -202,8 +199,8 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	/**
 	 * subclasses must override if they support specifying a parent class
 	 */
-	protected void setSpecifiedParentClassInXml(String parentClass) {
-		//no-op
+	protected void setSpecifiedParentClassInXml(@SuppressWarnings("unused") String parentClass) {
+		// NOP
 	}
 
 	/**
@@ -333,36 +330,19 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<AttributeMapping> getAttributeMappings() {
-		return new TransformationIterable<OrmReadOnlyPersistentAttribute, AttributeMapping>(this.getPersistentType().getAttributes()) {
-			@Override
-			protected AttributeMapping transform(OrmReadOnlyPersistentAttribute attribute) {
-				return attribute.getMapping();
-			}
-		};
+		return IterableTools.transform(this.getPersistentType().getAttributes(), OrmReadOnlyPersistentAttribute.MAPPING_TRANSFORMER);
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {
-		return new CompositeIterable<AttributeMapping>(this.getAllAttributeMappingsLists());
-	}
-
-	protected Iterable<Iterable<AttributeMapping>> getAllAttributeMappingsLists() {
-		return new TransformationIterable<TypeMapping, Iterable<AttributeMapping>>(this.getInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
 	}
 
 	public Iterable<String> getOverridableAttributeNames() {
-		return new CompositeIterable<String>(this.getOverridableAttributeNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getOverridableAttributeNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAttributeNames() {
-		return new CompositeIterable<String>(this.getAllOverridableAttributeNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getAllOverridableAttributeNamesLists() {
-		return new TransformationIterable<TypeMapping, Iterable<String>>(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<AttributeMapping> getAttributeMappings(final String mappingKey) {
@@ -409,19 +389,11 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<String> getOverridableAssociationNames() {
-		return new CompositeIterable<String>(this.getOverridableAssociationNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getOverridableAssociationNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAssociationNames() {
-		return new CompositeIterable<String>(this.getAllOverridableAssociationNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getAllOverridableAssociationNamesLists() {
-		return new TransformationIterable<TypeMapping, Iterable<String>>(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
 
 	public Relationship resolveOverriddenRelationship(String attributeName) {
@@ -463,12 +435,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	protected Iterable<TypeMapping> convertToMappings(Iterable<PersistentType> types) {
-		return new TransformationIterable<PersistentType, TypeMapping>(types) {
-			@Override
-			protected TypeMapping transform(PersistentType type) {
-				return type.getMapping();
-			}
-		};
+		return IterableTools.transform(types, PersistentType.MAPPING_TRANSFORMER);
 	}
 
 	public InheritanceType getInheritanceStrategy() {
@@ -518,8 +485,8 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return this.getPersistentType().isFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameTypeEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
@@ -528,14 +495,14 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return this.getPersistentType().isFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.getPersistentType().isIn(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
@@ -546,16 +513,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	// ********** generators **********
 
 	public Iterable<Generator> getGenerators() {
-		return new CompositeIterable<Generator>(this.getAttributeMappingGeneratorLists());
-	}
-
-	protected Iterable<Iterable<Generator>> getAttributeMappingGeneratorLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<Generator>>(this.getAttributeMappings()) {
-					@Override
-					protected Iterable<Generator> transform(AttributeMapping attributeMapping) {
-						return attributeMapping.getGenerators();
-					}
-				};
+		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
 	}
 
 

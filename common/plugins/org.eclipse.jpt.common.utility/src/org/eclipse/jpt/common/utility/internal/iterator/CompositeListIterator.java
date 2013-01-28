@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterator;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * A <code>CompositeListIterator</code> wraps a list
@@ -43,34 +38,6 @@ public class CompositeListIterator<E>
 
 
 	/**
-	 * Construct a list iterator on the elements in the specified list of lists.
-	 */
-	public CompositeListIterator(List<? extends List<E>> lists) {
-		this(
-			new TransformationListIterator<List<E>, ListIterator<E>>(lists.listIterator()) {
-				@Override
-				protected ListIterator<E> transform(List<E> list) {
-					return list.listIterator();
-				}
-			}
-		);
-	}
-
-	/**
-	 * Construct a list iterator on the elements in the specified list of lists.
-	 */
-	public CompositeListIterator(ListIterable<? extends ListIterable<E>> listIterables) {
-		this(
-			new TransformationListIterator<ListIterable<E>, ListIterator<E>>(listIterables.iterator()) {
-				@Override
-				protected ListIterator<E> transform(ListIterable<E> list) {
-					return list.iterator();
-				}
-			}
-		);
-	}
-
-	/**
 	 * Construct a list iterator with the specified list of list iterators.
 	 */
 	public CompositeListIterator(ListIterator<? extends ListIterator<E>> iterators) {
@@ -81,77 +48,6 @@ public class CompositeListIterator<E>
 		this.iterators = iterators;
 		this.nextIndex = 0;
 		this.nextReturned = false;
-	}
-
-	/**
-	 * Construct a list iterator with the specified object prepended
-	 * to the specified list.
-	 */
-	public CompositeListIterator(E object, List<E> list) {
-		this(object, list.listIterator());
-	}
-
-	/**
-	 * Construct a list iterator with the specified object prepended
-	 * to the specified list.
-	 */
-	public CompositeListIterator(E object, ListIterable<E> listIterable) {
-		this(object, listIterable.iterator());
-	}
-
-	/**
-	 * Construct a list iterator with the specified object prepended
-	 * to the specified iterator.
-	 */
-	@SuppressWarnings("unchecked")
-	public CompositeListIterator(E object, ListIterator<E> iterator) {
-		this(new SingleElementListIterator<E>(object), iterator);
-	}
-
-	/**
-	 * Construct a list iterator with the specified object appended
-	 * to the specified list.
-	 */
-	public CompositeListIterator(List<E> list, E object) {
-		this(list.listIterator(), object);
-	}
-
-	/**
-	 * Construct a list iterator with the specified object appended
-	 * to the specified list.
-	 */
-	public CompositeListIterator(ListIterable<E> listIterable, E object) {
-		this(listIterable.iterator(), object);
-	}
-
-	/**
-	 * Construct a list iterator with the specified object appended
-	 * to the specified iterator.
-	 */
-	@SuppressWarnings("unchecked")
-	public CompositeListIterator(ListIterator<E> iterator, E object) {
-		this(iterator, new SingleElementListIterator<E>(object));
-	}
-
-	/**
-	 * Construct a list iterator with the specified lists.
-	 */
-	public CompositeListIterator(List<E>... lists) {
-		this(Arrays.asList(lists));
-	}
-
-	/**
-	 * Construct a list iterator with the specified lists.
-	 */
-	public CompositeListIterator(ListIterable<E>... listIterables) {
-		this(new ArrayListIterable<ListIterable<E>>(listIterables));
-	}
-
-	/**
-	 * Construct a list iterator with the specified list iterators.
-	 */
-	public CompositeListIterator(ListIterator<E>... iterators) {
-		this(new ArrayListIterator<ListIterator<E>>(iterators));
 	}
 
 	public void add(E o) {

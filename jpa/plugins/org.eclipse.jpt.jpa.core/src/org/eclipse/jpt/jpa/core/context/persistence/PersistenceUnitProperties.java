@@ -1,19 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2010 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -25,7 +23,8 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @version 3.0
  * @since 2.3
  */
-public interface PersistenceUnitProperties extends Model
+public interface PersistenceUnitProperties
+	extends Model, TypeRefactoringParticipant
 {
 	/**
 	 * Method used for identifying the given property.
@@ -56,26 +55,4 @@ public interface PersistenceUnitProperties extends Model
 	 * A Property with the given name was removed
 	 */
 	void propertyRemoved(String propertyName);
-
-
-	// ************ refactoring **************
-
-	/**
-	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
-	 */
-	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-
-	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
-	 */
-	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
-
-	/**
-	 * Create ReplaceEdits for renaming any reference to the originalPackage newName.
-	 * The originalPackage has not yet been renamed.
-	 */
-	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
-
 }

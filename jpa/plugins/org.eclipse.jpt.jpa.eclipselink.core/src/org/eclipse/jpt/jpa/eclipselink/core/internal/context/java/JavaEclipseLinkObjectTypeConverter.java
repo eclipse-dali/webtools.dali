@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
@@ -223,12 +223,7 @@ public class JavaEclipseLinkObjectTypeConverter
 	// ********** data values **********
 
 	public Iterable<String> getDataValues() {
-		return new TransformationIterable<JavaEclipseLinkConversionValue, String>(this.getConversionValues()) {
-			@Override
-			protected String transform(JavaEclipseLinkConversionValue conversionValue) {
-				return conversionValue.getDataValue();
-			}
-		};
+		return IterableTools.transform(this.getConversionValues(), EclipseLinkConversionValue.DATA_VALUE_TRANSFORMER);
 	}
 
 	public int getDataValuesSize() {

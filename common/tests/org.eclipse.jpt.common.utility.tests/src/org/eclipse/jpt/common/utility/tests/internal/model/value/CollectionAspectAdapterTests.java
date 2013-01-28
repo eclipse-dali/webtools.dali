@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,13 +12,10 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -31,8 +28,8 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -270,7 +267,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 			this.descriptions = new HashBag<String>();
 		}
 		public Iterator<String> names() {
-			return new ReadOnlyIterator<String>(this.names);
+			return IteratorTools.readOnlyIterator(this.names.iterator());
 		}
 		public void addName(String name) {
 			if (this.names.add(name)) {
@@ -296,7 +293,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 			}
 		}
 		public Iterator<String> descriptions() {
-			return new ReadOnlyIterator<String>(this.descriptions);
+			return IteratorTools.readOnlyIterator(this.descriptions.iterator());
 		}
 		public void addDescription(String description) {
 			if (this.descriptions.add(description)) {

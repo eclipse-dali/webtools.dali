@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -37,6 +36,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
@@ -467,12 +467,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private Iterator<String> buildTargetDatabases() {
-		return new TransformationIterator<TargetDatabase, String>(IteratorTools.iterator(TargetDatabase.values())) {
-			@Override
-			protected String transform(TargetDatabase next) {
-				return next.name();
-			}
-		};
+		return IteratorTools.transform(IteratorTools.iterator(TargetDatabase.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildTargetDatabasesCollectionHolder() {
@@ -602,12 +597,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private Iterator<String> buildTargetServers() {
-		return new TransformationIterator<TargetServer, String>(IteratorTools.iterator(TargetServer.values())) {
-			@Override
-			protected String transform(TargetServer next) {
-				return next.name();
-			}
-		};
+		return IteratorTools.transform(IteratorTools.iterator(TargetServer.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
 	private CollectionValueModel<String> buildTargetServersCollectionHolder() {

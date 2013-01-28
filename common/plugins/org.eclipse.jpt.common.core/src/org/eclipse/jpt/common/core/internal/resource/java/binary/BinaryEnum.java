@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
  * binary enum
@@ -81,19 +80,23 @@ final class BinaryEnum
 	}
 	
 	private Iterable<JavaResourceEnumConstant> buildEnumConstants() {
-		return new TransformationIterable<IField, JavaResourceEnumConstant>(getEnumConstants(getElement())) {
-			@Override
-			protected JavaResourceEnumConstant transform(IField field) {
-				return BinaryEnum.this.buildEnumConstant(field);
-			}
-		};
+		return IterableTools.transform(getEnumConstants(getElement()), new FieldEnumConstantTransformer());
+	}
+
+	/* CU private */ class FieldEnumConstantTransformer
+		extends TransformerAdapter<IField, JavaResourceEnumConstant>
+	{
+		@Override
+		public JavaResourceEnumConstant transform(IField field) {
+			return BinaryEnum.this.buildEnumConstant(field);
+		}
 	}
 	
 	private Iterable<IField> getEnumConstants(IType type) {
 		return new FilteringIterable<IField>(IterableTools.iterable(this.getFields(type))) {
 			@Override
 			protected boolean accept(IField jdtField) {
-				return isEnumConstant(jdtField);
+				return fieldIsEnumConstant(jdtField);
 			}
 		};
 	}
@@ -110,7 +113,7 @@ final class BinaryEnum
 	
 	private static final IField[] EMPTY_FIELD_ARRAY = new IField[0];
 	
-	private boolean isEnumConstant(IField field) {
+	/* CU private */ boolean fieldIsEnumConstant(IField field) {
 		try {
 			return field.isEnumConstant();
 		}
@@ -120,7 +123,7 @@ final class BinaryEnum
 		}
 	}
 	
-	private JavaResourceEnumConstant buildEnumConstant(IField jdtEnumConstant) {
+	/* CU private */ JavaResourceEnumConstant buildEnumConstant(IField jdtEnumConstant) {
 		return new BinaryEnumConstant(this, jdtEnumConstant);
 	}
 }

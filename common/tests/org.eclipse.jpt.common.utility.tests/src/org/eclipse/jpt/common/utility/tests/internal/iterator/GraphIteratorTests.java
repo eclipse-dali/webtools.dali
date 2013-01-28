@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,14 +14,15 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterator.GraphIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class GraphIteratorTests extends TestCase {
+public class GraphIteratorTests
+	extends TestCase
+{
 	/** this will be populated with all the nodes created for the test */
 	Collection<GraphNode> nodes = new ArrayList<GraphNode>();
 
@@ -35,15 +36,8 @@ public class GraphIteratorTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testHasNext1() {
-		this.verifyHasNext(this.buildGraphIterator1());
-	}
-
-	public void testHasNext2() {
-		this.verifyHasNext(this.buildGraphIterator2());
-	}
-
-	private void verifyHasNext(Iterator<GraphNode> iterator) {
+	public void testHasNext() {
+		Iterator<GraphNode> iterator = this.buildGraphIterator();
 		int i = 0;
 		while (iterator.hasNext()) {
 			iterator.next();
@@ -52,29 +46,15 @@ public class GraphIteratorTests extends TestCase {
 		assertEquals(this.nodes.size(), i);
 	}
 
-	public void testNext1() {
-		this.verifyNext(this.buildGraphIterator1());
-	}
-
-	public void testNext2() {
-		this.verifyNext(this.buildGraphIterator2());
-	}
-
-	private void verifyNext(Iterator<GraphNode> iterator) {
+	public void testNext() {
+		Iterator<GraphNode> iterator = this.buildGraphIterator();
 		while (iterator.hasNext()) {
 			assertTrue("bogus element", this.nodes.contains(iterator.next()));
 		}
 	}
 
-	public void testNoSuchElementException1() {
-		this.verifyNoSuchElementException(this.buildGraphIterator1());
-	}
-
-	public void testNoSuchElementException2() {
-		this.verifyNoSuchElementException(this.buildGraphIterator2());
-	}
-
-	private void verifyNoSuchElementException(Iterator<GraphNode> iterator) {
+	public void testNoSuchElementException() {
+		Iterator<GraphNode> iterator = this.buildGraphIterator();
 		boolean exCaught = false;
 		while (iterator.hasNext()) {
 			iterator.next();
@@ -87,15 +67,8 @@ public class GraphIteratorTests extends TestCase {
 		assertTrue("NoSuchElementException not thrown", exCaught);
 	}
 
-	public void testSize1() {
-		this.verifySize(this.buildGraphIterator1());
-	}
-
-	public void testSize2() {
-		this.verifySize(this.buildGraphIterator2());
-	}
-
-	private void verifySize(Iterator<GraphNode> iterator) {
+	public void testSize() {
+		Iterator<GraphNode> iterator = this.buildGraphIterator();
 		int iteratorSize = IteratorTools.size(iterator);
 		int actualSize = this.nodes.size();
 		assertTrue("Too few items in iterator.", iteratorSize >= actualSize);
@@ -106,7 +79,7 @@ public class GraphIteratorTests extends TestCase {
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<GraphNode> iterator = new GraphIterator<GraphNode>(this.buildGraphRoot());
+			Iterator<GraphNode> iterator = IteratorTools.graphIterator(this.buildGraphRoot(), Transformer.Disabled.<GraphNode, Iterator<? extends GraphNode>>instance());
 			GraphNode gn = iterator.next();
 			fail("invalid graph node: " + gn);
 		} catch (UnsupportedOperationException ex) {
@@ -115,29 +88,14 @@ public class GraphIteratorTests extends TestCase {
 		assertTrue("NoSuchElementException not thrown", exCaught);
 	}
 
-	/**
-	 * build a graph iterator with an explicit misterRogers
-	 */
-	private Iterator<GraphNode> buildGraphIterator1() {
-		return new GraphIterator<GraphNode>(this.buildGraphRoot(), this.buildMisterRogers());
+	private Iterator<GraphNode> buildGraphIterator() {
+		return IteratorTools.graphIterator(this.buildGraphRoot(), this.buildTransformer());
 	}
 
-	private GraphIterator.MisterRogers<GraphNode> buildMisterRogers() {
-		return new GraphIterator.MisterRogers<GraphNode>() {
-			public Iterator<GraphNode> neighbors(GraphNode next) {
-				return next.neighbors();
-			}
-		};
-	}
-
-	/**
-	 * build a graph iterator with an override
-	 */
-	private Iterator<GraphNode> buildGraphIterator2() {
-		return new GraphIterator<GraphNode>(this.buildGraphRoot()) {
-			@Override
-			public Iterator<GraphNode> neighbors(GraphNode next) {
-				return next.neighbors();
+	private Transformer<GraphNode, Iterator<? extends GraphNode>> buildTransformer() {
+		return new Transformer<GraphNode, Iterator<? extends GraphNode>>() {
+			public Iterator<GraphNode> transform(GraphNode node) {
+				return node.neighbors();
 			}
 		};
 	}

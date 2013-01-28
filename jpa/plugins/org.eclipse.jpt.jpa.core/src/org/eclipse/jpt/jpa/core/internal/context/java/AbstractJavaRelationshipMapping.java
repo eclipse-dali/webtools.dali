@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,8 @@ import java.util.List;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -252,11 +251,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 
 	public Iterable<String> getAllTargetEntityAttributeNames() {
-		return new CompositeIterable<String>(this.getAllTargetEntityAttributeNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getAllTargetEntityAttributeNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAllTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getAllTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getAllTargetEntityAttributeMappings() {
@@ -266,11 +261,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	// Get the names of non-transient attribute mappings
 	public Iterable<String> getTargetEntityNonTransientAttributeNames() {
-		return new CompositeIterable<String>(this.getTargetEntityNonTransientAttributeNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getTargetEntityNonTransientAttributeNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getTargetEntityNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getTargetEntityNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getTargetEntityNonTransientAttributeMappings() {

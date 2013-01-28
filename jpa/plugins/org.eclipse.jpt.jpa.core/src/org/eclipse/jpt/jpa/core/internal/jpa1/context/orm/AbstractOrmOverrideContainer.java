@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -85,7 +84,7 @@ public abstract class AbstractOrmOverrideContainer<
 
 	@SuppressWarnings("unchecked")
 	public ListIterable<R> getOverrides() {
-		return new CompositeListIterable<R>(this.getReadOnlySpecifiedOverrides(), this.getReadOnlyVirtualOverrides());
+		return IterableTools.compositeListIterable(this.getReadOnlySpecifiedOverrides(), this.getReadOnlyVirtualOverrides());
 	}
 
 	public int getOverridesSize() {

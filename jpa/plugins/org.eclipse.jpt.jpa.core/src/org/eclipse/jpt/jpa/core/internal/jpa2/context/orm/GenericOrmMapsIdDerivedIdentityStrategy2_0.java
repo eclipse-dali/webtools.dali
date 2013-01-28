@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,11 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -128,12 +128,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<String> getCandidateIdAttributeNames() {
-		return new TransformationIterable<AttributeMapping, String>(this.getCandidateIdAttributeMappings()) {
-			@Override
-			protected String transform(AttributeMapping mapping) {
-				return mapping.getName();
-			}
-		};
+		return IterableTools.transform(this.getCandidateIdAttributeMappings(), AttributeMapping.NAME_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getCandidateIdAttributeMappings() {
@@ -141,39 +136,36 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<AttributeMapping> buildCandidateIdAttributeMappings(Iterable<AttributeMapping> attributeMappings) {
-		return new CompositeIterable<AttributeMapping>(this.getCandidateIdAttributeMappingLists(attributeMappings));
+		return IterableTools.compositeIterable(attributeMappings, CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER);
 	}
 
-	protected Iterable<Iterable<AttributeMapping>> getCandidateIdAttributeMappingLists(Iterable<AttributeMapping> attributeMappings) {
-		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(attributeMappings) {
-			@Override
-			protected Iterable<AttributeMapping> transform(AttributeMapping attributeMapping) {
-				return ObjectTools.equals(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
-						this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) attributeMapping) :
-						new SingleElementIterable<AttributeMapping>(attributeMapping);
-			}
+	protected static final Transformer<AttributeMapping, Iterable<AttributeMapping>> CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER = new CandidateIdAttributeMappingListsTransformer();
 
-			/**
-			 * Convert the specified mapping into a collection of its "mappings".
-			 * Typically, this collection will include just the mapping itself;
-			 * but, if the mapping is an embedded ID, this collection will include
-			 * the mapping itself plus all the mappings of its target embeddable.
-			 * 
-			 * NB: Recursion is unnecessary.
-			 */
-			protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
-				Embeddable embeddable = mapping.getTargetEmbeddable();
-				if (embeddable == null) {
-					return new SingleElementIterable<AttributeMapping>(mapping);
-				}
-				return new CompositeIterable<AttributeMapping>(
-						mapping,
-						embeddable.getAllAttributeMappings()
-					);
-			}
-		};
+	protected static class CandidateIdAttributeMappingListsTransformer
+		extends TransformerAdapter<AttributeMapping, Iterable<AttributeMapping>>
+	{
+		@Override
+		public Iterable<AttributeMapping> transform(AttributeMapping attributeMapping) {
+			return ObjectTools.equals(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
+					this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) attributeMapping) :
+					new SingleElementIterable<AttributeMapping>(attributeMapping);
+		}
+
+		/**
+		 * Convert the specified mapping into a collection of its "mappings".
+		 * Typically, this collection will include just the mapping itself;
+		 * but, if the mapping is an embedded ID, this collection will include
+		 * the mapping itself plus all the mappings of its target embeddable.
+		 * <p>
+		 * <strong>NB:</strong> Recursion is unnecessary.
+		 */
+		protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
+			Embeddable embeddable = mapping.getTargetEmbeddable();
+			return (embeddable == null) ?
+					IterableTools.<AttributeMapping>singletonIterable(mapping) :
+					IterableTools.insert(mapping, embeddable.getAllAttributeMappings());
+		}
 	}
-
 
 	public AttributeMapping getDerivedIdAttributeMapping() {
 		String idAttributeName = this.getIdAttributeName();

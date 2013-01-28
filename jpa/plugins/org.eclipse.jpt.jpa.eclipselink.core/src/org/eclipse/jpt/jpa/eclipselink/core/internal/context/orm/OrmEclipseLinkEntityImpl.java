@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,12 +18,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -35,6 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -162,14 +159,7 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
-	}
-
-	protected Iterable<Iterable<EclipseLinkConverter>> getAttributeMappingConverterLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<EclipseLinkConverter>>(
-				this.getAttributeMappings(),
-				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
-			);
+		return IterableTools.compositeIterable(this.getAttributeMappings(), EclipseLinkConvertibleMapping.ATTRIBUTE_MAPPING_CONVERTERS_TRANSFORMER);
 	}
 
 
@@ -354,8 +344,8 @@ public class OrmEclipseLinkEntityImpl
 
 	protected Iterable<ReplaceEdit> createClassExtractorRenameTypeEdits(IType originalType, String newName) {
 		return this.classExtractorIsFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.getXmlClassExtractor().createRenameEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.getXmlClassExtractor().createRenameEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@Override
@@ -379,8 +369,8 @@ public class OrmEclipseLinkEntityImpl
 
 	protected Iterable<ReplaceEdit> createClassExtractorMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return this.classExtractorIsFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.getXmlClassExtractor().createRenamePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.getXmlClassExtractor().createRenamePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -404,8 +394,8 @@ public class OrmEclipseLinkEntityImpl
 
 	protected Iterable<ReplaceEdit> createClassExtractorRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.classExtractorIsIn(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.getXmlClassExtractor().createRenamePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.getXmlClassExtractor().createRenamePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.Range;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -437,7 +442,7 @@ public final class ListTools {
 	 * Return the destination list after the source list has been copied into it.
 	 * @see Collections#copy(List, List)
 	 */
-	public static <E> List<E> copy(List<E> dest, List<? extends E> src) {
+	public static <E, L extends List<E>> L copy(L dest, List<? extends E> src) {
 		Collections.copy(dest, src);
 		return dest;
 	}
@@ -446,7 +451,7 @@ public final class ListTools {
 	 * Return the list after it has been "filled".
 	 * @see Collections#fill(List, Object)
 	 */
-	public static <E> List<E> fill(List<E> list, E value) {
+	public static <E, L extends List<E>> L fill(L list, E value) {
 		Collections.fill(list, value);
 		return list;
 	}
@@ -455,7 +460,7 @@ public final class ListTools {
 	 * Return the list after it has been "reversed".
 	 * @see Collections#reverse(List)
 	 */
-	public static <E> List<E> reverse(List<E> list) {
+	public static <E, L extends List<E>> L reverse(L list) {
 		Collections.reverse(list);
 		return list;
 	}
@@ -464,7 +469,7 @@ public final class ListTools {
 	 * Return the list after it has been "rotated".
 	 * @see Collections#rotate(List, int)
 	 */
-	public static <E> List<E> rotate(List<E> list, int distance) {
+	public static <E, L extends List<E>> L rotate(L list, int distance) {
 		Collections.rotate(list, distance);
 		return list;
 	}
@@ -473,7 +478,7 @@ public final class ListTools {
 	 * Return the list after it has been "shuffled".
 	 * @see Collections#shuffle(List)
 	 */
-	public static <E> List<E> shuffle(List<E> list) {
+	public static <E, L extends List<E>> L shuffle(L list) {
 		Collections.shuffle(list);
 		return list;
 	}
@@ -482,7 +487,7 @@ public final class ListTools {
 	 * Return the list after it has been "shuffled".
 	 * @see Collections#shuffle(List, Random)
 	 */
-	public static <E> List<E> shuffle(List<E> list, Random random) {
+	public static <E, L extends List<E>> L shuffle(L list, Random random) {
 		Collections.shuffle(list, random);
 		return list;
 	}
@@ -492,7 +497,7 @@ public final class ListTools {
 	 * NB: The list is sorted in place as a side-effect.
 	 * @see Collections#sort(List)
 	 */
-	public static <E extends Comparable<? super E>> List<E> sort(List<E> list) {
+	public static <E extends Comparable<? super E>, L extends List<E>> L sort(L list) {
 		Collections.sort(list);
 		return list;
 	}
@@ -502,7 +507,7 @@ public final class ListTools {
 	 * NB: The list is sorted in place as a side-effect.
 	 * @see Collections#sort(List, Comparator)
 	 */
-	public static <E> List<E> sort(List<E> list, Comparator<? super E> comparator) {
+	public static <E, L extends List<E>> L sort(L list, Comparator<? super E> comparator) {
 		Collections.sort(list, comparator);
 		return list;
 	}
@@ -511,7 +516,7 @@ public final class ListTools {
 	 * Return the list after the specified elements have been "swapped".
 	 * @see Collections#swap(List, int, int)
 	 */
-	public static <E> List<E> swap(List<E> list, int i, int j) {
+	public static <E, L extends List<E>> L swap(L list, int i, int j) {
 		Collections.swap(list, i, j);
 		return list;
 	}
@@ -567,6 +572,125 @@ public final class ListTools {
 			list.add(e);
 		}
 		return list;
+	}
+
+
+	// ********** transformers **********
+
+	/**
+	 * Return a transformer that transforms a {@link List} into a
+	 * {@link ListIterator}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<List<E>, ListIterator<E>> listIteratorTransformer() {
+		return LIST_ITERATOR_TRANSFORMER;
+	}
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * {@link ListIterator}.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer LIST_ITERATOR_TRANSFORMER = new ListIteratorTransformer();
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * {@link ListIterator}.
+	 */
+	public static class ListIteratorTransformer<E>
+		extends TransformerAdapter<List<E>, ListIterator<E>>
+	{
+		@Override
+		public ListIterator<E> transform(List<E> list) {
+			return list.listIterator();
+		}
+	}
+
+	/**
+	 * Return a transformer that transforms a {@link List} into a
+	 * <em>read-only</em> {@link ListIterator}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<List<? extends E>, ListIterator<? extends E>> readOnlyListIteratorTransformer() {
+		return READ_ONLY_LIST_ITERATOR_TRANSFORMER;
+	}
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * <em>read-only</em> {@link ListIterator}.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer READ_ONLY_LIST_ITERATOR_TRANSFORMER = new ReadOnlyListIteratorTransformer();
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * <em>read-only</em> {@link ListIterator}.
+	 */
+	public static class ReadOnlyListIteratorTransformer<E>
+		extends TransformerAdapter<List<? extends E>, ListIterator<? extends E>>
+	{
+		@Override
+		public ListIterator<? extends E> transform(List<? extends E> list) {
+			return IteratorTools.readOnlyListIterator(list.listIterator());
+		}
+	}
+
+	/**
+	 * Return a transformer that transforms a {@link List} into a
+	 * {@link ListIterable}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<List<E>, ListIterable<E>> listIterableTransformer() {
+		return LIST_ITERABLE_TRANSFORMER;
+	}
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * {@link ListIterable}.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer LIST_ITERABLE_TRANSFORMER = new ListIterableTransformer();
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * {@link ListIterable}.
+	 */
+	public static class ListIterableTransformer<E>
+		extends TransformerAdapter<List<E>, ListIterable<E>>
+	{
+		@Override
+		public ListIterable<E> transform(List<E> list) {
+			return IterableTools.listIterable(list);
+		}
+	}
+
+	/**
+	 * Return a transformer that transforms a {@link List} into a
+	 * <em>read-only</em> {@link ListIterable}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<List<? extends E>, ListIterable<? extends E>> readOnlyListIterableTransformer() {
+		return READ_ONLY_LIST_ITERABLE_TRANSFORMER;
+	}
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * <em>read-only</em> {@link ListIterable}.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer READ_ONLY_LIST_ITERABLE_TRANSFORMER = new ReadOnlyListIterableTransformer();
+
+	/**
+	 * A transformer that transforms a {@link List} into a
+	 * <em>read-only</em> {@link ListIterable}.
+	 */
+	public static class ReadOnlyListIterableTransformer<E>
+		extends TransformerAdapter<List<? extends E>, ListIterable<? extends E>>
+	{
+		@Override
+		public ListIterable<? extends E> transform(List<? extends E> list) {
+			return IterableTools.listIterable(list);
+		}
 	}
 
 

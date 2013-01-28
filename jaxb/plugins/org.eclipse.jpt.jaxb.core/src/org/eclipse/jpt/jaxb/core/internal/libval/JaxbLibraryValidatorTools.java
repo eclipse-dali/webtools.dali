@@ -23,8 +23,9 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
@@ -170,13 +171,17 @@ public class JaxbLibraryValidatorTools {
 	}
 
 	private static Iterable<IPath> buildLibraryPaths(IVMInstall vm) {
-			return new TransformationIterable<LibraryLocation, IPath>(
-					new ArrayIterable<LibraryLocation>(JavaRuntime.getLibraryLocations(vm))) {
-				@Override
-				protected IPath transform(LibraryLocation libraryLocation) {
-					return libraryLocation.getSystemLibraryPath();
-				}
-			};
+			return IterableTools.transform(IterableTools.iterable(JavaRuntime.getLibraryLocations(vm)), LIBRARY_LOCATION_TRANSFORMER);
+	}
+
+	private static final Transformer<LibraryLocation, IPath> LIBRARY_LOCATION_TRANSFORMER = new LibraryLocationTransformer();
+	/* CU private */ static class LibraryLocationTransformer
+		extends TransformerAdapter<LibraryLocation, IPath>
+	{
+		@Override
+		public IPath transform(LibraryLocation libraryLocation) {
+			return libraryLocation.getSystemLibraryPath();
+		}
 	}
 
 	private static final String XML_SEE_ALSO = "javax/xml/bind/annotation/XmlSeeAlso.class"; //$NON-NLS-1$

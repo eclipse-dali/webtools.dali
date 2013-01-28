@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -154,7 +152,6 @@ public class OrmEclipseLinkTypeConverter
 
 	// ********** refactoring **********
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
@@ -165,8 +162,8 @@ public class OrmEclipseLinkTypeConverter
 
 	protected Iterable<ReplaceEdit> createRenameDataTypeEdits(IType originalType, String newName) {
 		return this.dataTypeIsFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameDataTypeEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameDataTypeEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameDataTypeEdit(IType originalType, String newName) {
@@ -175,15 +172,14 @@ public class OrmEclipseLinkTypeConverter
 
 	protected Iterable<ReplaceEdit> createRenameObjectTypeEdits(IType originalType, String newName) {
 		return this.objectTypeIsFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameObjectTypeEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameObjectTypeEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameObjectTypeEdit(IType originalType, String newName) {
 		return this.xmlConverter.createRenameObjectTypeEdit(originalType, newName);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
@@ -194,8 +190,8 @@ public class OrmEclipseLinkTypeConverter
 
 	protected Iterable<ReplaceEdit> createMoveDataTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return this.dataTypeIsFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameDataTypePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameDataTypePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameDataTypePackageEdit(String newName) {
@@ -204,15 +200,14 @@ public class OrmEclipseLinkTypeConverter
 
 	protected Iterable<ReplaceEdit> createMoveObjectTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return this.objectTypeIsFor(originalType.getFullyQualifiedName('.')) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameObjectTypePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameObjectTypePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenameObjectTypePackageEdit(String newName) {
 		return this.xmlConverter.createRenameObjectTypePackageEdit(newName);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
@@ -223,14 +218,14 @@ public class OrmEclipseLinkTypeConverter
 
 	protected Iterable<ReplaceEdit> createRenameDataTypePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.dataTypeIsIn(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameDataTypePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameDataTypePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected Iterable<ReplaceEdit> createRenameObjectTypePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.objectTypeIsIn(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenameObjectTypePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenameObjectTypePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 

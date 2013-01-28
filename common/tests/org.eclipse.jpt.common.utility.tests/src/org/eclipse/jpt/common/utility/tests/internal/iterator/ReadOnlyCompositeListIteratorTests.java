@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyCompositeListIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
-
+public class ReadOnlyCompositeListIteratorTests
+	extends CompositeIteratorTests
+{
 	public ReadOnlyCompositeListIteratorTests(String name) {
 		super(name);
 	}
@@ -164,13 +167,13 @@ public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator2() {
-		return new ReadOnlyCompositeListIterator<String>(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
+		return IteratorTools.readOnlyCompositeListIterator(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator3() {
-		return new ReadOnlyCompositeListIterator<String>(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
+		return IteratorTools.readOnlyCompositeListIterator(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
 	}
 
 	Iterator<String> buildCompositeIterator(String string, ListIterator<String> iterator) {
@@ -178,7 +181,7 @@ public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 	}
 
 	ListIterator<String> buildCompositeListIterator(String string, ListIterator<String> iterator) {
-		return new ReadOnlyCompositeListIterator<String>(string, iterator);
+		return IteratorTools.insertReadOnly(string, iterator);
 	}
 
 	public void testVariedNestedIterators() {
@@ -197,10 +200,11 @@ public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 		List<List<? extends Number>> list = new ArrayList<List<? extends Number>>();
 		list.add(integerList);
 		list.add(floatList);
-		ListIterator<Number> li = new ReadOnlyCompositeListIterator<Number>(list);
+		Transformer<List<? extends Number>, ListIterator<? extends Number>> transformer = ListTools.readOnlyListIteratorTransformer();
+		ListIterator<ListIterator<? extends Number>> numberIterators = IteratorTools.transform(list.listIterator(), transformer);
+		ListIterator<Number> li = IteratorTools.readOnlyCompositeListIterator(numberIterators);
 		while (li.hasNext()) {
 			assertTrue(li.next().intValue() > 0);
 		}
 	}
-
 }

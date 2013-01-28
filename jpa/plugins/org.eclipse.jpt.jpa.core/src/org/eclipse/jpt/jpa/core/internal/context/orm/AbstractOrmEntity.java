@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -31,7 +30,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -1405,20 +1403,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	// ********** associated tables **********
 
 	public Iterable<ReadOnlyTable> getAssociatedTables() {
-		return new CompositeIterable<ReadOnlyTable>(this.table, this.getSecondaryTables());
-	}
-
-	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
-		return CollectionTools.collection(this.allAssociatedTables());
-	}
-
-	public Iterator<ReadOnlyTable> allAssociatedTables() {
-		return new CompositeIterator<ReadOnlyTable>(this.allAssociatedTablesLists());
+		return IterableTools.<ReadOnlyTable>insert(this.table, this.getSecondaryTables());
 	}
 
 	// TODO eliminate duplicate tables?
-	protected Iterable<Iterable<ReadOnlyTable>> allAssociatedTablesLists() {
-		return new TransformationIterable<TypeMapping, Iterable<ReadOnlyTable>>(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllAssociatedTableNames() {
@@ -1433,12 +1423,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<String> convertToNames_(Iterable<ReadOnlyTable> tables) {
-		return new TransformationIterable<ReadOnlyTable, String>(tables) {
-			@Override
-			protected String transform(ReadOnlyTable t) {
-				return t.getName();
-			}
-		};
+		return new TransformationIterable<ReadOnlyTable, String>(tables, ReadOnlyTable.NAME_TRANSFORMER);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1508,12 +1493,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables_() {
-		return new TransformationIterable<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedTables()) {
-			@Override
-			protected org.eclipse.jpt.jpa.db.Table transform(ReadOnlyTable t) {
-				return t.getDbTable();
-			}
-		};
+		return new TransformationIterable<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedTables(), ReadOnlyTable.DB_TABLE_TRANSFORMER);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,9 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ListListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ReadOnlyCompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationListIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -233,7 +232,7 @@ public class CompositeListValueModel<E1, E2>
 	}
 
 	protected ListIterable<ListIterable<E2>> buildListsIterables() {
-		return new TransformationListIterable<Info, ListIterable<E2>>(this.infoList, new InfoTransformer());
+		return IterableTools.transform(IterableTools.listIterable(this.infoList), new InfoTransformer());
 	}
 
 	protected class InfoTransformer
@@ -241,7 +240,7 @@ public class CompositeListValueModel<E1, E2>
 	{
 		@Override
 		public ListIterable<E2> transform(Info info) {
-			return new ListListIterable<E2>(info.items);
+			return IterableTools.listIterable(info.items);
 		}
 	}
 

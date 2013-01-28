@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,16 +12,16 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.GraphIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.GraphIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class GraphIterableTests extends TestCase {
+public class GraphIterableTests
+	extends TestCase
+{
 	/** this will be populated with all the nodes created for the test */
 	Collection<GraphNode> nodes = new ArrayList<GraphNode>();
 
@@ -35,64 +35,34 @@ public class GraphIterableTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testNeighbors1() {
-		for (GraphNode gn : this.buildGraphIterable1()) {
+	public void testNeighbors() {
+		for (GraphNode gn : this.buildGraphIterable()) {
 			assertTrue(this.nodes.contains(gn));
 		}
 	}
 
-	private Iterable<GraphNode> buildGraphIterable1() {
-		return new GraphIterable<GraphNode>(this.buildGraphRoot()) {
-			@Override
-			public Iterator<GraphNode> neighbors(GraphNode next) {
-				return next.neighbors();
-			}
-		};
+	private Iterable<GraphNode> buildGraphIterable() {
+		return IterableTools.graphIterable(this.buildGraphRoot(), this.buildTransformer());
 	}
 
-	public void testNeighbors2() {
-		for (GraphNode gn : this.buildGraphIterable2()) {
+	public void testNeighbors_roots() {
+		for (GraphNode gn : this.buildGraphIterable_roots()) {
 			assertTrue(this.nodes.contains(gn));
 		}
 	}
 
-	private Iterable<GraphNode> buildGraphIterable2() {
-		return new GraphIterable<GraphNode>(this.buildGraphRoot(), this.buildMisterRogers());
-	}
-
-	public void testNeighbors3() {
-		for (GraphNode gn : this.buildGraphIterable3()) {
-			assertTrue(this.nodes.contains(gn));
-		}
-	}
-
-	private Iterable<GraphNode> buildGraphIterable3() {
-		return new GraphIterable<GraphNode>(new GraphNode[] { this.buildGraphRoot() }) {
-			@Override
-			public Iterator<GraphNode> neighbors(GraphNode next) {
-				return next.neighbors();
-			}
-		};
-	}
-
-	public void testNeighbors4() {
-		for (GraphNode gn : this.buildGraphIterable4()) {
-			assertTrue(this.nodes.contains(gn));
-		}
-	}
-
-	private Iterable<GraphNode> buildGraphIterable4() {
-		return new GraphIterable<GraphNode>(new GraphNode[] { this.buildGraphRoot() }, this.buildMisterRogers());
+	private Iterable<GraphNode> buildGraphIterable_roots() {
+		return IterableTools.graphIterable(new GraphNode[] { this.buildGraphRoot() }, this.buildTransformer());
 	}
 
 	public void testToString() {
-		assertNotNull(this.buildGraphIterable1().toString());
+		assertNotNull(this.buildGraphIterable().toString());
 	}
 
 	public void testMissingMisterRogers() {
 		boolean exCaught = false;
 		try {
-			for (GraphNode gn : new GraphIterable<GraphNode>(this.buildGraphRoot())) {
+			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), Transformer.Disabled.<GraphNode, Iterator<? extends GraphNode>>instance())) {
 				assertTrue(this.nodes.contains(gn));
 			}
 			fail();
@@ -102,10 +72,10 @@ public class GraphIterableTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	private GraphIterator.MisterRogers<GraphNode> buildMisterRogers() {
-		return new GraphIterator.MisterRogers<GraphNode>() {
-			public Iterator<GraphNode> neighbors(GraphNode next) {
-				return next.neighbors();
+	private Transformer<GraphNode, Iterator<? extends GraphNode>> buildTransformer() {
+		return new Transformer<GraphNode, Iterator<? extends GraphNode>>() {
+			public Iterator<GraphNode> transform(GraphNode node) {
+				return node.neighbors();
 			}
 		};
 	}

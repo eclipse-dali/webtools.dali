@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,9 @@ import org.eclipse.jpt.common.utility.internal.iterator.TransformationListIterat
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class TransformationListIteratorTests extends TestCase {
-
+public class TransformationListIteratorTests
+	extends TestCase
+{
 	public TransformationListIteratorTests(String name) {
 		super(name);
 	}
@@ -273,12 +274,12 @@ public class TransformationListIteratorTests extends TestCase {
 
 	private ListIterator<Integer> buildInnerTransformationListIterator(ListIterator<String> nestedIterator) {
 		// transform each string into an integer with a value of the string's length
-		return new TransformationListIterator<String, Integer>(nestedIterator) {
-			@Override
-			protected Integer transform(String next) {
-				return new Integer(next.length());
+		Transformer<String, Integer> transformer = new Transformer<String, Integer>() {
+			public Integer transform(String s) {
+				return new Integer(s.length());
 			}
 		};
+		return new TransformationListIterator<String, Integer>(nestedIterator, transformer);
 	}
 
 	private ListIterator<String> buildNestedIterator() {
@@ -308,7 +309,7 @@ public class TransformationListIteratorTests extends TestCase {
 
 	public void testInvalidTransformationListIterator() {
 		// missing method override
-		Iterator<Integer> iterator = new TransformationListIterator<String, Integer>(this.buildList().listIterator());
+		Iterator<Integer> iterator = new TransformationListIterator<String, Integer>(this.buildList().listIterator(), Transformer.Disabled.<String, Integer>instance());
 		boolean exCaught = false;
 		try {
 			Integer integer = iterator.next();

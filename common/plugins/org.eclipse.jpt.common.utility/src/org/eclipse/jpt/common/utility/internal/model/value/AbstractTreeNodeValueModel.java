@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,8 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
@@ -125,12 +124,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 	 * and up to, and including, the root node.
 	 */
 	protected Iterator<TreeNodeValueModel<T>> backPath() {
-		return new ChainIterator<TreeNodeValueModel<T>>(this) {
-			@Override
-			protected TreeNodeValueModel<T> nextLink(TreeNodeValueModel<T> currentLink) {
-				return currentLink.parent();
-			}
-		};
+		return IteratorTools.chainIterator(this, new ParentTransformer<T>());
 	}
 
 	public TreeNodeValueModel<T> child(int index) {

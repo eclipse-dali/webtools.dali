@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,12 +27,12 @@ import org.eclipse.jpt.common.utility.internal.iterator.StackIterator;
 public class StackIterable<E>
 	implements Iterable<E>
 {
-	private final Stack<E> stack;
+	private final Stack<? extends E> stack;
 
 	/**
 	 * Construct an iterable for the specified stack.
 	 */
-	public StackIterable(Stack<E> stack) {
+	public StackIterable(Stack<? extends E> stack) {
 		super();
 		if (stack == null) {
 			throw new NullPointerException();

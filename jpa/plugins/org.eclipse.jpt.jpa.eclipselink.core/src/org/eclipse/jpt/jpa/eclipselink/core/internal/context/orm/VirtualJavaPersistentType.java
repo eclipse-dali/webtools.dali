@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -247,21 +246,16 @@ public class VirtualJavaPersistentType
 	// ********** inheritance **********
 
 	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return this.getInheritanceHierarchyOf(this);
+		return this.buildInheritanceHierarchy(this);
 	}
 
 	public Iterable<PersistentType> getAncestors() {
-		return this.getInheritanceHierarchyOf(this.superPersistentType);
+		return this.buildInheritanceHierarchy(this.superPersistentType);
 	}
 
-	protected Iterable<PersistentType> getInheritanceHierarchyOf(PersistentType start) {
+	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
 		// using a chain iterable to traverse up the inheritance tree
-		return new ChainIterable<PersistentType>(start) {
-			@Override
-			protected PersistentType nextLink(PersistentType persistentType) {
-				return persistentType.getSuperPersistentType();
-			}
-		};
+		return IterableTools.chainIterable(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 

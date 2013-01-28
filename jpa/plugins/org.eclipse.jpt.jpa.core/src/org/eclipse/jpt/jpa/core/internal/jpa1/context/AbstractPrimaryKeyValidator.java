@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.Collection;
 import java.util.List;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -384,12 +383,7 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 
 	protected Iterable<String> getIdClassAttributeNames(JavaPersistentType idClass) {
-		return new TransformationIterable<JavaPersistentAttribute, String>(getAllIdClassAttributes(idClass)) {
-			@Override
-			protected String transform(JavaPersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
+		return IterableTools.transform(getAllIdClassAttributes(idClass), ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
 	}
 
 	protected Iterable<JavaPersistentAttribute> getAllIdClassAttributes(JavaPersistentType idClass) {
@@ -397,12 +391,7 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 
 	protected Iterable<String> getIdClassFieldNames(JavaPersistentType idClass) {
-		return new TransformationIterable<JavaResourceField, String>(idClass.getJavaResourceType().getFields()) {
-			@Override
-			protected String transform(JavaResourceField attribute) {
-				return attribute.getName();
-			}
-		};
+		return IterableTools.transform(idClass.getJavaResourceType().getFields(), JavaResourceMember.NAME_TRANSFORMER);
 	}
 	
 	// **************** convenience methods ********************************************************

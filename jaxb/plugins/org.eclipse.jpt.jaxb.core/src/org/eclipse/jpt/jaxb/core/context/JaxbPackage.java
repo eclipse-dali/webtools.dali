@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 
 /**
@@ -31,6 +33,15 @@ public interface JaxbPackage
 	 * This is unchanging in that, if a package name changes, a new JaxbPackage is created.
 	 */
 	String getName();
+	Transformer<JaxbPackage, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<JaxbPackage, String>
+	{
+		@Override
+		public String transform(JaxbPackage table) {
+			return table.getName();
+		}
+	}
 	
 	/**
 	 * The optional package-info

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Straightforward definition of an object pairing.
@@ -26,10 +29,32 @@ public interface Association<K, V> {
 	 */
 	K getKey();
 
+	@SuppressWarnings("rawtypes")
+	Transformer KEY_TRANSFORMER = new KeyTransformer();
+	class KeyTransformer<K, V>
+		extends TransformerAdapter<Association<K, V>, K>
+	{
+		@Override
+		public K transform(Association<K, V> association) {
+			return association.getKey();
+		}
+	}
+
 	/**
 	 * Return the association's value.
 	 */
 	V getValue();
+
+	@SuppressWarnings("rawtypes")
+	Transformer VALUE_TRANSFORMER = new ValueTransformer();
+	class ValueTransformer<K, V>
+		extends TransformerAdapter<Association<K, V>, V>
+	{
+		@Override
+		public V transform(Association<K, V> association) {
+			return association.getValue();
+		}
+	}
 
 	/**
 	 * Set the association's value.

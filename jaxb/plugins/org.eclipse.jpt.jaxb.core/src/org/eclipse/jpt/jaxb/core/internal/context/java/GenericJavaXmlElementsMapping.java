@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
@@ -19,7 +19,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -36,7 +38,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
-import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -268,15 +270,9 @@ public class GenericJavaXmlElementsMapping
 	
 	@Override
 	public Iterable<String> getReferencedXmlTypeNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.compositeIterable(
 				super.getReferencedXmlTypeNames(),
-				new CompositeIterable<String>(
-						new TransformationIterable<XmlElement, Iterable<String>>(getXmlElements()) {
-							@Override
-							protected Iterable<String> transform(XmlElement o) {
-								return o.getReferencedXmlTypeNames();
-							}
-						}));
+				IterableTools.compositeIterable(getXmlElements(), XmlElement.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
 	}
 	
 	@Override
@@ -465,36 +461,45 @@ public class GenericJavaXmlElementsMapping
 		}
 		
 		public Iterable<ValidatableReference> getReferences() {
-			return new TransformationIterable<XmlElement, ValidatableReference>(
-					GenericJavaXmlElementsMapping.this.getXmlElements()) {
-				
-				@Override
-				protected ValidatableReference transform(final XmlElement o) {
-					
-					return new ValidatableReference() {
-						
-						public String getFullyQualifiedType() {
-							return o.getFullyQualifiedType();
-						}
-						
-						public TextRange getTypeTextRange() {
-							return o.getTypeTextRange();
-						}
-						
-						public XsdFeature getXsdFeature() {
-							return o.getXsdElement();
-						}
-						
-						public TextRange getXsdFeatureTextRange() {
-							return o.getQName().getNameTextRange();
-						}
-					};
-				}
-			};
+			return IterableTools.transform(GenericJavaXmlElementsMapping.this.getXmlElements(), XML_ELEMENT_TRANSFORMER);
 		}
 		
 		public boolean isList() {
 			return false;
+		}
+	}
+	protected static final Transformer<XmlElement, ValidatableReference> XML_ELEMENT_TRANSFORMER = new XmlElementTransformer();
+	public static class XmlElementTransformer
+		extends TransformerAdapter<XmlElement, ValidatableReference>
+	{
+		@Override
+		public ValidatableReference transform(XmlElement xmlElement) {
+			return new XmlElementValidatableReference(xmlElement);
+		}
+	}
+
+	public static class XmlElementValidatableReference
+		implements ValidatableReference
+	{
+		protected final XmlElement xmlElement;
+		public XmlElementValidatableReference(XmlElement xmlElement) {
+			super();
+			this.xmlElement = xmlElement;
+		}
+		public String getFullyQualifiedType() {
+			return this.xmlElement.getFullyQualifiedType();
+		}
+		
+		public TextRange getTypeTextRange() {
+			return this.xmlElement.getTypeTextRange();
+		}
+		
+		public XsdElementDeclaration getXsdFeature() {
+			return this.xmlElement.getXsdElement();
+		}
+		
+		public TextRange getXsdFeatureTextRange() {
+			return this.xmlElement.getQName().getNameTextRange();
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,9 @@ import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * This <code>PaneVisibilityEnabler</code> keeps the "visible" state of a
@@ -147,12 +148,17 @@ public class PaneVisibilityEnabler extends StateController
 	}
 
 	private static Collection<ControlHolder> wrap(Iterator<? extends Pane<?>> panes) {
-		return CollectionTools.collection(new TransformationIterator<Pane<?>, ControlHolder>(panes) {
-			@Override
-			protected ControlHolder transform(Pane<?> pane) {
-				return new PaneHolder(pane);
-			}
-		});
+		return CollectionTools.collection(IteratorTools.transform(panes, PANE_HOLDER_TRANSFORMER));
+	}
+
+	private static final Transformer<Pane<?>, ControlHolder> PANE_HOLDER_TRANSFORMER = new PaneHolderTransformer();
+	/* CU private */ static class PaneHolderTransformer
+		extends TransformerAdapter<Pane<?>, ControlHolder>
+	{
+		@Override
+		public ControlHolder transform(Pane<?> pane) {
+			return new PaneHolder(pane);
+		}
 	}
 
 	/**

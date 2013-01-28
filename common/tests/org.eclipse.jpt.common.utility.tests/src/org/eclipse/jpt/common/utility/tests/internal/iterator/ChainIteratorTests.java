@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,9 +17,12 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class ChainIteratorTests extends TestCase {
+public class ChainIteratorTests
+	extends TestCase
+{
 	private final static Class<?>[] VECTOR_HIERARCHY = { Vector.class, AbstractList.class, AbstractCollection.class, Object.class };
 
 	public ChainIteratorTests(String name) {
@@ -35,25 +38,9 @@ public class ChainIteratorTests extends TestCase {
 		assertEquals(VECTOR_HIERARCHY.length, i);
 	}
 
-	public void testInnerHasNext() {
-		int i = 0;
-		for (Iterator<Class<?>> stream = this.buildInnerIterator(); stream.hasNext();) {
-			stream.next();
-			i++;
-		}
-		assertEquals(VECTOR_HIERARCHY.length, i);
-	}
-
 	public void testNext() {
 		int i = 0;
 		for (Iterator<Class<?>> stream = this.buildIterator(); stream.hasNext(); i++) {
-			assertEquals("bogus link", VECTOR_HIERARCHY[i], stream.next());
-		}
-	}
-
-	public void testInnerNext() {
-		int i = 0;
-		for (Iterator<Class<?>> stream = this.buildInnerIterator(); stream.hasNext(); i++) {
 			assertEquals("bogus link", VECTOR_HIERARCHY[i], stream.next());
 		}
 	}
@@ -88,31 +75,16 @@ public class ChainIteratorTests extends TestCase {
 	}
 
 	private Iterator<Class<?>> buildIterator() {
-		return this.buildChainIterator(Vector.class, this.buildLinker());
+		return this.buildChainIterator(Vector.class, this.buildTransformer());
 	}
 
-	private Iterator<Class<?>> buildInnerIterator() {
-		return this.buildInnerChainIterator(Vector.class);
+	private Iterator<Class<?>> buildChainIterator(Class<?> startLink, Transformer<Class<?>, Class<?>> transformer) {
+		return new ChainIterator<Class<?>>(startLink, transformer);
 	}
 
-	private Iterator<Class<?>> buildChainIterator(Class<?> startLink, ChainIterator.Linker<Class<?>> linker) {
-		return new ChainIterator<Class<?>>(startLink, linker);
-	}
-
-	private ChainIterator.Linker<Class<?>> buildLinker() {
-		// chain up the class's hierarchy
-		return new ChainIterator.Linker<Class<?>>() {
-			public Class<?> nextLink(Class<?> currentLink) {
-				return currentLink.getSuperclass();
-			}
-		};
-	}
-
-	private Iterator<Class<?>> buildInnerChainIterator(Class<?> startLink) {
-		// chain up the class's hierarchy
-		return new ChainIterator<Class<?>>(startLink) {
-			@Override
-			protected Class<?> nextLink(Class<?> currentLink) {
+	private Transformer<Class<?>, Class<?>> buildTransformer() {
+		return new Transformer<Class<?>, Class<?>>() {
+			public Class<?> transform(Class<?> currentLink) {
 				return currentLink.getSuperclass();
 			}
 		};
@@ -120,7 +92,7 @@ public class ChainIteratorTests extends TestCase {
 
 	public void testInvalidChainIterator() {
 		// missing method override
-		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class);
+		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class, Transformer.Disabled.<Class<?>, Class<?>>instance());
 		boolean exCaught = false;
 		try {
 			Class<?> c = iterator.next();

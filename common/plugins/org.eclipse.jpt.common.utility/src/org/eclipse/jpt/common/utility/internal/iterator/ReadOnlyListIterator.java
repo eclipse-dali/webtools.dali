@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterator;
 
-import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * A <code>ReadOnlyListIterator</code> wraps another
@@ -32,22 +29,6 @@ public class ReadOnlyListIterator<E>
 {
 	private final ListIterator<? extends E> listIterator;
 
-
-	/**
-	 * Construct a list iterator on the specified list that
-	 * disallows removes, sets, and adds.
-	 */
-	public ReadOnlyListIterator(List<? extends E> list) {
-		this(list.listIterator());
-	}
-
-	/**
-	 * Construct a list iterator on the specified list that
-	 * disallows removes, sets, and adds.
-	 */
-	public ReadOnlyListIterator(ListIterable<? extends E> listIterable) {
-		this(listIterable.iterator());
-	}
 
 	/**
 	 * Construct a list iterator on the specified list iterator that

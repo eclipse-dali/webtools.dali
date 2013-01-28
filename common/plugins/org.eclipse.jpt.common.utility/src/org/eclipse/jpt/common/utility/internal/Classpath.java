@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,16 +23,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
  * <code>Classpath</code> models a Java classpath, which consists of a list of
@@ -594,13 +593,22 @@ public class Classpath
 		return new CompositeIterator<String>(this.entryClassNamesIterators(filter));
 	}
 
-	private Iterator<Iterator<String>> entryClassNamesIterators(final Filter<String> filter) {
-		return new TransformationIterator<Entry, Iterator<String>>(new ArrayIterator<Entry>(this.entries)) {
-			@Override
-			protected Iterator<String> transform(Entry entry) {
-				return entry.classNames(filter);
-			}
-		};
+	private Iterator<Iterator<String>> entryClassNamesIterators(Filter<String> filter) {
+		return IteratorTools.transform(IteratorTools.iterator(this.entries), new EntryClassNamesTransformer(filter));
+	}
+
+	/* CU private */ static class EntryClassNamesTransformer
+		extends TransformerAdapter<Entry, Iterator<String>>
+	{
+		private final Filter<String> filter;
+		EntryClassNamesTransformer(Filter<String> filter) {
+			super();
+			this.filter = filter;
+		}
+		@Override
+		public Iterator<String> transform(Entry entry) {
+			return entry.classNames(this.filter);
+		}
 	}
 
 	/**
@@ -897,15 +905,23 @@ public class Classpath
 		 * Transform the class files to class names.
 		 */
 		private Iterator<String> classNamesForDirectory() {
-			final int start = this.canonicalFile.getAbsolutePath().length() + 1;
-			return new TransformationIterator<File, String>(this.classFilesForDirectory()) {
-				@Override
-				protected String transform(File f) {
-					return convertToClassName(f.getAbsolutePath().substring(start));
-				}
-			};
+			int start = this.canonicalFile.getAbsolutePath().length() + 1;
+			return IteratorTools.transform(this.classFilesForDirectory(), new ClassNameFileTransformer(start));
 		}
 
+		/* CU private */ static class ClassNameFileTransformer
+			extends TransformerAdapter<File, String>
+		{
+			private final int start;
+			ClassNameFileTransformer(int start) {
+				super();
+				this.start = start;
+			}
+			@Override
+			public String transform(File f) {
+				return convertToClassName(f.getAbsolutePath().substring(this.start));
+			}
+		}
 		/**
 		 * Return the names of all the classes discovered
 		 * in the entry's archive file and accepted by the

@@ -29,16 +29,18 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
@@ -274,7 +276,7 @@ public class EclipseLinkPersistenceUnit
 	public ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedEclipseLinkMappingFileRef == null) ?
 				super.getMappingFileRefs() :
-				new CompositeListIterable<MappingFileRef>(this.impliedEclipseLinkMappingFileRef, super.getMappingFileRefs());
+				IterableTools.insert(this.impliedEclipseLinkMappingFileRef, super.getMappingFileRefs());
 	}
 
 	@Override
@@ -452,41 +454,45 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<EclipseLinkConverter> getMappingFileConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(this.getMappingFileConverterLists());
+		return IterableTools.compositeIterable(this.getMappingFiles(), MAPPING_FILE_CONVERTERS_TRANSFORMER);
 	}
 
-	protected Iterable<Iterable<EclipseLinkConverter>> getMappingFileConverterLists() {
-		return new TransformationIterable<MappingFile, Iterable<EclipseLinkConverter>>(this.getMappingFiles()) {
-					@Override
-					protected Iterable<EclipseLinkConverter> transform(MappingFile mappingFile) {
-						MappingFile.Root root = mappingFile.getRoot();
-						return (root instanceof EclipseLinkEntityMappings) ?
-								((EclipseLinkEntityMappings) root).getMappingFileConverters() :
-								EmptyIterable.<EclipseLinkConverter>instance();
-					}
-				};
+	public static final Transformer<MappingFile, Iterable<EclipseLinkConverter>> MAPPING_FILE_CONVERTERS_TRANSFORMER = new MappingFileConvertersTransformer();
+
+	public static class MappingFileConvertersTransformer
+		extends TransformerAdapter<MappingFile, Iterable<EclipseLinkConverter>>
+	{
+		@Override
+		public Iterable<EclipseLinkConverter> transform(MappingFile mappingFile) {
+				MappingFile.Root root = mappingFile.getRoot();
+				return (root instanceof EclipseLinkEntityMappings) ?
+						((EclipseLinkEntityMappings) root).getMappingFileConverters() :
+						EmptyIterable.<EclipseLinkConverter>instance();
+		}
 	}
 
 	/**
 	 * Include "overridden" Java converters.
 	 */
 	public Iterable<JavaEclipseLinkConverter<?>> getAllJavaConverters() {
-		return new CompositeIterable<JavaEclipseLinkConverter<?>>(this.getAllJavaTypeMappingConverterLists());
+		return IterableTools.compositeIterable(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_CONVERTER_TRANSFORMER);
 	}
 
-	protected Iterable<Iterable<JavaEclipseLinkConverter<?>>> getAllJavaTypeMappingConverterLists() {
-		return new TransformationIterable<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>>(this.getAllJavaTypeMappingsUnique()) {
-					@Override
-					protected Iterable<JavaEclipseLinkConverter<?>> transform(TypeMapping typeMapping) {
-						return new SubIterableWrapper<EclipseLinkConverter, JavaEclipseLinkConverter<?>>(this.transform_(typeMapping));
-					}
-					protected Iterable<EclipseLinkConverter> transform_(TypeMapping typeMapping) {
-						// Java "null" type mappings are not EclipseLink mappings
-						return (typeMapping instanceof EclipseLinkTypeMapping) ?
-								((EclipseLinkTypeMapping) typeMapping).getConverters() :
-								EmptyIterable.<EclipseLinkConverter>instance();
-					}
-				};
+	public static final Transformer<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>> TYPE_MAPPING_CONVERTER_TRANSFORMER = new TypeMappingConverterTransformer();
+
+	public static class TypeMappingConverterTransformer
+		extends TransformerAdapter<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>>
+	{
+		@Override
+		public Iterable<JavaEclipseLinkConverter<?>> transform(TypeMapping typeMapping) {
+			return new SubIterableWrapper<EclipseLinkConverter, JavaEclipseLinkConverter<?>>(this.transform_(typeMapping));
+		}
+		protected Iterable<EclipseLinkConverter> transform_(TypeMapping typeMapping) {
+			// Java "null" type mappings are not EclipseLink mappings
+			return (typeMapping instanceof EclipseLinkTypeMapping) ?
+					((EclipseLinkTypeMapping) typeMapping).getConverters() :
+					EmptyIterable.<EclipseLinkConverter>instance();
+		}
 	}
 
 
@@ -578,12 +584,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<String> getEclipseLinkDynamicPersistentTypeNames() {
-		return new TransformationIterable<EclipseLinkOrmPersistentType, String>(this.getEclipseLinkDynamicPersistentTypes()) {
-			@Override
-			protected String transform(EclipseLinkOrmPersistentType type) {
-				return type.getName();
-			}
-		};
+		return IterableTools.transform(this.getEclipseLinkDynamicPersistentTypes(), PersistentType.NAME_TRANSFORMER);
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkDynamicPersistentTypes() {
@@ -596,18 +597,14 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkOrmPersistentTypes() {
-		return new TransformationIterable<PersistentType, EclipseLinkOrmPersistentType>(
+		return IterableTools.subIterable(
 				new FilteringIterable<PersistentType>(this.getMappingFilePersistentTypes()) {
 					@Override
 					protected boolean accept(PersistentType pType) {
 						return pType instanceof EclipseLinkOrmPersistentType;
 					}
-				}) {
-			@Override
-			protected EclipseLinkOrmPersistentType transform(PersistentType pType) {
-				return (EclipseLinkOrmPersistentType) pType;
-			}
-		};
+				}
+			);
 	}
 
 	// ********** validation **********

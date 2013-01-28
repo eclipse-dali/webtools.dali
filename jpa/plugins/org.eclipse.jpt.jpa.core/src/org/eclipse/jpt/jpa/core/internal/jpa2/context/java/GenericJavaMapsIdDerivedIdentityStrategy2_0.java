@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,11 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -182,35 +182,29 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<String> getAllAttributeMappingChoiceNames() {
-		return new TransformationIterable<AttributeMapping, String>(this.getAllAttributeMappingChoices()) {
-				@Override
-				protected String transform(AttributeMapping mapping) {
-					return mapping.getName();
-				}
-			};
+		return IterableTools.transform(this.getAllAttributeMappingChoices(), AttributeMapping.NAME_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappingChoices() {
 		return this.buildAttributeMappingChoices(this.getAllAttributeMappings());
 	}
 
-	protected Iterable<AttributeMapping> buildAttributeMappingChoices(Iterable<AttributeMapping> attributeMappings) {
-		return new CompositeIterable<AttributeMapping>(this.getAttributeMappingChoiceIterables(attributeMappings));
-	}
-
 	/**
 	 * @see #getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping)
 	 */
-	protected Iterable<Iterable<AttributeMapping>> getAttributeMappingChoiceIterables(Iterable<AttributeMapping> availableMappings) {
-		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(availableMappings) {
-			@Override
-			protected Iterable<AttributeMapping> transform(AttributeMapping mapping) {
-				if (ObjectTools.equals(mapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
-					return GenericJavaMapsIdDerivedIdentityStrategy2_0.this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) mapping);
-				}
-				return new SingleElementIterable<AttributeMapping>(mapping);
-			}
-		};
+	protected Iterable<AttributeMapping> buildAttributeMappingChoices(Iterable<AttributeMapping> attributeMappings) {
+		return IterableTools.compositeIterable(attributeMappings, new AttributeMappingTransformer());
+	}
+
+	public class AttributeMappingTransformer
+		extends TransformerAdapter<AttributeMapping, Iterable<AttributeMapping>>
+	{
+		@Override
+		public Iterable<AttributeMapping> transform(AttributeMapping mapping) {
+			return (ObjectTools.equals(mapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) ?
+					GenericJavaMapsIdDerivedIdentityStrategy2_0.this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) mapping) :
+					new SingleElementIterable<AttributeMapping>(mapping);
+		}
 	}
 
 	/**
@@ -224,7 +218,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		if (embeddable == null) {
 			return new SingleElementIterable<AttributeMapping>(mapping);
 		}
-		return new CompositeIterable<AttributeMapping>(
+		return IterableTools.insert(
 				mapping,
 				embeddable.getAllAttributeMappings()
 			);

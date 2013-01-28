@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
@@ -20,17 +19,17 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * binary method
@@ -122,16 +121,19 @@ final class BinaryMethod
 	}
 	
 	private Iterable<String> buildParameterTypeNames(IMethodBinding binding) {
-		if (binding == null) {
-			return EmptyIterable.instance();
+		return (binding == null) ?
+				EmptyIterable.<String>instance() :
+				IterableTools.transform(IterableTools.iterable(binding.getParameterTypes()), TYPE_BINDING_DECLARATION_QUALIFIED_NAME);
+	}
+
+	private static final Transformer<ITypeBinding, String> TYPE_BINDING_DECLARATION_QUALIFIED_NAME = new TypeBindingDeclarationQualifiedName();
+	/* CU private */ static class TypeBindingDeclarationQualifiedName
+		extends TransformerAdapter<ITypeBinding, String>
+	{
+		@Override
+		public String transform(ITypeBinding typeBinding) {
+			return typeBinding.getTypeDeclaration().getQualifiedName();
 		}
-		return new TransformationIterable<ITypeBinding, String>(
-				new ArrayIterable<ITypeBinding>(binding.getParameterTypes())) {
-			@Override
-			protected String transform(ITypeBinding parameterType) {
-				return parameterType.getTypeDeclaration().getQualifiedName();
-			}
-		};
 	}
 	
 	private void updateParameterTypeNames() {

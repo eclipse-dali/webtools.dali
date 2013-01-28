@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 
@@ -142,12 +143,7 @@ final class DTPForeignKeyWrapper
 	}
 
 	public Iterable<Column> getBaseColumns() {
-		return new TransformationIterable<LocalColumnPair, Column>(this.getLocalColumnPairs()) {
-			@Override
-			protected Column transform(LocalColumnPair pair) {
-				return pair.getBaseColumn();
-			}
-		};
+		return IterableTools.transform(this.getLocalColumnPairs(), LocalColumnPair.BASE_COLUMN_TRANSFORMER);
 	}
 
 	boolean baseColumnsContains(Column column) {
@@ -164,12 +160,7 @@ final class DTPForeignKeyWrapper
 	}
 
 	public Iterable<Column> getReferencedColumns() {
-		return new TransformationIterable<LocalColumnPair, Column>(this.getLocalColumnPairs()) {
-			@Override
-			protected Column transform(LocalColumnPair columnPair) {
-				return columnPair.getReferencedColumn();
-			}
-		};
+		return IterableTools.transform(this.getLocalColumnPairs(), LocalColumnPair.REFERENCED_COLUMN_TRANSFORMER);
 	}
 
 	// ***** attribute name
@@ -307,9 +298,27 @@ final class DTPForeignKeyWrapper
 		public DTPColumnWrapper getBaseColumn() {
 			return this.baseColumn;
 		}
+		public static final Transformer<LocalColumnPair, Column> BASE_COLUMN_TRANSFORMER = new BaseColumnTransformer();
+		public static class BaseColumnTransformer
+			extends TransformerAdapter<LocalColumnPair, Column>
+		{
+			@Override
+			public Column transform(LocalColumnPair pair) {
+				return pair.getBaseColumn();
+			}
+		}
 
 		public DTPColumnWrapper getReferencedColumn() {
 			return this.referencedColumn;
+		}
+		public static final Transformer<LocalColumnPair, Column> REFERENCED_COLUMN_TRANSFORMER = new ReferencedColumnTransformer();
+		public static class ReferencedColumnTransformer
+			extends TransformerAdapter<LocalColumnPair, Column>
+		{
+			@Override
+			public Column transform(LocalColumnPair pair) {
+				return pair.getReferencedColumn();
+			}
 		}
 
 		@Override

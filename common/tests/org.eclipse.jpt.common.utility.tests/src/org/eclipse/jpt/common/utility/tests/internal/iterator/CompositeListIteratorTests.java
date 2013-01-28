@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.iterator.CompositeListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 @SuppressWarnings("nls")
-public class CompositeListIteratorTests extends ReadOnlyCompositeListIteratorTests {
-
+public class CompositeListIteratorTests
+	extends ReadOnlyCompositeListIteratorTests
+{
 	public CompositeListIteratorTests(String name) {
 		super(name);
 	}
@@ -315,18 +316,17 @@ public class CompositeListIteratorTests extends ReadOnlyCompositeListIteratorTes
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator2() {
-		return new CompositeListIterator<String>(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
+		return IteratorTools.compositeListIterator(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator3() {
-		return new CompositeListIterator<String>(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
+		return IteratorTools.compositeListIterator(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
 	}
 
 	@Override
 	ListIterator<String> buildCompositeListIterator(String string, ListIterator<String> iterator) {
-		return new CompositeListIterator<String>(string, iterator);
+		return IteratorTools.insert(string, iterator);
 	}
-
 }

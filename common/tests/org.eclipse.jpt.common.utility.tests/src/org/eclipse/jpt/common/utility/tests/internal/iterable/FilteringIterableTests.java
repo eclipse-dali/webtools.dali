@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,9 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 
 @SuppressWarnings("nls")
-public class FilteringIterableTests extends TestCase {
+public class FilteringIterableTests
+	extends TestCase
+{
 	private static final String PREFIX = "prefix";
 
 	public FilteringIterableTests(String name) {
@@ -37,6 +39,16 @@ public class FilteringIterableTests extends TestCase {
 
 	public void testFilter() {
 		Filter<String> filter = this.buildFilter();
+		int i = 0;
+		for (String s : new FilteringIterable<String>(this.buildNestedIterable(), filter)) {
+			assertTrue(s.contains(PREFIX));
+			i++;
+		}
+		assertEquals(6, i);
+	}
+
+	public void testSuperFilter() {
+		Filter<Object> filter = this.buildSuperFilter();
 		int i = 0;
 		for (String s : new FilteringIterable<String>(this.buildNestedIterable(), filter)) {
 			assertTrue(s.contains(PREFIX));
@@ -78,6 +90,14 @@ public class FilteringIterableTests extends TestCase {
 		return new Filter<String>() {
 			public boolean accept(String s) {
 				return s.startsWith(PREFIX);
+			}
+		};
+	}
+
+	private Filter<Object> buildSuperFilter() {
+		return new Filter<Object>() {
+			public boolean accept(Object o) {
+				return o.toString().startsWith(PREFIX);
 			}
 		};
 	}

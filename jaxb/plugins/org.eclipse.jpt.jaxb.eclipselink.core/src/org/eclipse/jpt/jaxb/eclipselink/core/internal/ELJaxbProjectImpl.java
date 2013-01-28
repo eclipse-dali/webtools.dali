@@ -1,7 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbProject;
@@ -18,12 +27,6 @@ public class ELJaxbProjectImpl
 	
 	
 	public Iterable<JptXmlResource> getOxmResources() {
-		return new TransformationIterable<JaxbFile, JptXmlResource>(
-				getJaxbFiles(Oxm.CONTENT_TYPE)) {
-			@Override
-			protected JptXmlResource transform(JaxbFile o) {
-				return (JptXmlResource) o.getResourceModel();
-			}
-		};
+		return IterableTools.subIterable(IterableTools.transform(getJaxbFiles(Oxm.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 }

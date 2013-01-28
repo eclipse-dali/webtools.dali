@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 
 /**
@@ -48,14 +47,13 @@ public interface EclipseLinkTypeMapping
 	boolean usesPrimaryKeyTenantDiscriminatorColumns();
 
 	Iterable<EclipseLinkConverter> getConverters();
-
-	Transformer<AttributeMapping, Iterable<EclipseLinkConverter>> ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER =
-		new Transformer<AttributeMapping, Iterable<EclipseLinkConverter>>() {
-			public Iterable<EclipseLinkConverter> transform(AttributeMapping attributeMapping) {
-				if (attributeMapping instanceof EclipseLinkConvertibleMapping) {
-					return ((EclipseLinkConvertibleMapping) attributeMapping).getConverterContainer().getConverters();
-				}
-				return EmptyIterable.instance();
-			}
-		};
+	Transformer<EclipseLinkTypeMapping, Iterable<EclipseLinkConverter>> CONVERTERS_TRANSFORMER = new ConvertersTransformer();
+	class ConvertersTransformer
+		extends TransformerAdapter<EclipseLinkTypeMapping, Iterable<EclipseLinkConverter>>
+	{
+		@Override
+		public Iterable<EclipseLinkConverter> transform(EclipseLinkTypeMapping mapping) {
+			return mapping.getConverters();
+		}
+	}
 }

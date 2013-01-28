@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,10 +15,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -26,11 +25,11 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
@@ -130,7 +129,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<TypeMapping> getInheritanceHierarchy() {
-		return this.convertToMappings(this.getPersistentType().getInheritanceHierarchy());
+		return IterableTools.transform(this.getPersistentType().getInheritanceHierarchy(), PersistentType.MAPPING_TRANSFORMER);
 	}
 
 	/**
@@ -140,16 +139,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	 * has a loop.
 	 */
 	protected Iterable<TypeMapping> getAncestors() {
-		return this.convertToMappings(this.getPersistentType().getAncestors());
-	}
-
-	protected Iterable<TypeMapping> convertToMappings(Iterable<PersistentType> types) {
-		return new TransformationIterable<PersistentType, TypeMapping>(types) {
-			@Override
-			protected TypeMapping transform(PersistentType type) {
-				return type.getMapping();
-			}
-		};
+		return IterableTools.transform(this.getPersistentType().getAncestors(), PersistentType.MAPPING_TRANSFORMER);
 	}
 
 	public InheritanceType getInheritanceStrategy() {
@@ -168,12 +158,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute mappings **********
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings() {
-		return new TransformationIterable<JavaPersistentAttribute, JavaAttributeMapping>(this.getPersistentType().getAttributes()) {
-			@Override
-			protected JavaAttributeMapping transform(JavaPersistentAttribute attribute) {
-				return attribute.getMapping();
-			}
-		};
+		return IterableTools.subIterable(IterableTools.transform(this.getPersistentType().getAttributes(), ReadOnlyPersistentAttribute.MAPPING_TRANSFORMER));
 	}
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings(final String mappingKey) {
@@ -186,11 +171,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {
-		return new CompositeIterable<AttributeMapping>(this.getAllAttributeMappingsLists());
-	}
-
-	protected Iterable<Iterable<AttributeMapping>> getAllAttributeMappingsLists() {
-		return new TransformationIterable<TypeMapping, Iterable<AttributeMapping>>(this.getNonNullInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getNonNullInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
 	}
 
 	protected Iterable<TypeMapping> getNonNullInheritanceHierarchy() {
@@ -222,19 +203,11 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute overrides **********
 
 	public Iterable<String> getOverridableAttributeNames() {
-		return new CompositeIterable<String>(this.getOverridableAttributeNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getOverridableAttributeNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAttributeNames() {
-		return new CompositeIterable<String>(this.allOverridableAttributeNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> allOverridableAttributeNamesLists() {
-		return new TransformationIterable<TypeMapping, Iterable<String>>(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
 	}
 
 	public Column resolveOverriddenColumn(String attributeName) {
@@ -251,19 +224,11 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** association overrides **********
 
 	public Iterable<String> getOverridableAssociationNames() {
-		return new CompositeIterable<String>(this.getOverridableAssociationNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getOverridableAssociationNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAssociationNames() {
-		return new CompositeIterable<String>(this.getAllOverridableAssociationNamesLists());
-	}
-
-	protected Iterable<Iterable<String>> getAllOverridableAssociationNamesLists() {
-		return new TransformationIterable<TypeMapping, Iterable<String>>(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
+		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
 
 	public Relationship resolveOverriddenRelationship(String attributeName) {
@@ -280,16 +245,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** generators **********
 
 	public Iterable<Generator> getGenerators() {
-		return new CompositeIterable<Generator>(this.getAttributeMappingGeneratorLists());
-	}
-
-	protected Iterable<Iterable<Generator>> getAttributeMappingGeneratorLists() {
-		return new TransformationIterable<JavaAttributeMapping, Iterable<Generator>>(this.getAttributeMappings()) {
-					@Override
-					protected Iterable<Generator> transform(JavaAttributeMapping attributeMapping) {
-						return attributeMapping.getGenerators();
-					}
-				};
+		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
 	}
 
 

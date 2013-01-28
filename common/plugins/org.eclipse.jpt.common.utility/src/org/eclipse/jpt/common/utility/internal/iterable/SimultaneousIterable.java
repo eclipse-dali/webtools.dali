@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.internal.iterator.SimultaneousIterator;
 
 /**
@@ -25,20 +24,13 @@ import org.eclipse.jpt.common.utility.internal.iterator.SimultaneousIterator;
  * @see org.eclipse.jpt.common.utility.internal.iterator.SimultaneousIterator
  */
 public class SimultaneousIterable<E>
-	extends AbstractSimultaneousIterable<E, Iterable<E>>
+	extends AbstractSimultaneousIterable<E, Iterable<? extends E>>
 	implements Iterable<List<E>>
 {
 	/**
-	 * Construct a "simultaneous" iterator for the specified iterators.
-	 */
-	public <I extends Iterable<E>> SimultaneousIterable(I... iterables) {
-		super(iterables);
-	}
-
-	/**
 	 * Construct a "multiple" iterator for the specified iterators.
 	 */
-	public <I extends Iterable<E>> SimultaneousIterable(Iterable<I> iterables) {
+	public <I extends Iterable<? extends E>> SimultaneousIterable(Iterable<I> iterables) {
 		super(iterables);
 	}
 
@@ -46,13 +38,13 @@ public class SimultaneousIterable<E>
 	 * Construct a "multiple" iterator for the specified iterators.
 	 * Use the specified size as a performance hint.
 	 */
-	public <I extends Iterable<E>> SimultaneousIterable(Iterable<I> iterables, int iterablesSize) {
+	public <I extends Iterable<? extends E>> SimultaneousIterable(Iterable<I> iterables, int iterablesSize) {
 		super(iterables, iterablesSize);
 	}
 
 	public Iterator<List<E>> iterator() {
-		ArrayList<Iterator<E>> iterators = this.buildList();
-		for (Iterable<E> iterable : this.iterables) {
+		ArrayList<Iterator<? extends E>> iterators = this.buildList();
+		for (Iterable<? extends E> iterable : this.iterables) {
 			iterators.add(iterable.iterator());
 		}
 		return new SimultaneousIterator<E>(iterators, iterators.size());

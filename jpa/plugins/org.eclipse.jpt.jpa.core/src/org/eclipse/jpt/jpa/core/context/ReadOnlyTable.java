@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -35,6 +37,15 @@ public interface ReadOnlyTable
 	 * name.
 	 */
 	String getName();
+	Transformer<ReadOnlyTable, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<ReadOnlyTable, String>
+	{
+		@Override
+		public String transform(ReadOnlyTable table) {
+			return table.getName();
+		}
+	}
 	String getSpecifiedName();
 		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
 	String getDefaultName();
@@ -49,6 +60,15 @@ public interface ReadOnlyTable
 	 * Return the corresponding database table.
 	 */
 	org.eclipse.jpt.jpa.db.Table getDbTable();
+	Transformer<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table> DB_TABLE_TRANSFORMER = new DbTableTransformer();
+	class DbTableTransformer
+		extends TransformerAdapter<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table>
+	{
+		@Override
+		public org.eclipse.jpt.jpa.db.Table transform(ReadOnlyTable table) {
+			return table.getDbTable();
+		}
+	}
 
 
 	// ********** schema **********

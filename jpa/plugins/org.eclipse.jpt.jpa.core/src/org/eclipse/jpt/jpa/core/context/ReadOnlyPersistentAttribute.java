@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 
@@ -25,12 +27,21 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
  * @since ... a while?
  */
 public interface ReadOnlyPersistentAttribute
-	extends JpaContextNode, JpaStructureNode, ReadOnlyAccessHolder
+	extends JpaStructureNode, ReadOnlyAccessHolder
 {
 	// ********** name **********
 
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	Transformer<ReadOnlyPersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<ReadOnlyPersistentAttribute, String>
+	{
+		@Override
+		public String transform(ReadOnlyPersistentAttribute attribute) {
+			return attribute.getName();
+		}
+	}
 
 
 	// ********** mapping **********
@@ -42,6 +53,15 @@ public interface ReadOnlyPersistentAttribute
 	 */
 	AttributeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+	Transformer<ReadOnlyPersistentAttribute, AttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
+	class MappingTransformer
+		extends TransformerAdapter<ReadOnlyPersistentAttribute, AttributeMapping>
+	{
+		@Override
+		public AttributeMapping transform(ReadOnlyPersistentAttribute pa) {
+			return pa.getMapping();
+		}
+	}
 
 	/**
 	 * Return the attribute's mapping key.

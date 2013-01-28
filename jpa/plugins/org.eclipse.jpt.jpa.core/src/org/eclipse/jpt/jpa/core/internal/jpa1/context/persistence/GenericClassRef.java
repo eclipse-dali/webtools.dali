@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,13 +14,12 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -295,8 +294,8 @@ public class GenericClassRef
 			throw new IllegalStateException();
 		}
 		return this.isFor(type) ?
-				new SingleElementIterable<DeleteEdit>(this.createDeleteEdit()) :
-				EmptyIterable.<DeleteEdit>instance();
+				IterableTools.singletonIterable(this.createDeleteEdit()) :
+				IterableTools.<DeleteEdit>emptyIterable();
 	}
 
 	protected DeleteEdit createDeleteEdit() {
@@ -308,8 +307,8 @@ public class GenericClassRef
 			throw new IllegalStateException();
 		}
 		return this.isFor(originalType) ?
-				new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createReplaceEdit(originalType, newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
@@ -321,8 +320,8 @@ public class GenericClassRef
 			throw new IllegalStateException();
 		}
 		return this.isFor(originalType) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newPackage.getElementName())) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
@@ -330,8 +329,8 @@ public class GenericClassRef
 			throw new IllegalStateException();
 		}
 		return this.isInPackage(originalPackage) ?
-				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
-				EmptyIterable.<ReplaceEdit>instance();
+				IterableTools.singletonIterable(this.createRenamePackageEdit(newName)) :
+				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {

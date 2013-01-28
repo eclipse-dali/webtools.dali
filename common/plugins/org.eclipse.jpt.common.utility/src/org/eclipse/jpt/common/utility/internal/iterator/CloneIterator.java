@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal.iterator;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -31,15 +30,17 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * 
  * @param <E> the type of elements returned by the iterator
  * 
- * @see org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable
- * @see org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#liveCloneIterable(Collection)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#liveCloneIterable(Collection, Remover)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#snapshotCloneIterable(Collection)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#snapshotCloneIterable(Collection, Remover)
  */
 public class CloneIterator<E>
 	implements Iterator<E>
 {
 	private final Iterator<Object> iterator;
 	private E current;
-	private final Remover<E> remover;
+	private final Remover<? super E> remover;
 	private boolean removeAllowed;
 
 
@@ -66,7 +67,7 @@ public class CloneIterator<E>
 	 * Use the specified remover to remove objects from the
 	 * original collection.
 	 */
-	public CloneIterator(Collection<? extends E> collection, Remover<E> remover) {
+	public CloneIterator(Collection<? extends E> collection, Remover<? super E> remover) {
 		this(remover, collection.toArray());
 	}
 
@@ -75,7 +76,7 @@ public class CloneIterator<E>
 	 * Use the specified remover to remove objects from the
 	 * original array.
 	 */
-	public CloneIterator(E[] array, Remover<E> remover) {
+	public CloneIterator(E[] array, Remover<? super E> remover) {
 		this(remover, array.clone());
 	}
 
@@ -84,7 +85,7 @@ public class CloneIterator<E>
 	 * Swap order of arguments to prevent collision with other constructor.
 	 * The passed in array will *not* be cloned.
 	 */
-	protected CloneIterator(Remover<E> remover, Object... array) {
+	protected CloneIterator(Remover<? super E> remover, Object... array) {
 		super();
 		if (remover == null) {
 			throw new NullPointerException();

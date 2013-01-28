@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
@@ -15,10 +15,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
@@ -193,13 +191,7 @@ public class GenericJavaXmlElementRefs
 	// ***** misc *****
 	
 	public Iterable<String> getReferencedXmlTypeNames() {
-		return new CompositeIterable<String>(
-				new TransformationIterable<XmlElementRef, Iterable<String>>(getXmlElementRefs()) {
-					@Override
-					protected Iterable<String> transform(XmlElementRef xmlElementRef) {
-						return xmlElementRef.getReferencedXmlTypeNames();
-					}
-				});
+		return IterableTools.compositeIterable(getXmlElementRefs(), XmlElementRef.REFERENCED_XML_TYPE_NAMES_TRANSFORMER);
 	}
 	
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * the transformer will return {@link Boolean#TRUE}.
  * </ul>
  * 
- * @param <T> the type of the object passed to the transformer
+ * @param <I> input: the type of the object passed to the transformer
  */
-public class NotNullObjectTransformer<T>
-	implements Transformer<T, Boolean>, Serializable
+public class NotNullObjectTransformer<I>
+	implements Transformer<I, Boolean>, Serializable
 {
 	@SuppressWarnings("rawtypes")
 	public static final Transformer INSTANCE = new NotNullObjectTransformer();
@@ -39,7 +39,7 @@ public class NotNullObjectTransformer<T>
 		super();
 	}
 
-	public Boolean transform(T o) {
+	public Boolean transform(I o) {
 		return Boolean.valueOf(o != null);
 	}
 
