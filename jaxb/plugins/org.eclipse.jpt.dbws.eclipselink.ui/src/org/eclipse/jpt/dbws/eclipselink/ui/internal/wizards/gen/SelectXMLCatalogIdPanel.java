@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.Vector;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -48,7 +48,7 @@ public class SelectXMLCatalogIdPanel extends Composite {
 		this.setLayoutData(gd);
 
 		Label label = new Label(this, SWT.NONE);
-		label.setText(JptDbwsUiMessages.BuilderXmlWizardPage_xmlCatalogTableTitle);
+		label.setText(JptDbwsEclipseLinkUiMessages.BUILDER_XML_WIZARD_PAGE__XML_CATALOG_TABLE_TITLE);
 
 		tableViewer = createTableViewer(this, resourceManager);
 		tableViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -57,8 +57,8 @@ public class SelectXMLCatalogIdPanel extends Composite {
 
 	protected XMLCatalogTableViewer createTableViewer(Composite parent, ResourceManager resourceManager) {
 		String headings[] = new String[2];
-		headings[0] = JptDbwsUiMessages.BuilderXmlWizardPage_xmlCatalogKeyColumn;
-		headings[1] = JptDbwsUiMessages.BuilderXmlWizardPage_xmlCatalogUriColumn;
+		headings[0] = JptDbwsEclipseLinkUiMessages.BUILDER_XML_WIZARD_PAGE__XML_CATALOG_KEY_COLUMN;
+		headings[1] = JptDbwsEclipseLinkUiMessages.BUILDER_XML_WIZARD_PAGE__XML_CATALOG_URI_COLUMN;
 
 		XMLCatalogTableViewer theTableViewer = new XMLCatalogTableViewer(parent, headings, resourceManager) {
 

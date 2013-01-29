@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiImages;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -70,8 +70,8 @@ public class JdbcDriverWizardPage extends WizardPage
 	}
 
 	protected void initialize() {
-		this.setTitle(JptDbwsUiMessages.JdbcDriverWizardPage_title);
-		this.setDescription(JptDbwsUiMessages.JdbcDriverWizardPage_desc);
+		this.setTitle(JptDbwsEclipseLinkUiMessages.JDBC_DRIVER_WIZARD_PAGE__TITLE);
+		this.setDescription(JptDbwsEclipseLinkUiMessages.JDBC_DRIVER_WIZARD_PAGE__DESC);
 		this.setImageDescriptor(JptDbwsEclipseLinkUiImages.NEW_WEB_SERVICES_CLIENT_BANNER);
 	}
 
@@ -171,7 +171,7 @@ public class JdbcDriverWizardPage extends WizardPage
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, HELP_CONTEXT_ID);
 
-			this.buildLabel(composite, 2, JptDbwsUiMessages.JdbcDriverWizardPage_driverFiles);
+			this.buildLabel(composite, 2, JptDbwsEclipseLinkUiMessages.JDBC_DRIVER_WIZARD_PAGE__DRIVER_FILES);
 			
 			this.buildDriverFilesTable(composite);
 		}
@@ -238,7 +238,7 @@ public class JdbcDriverWizardPage extends WizardPage
 			buttonComposite.setLayoutData(gridData);
 			// Add buttons
 			Button addButton = new Button(buttonComposite, SWT.PUSH);
-			addButton.setText(JptDbwsUiMessages.JdbcDriverWizardPage_addButton);
+			addButton.setText(JptDbwsEclipseLinkUiMessages.JDBC_DRIVER_WIZARD_PAGE__ADD_BUTTON);
 			gridData = new GridData();
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.grabExcessHorizontalSpace= true;
@@ -257,7 +257,7 @@ public class JdbcDriverWizardPage extends WizardPage
 			});
 			// Remove buttons
 			Button removeButton = new Button(buttonComposite, SWT.PUSH);
-			removeButton.setText(JptDbwsUiMessages.JdbcDriverWizardPage_removeButton);
+			removeButton.setText(JptDbwsEclipseLinkUiMessages.JDBC_DRIVER_WIZARD_PAGE__REMOVE_BUTTON);
 			gridData =  new GridData();
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.grabExcessHorizontalSpace= true;
@@ -291,7 +291,7 @@ public class JdbcDriverWizardPage extends WizardPage
 			String projectPath= this.getJavaProject().getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
-			dialog.setText(JptDbwsUiMessages.JdbcDriverWizardPage_chooseADriverFile);
+			dialog.setText(JptDbwsEclipseLinkUiMessages.JDBC_DRIVER_WIZARD_PAGE__CHOOSE_A_DRIVER_FILE);
 			dialog.setFilterPath(projectPath);
 			dialog.setFilterExtensions(new String[] {BINDINGS_FILE_FILTER});
 

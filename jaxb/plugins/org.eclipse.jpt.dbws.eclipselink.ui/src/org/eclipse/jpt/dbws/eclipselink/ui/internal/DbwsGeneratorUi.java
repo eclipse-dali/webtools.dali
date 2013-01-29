@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2013 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.dbws.eclipselink.ui.internal;
 
 import java.io.File;
@@ -28,6 +28,7 @@ import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.dbws.eclipselink.core.internal.gen.DbwsGenerator;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen.DbwsGeneratorWizard;
 import org.eclipse.persistence.oxm.XMLContext;
@@ -60,7 +61,7 @@ public class DbwsGeneratorUi
 		IProject project = xmlFile.getProject();
 		
 		if( ! projectIsWebDynamic(project)) {
-			throw new RuntimeException(JptDbwsUiMessages.DbwsGeneratorUi_notWebDynamicProject);
+			throw new RuntimeException(JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__NOT_WEB_DYNAMIC_PROJECT);
 		}
 		IPath xmlPath = xmlFile.getProjectRelativePath();
 		
@@ -88,21 +89,21 @@ public class DbwsGeneratorUi
 
 	public static boolean displayDBWSNotOnClasspathWarning(Shell shell) {
 
-		String msg = JptDbwsUiMessages.DbwsGeneratorUi_dbwsNotOnClasspathMessage;
+		String msg = JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__DBWS_NOT_ON_CLASSPATH_MESSAGE;
 
 		return MessageDialog.openQuestion(
 			shell,
-			JptDbwsUiMessages.DbwsGeneratorUi_runningDbwsWarningTitle,
+			JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__RUNNING_DBWS_WARNING_TITLE,
 			msg);
 	}
 
 	public static boolean displayOverridingWebContentWarning(Shell shell) {
 
-		String msg = JptDbwsUiMessages.DbwsGeneratorUi_runningDbwsWarningMessage;
+		String msg = JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__RUNNING_DBWS_WARNING_MESSAGE;
 
 		return MessageDialog.openQuestion(
 			shell,
-			JptDbwsUiMessages.DbwsGeneratorUi_runningDbwsWarningTitle,
+			JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__RUNNING_DBWS_WARNING_TITLE,
 			msg);
 	}
     
@@ -115,7 +116,7 @@ public class DbwsGeneratorUi
 		}
 		this.javaProject = this.findJavaProject(webProject);
 		if(this.javaProject == null) {
-			throw new RuntimeException(JptDbwsUiMessages.DbwsGeneratorUi_notJavaProject);
+			throw new RuntimeException(JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__NOT_JAVA_PROJECT);
 		}
 		this.builderXmlFile = builderXmlFile;
 	}
@@ -148,7 +149,7 @@ public class DbwsGeneratorUi
 	private void openWizardDialog() {
 
 		DbwsGeneratorWizard wizard = new DbwsGeneratorWizard(this.javaProject, this.builderXmlFile);
-		wizard.setWindowTitle(JptDbwsUiMessages.DbwsGeneratorWizard_title);
+		wizard.setWindowTitle(JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_WIZARD__TITLE);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		int returnCode = dialog.open();
@@ -260,7 +261,7 @@ public class DbwsGeneratorUi
 		private final String driverJarList;
 
 		public GenerateDbwsJob(IJavaProject javaProject, String builderFileName, String stageDirName, String driverJarList) {
-			super(JptDbwsUiMessages.DbwsGeneratorWizard_generatingDbws, javaProject);
+			super(JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_WIZARD__GENERATING_DBWS, javaProject);
 
 			this.builderFileName = builderFileName;
 			this.stageDirName = stageDirName;
@@ -281,7 +282,7 @@ public class DbwsGeneratorUi
 
 		@Override
 		protected String getJobName() {
-			return JptDbwsUiMessages.DbwsGeneratorUi_generatingDbws;
+			return JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__GENERATING_DBWS;
 		}
 
 		@Override

@@ -23,8 +23,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiImages;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.DbwsGeneratorUi;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
@@ -77,7 +77,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources(workbench.getDisplay()));
 		this.selection = sel;
 
-		this.setWindowTitle(JptDbwsUiMessages.DbwsGeneratorWizard_title);
+		this.setWindowTitle(JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_WIZARD__TITLE);
 
 		this.setDefaultPageImageDescriptor(JptDbwsEclipseLinkUiImages.NEW_WEB_SERVICES_CLIENT_BANNER);
 		this.setNeedsProgressMonitor(true);
@@ -155,9 +155,9 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	private WebDynamicProjectWizardPage buildWebDynamicProjectPage() {
 		
 		WebDynamicProjectWizardPage page = new WebDynamicProjectWizardPage(this.javaProject);
-		page.setTitle(JptDbwsUiMessages.WebDynamicProjectWizardPage_title);
-		page.setDescription(JptDbwsUiMessages.WebDynamicProjectWizardPage_desc);
-		page.setDestinationLabel(JptDbwsUiMessages.WebDynamicProjectWizardPage_destinationProject);
+		page.setTitle(JptDbwsEclipseLinkUiMessages.WEB_DYNAMIC_PROJECT_WIZARD_PAGE__TITLE);
+		page.setDescription(JptDbwsEclipseLinkUiMessages.WEB_DYNAMIC_PROJECT_WIZARD_PAGE__DESC);
+		page.setDestinationLabel(JptDbwsEclipseLinkUiMessages.WEB_DYNAMIC_PROJECT_WIZARD_PAGE__DESTINATION_PROJECT);
 
 		return page;
 	}

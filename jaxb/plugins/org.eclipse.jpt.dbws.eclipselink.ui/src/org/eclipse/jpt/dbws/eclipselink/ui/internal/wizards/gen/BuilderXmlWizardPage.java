@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 
 import org.eclipse.core.resources.IFile;
@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -105,8 +105,8 @@ public class BuilderXmlWizardPage extends WizardPage {
 	    	}
 	    	this.selectSourcePanel.update();
 			
-			this.setTitle(JptDbwsUiMessages.BuilderXmlWizardPage_title);
-			this.setDescription(JptDbwsUiMessages.BuilderXmlWizardPage_desc);
+			this.setTitle(JptDbwsEclipseLinkUiMessages.BUILDER_XML_WIZARD_PAGE__TITLE);
+			this.setDescription(JptDbwsEclipseLinkUiMessages.BUILDER_XML_WIZARD_PAGE__DESC);
 			this.selectSourcePanel.setFilterExtensions(browseXMLFilterExtensions);
 		}
 		this.selectSourcePanel.setVisibleHelper(visible);
@@ -175,7 +175,7 @@ public class BuilderXmlWizardPage extends WizardPage {
 		String uri = this.getSourceURI();
 		if(uri != null) {
 			if( ! URIHelper.isReadableURI(uri, false)) {
-				errorMessage = JptDbwsUiMessages.BuilderXmlWizardPage_errorUriCannotBeLocated;
+				errorMessage = JptDbwsEclipseLinkUiMessages.BUILDER_XML_WIZARD_PAGE__ERROR_URI_CANNOT_BE_LOCATED;
 			}
 		}
 		return errorMessage;
