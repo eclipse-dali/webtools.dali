@@ -254,13 +254,6 @@ public abstract class AbstractJavaType
 		return (pkg == null) ? null : pkg.getPackageInfo();
 	}
 	
-	public Iterable<String> getReferencedXmlTypeNames() {
-		if (this.mapping != null) {
-			return this.mapping.getReferencedXmlTypeNames();
-		}
-		return EmptyIterable.instance();
-	}
-	
 	
 	// ***** content assist *****
 	

@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
@@ -32,13 +33,13 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -50,9 +51,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractJaxbContextRoot
 		extends AbstractJaxbContextNode
 		implements JaxbContextRoot {
-	
-	//TODO this needs to move to some sort of JAXB util class, but not sure if there is one yet
-	private static final String CORE_JAVA_TYPE_PACKAGE_PREFIX = "java";
 	
 	/* This object has no parent, so it must point to the JAXB project explicitly. */
 	protected final JaxbProject jaxbProject;
@@ -97,9 +95,9 @@ public abstract class AbstractJaxbContextRoot
 		Set<String> totalTypeNames = new HashSet<String>();
 		
 		// process types with annotations and in jaxb.index files
-		for (JavaResourceAbstractType resourceType : calculateInitialTypes()) {
-			totalTypeNames.add(resourceType.getTypeBinding().getQualifiedName());
-			addType_(buildType(resourceType));
+		for (String typeName: CollectionTools.set(calculateInitialTypeNames())) {  // ensure iterable is unique
+			totalTypeNames.add(typeName);
+			addType_(buildType(typeName));
 		}
 		
 		// once all classes have been processed, add packages
@@ -151,33 +149,36 @@ public abstract class AbstractJaxbContextRoot
 		}
 		
 		// calculate initial types (annotated or listed in jaxb.index files)
-		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialTypes();
+		final Set<String> resourceTypesToProcess 
+				= CollectionTools.set(calculateInitialTypeNames());
 		
 		// store set of types that are referenced (and should therefore be default mapped)
-		final Set<JavaResourceAbstractType> referencedTypes = new HashSet<JavaResourceAbstractType>();
+		final Set<String> referencedTypes = new HashSet<String>();
 		
 		// while there are resource types to process or types to scan, continue to do so
 		while (! resourceTypesToProcess.isEmpty() || ! typesToScan.isEmpty()) {
-			for (JavaResourceAbstractType resourceType : new SnapshotCloneIterable<JavaResourceAbstractType>(resourceTypesToProcess)) {
-				String className = resourceType.getTypeBinding().getQualifiedName();
-				typesToRemove.remove(className);
-				totalTypes.add(className);
-				typesToScan.add(className);
-				processType(resourceType, typesToUpdate, referencedTypes.contains(resourceType));
-				resourceTypesToProcess.remove(resourceType);
+			for (String typeName : new SnapshotCloneIterable<String>(resourceTypesToProcess)) {
+				JavaResourceAbstractType resourceType = getJaxbProject().getJavaResourceType(typeName);
+				if (resourceType != null) { // if resource type is null, assume a validation error elsewhere
+					typesToRemove.remove(typeName);
+					totalTypes.add(typeName);
+					typesToScan.add(typeName);
+					processType(resourceType, typesToUpdate, referencedTypes.contains(typeName));
+				}
+				resourceTypesToProcess.remove(typeName);
 			}
 			
 			for (String typeToScan : new SnapshotCloneIterable<String>(typesToScan)) {
-				JavaType jaxbType = getJavaType(typeToScan);
-				if (jaxbType != null) {
-					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
+				JaxbTypeMapping typeMapping = getTypeMapping(typeToScan);
+				if (typeMapping != null) {
+					for (String referencedTypeName : typeMapping.getReferencedXmlTypeNames()) {
 						if (! StringTools.isBlank(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
 							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
 							if (referencedType != null && ! typeIsCoreJavaType(referencedTypeName)) {
-								resourceTypesToProcess.add(referencedType);
-								referencedTypes.add(referencedType);
+								resourceTypesToProcess.add(referencedType.getTypeBinding().getQualifiedName());
 							}
 						}
+						referencedTypes.add(referencedTypeName);
 					}
 				}
 				typesToScan.remove(typeToScan);
@@ -235,15 +236,22 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	/*
-	 * Calculate set of initial types
+	 * Calculate iterable of initial type names
+	 */
+	protected Iterable<String> calculateInitialTypeNames() {
+		return IterableTools.transform(calculateInitialTypes(), JavaResourceAbstractType.NAME_TRANSFORMER);
+	}
+	
+	/*
+	 * Calculate iterable of initial types
 	 * This should be:
 	 * - all resource types with @XmlType, @XmlRootElement, or @XmlJavaTypeAdapter
 	 * - all resource classes with @XmlRegistry
 	 * - all resource enums with @XmlEnum
 	 * - all types listed in jaxb.index files.
 	 */
-	protected Set<JavaResourceAbstractType> calculateInitialTypes() {
-		Set<JavaResourceAbstractType> set = CollectionTools.set(
+	protected Iterable<JavaResourceAbstractType> calculateInitialTypes() {
+		return new CompositeIterable<JavaResourceAbstractType>(
 				new FilteringIterable<JavaResourceAbstractType>(
 						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
@@ -262,27 +270,23 @@ public abstract class AbstractJaxbContextRoot
 								|| o.getAnnotation(JAXB.XML_ROOT_ELEMENT) != null
 								|| o.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0;
 					}
-				});
-		CollectionTools.addAll(
-				set,
+				},
 				IterableTools.notNulls(
 						IterableTools.transform(
-								IterableTools.compositeIterable(
-										getJaxbProject().getJaxbIndexResources(), JaxbIndexResource.CLASS_NAMES_TRANSFORMER
-								),
-								new JavaResourceTypeTransformer()
-						)
-				)
-		);
-		return set;
+								IterableTools.compositeIterable(getJaxbProject().getJaxbIndexResources(), JaxbIndexResource.CLASS_NAMES_TRANSFORMER),
+								new JavaResourceTypeTransformer())));
 	}
+	
 	protected class JavaResourceTypeTransformer
-		extends TransformerAdapter<String, JavaResourceAbstractType>
-	{
+			extends TransformerAdapter<String, JavaResourceAbstractType> {
 		@Override
 		public JavaResourceAbstractType transform(String typeName) {
 			return getJaxbProject().getJavaResourceType(typeName);
 		}
+	}
+	
+	private boolean typeIsCoreJavaType(String typeName){
+		return typeName.startsWith(JAXB.CORE_JAVA_TYPE_PACKAGE_PREFIX);
 	}
 	
 	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate, boolean defaultMapped) {
@@ -312,6 +316,11 @@ public abstract class AbstractJaxbContextRoot
 		return TypeKind.CLASS;
 	}
 	
+	protected JavaType buildType(String typeName) {
+		JavaResourceAbstractType resourceType = getJaxbProject().getJavaResourceType(typeName);
+		return (resourceType == null) ? null : buildType(resourceType);
+	}
+	
 	protected JavaType buildType(JavaResourceAbstractType resourceType) {
 		TypeKind kind = calculateJaxbTypeKind(resourceType);
 		if (kind == TypeKind.ENUM) {
@@ -320,10 +329,6 @@ public abstract class AbstractJaxbContextRoot
 		else {
 			return buildJaxbClass((JavaResourceType) resourceType);
 		}
-	}
-	
-	private boolean typeIsCoreJavaType(String typeName){
-		return typeName.startsWith(CORE_JAVA_TYPE_PACKAGE_PREFIX);
 	}
 	
 	
@@ -491,11 +496,11 @@ public abstract class AbstractJaxbContextRoot
 	
 	public Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage) {
 		return IterableTools.notNulls(
-				IterableTools.transform(getJavaClasses(jaxbPackage), JavaClass.XML_REGISTRY_TRANSFORMER)
-			);
+				IterableTools.transform(getJavaClasses(jaxbPackage), 
+				JavaClass.XML_REGISTRY_TRANSFORMER));
 	}
 	
-	public JavaTypeMapping getTypeMapping(String typeName) {
+	public JaxbTypeMapping getTypeMapping(String typeName) {
 		JavaType type = getJavaType(typeName);
 		return (type == null) ? null : type.getMapping();
 	}

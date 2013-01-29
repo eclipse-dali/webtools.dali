@@ -69,8 +69,7 @@ public class OxmXmlSeeAlsoImpl
 	}
 
 	public Iterable<String> getReferencedXmlTypeNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return getClasses();
 	}
 	
 	

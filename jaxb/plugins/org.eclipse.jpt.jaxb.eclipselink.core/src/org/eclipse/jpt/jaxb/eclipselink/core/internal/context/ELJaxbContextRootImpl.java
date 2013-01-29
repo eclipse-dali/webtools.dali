@@ -12,21 +12,27 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbProject;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm.OxmFileImpl;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
@@ -40,6 +46,9 @@ public class ELJaxbContextRootImpl
 	
 	// store as SortedSet ordered by file path
 	private SortedSet<OxmFile> oxmFiles;
+	
+	// store map of type mappings for easiest (and fastest) lookup
+	private Hashtable<String, OxmTypeMapping> oxmTypeMappingMap;
 	
 	
 	public ELJaxbContextRootImpl(JaxbProject jaxbProject) {
@@ -59,23 +68,10 @@ public class ELJaxbContextRootImpl
 	@Override
 	protected void initialize() {
 		
-		// can't do this statically, since this gets called during constructor
-		this.oxmFiles = Collections.synchronizedSortedSet(
-				new TreeSet<OxmFile>(
-						new Comparator<OxmFile>() {
-							public int compare(OxmFile of1, OxmFile of2) {
-								return of1.getResource().getProjectRelativePath().toString().compareTo(
-									of2.getResource().getProjectRelativePath().toString());
-							}
-						})); 
-		
-		// initialize oxm files *first*
-		synchronized (this.oxmFiles) {
-			for (JptXmlResource oxmResource : getJaxbProject().getOxmResources()) {
-				this.oxmFiles.add(buildOxmFile(oxmResource));
-			}
-		}
-		
+		// initialize oxm files and type mappings *first*
+		initOxmFiles();
+		// map should at least not be null
+		this.oxmTypeMappingMap = new Hashtable<String, OxmTypeMapping>();
 		super.initialize();
 	}
 	
@@ -89,27 +85,48 @@ public class ELJaxbContextRootImpl
 	
 	@Override
 	public void update() {
+		// rebuild type mapping map before anything
+		rebuildOxmTypeMappingMap();
 		
-		// update oxm files *first* 
-		
-		Collection<JptXmlResource> 
-				unmatchedOxmResources = CollectionTools.collection(getJaxbProject().getOxmResources());
-		
-		for (OxmFile oxmFile : getOxmFiles()) {
-			JptXmlResource oxmResource = oxmFile.getOxmResource();
-			if (! unmatchedOxmResources.remove(oxmResource)) {
-				removeOxmFile(oxmFile);
-			}
-			else {
-				oxmFile.update();
-			}
-		}
-		
-		for (JptXmlResource oxmResource : unmatchedOxmResources) {
-			addOxmFile(buildOxmFile(oxmResource));
-		}
+		// update oxm files before calling update on superclass
+		updateOxmFiles();
 		
 		super.update();
+	}
+	
+	protected void rebuildOxmTypeMappingMap() {
+		synchronized (this.oxmTypeMappingMap) {
+			Hashtable<String, OxmTypeMapping> oldMap = new Hashtable<String, OxmTypeMapping>(this.oxmTypeMappingMap);
+			this.oxmTypeMappingMap.clear();
+			for (OxmFile oxmFile : getOxmFiles()) {
+				// TODO - xml enums
+				for (OxmJavaType oxmJavaType : oxmFile.getXmlBindings().getJavaTypes()) {
+					String typeName = oxmJavaType.getTypeName().getFullyQualifiedName();
+					if (! StringTools.isBlank(typeName)) {
+						if (! this.oxmTypeMappingMap.containsKey(typeName)) {
+							this.oxmTypeMappingMap.put(typeName, oxmJavaType);
+						}
+					}
+				}
+			}
+			if (! oldMap.equals(this.oxmTypeMappingMap)) {
+				// no aspect associated with this.  this is just to cover the cases where this is
+				// the only thing that changes, as no further update will be scheduled.
+				fireStateChanged();
+			}
+		}
+	}
+	
+	@Override
+	protected Set<String> calculateInitialPackageNames() {
+		Set<String> initialPackageNames = super.calculateInitialPackageNames();
+		for (OxmFile oxmFile : getOxmFiles()) {
+			String packageName = oxmFile.getPackageName();
+			if (! StringTools.isBlank(packageName)) {
+				initialPackageNames.add(packageName);
+			}
+		}
+		return initialPackageNames;
 	}
 	
 	
@@ -144,6 +161,55 @@ public class ELJaxbContextRootImpl
 	
 	protected OxmFile buildOxmFile(JptXmlResource oxmResource) {
 		return new OxmFileImpl(this, oxmResource);
+	}
+	
+	protected void initOxmFiles() {
+		// can't do this statically, since this gets called during constructor
+		this.oxmFiles = Collections.synchronizedSortedSet(
+				new TreeSet<OxmFile>(
+						new Comparator<OxmFile>() {
+							public int compare(OxmFile of1, OxmFile of2) {
+								return of1.getResource().getProjectRelativePath().toString().compareTo(
+									of2.getResource().getProjectRelativePath().toString());
+							}
+						}));
+		synchronized (this.oxmFiles) {
+			for (JptXmlResource oxmResource : getJaxbProject().getOxmResources()) {
+				this.oxmFiles.add(buildOxmFile(oxmResource));
+			}
+		}
+	}
+	
+	protected void updateOxmFiles() {
+		Collection<JptXmlResource> 
+				unmatchedOxmResources = CollectionTools.collection(getJaxbProject().getOxmResources());
+		
+		for (OxmFile oxmFile : getOxmFiles()) {
+			JptXmlResource oxmResource = oxmFile.getOxmResource();
+			if (! unmatchedOxmResources.remove(oxmResource)) {
+				removeOxmFile(oxmFile);
+			}
+			else {
+				oxmFile.update();
+			}
+		}
+		
+		for (JptXmlResource oxmResource : unmatchedOxmResources) {
+			addOxmFile(buildOxmFile(oxmResource));
+		}
+	}
+	
+	
+	// ***** misc *****
+	
+	@Override
+	public JaxbTypeMapping getTypeMapping(String typeName) {
+		OxmTypeMapping oxmTypeMapping = getOxmTypeMapping(typeName);
+		return (oxmTypeMapping != null) ? oxmTypeMapping : super.getTypeMapping(typeName);
+	}
+	
+	public OxmTypeMapping getOxmTypeMapping(String typeName) {
+		return this.oxmTypeMappingMap.get(typeName);
 	}
 	
 	

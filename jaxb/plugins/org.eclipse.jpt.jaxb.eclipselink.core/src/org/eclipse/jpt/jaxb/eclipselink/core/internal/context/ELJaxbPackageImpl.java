@@ -23,7 +23,6 @@ public class ELJaxbPackageImpl
 	
 	public ELJaxbPackageImpl(ELJaxbContextRoot parent, String name) {
 		super(parent, name);
-		this.oxmFile = parent.getOxmFile(name);
 	}
 	
 	
@@ -54,7 +53,9 @@ public class ELJaxbPackageImpl
 				this.oxmFile.setPackage(null);
 			}
 			setOxmFile_(oxmFile);
-			oxmFile.setPackage(this);
+			if (oxmFile != null) {
+				oxmFile.setPackage(this);
+			}
 		}
 	}
 	

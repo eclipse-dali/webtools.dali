@@ -9,19 +9,29 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
+import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.SuperIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCurator;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.JaxbPackageItemContentProvider;
 
 public class ELJaxbPackageContentProvider
-		extends JaxbPackageItemContentProvider {
+		extends JaxbPackageItemContentProvider<ELJaxbPackage> {
 	
 	public ELJaxbPackageContentProvider(ELJaxbPackage jaxbPackage, Manager manager) {
 		super(jaxbPackage, manager);
@@ -29,10 +39,15 @@ public class ELJaxbPackageContentProvider
 	
 	
 	@Override
+	public ELJaxbContextRoot getParent() {
+		return (ELJaxbContextRoot) super.getParent();
+	}
+	
+	@Override
 	protected CollectionValueModel<JaxbContextNode> buildChildrenModel() {
 		return CompositeCollectionValueModel.forModels(
 				buildOxmFileChildrenModel(),
-				super.buildChildrenModel());
+				buildJavaTypeChildrenModel());
 	}
 	
 	protected CollectionValueModel<JaxbContextNode> buildOxmFileChildrenModel() {
@@ -47,5 +62,34 @@ public class ELJaxbPackageContentProvider
 							}
 						}),
 				NotNullFilter.instance());
+	}
+	
+	protected CollectionValueModel<JaxbContextNode> buildJavaTypeChildrenModel() {
+		return new ListCollectionValueModelAdapter<JaxbContextNode>(
+				new ListCurator<ELJaxbContextRoot, JaxbContextNode>(getParent()) {
+					@Override
+					protected Iterator<JaxbContextNode> iteratorForRecord() {
+						final ELJaxbContextRoot contextRoot = this.subject;
+						return new SuperIteratorWrapper<JaxbContextNode>(
+								new FilteringIterable<JavaType>(this.subject.getJavaTypes(ELJaxbPackageContentProvider.this.item)) {
+									@Override
+									protected boolean accept(JavaType o) {
+										String typeName = o.getTypeName().getFullyQualifiedName();
+										// TODO xml-registry, xml-java-type-adapter
+										JavaTypeMapping typeMapping = o.getMapping();
+										if (typeMapping != null && contextRoot.getTypeMapping(typeName) == typeMapping) {
+											return true;
+										}
+										if (o.getXmlJavaTypeAdapter() != null) {
+											return true;
+										}
+										if (o.getKind() == TypeKind.CLASS && ((JavaClass) o).getXmlRegistry() != null) {
+											return true;
+										}
+										return false;
+									}
+								});
+					}
+				});
 	}
 }

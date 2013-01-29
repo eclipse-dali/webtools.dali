@@ -97,12 +97,6 @@ public interface JavaType
 	 */
 	JaxbPackageInfo getJaxbPackageInfo();
 	
-	/**
-	 * Return all directly referenced types, fully qualified.
-	 * (Used for constructing Jaxb context)
-	 */
-	Iterable<String> getReferencedXmlTypeNames();
-	
 	
 	// ****** validation *****
 	

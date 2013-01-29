@@ -18,10 +18,10 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 
 
-public class JaxbPackageItemContentProvider
-		extends AbstractItemTreeContentProvider<JaxbPackage, JaxbContextNode> {
+public class JaxbPackageItemContentProvider<I extends JaxbPackage>
+		extends AbstractItemTreeContentProvider<I, JaxbContextNode> {
 	
-	public JaxbPackageItemContentProvider(JaxbPackage jaxbPackage, Manager manager) {
+	public JaxbPackageItemContentProvider(I jaxbPackage, Manager manager) {
 		super(jaxbPackage, manager);
 	}
 	

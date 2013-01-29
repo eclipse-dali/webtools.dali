@@ -16,12 +16,14 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlSchema;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
@@ -340,6 +342,19 @@ public class OxmXmlBindingsImpl
 //		protected void disposeElement(OxmJavaType element) {
 //			element.dispose();
 //		}
+	}
+	
+	
+	// ***** misc *****
+	
+	public Iterable<OxmTypeMapping> getTypeMappings() {
+		// TODO xml-enums
+		return new SuperIterableWrapper<OxmTypeMapping>(getJavaTypes());
+	}
+	
+	public OxmTypeMapping getTypeMapping(String typeName) {
+		// TODO xml-enums
+		return getJavaType(typeName);
 	}
 	
 	

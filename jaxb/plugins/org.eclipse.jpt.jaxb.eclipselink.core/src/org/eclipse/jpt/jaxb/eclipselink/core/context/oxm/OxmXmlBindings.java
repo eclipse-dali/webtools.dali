@@ -90,4 +90,14 @@ public interface OxmXmlBindings
 	 * Return the first java type with the given qualified name
 	 */
 	OxmJavaType getJavaType(String qualifiedName);
+	
+	
+	// ***** misc *****
+	
+	Iterable<OxmTypeMapping> getTypeMappings();
+	
+	/**
+	 * Return *first* type mapping with the given name
+	 */
+	OxmTypeMapping getTypeMapping(String typeName);
 }

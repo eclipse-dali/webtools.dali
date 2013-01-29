@@ -356,8 +356,20 @@ public abstract class AbstractOxmTypeMapping
 	// ***** misc *****
 	
 	public Iterable<String> getReferencedXmlTypeNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return (isXmlTransient()) ?
+				getTransientReferencedXmlTypeNames()
+				: getNonTransientReferencedXmlTypeNames(); 
+	}
+	
+	protected Iterable<String> getTransientReferencedXmlTypeNames() {
+		return EmptyIterable.instance();
+	}
+	
+	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
+		if (this.xmlSeeAlso != null) {
+			return this.xmlSeeAlso.getReferencedXmlTypeNames();
+		}
+		return EmptyIterable.instance();
 	}
 	
 	public XsdTypeDefinition getXsdTypeDefinition() {

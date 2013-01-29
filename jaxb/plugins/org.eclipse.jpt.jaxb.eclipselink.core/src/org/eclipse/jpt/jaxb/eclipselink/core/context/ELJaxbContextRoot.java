@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.context;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 
 public interface ELJaxbContextRoot
 		extends JaxbContextRoot {
@@ -30,4 +31,9 @@ public interface ELJaxbContextRoot
 	 * Return the (first) oxm file with the given package name
 	 */
 	OxmFile getOxmFile(String packageName);
+	
+	
+	// ***** misc *****
+	
+	OxmTypeMapping getOxmTypeMapping(String typeName);
 }

@@ -23,7 +23,12 @@ package org.eclipse.jpt.jaxb.core.resource.java;
  */
 @SuppressWarnings("nls")
 public interface JAXB {
-
+	
+	// Generic java
+	
+	String CORE_JAVA_TYPE_PACKAGE_PREFIX = "java";
+	
+	
 	// JAXB packages
 	
 	String JAXB_PACKAGE = "javax.xml.bind";
