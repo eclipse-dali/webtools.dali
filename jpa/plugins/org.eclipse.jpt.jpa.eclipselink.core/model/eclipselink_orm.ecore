@@ -163,10 +163,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredFunctionQuery" eSuperTypes="#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredProcedureQuery" eSuperTypes="#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredFunctionQuery" eSuperTypes="#//v2_3/XmlNamedStoredFunctionQuery_2_3"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlNamedStoredProcedureQuery">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlNamedStoredProcedureQuery #//v2_3/XmlNamedStoredProcedureQuery_2_3">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="returnsResultSet" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multipleResultSets" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="callByIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNoSql" eSuperTypes="#//v2_4/XmlNoSql_2_4"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlObjectTypeConverter" eSuperTypes="#//XmlNamedConverter">
@@ -218,9 +216,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlReturnInsert" eSuperTypes="#//v2_1/XmlReturnInsert_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlRoundRobinPartitioning" eSuperTypes="#//v2_2/XmlRoundRobinPartitioning_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlSecondaryTable" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlSecondaryTable #//v2_2/XmlSecondaryTable_2_2"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlStoredProcedureParameter">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlStoredProcedureParameter" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlStoredProcedureParameter #//v2_3/XmlStoredProcedureParameter_2_3">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//XmlDirection"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="queryParameter" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jdbcType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -713,6 +710,11 @@
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery_2_3"
+        abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="multipleResultSets" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="callByIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminatorColumns"
@@ -725,6 +727,10 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlTable_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlStoredProcedureParameter_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlStruct_2_3" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

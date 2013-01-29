@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -207,7 +207,7 @@ public class XmlPlsqlRecord extends EBaseObjectImpl implements XmlPlsqlRecord_2_
 	}
 
 	protected static Translator buildNameTranslator() {
-		return new Translator(EclipseLink2_3.PLSQL_RECORD__NAME, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlPlsqlRecord_2_3_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.NAME, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlPlsqlRecord_2_3_Name(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlPlsqlRecord

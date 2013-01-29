@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
@@ -35,10 +36,9 @@ import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlNamedStoredProcedureQuery_2_1()
  * @model kind="class" interface="true" abstract="true"
- * @extends EBaseObject
  * @generated
  */
-public interface XmlNamedStoredProcedureQuery_2_1 extends EBaseObject
+public interface XmlNamedStoredProcedureQuery_2_1 extends XmlQuery
 {
 	/**
 	 * Returns the value of the '<em><b>Result Classes</b></em>' attribute list.

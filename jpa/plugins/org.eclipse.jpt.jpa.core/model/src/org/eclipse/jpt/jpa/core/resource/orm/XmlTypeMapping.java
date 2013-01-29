@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,9 +26,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping#getClassName <em>Class Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping#getMetadataComplete <em>Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping#getAttributes <em>Attributes</em>}</li>
  * </ul>
  * </p>
@@ -39,34 +35,8 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlTypeMapping extends XmlAccessHolder
+public interface XmlTypeMapping extends XmlManagedType, XmlAccessHolder
 {
-	/**
-	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Class Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Class Name</em>' attribute.
-	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTypeMapping_ClassName()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	String getClassName();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping#getClassName <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Class Name</em>' attribute.
-	 * @see #getClassName()
-	 * @generated
-	 */
-	void setClassName(String value);
-
 	/**
 	 * Returns the value of the '<em><b>Metadata Complete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -94,32 +64,6 @@ public interface XmlTypeMapping extends XmlAccessHolder
 	void setMetadataComplete(Boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Description</em>' attribute.
-	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTypeMapping_Description()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	String getDescription();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping#getDescription <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Description</em>' attribute.
-	 * @see #getDescription()
-	 * @generated
-	 */
-	void setDescription(String value);
-
-	/**
 	 * Returns the value of the '<em><b>Attributes</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -144,8 +88,6 @@ public interface XmlTypeMapping extends XmlAccessHolder
 	 * @generated
 	 */
 	void setAttributes(Attributes value);
-	
-	TextRange getClassTextRange();
 
 	TextRange getAttributesTextRange();
 	
@@ -154,14 +96,4 @@ public interface XmlTypeMapping extends XmlAccessHolder
 	//TODO not happy with this, or the corresponding one in XmlAttributeMapping
 	String getMappingKey();
 
-
-	// ********** refactoring **********
-
-	ReplaceEdit createRenameTypeEdit(IType originalType, String newName);
-
-	ReplaceEdit createRenamePackageEdit(String newName);
-
-	// ********** content assist *********
-
-	boolean classNameTouches(int pos);
 } // XmlTypeMapping

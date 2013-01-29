@@ -64,24 +64,24 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getParameterMode() <em>Parameter Mode</em>}' attribute.
+	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getParameterMode()
+	 * @see #getMode()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final ParameterMode_2_1 PARAMETER_MODE_EDEFAULT = ParameterMode_2_1.IN;
+	protected static final ParameterMode_2_1 MODE_EDEFAULT = ParameterMode_2_1.IN;
 
 	/**
-	 * The cached value of the '{@link #getParameterMode() <em>Parameter Mode</em>}' attribute.
+	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getParameterMode()
+	 * @see #getMode()
 	 * @generated
 	 * @ordered
 	 */
-	protected ParameterMode_2_1 parameterMode = PARAMETER_MODE_EDEFAULT;
+	protected ParameterMode_2_1 mode = MODE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -180,41 +180,41 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Parameter Mode</b></em>' attribute.
+	 * Returns the value of the '<em><b>Mode</b></em>' attribute.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Parameter Mode</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Mode</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parameter Mode</em>' attribute.
+	 * @return the value of the '<em>Mode</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1
-	 * @see #setParameterMode(ParameterMode_2_1)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlStoredProcedureParameter_2_1_ParameterMode()
+	 * @see #setMode(ParameterMode_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlStoredProcedureParameter_2_1_Mode()
 	 * @model
 	 * @generated
 	 */
-	public ParameterMode_2_1 getParameterMode()
+	public ParameterMode_2_1 getMode()
 	{
-		return parameterMode;
+		return mode;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter#getParameterMode <em>Parameter Mode</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter#getMode <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parameter Mode</em>' attribute.
+	 * @param value the new value of the '<em>Mode</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1
-	 * @see #getParameterMode()
+	 * @see #getMode()
 	 * @generated
 	 */
-	public void setParameterMode(ParameterMode_2_1 newParameterMode)
+	public void setMode(ParameterMode_2_1 newMode)
 	{
-		ParameterMode_2_1 oldParameterMode = parameterMode;
-		parameterMode = newParameterMode == null ? PARAMETER_MODE_EDEFAULT : newParameterMode;
+		ParameterMode_2_1 oldMode = mode;
+		mode = newMode == null ? MODE_EDEFAULT : newMode;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_STORED_PROCEDURE_PARAMETER__PARAMETER_MODE, oldParameterMode, parameterMode));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_STORED_PROCEDURE_PARAMETER__MODE, oldMode, mode));
 	}
 
 	/**
@@ -299,8 +299,8 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 		{
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__DESCRIPTION:
 				return getDescription();
-			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__PARAMETER_MODE:
-				return getParameterMode();
+			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__MODE:
+				return getMode();
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
 				return getName();
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__CLASS_NAME:
@@ -322,8 +322,8 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__PARAMETER_MODE:
-				setParameterMode((ParameterMode_2_1)newValue);
+			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__MODE:
+				setMode((ParameterMode_2_1)newValue);
 				return;
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
 				setName((String)newValue);
@@ -348,8 +348,8 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__PARAMETER_MODE:
-				setParameterMode(PARAMETER_MODE_EDEFAULT);
+			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__MODE:
+				setMode(MODE_EDEFAULT);
 				return;
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
 				setName(NAME_EDEFAULT);
@@ -373,8 +373,8 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 		{
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__PARAMETER_MODE:
-				return parameterMode != PARAMETER_MODE_EDEFAULT;
+			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__MODE:
+				return mode != MODE_EDEFAULT;
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_STORED_PROCEDURE_PARAMETER__CLASS_NAME:
@@ -396,8 +396,8 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (description: ");
 		result.append(description);
-		result.append(", parameterMode: ");
-		result.append(parameterMode);
+		result.append(", mode: ");
+		result.append(mode);
 		result.append(", name: ");
 		result.append(name);
 		result.append(", className: ");
@@ -422,8 +422,8 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 		return new Translator[] {
 			buildNameTranslator(),
 			buildClassTranslator(),
+			buildModeTranslator(),
 			buildDescriptionTranslator(),
-			buildParameterModeTranslator(),
 		};
 	}
 
@@ -439,7 +439,7 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 		return new Translator(JPA.DESCRIPTION, OrmV2_1Package.eINSTANCE.getXmlStoredProcedureParameter_2_1_Description());
 	}
 
-	protected static Translator buildParameterModeTranslator() {
-		return new Translator(JPA2_1.PARAMETER_MODE, OrmV2_1Package.eINSTANCE.getXmlStoredProcedureParameter_2_1_ParameterMode());
+	protected static Translator buildModeTranslator() {
+		return new Translator(JPA2_1.MODE, OrmV2_1Package.eINSTANCE.getXmlStoredProcedureParameter_2_1_Mode(), Translator.DOM_ATTRIBUTE);
 	}
 } // XmlStoredProcedureParameter

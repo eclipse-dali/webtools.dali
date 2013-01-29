@@ -15,8 +15,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -38,7 +39,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getDirection <em>Direction</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getQueryParameter <em>Query Parameter</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getType <em>Type</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getJdbcType <em>Jdbc Type</em>}</li>
@@ -48,11 +48,30 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStoredProcedureParameter()
  * @model kind="class"
- * @extends EBaseObject
  * @generated
  */
-public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBaseObject
+public class XmlStoredProcedureParameter extends org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter implements XmlStoredProcedureParameter_2_3
 {
+	/**
+	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean OPTIONAL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean optional = OPTIONAL_EDEFAULT;
+
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
@@ -68,26 +87,6 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	 * @ordered
 	 */
 	protected XmlDirection direction = DIRECTION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getQueryParameter() <em>Query Parameter</em>}' attribute.
@@ -191,6 +190,41 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Optional</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Optional</em>' attribute.
+	 * @see #setOptional(Boolean)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStoredProcedureParameter_2_3_Optional()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getOptional()
+	{
+		return optional;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getOptional <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optional</em>' attribute.
+	 * @see #getOptional()
+	 * @generated
+	 */
+	public void setOptional(Boolean newOptional)
+	{
+		Boolean oldOptional = optional;
+		optional = newOptional;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL, oldOptional, optional));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Direction</b></em>' attribute.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlDirection}.
 	 * <!-- begin-user-doc -->
@@ -226,41 +260,6 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 		direction = newDirection == null ? DIRECTION_EDEFAULT : newDirection;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__DIRECTION, oldDirection, direction));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStoredProcedureParameter_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME, oldName, name));
 	}
 
 	/**
@@ -413,10 +412,10 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL:
+				return getOptional();
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__DIRECTION:
 				return getDirection();
-			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
-				return getName();
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER:
 				return getQueryParameter();
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__TYPE:
@@ -439,11 +438,11 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL:
+				setOptional((Boolean)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__DIRECTION:
 				setDirection((XmlDirection)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
-				setName((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER:
 				setQueryParameter((String)newValue);
@@ -471,11 +470,11 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL:
+				setOptional(OPTIONAL_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__DIRECTION:
 				setDirection(DIRECTION_EDEFAULT);
-				return;
-			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
-				setName(NAME_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER:
 				setQueryParameter(QUERY_PARAMETER_EDEFAULT);
@@ -503,10 +502,10 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL:
+				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__DIRECTION:
 				return direction != DIRECTION_EDEFAULT;
-			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER:
 				return QUERY_PARAMETER_EDEFAULT == null ? queryParameter != null : !QUERY_PARAMETER_EDEFAULT.equals(queryParameter);
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__TYPE:
@@ -525,15 +524,53 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	 * @generated
 	 */
 	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlStoredProcedureParameter_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL: return EclipseLinkOrmV2_3Package.XML_STORED_PROCEDURE_PARAMETER_23__OPTIONAL;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlStoredProcedureParameter_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_STORED_PROCEDURE_PARAMETER_23__OPTIONAL: return EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER__OPTIONAL;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString()
 	{
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (direction: ");
+		result.append(" (optional: ");
+		result.append(optional);
+		result.append(", direction: ");
 		result.append(direction);
-		result.append(", name: ");
-		result.append(name);
 		result.append(", queryParameter: ");
 		result.append(queryParameter);
 		result.append(", type: ");
@@ -560,11 +597,15 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildDirectionTranslator(),
+			buildModeTranslator(),
 			buildNameTranslator(),
 			buildQueryParameterTranslator(),
+			buildOptionalTranslator(),
 			buildTypeTranslator(),
 			buildJdbcTypeTranslator(),
 			buildJdbcTypeNameTranslator(),
+			buildClassTranslator(),
+			buildDescriptionTranslator(),
 		};
 	}
 	
@@ -572,12 +613,12 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements EBas
 		return new Translator(EclipseLink.PARAMETER__DIRECTION, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Direction(), Translator.DOM_ATTRIBUTE);
 	}
 
-	protected static Translator buildNameTranslator() {
-		return new Translator(EclipseLink.PARAMETER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Name(), Translator.DOM_ATTRIBUTE);
-	}
-
 	protected static Translator buildQueryParameterTranslator() {
 		return new Translator(EclipseLink.PARAMETER__QUERY_PARAMETER, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_QueryParameter(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildOptionalTranslator() {
+		return new Translator(EclipseLink2_3.OPTIONAL, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlStoredProcedureParameter_2_3_Optional(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildTypeTranslator() {

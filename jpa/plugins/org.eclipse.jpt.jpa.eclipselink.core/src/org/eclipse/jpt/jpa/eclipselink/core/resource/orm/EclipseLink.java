@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved. This
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -85,7 +85,6 @@ public interface EclipseLink
 		String NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET = "returns-result-set"; //$NON-NLS-1$
 	String NAMED_STORED_PROCEDURE_QUERY__PARAMETER = "parameter"; //$NON-NLS-1$
 		String PARAMETER__DIRECTION = "direction"; //$NON-NLS-1$
-		String PARAMETER__NAME = "name"; //$NON-NLS-1$
 		String PARAMETER__QUERY_PARAMETER = "query-parameter"; //$NON-NLS-1$
 		String PARAMETER__TYPE = "type"; //$NON-NLS-1$
 		String PARAMETER__JDBC_TYPE = "jdbc-type"; //$NON-NLS-1$

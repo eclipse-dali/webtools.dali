@@ -1368,14 +1368,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_CONVERTER = 20;
 	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER__DESCRIPTION = OrmPackage.XML_CONVERTER__DESCRIPTION;
-	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1383,6 +1375,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_CONVERTER__CLASS_NAME = OrmPackage.XML_CONVERTER__CLASS_NAME;
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CONVERTER__DESCRIPTION = OrmPackage.XML_CONVERTER__DESCRIPTION;
 	/**
 	 * The feature id for the '<em><b>Auto Apply</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1942,14 +1942,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_EMBEDDABLE = 26;
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__ACCESS = OrmPackage.XML_EMBEDDABLE__ACCESS;
-	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1958,14 +1950,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_EMBEDDABLE__CLASS_NAME = OrmPackage.XML_EMBEDDABLE__CLASS_NAME;
 	/**
-	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__METADATA_COMPLETE = OrmPackage.XML_EMBEDDABLE__METADATA_COMPLETE;
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1973,6 +1957,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_EMBEDDABLE__DESCRIPTION = OrmPackage.XML_EMBEDDABLE__DESCRIPTION;
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__ACCESS = OrmPackage.XML_EMBEDDABLE__ACCESS;
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__METADATA_COMPLETE = OrmPackage.XML_EMBEDDABLE__METADATA_COMPLETE;
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -2305,14 +2305,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ENTITY = 29;
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ACCESS = OrmPackage.XML_ENTITY__ACCESS;
-	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2321,14 +2313,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ENTITY__CLASS_NAME = OrmPackage.XML_ENTITY__CLASS_NAME;
 	/**
-	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__METADATA_COMPLETE = OrmPackage.XML_ENTITY__METADATA_COMPLETE;
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2336,6 +2320,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__DESCRIPTION = OrmPackage.XML_ENTITY__DESCRIPTION;
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ACCESS = OrmPackage.XML_ENTITY__ACCESS;
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__METADATA_COMPLETE = OrmPackage.XML_ENTITY__METADATA_COMPLETE;
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4650,14 +4650,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 18;
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__ACCESS = OrmPackage.XML_MAPPED_SUPERCLASS__ACCESS;
-	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4666,14 +4658,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MAPPED_SUPERCLASS__CLASS_NAME = OrmPackage.XML_MAPPED_SUPERCLASS__CLASS_NAME;
 	/**
-	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__METADATA_COMPLETE = OrmPackage.XML_MAPPED_SUPERCLASS__METADATA_COMPLETE;
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4681,6 +4665,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MAPPED_SUPERCLASS__DESCRIPTION = OrmPackage.XML_MAPPED_SUPERCLASS__DESCRIPTION;
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ACCESS = OrmPackage.XML_MAPPED_SUPERCLASS__ACCESS;
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__METADATA_COMPLETE = OrmPackage.XML_MAPPED_SUPERCLASS__METADATA_COMPLETE;
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5351,21 +5351,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS;
 	/**
-	 * The feature id for the '<em><b>Returns Result Set</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT + 0;
-	/**
 	 * The feature id for the '<em><b>Multiple Result Sets</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT + 1;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Call By Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5373,7 +5365,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT + 2;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Returns Result Set</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET = OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Xml Named Stored Procedure Query</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6759,13 +6759,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = OrmPackage.XML_SECONDARY_TABLE_FEATURE_COUNT + 1;
 	/**
-	 * The feature id for the '<em><b>Direction</b></em>' attribute.
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER__DIRECTION = 0;
+	public static final int XML_STORED_PROCEDURE_PARAMETER__DESCRIPTION = OrmPackage.XML_STORED_PROCEDURE_PARAMETER__DESCRIPTION;
+	/**
+	 * The feature id for the '<em><b>Mode</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER__MODE = OrmPackage.XML_STORED_PROCEDURE_PARAMETER__MODE;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6773,7 +6781,31 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER__NAME = 1;
+	public static final int XML_STORED_PROCEDURE_PARAMETER__NAME = OrmPackage.XML_STORED_PROCEDURE_PARAMETER__NAME;
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER__CLASS_NAME = OrmPackage.XML_STORED_PROCEDURE_PARAMETER__CLASS_NAME;
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER__OPTIONAL = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 0;
+	/**
+	 * The feature id for the '<em><b>Direction</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER__DIRECTION = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 1;
 	/**
 	 * The feature id for the '<em><b>Query Parameter</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6781,7 +6813,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER = 2;
+	public static final int XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 2;
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6789,7 +6821,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER__TYPE = 3;
+	public static final int XML_STORED_PROCEDURE_PARAMETER__TYPE = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Jdbc Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6797,7 +6829,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER__JDBC_TYPE = 4;
+	public static final int XML_STORED_PROCEDURE_PARAMETER__JDBC_TYPE = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Jdbc Type Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6805,7 +6837,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER__JDBC_TYPE_NAME = 5;
+	public static final int XML_STORED_PROCEDURE_PARAMETER__JDBC_TYPE_NAME = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 5;
 	/**
 	 * The number of structural features of the '<em>Xml Stored Procedure Parameter</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6813,7 +6845,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT = 6;
+	public static final int XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT = OrmPackage.XML_STORED_PROCEDURE_PARAMETER_FEATURE_COUNT + 6;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStruct <em>Xml Struct</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -7372,14 +7404,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TYPE_MAPPING = 87;
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TYPE_MAPPING__ACCESS = OrmPackage.XML_TYPE_MAPPING__ACCESS;
-	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7388,14 +7412,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TYPE_MAPPING__CLASS_NAME = OrmPackage.XML_TYPE_MAPPING__CLASS_NAME;
 	/**
-	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TYPE_MAPPING__METADATA_COMPLETE = OrmPackage.XML_TYPE_MAPPING__METADATA_COMPLETE;
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7403,6 +7419,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_TYPE_MAPPING__DESCRIPTION = OrmPackage.XML_TYPE_MAPPING__DESCRIPTION;
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__ACCESS = OrmPackage.XML_TYPE_MAPPING__ACCESS;
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__METADATA_COMPLETE = OrmPackage.XML_TYPE_MAPPING__METADATA_COMPLETE;
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -9952,34 +9984,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getMultipleResultSets <em>Multiple Result Sets</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Multiple Result Sets</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getMultipleResultSets()
-	 * @see #getXmlNamedStoredProcedureQuery()
-	 * @generated
-	 */
-	public EAttribute getXmlNamedStoredProcedureQuery_MultipleResultSets()
-	{
-		return (EAttribute)xmlNamedStoredProcedureQueryEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getCallByIndex <em>Call By Index</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Call By Index</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getCallByIndex()
-	 * @see #getXmlNamedStoredProcedureQuery()
-	 * @generated
-	 */
-	public EAttribute getXmlNamedStoredProcedureQuery_CallByIndex()
-	{
-		return (EAttribute)xmlNamedStoredProcedureQueryEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNoSql <em>Xml No Sql</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10411,20 +10415,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getName()
-	 * @see #getXmlStoredProcedureParameter()
-	 * @generated
-	 */
-	public EAttribute getXmlStoredProcedureParameter_Name()
-	{
-		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter#getQueryParameter <em>Query Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10435,7 +10425,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EAttribute getXmlStoredProcedureParameter_QueryParameter()
 	{
-		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -10449,7 +10439,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EAttribute getXmlStoredProcedureParameter_Type()
 	{
-		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -10463,7 +10453,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EAttribute getXmlStoredProcedureParameter_JdbcType()
 	{
-		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -10477,7 +10467,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EAttribute getXmlStoredProcedureParameter_JdbcTypeName()
 	{
-		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)xmlStoredProcedureParameterEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -11195,8 +11185,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlNamedStoredProcedureQueryEClass = createEClass(XML_NAMED_STORED_PROCEDURE_QUERY);
 		createEAttribute(xmlNamedStoredProcedureQueryEClass, XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET);
-		createEAttribute(xmlNamedStoredProcedureQueryEClass, XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS);
-		createEAttribute(xmlNamedStoredProcedureQueryEClass, XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX);
 
 		xmlNoSqlEClass = createEClass(XML_NO_SQL);
 
@@ -11260,7 +11248,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlStoredProcedureParameterEClass = createEClass(XML_STORED_PROCEDURE_PARAMETER);
 		createEAttribute(xmlStoredProcedureParameterEClass, XML_STORED_PROCEDURE_PARAMETER__DIRECTION);
-		createEAttribute(xmlStoredProcedureParameterEClass, XML_STORED_PROCEDURE_PARAMETER__NAME);
 		createEAttribute(xmlStoredProcedureParameterEClass, XML_STORED_PROCEDURE_PARAMETER__QUERY_PARAMETER);
 		createEAttribute(xmlStoredProcedureParameterEClass, XML_STORED_PROCEDURE_PARAMETER__TYPE);
 		createEAttribute(xmlStoredProcedureParameterEClass, XML_STORED_PROCEDURE_PARAMETER__JDBC_TYPE);
@@ -11489,6 +11476,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlNamedPlsqlStoredProcedureQueryEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlNamedPlsqlStoredProcedureQuery_2_3());
 		xmlNamedStoredFunctionQueryEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlNamedStoredFunctionQuery_2_3());
 		xmlNamedStoredProcedureQueryEClass.getESuperTypes().add(theOrmPackage.getXmlNamedStoredProcedureQuery());
+		xmlNamedStoredProcedureQueryEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlNamedStoredProcedureQuery_2_3());
 		xmlNoSqlEClass.getESuperTypes().add(theEclipseLinkOrmV2_4Package.getXmlNoSql_2_4());
 		xmlObjectTypeConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
 		xmlOneToManyEClass.getESuperTypes().add(theOrmPackage.getXmlOneToMany());
@@ -11525,6 +11513,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlRoundRobinPartitioningEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlRoundRobinPartitioning_2_2());
 		xmlSecondaryTableEClass.getESuperTypes().add(theOrmPackage.getXmlSecondaryTable());
 		xmlSecondaryTableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlSecondaryTable_2_2());
+		xmlStoredProcedureParameterEClass.getESuperTypes().add(theOrmPackage.getXmlStoredProcedureParameter());
+		xmlStoredProcedureParameterEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlStoredProcedureParameter_2_3());
 		xmlStructEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlStruct_2_3());
 		xmlStructConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
 		xmlStructureEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
@@ -11712,8 +11702,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlNamedStoredProcedureQueryEClass, XmlNamedStoredProcedureQuery.class, "XmlNamedStoredProcedureQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlNamedStoredProcedureQuery_ReturnsResultSet(), theXMLTypePackage.getBooleanObject(), "returnsResultSet", null, 0, 1, XmlNamedStoredProcedureQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlNamedStoredProcedureQuery_MultipleResultSets(), theXMLTypePackage.getBooleanObject(), "multipleResultSets", null, 0, 1, XmlNamedStoredProcedureQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlNamedStoredProcedureQuery_CallByIndex(), theXMLTypePackage.getBooleanObject(), "callByIndex", null, 0, 1, XmlNamedStoredProcedureQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNoSqlEClass, XmlNoSql.class, "XmlNoSql", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -11777,7 +11765,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlStoredProcedureParameterEClass, XmlStoredProcedureParameter.class, "XmlStoredProcedureParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlStoredProcedureParameter_Direction(), this.getXmlDirection(), "direction", null, 0, 1, XmlStoredProcedureParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlStoredProcedureParameter_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlStoredProcedureParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlStoredProcedureParameter_QueryParameter(), theXMLTypePackage.getString(), "queryParameter", null, 0, 1, XmlStoredProcedureParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlStoredProcedureParameter_Type(), theXMLTypePackage.getString(), "type", null, 0, 1, XmlStoredProcedureParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlStoredProcedureParameter_JdbcType(), theXMLTypePackage.getIntObject(), "jdbcType", null, 0, 1, XmlStoredProcedureParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -12814,22 +12801,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EAttribute XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET = eINSTANCE.getXmlNamedStoredProcedureQuery_ReturnsResultSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Multiple Result Sets</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS = eINSTANCE.getXmlNamedStoredProcedureQuery_MultipleResultSets();
-
-		/**
-		 * The meta object literal for the '<em><b>Call By Index</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX = eINSTANCE.getXmlNamedStoredProcedureQuery_CallByIndex();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNoSql <em>Xml No Sql</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -13118,14 +13089,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_STORED_PROCEDURE_PARAMETER__DIRECTION = eINSTANCE.getXmlStoredProcedureParameter_Direction();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_STORED_PROCEDURE_PARAMETER__NAME = eINSTANCE.getXmlStoredProcedureParameter_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Query Parameter</b></em>' attribute feature.

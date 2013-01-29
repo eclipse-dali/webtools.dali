@@ -55,7 +55,7 @@ public interface JPA2_1
 	String NAMED_ENTITY_GRAPH = "named-entity-graph";
 	String NAMED_STORED_PROCEDURE_QUERY = "named-stored-procedure-query";
 	String PARAMETER = "parameter";
-	String PARAMETER_MODE = "parameter-mode";
+	String MODE = "mode";
 	String PROCEDURE_NAME = "procedure-name";
 	String PRIMARY_KEY_FOREIGN_KEY = "primary-key-foreign-key";
 	String RESULT_CLASS = "result-class";

@@ -14,6 +14,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
@@ -40,8 +43,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getReturnsResultSet <em>Returns Result Set</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getMultipleResultSets <em>Multiple Result Sets</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery#getCallByIndex <em>Call By Index</em>}</li>
  * </ul>
  * </p>
  *
@@ -49,28 +50,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery
+public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery implements XmlNamedStoredProcedureQuery_2_3
 {
-	/**
-	 * The default value of the '{@link #getReturnsResultSet() <em>Returns Result Set</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturnsResultSet()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean RETURNS_RESULT_SET_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReturnsResultSet() <em>Returns Result Set</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturnsResultSet()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean returnsResultSet = RETURNS_RESULT_SET_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getMultipleResultSets() <em>Multiple Result Sets</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -110,6 +91,26 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	 * @ordered
 	 */
 	protected Boolean callByIndex = CALL_BY_INDEX_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getReturnsResultSet() <em>Returns Result Set</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnsResultSet()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean RETURNS_RESULT_SET_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getReturnsResultSet() <em>Returns Result Set</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnsResultSet()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean returnsResultSet = RETURNS_RESULT_SET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -177,7 +178,7 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Multiple Result Sets</em>' attribute.
 	 * @see #setMultipleResultSets(Boolean)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery_MultipleResultSets()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery_2_3_MultipleResultSets()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -212,7 +213,7 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Call By Index</em>' attribute.
 	 * @see #setCallByIndex(Boolean)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery_CallByIndex()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery_2_3_CallByIndex()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -247,12 +248,12 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
-				return getReturnsResultSet();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS:
 				return getMultipleResultSets();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX:
 				return getCallByIndex();
+			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
+				return getReturnsResultSet();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -268,14 +269,14 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
-				setReturnsResultSet((Boolean)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS:
 				setMultipleResultSets((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX:
 				setCallByIndex((Boolean)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
+				setReturnsResultSet((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -291,14 +292,14 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
-				setReturnsResultSet(RETURNS_RESULT_SET_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS:
 				setMultipleResultSets(MULTIPLE_RESULT_SETS_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX:
 				setCallByIndex(CALL_BY_INDEX_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
+				setReturnsResultSet(RETURNS_RESULT_SET_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -314,14 +315,54 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
-				return RETURNS_RESULT_SET_EDEFAULT == null ? returnsResultSet != null : !RETURNS_RESULT_SET_EDEFAULT.equals(returnsResultSet);
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS:
 				return MULTIPLE_RESULT_SETS_EDEFAULT == null ? multipleResultSets != null : !MULTIPLE_RESULT_SETS_EDEFAULT.equals(multipleResultSets);
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX:
 				return CALL_BY_INDEX_EDEFAULT == null ? callByIndex != null : !CALL_BY_INDEX_EDEFAULT.equals(callByIndex);
+			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET:
+				return RETURNS_RESULT_SET_EDEFAULT == null ? returnsResultSet != null : !RETURNS_RESULT_SET_EDEFAULT.equals(returnsResultSet);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlNamedStoredProcedureQuery_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS: return EclipseLinkOrmV2_3Package.XML_NAMED_STORED_PROCEDURE_QUERY_23__MULTIPLE_RESULT_SETS;
+				case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX: return EclipseLinkOrmV2_3Package.XML_NAMED_STORED_PROCEDURE_QUERY_23__CALL_BY_INDEX;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlNamedStoredProcedureQuery_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_NAMED_STORED_PROCEDURE_QUERY_23__MULTIPLE_RESULT_SETS: return EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__MULTIPLE_RESULT_SETS;
+				case EclipseLinkOrmV2_3Package.XML_NAMED_STORED_PROCEDURE_QUERY_23__CALL_BY_INDEX: return EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__CALL_BY_INDEX;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -335,12 +376,12 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (returnsResultSet: ");
-		result.append(returnsResultSet);
-		result.append(", multipleResultSets: ");
+		result.append(" (multipleResultSets: ");
 		result.append(multipleResultSets);
 		result.append(", callByIndex: ");
 		result.append(callByIndex);
+		result.append(", returnsResultSet: ");
+		result.append(returnsResultSet);
 		result.append(')');
 		return result.toString();
 	}
@@ -362,9 +403,11 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 			buildResultClassTranslator(),
 			buildResultSetMappingTranslator(),
 			buildProcedureNameTranslator(),
-			buildReturnResultSetTranslator(),
+			buildReturnsResultSetTranslator(),
+			buildMultipleResultSetsTranslator(),
+			buildCallByIndexTranslator(),
 			buildHintTranslator(),
-//TODO			buildParameterTranslator(),
+			buildParameterTranslator(),
 		};
 	}
 
@@ -384,10 +427,18 @@ public class XmlNamedStoredProcedureQuery extends org.eclipse.jpt.jpa.core.resou
 		return new Translator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME, OrmV2_1Package.eINSTANCE.getXmlNamedStoredProcedureQuery_2_1_ProcedureName(), Translator.DOM_ATTRIBUTE);
 	}
 	
-	protected static Translator buildReturnResultSetTranslator() {
+	protected static Translator buildReturnsResultSetTranslator() {
 		return new BooleanTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_ReturnsResultSet(), Translator.DOM_ATTRIBUTE);
 	}
 	
+	protected static Translator buildMultipleResultSetsTranslator() {
+		return new BooleanTranslator(EclipseLink2_3.MULTIPLE_RESULT_SETS, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlNamedStoredProcedureQuery_2_3_MultipleResultSets(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildCallByIndexTranslator() {
+		return new BooleanTranslator(EclipseLink2_3.CALL_BY_INDEX, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlNamedStoredProcedureQuery_2_3_CallByIndex(), Translator.DOM_ATTRIBUTE);
+	}
+
 	protected static Translator buildHintTranslator() {
 		return XmlQueryHint.buildTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY__HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints());
 	}

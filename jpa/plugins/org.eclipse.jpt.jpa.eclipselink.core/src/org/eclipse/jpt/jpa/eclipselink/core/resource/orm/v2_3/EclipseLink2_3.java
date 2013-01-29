@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -34,17 +34,11 @@ public interface EclipseLink2_3
 	String MULTITENANT_TYPE = "multiltenant-type";
 
 	String NAMED_STORED_FUNCTION_QUERY = "named-stored-function-query";
-		String NAMED_STORED_FUNCTION_QUERY__NAME = "nname";
 	String NAMED_PLSQL_STORED_PROCEDURE_QUERY = "named-plsql-stored-procedure-query";
-		String NAMED_PLSQL_STORED_PROCEDURE_QUERY__NAME = "name";
 	String NAMED_PLSQL_STORED_FUNCTION_QUERY = "named-plsql-stored-function-query";
-		String NAMED_PLSQL_STORED_FUNCTION_QUERY__NAME = "name";
 	String PLSQL_RECORD = "plsql-record";
-		String PLSQL_RECORD__NAME = "name";
 	String PLSQL_TABLE = "plsql-table";
-		String PLSQL_TABLE__NAME = "name";
 	String STRUCT = "struct";
-		String STRUCT__NAME = "name";
 	String STRUCTURE = "structure";
 		String STRUCTURE__ATTRIBUTE_TYPE = "attribute-type";
 
@@ -53,5 +47,8 @@ public interface EclipseLink2_3
 		String TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY= "primary-key";
 		String TENANT_DISCRIMINATOR_COLUMN__TABLE = "table";
 
+	String CALL_BY_INDEX = "call-by-index"; //$NON-NLS-1$
+	String MULTIPLE_RESULT_SETS = "multiple-result-sets"; //$NON-NLS-1$
+	String OPTIONAL = "optional"; //$NON-NLS-1$
 
 }

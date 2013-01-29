@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -36,7 +33,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements XmlTypeMapping
+public abstract class AbstractXmlTypeMapping extends AbstractXmlManagedType implements XmlTypeMapping
 {
 
 	/**
@@ -60,26 +57,6 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 	protected String access = ACCESS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CLASS_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String className = CLASS_NAME_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -98,26 +75,6 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 	 * @ordered
 	 */
 	protected Boolean metadataComplete = METADATA_COMPLETE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DESCRIPTION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' containment reference.
@@ -148,41 +105,6 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.ABSTRACT_XML_TYPE_MAPPING;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Class Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Class Name</em>' attribute.
-	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTypeMapping_ClassName()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getClassName()
-	{
-		return className;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTypeMapping#getClassName <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Class Name</em>' attribute.
-	 * @see #getClassName()
-	 * @generated
-	 */
-	public void setClassName(String newClassName)
-	{
-		String oldClassName = className;
-		className = newClassName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME, oldClassName, className));
 	}
 
 	/**
@@ -253,41 +175,6 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 		metadataComplete = newMetadataComplete;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE, oldMetadataComplete, metadataComplete));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Description</em>' attribute.
-	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlTypeMapping_Description()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getDescription()
-	{
-		return description;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTypeMapping#getDescription <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Description</em>' attribute.
-	 * @see #getDescription()
-	 * @generated
-	 */
-	public void setDescription(String newDescription)
-	{
-		String oldDescription = description;
-		description = newDescription;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -378,12 +265,8 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 		{
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				return getAccess();
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				return getClassName();
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				return getMetadataComplete();
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION:
-				return getDescription();
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES:
 				return getAttributes();
 		}
@@ -403,14 +286,8 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				setAccess((String)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				setClassName((String)newValue);
-				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				setMetadataComplete((Boolean)newValue);
-				return;
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION:
-				setDescription((String)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES:
 				setAttributes((Attributes)newValue);
@@ -432,14 +309,8 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				setClassName(CLASS_NAME_EDEFAULT);
-				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				setMetadataComplete(METADATA_COMPLETE_EDEFAULT);
-				return;
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION:
-				setDescription(DESCRIPTION_EDEFAULT);
 				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES:
 				setAttributes((Attributes)null);
@@ -460,16 +331,68 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 		{
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				return ACCESS_EDEFAULT == null ? access != null : !ACCESS_EDEFAULT.equals(access);
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES:
 				return attributes != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAccessHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS: return OrmPackage.XML_ACCESS_HOLDER__ACCESS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE: return OrmPackage.XML_TYPE_MAPPING__METADATA_COMPLETE;
+				case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES: return OrmPackage.XML_TYPE_MAPPING__ATTRIBUTES;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAccessHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_TYPE_MAPPING__METADATA_COMPLETE: return OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE;
+				case OrmPackage.XML_TYPE_MAPPING__ATTRIBUTES: return OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -485,20 +408,12 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (access: ");
 		result.append(access);
-		result.append(", className: ");
-		result.append(className);
 		result.append(", metadataComplete: ");
 		result.append(metadataComplete);
-		result.append(", description: ");
-		result.append(description);
 		result.append(')');
 		return result.toString();
 	}
 	
-
-	public TextRange getClassTextRange() {
-		return getAttributeTextRange(JPA.CLASS);
-	}
 
 	public TextRange getAttributesTextRange() {
 		return getAttributeTextRange(JPA.ATTRIBUTES);
@@ -510,16 +425,8 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 	
 	// ********** translators **********
 	
-	protected static Translator buildClassTranslator() {
-		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlTypeMapping_ClassName(), Translator.DOM_ATTRIBUTE);
-	}
-	
 	protected static Translator buildMetadataCompleteTranslator() {
 		return new Translator(JPA.METADATA_COMPLETE, OrmPackage.eINSTANCE.getXmlTypeMapping_MetadataComplete(), Translator.DOM_ATTRIBUTE);
-	}
-	
-	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, OrmPackage.eINSTANCE.getXmlTypeMapping_Description());
 	}
 	
 	protected static Translator buildAttributesTranslator() {
@@ -530,39 +437,4 @@ public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements 
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 
-
-	// ********** refactoring **********
-
-	public ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
-		String originalName = originalType.getTypeQualifiedName();
-		int nameIndex = this.className.lastIndexOf(originalName);
-		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
-		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
-	}
-
-	public ReplaceEdit createRenamePackageEdit(String newPackageName) {
-		int packageLength = this.className.lastIndexOf('.');
-		if (newPackageName == "") {//$NON-NLS-1$
-			//moving to the default package, remove the '.'
-			packageLength++;
-		}
-		if (packageLength == -1) {
-			//moving from the default package or unspecified package
-			packageLength = 0;
-			newPackageName = newPackageName + '.';
-		}
-		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
-		return new ReplaceEdit(offset, packageLength, newPackageName);
-	}
-
-	// *********** content assist ************
-	
-	protected TextRange getClassNameCodeAssistTextRange() {
-		return getAttributeCodeAssistTextRange(JPA.CLASS);
-	}
-
-	public boolean classNameTouches(int pos) {
-		TextRange textRange = this.getClassNameCodeAssistTextRange();
-		return (textRange != null) && (textRange.touches(pos));
-	}
 } // TypeMapping

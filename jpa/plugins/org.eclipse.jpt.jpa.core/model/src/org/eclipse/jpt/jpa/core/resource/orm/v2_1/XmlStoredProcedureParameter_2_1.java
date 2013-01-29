@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getParameterMode <em>Parameter Mode</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getMode <em>Mode</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getClassName <em>Class Name</em>}</li>
  * </ul>
@@ -66,33 +66,33 @@ public interface XmlStoredProcedureParameter_2_1 extends EBaseObject
 	void setDescription(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Parameter Mode</b></em>' attribute.
+	 * Returns the value of the '<em><b>Mode</b></em>' attribute.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Parameter Mode</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Mode</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parameter Mode</em>' attribute.
+	 * @return the value of the '<em>Mode</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1
-	 * @see #setParameterMode(ParameterMode_2_1)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlStoredProcedureParameter_2_1_ParameterMode()
+	 * @see #setMode(ParameterMode_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlStoredProcedureParameter_2_1_Mode()
 	 * @model
 	 * @generated
 	 */
-	ParameterMode_2_1 getParameterMode();
+	ParameterMode_2_1 getMode();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getParameterMode <em>Parameter Mode</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getMode <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parameter Mode</em>' attribute.
+	 * @param value the new value of the '<em>Mode</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1
-	 * @see #getParameterMode()
+	 * @see #getMode()
 	 * @generated
 	 */
-	void setParameterMode(ParameterMode_2_1 value);
+	void setMode(ParameterMode_2_1 value);
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

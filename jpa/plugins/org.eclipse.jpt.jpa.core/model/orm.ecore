@@ -36,6 +36,8 @@
       eSuperTypes="#//XmlNamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referencedColumnName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlManagedType" abstract="true"
+      eSuperTypes="#//XmlManagedType"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlNamedColumn" abstract="true"
       eSuperTypes="#//XmlNamedColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlRelationshipMapping" abstract="true"
@@ -60,7 +62,7 @@
         eType="#//XmlUniqueConstraint" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTypeMapping" abstract="true"
-      eSuperTypes="#//XmlTypeMapping"/>
+      eSuperTypes="#//AbstractXmlManagedType #//XmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAccessHolder" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
@@ -136,7 +138,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstructorResult" eSuperTypes="#//v2_1/ConstructorResult_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlConvert" eSuperTypes="#//v2_1/XmlConvert_2_1"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlConverter" eSuperTypes="#//v2_1/XmlConverter_2_1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConverter" eSuperTypes="#//AbstractXmlManagedType #//v2_1/XmlConverter_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlConvertibleMapping" abstract="true"
       interface="true" eSuperTypes="#//v2_1/XmlConvertibleMapping_2_1">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lob" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
@@ -280,6 +282,11 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Lob"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManagedType" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="#//AbstractXmlMultiRelationshipMapping #//v2_0/XmlManyToMany_2_0 #//v2_1/XmlManyToMany_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="#//AbstractXmlSingleRelationshipMapping #//v2_1/XmlManyToOne_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="MapKey">
@@ -308,7 +315,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//XmlQuery #//v2_0/XmlNamedQuery_2_0">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery" eSuperTypes="#//XmlQuery #//v2_1/XmlNamedStoredProcedureQuery_2_1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery" eSuperTypes="#//v2_1/XmlNamedStoredProcedureQuery_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNullAttributeMapping" abstract="true"
       eSuperTypes="#//AbstractXmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="#//AbstractXmlMultiRelationshipMapping #//XmlJoinColumnContainer #//v2_0/XmlOneToMany_2_0 #//v2_1/XmlOneToMany_2_1"/>
@@ -396,11 +403,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="#//AbstractXmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTypeMapping" abstract="true" interface="true"
-      eSuperTypes="#//XmlAccessHolder">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      eSuperTypes="#//XmlManagedType #//XmlAccessHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" eType="#//Attributes"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -624,10 +628,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableConversion" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlConverter_2_1" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+        interface="true" eSuperTypes="#//XmlManagedType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoApply" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlConverterContainer_2_1" abstract="true"
@@ -722,7 +723,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery_2_1"
-        abstract="true" interface="true">
+        abstract="true" interface="true" eSuperTypes="#//XmlQuery">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultClasses" upperBound="-1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultSetMappings" upperBound="-1"
@@ -774,7 +775,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlStoredProcedureParameter_2_1" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameterMode" eType="#//v2_1/ParameterMode_2_1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" eType="#//v2_1/ParameterMode_2_1"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

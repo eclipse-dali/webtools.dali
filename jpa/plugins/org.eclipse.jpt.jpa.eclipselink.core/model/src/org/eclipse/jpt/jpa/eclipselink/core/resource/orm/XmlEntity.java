@@ -27,6 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
@@ -3942,6 +3943,10 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 
 	protected static Translator buildNoSqlTranslator() {
 		return XmlNoSql.buildTranslator(EclipseLink2_4.NO_SQL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEntity_2_4_NoSql());
+	}
+	
+	protected static Translator buildConvertTranslator() {
+		return XmlConvert.buildTranslator(JPA2_1.CONVERT, OrmV2_1Package.eINSTANCE.getXmlEntity_2_1_Converts());
 	}
 	
 	// *********** content assist ************

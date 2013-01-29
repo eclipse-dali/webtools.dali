@@ -281,22 +281,22 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int XML_CONVERTER_21 = 5;
 
 	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_21__DESCRIPTION = 0;
-
-	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTER_21__CLASS_NAME = 1;
+	public static final int XML_CONVERTER_21__CLASS_NAME = OrmPackage.XML_MANAGED_TYPE__CLASS_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CONVERTER_21__DESCRIPTION = OrmPackage.XML_MANAGED_TYPE__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Auto Apply</b></em>' attribute.
@@ -305,7 +305,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTER_21__AUTO_APPLY = 2;
+	public static final int XML_CONVERTER_21__AUTO_APPLY = OrmPackage.XML_MANAGED_TYPE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Converter 21</em>' class.
@@ -314,7 +314,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTER_21_FEATURE_COUNT = 3;
+	public static final int XML_CONVERTER_21_FEATURE_COUNT = OrmPackage.XML_MANAGED_TYPE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1 <em>Xml Converter Container 21</em>}' class.
@@ -988,13 +988,40 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int XML_NAMED_ENTITY_GRAPH_21_FEATURE_COUNT = 5;
 
 	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__DESCRIPTION = OrmPackage.XML_QUERY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__NAME = OrmPackage.XML_QUERY__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Hints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__HINTS = OrmPackage.XML_QUERY__HINTS;
+
+	/**
 	 * The feature id for the '<em><b>Result Classes</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES = 0;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES = OrmPackage.XML_QUERY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Result Set Mappings</b></em>' attribute list.
@@ -1003,7 +1030,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS = 1;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS = OrmPackage.XML_QUERY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Procedure Name</b></em>' attribute.
@@ -1012,7 +1039,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME = 2;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME = OrmPackage.XML_QUERY_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -1021,7 +1048,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS = 3;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS = OrmPackage.XML_QUERY_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Named Stored Procedure Query 21</em>' class.
@@ -1030,7 +1057,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21_FEATURE_COUNT = 4;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21_FEATURE_COUNT = OrmPackage.XML_QUERY_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Named Attribute Nodes</b></em>' containment reference list.
@@ -1177,13 +1204,13 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int XML_STORED_PROCEDURE_PARAMETER_21__DESCRIPTION = 0;
 
 	/**
-	 * The feature id for the '<em><b>Parameter Mode</b></em>' attribute.
+	 * The feature id for the '<em><b>Mode</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER_21__PARAMETER_MODE = 1;
+	public static final int XML_STORED_PROCEDURE_PARAMETER_21__MODE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1803,34 +1830,6 @@ public class OrmV2_1Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1#getDescription <em>Description</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Description</em>'.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1#getDescription()
-	 * @see #getXmlConverter_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlConverter_2_1_Description()
-	{
-		return (EAttribute)xmlConverter_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1#getClassName <em>Class Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Class Name</em>'.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1#getClassName()
-	 * @see #getXmlConverter_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlConverter_2_1_ClassName()
-	{
-		return (EAttribute)xmlConverter_2_1EClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1#getAutoApply <em>Auto Apply</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1841,7 +1840,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 */
 	public EAttribute getXmlConverter_2_1_AutoApply()
 	{
-		return (EAttribute)xmlConverter_2_1EClass.getEStructuralFeatures().get(2);
+		return (EAttribute)xmlConverter_2_1EClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2640,15 +2639,15 @@ public class OrmV2_1Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getParameterMode <em>Parameter Mode</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getMode <em>Mode</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Parameter Mode</em>'.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getParameterMode()
+	 * @return the meta object for the attribute '<em>Mode</em>'.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1#getMode()
 	 * @see #getXmlStoredProcedureParameter_2_1()
 	 * @generated
 	 */
-	public EAttribute getXmlStoredProcedureParameter_2_1_ParameterMode()
+	public EAttribute getXmlStoredProcedureParameter_2_1_Mode()
 	{
 		return (EAttribute)xmlStoredProcedureParameter_2_1EClass.getEStructuralFeatures().get(1);
 	}
@@ -3043,8 +3042,6 @@ public class OrmV2_1Package extends EPackageImpl
 		createEAttribute(xmlConvert_2_1EClass, XML_CONVERT_21__DISABLE_CONVERSION);
 
 		xmlConverter_2_1EClass = createEClass(XML_CONVERTER_21);
-		createEAttribute(xmlConverter_2_1EClass, XML_CONVERTER_21__DESCRIPTION);
-		createEAttribute(xmlConverter_2_1EClass, XML_CONVERTER_21__CLASS_NAME);
 		createEAttribute(xmlConverter_2_1EClass, XML_CONVERTER_21__AUTO_APPLY);
 
 		xmlConverterContainer_2_1EClass = createEClass(XML_CONVERTER_CONTAINER_21);
@@ -3134,7 +3131,7 @@ public class OrmV2_1Package extends EPackageImpl
 
 		xmlStoredProcedureParameter_2_1EClass = createEClass(XML_STORED_PROCEDURE_PARAMETER_21);
 		createEAttribute(xmlStoredProcedureParameter_2_1EClass, XML_STORED_PROCEDURE_PARAMETER_21__DESCRIPTION);
-		createEAttribute(xmlStoredProcedureParameter_2_1EClass, XML_STORED_PROCEDURE_PARAMETER_21__PARAMETER_MODE);
+		createEAttribute(xmlStoredProcedureParameter_2_1EClass, XML_STORED_PROCEDURE_PARAMETER_21__MODE);
 		createEAttribute(xmlStoredProcedureParameter_2_1EClass, XML_STORED_PROCEDURE_PARAMETER_21__NAME);
 		createEAttribute(xmlStoredProcedureParameter_2_1EClass, XML_STORED_PROCEDURE_PARAMETER_21__CLASS_NAME);
 
@@ -3177,15 +3174,18 @@ public class OrmV2_1Package extends EPackageImpl
 
 		// Obtain other dependent packages
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
+		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlConverter_2_1EClass.getESuperTypes().add(theOrmPackage.getXmlManagedType());
 		xmlEntity_2_1EClass.getESuperTypes().add(this.getXmlQueryContainer_2_1());
 		xmlEntityMappings_2_1EClass.getESuperTypes().add(this.getXmlConverterContainer_2_1());
 		xmlEntityMappings_2_1EClass.getESuperTypes().add(this.getXmlQueryContainer_2_1());
+		xmlNamedStoredProcedureQuery_2_1EClass.getESuperTypes().add(theOrmPackage.getXmlQuery());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(columnResult_2_1EClass, ColumnResult_2_1.class, "ColumnResult_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3209,8 +3209,6 @@ public class OrmV2_1Package extends EPackageImpl
 		initEAttribute(getXmlConvert_2_1_DisableConversion(), theXMLTypePackage.getBooleanObject(), "disableConversion", null, 0, 1, XmlConvert_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlConverter_2_1EClass, XmlConverter_2_1.class, "XmlConverter_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlConverter_2_1_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlConverter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlConverter_2_1_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlConverter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlConverter_2_1_AutoApply(), theXMLTypePackage.getBooleanObject(), "autoApply", null, 0, 1, XmlConverter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlConverterContainer_2_1EClass, XmlConverterContainer_2_1.class, "XmlConverterContainer_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3300,7 +3298,7 @@ public class OrmV2_1Package extends EPackageImpl
 
 		initEClass(xmlStoredProcedureParameter_2_1EClass, XmlStoredProcedureParameter_2_1.class, "XmlStoredProcedureParameter_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlStoredProcedureParameter_2_1_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlStoredProcedureParameter_2_1_ParameterMode(), this.getParameterMode_2_1(), "parameterMode", null, 0, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlStoredProcedureParameter_2_1_Mode(), this.getParameterMode_2_1(), "mode", null, 0, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlStoredProcedureParameter_2_1_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlStoredProcedureParameter_2_1_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3474,22 +3472,6 @@ public class OrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_CONVERTER_21 = eINSTANCE.getXmlConverter_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_CONVERTER_21__DESCRIPTION = eINSTANCE.getXmlConverter_2_1_Description();
-
-		/**
-		 * The meta object literal for the '<em><b>Class Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_CONVERTER_21__CLASS_NAME = eINSTANCE.getXmlConverter_2_1_ClassName();
 
 		/**
 		 * The meta object literal for the '<em><b>Auto Apply</b></em>' attribute feature.
@@ -3962,12 +3944,12 @@ public class OrmV2_1Package extends EPackageImpl
 		public static final EAttribute XML_STORED_PROCEDURE_PARAMETER_21__DESCRIPTION = eINSTANCE.getXmlStoredProcedureParameter_2_1_Description();
 
 		/**
-		 * The meta object literal for the '<em><b>Parameter Mode</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Mode</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_STORED_PROCEDURE_PARAMETER_21__PARAMETER_MODE = eINSTANCE.getXmlStoredProcedureParameter_2_1_ParameterMode();
+		public static final EAttribute XML_STORED_PROCEDURE_PARAMETER_21__MODE = eINSTANCE.getXmlStoredProcedureParameter_2_1_Mode();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.

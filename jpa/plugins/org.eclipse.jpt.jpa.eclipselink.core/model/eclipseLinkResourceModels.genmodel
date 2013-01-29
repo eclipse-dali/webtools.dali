@@ -180,8 +180,6 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNamedStoredFunctionQuery"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/returnsResultSet"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/multipleResultSets"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/callByIndex"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNoSql"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlObjectTypeConverter">
@@ -229,7 +227,6 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlSecondaryTable"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStoredProcedureParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/direction"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/queryParameter"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/jdbcType"/>
@@ -564,6 +561,10 @@
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedStoredFunctionQuery_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedStoredFunctionQuery_2_3/name"/>
       </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedStoredProcedureQuery_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedStoredProcedureQuery_2_3/multipleResultSets"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedStoredProcedureQuery_2_3/callByIndex"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3/tenantDiscriminatorColumns"/>
       </genClasses>
@@ -572,6 +573,9 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPlsqlTable_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlPlsqlTable_2_3/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStoredProcedureParameter_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlStoredProcedureParameter_2_3/optional"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStruct_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlStruct_2_3/name"/>

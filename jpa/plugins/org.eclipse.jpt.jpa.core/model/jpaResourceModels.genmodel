@@ -64,6 +64,7 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseJoinColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseJoinColumn/referencedColumnName"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlManagedType"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlNamedColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlRelationshipMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlRelationshipMapping/targetEntity"/>
@@ -236,6 +237,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinTableContainer/joinTable"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Lob"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlManagedType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlManagedType/className"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlManagedType/description"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlManyToMany"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlManyToOne"/>
     <genClasses ecoreClass="orm.ecore#//MapKey">
@@ -331,9 +336,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlTransient"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlTypeMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/className"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/metadataComplete"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlTypeMapping/attributes"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraint">
@@ -481,8 +484,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConvert_2_1/disableConversion"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConverter_2_1">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/description"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/className"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlConverter_2_1/autoApply"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlConverterContainer_2_1">
@@ -573,7 +574,7 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/description"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/parameterMode"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/mode"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/name"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlStoredProcedureParameter_2_1/className"/>
       </genClasses>

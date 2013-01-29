@@ -162,7 +162,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPersistenceUnitDefaults_2_3()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23 = 11;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23 = 12;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3 <em>Xml Plsql Record 23</em>}' class.
@@ -172,7 +172,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPlsqlRecord_2_3()
 	 * @generated
 	 */
-	public static final int XML_PLSQL_RECORD_23 = 12;
+	public static final int XML_PLSQL_RECORD_23 = 13;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3 <em>Xml Plsql Table 23</em>}' class.
@@ -182,7 +182,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPlsqlTable_2_3()
 	 * @generated
 	 */
-	public static final int XML_PLSQL_TABLE_23 = 13;
+	public static final int XML_PLSQL_TABLE_23 = 14;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3 <em>Xml Struct 23</em>}' class.
@@ -192,7 +192,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStruct_2_3()
 	 * @generated
 	 */
-	public static final int XML_STRUCT_23 = 14;
+	public static final int XML_STRUCT_23 = 16;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3 <em>Xml Attributes 23</em>}' class.
@@ -212,7 +212,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStructure_2_3()
 	 * @generated
 	 */
-	public static final int XML_STRUCTURE_23 = 16;
+	public static final int XML_STRUCTURE_23 = 18;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3 <em>Xml Array 23</em>}' class.
@@ -367,7 +367,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminatorColumn_2_3()
 	 * @generated
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23 = 15;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23 = 17;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlElementCollection_2_3 <em>Xml Element Collection 23</em>}' class.
@@ -713,6 +713,43 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_NAMED_STORED_FUNCTION_QUERY_23_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3 <em>Xml Named Stored Procedure Query 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedStoredProcedureQuery_2_3()
+	 * @generated
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_23 = 11;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Result Sets</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_23__MULTIPLE_RESULT_SETS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Call By Index</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_23__CALL_BY_INDEX = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Named Stored Procedure Query 23</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_23_FEATURE_COUNT = 2;
+
+	/**
 	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -765,6 +802,34 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_PLSQL_TABLE_23_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3 <em>Xml Stored Procedure Parameter 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStoredProcedureParameter_2_3()
+	 * @generated
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER_23 = 15;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER_23__OPTIONAL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Stored Procedure Parameter 23</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STORED_PROCEDURE_PARAMETER_23_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -873,7 +938,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getMultitenantType()
 	 * @generated
 	 */
-	public static final int MULTITENANT_TYPE = 17;
+	public static final int MULTITENANT_TYPE = 19;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -909,6 +974,13 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlNamedStoredFunctionQuery_2_3EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlNamedStoredProcedureQuery_2_3EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -951,6 +1023,13 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlPlsqlTable_2_3EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlStoredProcedureParameter_2_3EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1278,6 +1357,50 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public EAttribute getXmlNamedStoredFunctionQuery_2_3_Name()
 	{
 		return (EAttribute)xmlNamedStoredFunctionQuery_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3 <em>Xml Named Stored Procedure Query 23</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Named Stored Procedure Query 23</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3
+	 * @generated
+	 */
+	public EClass getXmlNamedStoredProcedureQuery_2_3()
+	{
+		return xmlNamedStoredProcedureQuery_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3#getMultipleResultSets <em>Multiple Result Sets</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Multiple Result Sets</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3#getMultipleResultSets()
+	 * @see #getXmlNamedStoredProcedureQuery_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlNamedStoredProcedureQuery_2_3_MultipleResultSets()
+	{
+		return (EAttribute)xmlNamedStoredProcedureQuery_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3#getCallByIndex <em>Call By Index</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Call By Index</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3#getCallByIndex()
+	 * @see #getXmlNamedStoredProcedureQuery_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlNamedStoredProcedureQuery_2_3_CallByIndex()
+	{
+		return (EAttribute)xmlNamedStoredProcedureQuery_2_3EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -1664,6 +1787,35 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3 <em>Xml Stored Procedure Parameter 23</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Stored Procedure Parameter 23</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3
+	 * @generated
+	 */
+	public EClass getXmlStoredProcedureParameter_2_3()
+	{
+		return xmlStoredProcedureParameter_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3#getOptional <em>Optional</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Optional</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3#getOptional()
+	 * @see #getXmlStoredProcedureParameter_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlStoredProcedureParameter_2_3_Optional()
+	{
+		return (EAttribute)xmlStoredProcedureParameter_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3 <em>Xml Struct 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1980,6 +2132,10 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		xmlNamedStoredFunctionQuery_2_3EClass = createEClass(XML_NAMED_STORED_FUNCTION_QUERY_23);
 		createEAttribute(xmlNamedStoredFunctionQuery_2_3EClass, XML_NAMED_STORED_FUNCTION_QUERY_23__NAME);
 
+		xmlNamedStoredProcedureQuery_2_3EClass = createEClass(XML_NAMED_STORED_PROCEDURE_QUERY_23);
+		createEAttribute(xmlNamedStoredProcedureQuery_2_3EClass, XML_NAMED_STORED_PROCEDURE_QUERY_23__MULTIPLE_RESULT_SETS);
+		createEAttribute(xmlNamedStoredProcedureQuery_2_3EClass, XML_NAMED_STORED_PROCEDURE_QUERY_23__CALL_BY_INDEX);
+
 		xmlPersistenceUnitDefaults_2_3EClass = createEClass(XML_PERSISTENCE_UNIT_DEFAULTS_23);
 		createEReference(xmlPersistenceUnitDefaults_2_3EClass, XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATOR_COLUMNS);
 
@@ -1988,6 +2144,9 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 		xmlPlsqlTable_2_3EClass = createEClass(XML_PLSQL_TABLE_23);
 		createEAttribute(xmlPlsqlTable_2_3EClass, XML_PLSQL_TABLE_23__NAME);
+
+		xmlStoredProcedureParameter_2_3EClass = createEClass(XML_STORED_PROCEDURE_PARAMETER_23);
+		createEAttribute(xmlStoredProcedureParameter_2_3EClass, XML_STORED_PROCEDURE_PARAMETER_23__OPTIONAL);
 
 		xmlStruct_2_3EClass = createEClass(XML_STRUCT_23);
 		createEAttribute(xmlStruct_2_3EClass, XML_STRUCT_23__NAME);
@@ -2097,6 +2256,10 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEClass(xmlNamedStoredFunctionQuery_2_3EClass, XmlNamedStoredFunctionQuery_2_3.class, "XmlNamedStoredFunctionQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlNamedStoredFunctionQuery_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlNamedStoredFunctionQuery_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlNamedStoredProcedureQuery_2_3EClass, XmlNamedStoredProcedureQuery_2_3.class, "XmlNamedStoredProcedureQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlNamedStoredProcedureQuery_2_3_MultipleResultSets(), theXMLTypePackage.getBooleanObject(), "multipleResultSets", null, 0, 1, XmlNamedStoredProcedureQuery_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlNamedStoredProcedureQuery_2_3_CallByIndex(), theXMLTypePackage.getBooleanObject(), "callByIndex", null, 0, 1, XmlNamedStoredProcedureQuery_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlPersistenceUnitDefaults_2_3EClass, XmlPersistenceUnitDefaults_2_3.class, "XmlPersistenceUnitDefaults_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlPersistenceUnitDefaults_2_3_TenantDiscriminatorColumns(), this.getXmlTenantDiscriminatorColumn_2_3(), null, "tenantDiscriminatorColumns", null, 0, -1, XmlPersistenceUnitDefaults_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2105,6 +2268,9 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 		initEClass(xmlPlsqlTable_2_3EClass, XmlPlsqlTable_2_3.class, "XmlPlsqlTable_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlPlsqlTable_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlPlsqlTable_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlStoredProcedureParameter_2_3EClass, XmlStoredProcedureParameter_2_3.class, "XmlStoredProcedureParameter_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlStoredProcedureParameter_2_3_Optional(), theXMLTypePackage.getBooleanObject(), "optional", null, 0, 1, XmlStoredProcedureParameter_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlStruct_2_3EClass, XmlStruct_2_3.class, "XmlStruct_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlStruct_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlStruct_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2250,6 +2416,32 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_NAMED_STORED_FUNCTION_QUERY_23__NAME = eINSTANCE.getXmlNamedStoredFunctionQuery_2_3_Name();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3 <em>Xml Named Stored Procedure Query 23</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredProcedureQuery_2_3
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedStoredProcedureQuery_2_3()
+		 * @generated
+		 */
+		public static final EClass XML_NAMED_STORED_PROCEDURE_QUERY_23 = eINSTANCE.getXmlNamedStoredProcedureQuery_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Multiple Result Sets</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NAMED_STORED_PROCEDURE_QUERY_23__MULTIPLE_RESULT_SETS = eINSTANCE.getXmlNamedStoredProcedureQuery_2_3_MultipleResultSets();
+
+		/**
+		 * The meta object literal for the '<em><b>Call By Index</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NAMED_STORED_PROCEDURE_QUERY_23__CALL_BY_INDEX = eINSTANCE.getXmlNamedStoredProcedureQuery_2_3_CallByIndex();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3 <em>Xml Entity 23</em>}' class.
@@ -2470,6 +2662,24 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_PLSQL_TABLE_23__NAME = eINSTANCE.getXmlPlsqlTable_2_3_Name();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3 <em>Xml Stored Procedure Parameter 23</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStoredProcedureParameter_2_3
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStoredProcedureParameter_2_3()
+		 * @generated
+		 */
+		public static final EClass XML_STORED_PROCEDURE_PARAMETER_23 = eINSTANCE.getXmlStoredProcedureParameter_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Optional</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_STORED_PROCEDURE_PARAMETER_23__OPTIONAL = eINSTANCE.getXmlStoredProcedureParameter_2_3_Optional();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3 <em>Xml Struct 23</em>}' class.
