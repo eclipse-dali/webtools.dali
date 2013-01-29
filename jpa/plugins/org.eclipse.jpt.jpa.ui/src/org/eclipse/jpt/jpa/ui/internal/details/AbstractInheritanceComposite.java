@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -153,11 +153,11 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		String defaultValue = subject.getDefaultDiscriminatorValue();
 
 		if (defaultValue == null && subject.discriminatorValueIsUndefined()) {
-			return JptCommonUiMessages.NoneSelected;
+			return JptCommonUiMessages.NONE_SELECTED;
 		}
 		if (defaultValue != null && defaultValue.length() > 0) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}

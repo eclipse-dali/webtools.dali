@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.FolderChooserComboPane;
@@ -231,11 +231,11 @@ public class PersistenceXmlSchemaGenerationComposite
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}
-		return JptCommonUiMessages.DefaultEmpty;
+		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
 
@@ -285,11 +285,11 @@ public class PersistenceXmlSchemaGenerationComposite
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}
-		return JptCommonUiMessages.DefaultEmpty;
+		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
 	private Pane<SchemaGeneration> buildDdlGenerationLocationComposite(Composite container) {
@@ -325,7 +325,7 @@ public class PersistenceXmlSchemaGenerationComposite
 
 				if (defaultValue != null) {
 					return NLS.bind(
-						JptCommonUiMessages.DefaultWithOneParam,
+						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 						defaultValue
 					);
 				}

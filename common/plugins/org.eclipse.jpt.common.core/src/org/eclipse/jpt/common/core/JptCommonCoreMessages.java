@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.core.internal;
+package org.eclipse.jpt.common.core;
 
 import org.eclipse.osgi.util.NLS;
 

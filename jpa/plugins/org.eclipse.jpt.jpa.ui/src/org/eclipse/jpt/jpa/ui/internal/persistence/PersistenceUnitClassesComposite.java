@@ -21,7 +21,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
@@ -173,7 +173,7 @@ public class PersistenceUnitClassesComposite
 			@Override
 			protected String transform(Boolean v) {
 				if (v != null) {
-					String defaultStringValue = v.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					String defaultStringValue = v.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
 					return NLS.bind(JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault, defaultStringValue);
 				}
 				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
@@ -299,8 +299,8 @@ public class PersistenceUnitClassesComposite
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.ClassChooserPane_dialogTitle);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.ClassChooserPane_dialogMessage);
+		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];

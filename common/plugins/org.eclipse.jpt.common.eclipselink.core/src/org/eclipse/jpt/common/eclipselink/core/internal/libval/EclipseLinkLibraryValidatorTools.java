@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.util.IClassFileReader;
 import org.eclipse.jdt.core.util.IFieldInfo;
-import org.eclipse.jpt.common.eclipselink.core.internal.JptCommonEclipseLinkCoreMessages;
+import org.eclipse.jpt.common.eclipselink.core.JptCommonEclipseLinkCoreMessages;
 import org.eclipse.jpt.common.eclipselink.core.internal.plugin.JptCommonEclipseLinkCorePlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryProviderInstallOperationConfig;
 import org.eclipse.osgi.service.resolver.VersionRange;
@@ -57,7 +57,7 @@ public class EclipseLinkLibraryValidatorTools {
 				}
 				if (versionString != null) {
 					if (version != null) {
-						return buildErrorStatus(JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_multipleEclipseLinkVersions);
+						return buildErrorStatus(JptCommonEclipseLinkCoreMessages.ECLIPSELINK_LIBRARY_VALIDATOR__MULTIPLE_ECLIPSELINK_VERSIONS);
 					}
 					version = new Version(versionString);
 				}
@@ -65,11 +65,11 @@ public class EclipseLinkLibraryValidatorTools {
 		}
 
 		if (version == null) {
-			return buildErrorStatus(JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_noEclipseLinkVersion);
+			return buildErrorStatus(JptCommonEclipseLinkCoreMessages.ECLIPSELINK_LIBRARY_VALIDATOR__NO_ECLIPSELINK_VERSION);
 		}
 
 		if ( ! versionRange.isIncluded(version)) {
-			return buildErrorStatus(JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_improperEclipseLinkVersion);
+			return buildErrorStatus(JptCommonEclipseLinkCoreMessages.ECLIPSELINK_LIBRARY_VALIDATOR__IMPROPER_ECLIPSELINK_VERSION);
 		}
 
 		return Status.OK_STATUS;

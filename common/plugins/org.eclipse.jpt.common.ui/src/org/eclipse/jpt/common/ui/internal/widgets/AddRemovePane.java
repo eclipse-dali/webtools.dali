@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -681,8 +681,8 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 		 * add and remove buttons.
 		 */
 		public AbstractAdapter() {
-			this(JptCommonUiMessages.AddRemovePane_AddButtonText,
-				JptCommonUiMessages.AddRemovePane_RemoveButtonText);
+			this(JptCommonUiMessages.ADD_REMOVE_PANE__ADD_BUTTON_TEXT,
+				JptCommonUiMessages.ADD_REMOVE_PANE__REMOVE_BUTTON_TEXT);
 		}
 
 		/**

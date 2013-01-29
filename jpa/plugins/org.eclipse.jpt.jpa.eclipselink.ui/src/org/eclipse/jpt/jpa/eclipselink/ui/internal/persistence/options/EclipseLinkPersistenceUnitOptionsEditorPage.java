@@ -14,8 +14,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -275,11 +275,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}
-		return JptCommonUiMessages.DefaultEmpty;
+		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
 
@@ -328,11 +328,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}
-		return JptCommonUiMessages.DefaultEmpty;
+		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
 
@@ -488,11 +488,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}
-		return JptCommonUiMessages.DefaultEmpty;
+		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
 
@@ -618,11 +618,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptCommonUiMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 				defaultValue
 			);
 		}
-		return JptCommonUiMessages.DefaultEmpty;
+		return JptCommonUiMessages.DEFAULT_EMPTY;
 	}
 
 
@@ -695,7 +695,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabel;
@@ -740,7 +740,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabel;

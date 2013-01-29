@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.swt.widgets.Display;
@@ -148,7 +148,7 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 	
 	private void postGenerate(boolean generationSuccessful) {
 		if( ! generationSuccessful) {
-			this.displayError(JptCommonUiMessages.AbstractJptGenerateJob_generationFailed);
+			this.displayError(JptCommonUiMessages.ABSTRACT_JPT_GENERATE_JOB__GENERATION_FAILED);
 			return;
 		}
 		else {
@@ -171,7 +171,7 @@ public abstract class AbstractJptGenerateJob extends WorkspaceJob {
 			public void run() {
 				MessageDialog.openError(
 					AbstractJptGenerateJob.this.getShell(),
-					JptCommonUiMessages.AbstractJptGenerateJob_error,
+					JptCommonUiMessages.ABSTRACT_JPT_GENERATE_JOB__ERROR,
 					message
 				);
 			}

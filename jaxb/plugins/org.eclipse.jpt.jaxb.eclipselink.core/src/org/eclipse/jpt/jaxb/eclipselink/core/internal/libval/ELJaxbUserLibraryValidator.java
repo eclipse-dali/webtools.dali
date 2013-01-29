@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.common.eclipselink.core.internal.JptCommonEclipseLinkCoreMessages;
 import org.eclipse.jpt.common.eclipselink.core.internal.libval.EclipseLinkLibraryValidatorTools;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jaxb.eclipselink.core.JptJaxbEclipseLinkCoreMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.plugin.JptJaxbEclipseLinkCorePlugin;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
@@ -54,7 +54,7 @@ public class ELJaxbUserLibraryValidator
 		status = LibraryValidatorTools.validateClasses(config, XJC_CLASS_NAMES);
 		return status.isOK() ?
 				status :
-				JptJaxbEclipseLinkCorePlugin.instance().buildWarningStatus(JptCommonEclipseLinkCoreMessages.ELJaxbUserLibraryValidator_noXjcClasses);
+				JptJaxbEclipseLinkCorePlugin.instance().buildWarningStatus(JptJaxbEclipseLinkCoreMessages.EL_JAXB_USER_LIBRARY_VALIDATOR__NO_XJC_CLASSES);
 	}
 
 	/**

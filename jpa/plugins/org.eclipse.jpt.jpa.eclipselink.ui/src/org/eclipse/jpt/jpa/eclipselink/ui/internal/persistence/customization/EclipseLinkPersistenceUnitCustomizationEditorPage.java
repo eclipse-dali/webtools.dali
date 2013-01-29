@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
@@ -174,7 +174,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabel;
@@ -219,7 +219,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validateSchemaLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validateSchemaLabel;
@@ -263,7 +263,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_throwExceptionsLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_throwExceptionsLabel;

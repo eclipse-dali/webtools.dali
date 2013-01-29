@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -105,8 +105,8 @@ public class EclipseLinkCustomizerClassChooser extends ClassChooserComboPane<Ecl
 	protected String defaultText(EclipseLinkCustomizer customizer) {
 		String defaultClassName = customizer.getDefaultCustomizerClass();
 		return (defaultClassName == null) ?
-				JptCommonUiMessages.NoneSelected
-				: NLS.bind(JptCommonUiMessages.DefaultWithOneParam, defaultClassName);
+				JptCommonUiMessages.NONE_SELECTED
+				: NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultClassName);
 	}
 
 	@Override

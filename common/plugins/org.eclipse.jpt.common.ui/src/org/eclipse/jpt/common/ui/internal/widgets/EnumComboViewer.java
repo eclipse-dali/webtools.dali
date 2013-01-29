@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -175,7 +175,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 
 			if (defaultValue != null) {
 				String displayString = displayString(defaultValue);
-				return NLS.bind(JptCommonUiMessages.EnumComboViewer_defaultWithDefault, displayString);
+				return NLS.bind(JptCommonUiMessages.ENUM_COMBO_VIEWER__DEFAULT_WITH_DEFAULT, displayString);
 			}
 			return nullDisplayString();
 		}

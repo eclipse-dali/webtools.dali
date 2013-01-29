@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
@@ -163,12 +163,12 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptCommonUiMessages.DefaultWithOneParam,
+							JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 							defaultName
 						);
 					}
 					else {
-						value = JptCommonUiMessages.DefaultEmpty;
+						value = JptCommonUiMessages.DEFAULT_EMPTY;
 					}
 				}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -179,7 +179,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			
 			@Override
 			protected String buildNullDefaultValueEntry() {
-				return JptCommonUiMessages.NoneSelected;
+				return JptCommonUiMessages.NONE_SELECTED;
 			}
 
 			@Override
@@ -247,7 +247,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			
 			@Override
 			protected String nullDisplayString() {
-				return JptCommonUiMessages.NoneSelected;
+				return JptCommonUiMessages.NONE_SELECTED;
 			}
 			
 			@Override

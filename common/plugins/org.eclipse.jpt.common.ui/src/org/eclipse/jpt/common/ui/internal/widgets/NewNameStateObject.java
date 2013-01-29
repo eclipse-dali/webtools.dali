@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
@@ -71,10 +71,10 @@ final class NewNameStateObject extends AbstractNode
 	private void addNameProblems(List<Problem> currentProblems) {
 
 		if (StringTools.isBlank(name)) {
-			currentProblems.add(buildProblem(JptCommonUiMessages.NewNameStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptCommonUiMessages.NEW_NAME_STATE_OBJECT__NAME_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 		else if (names.contains(name.trim())) {
-			currentProblems.add(buildProblem(JptCommonUiMessages.NewNameStateObject_nameAlreadyExists, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptCommonUiMessages.NEW_NAME_STATE_OBJECT__NAME_ALREADY_EXISTS, IMessageProvider.ERROR));
 		}
 	}
 
