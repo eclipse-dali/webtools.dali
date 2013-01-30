@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -239,7 +240,17 @@ public abstract class AbstractJaxbContextRoot
 	 * Calculate iterable of initial type names
 	 */
 	protected Iterable<String> calculateInitialTypeNames() {
-		return IterableTools.transform(calculateInitialTypes(), JavaResourceAbstractType.NAME_TRANSFORMER);
+		return IterableTools.transform(
+				calculateInitialTypes(), 
+				new JavaResourceTypeNameTransformer());
+	}
+	
+	protected class JavaResourceTypeNameTransformer
+			implements Transformer<JavaResourceAbstractType, String> {
+		
+		public String transform(JavaResourceAbstractType input) {
+			return input.getTypeBinding().getQualifiedName();
+		}
 	}
 	
 	/*
