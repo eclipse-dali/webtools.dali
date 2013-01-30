@@ -396,14 +396,15 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 				annotation.synchronizeWith(astAnnotation);
 			}
 		}
-
+		
+		// add annotations first, otherwise it might cause unnecessary remove/add behavior elsewhere
+		this.annotations.putAll(annotationsToAdd);
+		this.fireItemsAdded(ANNOTATIONS_COLLECTION, annotationsToAdd.values());
+		
 		for (String annotationName : annotationsToRemove.keySet()) {
 			this.annotations.remove(annotationName);
 		}
 		this.fireItemsRemoved(ANNOTATIONS_COLLECTION, annotationsToRemove.values());
-
-		this.annotations.putAll(annotationsToAdd);
-		this.fireItemsAdded(ANNOTATIONS_COLLECTION, annotationsToAdd.values());
 	}
 
 	private void syncAnnotationContainers(HashMap<String, org.eclipse.jdt.core.dom.Annotation> astContainerAnnotations, HashMap<String, org.eclipse.jdt.core.dom.Annotation> astStandaloneNestableAnnotations) {
