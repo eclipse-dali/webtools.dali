@@ -42,7 +42,7 @@ public class ReadOnlyListIterable<E>
 	}
 
 	public ListIterator<E> iterator() {
-		return IteratorTools.readOnlyListIterator(this.listIterable.iterator());
+		return IteratorTools.readOnly(this.listIterable.iterator());
 	}
 
 	@Override

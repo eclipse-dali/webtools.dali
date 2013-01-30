@@ -14,8 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -87,21 +87,21 @@ public class CloneIteratorTests
 	}
 
 	public void testRemoveRemover() {
-		CloneIterator.Remover<String> remover = new CloneIterator.Remover<String>() {
-			public void remove(String element) {
+		ParameterizedCommand<String> remover = new ParameterizedCommand<String>() {
+			public void execute(String element) {
 				CloneIteratorTests.this.originalCollection.remove(element);
 			}
 		};
-		this.verifyRemove(new CloneIterator<String>(this.originalCollection, remover));
+		this.verifyRemove(IteratorTools.clone(this.originalCollection, remover));
 	}
 
 	public void testRemoveRemover_super() {
-		CloneIterator.Remover<Object> remover = new CloneIterator.Remover<Object>() {
-			public void remove(Object element) {
+		ParameterizedCommand<Object> remover = new ParameterizedCommand<Object>() {
+			public void execute(Object element) {
 				CloneIteratorTests.this.originalCollection.remove(element);
 			}
 		};
-		this.verifyRemove(new CloneIterator<String>(this.originalCollection, remover));
+		this.verifyRemove(IteratorTools.clone(this.originalCollection, remover));
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class CloneIteratorTests
 		}
 	}
 
-	private void verifyRemove(Iterator<String> iterator) {
+	private void verifyRemove(Iterator<?> iterator) {
 		Object removed = "three";
 		assertTrue(this.originalCollection.contains(removed));
 		// try to remove before calling #next()
@@ -184,7 +184,7 @@ public class CloneIteratorTests
 	}
 
 	private Iterator<String> buildCloneIterator(Collection<String> c) {
-		return new CloneIterator<String>(c);
+		return IteratorTools.clone(c);
 	}
 
 	private Collection<String> buildCollection() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.HashSet;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -134,7 +134,7 @@ final class MultiControlBooleanStateController
 	}
 
 	/* CU private */ void clearControls() {
-		this.removeControls(new SnapshotCloneIterable<Control>(this.controls));
+		this.removeControls(IterableTools.cloneSnapshot(this.controls));
 	}
 
 	/* CU private */ void removeControls(Iterable<? extends Control> controls_) {

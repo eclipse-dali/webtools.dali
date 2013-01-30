@@ -124,7 +124,7 @@ public class ExtendedListValueModelWrapper<E>
 
 	@SuppressWarnings("unchecked")
 	protected ListIterator<E> listIterator_() {
-		return IteratorTools.readOnlyCompositeListIterator(
+		return IteratorTools.concatenateReadOnly(
 			this.prefix.listIterator(),
 			this.listModel.listIterator(),
 			this.suffix.listIterator()

@@ -19,9 +19,9 @@ import java.util.List;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -419,8 +419,8 @@ public class TableModelAdapterTests
 	
 	
 		public Iterator<Person> people() {
-			return new CloneIterator<Person>(this.people, new CloneIterator.Remover<Person>() {
-				public void remove(Person person) {
+			return IteratorTools.clone(this.people, new ParameterizedCommand<Person>() {
+				public void execute(Person person) {
 					Crowd.this.removePerson(person);
 				}
 			});

@@ -270,9 +270,9 @@ public class GenericJavaXmlElementsMapping
 	
 	@Override
 	public Iterable<String> getReferencedXmlTypeNames() {
-		return IterableTools.compositeIterable(
+		return IterableTools.concatenate(
 				super.getReferencedXmlTypeNames(),
-				IterableTools.compositeIterable(getXmlElements(), XmlElement.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
+				IterableTools.children(getXmlElements(), XmlElement.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
 	}
 	
 	@Override

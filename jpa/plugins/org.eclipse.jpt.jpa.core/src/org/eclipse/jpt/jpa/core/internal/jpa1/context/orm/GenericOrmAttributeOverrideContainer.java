@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
@@ -44,7 +44,7 @@ public class GenericOrmAttributeOverrideContainer
 	@Override
 	protected Iterable<XmlAttributeOverride> getXmlOverrides_() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlAttributeOverride>(this.owner.getXmlOverrides());
+		return IterableTools.cloneLive(this.owner.getXmlOverrides());
 	}
 
 	@Override

@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
@@ -154,11 +153,11 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getTypeMappingConverters() {
-		return IterableTools.compositeIterable(this.getEclipseLinkTypeMappings(), EclipseLinkTypeMapping.CONVERTERS_TRANSFORMER);
+		return IterableTools.children(this.getEclipseLinkTypeMappings(), EclipseLinkTypeMapping.CONVERTERS_TRANSFORMER);
 	}
 
 	protected Iterable<EclipseLinkOrmTypeMapping> getEclipseLinkTypeMappings() {
-		return IterableTools.subIterable(this.getTypeMappings());
+		return IterableTools.downCast(this.getTypeMappings());
 	}
 
 
@@ -236,7 +235,7 @@ public class EclipseLinkEntityMappingsImpl
 			return EmptyListIterable.instance();
 		}
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlTenantDiscriminatorColumn_2_3>(this.getXmlEntityMappings().getTenantDiscriminatorColumns());
+		return IterableTools.cloneLive(this.getXmlEntityMappings().getTenantDiscriminatorColumns());
 	}
 
 	/**
@@ -596,7 +595,7 @@ public class EclipseLinkEntityMappingsImpl
 
 	protected ListIterable<XmlUuidGenerator_2_4> getXmlUuidGenerators() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlUuidGenerator_2_4>(this.getXmlEntityMappings().getUuidGenerators());
+		return IterableTools.cloneLive(this.getXmlEntityMappings().getUuidGenerators());
 	}
 
 	protected ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4> buildUuidGeneratorContainer() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,12 @@
 package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 
 @SuppressWarnings("nls")
-public class LiveCloneIterableTests extends CloneIterableTests {
-
+public class LiveCloneIterableTests
+	extends CloneIterableTests
+{
 	public LiveCloneIterableTests(String name) {
 		super(name);
 	}
@@ -41,31 +40,12 @@ public class LiveCloneIterableTests extends CloneIterableTests {
 	}
 
 	@Override
-	public void testRemover() {
-		super.testRemover();
-		// "live" clone iterable will no longer contain the element removed from the
-		// original collection
-		assertFalse(IterableTools.contains(this.iterable, "three"));
-	}
-
-	@Override
 	Iterable<String> buildIterable(List<String> c) {
-		return new LiveCloneIterable<String>(c);
-	}
-
-	@Override
-	Iterable<String> buildRemovingIterable(final List<String> c) {
-		return new LiveCloneIterable<String>(c) {
-				@Override
-				protected void remove(String current) {
-					c.remove(current);
-				}
-			};
+		return IterableTools.cloneLive(c);
 	}
 
 	@Override
 	Iterable<String> buildIterableWithRemover(List<String> c) {
-		return new LiveCloneIterable<String>(c, this.buildRemover(c));
+		return IterableTools.cloneLive(c, this.buildRemoveCommand(c));
 	}
-
 }

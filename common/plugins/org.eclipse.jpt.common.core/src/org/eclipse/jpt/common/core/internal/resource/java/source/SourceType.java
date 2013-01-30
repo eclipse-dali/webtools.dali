@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -46,7 +45,6 @@ import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -340,7 +338,7 @@ final class SourceType
 	// ********** types **********
 
 	public Iterable<JavaResourceType> getTypes() {
-		return new LiveCloneIterable<JavaResourceType>(this.types);  // read-only
+		return IterableTools.cloneLive(this.types);  // read-only
 	}
 
 	public Iterable<JavaResourceType> getAllTypes() {
@@ -412,7 +410,7 @@ final class SourceType
 	// ********** enums **********
 
 	public Iterable<JavaResourceEnum> getEnums() {
-		return new LiveCloneIterable<JavaResourceEnum>(this.enums);  // read-only
+		return IterableTools.cloneLive(this.enums);  // read-only
 	}
 
 	public Iterable<JavaResourceEnum> getAllEnums() {
@@ -473,7 +471,7 @@ final class SourceType
 	// ********** fields **********
 
 	public Iterable<JavaResourceField> getFields() {
-		return new LiveCloneIterable<JavaResourceField>(this.fields);
+		return IterableTools.cloneLive(this.fields);
 	}
 
 	private void addField(JavaResourceField field) {
@@ -554,7 +552,7 @@ final class SourceType
 	// ********** methods **********
 
 	public Iterable<JavaResourceMethod> getMethods() {
-		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
+		return IterableTools.cloneLive(this.methods);
 	}
 
 	private static JavaResourceMethod getMethod(Collection<JavaResourceMethod> methods, MethodSignature signature, int occurrence) {

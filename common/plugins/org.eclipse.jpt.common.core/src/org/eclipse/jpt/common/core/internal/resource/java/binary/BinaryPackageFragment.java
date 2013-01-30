@@ -25,7 +25,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
@@ -115,7 +114,7 @@ final class BinaryPackageFragment
 	// ********** JavaResourcePackageFragment implementation **********
 
 	public ListIterable<JavaResourceClassFile> getClassFiles() {
-		return new LiveCloneListIterable<JavaResourceClassFile>(this.classFiles);
+		return IterableTools.cloneLive(this.classFiles);
 	}
 
 	public int getClassFilesSize() {

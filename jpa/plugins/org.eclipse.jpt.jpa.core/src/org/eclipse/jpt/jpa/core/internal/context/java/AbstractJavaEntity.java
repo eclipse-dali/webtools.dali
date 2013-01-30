@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -294,7 +293,7 @@ public abstract class AbstractJavaEntity
 	// ********** descendants **********
 
 	public Iterable<Entity> getDescendants() {
-		return new LiveCloneListIterable<Entity>(this.descendants);
+		return IterableTools.cloneLive(this.descendants);
 	}
 
 	protected void updateDescendants() {
@@ -994,7 +993,7 @@ public abstract class AbstractJavaEntity
 	// TODO eliminate duplicate tables?
 	@Override
 	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	@Override
@@ -1006,7 +1005,7 @@ public abstract class AbstractJavaEntity
 	 * strip out <code>null</code> names
 	 */
 	protected Iterable<String> convertToNames(Iterable<ReadOnlyTable> tables) {
-		return IterableTools.notNulls(IterableTools.transform(tables, ReadOnlyTable.NAME_TRANSFORMER));
+		return IterableTools.removeNulls(IterableTools.transform(tables, ReadOnlyTable.NAME_TRANSFORMER));
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1059,7 +1058,7 @@ public abstract class AbstractJavaEntity
 	 * strip out null db tables
 	 */
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables() {
-		return IterableTools.notNulls(IterableTools.transform(this.getAllAssociatedTables(), ReadOnlyTable.DB_TABLE_TRANSFORMER));
+		return IterableTools.removeNulls(IterableTools.transform(this.getAllAssociatedTables(), ReadOnlyTable.DB_TABLE_TRANSFORMER));
 	}
 
 	@Override

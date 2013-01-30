@@ -106,7 +106,7 @@ public class CollectionListValueModelAdapter<E>
 	}
 
 	public ListIterator<E> listIterator() {
-		return IteratorTools.readOnlyListIterator(this.list.listIterator());
+		return IteratorTools.readOnly(this.list.listIterator());
 	}
 
 	public E get(int index) {

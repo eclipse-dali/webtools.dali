@@ -30,7 +30,6 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -421,7 +420,7 @@ public class DelegatingTreeContentProviderUiTest
 		}
 
 		public ListIterable<TreeNode> getChildren() {
-			return new LiveCloneListIterable<TreeNode>(this.children);
+			return IterableTools.cloneLive(this.children);
 		}
 
 		protected void addChild(TreeNode child) {

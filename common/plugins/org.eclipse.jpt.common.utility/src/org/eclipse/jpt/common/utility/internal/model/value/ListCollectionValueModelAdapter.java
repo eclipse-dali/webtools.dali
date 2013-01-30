@@ -109,7 +109,7 @@ public class ListCollectionValueModelAdapter<E>
 
 	public Iterator<E> iterator() {
 		// try to prevent backdoor modification of the list
-		return IteratorTools.readOnlyIterator(this.collection.iterator());
+		return IteratorTools.readOnly(this.collection.iterator());
 	}
 
 	public int size() {

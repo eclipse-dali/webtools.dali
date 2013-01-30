@@ -95,7 +95,7 @@ public class JavaEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), EclipseLinkConvertibleMapping.ATTRIBUTE_MAPPING_CONVERTERS_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), EclipseLinkConvertibleMapping.ATTRIBUTE_MAPPING_CONVERTERS_TRANSFORMER);
 	}
 
 

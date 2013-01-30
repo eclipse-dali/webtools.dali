@@ -27,6 +27,6 @@ public class ELJaxbProjectImpl
 	
 	
 	public Iterable<JptXmlResource> getOxmResources() {
-		return IterableTools.subIterable(IterableTools.transform(getJaxbFiles(Oxm.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(getJaxbFiles(Oxm.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 }

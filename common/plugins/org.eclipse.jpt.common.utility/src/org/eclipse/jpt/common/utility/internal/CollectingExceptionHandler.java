@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
  * An exception handler that collects and holds the exceptions handed to it.
@@ -36,7 +36,7 @@ public class CollectingExceptionHandler
 	 * Return the current list of exceptions handled by the handler so far.
 	 */
 	public Iterable<Throwable> getExceptions() {
-		return new SnapshotCloneIterable<Throwable>(this.exceptions);
+		return IterableTools.cloneSnapshot(this.exceptions);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class CollectingExceptionHandler
 	 */
 	public Iterable<Throwable> clearExceptions() {
 		synchronized (this.exceptions) {
-			Iterable<Throwable> result = new SnapshotCloneIterable<Throwable>(this.exceptions);
+			Iterable<Throwable> result = IterableTools.cloneSnapshot(this.exceptions);
 			this.exceptions.clear();
 			return result;
 		}

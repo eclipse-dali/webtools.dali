@@ -527,15 +527,15 @@ public class XPath {
 		}
 		
 		protected Iterable<String> getAttributeProposals(Context context, final XsdTypeDefinition xsdType) {
-			return IterableTools.compositeIterable(
-					IterableTools.compositeIterable(
+			return IterableTools.concatenate(
+					IterableTools.concatenate(
 							IterableTools.transform(getXmlNsInfos(context), new XmlNsAttributeNamesTransformer(xsdType))),
 					IterableTools.transform(xsdType.getAttributeNames(StringTools.EMPTY_STRING), new AttributeNameTransformer(null)));
 		}
 		
 		protected Iterable<String> getElementProposals(Context context, final XsdTypeDefinition xsdType) {
-			return IterableTools.compositeIterable(
-					IterableTools.compositeIterable(
+			return IterableTools.concatenate(
+					IterableTools.concatenate(
 							IterableTools.transform(getXmlNsInfos(context), new XmlNsElementNamesTransformer(xsdType))),
 					xsdType.getElementNames(StringTools.EMPTY_STRING, false));
 		}

@@ -162,7 +162,7 @@ public class SimultaneousIteratorTests
 	}
 
 	protected Iterator<List<String>> buildIterator(ListIterator<String>... iterators) {
-		return IteratorTools.simultaneousIterator(iterators);
+		return IteratorTools.align(iterators);
 	}
 
 	protected Iterator<List<String>> buildIterator(Iterable<ListIterator<String>> iterators) {

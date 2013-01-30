@@ -267,7 +267,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 			this.descriptions = new HashBag<String>();
 		}
 		public Iterator<String> names() {
-			return IteratorTools.readOnlyIterator(this.names.iterator());
+			return IteratorTools.readOnly(this.names.iterator());
 		}
 		public void addName(String name) {
 			if (this.names.add(name)) {
@@ -293,7 +293,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 			}
 		}
 		public Iterator<String> descriptions() {
-			return IteratorTools.readOnlyIterator(this.descriptions.iterator());
+			return IteratorTools.readOnly(this.descriptions.iterator());
 		}
 		public void addDescription(String description) {
 			if (this.descriptions.add(description)) {

@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
@@ -76,7 +75,7 @@ final class BinaryEnum
 	// ***** enum constants *****
 	
 	public Iterable<JavaResourceEnumConstant> getEnumConstants() {
-		return new LiveCloneIterable<JavaResourceEnumConstant>(this.enumConstants);
+		return IterableTools.cloneLive(this.enumConstants);
 	}
 	
 	private Iterable<JavaResourceEnumConstant> buildEnumConstants() {

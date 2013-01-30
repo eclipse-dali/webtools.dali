@@ -216,7 +216,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 				return createPersistenceXmlReplaceEdits(persistenceUnit, javaElement, getArguments(javaElement).getDestination());
 			}
 		};
-		return IterableTools.compositeIterable(this.getElementsOnClasspath(persistenceUnit.getJpaProject()), transformer);
+		return IterableTools.children(this.getElementsOnClasspath(persistenceUnit.getJpaProject()), transformer);
 	}
 
 	protected Iterable<IJavaElement> getElementsOnClasspath(final JpaProject jpaProject) {
@@ -257,7 +257,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 				return createMappingFileReplaceEdits(mappingFileRef, javaElement, getArguments(javaElement).getDestination());
 			}
 		};
-		return IterableTools.compositeIterable(this.getElementsOnClasspath(mappingFileRef.getJpaProject()), transformer);
+		return IterableTools.children(this.getElementsOnClasspath(mappingFileRef.getJpaProject()), transformer);
 	}
 	
 	protected abstract Iterable<ReplaceEdit> createMappingFileReplaceEdits(MappingFileRef mappingFileRef, IJavaElement javaElement, Object destination);

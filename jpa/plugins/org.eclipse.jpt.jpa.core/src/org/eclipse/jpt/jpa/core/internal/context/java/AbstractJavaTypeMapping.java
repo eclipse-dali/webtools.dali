@@ -158,7 +158,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute mappings **********
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings() {
-		return IterableTools.subIterable(IterableTools.transform(this.getPersistentType().getAttributes(), ReadOnlyPersistentAttribute.MAPPING_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(this.getPersistentType().getAttributes(), ReadOnlyPersistentAttribute.MAPPING_TRANSFORMER));
 	}
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings(final String mappingKey) {
@@ -171,7 +171,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {
-		return IterableTools.compositeIterable(this.getNonNullInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
+		return IterableTools.children(this.getNonNullInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
 	}
 
 	protected Iterable<TypeMapping> getNonNullInheritanceHierarchy() {
@@ -203,11 +203,11 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute overrides **********
 
 	public Iterable<String> getOverridableAttributeNames() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAttributeNames() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
 	}
 
 	public Column resolveOverriddenColumn(String attributeName) {
@@ -224,11 +224,11 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** association overrides **********
 
 	public Iterable<String> getOverridableAssociationNames() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAssociationNames() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
 
 	public Relationship resolveOverriddenRelationship(String attributeName) {
@@ -245,7 +245,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** generators **********
 
 	public Iterable<Generator> getGenerators() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
 	}
 
 

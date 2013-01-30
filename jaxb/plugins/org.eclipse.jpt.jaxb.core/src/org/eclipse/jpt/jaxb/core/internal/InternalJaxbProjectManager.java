@@ -40,7 +40,7 @@ import org.eclipse.jpt.common.utility.internal.ExceptionHandlerAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
@@ -320,7 +320,7 @@ public class InternalJaxbProjectManager
 	}
 
 	private Iterable<JaxbProject> getJaxbProjects_() {
-		return new LiveCloneIterable<JaxbProject>(this.jaxbProjects);
+		return IterableTools.cloneLive(this.jaxbProjects);
 	}
 
 	public int getJaxbProjectsSize() {

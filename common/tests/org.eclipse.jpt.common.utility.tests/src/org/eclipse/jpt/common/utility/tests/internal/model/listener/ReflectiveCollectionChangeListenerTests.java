@@ -15,9 +15,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -237,8 +238,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			super();
 		}
 		Iterator<String> strings() {
-			return new CloneIterator<String>(this.strings, new CloneIterator.Remover<String>() {
-				public void remove(String s) {
+			return IteratorTools.clone(this.strings, new ParameterizedCommand<String>() {
+				public void execute(String s) {
 					TestModel.this.removeString(s);
 				}
 			});

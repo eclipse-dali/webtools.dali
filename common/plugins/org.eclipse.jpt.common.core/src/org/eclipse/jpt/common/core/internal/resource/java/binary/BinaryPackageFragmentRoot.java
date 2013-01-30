@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 
 /**
  * binary package fragment root
@@ -81,14 +80,14 @@ public final class BinaryPackageFragmentRoot
 	 * NB: we hold only annotated types
 	 */
 	public Iterable<JavaResourceAbstractType> getTypes() {
-		return IterableTools.compositeIterable(this.getPackageFragments(), JavaResourcePackageFragment.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getPackageFragments(), JavaResourcePackageFragment.TYPES_TRANSFORMER);
 	}
 
 
 	// ********** JavaResourcePackageFragmentRoot implementation **********
 
 	public Iterable<JavaResourcePackageFragment> getPackageFragments() {
-		return new LiveCloneIterable<JavaResourcePackageFragment>(this.packageFragments);
+		return IterableTools.cloneLive(this.packageFragments);
 	}
 
 	public int getPackageFragmentsSize() {

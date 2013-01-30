@@ -121,7 +121,7 @@ public class TransformationListValueModel<E1, E2>
 	}
 
 	public ListIterator<E2> listIterator() {
-		return IteratorTools.readOnlyListIterator(this.transformedList.listIterator());
+		return IteratorTools.readOnly(this.transformedList.listIterator());
 	}
 
 	public E2 get(int index) {

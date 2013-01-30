@@ -32,8 +32,6 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -486,7 +484,7 @@ public abstract class AbstractEntityMappings
 	// ********** persistent types **********
 
 	public ListIterable<OrmPersistentType> getPersistentTypes() {
-		return new LiveCloneListIterable<OrmPersistentType>(this.persistentTypes);
+		return IterableTools.cloneLive(this.persistentTypes);
 	}
 
 	public int getPersistentTypesSize() {
@@ -811,7 +809,7 @@ public abstract class AbstractEntityMappings
 
 	protected Iterable<XmlTypeMapping> getXmlTypeMappings() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlTypeMapping>(this.xmlEntityMappings.getTypeMappings());
+		return IterableTools.cloneLive(this.xmlEntityMappings.getTypeMappings());
 	}
 
 	protected void movePersistentType_(int index, OrmPersistentType persistentType) {
@@ -902,7 +900,7 @@ public abstract class AbstractEntityMappings
 
 	protected ListIterable<XmlSequenceGenerator> getXmlSequenceGenerators() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());
+		return IterableTools.cloneLive(this.xmlEntityMappings.getSequenceGenerators());
 	}
 
 	protected ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> buildSequenceGeneratorContainer() {
@@ -985,7 +983,7 @@ public abstract class AbstractEntityMappings
 
 	protected ListIterable<XmlTableGenerator> getXmlTableGenerators() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
+		return IterableTools.cloneLive(this.xmlEntityMappings.getTableGenerators());
 	}
 
 	protected ContextListContainer<OrmTableGenerator, XmlTableGenerator> buildTableGeneratorContainer() {
@@ -1041,7 +1039,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<Query> getTypeMappingQueries() {
-		return IterableTools.compositeIterable(this.getTypeMappings(), TypeMapping.QUERIES_TRANSFORMER);
+		return IterableTools.children(this.getTypeMappings(), TypeMapping.QUERIES_TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1054,11 +1052,11 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<Generator> getTypeMappingGenerators() {
-		return IterableTools.compositeIterable(this.getTypeMappings(), TypeMapping.GENERATORS_TRANSFORMER);
+		return IterableTools.children(this.getTypeMappings(), TypeMapping.GENERATORS_TRANSFORMER);
 	}
 
 	protected Iterable<OrmTypeMapping> getTypeMappings() {
-		return IterableTools.subIterable(IterableTools.transform(this.getPersistentTypes(), PersistentType.MAPPING_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(this.getPersistentTypes(), PersistentType.MAPPING_TRANSFORMER));
 	}
 
 
@@ -1115,15 +1113,15 @@ public abstract class AbstractEntityMappings
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
-		return IterableTools.compositeIterable(this.getPersistentTypes(), new DeleteTypeRefactoringParticipant.DeleteTypeEditsTransformer(type));
+		return IterableTools.children(this.getPersistentTypes(), new DeleteTypeRefactoringParticipant.DeleteTypeEditsTransformer(type));
 	}
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return IterableTools.compositeIterable(this.getPersistentTypes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(this.getPersistentTypes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.compositeIterable(this.getPersistentTypes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(this.getPersistentTypes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1134,7 +1132,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<ReplaceEdit> createPersistentTypeRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.compositeIterable(this.getPersistentTypes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+		return IterableTools.children(this.getPersistentTypes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createRenamePackageEdit(IPackageFragment originalPackage, String newName) {

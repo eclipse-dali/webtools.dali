@@ -339,7 +339,7 @@ public class ListAspectAdapterTests extends TestCase {
 			this.descriptions = new ArrayList<String>();
 		}
 		public ListIterator<String> names() {
-			return IteratorTools.readOnlyListIterator(this.names.listIterator());
+			return IteratorTools.readOnly(this.names.listIterator());
 		}
 		public String getName(int index) {
 			return this.names.get(index);
@@ -375,7 +375,7 @@ public class ListAspectAdapterTests extends TestCase {
 			return replacedName;
 		}
 		public ListIterator<String> descriptions() {
-			return IteratorTools.readOnlyListIterator(this.descriptions.listIterator());
+			return IteratorTools.readOnly(this.descriptions.listIterator());
 		}
 		public String getDescription(int index) {
 			return this.descriptions.get(index);

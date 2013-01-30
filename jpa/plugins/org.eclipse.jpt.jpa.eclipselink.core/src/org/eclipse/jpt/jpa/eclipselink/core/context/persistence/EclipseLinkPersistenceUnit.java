@@ -33,8 +33,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -366,7 +364,7 @@ public class EclipseLinkPersistenceUnit
 	public static final String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	public ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns() {
-		return new LiveCloneListIterable<ReadOnlyTenantDiscriminatorColumn2_3>(this.defaultTenantDiscriminatorColumns);
+		return IterableTools.cloneLive(this.defaultTenantDiscriminatorColumns);
 	}
 
 	protected void setDefaultTenantDiscriminatorColumns(Iterable<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns) {
@@ -408,7 +406,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<EclipseLinkConverter> getConverters() {
-		return new LiveCloneIterable<EclipseLinkConverter>(this.converters);
+		return IterableTools.cloneLive(this.converters);
 	}
 
 	public int getConvertersSize() {
@@ -454,7 +452,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<EclipseLinkConverter> getMappingFileConverters() {
-		return IterableTools.compositeIterable(this.getMappingFiles(), MAPPING_FILE_CONVERTERS_TRANSFORMER);
+		return IterableTools.children(this.getMappingFiles(), MAPPING_FILE_CONVERTERS_TRANSFORMER);
 	}
 
 	public static final Transformer<MappingFile, Iterable<EclipseLinkConverter>> MAPPING_FILE_CONVERTERS_TRANSFORMER = new MappingFileConvertersTransformer();
@@ -475,7 +473,7 @@ public class EclipseLinkPersistenceUnit
 	 * Include "overridden" Java converters.
 	 */
 	public Iterable<JavaEclipseLinkConverter<?>> getAllJavaConverters() {
-		return IterableTools.compositeIterable(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_CONVERTER_TRANSFORMER);
+		return IterableTools.children(this.getAllJavaTypeMappingsUnique(), TYPE_MAPPING_CONVERTER_TRANSFORMER);
 	}
 
 	public static final Transformer<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>> TYPE_MAPPING_CONVERTER_TRANSFORMER = new TypeMappingConverterTransformer();
@@ -597,7 +595,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkOrmPersistentTypes() {
-		return IterableTools.subIterable(
+		return IterableTools.downCast(
 				new FilteringIterable<PersistentType>(this.getMappingFilePersistentTypes()) {
 					@Override
 					protected boolean accept(PersistentType pType) {

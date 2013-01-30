@@ -91,7 +91,7 @@ public class SortedListValueModelWrapper<E>
 	}
 
 	public ListIterator<E> listIterator() {
-		return IteratorTools.readOnlyListIterator(this.sortedList.listIterator());
+		return IteratorTools.readOnly(this.sortedList.listIterator());
 	}
 
 	public E get(int index) {

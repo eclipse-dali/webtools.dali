@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -15,7 +15,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedType;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
@@ -169,6 +169,6 @@ public abstract class EclipseLinkDynamicManagedType implements IManagedType {
 	 */
 	public Iterable<IMapping> mappings() {
 		initializeMappings();
-		return new SnapshotCloneIterable<IMapping>(mappings.values());
+		return IterableTools.<IMapping>cloneSnapshot(mappings.values());
 	}
 }

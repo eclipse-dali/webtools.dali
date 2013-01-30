@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * A <code>LiveCloneListIterable</code> returns a list iterator on a current
@@ -27,10 +28,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
  * By default, the list iterator returned by a <code>LiveCloneListIterable</code>
  * does not support the modify operations; this is because it does not
  * have access to the original list. But if the <code>LiveCloneListIterable</code>
- * is supplied with an {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Mutator} it will delegate the
- * modify operations to the <code>Mutator</code>.
- * Alternatively, a subclass can override the list iterable's mutation
- * methods.
+ * is supplied with an {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter adapter}
+ * it will delegate the {@link ListIterator} mutation operations to the adapter.
  * 
  * @param <E> the type of elements returned by the list iterable's list iterator
  * 
@@ -49,9 +48,7 @@ public class LiveCloneListIterable<E>
 	/**
 	 * Construct a "live" list iterable for the specified list.
 	 * The {@link ListIterator} mutation operations will not be supported
-	 * by the list iterator returned by {@link #iterator()}
-	 * unless a subclass overrides the iterable's mutation
-	 * methods.
+	 * by the list iterator returned by {@link #iterator()}.
 	 */
 	public LiveCloneListIterable(List<? extends E> list) {
 		super();
@@ -66,7 +63,7 @@ public class LiveCloneListIterable<E>
 	 * The specified mutator will be used by any generated list iterators to
 	 * modify the original list.
 	 */
-	public LiveCloneListIterable(List<? extends E> list, CloneListIterator.Mutator<E> mutator) {
+	public LiveCloneListIterable(List<? extends E> list, CloneListIterator.Adapter<E> mutator) {
 		super(mutator);
 		if (list == null) {
 			throw new NullPointerException();
@@ -74,11 +71,8 @@ public class LiveCloneListIterable<E>
 		this.list = list;
 	}
 
-
-	// ********** ListIterable implementation **********
-
 	public ListIterator<E> iterator() {
-		return new CloneListIterator<E>(this.list, this.mutator);
+		return IteratorTools.clone(this.list, this.adapter);
 	}
 
 	@Override

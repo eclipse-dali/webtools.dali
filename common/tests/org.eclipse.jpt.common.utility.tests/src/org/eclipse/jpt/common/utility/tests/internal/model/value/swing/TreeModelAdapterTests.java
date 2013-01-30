@@ -319,7 +319,7 @@ public class TreeModelAdapterTests extends TestCase {
 		}
 
 		public Iterator<TestModel> children() {
-			return IteratorTools.readOnlyIterator(this.children.iterator());
+			return IteratorTools.readOnly(this.children.iterator());
 		}
 		public int childrenSize() {
 			return this.children.size();

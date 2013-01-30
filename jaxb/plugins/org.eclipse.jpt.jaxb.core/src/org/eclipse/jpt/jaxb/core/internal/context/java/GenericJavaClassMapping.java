@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -506,11 +506,11 @@ public class GenericJavaClassMapping
 	// ***** included attributes *****
 	
 	public Iterable<JaxbPersistentAttribute> getIncludedAttributes() {
-		return IterableTools.compositeIterable(getIncludedAttributesContainers(), JaxbAttributesContainer.ATTRIBUTES_TRANSFORMER);
+		return IterableTools.children(getIncludedAttributesContainers(), JaxbAttributesContainer.ATTRIBUTES_TRANSFORMER);
 	}
 	
 	protected Iterable<JaxbAttributesContainer> getIncludedAttributesContainers() {
-		return new LiveCloneIterable<JaxbAttributesContainer>(this.includedAttributesContainers.values());  // read-only
+		return IterableTools.cloneLive(this.includedAttributesContainers.values());  // read-only
 	}
 	
 	public int getIncludedAttributesSize() {
@@ -607,8 +607,8 @@ public class GenericJavaClassMapping
 	 * return those inherited attributes that are not included
 	 */
 	protected Iterable<JaxbPersistentAttribute> getOtherInheritedAttributes() {
-		return IterableTools.compositeIterable(
-						IterableTools.chainIterable(getSuperclass(), JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
+		return IterableTools.children(
+						ObjectTools.chain(getSuperclass(), JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
 						JaxbClassMapping.ATTRIBUTES_TRANSFORMER);
 	}
 	
@@ -658,7 +658,7 @@ public class GenericJavaClassMapping
 		return new CompositeIterable<String>(
 				super.getNonTransientReferencedXmlTypeNames(),
 				new SingleElementIterable<String>(this.superclassName),
-				IterableTools.compositeIterable(getAttributeMappings(), JaxbAttributeMapping.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
+				IterableTools.children(getAttributeMappings(), JaxbAttributeMapping.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
 	}
 	
 	public JaxbAttributeMapping getXmlIdMapping() {

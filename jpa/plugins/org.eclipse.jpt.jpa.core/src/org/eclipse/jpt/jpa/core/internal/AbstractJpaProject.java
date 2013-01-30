@@ -72,7 +72,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
@@ -402,7 +401,7 @@ public abstract class AbstractJpaProject
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceCompilationUnit> getCombinedJavaResourceCompilationUnits() {
-		return IterableTools.compositeIterable(
+		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getExternalJavaResourceCompilationUnits()
 				);
@@ -531,7 +530,7 @@ public abstract class AbstractJpaProject
 	// ********** JPA files **********
 
 	public Iterable<JpaFile> getJpaFiles() {
-		return new LiveCloneIterable<JpaFile>(this.jpaFiles.values());  // read-only
+		return IterableTools.cloneLive(this.jpaFiles.values());  // read-only
 	}
 
 	public int getJpaFilesSize() {
@@ -709,7 +708,7 @@ public abstract class AbstractJpaProject
 	// ********** external Java resource compilation units (source) **********
 
 	public Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
-		return new LiveCloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
+		return IterableTools.cloneLive(this.externalJavaResourceCompilationUnits);  // read-only
 	}
 
 	public int getExternalJavaResourceCompilationUnitsSize() {
@@ -871,14 +870,14 @@ public abstract class AbstractJpaProject
 	 */
 	protected Iterable<JavaResourceAbstractType> getInternalSourceJavaResourceTypes() {
 		// get *all* the types in each compilation unit
-		return IterableTools.compositeIterable(this.getInternalJavaResourceCompilationUnits(), JavaResourceNode.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getInternalJavaResourceCompilationUnits(), JavaResourceNode.Root.TYPES_TRANSFORMER);
 	}
 
 	/**
 	 * Return the JPA project's resource compilation units.
 	 */
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
-		return IterableTools.subIterable(IterableTools.transform(this.getJavaSourceJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(this.getJavaSourceJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**
@@ -915,12 +914,12 @@ public abstract class AbstractJpaProject
 	 * persistence.xml
 	 */
 	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
-		return IterableTools.compositeIterable(this.getJavaResourceNodeRoots(), JavaResourceNode.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getJavaResourceNodeRoots(), JavaResourceNode.Root.TYPES_TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
-		return IterableTools.compositeIterable(
+		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getInternalJavaResourcePackageFragmentRoots(),
 					this.getExternalJavaResourceCompilationUnits(),
@@ -941,7 +940,7 @@ public abstract class AbstractJpaProject
 	}
 
 	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
-		return IterableTools.notNulls(IterableTools.transform(this.getPackageInfoSourceJpaFiles(), JPA_FILE_JAVA_RESOURCE_PACKAGE_TRANSFORMER));
+		return IterableTools.removeNulls(IterableTools.transform(this.getPackageInfoSourceJpaFiles(), JPA_FILE_JAVA_RESOURCE_PACKAGE_TRANSFORMER));
 	}
 
 	protected static final Transformer<JpaFile, JavaResourcePackage> JPA_FILE_JAVA_RESOURCE_PACKAGE_TRANSFORMER = new JpaFileJavaResourcePackageTransformer();
@@ -980,7 +979,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JavaResourcePackageFragmentRoot> getInternalJavaResourcePackageFragmentRoots() {
-		return IterableTools.subIterable(IterableTools.transform(this.getJarJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(this.getJarJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**

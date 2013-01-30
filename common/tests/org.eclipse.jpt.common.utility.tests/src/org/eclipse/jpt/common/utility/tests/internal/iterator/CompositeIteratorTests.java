@@ -243,13 +243,13 @@ public class CompositeIteratorTests
 	// use vararg constructor
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator2() {
-		return IteratorTools.compositeIterator(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
+		return IteratorTools.concatenate(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
 	}
 
 	// use vararg constructor
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator3() {
-		return IteratorTools.compositeIterator(new Iterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
+		return IteratorTools.concatenate(new Iterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
 	}
 
 	Iterator<String> buildCompositeIterator(String string, Iterator<String> iterator) {

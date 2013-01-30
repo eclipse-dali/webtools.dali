@@ -96,7 +96,7 @@ public class FilteringCollectionValueModel<E>
 	// ********** CollectionValueModel implementation **********
 
 	public Iterator<E> iterator() {
-		return IteratorTools.readOnlyIterator(this.filteredItems.iterator());
+		return IteratorTools.readOnly(this.filteredItems.iterator());
 	}
 
 	public int size() {

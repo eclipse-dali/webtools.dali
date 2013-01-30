@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
 
@@ -117,7 +117,7 @@ final class SourceEnum
 	// ********** enum constants **********
 
 	public Iterable<JavaResourceEnumConstant> getEnumConstants() {
-		return new LiveCloneIterable<JavaResourceEnumConstant>(this.enumConstants);
+		return IterableTools.cloneLive(this.enumConstants);
 	}
 
 	private void addEnumConstant(JavaResourceEnumConstant enumConstant) {

@@ -1221,7 +1221,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	 * (non-transient attribute or association mappings, depending on the specified transformer).
 	 */
 	protected Iterable<String> getAllTargetEmbeddableNonTransientAttributeNames() {
-		return IterableTools.compositeIterable(this.getTargetEmbeddableNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getTargetEmbeddableNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	protected Iterable<AttributeMapping> getTargetEmbeddableNonTransientAttributeMappings() {
@@ -1259,7 +1259,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
 	protected Iterable<String> getEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return IterableTools.compositeIterable(this.getEmbeddableAttributeMappings(), transformer);
+		return IterableTools.children(this.getEmbeddableAttributeMappings(), transformer);
 	}
 
 	@Override

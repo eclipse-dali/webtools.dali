@@ -24,7 +24,7 @@ public class SimultaneousListIteratorTests
 
 	@Override
 	protected Iterator<List<String>> buildIterator(ListIterator<String>... iterators) {
-		return IteratorTools.simultaneousListIterator(iterators);
+		return IteratorTools.alignList(iterators);
 	}
 
 	@Override

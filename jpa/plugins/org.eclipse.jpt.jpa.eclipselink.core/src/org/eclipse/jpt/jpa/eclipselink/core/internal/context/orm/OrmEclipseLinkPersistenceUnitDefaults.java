@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -144,7 +144,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 			return EmptyListIterable.instance();
 		}
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlTenantDiscriminatorColumn_2_3>(this.getXmlDefaults().getTenantDiscriminatorColumns());
+		return IterableTools.cloneLive(this.getXmlDefaults().getTenantDiscriminatorColumns());
 	}
 
 	/**

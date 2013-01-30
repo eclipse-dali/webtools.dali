@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -31,6 +31,7 @@ import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IMappedSuperclass;
+import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 
@@ -196,7 +197,7 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 */
 	public Iterable<IEntity> entities() {
 		initializeManagedTypes();
-		return new SnapshotCloneIterable<IEntity>(entities);
+		return IterableTools.cloneSnapshot(entities);
 	}
 
 	/**
@@ -327,6 +328,6 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 */
 	public Iterable<IManagedType> managedTypes() {
 		initializeManagedTypes();
-		return new SnapshotCloneIterable<IManagedType>(managedTypes.values());
+		return IterableTools.cloneSnapshot(managedTypes.values());
 	}
 }

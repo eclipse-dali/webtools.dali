@@ -26,7 +26,6 @@ import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -109,7 +108,7 @@ final class BinaryMethod
 	// ***** parameter type names *****
 	
 	public ListIterable<String> getParameterTypeNames() {
-		return new LiveCloneListIterable<String>(this.parameterTypeNames);
+		return IterableTools.cloneLive(this.parameterTypeNames);
 	}
 	
 	public String getParameterTypeName(int index) {

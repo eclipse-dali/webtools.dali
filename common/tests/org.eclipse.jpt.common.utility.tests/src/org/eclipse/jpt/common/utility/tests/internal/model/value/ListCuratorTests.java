@@ -310,7 +310,7 @@ public final class ListCuratorTests
 		}
 		
 		public ListIterator<String> strings() {
-			return IteratorTools.readOnlyListIterator(this.strings.listIterator());
+			return IteratorTools.readOnly(this.strings.listIterator());
 		}
 		
 		public void addString(int index, String string) {

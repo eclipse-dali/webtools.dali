@@ -37,7 +37,6 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -165,7 +164,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	// ********** annotations **********
 
 	public Iterable<Annotation> getAnnotations() {
-		return new LiveCloneIterable<Annotation>(this.annotations.values());
+		return IterableTools.cloneLive(this.annotations.values());
 	}
 
 	public int getAnnotationsSize() {
@@ -230,11 +229,11 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	// ********** combination annotations **********
 
 	private Iterable<NestableAnnotation> getNestableAnnotations() {
-		return IterableTools.compositeIterable(this.getAnnotationContainers(), CombinationAnnotationContainer_.NESTED_ANNOTATIONS_TRANSFORMER);
+		return IterableTools.children(this.getAnnotationContainers(), CombinationAnnotationContainer_.NESTED_ANNOTATIONS_TRANSFORMER);
 	}
 
 	private Iterable<CombinationAnnotationContainer> getAnnotationContainers() {
-		return new LiveCloneIterable<CombinationAnnotationContainer>(this.annotationContainers.values());
+		return IterableTools.cloneLive(this.annotationContainers.values());
 	}
 
 	public ListIterable<NestableAnnotation> getAnnotations(String nestableAnnotationName) {

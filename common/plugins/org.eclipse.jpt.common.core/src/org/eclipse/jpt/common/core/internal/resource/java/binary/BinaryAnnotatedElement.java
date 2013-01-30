@@ -25,8 +25,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -142,7 +140,7 @@ abstract class BinaryAnnotatedElement
 	// ********** annotations **********
 	
 	public Iterable<Annotation> getAnnotations() {
-		return new LiveCloneIterable<Annotation>(this.annotations.values());
+		return IterableTools.cloneLive(this.annotations.values());
 	}
 	
 	public int getAnnotationsSize() {
@@ -186,7 +184,7 @@ abstract class BinaryAnnotatedElement
 	// ********** combination annotations **********
 	
 	private Iterable<NestableAnnotation> getNestableAnnotations() {
-		return IterableTools.compositeIterable(this.getAnnotationContainers(), ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER);
+		return IterableTools.children(this.getAnnotationContainers(), ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER);
 	}
 	
 	private static final Transformer<AnnotationContainer, Iterable<NestableAnnotation>> ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER = new AnnotationContainerNestedAnnotationsTransformer();
@@ -201,7 +199,7 @@ abstract class BinaryAnnotatedElement
 	}
 	
 	private Iterable<AnnotationContainer> getAnnotationContainers() {
-		return new LiveCloneIterable<AnnotationContainer>(this.annotationContainers.values());
+		return IterableTools.cloneLive(this.annotationContainers.values());
 	}
 	
 	public ListIterable<NestableAnnotation> getAnnotations(String nestableAnnotationName) {
@@ -368,7 +366,7 @@ abstract class BinaryAnnotatedElement
 		}
 		
 		ListIterable<NestableAnnotation> getNestedAnnotations() {
-			return new LiveCloneListIterable<NestableAnnotation>(this.nestedAnnotations);
+			return IterableTools.cloneLive(this.nestedAnnotations);
 		}
 		
 		int getNestedAnnotationsSize() {

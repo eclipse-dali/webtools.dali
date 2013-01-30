@@ -48,7 +48,7 @@ public class ReadOnlyCompositeListIterable<E>
 	 * combined list iterators
 	 */
 	public ListIterator<E> iterator() {
-		return IteratorTools.readOnlyCompositeListIterator(this.iterators());
+		return IteratorTools.concatenateReadOnly(this.iterators());
 	}
 
 	/**

@@ -144,7 +144,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
 	protected Iterable<String> getEmbeddableAttributeMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return IterableTools.compositeIterable(this.getEmbeddableAttributeMappings(), transformer);
+		return IterableTools.children(this.getEmbeddableAttributeMappings(), transformer);
 	}
 
 	/**

@@ -195,7 +195,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	}
 
 	protected Iterable<E2> buildCompositeIterable() {
-		return IterableTools.compositeIterable(this.collections.values());
+		return IterableTools.concatenate(this.collections.values());
 	}
 
 	public int size() {

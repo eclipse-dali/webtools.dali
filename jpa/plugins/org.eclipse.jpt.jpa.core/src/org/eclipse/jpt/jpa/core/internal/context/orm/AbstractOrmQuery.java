@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
@@ -142,7 +142,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected ListIterable<XmlQueryHint> getXmlHints() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlQueryHint>(this.xmlQuery.getHints());
+		return IterableTools.cloneLive(this.xmlQuery.getHints());
 	}
 
 	protected ContextListContainer<OrmQueryHint, XmlQueryHint> buildHintContainer() {

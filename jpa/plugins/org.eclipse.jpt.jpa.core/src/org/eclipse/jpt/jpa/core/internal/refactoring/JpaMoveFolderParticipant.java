@@ -192,7 +192,7 @@ public class JpaMoveFolderParticipant
 				return createPersistenceUnitReplaceEdits(persistenceUnit, folder, (IContainer) getArguments(folder).getDestination());
 			}
 		};
-		return IterableTools.compositeIterable(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject()), transformer);
+		return IterableTools.children(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject()), transformer);
 	}
 
 	protected Iterable<IFolder> getOriginalFoldersOnClasspath(final JpaProject jpaProject) {

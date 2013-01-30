@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTModifiedDeclaration.Adapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
@@ -229,7 +228,7 @@ public abstract class AbstractJaxbNode
 		 * Return an Iterable of the context elements
 		 */
 		public Iterable<C> getContextElements() {
-			return new LiveCloneIterable<C>(this.contextElements);
+			return IterableTools.cloneLive(this.contextElements);
 		}
 
 		/**
@@ -360,7 +359,7 @@ public abstract class AbstractJaxbNode
 
 		@Override
 		public ListIterable<C> getContextElements() {
-			return new LiveCloneListIterable<C>(this.contextElements);
+			return IterableTools.cloneLive(this.contextElements);
 		}
 
 		@Override
@@ -447,7 +446,7 @@ public abstract class AbstractJaxbNode
 
 		@Override
 		public ListIterable<C> getContextElements() {
-			return new LiveCloneListIterable<C>(this.contextElements);
+			return IterableTools.cloneLive(this.contextElements);
 		}
 
 		@Override

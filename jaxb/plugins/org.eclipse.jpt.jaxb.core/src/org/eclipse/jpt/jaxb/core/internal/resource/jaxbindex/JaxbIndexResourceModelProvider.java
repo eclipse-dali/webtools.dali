@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -97,7 +97,7 @@ public class JaxbIndexResourceModelProvider
 	}
 	
 	protected void removeProjectResources(IProject removedProject) {
-		for (IFile file : new SnapshotCloneIterable<IFile>(this.models.keySet())) {
+		for (IFile file : IterableTools.cloneSnapshot(this.models.keySet())) {
 			if (file.getProject().equals(removedProject)) {
 				removeResource(file);
 			}

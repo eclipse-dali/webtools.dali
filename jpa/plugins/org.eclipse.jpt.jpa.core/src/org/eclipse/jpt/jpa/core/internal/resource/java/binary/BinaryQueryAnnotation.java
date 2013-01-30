@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
@@ -109,7 +109,7 @@ abstract class BinaryQueryAnnotation
 	// ***** hints
 
 	public ListIterable<QueryHintAnnotation> getHints() {
-		return new LiveCloneListIterable<QueryHintAnnotation>(this.hints);
+		return IterableTools.cloneLive(this.hints);
 	}
 
 	public int getHintsSize() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,9 +19,8 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
@@ -660,7 +659,7 @@ public abstract class AbstractNode
 	 * @see #branchProblems()
 	 */
 	public final Iterator<Problem> problems() {
-		return new CloneIterator<Problem>(this.problems);	// removes are not allowed
+		return IteratorTools.clone(this.problems);	// removes are not allowed
 	}
 
 	/**
@@ -686,7 +685,7 @@ public abstract class AbstractNode
 	 * node's descendants' problems.
 	 */
 	public final ListIterator<Problem> branchProblems() {
-		return new CloneListIterator<Problem>(this.branchProblems);	// removes are not allowed
+		return IteratorTools.clone(this.branchProblems);	// removes are not allowed
 	}
 
 	/**

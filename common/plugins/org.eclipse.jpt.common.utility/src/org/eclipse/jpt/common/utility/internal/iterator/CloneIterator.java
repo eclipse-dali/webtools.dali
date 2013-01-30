@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterator;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -25,22 +25,22 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * By default, a <code>CloneIterator</code> does not support the
  * {@link #remove()} operation; this is because it does not have
  * access to the original collection. But if the <code>CloneIterator</code>
- * is supplied with an {@link Remover} it will delegate the
- * {@link #remove()} operation to the {@link Remover}.
+ * is supplied with an {@link ParameterizedCommand} it will delegate the
+ * {@link #remove()} operation to the {@link ParameterizedCommand}.
  * 
  * @param <E> the type of elements returned by the iterator
  * 
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#liveCloneIterable(Collection)
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#liveCloneIterable(Collection, Remover)
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#snapshotCloneIterable(Collection)
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#snapshotCloneIterable(Collection, Remover)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneLive(Collection)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneLive(Collection, ParameterizedCommand)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneSnapshot(Collection)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#cloneSnapshot(Collection, ParameterizedCommand)
  */
 public class CloneIterator<E>
 	implements Iterator<E>
 {
 	private final Iterator<Object> iterator;
 	private E current;
-	private final Remover<? super E> remover;
+	private final ParameterizedCommand<? super E> removeCommand;
 	private boolean removeAllowed;
 
 
@@ -48,51 +48,33 @@ public class CloneIterator<E>
 
 	/**
 	 * Construct an iterator on a copy of the specified collection.
-	 * The {@link #remove()} method will not be supported.
+	 * Use the specified command to remove objects from the
+	 * original collection.
 	 */
 	public CloneIterator(Collection<? extends E> collection) {
-		this(collection, Remover.ReadOnly.<E>instance());
-	}
-
-	/**
-	 * Construct an iterator on a copy of the specified array.
-	 * The {@link #remove()} method will not be supported.
-	 */
-	public CloneIterator(E[] array) {
-		this(array, Remover.ReadOnly.<E>instance());
+		this(collection, ParameterizedCommand.Disabled.<E>instance());
 	}
 
 	/**
 	 * Construct an iterator on a copy of the specified collection.
-	 * Use the specified remover to remove objects from the
+	 * Use the specified command to remove objects from the
 	 * original collection.
 	 */
-	public CloneIterator(Collection<? extends E> collection, Remover<? super E> remover) {
-		this(remover, collection.toArray());
-	}
-
-	/**
-	 * Construct an iterator on a copy of the specified array.
-	 * Use the specified remover to remove objects from the
-	 * original array.
-	 */
-	public CloneIterator(E[] array, Remover<? super E> remover) {
-		this(remover, array.clone());
+	public CloneIterator(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
+		this(collection.toArray(), removeCommand);
 	}
 
 	/**
 	 * Internal constructor used by subclasses.
-	 * Swap order of arguments to prevent collision with other constructor.
-	 * The passed in array will *not* be cloned.
 	 */
-	protected CloneIterator(Remover<? super E> remover, Object... array) {
+	protected CloneIterator(Object[] array, ParameterizedCommand<? super E> removeCommand) {
 		super();
-		if (remover == null) {
+		if (removeCommand == null) {
 			throw new NullPointerException();
 		}
 		this.iterator = new ArrayIterator<Object>(array);
 		this.current = null;
-		this.remover = remover;
+		this.removeCommand = removeCommand;
 		this.removeAllowed = false;
 	}
 
@@ -103,8 +85,16 @@ public class CloneIterator<E>
 		return this.iterator.hasNext();
 	}
 
+	/**
+	 * The collection passed in during construction held elements of type <code>E</code>,
+	 * so this cast is not a problem. We need this cast because
+	 * all the elements of the original collection were copied into
+	 * an object array (<code>Object[]</code>).
+	 */
 	public E next() {
-		this.current = this.nestedNext();
+		@SuppressWarnings("unchecked")
+		E next = (E) this.iterator.next();
+		this.current = next;
 		this.removeAllowed = true;
 		return this.current;
 	}
@@ -113,71 +103,12 @@ public class CloneIterator<E>
 		if ( ! this.removeAllowed) {
 			throw new IllegalStateException();
 		}
-		this.remover.remove(this.current);
+		this.removeCommand.execute(this.current);
 		this.removeAllowed = false;
-	}
-
-
-	// ********** internal methods **********
-
-	/**
-	 * The collection passed in during construction held elements of type <code>E</code>,
-	 * so this cast is not a problem. We need this cast because
-	 * all the elements of the original collection were copied into
-	 * an object array (<code>Object[]</code>).
-	 */
-	@SuppressWarnings("unchecked")
-	protected E nestedNext() {
-		return (E) this.iterator.next();
 	}
 
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this);
-	}
-
-
-	//********** member interface **********
-
-	/**
-	 * Used by {@link CloneIterator} to remove
-	 * elements from the original collection; since the iterator
-	 * does not have direct access to the original collection.
-	 */
-	public interface Remover<T> {
-
-		/**
-		 * Remove the specified object from the original collection.
-		 */
-		void remove(T element);
-
-
-		final class ReadOnly<S>
-			implements Remover<S>, Serializable
-		{
-			@SuppressWarnings("rawtypes")
-			public static final Remover INSTANCE = new ReadOnly();
-			@SuppressWarnings("unchecked")
-			public static <R> Remover<R> instance() {
-				return INSTANCE;
-			}
-			// ensure single instance
-			private ReadOnly() {
-				super();
-			}
-			// remove is not supported
-			public void remove(Object element) {
-				throw new UnsupportedOperationException();
-			}
-			@Override
-			public String toString() {
-				return ObjectTools.singletonToString(this);
-			}
-			private static final long serialVersionUID = 1L;
-			private Object readResolve() {
-				// replace this object with the singleton
-				return INSTANCE;
-			}
-		}
 	}
 }

@@ -193,7 +193,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	 * @see #getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping)
 	 */
 	protected Iterable<AttributeMapping> buildAttributeMappingChoices(Iterable<AttributeMapping> attributeMappings) {
-		return IterableTools.compositeIterable(attributeMappings, new AttributeMappingTransformer());
+		return IterableTools.children(attributeMappings, new AttributeMappingTransformer());
 	}
 
 	public class AttributeMappingTransformer

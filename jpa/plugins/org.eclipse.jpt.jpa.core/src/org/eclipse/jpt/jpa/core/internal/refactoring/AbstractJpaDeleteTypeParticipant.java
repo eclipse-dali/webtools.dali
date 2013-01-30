@@ -213,7 +213,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 	}
 
 	protected Iterable<DeleteEdit> createPersistenceXmlDeleteEdits(PersistenceUnit persistenceUnit) {
-		return IterableTools.compositeIterable(this.getTypesOnClasspath(persistenceUnit.getJpaProject()), new PersistenceUnitDeleteTypeEditsTransformer(persistenceUnit));
+		return IterableTools.children(this.getTypesOnClasspath(persistenceUnit.getJpaProject()), new PersistenceUnitDeleteTypeEditsTransformer(persistenceUnit));
 	}
 
 	public static class PersistenceUnitDeleteTypeEditsTransformer
@@ -257,7 +257,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 	}
 
 	private Iterable<DeleteEdit> createMappingFileDeleteTypeEdits(MappingFileRef mappingFileRef) {
-		return IterableTools.compositeIterable(this.getTypesOnClasspath(mappingFileRef.getJpaProject()), new MappingFileDeleteTypeEditsTransformer(mappingFileRef));
+		return IterableTools.children(this.getTypesOnClasspath(mappingFileRef.getJpaProject()), new MappingFileDeleteTypeEditsTransformer(mappingFileRef));
 	}
 
 	public static class MappingFileDeleteTypeEditsTransformer

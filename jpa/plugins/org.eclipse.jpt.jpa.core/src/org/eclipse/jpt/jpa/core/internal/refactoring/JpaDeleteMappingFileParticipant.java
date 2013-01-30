@@ -182,7 +182,7 @@ public class JpaDeleteMappingFileParticipant
 				return persistenceUnit.createDeleteMappingFileEdits(file);
 			}
 		};
-		return IterableTools.compositeIterable(this.mappingFiles.keySet(), transformer);
+		return IterableTools.children(this.mappingFiles.keySet(), transformer);
 	}
 	
 	protected void addPersistenceXmlDeleteMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {

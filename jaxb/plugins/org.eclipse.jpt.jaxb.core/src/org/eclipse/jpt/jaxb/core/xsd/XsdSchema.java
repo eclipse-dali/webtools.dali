@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
@@ -34,7 +33,7 @@ public class XsdSchema
 	}
 	
 	public Iterable<String> getNamespaces() {
-		Iterable<String> result = new SnapshotCloneIterable(getXSDSchema().getQNamePrefixToNamespaceMap().values());
+		Iterable<String> result = IterableTools.cloneSnapshot(getXSDSchema().getQNamePrefixToNamespaceMap().values());
 		if (StringTools.isBlank(getXSDSchema().getTargetNamespace())) {
 			result = IterableTools.insert("", result);
 		}
@@ -83,11 +82,11 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDTypeDefinition> getDeclaredXSDTypeDefinitions() {
-		return new SnapshotCloneIterable(getXSDSchema().getTypeDefinitions());
+		return IterableTools.cloneSnapshot(getXSDSchema().getTypeDefinitions());
 	}
 	
 	protected Iterable<XSDTypeDefinition> getBuiltInXSDTypeDefinitions() {
-		return new SnapshotCloneIterable(getXSDSchema().getSchemaForSchema().getTypeDefinitions());
+		return IterableTools.cloneSnapshot(getXSDSchema().getSchemaForSchema().getTypeDefinitions());
 	}
 	
 	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions(final String namespace) {
@@ -103,7 +102,7 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions(String namespace) {
-		return IterableTools.subIterable(
+		return IterableTools.downCast(
 			new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions(namespace)) {
 				@Override
 				protected boolean accept(XSDTypeDefinition o) {
@@ -136,7 +135,7 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations() {
-		return new SnapshotCloneIterable(getXSDSchema().getElementDeclarations());
+		return IterableTools.cloneSnapshot(getXSDSchema().getElementDeclarations());
 	}
 
 	public Iterable<String> getNamespaceProposals() {

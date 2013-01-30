@@ -15,7 +15,7 @@ import java.util.Iterator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -248,7 +248,7 @@ abstract class StateController
 	 * @return The iteration of <code>ControlHolder</code>s
 	 */
 	protected final Iterator<ControlHolder> controlHolders() {
-		return new CloneIterator<ControlHolder>(this.controlHolders);
+		return IteratorTools.clone(this.controlHolders);
 	}
 
 	/**

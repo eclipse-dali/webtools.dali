@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 
 /**
@@ -28,10 +29,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
  * By default, the iterator returned by a <code>SnapshotCloneIterable</code> does not
  * support the {@link Iterator#remove()} operation; this is because it does not
  * have access to the original collection. But if the <code>SnapshotCloneIterable</code>
- * is supplied with a {@link org.eclipse.jpt.common.utility.internal.iterator.CloneIterator.Remover} it will delegate the
- * {@link Iterator#remove()} operation to the <code>Remover</code>.
- * Alternatively, a subclass can override the iterable's {@link #remove(Object)}
- * method.
+ * is supplied with an {@link ParameterizedCommand remove command} it will delegate the
+ * {@link Iterator#remove()} operation to the command.
  * <p>
  * This iterable is useful for multiple passes over a collection that should not
  * be changed (e.g. by another thread) between passes.
@@ -53,9 +52,7 @@ public class SnapshotCloneIterable<E>
 	/**
 	 * Construct a "snapshot" iterable for the specified collection.
 	 * The {@link Iterator#remove()} operation will not be supported
-	 * by the iterator returned by {@link #iterator()}
-	 * unless a subclass overrides the iterable's {@link #remove(Object)}
-	 * method.
+	 * by the iterator returned by {@link #iterator()}.
 	 */
 	public SnapshotCloneIterable(Collection<? extends E> collection) {
 		super();
@@ -64,11 +61,11 @@ public class SnapshotCloneIterable<E>
 
 	/**
 	 * Construct a "snapshot" iterable for the specified collection.
-	 * The specified remover will be used by any generated iterators to
+	 * The specified command will be used by any generated iterators to
 	 * remove objects from the original collection.
 	 */
-	public SnapshotCloneIterable(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
-		super(remover);
+	public SnapshotCloneIterable(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
+		super(removeCommand);
 		this.array = collection.toArray();
 	}
 
@@ -76,7 +73,7 @@ public class SnapshotCloneIterable<E>
 	// ********** Iterable implementation **********
 
 	public Iterator<E> iterator() {
-		return new LocalCloneIterator<E>(this.remover, this.array);
+		return new LocalCloneIterator<E>(this.array, this.removeCommand);
 	}
 
 	@Override
@@ -91,8 +88,8 @@ public class SnapshotCloneIterable<E>
 	 * provide access to "internal" constructor
 	 */
 	protected static class LocalCloneIterator<E> extends CloneIterator<E> {
-		protected LocalCloneIterator(Remover<E> remover, Object[] array) {
-			super(remover, array);
+		protected LocalCloneIterator(Object[] array, ParameterizedCommand<? super E> removeCommand) {
+			super(array, removeCommand);
 		}
 	}
 }

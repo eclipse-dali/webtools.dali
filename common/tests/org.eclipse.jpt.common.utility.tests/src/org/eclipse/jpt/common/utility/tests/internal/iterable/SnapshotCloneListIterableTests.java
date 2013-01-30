@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,20 +11,19 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneListIterable;
 
 @SuppressWarnings("nls")
-public class SnapshotCloneListIterableTests extends SnapshotCloneIterableTests {
-
+public class SnapshotCloneListIterableTests
+	extends SnapshotCloneIterableTests
+{
 	public SnapshotCloneListIterableTests(String name) {
 		super(name);
 	}
 
 	public void testAdd() {
 		final List<String> collection = this.buildCollection();
-		this.iterable = this.buildRemovingIterable(collection);
+		this.iterable = this.buildIterableWithRemover(collection);
 
 		String added = "xxxx";
 		assertFalse(IterableTools.contains(this.iterable, added));
@@ -62,7 +61,7 @@ public class SnapshotCloneListIterableTests extends SnapshotCloneIterableTests {
 
 	public void testSet() {
 		final List<String> collection = this.buildCollection();
-		this.iterable = this.buildRemovingIterable(collection);
+		this.iterable = this.buildIterableWithRemover(collection);
 
 		String added = "xxxx";
 		assertFalse(IterableTools.contains(this.iterable, added));
@@ -102,30 +101,12 @@ public class SnapshotCloneListIterableTests extends SnapshotCloneIterableTests {
 
 	@Override
 	Iterable<String> buildIterable(List<String> c) {
-		return new SnapshotCloneListIterable<String>(c);
-	}
-
-	@Override
-	Iterable<String> buildRemovingIterable(final List<String> c) {
-		return new SnapshotCloneListIterable<String>(c) {
-				@Override
-				protected void add(int index, String element) {
-					c.add(index, element);
-				}
-				@Override
-				protected void remove(int index) {
-					c.remove(index);
-				}
-				@Override
-				protected void set(int index, String element) {
-					c.set(index, element);
-				}
-			};
+		return IterableTools.cloneSnapshot(c);
 	}
 
 	@Override
 	Iterable<String> buildIterableWithRemover(List<String> c) {
-		return new SnapshotCloneListIterable<String>(c, this.buildMutator(c));
+		return IterableTools.cloneSnapshot(c, this.buildMutator(c));
 	}
 
 }

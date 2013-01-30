@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.ui.JptCommonUiImages;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
@@ -488,7 +488,7 @@ public class DatabaseGroup
 	}
 
 	private Iterator<Listener> listeners() {
-		return new CloneIterator<Listener>(this.listeners);
+		return IteratorTools.clone(this.listeners);
 	}
 
 	private void fireConnectionProfileChanged(ConnectionProfile connectionProfile) {

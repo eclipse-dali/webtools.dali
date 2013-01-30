@@ -631,7 +631,7 @@ public final class ListTools {
 	{
 		@Override
 		public ListIterator<? extends E> transform(List<? extends E> list) {
-			return IteratorTools.readOnlyListIterator(list.listIterator());
+			return IteratorTools.readOnly(list.listIterator());
 		}
 	}
 

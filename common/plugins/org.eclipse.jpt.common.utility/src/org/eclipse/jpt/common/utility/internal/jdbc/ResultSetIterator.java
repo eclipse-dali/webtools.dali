@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.iterator;
+package org.eclipse.jpt.common.utility.internal.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

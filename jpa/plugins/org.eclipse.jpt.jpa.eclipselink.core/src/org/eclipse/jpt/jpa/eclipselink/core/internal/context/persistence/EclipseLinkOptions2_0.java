@@ -1,18 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
@@ -181,7 +180,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	// ********** ValidationGroupPrePersists **********
 
 	public ListIterable<String> getValidationGroupPrePersists(){
-		return new LiveCloneListIterable<String>(this.validationGroupPrePersists);
+		return IterableTools.cloneLive(this.validationGroupPrePersists);
 	}
 	
 	public int getValidationGroupPrePersistsSize(){
@@ -236,7 +235,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	// ********** ValidationGroupPreUpdates **********
 
 	public ListIterable<String> getValidationGroupPreUpdates(){
-		return new LiveCloneListIterable<String>(this.validationGroupPreUpdates);
+		return IterableTools.cloneLive(this.validationGroupPreUpdates);
 	}
 	
 	public int getValidationGroupPreUpdatesSize(){
@@ -291,7 +290,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	// ********** ValidationGroupPreRemoves **********
 
 	public ListIterable<String> getValidationGroupPreRemoves(){
-		return new LiveCloneListIterable<String>(this.validationGroupPreRemoves);
+		return IterableTools.cloneLive(this.validationGroupPreRemoves);
 	}
 	
 	public int getValidationGroupPreRemovesSize(){

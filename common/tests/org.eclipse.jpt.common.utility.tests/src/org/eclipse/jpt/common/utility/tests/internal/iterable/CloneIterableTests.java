@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,17 +11,17 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Iterator;
-
+import java.util.List;
 import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 
 @SuppressWarnings("nls")
-public abstract class CloneIterableTests extends TestCase {
+public abstract class CloneIterableTests
+	extends TestCase
+{
 	Iterable<String> iterable;
 
 	public CloneIterableTests(String name) {
@@ -46,20 +46,6 @@ public abstract class CloneIterableTests extends TestCase {
 	}
 
 	public void testRemove() {
-		final List<String> collection = this.buildCollection();
-		this.iterable = this.buildRemovingIterable(collection);
-
-		Object removed = "three";
-		assertTrue(IterableTools.contains(this.iterable, removed));
-		for (Iterator<String> iterator = this.iterable.iterator(); iterator.hasNext(); ) {
-			if (iterator.next().equals(removed)) {
-				iterator.remove();
-			}
-		}
-		assertFalse(collection.contains(removed));
-	}
-
-	public void testRemover() {
 		final List<String> collection = this.buildCollection();
 		this.iterable = this.buildIterableWithRemover(collection);
 
@@ -102,20 +88,18 @@ public abstract class CloneIterableTests extends TestCase {
 
 	abstract Iterable<String> buildIterable(List<String> c);
 
-	abstract Iterable<String> buildRemovingIterable(List<String> c);
-
 	abstract Iterable<String> buildIterableWithRemover(List<String> c);
 
-	CloneIterator.Remover<String> buildRemover(final Collection<String> c) {
-		return new CloneIterator.Remover<String>() {
-			public void remove(String current) {
+	ParameterizedCommand<String> buildRemoveCommand(final Collection<String> c) {
+		return new ParameterizedCommand<String>() {
+			public void execute(String current) {
 				c.remove(current);
 			}
 		};
 	}
 
-	CloneListIterator.Mutator<String> buildMutator(final List<String> list) {
-		return new CloneListIterator.Mutator<String>() {
+	CloneListIterator.Adapter<String> buildMutator(final List<String> list) {
+		return new CloneListIterator.Adapter<String>() {
 			public void add(int index, String string) {
 				list.add(index, string);
 			}

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.jdbc.ResultSetIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 @SuppressWarnings("nls")

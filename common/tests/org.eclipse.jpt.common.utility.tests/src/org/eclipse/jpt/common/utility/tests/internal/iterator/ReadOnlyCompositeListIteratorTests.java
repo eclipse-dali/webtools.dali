@@ -167,13 +167,13 @@ public class ReadOnlyCompositeListIteratorTests
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator2() {
-		return IteratorTools.readOnlyCompositeListIterator(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
+		return IteratorTools.concatenateReadOnly(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator3() {
-		return IteratorTools.readOnlyCompositeListIterator(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
+		return IteratorTools.concatenateReadOnly(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
 	}
 
 	Iterator<String> buildCompositeIterator(String string, ListIterator<String> iterator) {
@@ -202,7 +202,7 @@ public class ReadOnlyCompositeListIteratorTests
 		list.add(floatList);
 		Transformer<List<? extends Number>, ListIterator<? extends Number>> transformer = ListTools.readOnlyListIteratorTransformer();
 		ListIterator<ListIterator<? extends Number>> numberIterators = IteratorTools.transform(list.listIterator(), transformer);
-		ListIterator<Number> li = IteratorTools.readOnlyCompositeListIterator(numberIterators);
+		ListIterator<Number> li = IteratorTools.concatenateReadOnly(numberIterators);
 		while (li.hasNext()) {
 			assertTrue(li.next().intValue() > 0);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -1015,7 +1015,7 @@ public class TableModelAdapterTest {
 		}
 
 		ListIterator<Employee> employees() {
-			return new CloneListIterator<Employee>(employees);
+			return IteratorTools.clone(employees);
 		}
 
 		int employeesSize() {

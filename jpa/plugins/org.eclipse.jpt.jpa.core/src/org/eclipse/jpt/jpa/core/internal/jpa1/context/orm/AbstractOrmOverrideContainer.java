@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Override_;
@@ -84,7 +83,7 @@ public abstract class AbstractOrmOverrideContainer<
 
 	@SuppressWarnings("unchecked")
 	public ListIterable<R> getOverrides() {
-		return IterableTools.compositeListIterable(this.getReadOnlySpecifiedOverrides(), this.getReadOnlyVirtualOverrides());
+		return IterableTools.concatenate(this.getReadOnlySpecifiedOverrides(), this.getReadOnlyVirtualOverrides());
 	}
 
 	public int getOverridesSize() {
@@ -173,7 +172,7 @@ public abstract class AbstractOrmOverrideContainer<
 	// ********** specified overrides **********
 
 	public ListIterable<S> getSpecifiedOverrides() {
-		return new LiveCloneListIterable<S>(this.specifiedOverrides);
+		return IterableTools.cloneLive(this.specifiedOverrides);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -297,7 +296,7 @@ public abstract class AbstractOrmOverrideContainer<
 	// ********** virtual overrides **********
 
 	public ListIterable<V> getVirtualOverrides() {
-		return new LiveCloneListIterable<V>(this.virtualOverrides);
+		return IterableTools.cloneLive(this.virtualOverrides);
 	}
 
 	@SuppressWarnings("unchecked")

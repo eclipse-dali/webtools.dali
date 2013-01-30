@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,10 +29,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
  * By default, the list iterator returned by a <code>SnapshotCloneListIterable</code> does not
  * support the {@link ListIterator} mutation operations; this is because it does not
  * have access to the original list. But if the <code>SnapshotCloneListIterable</code>
- * is supplied with a {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Mutator} it will delegate the
- * {@link ListIterator} mutation operations to the <code>Mutator</code>.
- * Alternatively, a subclass can override the list iterable's mutation
- * methods.
+ * is supplied with an {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter adapter}
+ * it will delegate the {@link ListIterator} mutation operations to the adapter.
  * <p>
  * This list iterable is useful for multiple passes over a list that should not
  * be changed (e.g. by another thread) between passes.
@@ -54,9 +52,7 @@ public class SnapshotCloneListIterable<E>
 	/**
 	 * Construct a "snapshot" list iterable for the specified list.
 	 * The {@link ListIterator} modify operations will not be supported
-	 * by the list iterator returned by {@link #iterator()}
-	 * unless a subclass overrides the list iterable's modify
-	 * method.
+	 * by the list iterator returned by {@link #iterator()}.
 	 */
 	public SnapshotCloneListIterable(List<? extends E> list) {
 		super();
@@ -68,16 +64,13 @@ public class SnapshotCloneListIterable<E>
 	 * The specified mutator will be used by any generated list iterators to
 	 * modify the original list.
 	 */
-	public SnapshotCloneListIterable(List<? extends E> list, CloneListIterator.Mutator<E> mutator) {
+	public SnapshotCloneListIterable(List<? extends E> list, CloneListIterator.Adapter<E> mutator) {
 		super(mutator);
 		this.array = list.toArray();
 	}
 
-
-	// ********** ListIterable implementation **********
-
 	public ListIterator<E> iterator() {
-		return new LocalCloneListIterator<E>(this.mutator, this.array);
+		return new LocalCloneListIterator<E>(this.array, this.adapter);
 	}
 
 	@Override
@@ -91,9 +84,11 @@ public class SnapshotCloneListIterable<E>
 	/**
 	 * provide access to "internal" constructor
 	 */
-	protected static class LocalCloneListIterator<E> extends CloneListIterator<E> {
-		protected LocalCloneListIterator(Mutator<E> mutator, Object[] array) {
-			super(mutator, array);
+	protected static class LocalCloneListIterator<E>
+		extends CloneListIterator<E>
+	{
+		protected LocalCloneListIterator(Object[] array, Adapter<E> adapter) {
+			super(array, adapter);
 		}
 	}
 }

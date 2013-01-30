@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
@@ -568,7 +567,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	// ****** entities list *******
 
 	public ListIterable<CachingEntity> getEntities() {
-		return new LiveCloneListIterable<CachingEntity>(this.entities);
+		return IterableTools.cloneLive(this.entities);
 	}
 
 	public Iterable<String> getEntityNames() {

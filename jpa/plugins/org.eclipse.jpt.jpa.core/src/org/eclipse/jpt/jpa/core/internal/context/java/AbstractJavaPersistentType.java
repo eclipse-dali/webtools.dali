@@ -37,7 +37,6 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -379,7 +378,7 @@ public abstract class AbstractJavaPersistentType
 	// ********** attributes **********
 
 	public ListIterable<JavaPersistentAttribute> getAttributes() {
-		return new LiveCloneListIterable<JavaPersistentAttribute>(this.attributes);
+		return IterableTools.cloneLive(this.attributes);
 	}
 
 	public int getAttributesSize() {
@@ -405,7 +404,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
-		return IterableTools.compositeIterable(
+		return IterableTools.children(
 					this.getInheritanceHierarchy(),
 					PersistentType.ATTRIBUTES_TRANSFORMER
 			);
@@ -868,11 +867,11 @@ public abstract class AbstractJavaPersistentType
 
 	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
 		// using a chain iterable to traverse up the inheritance tree
-		return IterableTools.chainIterable(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
+		return ObjectTools.chain(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
-		return IterableTools.chainIterable(this.resourceType, new SuperJavaResourceTypeTransformer());
+		return ObjectTools.chain(this.resourceType, new SuperJavaResourceTypeTransformer());
 	}
 
 	/**

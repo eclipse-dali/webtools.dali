@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 
 @SuppressWarnings("nls")
@@ -178,15 +179,15 @@ public class CloneListIteratorTests
 	}
 
 	public void testModifyMutatorNext() {
-		this.verifyModifyNext(new CloneListIterator<String>(this.originalList, this.buildMutator()));
+		this.verifyModifyNext(IteratorTools.clone(this.originalList, this.buildMutator()));
 	}
 
 	public void testModifyMutatorPrevious() {
-		this.verifyModifyPrevious(new CloneListIterator<String>(this.originalList, this.buildMutator()));
+		this.verifyModifyPrevious(IteratorTools.clone(this.originalList, this.buildMutator()));
 	}
 
-	private CloneListIterator.Mutator<String> buildMutator() {
-		return new CloneListIterator.Mutator<String>() {
+	private CloneListIterator.Adapter<String> buildMutator() {
+		return new CloneListIterator.Adapter<String>() {
 			public void add(int index, String o) {
 				CloneListIteratorTests.this.originalList.add(index, o);
 			}
@@ -197,33 +198,6 @@ public class CloneListIteratorTests
 
 			public void set(int index, String o) {
 				CloneListIteratorTests.this.originalList.set(index, o);
-			}
-		};
-	}
-
-	public void testModifySubclassNext() {
-		this.verifyModifyNext(this.buildSubclass());
-	}
-
-	public void testModifySubclassPrevious() {
-		this.verifyModifyPrevious(this.buildSubclass());
-	}
-
-	private ListIterator<String> buildSubclass() {
-		return new CloneListIterator<String>(this.originalList) {
-			@Override
-			protected void add(int currentIndex, String o) {
-				CloneListIteratorTests.this.originalList.add(currentIndex, o);
-			}
-
-			@Override
-			protected void remove(int currentIndex) {
-				CloneListIteratorTests.this.originalList.remove(currentIndex);
-			}
-
-			@Override
-			protected void set(int currentIndex, String o) {
-				CloneListIteratorTests.this.originalList.set(currentIndex, o);
 			}
 		};
 	}
@@ -314,7 +288,7 @@ public class CloneListIteratorTests
 	}
 
 	private ListIterator<String> buildCloneListIterator(List<String> list) {
-		return new CloneListIterator<String>(list);
+		return IteratorTools.clone(list);
 	}
 
 	private ListIterator<String> buildNestedListIterator() {

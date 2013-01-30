@@ -26,8 +26,6 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -158,7 +156,7 @@ public abstract class AbstractJaxbContextRoot
 		
 		// while there are resource types to process or types to scan, continue to do so
 		while (! resourceTypesToProcess.isEmpty() || ! typesToScan.isEmpty()) {
-			for (String typeName : new SnapshotCloneIterable<String>(resourceTypesToProcess)) {
+			for (String typeName : IterableTools.cloneSnapshot(resourceTypesToProcess)) {
 				JavaResourceAbstractType resourceType = getJaxbProject().getJavaResourceType(typeName);
 				if (resourceType != null) { // if resource type is null, assume a validation error elsewhere
 					typesToRemove.remove(typeName);
@@ -169,7 +167,7 @@ public abstract class AbstractJaxbContextRoot
 				resourceTypesToProcess.remove(typeName);
 			}
 			
-			for (String typeToScan : new SnapshotCloneIterable<String>(typesToScan)) {
+			for (String typeToScan : IterableTools.cloneSnapshot(typesToScan)) {
 				JaxbTypeMapping typeMapping = getTypeMapping(typeToScan);
 				if (typeMapping != null) {
 					for (String referencedTypeName : typeMapping.getReferencedXmlTypeNames()) {
@@ -282,9 +280,9 @@ public abstract class AbstractJaxbContextRoot
 								|| o.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0;
 					}
 				},
-				IterableTools.notNulls(
+				IterableTools.removeNulls(
 						IterableTools.transform(
-								IterableTools.compositeIterable(getJaxbProject().getJaxbIndexResources(), JaxbIndexResource.CLASS_NAMES_TRANSFORMER),
+								IterableTools.children(getJaxbProject().getJaxbIndexResources(), JaxbIndexResource.CLASS_NAMES_TRANSFORMER),
 								new JavaResourceTypeTransformer())));
 	}
 	
@@ -363,7 +361,7 @@ public abstract class AbstractJaxbContextRoot
 	// ***** packages *****
 	
 	public Iterable<JaxbPackage> getPackages() {
-		return new LiveCloneIterable<JaxbPackage>(this.packages.values());
+		return IterableTools.cloneLive(this.packages.values());
 	}
 	
 	public int getPackagesSize() {
@@ -412,7 +410,7 @@ public abstract class AbstractJaxbContextRoot
 	// ***** types *****
 	
 	public Iterable<JavaType> getJavaTypes() {
-		return new LiveCloneIterable<JavaType>(this.types.values());
+		return IterableTools.cloneLive(this.types.values());
 	}
 	
 	public int getJavaTypesSize() {
@@ -506,7 +504,7 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	public Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage) {
-		return IterableTools.notNulls(
+		return IterableTools.removeNulls(
 				IterableTools.transform(getJavaClasses(jaxbPackage), 
 				JavaClass.XML_REGISTRY_TRANSFORMER));
 	}

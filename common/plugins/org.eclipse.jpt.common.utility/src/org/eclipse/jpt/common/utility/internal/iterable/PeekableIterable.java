@@ -48,7 +48,7 @@ public class PeekableIterable<E>
 	}
 
 	public PeekableIterator<E> iterator() {
-		return IteratorTools.peekableIterator(this.iterable.iterator());
+		return IteratorTools.peekable(this.iterable.iterator());
 	}
 
 	@Override

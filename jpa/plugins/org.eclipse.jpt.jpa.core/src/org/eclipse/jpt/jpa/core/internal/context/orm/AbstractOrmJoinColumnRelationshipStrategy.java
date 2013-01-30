@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
@@ -152,7 +151,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 
 	protected ListIterable<XmlJoinColumn> getXmlJoinColumns() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlJoinColumn>(this.getXmlJoinColumnContainer().getJoinColumns());
+		return IterableTools.cloneLive(this.getXmlJoinColumnContainer().getJoinColumns());
 	}
 
 	protected ContextListContainer<OrmJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {

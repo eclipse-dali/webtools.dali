@@ -51,15 +51,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
@@ -343,7 +340,7 @@ public abstract class AbstractJaxbProject
 	// ********** JAXB files **********
 
 	public Iterable<JaxbFile> getJaxbFiles() {
-		return new LiveCloneIterable<JaxbFile>(this.jaxbFiles);  // read-only
+		return IterableTools.cloneLive(this.jaxbFiles);  // read-only
 	}
 
 	public int getJaxbFilesSize() {
@@ -518,7 +515,7 @@ public abstract class AbstractJaxbProject
 	// ********** external Java resource compilation units (source) **********
 
 	public Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
-		return new LiveCloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
+		return IterableTools.cloneLive(this.externalJavaResourceCompilationUnits);  // read-only
 	}
 
 	public int getExternalJavaResourceCompilationUnitsSize() {
@@ -600,7 +597,7 @@ public abstract class AbstractJaxbProject
 						return (jaxbPackage != null) ? jaxbPackage.getPackageInfo() : null;
 					}
 				};
-				return IterableTools.notNulls(
+				return IterableTools.removeNulls(
 						IterableTools.transform(
 							IterableTools.iterable(cu.getPackageDeclarations()), transformer));
 			}
@@ -616,7 +613,7 @@ public abstract class AbstractJaxbProject
 						return getContextRoot().getJavaType(o.getFullyQualifiedName('.'));
 					}
 				};
-				return IterableTools.notNulls(
+				return IterableTools.removeNulls(
 						IterableTools.transform(
 							IterableTools.iterable(cu.getAllTypes()), transformer));
 			}
@@ -671,7 +668,7 @@ public abstract class AbstractJaxbProject
 	// ********** annotated Java source classes **********
 	
 	public Iterable<JavaResourceAbstractType> getJavaSourceResourceTypes() {
-		return IterableTools.compositeIterable(this.getInternalJavaResourceCompilationUnits(), JavaResourceNode.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getInternalJavaResourceCompilationUnits(), JavaResourceNode.Root.TYPES_TRANSFORMER);
 	}
 	
 	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceResourceTypes() {
@@ -693,7 +690,7 @@ public abstract class AbstractJaxbProject
 //	}
 	
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
-		return IterableTools.subIterable(IterableTools.transform(this.getJavaSourceJaxbFiles(), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(this.getJavaSourceJaxbFiles(), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**
@@ -713,7 +710,7 @@ public abstract class AbstractJaxbProject
 				return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
 			}
 		};
-		return IterableTools.notNulls(IterableTools.transform(this.getPackageInfoSourceJaxbFiles(), transformer));
+		return IterableTools.removeNulls(IterableTools.transform(this.getPackageInfoSourceJaxbFiles(), transformer));
 	}
 	
 	public JavaResourcePackage getJavaResourcePackage(String packageName) {
@@ -769,7 +766,7 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
-		return IterableTools.compositeIterable(this.getJavaResourceNodeRoots(), JavaResourceNode.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getJavaResourceNodeRoots(), JavaResourceNode.Root.TYPES_TRANSFORMER);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -875,7 +872,7 @@ public abstract class AbstractJaxbProject
 	// **************** jaxb.index resources **********************************
 	
 	public Iterable<JaxbIndexResource> getJaxbIndexResources() {
-		return IterableTools.subIterable(IterableTools.transform(getJaxbFiles(JaxbIndexResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(getJaxbFiles(JaxbIndexResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 	
 	public JaxbIndexResource getJaxbIndexResource(String packageName) {
@@ -891,7 +888,7 @@ public abstract class AbstractJaxbProject
 	// **************** jaxb.properties resources *****************************
 	
 	public Iterable<JaxbPropertiesResource> getJaxbPropertiesResources() {
-		return IterableTools.subIterable(IterableTools.transform(getJaxbFiles(JaxbPropertiesResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(getJaxbFiles(JaxbPropertiesResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 	
 	public JaxbPropertiesResource getJaxbPropertiesResource(String packageName) {
@@ -1112,7 +1109,7 @@ public abstract class AbstractJaxbProject
 	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
 		List<IMessage> messages = new ArrayList<IMessage>();
 		this.validate(messages, reporter);
-		return new SnapshotCloneIterable<IMessage>(messages);
+		return IterableTools.cloneSnapshot(messages);
 	}
 	
 	protected void validate(List<IMessage> messages, IReporter reporter) {

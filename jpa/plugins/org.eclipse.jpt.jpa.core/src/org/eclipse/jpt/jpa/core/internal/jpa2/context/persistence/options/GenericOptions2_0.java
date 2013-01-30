@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options;
 
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
@@ -171,7 +170,7 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 
 	// ********** ValidationGroupPrePersists **********
 	public ListIterable<String> getValidationGroupPrePersists(){
-		return new LiveCloneListIterable<String>(this.validationGroupPrePersists);
+		return IterableTools.cloneLive(this.validationGroupPrePersists);
 	}
 	
 	public int getValidationGroupPrePersistsSize(){
@@ -225,7 +224,7 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	// ********** ValidationGroupPreUpdates **********
 
 	public ListIterable<String> getValidationGroupPreUpdates(){
-		return new LiveCloneListIterable<String>(this.validationGroupPreUpdates);
+		return IterableTools.cloneLive(this.validationGroupPreUpdates);
 	}
 	
 	public int getValidationGroupPreUpdatesSize(){
@@ -280,7 +279,7 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	// ********** ValidationGroupPreRemoves **********
 
 	public ListIterable<String> getValidationGroupPreRemoves(){
-		return new LiveCloneListIterable<String>(this.validationGroupPreRemoves);
+		return IterableTools.cloneLive(this.validationGroupPreRemoves);
 	}
 	
 	public int getValidationGroupPreRemovesSize(){

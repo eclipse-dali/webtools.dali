@@ -167,7 +167,7 @@ public class JpaDeletePackageOrFolderParticipant
 		};
 		return new CompositeIterable<DeleteEdit>(
 				super.createPersistenceXmlDeleteEdits(persistenceUnit),
-				IterableTools.compositeIterable(this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject()), transformer)
+				IterableTools.children(this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject()), transformer)
 			);
 	}
 
@@ -200,7 +200,7 @@ public class JpaDeletePackageOrFolderParticipant
 	}
 
 	protected Iterable<IFile> getPossibleMappingFilesInPackageFragments() {
-		return IterableTools.compositeIterable(this.packageFragments, PACKAGE_FRAGMENT_NON_JAVA_FILES_TRANSFORMER);
+		return IterableTools.children(this.packageFragments, PACKAGE_FRAGMENT_NON_JAVA_FILES_TRANSFORMER);
 	}
 
 	protected static final Transformer<IPackageFragment, Iterable<IFile>> PACKAGE_FRAGMENT_NON_JAVA_FILES_TRANSFORMER = new PackageFragmentNonJavaFilesTransformer();

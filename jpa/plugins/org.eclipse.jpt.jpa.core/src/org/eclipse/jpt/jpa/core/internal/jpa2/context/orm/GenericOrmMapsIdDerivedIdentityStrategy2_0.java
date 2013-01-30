@@ -136,7 +136,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<AttributeMapping> buildCandidateIdAttributeMappings(Iterable<AttributeMapping> attributeMappings) {
-		return IterableTools.compositeIterable(attributeMappings, CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER);
+		return IterableTools.children(attributeMappings, CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER);
 	}
 
 	protected static final Transformer<AttributeMapping, Iterable<AttributeMapping>> CANDIDATE_ID_ATTRIBUTE_MAPPING_LISTS_TRANSFORMER = new CandidateIdAttributeMappingListsTransformer();

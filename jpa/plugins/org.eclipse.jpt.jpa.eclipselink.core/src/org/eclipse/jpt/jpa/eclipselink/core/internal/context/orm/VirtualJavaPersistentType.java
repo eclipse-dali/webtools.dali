@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -255,7 +256,7 @@ public class VirtualJavaPersistentType
 
 	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
 		// using a chain iterable to traverse up the inheritance tree
-		return IterableTools.chainIterable(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
+		return ObjectTools.chain(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 

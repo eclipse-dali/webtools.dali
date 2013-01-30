@@ -41,7 +41,7 @@ public class ReadOnlyCompositeListIterableTests
 		ListIterable<String> li2 = new ListListIterable<String>(c2);
 
 		@SuppressWarnings("unchecked")
-		Iterable<String> composite = IterableTools.readOnlyCompositeListIterable(new ListIterable[] { li1, li2 });
+		Iterable<String> composite = IterableTools.concatenateReadOnly(new ListIterable[] { li1, li2 });
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -120,7 +120,7 @@ public class ReadOnlyCompositeListIterableTests
 		ListIterable<String> li2 = new ListListIterable<String>(c2);
 
 		@SuppressWarnings("unchecked")
-		Iterable<String> composite = IterableTools.readOnlyCompositeListIterable(new ListIterable[] { li1, li2 });
+		Iterable<String> composite = IterableTools.concatenateReadOnly(new ListIterable[] { li1, li2 });
 		assertNotNull(composite.toString());
 	}
 }

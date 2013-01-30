@@ -41,7 +41,7 @@ public class ReadOnlyIterable<E>
 	}
 
 	public Iterator<E> iterator() {
-		return IteratorTools.readOnlyIterator(this.iterable.iterator());
+		return IteratorTools.readOnly(this.iterable.iterator());
 	}
 
 	@Override

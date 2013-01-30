@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -383,7 +383,7 @@ public class GenericOrmTableGenerator
 
 	protected ListIterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlUniqueConstraint>(this.xmlGenerator.getUniqueConstraints());
+		return IterableTools.cloneLive(this.xmlGenerator.getUniqueConstraints());
 	}
 
 	protected ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> buildUniqueConstraintContainer() {

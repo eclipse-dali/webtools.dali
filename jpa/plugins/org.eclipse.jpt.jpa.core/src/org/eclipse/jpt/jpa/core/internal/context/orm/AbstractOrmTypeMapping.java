@@ -334,15 +334,15 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
 	}
 
 	public Iterable<String> getOverridableAttributeNames() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAttributeNames() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<AttributeMapping> getAttributeMappings(final String mappingKey) {
@@ -389,11 +389,11 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<String> getOverridableAssociationNames() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllOverridableAssociationNames() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
 
 	public Relationship resolveOverriddenRelationship(String attributeName) {
@@ -513,7 +513,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	// ********** generators **********
 
 	public Iterable<Generator> getGenerators() {
-		return IterableTools.compositeIterable(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
+		return IterableTools.children(this.getAttributeMappings(), AttributeMapping.GENERATORS_TRANSFORMER);
 	}
 
 

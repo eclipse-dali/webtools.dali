@@ -316,13 +316,13 @@ public class CompositeListIteratorTests
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator2() {
-		return IteratorTools.compositeListIterator(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
+		return IteratorTools.concatenate(this.buildIterator1(), this.buildIterator2(), this.buildIterator3());
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator3() {
-		return IteratorTools.compositeListIterator(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
+		return IteratorTools.concatenate(new ListIterator[] { this.buildIterator1(), this.buildIterator2(), this.buildIterator3() });
 	}
 
 	@Override

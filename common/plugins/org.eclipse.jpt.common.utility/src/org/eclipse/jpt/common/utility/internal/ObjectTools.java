@@ -12,6 +12,14 @@ package org.eclipse.jpt.common.utility.internal;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import org.eclipse.jpt.common.utility.internal.collection.RepeatingElementList;
+import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.GraphIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TreeIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.RepeatingElementIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link Object} utility methods.
@@ -80,6 +88,45 @@ public final class ObjectTools {
 	 */
 	public static int hashCode(Object object, int nullHashCode) {
 		return (object == null) ? nullHashCode : object.hashCode();
+	}
+
+
+	// ********** iterables **********
+
+	/**
+	 * Return a chain iterable that starts with the specified object and uses
+	 * the specified {@link Transformer transformer}.
+	 * @see ChainIterable
+	 */
+	public static <E> ChainIterable<E> chain(E object, Transformer<? super E, ? extends E> transformer) {
+		return IterableTools.chainIterable(object, transformer);
+	}
+
+	/**
+	 * Return an iterable that will return the specified object followed
+	 * by its children etc. as determined by the specified transformer.
+	 * @see GraphIterable
+	 */
+	public static <E> GraphIterable<E> graph(E object, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return IterableTools.graphIterable(object, transformer);
+	}
+
+	/**
+	 * Return a list the returns the specified object the specified number
+	 * of times.
+	 * @see RepeatingElementIterator
+	 */
+	public static <E> RepeatingElementList<E> repeat(E object, int size) {
+		return new RepeatingElementList<E>(object, size);
+	}
+
+	/**
+	 * Construct an iterable that returns the nodes of a tree
+	 * with the specified object as its root and transformer.
+	 * @see TreeIterable
+	 */
+	public static <E> TreeIterable<E> tree(E object, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+		return IterableTools.treeIterable(object, transformer);
 	}
 
 

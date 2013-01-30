@@ -148,7 +148,7 @@ public class PrimitiveListTreeModelTests extends TestCase {
 		}
 	
 		public ListIterator<String> names() {
-			return IteratorTools.readOnlyListIterator(this.names.listIterator());
+			return IteratorTools.readOnly(this.names.listIterator());
 		}
 		public int namesSize() {
 			return this.names.size();

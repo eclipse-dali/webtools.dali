@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Vector;
-
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 
@@ -30,7 +29,7 @@ public abstract class AbstractJavaReadOnlyUniqueConstraint
 	// ********** column names **********
 
 	public Iterable<String> getColumnNames() {
-		return new LiveCloneIterable<String>(this.columnNames);
+		return IterableTools.cloneLive(this.columnNames);
 	}
 
 	public int getColumnNamesSize() {

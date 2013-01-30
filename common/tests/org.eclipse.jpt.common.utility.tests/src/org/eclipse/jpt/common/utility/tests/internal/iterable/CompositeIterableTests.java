@@ -87,7 +87,7 @@ public class CompositeIterableTests
 		Collection<Iterable<String>> collection = new ArrayList<Iterable<String>>();
 		collection.add(c1);
 		collection.add(c2);
-		Iterable<String> composite = IterableTools.compositeIterable(collection);
+		Iterable<String> composite = IterableTools.concatenate(collection);
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);

@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
@@ -230,7 +229,7 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	protected ListIterable<XmlConversionValue> getXmlConversionValues() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlConversionValue>(this.xmlConverter.getConversionValues());
+		return IterableTools.cloneLive(this.xmlConverter.getConversionValues());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> buildConversionValueContainer() {

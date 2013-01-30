@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal;
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
  * An exception handler that forwards exceptions to a collection of other
@@ -62,7 +62,7 @@ public abstract class AbstractCompositeExceptionHandler<H extends ExceptionHandl
 	 * Return the current list of exception handlers.
 	 */
 	public Iterable<H> getExceptionHandlers() {
-		return new SnapshotCloneIterable<H>(this.exceptionHandlers);
+		return IterableTools.cloneSnapshot(this.exceptionHandlers);
 	}
 
 	/**

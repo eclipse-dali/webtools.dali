@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
@@ -133,7 +132,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlConverter_2_1> getXmlCustomConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlConverter_2_1>(this.xmlConverterContainer.getConverters());
+		return IterableTools.cloneLive(this.xmlConverterContainer.getConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter_2_1> buildCustomConverterContainer() {
@@ -216,7 +215,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlObjectTypeConverter> getXmlObjectTypeConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlObjectTypeConverter>(this.xmlConverterContainer.getObjectTypeConverters());
+		return IterableTools.cloneLive(this.xmlConverterContainer.getObjectTypeConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> buildObjectTypeConverterContainer() {
@@ -298,7 +297,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlStructConverter> getXmlStructConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlStructConverter>(this.xmlConverterContainer.getStructConverters());
+		return IterableTools.cloneLive(this.xmlConverterContainer.getStructConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> buildStructConverterContainer() {
@@ -381,7 +380,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlTypeConverter> getXmlTypeConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlTypeConverter>(this.xmlConverterContainer.getTypeConverters());
+		return IterableTools.cloneLive(this.xmlConverterContainer.getTypeConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> buildTypeConverterContainer() {
@@ -427,19 +426,19 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected Iterable<ReplaceEdit> createRenameObjectTypeConverterEdits(IType originalType, String newName) {
-		return IterableTools.compositeIterable(getObjectTypeConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(getObjectTypeConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createRenameTypeConverterEdits(IType originalType, String newName) {
-		return IterableTools.compositeIterable(getTypeConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(getTypeConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createRenameStructConverterEdits(IType originalType, String newName) {
-		return IterableTools.compositeIterable(getStructConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(getStructConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createRenameCustomConverterEdits(IType originalType, String newName) {
-		return IterableTools.compositeIterable(getCustomConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(getCustomConverters(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -452,19 +451,19 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected Iterable<ReplaceEdit> createMoveObjectTypeConverterEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.compositeIterable(getObjectTypeConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(getObjectTypeConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	protected Iterable<ReplaceEdit> createMoveTypeConverterEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.compositeIterable(getTypeConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(getTypeConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	protected Iterable<ReplaceEdit> createMoveStructConverterEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.compositeIterable(getStructConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(getStructConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	protected Iterable<ReplaceEdit> createMoveCustomConverterEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.compositeIterable(getCustomConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(getCustomConverters(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 
@@ -478,19 +477,19 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected Iterable<ReplaceEdit> createObjectTypeConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.compositeIterable(getObjectTypeConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+		return IterableTools.children(getObjectTypeConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createTypeConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.compositeIterable(getTypeConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+		return IterableTools.children(getTypeConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createStructConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.compositeIterable(getStructConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+		return IterableTools.children(getStructConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createCustomConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.compositeIterable(getCustomConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+		return IterableTools.children(getCustomConverters(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 

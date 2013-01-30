@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -60,7 +59,7 @@ public final class BinaryTypeCache
 	}
 
 	private Iterable<Entry> getEntries() {
-		return new LiveCloneIterable<Entry>(this.entries);
+		return IterableTools.cloneLive(this.entries);
 	}
 
 

@@ -37,7 +37,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
@@ -256,7 +255,7 @@ final class BinaryType
 	// ***** fields *****
 	
 	public Iterable<JavaResourceField> getFields() {
-		return new LiveCloneIterable<JavaResourceField>(this.fields);
+		return IterableTools.cloneLive(this.fields);
 	}
 	
 	private Iterable<JavaResourceField> buildFields() {
@@ -305,7 +304,7 @@ final class BinaryType
 	// ***** methods *****
 	
 	public Iterable<JavaResourceMethod> getMethods() {
-		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
+		return IterableTools.cloneLive(this.methods);
 	}
 	
 	private Iterable<JavaResourceMethod> buildMethods() {

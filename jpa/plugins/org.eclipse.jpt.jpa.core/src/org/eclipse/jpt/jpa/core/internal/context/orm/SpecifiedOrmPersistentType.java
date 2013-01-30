@@ -38,7 +38,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -366,7 +365,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	@SuppressWarnings("unchecked")
 	public ListIterable<OrmReadOnlyPersistentAttribute> getAttributes() {
-		return IterableTools.compositeListIterable(this.getReadOnlySpecifiedAttributes(), this.getDefaultAttributes());
+		return IterableTools.concatenate(this.getReadOnlySpecifiedAttributes(), this.getDefaultAttributes());
 	}
 
 	public int getAttributesSize() {
@@ -383,7 +382,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), PersistentType.ATTRIBUTES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), PersistentType.ATTRIBUTES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllAttributeNames() {
@@ -598,7 +597,7 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** specified attributes **********
 
 	public ListIterable<OrmPersistentAttribute> getSpecifiedAttributes() {
-		return new LiveCloneListIterable<OrmPersistentAttribute>(this.specifiedAttributes);
+		return IterableTools.cloneLive(this.specifiedAttributes);
 	}
 
 	protected ListIterable<OrmReadOnlyPersistentAttribute> getReadOnlySpecifiedAttributes() {
@@ -692,7 +691,7 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** default attributes **********
 
 	public ListIterable<OrmReadOnlyPersistentAttribute> getDefaultAttributes() {
-		return new LiveCloneListIterable<OrmReadOnlyPersistentAttribute>(this.defaultAttributes);
+		return IterableTools.cloneLive(this.defaultAttributes);
 	}
 
 	public int getDefaultAttributesSize() {
@@ -1030,7 +1029,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected Iterable<PersistentType> buildInheritanceHierarchy(PersistentType start) {
 		// using a chain iterable to traverse up the inheritance tree
-		return IterableTools.chainIterable(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
+		return ObjectTools.chain(start, SUPER_PERSISTENT_TYPE_TRANSFORMER);
 	}
 
 
@@ -1188,7 +1187,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenameTypeEdits(IType originalType, String newName) {
-		return IterableTools.compositeIterable(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1200,7 +1199,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<ReplaceEdit> createSpecifiedAttributesMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.compositeIterable(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1212,7 +1211,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.compositeIterable(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+		return IterableTools.children(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 

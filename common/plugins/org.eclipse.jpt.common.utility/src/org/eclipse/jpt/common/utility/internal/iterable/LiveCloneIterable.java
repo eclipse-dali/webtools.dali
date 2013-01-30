@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,9 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * A <code>LiveCloneIterable</code> returns an iterator on a current copy of a
@@ -27,10 +29,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
  * By default, the iterator returned by a <code>LiveCloneIterable</code> does not
  * support the {@link Iterator#remove()} operation; this is because it does not
  * have access to the original collection. But if the <code>LiveCloneIterable</code>
- * is supplied with an {@link org.eclipse.jpt.common.utility.internal.iterator.CloneIterator.Remover} it will delegate the
- * {@link Iterator#remove()} operation to the <code>Remover</code>.
- * Alternatively, a subclass can override the iterable's {@link #remove(Object)}
- * method.
+ * is supplied with an {@link ParameterizedCommand remove command} it will delegate the
+ * {@link Iterator#remove()} operation to the command.
  * 
  * @param <E> the type of elements returned by the iterable's iterator
  * 
@@ -49,9 +49,7 @@ public class LiveCloneIterable<E>
 	/**
 	 * Construct a "live" iterable for the specified collection.
 	 * The {@link Iterator#remove()} operation will not be supported
-	 * by the iterator returned by {@link #iterator()}
-	 * unless a subclass overrides the iterable's {@link #remove(Object)}
-	 * method.
+	 * by the iterator returned by {@link #iterator()}.
 	 */
 	public LiveCloneIterable(Collection<? extends E> collection) {
 		super();
@@ -63,11 +61,11 @@ public class LiveCloneIterable<E>
 
 	/**
 	 * Construct a "live" iterable for the specified collection.
-	 * The specified remover will be used by any generated iterators to
+	 * The specified command will be used by any generated iterators to
 	 * remove objects from the original collection.
 	 */
-	public LiveCloneIterable(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
-		super(remover);
+	public LiveCloneIterable(Collection<? extends E> collection, ParameterizedCommand<? super E> removeCommand) {
+		super(removeCommand);
 		if (collection == null) {
 			throw new NullPointerException();
 		}
@@ -78,7 +76,7 @@ public class LiveCloneIterable<E>
 	// ********** Iterable implementation **********
 
 	public Iterator<E> iterator() {
-		return new CloneIterator<E>(this.collection, this.remover);
+		return IteratorTools.clone(this.collection, this.removeCommand);
 	}
 
 	@Override

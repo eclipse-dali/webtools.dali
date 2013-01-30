@@ -191,7 +191,7 @@ public class GenericJavaXmlElementRefs
 	// ***** misc *****
 	
 	public Iterable<String> getReferencedXmlTypeNames() {
-		return IterableTools.compositeIterable(getXmlElementRefs(), XmlElementRef.REFERENCED_XML_TYPE_NAMES_TRANSFORMER);
+		return IterableTools.children(getXmlElementRefs(), XmlElementRef.REFERENCED_XML_TYPE_NAMES_TRANSFORMER);
 	}
 	
 	

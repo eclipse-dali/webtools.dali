@@ -26,7 +26,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -336,7 +335,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	// ********** descendants **********
 
 	public Iterable<Entity> getDescendants() {
-		return new LiveCloneListIterable<Entity>(this.descendants);
+		return IterableTools.cloneLive(this.descendants);
 	}
 
 	protected void updateDescendants() {
@@ -580,7 +579,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected ListIterable<XmlSecondaryTable> getXmlSecondaryTables() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlSecondaryTable>(this.xmlTypeMapping.getSecondaryTables());
+		return IterableTools.cloneLive(this.xmlTypeMapping.getSecondaryTables());
 	}
 
 	protected ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> buildSpecifiedSecondaryTableContainer() {
@@ -847,7 +846,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected ListIterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlPrimaryKeyJoinColumn>(this.xmlTypeMapping.getPrimaryKeyJoinColumns());
+		return IterableTools.cloneLive(this.xmlTypeMapping.getPrimaryKeyJoinColumns());
 	}
 
 	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
@@ -976,11 +975,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	// ********** virtual primary key join columns **********
 
 	protected ListIterable<OrmVirtualPrimaryKeyJoinColumn> getVirtualPrimaryKeyJoinColumns() {
-		return new LiveCloneListIterable<OrmVirtualPrimaryKeyJoinColumn>(this.virtualPrimaryKeyJoinColumns);
+		return IterableTools.cloneLive(this.virtualPrimaryKeyJoinColumns);
 	}
 
 	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getReadOnlyVirtualPrimaryKeyJoinColumns() {
-		return new LiveCloneListIterable<ReadOnlyPrimaryKeyJoinColumn>(this.virtualPrimaryKeyJoinColumns);
+		return IterableTools.<ReadOnlyPrimaryKeyJoinColumn>cloneLive(this.virtualPrimaryKeyJoinColumns);
 	}
 
 	protected void initializeVirtualPrimaryKeyJoinColumns() {
@@ -1408,7 +1407,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// TODO eliminate duplicate tables?
 	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
-		return IterableTools.compositeIterable(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+		return IterableTools.children(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllAssociatedTableNames() {

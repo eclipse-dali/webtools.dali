@@ -50,8 +50,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.CommandAdapter;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
@@ -404,7 +404,7 @@ class InternalJpaProjectManager
 	}
 
 	public Iterable<JpaProject> getJpaProjects() {
-		return new SnapshotCloneIterable<JpaProject>(this.jpaProjects);
+		return IterableTools.cloneSnapshot(this.jpaProjects);
 	}
 
 	public int getJpaProjectsSize() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,11 +12,9 @@ package org.eclipse.jpt.common.utility.tests.internal.node;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
-import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
@@ -24,7 +22,9 @@ import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class AbstractNodeTests extends TestCase {
+public class AbstractNodeTests
+	extends TestCase
+{
 	private TestWorkbenchModel root;
 
 	public AbstractNodeTests(String name) {
@@ -406,8 +406,8 @@ public class AbstractNodeTests extends TestCase {
 		}
 	
 		public Iterator<TestWorkbenchModel> testChildren() {
-			return new CloneIterator<TestWorkbenchModel>(this.testChildren, new CloneIterator.Remover<TestWorkbenchModel>() {
-				public void remove(TestWorkbenchModel current) {
+			return IteratorTools.clone(this.testChildren, new ParameterizedCommand<TestWorkbenchModel>() {
+				public void execute(TestWorkbenchModel current) {
 					TestWorkbenchModel.this.removeTestChild(current);
 				}
 			});

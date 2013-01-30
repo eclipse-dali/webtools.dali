@@ -1,18 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -47,7 +48,7 @@ public class BinaryXmlElementRefsAnnotation
 	}
 
 	public ListIterable<XmlElementRefAnnotation> getXmlElementRefs() {
-		return new LiveCloneListIterable<XmlElementRefAnnotation>(this.xmlElementRefs);
+		return IterableTools.cloneLive(this.xmlElementRefs);
 	}
 
 	public int getXmlElementRefsSize() {

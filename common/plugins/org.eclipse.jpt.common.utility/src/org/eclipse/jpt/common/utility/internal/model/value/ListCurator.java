@@ -90,7 +90,7 @@ public abstract class ListCurator<S extends Model, E>
 	}
 
 	public ListIterator<E> listIterator() {
-		return IteratorTools.readOnlyListIterator(this.record.listIterator());
+		return IteratorTools.readOnly(this.record.listIterator());
 	}
 
 	/**

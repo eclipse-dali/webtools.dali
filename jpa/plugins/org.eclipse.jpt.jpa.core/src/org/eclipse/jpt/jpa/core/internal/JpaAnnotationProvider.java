@@ -55,11 +55,11 @@ public class JpaAnnotationProvider
 	}
 
 	protected Iterable<AnnotationDefinition> getAnnotationDefinitions() {
-		return IterableTools.compositeIterable(this.annotationDefinitionProviders, JpaAnnotationDefinitionProvider.ANNOTATION_DEFINITIONS_TRANSFORMER);
+		return IterableTools.children(this.annotationDefinitionProviders, JpaAnnotationDefinitionProvider.ANNOTATION_DEFINITIONS_TRANSFORMER);
 	}
 
 	protected Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions() {
-		return IterableTools.compositeIterable(this.annotationDefinitionProviders, JpaAnnotationDefinitionProvider.NESTABLE_ANNOTATION_DEFINITIONS_TRANSFORMER);
+		return IterableTools.children(this.annotationDefinitionProviders, JpaAnnotationDefinitionProvider.NESTABLE_ANNOTATION_DEFINITIONS_TRANSFORMER);
 	}
 
 
