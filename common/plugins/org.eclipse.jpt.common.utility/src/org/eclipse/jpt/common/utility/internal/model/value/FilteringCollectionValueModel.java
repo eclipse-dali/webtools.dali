@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -160,7 +160,7 @@ public class FilteringCollectionValueModel<E>
 	 * Return an iterable that filters the specified iterable.
 	 */
 	protected Iterable<E> filter(Iterable<? extends E> items) {
-		return new FilteringIterable<E>(items, this.filter);
+		return IterableTools.filter(items, this.filter);
 	}
 
 	/**

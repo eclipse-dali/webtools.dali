@@ -53,7 +53,6 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
@@ -173,7 +172,7 @@ public class JpaMakePersistentWizardPage
 	 * listed in <code>persistence.xml</code>, or listed in a mapping file.
 	 */
 	protected Iterable<IType> selectNonPersistentJdtTypes(Set<IType> selectedJdtTypes) {
-		return new FilteringIterable<IType>(selectedJdtTypes, new NonPersistentJdtTypeFilter());
+		return IterableTools.filter(selectedJdtTypes, new NonPersistentJdtTypeFilter());
 	}
 
 	/* CU private */ class NonPersistentJdtTypeFilter

@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -336,7 +336,7 @@ public class InternalJpaPlatformManager
 	 * the specified facet version.
 	 */
 	private Iterable<InternalJpaPlatformConfig> selectJpaPlatformConfigs(Iterable<InternalJpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
-		return new FilteringIterable<InternalJpaPlatformConfig>(configs, this.buildJpaPlatformConfigFilter(jpaFacetVersion));
+		return IterableTools.filter(configs, this.buildJpaPlatformConfigFilter(jpaFacetVersion));
 	}
 
 	private Filter<InternalJpaPlatformConfig> buildJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
@@ -361,14 +361,14 @@ public class InternalJpaPlatformManager
 	 * "Default" platforms (i.e. third-party platforms flagged as "default").
 	 */
 	private Iterable<InternalJpaPlatformConfig> getDefaultJpaPlatformConfigs() {
-		return new FilteringIterable<InternalJpaPlatformConfig>(this.getInternalJpaPlatformConfigs(), JpaPlatform.Config.DEFAULT_FILTER);
+		return IterableTools.filter(this.getInternalJpaPlatformConfigs(), JpaPlatform.Config.DEFAULT_FILTER);
 	}
 
 	/**
 	 * Dali-defined "generic" platforms.
 	 */
 	private Iterable<InternalJpaPlatformConfig> getDaliJpaPlatformConfigs() {
-		return new FilteringIterable<InternalJpaPlatformConfig>(this.getInternalJpaPlatformConfigs(), this.buildDaliJpaPlatformConfigFilter());
+		return IterableTools.filter(this.getInternalJpaPlatformConfigs(), this.buildDaliJpaPlatformConfigFilter());
 	}
 
 	private Filter<InternalJpaPlatformConfig> buildDaliJpaPlatformConfigFilter() {

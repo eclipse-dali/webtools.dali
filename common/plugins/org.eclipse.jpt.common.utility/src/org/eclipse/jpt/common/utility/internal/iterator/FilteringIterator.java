@@ -19,10 +19,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * and uses a {@link Filter} to determine which elements in the
  * nested iterator are to be returned by calls to {@link #next()}.
  * <p>
- * As an alternative to building a {@link Filter}, a subclass
- * of <code>FilteringIterator</code> can override the
- * {@link #accept(Object)} method.
- * <p>
  * One, possibly undesirable, side-effect of using this iterator is that
  * the nested iterator's <code>next()</code> method will be invoked
  * <em>before</em> the filtered iterator's {@link #next()}
@@ -41,52 +37,22 @@ public class FilteringIterator<E>
 	implements Iterator<E>
 {
 	private final Iterator<? extends E> iterator;
-	private final Filter<? super E> filter;
+	private final Filter<? super E> predicate;
 	private E next;
 	private boolean done;
 
 
 	/**
-	 * Construct an iterator with the specified
-	 * iterable and a disabled filter.
-	 * Use this constructor if you want to override the
-	 * {@link #accept(Object)} method instead of building
-	 * a {@link Filter}.
-	 */
-	public FilteringIterator(Iterable<? extends E> iterable) {
-		this(iterable.iterator());
-	}
-
-	/**
-	 * Construct an iterator with the specified nested
-	 * iterator and a disabled filter.
-	 * Use this constructor if you want to override the
-	 * {@link #accept(Object)} method instead of building
-	 * a {@link Filter}.
-	 */
-	public FilteringIterator(Iterator<? extends E> iterator) {
-		this(iterator, Filter.Disabled.<E>instance());
-	}
-
-	/**
-	 * Construct an iterator with the specified
-	 * iterable and filter.
-	 */
-	public FilteringIterator(Iterable<? extends E> iterable, Filter<? super E> filter) {
-		this(iterable.iterator(), filter);
-	}
-
-	/**
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<? extends E> iterator, Filter<? super E> filter) {
+	public FilteringIterator(Iterator<? extends E> iterator, Filter<? super E> predicate) {
 		super();
-		if ((iterator == null) || (filter == null)) {
+		if ((iterator == null) || (predicate == null)) {
 			throw new NullPointerException();
 		}
 		this.iterator = iterator;
-		this.filter = filter;
+		this.predicate = predicate;
 		this.loadNext();
 	}
 
@@ -104,15 +70,6 @@ public class FilteringIterator<E>
 	}
 
 	/**
-	 * Because we need to pre-load the next element
-	 * to be returned, we cannot support the <code>remove()</code>
-	 * method.
-	 */
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
 	 * Load next with the next valid entry from the nested
 	 * iterator. If there are none, next is set to <code>END</code>.
 	 */
@@ -120,7 +77,7 @@ public class FilteringIterator<E>
 		this.done = true;
 		while (this.iterator.hasNext() && (this.done)) {
 			E temp = this.iterator.next();
-			if (this.accept(temp)) {
+			if (this.predicate.accept(temp)) {
 				// assume that if the object was accepted it is of type E
 				this.next = temp;
 				this.done = false;
@@ -132,15 +89,12 @@ public class FilteringIterator<E>
 	}
 
 	/**
-	 * Return whether the {@link FilteringIterator}
-	 * should return the specified next element from a call to the
-	 * {@link #next()} method.
-	 * <p>
-	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link Filter}.
+	 * Because we need to pre-load the next element
+	 * to be returned, we cannot support the <code>remove()</code>
+	 * method.
 	 */
-	protected boolean accept(E o) {
-		return this.filter.accept(o);
+	public void remove() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

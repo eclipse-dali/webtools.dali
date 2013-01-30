@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
@@ -185,7 +184,7 @@ public final class JDTTools {
 	}
 
 	public static Iterable<IPackageFragmentRoot> getJavaSourceFolders(IJavaProject javaProject) {
-		return new FilteringIterable<IPackageFragmentRoot>(
+		return IterableTools.filter(
 				getPackageFragmentRoots(javaProject),
 				SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER
 			);

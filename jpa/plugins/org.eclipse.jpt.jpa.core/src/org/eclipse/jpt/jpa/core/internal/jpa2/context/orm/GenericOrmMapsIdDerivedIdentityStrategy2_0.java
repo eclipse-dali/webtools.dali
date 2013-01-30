@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -124,7 +123,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<String> getNonNullCandidateIdAttributeNames() {
-		return new FilteringIterable<String>(this.getCandidateIdAttributeNames(), NotNullFilter.<String>instance());
+		return IterableTools.removeNulls(this.getCandidateIdAttributeNames());
 	}
 
 	protected Iterable<String> getCandidateIdAttributeNames() {

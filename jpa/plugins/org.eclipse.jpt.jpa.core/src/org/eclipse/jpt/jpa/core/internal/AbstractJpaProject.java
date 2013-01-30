@@ -1178,7 +1178,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<IPackageFragmentRoot> getJavaSourceFolders() throws JavaModelException {
-		return new FilteringIterable<IPackageFragmentRoot>(
+		return IterableTools.filter(
 				this.getPackageFragmentRoots(),
 				SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER
 			);

@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -270,11 +269,11 @@ public class GenericJavaAttributesContainer
 	}
 
 	protected Iterable<JavaResourceField> getResourceFields(Filter<JavaResourceField> filter) {
-		return new FilteringIterable<JavaResourceField>(getResourceFields(), filter);
+		return IterableTools.filter(getResourceFields(), filter);
 	}
 
 	protected Iterable<JavaResourceMethod> getResourceMethods(Filter<JavaResourceMethod> filter) {
-		return new FilteringIterable<JavaResourceMethod>(getResourceMethods(), filter);
+		return IterableTools.filter(getResourceMethods(), filter);
 	}
 
 	protected Filter<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {

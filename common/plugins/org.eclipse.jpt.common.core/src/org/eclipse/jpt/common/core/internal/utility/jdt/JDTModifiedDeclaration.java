@@ -28,9 +28,10 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
  * Wrap any of the AST nodes that have modifiers (specifically, annotations);
@@ -74,8 +75,7 @@ public class JDTModifiedDeclaration
 	// ********** annotations **********
 
 	public Annotation getAnnotationNamed(String annotationName) {
-		for (Iterator<Annotation> stream = this.annotations(); stream.hasNext(); ) {
-			Annotation annotation = stream.next();
+		for (Annotation annotation : this.getAnnotations()) {
 			if (this.annotationIsNamed(annotation, annotationName)) {
 				return annotation;
 			}
@@ -129,17 +129,22 @@ public class JDTModifiedDeclaration
 	/**
 	 * Return the declaration's annotations.
 	 */
-	protected Iterator<Annotation> annotations() {
-		return new SubIteratorWrapper<IExtendedModifier, Annotation>(this.annotations_());
+	protected Iterable<Annotation> getAnnotations() {
+		return IterableTools.downCast(this.getAnnotations_());
 	}
 
-	protected Iterator<IExtendedModifier> annotations_() {
-		return new FilteringIterator<IExtendedModifier>(this.getModifiers().iterator()) {
-			@Override
-			protected boolean accept(IExtendedModifier next) {
-				return next.isAnnotation();
-			}
-		};
+	protected Iterable<IExtendedModifier> getAnnotations_() {
+		return IterableTools.filter(this.getModifiers(), EXTENDED_MODIFIER_IS_ANNOTATION);
+	}
+
+	protected static final Filter<IExtendedModifier> EXTENDED_MODIFIER_IS_ANNOTATION = new ExtendedModifierIsAnnotation();
+	protected static class ExtendedModifierIsAnnotation
+		extends FilterAdapter<IExtendedModifier>
+	{
+		@Override
+		public boolean accept(IExtendedModifier modifier) {
+			return modifier.isAnnotation();
+		}
 	}
 
 

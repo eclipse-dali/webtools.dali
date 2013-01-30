@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -147,7 +145,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters() {
-		return new FilteringIterable<EclipseLinkConverter>(this.getAttributeMappingConverters_(), NotNullFilter.<EclipseLinkConverter>instance());
+		return IterableTools.removeNulls(this.getAttributeMappingConverters_());
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {

@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 
 /**
@@ -218,7 +218,7 @@ public class InternalJptResourceTypeManager
 	}
 
 	public Iterable<JptResourceType> getResourceTypes(IContentType contentType) {
-		return new FilteringIterable<JptResourceType>(this.getResourceTypes(), new InternalJptResourceType.ContentTypeFilter(contentType));
+		return IterableTools.filter(this.getResourceTypes(), new InternalJptResourceType.ContentTypeFilter(contentType));
 	}
 
 	private boolean containsResourceType(String id) {

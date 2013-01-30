@@ -704,12 +704,12 @@ public final class IteratorTools {
 	}
 
 	/**
-	 * Return an iterator that will use the specified filter to filter the
+	 * Return an iterator that will use the specified predicate to filter the
 	 * elements in the specified iterator.
 	 * @see FilteringIterator
 	 */
-	public static <E> FilteringIterator<E> filter(Iterator<? extends E> iterator, Filter<E> filter) {
-		return new FilteringIterator<E>(iterator, filter);
+	public static <E> FilteringIterator<E> filter(Iterator<? extends E> iterator, Filter<? super E> predicate) {
+		return new FilteringIterator<E>(iterator, predicate);
 	}
 
 	/**

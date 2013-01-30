@@ -421,7 +421,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<String> getNonEmptyConverterNames() {
-		return new FilteringIterable<String>(this.getConverterNames(), StringTools.NON_BLANK_FILTER);
+		return IterableTools.filter(this.getConverterNames(), StringTools.NON_BLANK_FILTER);
 	}
 
 	protected Iterable<String> getConverterNames() {

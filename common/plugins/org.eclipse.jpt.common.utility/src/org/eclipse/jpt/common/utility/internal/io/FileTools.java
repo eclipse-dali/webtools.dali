@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,9 +26,8 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.XMLStringEncoder;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -189,7 +188,16 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterator<File> files(String directoryName) {
-		return files(new File(directoryName));
+		return getFiles(directoryName).iterator();
+	}
+	
+	/**
+	 * Return all the normal files in the specified directory,
+	 * skipping subdirectories.
+	 * @see File#isFile()
+	 */
+	public static Iterable<File> getFiles(String directoryName) {
+		return getFiles(new File(directoryName));
 	}
 	
 	/**
@@ -198,7 +206,16 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterator<File> files(File directory) {
-		return new FilteringIterator<File>(new ArrayIterator<File>(directory.listFiles()), NORMAL_FILE_FILTER);
+		return getFiles(directory).iterator();
+	}
+
+	/**
+	 * Return all the normal files in the specified directory,
+	 * skipping subdirectories.
+	 * @see File#isFile()
+	 */
+	public static Iterable<File> getFiles(File directory) {
+		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), NORMAL_FILE_FILTER);
 	}
 
 	/**
@@ -219,7 +236,15 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterator<File> directories(String directoryName) {
-		return directories(new File(directoryName));
+		return getDirectories(directoryName).iterator();
+	}
+	
+	/**
+	 * Return all the subdirectories in the specified directory.
+	 * @see File#isDirectory()
+	 */
+	public static Iterable<File> getDirectories(String directoryName) {
+		return getDirectories(new File(directoryName));
 	}
 	
 	/**
@@ -227,7 +252,15 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterator<File> directories(File directory) {
-		return new FilteringIterator<File>(new ArrayIterator<File>(directory.listFiles()), DIRECTORY_FILTER);
+		return getDirectories(directory).iterator();
+	}
+	
+	/**
+	 * Return all the subdirectories in the specified directory.
+	 * @see File#isDirectory()
+	 */
+	public static Iterable<File> getDirectories(File directory) {
+		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), DIRECTORY_FILTER);
 	}
 	
 	/**
@@ -249,7 +282,16 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterator<File> allFiles(String directoryName) {
-		return allFiles(new File(directoryName));
+		return getAllFiles(directoryName).iterator();
+	}
+	
+	/**
+	 * Return all the normal files in the specified directory,
+	 * recursing into subdirectories but skipping the subdirectories themselves.
+	 * @see File#isFile()
+	 */
+	public static Iterable<File> getAllFiles(String directoryName) {
+		return getAllFiles(new File(directoryName));
 	}
 	
 	/**
@@ -258,9 +300,18 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterator<File> allFiles(File directory) {
+		return getAllFiles(directory).iterator();
+	}
+
+	/**
+	 * Return all the normal files in the specified directory,
+	 * recursing into subdirectories but skipping the subdirectories themselves.
+	 * @see File#isFile()
+	 */
+	public static Iterable<File> getAllFiles(File directory) {
 		ArrayList<File> files = new ArrayList<File>(10000);
 		addAllFilesTo(directory, files);
-		return files.iterator();
+		return files;
 	}
 
 	/**
@@ -283,7 +334,16 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterator<File> allDirectories(String directoryName) {
-		return allDirectories(new File(directoryName));
+		return getAllDirectories(directoryName).iterator();
+	}
+	
+	/**
+	 * Return all the directories in the specified directory,
+	 * recursing into subdirectories.
+	 * @see File#isDirectory()
+	 */
+	public static Iterable<File> getAllDirectories(String directoryName) {
+		return getAllDirectories(new File(directoryName));
 	}
 	
 	/**
@@ -292,9 +352,18 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterator<File> allDirectories(File directory) {
+		return getAllDirectories(directory).iterator();
+	}
+	
+	/**
+	 * Return all the directories in the specified directory,
+	 * recursing into subdirectories.
+	 * @see File#isDirectory()
+	 */
+	public static Iterable<File> getAllDirectories(File directory) {
 		ArrayList<File> files = new ArrayList<File>(10000);
 		addAllDirectoriesTo(directory, files);
-		return files.iterator();
+		return files;
 	}
 	
 	/**
@@ -813,14 +882,14 @@ public final class FileTools {
 	 * Return only the files that fit the specified filter.
 	 */
 	public static Iterable<File> filter(Iterable<File> files, FileFilter fileFilter) {
-		return new FilteringIterable<File>(files, new FileFilterFilterAdapter(fileFilter));
+		return IterableTools.filter(files, new FileFilterFilterAdapter(fileFilter));
 	}
 
 	/**
 	 * Return only the files that fit the specified filter.
 	 */
 	public static Iterator<File> filter(Iterator<File> files, FileFilter fileFilter) {
-		return new FilteringIterator<File>(files, new FileFilterFilterAdapter(fileFilter));
+		return IteratorTools.filter(files, new FileFilterFilterAdapter(fileFilter));
 	}
 
 	/**

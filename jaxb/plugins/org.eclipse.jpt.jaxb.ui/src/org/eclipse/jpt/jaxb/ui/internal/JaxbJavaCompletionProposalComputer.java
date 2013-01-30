@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -158,7 +157,7 @@ public class JaxbJavaCompletionProposalComputer
 	}
 
 	private Iterable<String> buildCompletionProposals(JaxbContextNode javaNode, int pos, Filter<String> filter) {
-		return new FilteringIterable<String>(javaNode.getCompletionProposals(pos), filter);
+		return IterableTools.filter(javaNode.getCompletionProposals(pos), filter);
 	}
 
 	private IFile getCorrespondingResource(ICompilationUnit cu) {

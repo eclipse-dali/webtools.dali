@@ -12,11 +12,10 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
 public class FilteringIterableTests
@@ -40,7 +39,7 @@ public class FilteringIterableTests
 	public void testFilter() {
 		Filter<String> filter = this.buildFilter();
 		int i = 0;
-		for (String s : new FilteringIterable<String>(this.buildNestedIterable(), filter)) {
+		for (String s : IterableTools.filter(this.buildNestedIterable(), filter)) {
 			assertTrue(s.contains(PREFIX));
 			i++;
 		}
@@ -50,7 +49,7 @@ public class FilteringIterableTests
 	public void testSuperFilter() {
 		Filter<Object> filter = this.buildSuperFilter();
 		int i = 0;
-		for (String s : new FilteringIterable<String>(this.buildNestedIterable(), filter)) {
+		for (String s : IterableTools.filter(this.buildNestedIterable(), filter)) {
 			assertTrue(s.contains(PREFIX));
 			i++;
 		}
@@ -63,7 +62,7 @@ public class FilteringIterableTests
 
 	public void testMissingFilter() {
 		boolean exCaught = false;
-		Iterable<String> iterable = new FilteringIterable<String>(this.buildNestedIterable());
+		Iterable<String> iterable = IterableTools.filter(this.buildNestedIterable(), Filter.Disabled.<String>instance());
 		try {
 			Iterator<String> iterator = iterable.iterator();
 			fail("bogus iterator: " + iterator);

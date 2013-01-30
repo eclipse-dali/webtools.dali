@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -197,9 +196,9 @@ public class ELJavaClassMapping
 	// ***** misc *****
 	
 	public Iterable<String> getKeyXPaths() {
-		return IterableTools.filter(
-				IterableTools.transform(getAllKeyMappings(), ELXmlNamedNodeMapping.X_PATH_TRANSFORMER),
-				NotNullFilter.<String>instance());
+		return IterableTools.removeNulls(
+				IterableTools.transform(getAllKeyMappings(), ELXmlNamedNodeMapping.X_PATH_TRANSFORMER)
+			);
 	}
 	
 	protected Iterable<ELXmlNamedNodeMapping> getAllKeyMappings() {

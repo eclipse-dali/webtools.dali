@@ -13,15 +13,12 @@ import java.util.Iterator;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * A <code>FilteringIterable</code> wraps another {@link Iterable}
  * and uses a {@link Filter} to determine which elements in the
  * nested iterable are to be returned by the iterable's iterator.
- * <p>
- * As an alternative to building a {@link Filter}, a subclass
- * of <code>FilteringIterable</code> can override the
- * {@link #accept(Object)} method.
  * 
  * @param <E> the type of elements to be filtered
  * 
@@ -31,7 +28,7 @@ public class FilteringIterable<E>
 	implements Iterable<E>
 {
 	private final Iterable<? extends E> iterable;
-	private final Filter<? super E> filter;
+	private final Filter<? super E> predicate;
 
 
 	/**
@@ -44,28 +41,24 @@ public class FilteringIterable<E>
 	public FilteringIterable(Iterable<? extends E> iterable) {
 		super();
 		this.iterable = iterable;
-		this.filter = this.buildDefaultFilter();
+		this.predicate = new DefaultFilter();
 	}
 
 	/**
 	 * Construct an iterable with the specified nested
 	 * iterable and filter.
 	 */
-	public FilteringIterable(Iterable<? extends E> iterable, Filter<? super E> filter) {
+	public FilteringIterable(Iterable<? extends E> iterable, Filter<? super E> predicate) {
 		super();
-		if ((iterable == null) || (filter == null)) {
+		if ((iterable == null) || (predicate == null)) {
 			throw new NullPointerException();
 		}
 		this.iterable = iterable;
-		this.filter = filter;
-	}
-
-	protected Filter<? super E> buildDefaultFilter() {
-		return new DefaultFilter();
+		this.predicate = predicate;
 	}
 
 	public Iterator<E> iterator() {
-		return new FilteringIterator<E>(this.iterable.iterator(), this.filter);
+		return IteratorTools.filter(this.iterable.iterator(), this.predicate);
 	}
 
 	/**

@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.libval.LibraryValidatorManager;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
 /**
@@ -139,10 +139,7 @@ public class InternalLibraryValidatorManager
 	// ********** library validators **********
 
 	public Iterable<LibraryValidator> getLibraryValidators() {
-		return new FilteringIterable<LibraryValidator>(
-				this.getLibraryValidators_(),
-				NotNullFilter.<LibraryValidator>instance()
-			);
+		return IterableTools.removeNulls(this.getLibraryValidators_());
 	}
 
 	/**
@@ -156,10 +153,7 @@ public class InternalLibraryValidatorManager
 	}
 
 	public Iterable<LibraryValidator> getLibraryValidators(JptLibraryProviderInstallOperationConfig installConfig) {
-		return new FilteringIterable<LibraryValidator>(
-				this.getLibraryValidators_(installConfig),
-				NotNullFilter.<LibraryValidator>instance()
-			);
+		return IterableTools.removeNulls(this.getLibraryValidators_(installConfig));
 	}
 
 	/**
@@ -177,7 +171,7 @@ public class InternalLibraryValidatorManager
 	 * install config.
 	 */
 	private Iterable<LibraryValidatorConfig> getLibraryValidatorConfigs(JptLibraryProviderInstallOperationConfig installConfig) {
-		return new FilteringIterable<LibraryValidatorConfig>(
+		return IterableTools.filter(
 				this.libraryValidatorConfigs,
 				new LibraryValidatorConfig.EnabledFilter(installConfig)
 			);

@@ -28,8 +28,6 @@ import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.core.resource.ResourceLocatorManager;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
@@ -151,10 +149,7 @@ public class InternalResourceLocatorManager
 	// ********** resource locators **********
 
 	public Iterable<ResourceLocator> getResourceLocators() {
-		return new FilteringIterable<ResourceLocator>(
-				this.getResourceLocators_(),
-				NotNullFilter.<ResourceLocator>instance()
-			);
+		return IterableTools.removeNulls(this.getResourceLocators_());
 	}
 
 	/**
@@ -173,10 +168,7 @@ public class InternalResourceLocatorManager
 	}
 
 	public Iterable<ResourceLocator> getResourceLocators(IProject project) {
-		return new FilteringIterable<ResourceLocator>(
-				this.getResourceLocators_(project),
-				NotNullFilter.<ResourceLocator>instance()
-			);
+		return IterableTools.removeNulls(this.getResourceLocators_(project));
 	}
 
 	/**
@@ -202,7 +194,7 @@ public class InternalResourceLocatorManager
 	 * install config.
 	 */
 	private Iterable<ResourceLocatorConfig> getResourceLocatorConfigs(IProject project) {
-		return new FilteringIterable<ResourceLocatorConfig>(
+		return IterableTools.filter(
 				this.resourceLocatorConfigs,
 				new ResourceLocatorConfig.EnabledFilter(project)
 			);

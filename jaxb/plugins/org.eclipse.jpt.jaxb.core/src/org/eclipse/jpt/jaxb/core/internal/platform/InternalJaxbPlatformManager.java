@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -330,7 +330,7 @@ public class InternalJaxbPlatformManager
 	 * the specified facet version.
 	 */
 	private Iterable<JaxbPlatformConfig> selectJaxbPlatformConfigs(Iterable<JaxbPlatformConfig> configs, IProjectFacetVersion jaxbFacetVersion) {
-		return new FilteringIterable<JaxbPlatformConfig>(configs, this.buildJaxbPlatformConfigFilter(jaxbFacetVersion));
+		return IterableTools.filter(configs, this.buildJaxbPlatformConfigFilter(jaxbFacetVersion));
 	}
 
 	private Filter<JaxbPlatformConfig> buildJaxbPlatformConfigFilter(IProjectFacetVersion jaxbFacetVersion) {
@@ -355,14 +355,14 @@ public class InternalJaxbPlatformManager
 	 * "Default" platforms (i.e. third-party platforms flagged as "default").
 	 */
 	private Iterable<JaxbPlatformConfig> getDefaultJaxbPlatformConfigs() {
-		return new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformConfigs(), JaxbPlatformConfig.DEFAULT_FILTER);
+		return IterableTools.filter(this.getJaxbPlatformConfigs(), JaxbPlatformConfig.DEFAULT_FILTER);
 	}
 
 	/**
 	 * "Internal" (i.e. Dali-defined generic) platforms.
 	 */
 	private Iterable<JaxbPlatformConfig> getInternalJaxbPlatformConfigs() {
-		return new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformConfigs(), this.buildInternalJaxbPlatformConfigFilter());
+		return IterableTools.filter(this.getJaxbPlatformConfigs(), this.buildInternalJaxbPlatformConfigFilter());
 	}
 
 	private Filter<JaxbPlatformConfig> buildInternalJaxbPlatformConfigFilter() {

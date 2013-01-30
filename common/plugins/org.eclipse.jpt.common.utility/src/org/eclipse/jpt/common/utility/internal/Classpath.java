@@ -25,11 +25,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
@@ -486,7 +484,7 @@ public class Classpath
 	 * Return the classpath's entries.
 	 */
 	public Iterable<Entry> getEntries() {
-		return new ArrayIterable<Entry>(this.entries);
+		return IterableTools.iterable(this.entries);
 	}
 
 	/**
@@ -590,11 +588,7 @@ public class Classpath
 	 * Just a bit more performant than {@link #getClassNames(Filter)}.
 	 */
 	public Iterator<String> classNames(Filter<String> filter) {
-		return new CompositeIterator<String>(this.entryClassNamesIterators(filter));
-	}
-
-	private Iterator<Iterator<String>> entryClassNamesIterators(Filter<String> filter) {
-		return IteratorTools.transform(IteratorTools.iterator(this.entries), new EntryClassNamesTransformer(filter));
+		return IteratorTools.children(IteratorTools.iterator(this.entries), new EntryClassNamesTransformer(filter));
 	}
 
 	/* CU private */ static class EntryClassNamesTransformer
@@ -629,7 +623,7 @@ public class Classpath
 		for (int i = 0; i < len; i++) {
 			urls[i] = this.entries[i].getURL();
 		}
-		return new ArrayIterable<URL>(urls);
+		return IterableTools.iterable(urls);
 	}
 
 	@Override
@@ -818,12 +812,16 @@ public class Classpath
 		 * under the entry's directory.
 		 */
 		private Iterator<File> classFilesForDirectory() {
-			return new FilteringIterator<File>(FileTools.allFiles(this.canonicalFile)) {
-				@Override
-				protected boolean accept(File next) {
-					return Entry.this.fileNameMightBeForClassFile(next.getName());
-				}
-			};
+			return IteratorTools.filter(FileTools.allFiles(this.canonicalFile), new FileMightBeClassFile());
+		}
+
+		/* class private */ class FileMightBeClassFile
+			extends FilterAdapter<File>
+		{
+			@Override
+			public boolean accept(File f) {
+				return Entry.this.fileNameMightBeForClassFile(f.getName());
+			}
 		}
 
 		/**
@@ -889,7 +887,7 @@ public class Classpath
 					return this.classNamesForArchive(filter);
 				}
 			}
-			return EmptyIterator.instance();
+			return IteratorTools.emptyIterator();
 		}
 
 		/**
@@ -898,7 +896,7 @@ public class Classpath
 		 * the specified filter.
 		 */
 		private Iterator<String> classNamesForDirectory(Filter<String> filter) {
-			return new FilteringIterator<String>(this.classNamesForDirectory(), filter);
+			return IteratorTools.filter(this.classNamesForDirectory(), filter);
 		}
 
 		/**
@@ -933,7 +931,7 @@ public class Classpath
 			try {
 				zipFile = new ZipFile(this.canonicalFile);
 			} catch (IOException ex) {
-				return EmptyIterator.instance();
+				return IteratorTools.emptyIterator();
 			}
 			Collection<String> classNames = new HashSet<String>(zipFile.size());
 			for (Enumeration<? extends ZipEntry> stream = zipFile.entries(); stream.hasMoreElements(); ) {
@@ -949,7 +947,7 @@ public class Classpath
 			try {
 				zipFile.close();
 			} catch (IOException ex) {
-				return EmptyIterator.instance();
+				return IteratorTools.emptyIterator();
 			}
 			return classNames.iterator();
 		}

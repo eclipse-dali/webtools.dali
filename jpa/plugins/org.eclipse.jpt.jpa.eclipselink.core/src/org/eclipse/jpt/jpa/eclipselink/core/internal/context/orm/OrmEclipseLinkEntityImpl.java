@@ -16,8 +16,6 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -154,7 +152,7 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters() {
-		return new FilteringIterable<EclipseLinkConverter>(this.getAttributeMappingConverters_(), NotNullFilter.<EclipseLinkConverter>instance());
+		return IterableTools.removeNulls(this.getAttributeMappingConverters_());
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {

@@ -90,7 +90,7 @@ public class JavaEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters() {
-		return new FilteringIterable<EclipseLinkConverter>(this.getAttributeMappingConverters_(), NotNullFilter.<EclipseLinkConverter>instance());
+		return IterableTools.removeNulls(this.getAttributeMappingConverters_());
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {

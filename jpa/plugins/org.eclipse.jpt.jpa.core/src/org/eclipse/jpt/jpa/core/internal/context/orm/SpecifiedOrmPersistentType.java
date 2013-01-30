@@ -870,11 +870,11 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<JavaResourceField> getDefaultJavaResourceFields(Filter<JavaResourceField> filter) {
-		return new FilteringIterable<JavaResourceField>(getDefaultJavaResourceFields(), filter);
+		return IterableTools.filter(getDefaultJavaResourceFields(), filter);
 	}
 
 	protected Iterable<JavaResourceMethod> getJavaResourceMethods(Filter<JavaResourceMethod> filter) {
-		return new FilteringIterable<JavaResourceMethod>(getJavaResourceMethods(), filter);
+		return IterableTools.filter(getJavaResourceMethods(), filter);
 	}
 
 	protected Iterable<JavaResourceMethod> getJavaResourceMethods() {

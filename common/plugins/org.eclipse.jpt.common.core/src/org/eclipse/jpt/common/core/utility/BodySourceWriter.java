@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,15 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeSet;
-
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-
 import com.ibm.icu.text.Collator;
 
 /**
@@ -244,7 +242,7 @@ public class BodySourceWriter
 	 * strip off any non-required imports (e.g. "java.lang.Object')
 	 */
 	protected Iterable<Map.Entry<String, ImportPackage>> getRequiredImportEntries() {
-		return new FilteringIterable<Map.Entry<String, ImportPackage>>(this.imports.entrySet(), this.buildRequiredImportEntriesFilter());
+		return IterableTools.filter(this.imports.entrySet(), this.buildRequiredImportEntriesFilter());
 	}
 
 	protected Filter<Map.Entry<String, ImportPackage>> buildRequiredImportEntriesFilter() {

@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -183,7 +183,7 @@ public class SimpleJavaResourceLocator
 	}
 
 	protected Iterable<IPackageFragmentRoot> getSourcePackageFragmentRoots(IProject project) throws JavaModelException {
-		return new FilteringIterable<IPackageFragmentRoot>(this.getPackageFragmentRoots(project), SOURCE_ROOT_FILTER);
+		return IterableTools.filter(this.getPackageFragmentRoots(project), SOURCE_ROOT_FILTER);
 	}
 
 	protected static final Filter<IPackageFragmentRoot> SOURCE_ROOT_FILTER = new SourceRootFilter();

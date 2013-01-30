@@ -175,7 +175,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	protected Iterable<TypeMapping> getNonNullInheritanceHierarchy() {
-		return new FilteringIterable<TypeMapping>(this.getInheritanceHierarchy(), NotNullFilter.<TypeMapping>instance());
+		return IterableTools.removeNulls(this.getInheritanceHierarchy());
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {

@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
-import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 @SuppressWarnings("nls")
 public class FilteringIteratorTests
@@ -81,21 +79,6 @@ public class FilteringIteratorTests
 		}
 	}
 
-	public void testInnerHasNext() {
-		int i = 0;
-		for (Iterator<String> stream = this.buildInnerIterator(); stream.hasNext();) {
-			stream.next();
-			i++;
-		}
-		assertEquals(6, i);
-	}
-
-	public void testInnerNext() {
-		for (Iterator<String> stream = this.buildInnerIterator(); stream.hasNext();) {
-			assertTrue("bogus accept", stream.next().startsWith(PREFIX));
-		}
-	}
-
 	public void testRejectHasNext() {
 		int i = 0;
 		for (Iterator<String> stream = this.buildRejectIterator(); stream.hasNext();) {
@@ -121,15 +104,6 @@ public class FilteringIteratorTests
 		assertEquals(6, i);
 	}
 
-	public void testLoadNext() {
-		// loadNext() used to cause a NPE when executing during the
-		// constructor because the "outer" class is not bound until completion
-		// of the constructor
-		for (Iterator<String> stream = this.buildInnerIterator2(); stream.hasNext();) {
-			assertTrue("bogus accept", stream.next().startsWith(PREFIX));
-		}
-	}
-
 	public void testFilterHasNext() {
 		int i = 0;
 		for (Iterator<String> stream = this.buildFilterIterator(); stream.hasNext();) {
@@ -146,34 +120,15 @@ public class FilteringIteratorTests
 	}
 
 	private Iterator<String> buildFilteredIterator(Iterator<String> nestedIterator, Filter<String> filter) {
-		return new FilteringIterator<String>(nestedIterator, filter);
+		return IteratorTools.filter(nestedIterator, filter);
 	}
 
 	private Iterator<String> buildSuperFilteredIterator(Iterator<String> nestedIterator, Filter<Object> filter) {
-		return new FilteringIterator<String>(nestedIterator, filter);
-	}
-
-	private Iterator<String> buildInnerFilteredIterator(Iterator<String> nestedIterator) {
-		return new FilteringIterator<String>(nestedIterator) {
-			@Override
-			protected boolean accept(String s) {
-				return s.startsWith(PREFIX);
-			}
-		};
+		return IteratorTools.<String>filter(nestedIterator, filter);
 	}
 
 	String getPrefix() {
 		return PREFIX;
-	}
-
-	// this inner iterator will call the "outer" object
-	private Iterator<String> buildInnerFilteredIterator2(Iterator<String> nestedIterator) {
-		return new FilteringIterator<String>(nestedIterator) {
-			@Override
-			protected boolean accept(String s) {
-				return s.startsWith(FilteringIteratorTests.this.getPrefix());
-			}
-		};
 	}
 
 	private Iterator<String> buildNestedIterator() {
@@ -195,15 +150,6 @@ public class FilteringIteratorTests
 
 	private Iterator<String> buildSuperAcceptIterator() {
 		return this.buildSuperFilteredIterator(this.buildNestedIterator(), this.buildSuperAcceptFilter(PREFIX));
-	}
-
-	private Iterator<String> buildInnerIterator() {
-		return this.buildInnerFilteredIterator(this.buildNestedIterator());
-	}
-
-	// this inner iterator will call the "outer" object
-	private Iterator<String> buildInnerIterator2() {
-		return this.buildInnerFilteredIterator2(this.buildNestedIterator());
 	}
 
 	private Iterator<String> buildFilterIterator() {
@@ -280,7 +226,7 @@ public class FilteringIteratorTests
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<String> iterator = new FilteringIterator<String>(this.buildNestedIterator());
+			Iterator<String> iterator = IteratorTools.filter(this.buildNestedIterator(), Filter.Disabled.<String>instance());
 			String s = iterator.next();
 			fail("invalid string: " + s);
 		} catch (UnsupportedOperationException ex) {

@@ -1417,7 +1417,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * strip out <code>null</code> names
 	 */
 	protected Iterable<String> convertToNames(Iterable<ReadOnlyTable> tables) {
-		return new FilteringIterable<String>(this.convertToNames_(tables), NotNullFilter.<String>instance());
+		return IterableTools.removeNulls(this.convertToNames_(tables));
 	}
 
 	protected Iterable<String> convertToNames_(Iterable<ReadOnlyTable> tables) {
@@ -1487,7 +1487,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * strip out null db tables
 	 */
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables() {
-		return new FilteringIterable<org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedDbTables_(), NotNullFilter.<org.eclipse.jpt.jpa.db.Table>instance());
+		return IterableTools.removeNulls(this.getAllAssociatedDbTables_());
 	}
 
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables_() {

@@ -41,7 +41,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -527,7 +526,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<MappingFile> getMappingFiles() {
-		return new FilteringIterable<MappingFile>(this.getMappingFiles_(), NotNullFilter.<MappingFile>instance());
+		return IterableTools.removeNulls(this.getMappingFiles_());
 	}
 
 	protected Iterable<MappingFile> getMappingFiles_() {
@@ -1502,7 +1501,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<String> getNonEmptyGeneratorNames() {
-		return new FilteringIterable<String>(this.getGeneratorNames(), StringTools.NON_BLANK_FILTER);
+		return IterableTools.filter(this.getGeneratorNames(), StringTools.NON_BLANK_FILTER);
 	}
 
 	protected Iterable<String> getGeneratorNames() {
@@ -1687,10 +1686,7 @@ public abstract class AbstractPersistenceUnit
 	 * both specified and implied.
 	 */
 	protected Iterable<PersistentType> getClassRefPersistentTypes() {
-		return new FilteringIterable<PersistentType>(
-					this.getClassRefPersistentTypes_(),
-					NotNullFilter.<PersistentType>instance()
-				);
+		return IterableTools.removeNulls(this.getClassRefPersistentTypes_());
 	}
 
 	/**
@@ -1812,10 +1808,7 @@ public abstract class AbstractPersistenceUnit
 	 * @see #getAllJavaPersistentTypesUnique()
 	 */
 	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes() {
-		return new FilteringIterable<PersistentType>(
-					this.getMappingFileJavaPersistentTypes_(),
-					NotNullFilter.<PersistentType>instance()
-				);
+		return IterableTools.removeNulls(this.getMappingFileJavaPersistentTypes_());
 	}
 
 	/**

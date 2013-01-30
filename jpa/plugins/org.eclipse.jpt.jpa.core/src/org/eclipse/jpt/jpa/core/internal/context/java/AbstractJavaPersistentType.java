@@ -681,11 +681,11 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterable<JavaResourceField> getResourceFields(Filter<JavaResourceField> filter) {
-		return new FilteringIterable<JavaResourceField>(this.getResourceFields(), filter);
+		return IterableTools.filter(this.getResourceFields(), filter);
 	}
 
 	protected Iterable<JavaResourceMethod> getResourceMethods(Filter<JavaResourceMethod> filter) {
-		return new FilteringIterable<JavaResourceMethod>(this.getResourceMethods(), filter);
+		return IterableTools.filter(this.getResourceMethods(), filter);
 	}
 
 	public static Filter<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {

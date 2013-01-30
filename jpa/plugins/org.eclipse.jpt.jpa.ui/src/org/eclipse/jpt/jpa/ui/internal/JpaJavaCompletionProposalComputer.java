@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -154,7 +154,7 @@ public class JpaJavaCompletionProposalComputer
 	}
 
 	private Iterable<String> buildCompletionProposals(JavaPersistentType structureNode, int pos, Filter<String> filter) {
-		return new FilteringIterable<String>(structureNode.getCompletionProposals(pos), filter);
+		return IterableTools.filter(structureNode.getCompletionProposals(pos), filter);
 	}
 
 	private IFile getCorrespondingResource(ICompilationUnit cu) {

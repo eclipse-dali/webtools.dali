@@ -677,12 +677,12 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return an iterable that will use the specified filter to filter the
+	 * Return an iterable that will use the specified predicate to filter the
 	 * elements in the specified iterable.
 	 * @see FilteringIterable
 	 */
-	public static <E> FilteringIterable<E> filter(Iterable<? extends E> iterable, Filter<E> filter) {
-		return new FilteringIterable<E>(iterable, filter);
+	public static <E> FilteringIterable<E> filter(Iterable<? extends E> iterable, Filter<? super E> predicate) {
+		return new FilteringIterable<E>(iterable, predicate);
 	}
 
 	/**

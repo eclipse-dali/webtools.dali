@@ -36,7 +36,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectCollectionValueModelAdapter;
@@ -602,7 +601,7 @@ public class JpaProjectPropertiesPage
 	 */
 	private CollectionValueModel<JpaPlatform.Config> buildEnabledJpaPlatformConfigsModel() {
 		return new StaticCollectionValueModel<JpaPlatform.Config>(
-				new FilteringIterable<JpaPlatform.Config>(
+				IterableTools.filter(
 					getJpaPlatformConfigs(),
 					new JpaPlatformConfigFilter()
 				)
