@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.SuperIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
@@ -70,26 +71,37 @@ public class ELJaxbPackageContentProvider
 					@Override
 					protected Iterator<JaxbContextNode> iteratorForRecord() {
 						final ELJaxbContextRoot contextRoot = this.subject;
-						return new SuperIteratorWrapper<JaxbContextNode>(
-								new FilteringIterable<JavaType>(this.subject.getJavaTypes(ELJaxbPackageContentProvider.this.item)) {
-									@Override
-									protected boolean accept(JavaType o) {
-										String typeName = o.getTypeName().getFullyQualifiedName();
-										// TODO xml-registry, xml-java-type-adapter
-										JavaTypeMapping typeMapping = o.getMapping();
-										if (typeMapping != null && contextRoot.getTypeMapping(typeName) == typeMapping) {
-											return true;
-										}
-										if (o.getXmlJavaTypeAdapter() != null) {
-											return true;
-										}
-										if (o.getKind() == TypeKind.CLASS && ((JavaClass) o).getXmlRegistry() != null) {
-											return true;
-										}
-										return false;
-									}
-								});
+						return new SuperIterableWrapper<JaxbContextNode>(
+								IterableTools.filter(
+										this.subject.getJavaTypes(ELJaxbPackageContentProvider.this.item),
+										new JavaTypeFilter(contextRoot))).iterator();
 					}
 				});
+	}
+	
+	protected class JavaTypeFilter
+			implements Filter<JavaType> {
+		
+		private final ELJaxbContextRoot contextRoot;
+		
+		protected JavaTypeFilter(ELJaxbContextRoot contextRoot) {
+			this.contextRoot = contextRoot;
+		}
+		
+		public boolean accept(JavaType o) {
+			String typeName = o.getTypeName().getFullyQualifiedName();
+			// TODO xml-registry, xml-java-type-adapter
+			JavaTypeMapping typeMapping = o.getMapping();
+			if (typeMapping != null && contextRoot.getTypeMapping(typeName) == typeMapping) {
+				return true;
+			}
+			if (o.getXmlJavaTypeAdapter() != null) {
+				return true;
+			}
+			if (o.getKind() == TypeKind.CLASS && ((JavaClass) o).getXmlRegistry() != null) {
+				return true;
+			}
+			return false;
+		}
 	}
 }
