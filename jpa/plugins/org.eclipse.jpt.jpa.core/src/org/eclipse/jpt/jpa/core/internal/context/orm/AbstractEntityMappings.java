@@ -29,7 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
@@ -1032,7 +1031,7 @@ public abstract class AbstractEntityMappings
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Query> getMappingFileQueries() {
-		return new CompositeIterable<Query>(
+		return IterableTools.concatenate(
 					this.queryContainer.getQueries(),
 					this.getTypeMappingQueries()
 				);
@@ -1044,7 +1043,7 @@ public abstract class AbstractEntityMappings
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Generator> getMappingFileGenerators() {
-		return new CompositeIterable<Generator>(
+		return IterableTools.concatenate(
 					this.getSequenceGenerators(),
 					this.getTableGenerators(),
 					this.getTypeMappingGenerators()
@@ -1126,7 +1125,7 @@ public abstract class AbstractEntityMappings
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createPersistentTypeRenamePackageEdits(originalPackage, newName),
 				this.createRenamePackageEdit(originalPackage, newName));
 	}

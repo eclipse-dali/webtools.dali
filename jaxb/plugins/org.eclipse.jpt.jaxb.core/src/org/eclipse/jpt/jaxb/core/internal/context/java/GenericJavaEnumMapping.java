@@ -13,10 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
@@ -152,12 +150,13 @@ public class GenericJavaEnumMapping
 	
 	// ***** misc *****
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
 		if (this.specifiedXmlEnumValue != null) {
-			return new CompositeIterable<String>(
+			return IterableTools.concatenate(
 					super.getNonTransientReferencedXmlTypeNames(),
-					new SingleElementIterable(getFullyQualifiedXmlEnumValue()));
+					IterableTools.singletonIterable(getFullyQualifiedXmlEnumValue()));
 		}
 		return super.getNonTransientReferencedXmlTypeNames();
 	}

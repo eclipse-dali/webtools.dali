@@ -33,7 +33,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -1180,7 +1179,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.mapping.createRenameTypeEdits(originalType, newName),
 				this.createSpecifiedAttributesRenameTypeEdits(originalType, newName)
 			);
@@ -1192,7 +1191,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.mapping.createMoveTypeEdits(originalType, newPackage),
 				this.createSpecifiedAttributesMoveTypeEdits(originalType, newPackage)
 			);
@@ -1204,7 +1203,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.mapping.createRenamePackageEdits(originalPackage, newName),
 				this.createSpecifiedAttributesRenamePackageEdits(originalPackage, newName)
 			);

@@ -43,14 +43,6 @@ public class CompositeIterable<E>
 	}
 
 	/**
-	 * Construct an iterable with the specified iterables.
-	 */
-	// TODO remove
-	public CompositeIterable(Iterable<? extends E>... iterables) {
-		this(new ArrayIterable<Iterable<? extends E>>(iterables));
-	}
-
-	/**
 	 * combined iterators
 	 */
 	public Iterator<E> iterator() {

@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
@@ -154,7 +153,7 @@ public class OrmEclipseLinkTypeConverter
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createRenameDataTypeEdits(originalType, newName),
 				this.createRenameObjectTypeEdits(originalType, newName)
 			);
@@ -182,7 +181,7 @@ public class OrmEclipseLinkTypeConverter
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createMoveDataTypeEdits(originalType, newPackage),
 				this.createMoveObjectTypeEdits(originalType, newPackage)
 			);
@@ -210,7 +209,7 @@ public class OrmEclipseLinkTypeConverter
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createRenameDataTypePackageEdits(originalPackage, newName),
 				this.createRenameObjectTypePackageEdits(originalPackage, newName)
 			);
@@ -291,7 +290,7 @@ public class OrmEclipseLinkTypeConverter
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateTypeNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				MappingTools.getSortedJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames(),
 				MappingTools.getCollectionTypeNames(),

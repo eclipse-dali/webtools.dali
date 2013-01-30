@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
@@ -505,7 +504,7 @@ public class XPath {
 				};
 				return IterableTools.transform(
 								IterableTools.transform(
-										new CompositeIterable<String>(
+										IterableTools.concatenate(
 												getTextProposals(context, previousType),
 												getAttributeProposals(context, previousType),
 												getElementProposals(context, previousType)),

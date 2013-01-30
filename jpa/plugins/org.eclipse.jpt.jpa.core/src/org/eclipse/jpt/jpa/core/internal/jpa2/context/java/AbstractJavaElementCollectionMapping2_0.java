@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -1232,7 +1231,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<String> getAllMappingNames() {
-		return new CompositeIterable<String>(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames());
+		return IterableTools.concatenate(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames());
 	}
 
 	protected Iterable<String> getAllEmbeddableAttributeMappingNames() {

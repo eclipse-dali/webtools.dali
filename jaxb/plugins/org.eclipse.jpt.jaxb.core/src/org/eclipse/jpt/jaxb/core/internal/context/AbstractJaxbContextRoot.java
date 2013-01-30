@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
@@ -260,7 +259,7 @@ public abstract class AbstractJaxbContextRoot
 	 * - all types listed in jaxb.index files.
 	 */
 	protected Iterable<JavaResourceAbstractType> calculateInitialTypes() {
-		return new CompositeIterable<JavaResourceAbstractType>(
+		return IterableTools.concatenate(
 				new FilteringIterable<JavaResourceAbstractType>(
 						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -77,7 +76,7 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDTypeDefinition> getAllXSDTypeDefinitions() {
-		return new CompositeIterable<XSDTypeDefinition>(
+		return IterableTools.concatenate(
 				getDeclaredXSDTypeDefinitions(), getBuiltInXSDTypeDefinitions());
 	}
 	

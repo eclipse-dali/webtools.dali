@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
@@ -92,7 +91,7 @@ public class TypeMappingTools {
 
 	@SuppressWarnings("unchecked")
 	protected static Iterable<AttributeMapping> getSingleRelationshipMappings_(TypeMapping typeMapping) {
-		return new CompositeIterable<AttributeMapping>(
+		return IterableTools.concatenate(
 					typeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
 					typeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
 				);

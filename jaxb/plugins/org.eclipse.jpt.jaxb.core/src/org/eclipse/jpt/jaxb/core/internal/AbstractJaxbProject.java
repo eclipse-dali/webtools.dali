@@ -53,7 +53,6 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -330,7 +329,7 @@ public abstract class AbstractJaxbProject
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceCompilationUnit> getCombinedJavaResourceCompilationUnits() {
-		return new CompositeIterable<JavaResourceCompilationUnit>(
+		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getExternalJavaResourceCompilationUnits()
 				);
@@ -771,7 +770,7 @@ public abstract class AbstractJaxbProject
 	
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
-		return new CompositeIterable<JavaResourceNode.Root>(
+		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 //					this.getInternalJavaResourcePackageFragmentRoots(),
 					this.getExternalJavaResourceCompilationUnits(),

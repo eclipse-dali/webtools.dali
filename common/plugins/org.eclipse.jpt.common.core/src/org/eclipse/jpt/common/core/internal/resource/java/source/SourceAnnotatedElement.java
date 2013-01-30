@@ -34,7 +34,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -459,7 +458,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Annotation> getTopLevelAnnotations() {
-		return new CompositeIterable<Annotation>(
+		return IterableTools.concatenate(
 					this.getAnnotations(),
 					this.getContainerOrStandaloneNestableAnnotations()
 				);
@@ -503,7 +502,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	 */
 	@SuppressWarnings("unchecked")
 	private Iterable<Annotation> getSignificantAnnotations() {
-		return new CompositeIterable<Annotation>(
+		return IterableTools.concatenate(
 					this.getAnnotations(),
 					this.getNestableAnnotations()
 				);

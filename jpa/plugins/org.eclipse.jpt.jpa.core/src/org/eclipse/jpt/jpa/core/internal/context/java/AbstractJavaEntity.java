@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -945,7 +944,7 @@ public abstract class AbstractJavaEntity
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<Generator> getGenerators() {
-		return new CompositeIterable<Generator>(
+		return IterableTools.concatenate(
 					super.getGenerators(),
 					this.generatorContainer.getGenerators()
 				);

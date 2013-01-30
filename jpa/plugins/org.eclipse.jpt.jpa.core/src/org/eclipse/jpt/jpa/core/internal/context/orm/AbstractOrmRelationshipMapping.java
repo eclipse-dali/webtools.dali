@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
@@ -311,7 +310,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenameTypeEdits(originalType, newName),
 				this.createTargetEntityRenameTypeEdits(originalType, newName)
 			);
@@ -334,7 +333,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createMoveTypeEdits(originalType, newPackage),
 				this.createTargetEntityMoveTypeEdits(originalType, newPackage)
 			);
@@ -353,7 +352,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createTargetEntityRenamePackageEdits(originalPackage, newName)
 			);

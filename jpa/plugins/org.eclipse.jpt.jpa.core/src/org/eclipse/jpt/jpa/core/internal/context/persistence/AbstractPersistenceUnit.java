@@ -42,7 +42,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -772,7 +771,7 @@ public abstract class AbstractPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ClassRef> getClassRefs() {
-		return new CompositeIterable<ClassRef>(
+		return IterableTools.concatenate(
 						this.getSpecifiedClassRefs(),
 						this.getImpliedClassRefs()
 					);
@@ -1664,7 +1663,7 @@ public abstract class AbstractPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	public Iterable<PersistentType> getPersistentTypes() {
-		return new CompositeIterable<PersistentType>(
+		return IterableTools.concatenate(
 				this.getMappingFilePersistentTypes(),
 				this.getClassRefPersistentTypes(),
 				this.getJarFilePersistentTypes()
@@ -1677,7 +1676,7 @@ public abstract class AbstractPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	public Iterable<PersistentType> getJavaPersistentTypes() {
-		return new CompositeIterable<PersistentType>(
+		return IterableTools.concatenate(
 				this.getClassRefPersistentTypes(),
 				this.getJarFilePersistentTypes()
 			);
@@ -2567,7 +2566,7 @@ public abstract class AbstractPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 					this.createSpecifiedClassRefRenameTypeEdits(originalType, newName),
 					this.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName));
 	}
@@ -2582,7 +2581,7 @@ public abstract class AbstractPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createSpecifiedClassRefMoveTypeEdits(originalType, newPackage),
 			this.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage));
 	}
@@ -2598,7 +2597,7 @@ public abstract class AbstractPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createSpecifiedClassRefRenamePackageEdits(originalPackage, newName),
 			this.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName));
 	}

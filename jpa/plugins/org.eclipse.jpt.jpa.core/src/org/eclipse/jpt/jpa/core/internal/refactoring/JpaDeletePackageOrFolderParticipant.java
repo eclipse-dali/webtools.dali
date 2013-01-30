@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -165,7 +164,7 @@ public class JpaDeletePackageOrFolderParticipant
 				return persistenceUnit.createDeleteMappingFileEdits(file);
 			}
 		};
-		return new CompositeIterable<DeleteEdit>(
+		return IterableTools.concatenate(
 				super.createPersistenceXmlDeleteEdits(persistenceUnit),
 				IterableTools.children(this.getMappingFilesOnClasspath(persistenceUnit.getJpaProject()), transformer)
 			);
@@ -175,7 +174,7 @@ public class JpaDeletePackageOrFolderParticipant
 	protected Iterable<IFile> getMappingFilesOnClasspath(final JpaProject jpaProject) {
 		final IJavaProject javaProject = jpaProject.getJavaProject();
 		final JpaPlatform jpaPlatform = jpaProject.getJpaPlatform();
-		return new FilteringIterable<IFile>(new CompositeIterable<IFile>(
+		return new FilteringIterable<IFile>(IterableTools.concatenate(
 				getPossibleMappingFilesInFolders(),
 				getPossibleMappingFilesInPackageFragments())) 
 			{

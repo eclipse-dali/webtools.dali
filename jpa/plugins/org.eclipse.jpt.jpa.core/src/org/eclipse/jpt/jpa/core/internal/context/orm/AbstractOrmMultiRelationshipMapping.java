@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -869,7 +868,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateMapKeyClassNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				MappingTools.getSortedJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames()
 				);
@@ -905,7 +904,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenameTypeEdits(originalType, newName),
 				this.createMapKeyClassRenameTypeEdits(originalType, newName)
 			);
@@ -928,7 +927,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createMoveTypeEdits(originalType, newPackage),
 				this.createMapKeyClassMoveTypeEdits(originalType, newPackage)
 			);
@@ -947,7 +946,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createMapKeyClassRenamePackageEdits(originalPackage, newName)
 			);

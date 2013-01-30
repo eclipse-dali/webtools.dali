@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -113,7 +113,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	@SuppressWarnings("unchecked")
 	public Iterable<String> getAllMappingNames() {
 		return this.isJpa2_0Compatible() ?
-				new CompositeIterable<String>(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames()) :
+				IterableTools.concatenate(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames()) :
 				super.getAllMappingNames();
 	}
 

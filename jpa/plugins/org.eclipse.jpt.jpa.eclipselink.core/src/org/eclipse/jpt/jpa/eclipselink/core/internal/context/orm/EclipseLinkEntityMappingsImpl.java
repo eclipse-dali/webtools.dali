@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -146,7 +145,7 @@ public class EclipseLinkEntityMappingsImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<EclipseLinkConverter> getMappingFileConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(
+		return IterableTools.concatenate(
 					this.converterContainer.getConverters(),
 					this.getTypeMappingConverters()
 				);
@@ -631,7 +630,7 @@ public class EclipseLinkEntityMappingsImpl
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<Generator> getMappingFileGenerators() {
-		return new CompositeIterable<Generator>(
+		return IterableTools.concatenate(
 					super.getMappingFileGenerators(),
 					this.getUuidGenerators()
 				);
@@ -655,7 +654,7 @@ public class EclipseLinkEntityMappingsImpl
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			super.createRenameTypeEdits(originalType, newName),
 			this.createConverterRenameTypeEdits(originalType, newName));
 	}
@@ -667,7 +666,7 @@ public class EclipseLinkEntityMappingsImpl
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			super.createMoveTypeEdits(originalType, newPackage),
 			this.createConverterMoveTypeEdits(originalType, newPackage));
 	}
@@ -679,7 +678,7 @@ public class EclipseLinkEntityMappingsImpl
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			super.createRenamePackageEdits(originalPackage, newName),
 			this.createConverterRenamePackageEdits(originalPackage, newName));
 	}

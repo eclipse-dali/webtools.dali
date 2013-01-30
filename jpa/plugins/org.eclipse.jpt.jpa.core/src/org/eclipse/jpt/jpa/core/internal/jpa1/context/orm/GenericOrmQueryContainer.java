@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -71,7 +70,7 @@ public class GenericOrmQueryContainer
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Query> getQueries() {
-		return new CompositeIterable<Query>(this.getNamedQueries(), this.getNamedNativeQueries());
+		return IterableTools.<Query>concatenate(this.getNamedQueries(), this.getNamedNativeQueries());
 	}
 
 

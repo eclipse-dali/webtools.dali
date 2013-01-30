@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -77,7 +76,7 @@ public class JpaRenameTypeParticipant
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Iterable<ReplaceEdit> createPersistenceXmlReplaceEdits(PersistenceUnit persistenceUnit) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createPersistenceXmlReplaceOriginalTypeEdits(persistenceUnit),
 			this.createPersistenceXmlReplaceNestedTypeEdits(persistenceUnit));
 	}
@@ -108,7 +107,7 @@ public class JpaRenameTypeParticipant
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Iterable<ReplaceEdit> createMappingFileReplaceEdits(MappingFileRef mappingFileRef) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createMappingFileReplaceOriginalTypeEdits(mappingFileRef),
 			this.createMappingFileReplaceNestedTypeEdits(mappingFileRef));
 	}

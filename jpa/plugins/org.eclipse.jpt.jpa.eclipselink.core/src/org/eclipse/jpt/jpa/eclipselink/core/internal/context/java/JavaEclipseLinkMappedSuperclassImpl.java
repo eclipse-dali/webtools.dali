@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -141,7 +140,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<EclipseLinkConverter> getConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(
+		return IterableTools.concatenate(
 					this.converterContainer.getConverters(),
 					this.getAttributeMappingConverters()
 				);
@@ -218,7 +217,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<Generator> getGenerators() {
-		return new CompositeIterable<Generator>(
+		return IterableTools.concatenate(
 					super.getGenerators(),
 					this.generatorContainer.getGenerators()
 				);

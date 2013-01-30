@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
@@ -779,7 +778,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createSessionCustomizerRenameTypeEdits(originalType, newName),
 				this.createExceptionHandlerRenameTypeEdits(originalType, newName)
 			);
@@ -799,7 +798,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createSessionCustomizerMoveTypeEdits(originalType, newPackage),
 				this.createExceptionHandlerMoveTypeEdits(originalType, newPackage)
 			);
@@ -819,7 +818,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createSessionCustomizerRenamePackageEdits(originalPackage, newName),
 				this.createExceptionHandlerRenamePackageEdits(originalPackage, newName)
 			);

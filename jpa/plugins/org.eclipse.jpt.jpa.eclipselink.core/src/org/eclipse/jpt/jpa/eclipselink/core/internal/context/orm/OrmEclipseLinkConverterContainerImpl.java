@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -418,7 +417,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createRenameObjectTypeConverterEdits(originalType, newName),
 			this.createRenameTypeConverterEdits(originalType, newName),
 			this.createRenameStructConverterEdits(originalType, newName),
@@ -443,7 +442,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createMoveObjectTypeConverterEdits(originalType, newPackage),
 			this.createMoveTypeConverterEdits(originalType, newPackage),
 			this.createMoveStructConverterEdits(originalType, newPackage),
@@ -469,7 +468,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			this.createObjectTypeConverterRenamePackageEdits(originalPackage, newName),
 			this.createTypeConverterRenamePackageEdits(originalPackage, newName),
 			this.createStructConverterRenamePackageEdits(originalPackage, newName),
@@ -515,7 +514,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<EclipseLinkConverter> getConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(
+		return IterableTools.<EclipseLinkConverter>concatenate(
 					this.getCustomConverters(),
 					this.getObjectTypeConverters(),
 					this.getStructConverters(),

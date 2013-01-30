@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,12 +21,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
  * Convenience methods for dealing with JDT core
@@ -147,12 +145,11 @@ public final class JDTTools {
 	 * This is necessary because, for whatever reason, { @link IType#getSuperInterfaceNames()} and
 	 * {@link IType#getSuperclassName()} return unqualified names when the type is from Java source.
 	 */
+	@SuppressWarnings("unchecked")
 	private static Iterable<String> getNonResolvedSuperTypeNames(IType type) throws JavaModelException {
-		return new CompositeIterable<String>(
-					new FilteringIterable<String>(
-							new SingleElementIterable<String>(type.getSuperclassName()),
-							NotNullFilter.<String>instance()),
-					new ArrayIterable<String>(type.getSuperInterfaceNames()));
+		return IterableTools.concatenate(
+					IterableTools.removeNulls(IterableTools.singletonIterable(type.getSuperclassName())),
+					IterableTools.iterable(type.getSuperInterfaceNames()));
 	}
 
 	/**

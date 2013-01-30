@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -242,7 +241,7 @@ abstract class BinaryAnnotatedElement
 	
 	@SuppressWarnings("unchecked")
 	public Iterable<Annotation> getTopLevelAnnotations() {
-		return new CompositeIterable<Annotation>(
+		return IterableTools.concatenate(
 					this.getAnnotations(),
 					this.getContainerOrStandaloneNestableAnnotations()
 				);
@@ -271,7 +270,7 @@ abstract class BinaryAnnotatedElement
 	 */
 	@SuppressWarnings("unchecked")
 	private Iterable<Annotation> getSignificantAnnotations() {
-		return new CompositeIterable<Annotation>(
+		return IterableTools.concatenate(
 					this.getAnnotations(),
 					this.getNestableAnnotations()
 				);

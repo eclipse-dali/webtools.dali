@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -154,7 +154,7 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenameTypeEdits(originalType, newName),
 				this.createIdClassReplaceTypeEdits(originalType, newName)
 			);
@@ -167,7 +167,7 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createMoveTypeEdits(originalType, newPackage),
 				this.createIdClassMoveTypeEdits(originalType, newPackage)
 			);
@@ -180,7 +180,7 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createIdClassRenamePackageEdits(originalPackage, newName)
 			);

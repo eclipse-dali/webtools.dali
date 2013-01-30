@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManyToOneMapping;
@@ -69,7 +68,7 @@ public class OrmEclipseLinkManyToOneMapping
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateTargetEntityClassNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				super.getCandidateTargetEntityClassNames(),
 				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);

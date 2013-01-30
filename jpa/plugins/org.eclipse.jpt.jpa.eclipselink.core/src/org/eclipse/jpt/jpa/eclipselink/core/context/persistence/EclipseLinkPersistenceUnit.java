@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -1099,7 +1098,7 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName),
 				this.customization.createRenameTypeEdits(originalType, newName),
 				this.logging.createRenameTypeEdits(originalType, newName)
@@ -1109,7 +1108,7 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage),
 				this.customization.createMoveTypeEdits(originalType, newPackage),
 				this.logging.createMoveTypeEdits(originalType, newPackage)
@@ -1119,7 +1118,7 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName),
 				this.customization.createRenamePackageEdits(originalPackage, newName),
 				this.logging.createRenamePackageEdits(originalPackage, newName)

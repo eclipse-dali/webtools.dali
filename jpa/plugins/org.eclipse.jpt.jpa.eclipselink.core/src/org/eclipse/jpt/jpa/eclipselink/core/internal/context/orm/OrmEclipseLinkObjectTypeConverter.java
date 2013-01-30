@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -313,7 +312,7 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createRenameDataTypeEdits(originalType, newName),
 				this.createRenameObjectTypeEdits(originalType, newName)
 			);
@@ -341,7 +340,7 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createMoveDataTypeEdits(originalType, newPackage),
 				this.createMoveObjectTypeEdits(originalType, newPackage)
 			);
@@ -369,7 +368,7 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				this.createRenameDataTypePackageEdits(originalPackage, newName),
 				this.createRenameObjectTypePackageEdits(originalPackage, newName)
 			);
@@ -499,7 +498,7 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateTypeNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				MappingTools.getPrimaryBasicTypeNamesWithoutPrimitives(),
 				MappingTools.getBasicArrayTypeNames(),
 				//Add java enums to cover the case where object type is a user defined Enum

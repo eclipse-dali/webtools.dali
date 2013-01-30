@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -585,19 +584,19 @@ public class GenericJavaClassMapping
 	// ***** misc attributes *****
 	
 	public Iterable<JaxbPersistentAttribute> getAllLocallyDefinedAttributes() {
-		return new CompositeIterable<JaxbPersistentAttribute>(
+		return IterableTools.concatenate(
 				getAttributes(),
 				getIncludedAttributes());
 	}
 	
 	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
-		return new CompositeIterable<JaxbPersistentAttribute>(
+		return IterableTools.concatenate(
 				getIncludedAttributes(),
 				getOtherInheritedAttributes());
 	}
 	
 	public Iterable<JaxbPersistentAttribute> getAllAttributes() {
-		return new CompositeIterable<JaxbPersistentAttribute>(
+		return IterableTools.concatenate(
 				getAttributes(),
 				getIncludedAttributes(),
 				getOtherInheritedAttributes());
@@ -648,16 +647,16 @@ public class GenericJavaClassMapping
 	
 	@Override
 	protected Iterable<String> getTransientReferencedXmlTypeNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				super.getTransientReferencedXmlTypeNames(),
 				new SingleElementIterable(getJavaResourceType().getSuperclassQualifiedName()));
 	}
 	
 	@Override
 	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				super.getNonTransientReferencedXmlTypeNames(),
-				new SingleElementIterable<String>(this.superclassName),
+				IterableTools.singletonIterable(this.superclassName),
 				IterableTools.children(getAttributeMappings(), JaxbAttributeMapping.REFERENCED_XML_TYPE_NAMES_TRANSFORMER));
 	}
 	

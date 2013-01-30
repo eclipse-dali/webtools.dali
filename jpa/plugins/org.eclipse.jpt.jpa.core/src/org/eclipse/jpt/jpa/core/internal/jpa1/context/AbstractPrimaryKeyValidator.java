@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
@@ -306,7 +305,7 @@ public abstract class AbstractPrimaryKeyValidator
 		
 		Collection<AttributeMapping> errorMappings = new HashBag<AttributeMapping>();
 		for (AttributeMapping each 
-				: new CompositeIterable<AttributeMapping>(getIdMappings(typeMapping()), getEmbeddedIdMappings(typeMapping()))) {
+				: IterableTools.concatenate(getIdMappings(typeMapping()), getEmbeddedIdMappings(typeMapping()))) {
 			errorMappings.add(each);
 		}
 		Collection<AttributeMapping> errorDerivedIdMappings = new HashBag<AttributeMapping>();
@@ -550,7 +549,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * Return all primary key mappings, defined on and above the type mapping
 	 */
 	protected Iterable<AttributeMapping> getPrimaryKeyMappings(TypeMapping typeMapping) {
-		return new CompositeIterable<AttributeMapping>(
+		return IterableTools.concatenate(
 				getIdMappings(typeMapping),
 				getEmbeddedIdMappings(typeMapping),
 				getDerivedIdMappings(typeMapping),
@@ -561,7 +560,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * Return primary key mappings declared directly on the type mapping
 	 */
 	protected Iterable<AttributeMapping> getPrimaryKeyMappingsDefinedLocally(TypeMapping typeMapping) {
-		return new CompositeIterable<AttributeMapping>(
+		return IterableTools.concatenate(
 				getIdMappingsDefinedLocally(typeMapping),
 				getEmbeddedIdMappingsDefinedLocally(typeMapping),
 				getDerivedIdMappingsDefinedLocally(typeMapping),
@@ -647,7 +646,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	@SuppressWarnings("unchecked")
 	protected Iterable<AttributeMapping> getAllSingleRelationshipMappings_(TypeMapping typeMapping) {
-		return new CompositeIterable<AttributeMapping>(
+		return IterableTools.concatenate(
 					typeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
 					typeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
 				);
@@ -668,7 +667,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	@SuppressWarnings("unchecked")
 	protected Iterable<AttributeMapping> getSingleRelationshipMappings_(TypeMapping typeMapping) {
-		return new CompositeIterable<AttributeMapping>(
+		return IterableTools.concatenate(
 					typeMapping.getAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
 					typeMapping.getAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
 				);

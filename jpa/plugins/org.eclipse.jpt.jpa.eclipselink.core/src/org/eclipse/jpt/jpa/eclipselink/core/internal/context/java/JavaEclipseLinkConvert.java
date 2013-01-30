@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.Arrays;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -134,7 +134,7 @@ public class JavaEclipseLinkConvert
 	 */
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getConverterNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				this.getPersistenceUnit().getUniqueConverterNames(),
 				Arrays.asList(EclipseLinkConvert.RESERVED_CONVERTER_NAMES)
 				);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -316,7 +315,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			super.createMoveTypeEdits(originalType, newPackage),
 			this.converterContainer.createMoveTypeEdits(originalType, newPackage)
 		);
@@ -325,7 +324,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			super.createRenamePackageEdits(originalPackage, newName),
 			this.converterContainer.createRenamePackageEdits(originalPackage, newName)
 		);
@@ -334,7 +333,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 			super.createRenameTypeEdits(originalType, newName),
 			this.converterContainer.createRenameTypeEdits(originalType, newName)
 		);
@@ -393,7 +392,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateTargetClassNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				MappingTools.getSortedJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames(),
 				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())

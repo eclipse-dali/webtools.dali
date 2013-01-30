@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 import java.util.ArrayList;
 import java.util.Collection;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
@@ -37,7 +36,7 @@ public class CompositeIterableTests
 		c2.add("7");
 
 		@SuppressWarnings("unchecked")
-		Iterable<String> composite = new CompositeIterable<String>(c1, c2);
+		Iterable<String> composite = IterableTools.concatenate(c1, c2);
 		int i = 0;
 		for (String s : composite) {
 			assertEquals(String.valueOf(i++), s);
@@ -108,7 +107,7 @@ public class CompositeIterableTests
 		c2.add("7");
 
 		@SuppressWarnings("unchecked")
-		Iterable<String> composite = new CompositeIterable<String>(c1, c2);
+		Iterable<String> composite = IterableTools.concatenate(c1, c2);
 		assertNotNull(composite.toString());
 	}
 

@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
@@ -148,7 +147,7 @@ public class OrmEclipseLinkEntityImpl
 
 	@SuppressWarnings("unchecked")
 	public Iterable<EclipseLinkConverter> getConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(
+		return IterableTools.concatenate(
 					this.converterContainer.getConverters(),
 					this.getAttributeMappingConverters()
 				);
@@ -326,7 +325,7 @@ public class OrmEclipseLinkEntityImpl
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenameTypeEdits(originalType, newName),
 				this.createCustomizerRenameTypeEdits(originalType, newName),
 				this.createConverterHolderRenameTypeEdits(originalType, newName),
@@ -351,7 +350,7 @@ public class OrmEclipseLinkEntityImpl
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createMoveTypeEdits(originalType, newPackage),
 				this.createCustomizerMoveTypeEdits(originalType, newPackage),
 				this.createConverterHolderMoveTypeEdits(originalType, newPackage),
@@ -376,7 +375,7 @@ public class OrmEclipseLinkEntityImpl
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createCustomizerRenamePackageEdits(originalPackage, newName),
 				this.createConverterHolderRenamePackageEdits(originalPackage, newName),
@@ -480,7 +479,7 @@ public class OrmEclipseLinkEntityImpl
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getCandidateParentClassNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				super.getCandidateClassNames(),
 				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);

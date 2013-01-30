@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -1377,7 +1376,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<Generator> getGenerators() {
-		return new CompositeIterable<Generator>(
+		return IterableTools.concatenate(
 					super.getGenerators(),
 					this.generatorContainer.getGenerators()
 				);
@@ -1690,7 +1689,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 					super.createRenameTypeEdits(originalType, newName),
 					this.createIdClassRenameTypeEdits(originalType, newName));
 	}
@@ -1702,7 +1701,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 					super.createMoveTypeEdits(originalType, newPackage),
 					this.createIdClassMoveTypeEdits(originalType, newPackage));
 	}
@@ -1714,7 +1713,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
+		return IterableTools.concatenate(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createIdClassRenamePackageEdits(originalPackage, newName));
 	}

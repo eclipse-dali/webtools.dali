@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.Arrays;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
@@ -140,7 +140,7 @@ public class OrmEclipseLinkConvert
 	 */
 	@SuppressWarnings("unchecked")
 	protected Iterable<String> getConverterNames() {
-		return new CompositeIterable<String>(
+		return IterableTools.concatenate(
 				this.getPersistenceUnit().getUniqueConverterNames(),
 				Arrays.asList(EclipseLinkConvert.RESERVED_CONVERTER_NAMES));
 	}
