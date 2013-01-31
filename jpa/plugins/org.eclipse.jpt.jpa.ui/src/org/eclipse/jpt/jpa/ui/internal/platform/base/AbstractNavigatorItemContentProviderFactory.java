@@ -41,7 +41,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 			return this.buildPersistenceUnitProvider((PersistenceUnit) item, manager);
 		}
 		if (item instanceof OrmXml) {
-			//this skips the OrmXml.EntityMappings child and uses PersistenceUnits as children
+			//this skips the OrmXml.EntityMappings child and uses OrmPersistentTypes as children
 			return this.buildOrmXmlProvider((OrmXml) item, manager);
 		}
 		if (item instanceof JpaStructureNode) {
@@ -65,5 +65,4 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	protected ItemTreeContentProvider buildJpaStructureNodeProvider(JpaStructureNode item, Manager manager) {
 		return new JpaStructureNodeItemContentProvider(item, manager);
 	}
-
 }
