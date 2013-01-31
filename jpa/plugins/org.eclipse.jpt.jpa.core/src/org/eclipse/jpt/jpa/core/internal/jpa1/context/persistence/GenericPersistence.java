@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -49,11 +51,13 @@ public class GenericPersistence
 	// is for a list. We want to support multiple persistence units someday....
 	protected PersistenceUnit persistenceUnit;
 
+	protected final Vector<PersistenceUnit> children = new Vector<PersistenceUnit>();
 
 	public GenericPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		super(parent);
 		this.xmlPersistence = xmlPersistence;
 		this.initializePersistenceUnits();
+		this.initializeChildren();
 	}
 
 
@@ -69,6 +73,7 @@ public class GenericPersistence
 	public void update() {
 		super.update();
 		this.updateNodes(this.getPersistenceUnits());
+		this.updateChildren();
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -266,6 +271,22 @@ public class GenericPersistence
 		for (PersistenceUnit pu : this.getPersistenceUnits()) {
 			pu.dispose();
 		}
+	}
+
+	protected void initializeChildren() {
+		this.children.add(this.persistenceUnit);
+	}
+
+	protected void updateChildren() {
+		this.synchronizeCollection(this.getPersistenceUnits(), this.children, CHILDREN_COLLECTION);
+	}
+
+	public Iterable<PersistenceUnit> getChildren() {
+		return IterableTools.cloneLive(this.children);
+	}
+
+	public int getChildrenSize() {
+		return this.children.size();
 	}
 
 

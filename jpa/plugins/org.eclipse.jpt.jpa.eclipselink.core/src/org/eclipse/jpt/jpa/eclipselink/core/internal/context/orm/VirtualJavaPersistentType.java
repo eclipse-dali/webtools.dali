@@ -270,6 +270,14 @@ public class VirtualJavaPersistentType
 		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
 	}
 
+	public ListIterable<JpaStructureNode> getChildren() {
+		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+	}
+
+	public int getChildrenSize() {
+		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
 	}

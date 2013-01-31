@@ -80,6 +80,8 @@ public abstract class AbstractJavaPersistentType
 
 	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
 
+	protected final Vector<JavaPersistentAttribute> children = new Vector<JavaPersistentAttribute>();
+
 
 	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourceType resourceType) {
 		super(parent);
@@ -92,7 +94,7 @@ public abstract class AbstractJavaPersistentType
 
 		this.mapping = this.buildMapping();
 		this.initializeAttributes();
-
+		this.initializeChildren();
 	}
 
 
@@ -114,6 +116,7 @@ public abstract class AbstractJavaPersistentType
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.mapping.update();
 		this.updateAttributes();
+		this.updateChildren();
 	}
 
 
@@ -977,6 +980,22 @@ public abstract class AbstractJavaPersistentType
 
 	public void dispose() {
 		//nothing
+	}
+
+	protected void initializeChildren() {
+		this.children.addAll(this.attributes);
+	}
+
+	protected void updateChildren() {
+		this.synchronizeCollection(this.attributes, this.children, CHILDREN_COLLECTION);
+	}
+
+	public Iterable<JavaPersistentAttribute> getChildren() {
+		return IterableTools.cloneLive(this.children);
+	}
+
+	public int getChildrenSize() {
+		return this.children.size();
 	}
 
 

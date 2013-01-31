@@ -196,6 +196,8 @@ public abstract class AbstractPersistenceUnit
 
 	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
 
+	protected final Vector<JpaStructureNode> children = new Vector<JpaStructureNode>();
+
 
 	// ********** construction/initialization **********
 
@@ -228,6 +230,7 @@ public abstract class AbstractPersistenceUnit
 		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
 
 		this.initializeMetamodelFiles();
+		this.initializeChildren();
 	}
 
 
@@ -292,6 +295,8 @@ public abstract class AbstractPersistenceUnit
 
 		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
 		this.setDefaultValidationMode(this.buildDefaultValidationMode());
+
+		this.updateChildren();
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -352,6 +357,33 @@ public abstract class AbstractPersistenceUnit
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			mappingFileRef.dispose();
 		}
+	}
+
+	protected void initializeChildren() {
+		CollectionTools.addAll(this.children, this.getMappingFileRefs());
+		CollectionTools.addAll(this.children, this.getSpecifiedClassRefs());
+
+		//TODO why are we not displaying these in the JPA Structure View for a persistence.xml?
+		//CollectionTools.addAll(this.children, this.getImpliedClassRefs());
+		CollectionTools.addAll(this.children, this.getJarFileRefs());		
+	}
+
+	protected void updateChildren() {
+		Vector<JpaStructureNode> newChildren = new Vector<JpaStructureNode>();
+		CollectionTools.addAll(newChildren, this.getMappingFileRefs());
+		CollectionTools.addAll(newChildren, this.getSpecifiedClassRefs());
+		//CollectionTools.addAll(children, this.getImpliedClassRefs());
+		CollectionTools.addAll(newChildren, this.getJarFileRefs());
+
+		this.synchronizeCollection(newChildren, this.children, CHILDREN_COLLECTION);
+	}
+
+	public Iterable<JpaStructureNode> getChildren() {
+		return IterableTools.cloneLive(this.children);
+	}
+
+	public int getChildrenSize() {
+		return this.children.size();
 	}
 
 

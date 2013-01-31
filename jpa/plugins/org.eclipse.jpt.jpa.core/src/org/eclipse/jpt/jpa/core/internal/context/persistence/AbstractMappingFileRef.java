@@ -194,6 +194,14 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		}
 	}
 
+	public Iterable<JpaStructureNode> getChildren() {
+		return EmptyIterable.instance();
+	}
+
+	public int getChildrenSize() {
+		return 0;
+	}
+
 
 	// ********** queries/generators **********
 

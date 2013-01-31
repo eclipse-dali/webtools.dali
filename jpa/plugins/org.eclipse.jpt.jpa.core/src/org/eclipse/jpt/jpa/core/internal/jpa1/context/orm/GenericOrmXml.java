@@ -261,26 +261,15 @@ public class GenericOrmXml
 		return XmlFile_.isGenericMappingFile(this);
 	}
 
-	// ********** JpaStructureNode implementation **********
 
-	public ContextType getContextType() {
-		return new ContextType(this);
+	// ********** MappingFile implementation **********
+
+	public Object getResourceMappingFile() {
+		return this.xmlResource;
 	}
 
-	public Class<OrmXml> getType() {
-		return OrmXml.class;
-	}
-
-	public JpaStructureNode getStructureNode(int textOffset) {
-		if ((this.root != null) && this.root.containsOffset(textOffset)) {
-			return this.root.getStructureNode(textOffset);
-		}
-		return this;
-	}
-
-	// never actually selected
-	public TextRange getSelectionTextRange() {
-		return TextRange.Empty.instance();
+	public OrmPersistentType getPersistentType(String name) {
+		return (this.root == null) ? null : this.root.getPersistentType(name);
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -298,16 +287,6 @@ public class GenericOrmXml
 		if (this.root != null) {
 			this.root.dispose();
 		}
-	}
-
-	// ********** MappingFile implementation **********
-
-	public Object getResourceMappingFile() {
-		return this.xmlResource;
-	}
-
-	public OrmPersistentType getPersistentType(String name) {
-		return (this.root == null) ? null : this.root.getPersistentType(name);
 	}
 
 

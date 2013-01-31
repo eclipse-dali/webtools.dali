@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemContentProviderFactory;
+import org.eclipse.jpt.jpa.ui.internal.structure.JpaFileStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemLabelProviderFactory;
 
 public class OrmXmlUiDefinition
@@ -82,7 +82,7 @@ public class OrmXmlUiDefinition
 	
 	public static final ItemTreeStateProviderFactoryProvider STRUCTURE_VIEW_FACTORY_PROVIDER =
 			new SimpleItemTreeStateProviderFactoryProvider(
-					OrmStructureItemContentProviderFactory.instance(),
+					JpaFileStructureItemContentProviderFactory.instance(),
 					OrmStructureItemLabelProviderFactory.instance()
 				);
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -198,6 +197,23 @@ public class GenericPersistenceXml
 		return false;
 	}
 
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.root == null) {
+			return;
+		}
+		if (this.getResource().equals(jpaFile.getFile())) {
+			rootStructureNodes.add(this.root);
+			return;
+		}
+		this.root.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+	}
+
+	public void dispose() {
+		if (this.root != null) {
+			this.root.dispose();
+		}
+	}
+
 	// ********** metamodel **********
 
 	public void initializeMetamodel() {
@@ -215,46 +231,6 @@ public class GenericPersistenceXml
 	public void disposeMetamodel() {
 		if (this.root != null) {
 			((Persistence2_0) this.root).disposeMetamodel();
-		}
-	}
-
-
-	// ********** JpaStructureNode implementation **********
-
-	public ContextType getContextType() {
-		return new ContextType(this);
-	}
-
-	public Class<PersistenceXml> getType() {
-		return PersistenceXml.class;
-	}
-
-	public JpaStructureNode getStructureNode(int textOffset) {
-		if (this.root.containsOffset(textOffset)) {
-			return this.root.getStructureNode(textOffset);
-		}
-		return this;
-	}
-
-	// never actually selected
-	public TextRange getSelectionTextRange() {
-		return TextRange.Empty.instance();
-	}
-
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.root == null) {
-			return;
-		}
-		if (this.getResource().equals(jpaFile.getFile())) {
-			rootStructureNodes.add(this.root);
-			return;
-		}
-		this.root.gatherRootStructureNodes(jpaFile, rootStructureNodes);
-	}
-
-	public void dispose() {
-		if (this.root != null) {
-			this.root.dispose();
 		}
 	}
 

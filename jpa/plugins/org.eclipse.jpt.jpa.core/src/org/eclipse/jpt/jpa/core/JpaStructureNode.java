@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -63,6 +62,26 @@ public interface JpaStructureNode
 	 * structure node's JPA Details Page.
 	 */
 	Class<? extends JpaStructureNode> getType();
+
+
+	// ********** children **********
+
+	/**
+	 * String constant associated with changes to the structure
+	 * node's children.
+	 */
+	String CHILDREN_COLLECTION = "children"; //$NON-NLS-1$
+
+	/**
+	 * Return the children structure nodes, to be displayed in the JpaStructureView
+	 */
+	Iterable<? extends JpaStructureNode> getChildren();
+
+	/**
+	 * Return the size of the children structure node collection
+	 */
+	int getChildrenSize();
+
 
 	/**
 	 * Add the appropriate root structure nodes to the collection that

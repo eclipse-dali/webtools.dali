@@ -104,6 +104,8 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
 
+	protected final Vector<OrmReadOnlyPersistentAttribute> children = new Vector<OrmReadOnlyPersistentAttribute>();
+
 
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
@@ -114,6 +116,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.defaultAccess = AccessType.FIELD;  // keep this non-null
 		this.initializeSpecifiedAttributes();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
+		this.initializeChildren();
 	}
 
 
@@ -140,6 +143,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.updateDefaultAttributes();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
+		this.updateChildren();
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -1107,6 +1111,25 @@ public abstract class SpecifiedOrmPersistentType
 
 	public Class<OrmPersistentType> getType() {
 		return OrmPersistentType.class;
+	}
+
+	protected void initializeChildren() {
+		this.children.addAll(this.specifiedAttributes); //defaultAttributes haven't been built yet
+	}
+
+	protected void updateChildren() {
+		Vector<OrmReadOnlyPersistentAttribute> newChildren = new Vector<OrmReadOnlyPersistentAttribute>();
+		newChildren.addAll(this.specifiedAttributes);
+		newChildren.addAll(this.defaultAttributes);
+		this.synchronizeCollection(newChildren, this.children, CHILDREN_COLLECTION);
+	}
+
+	public Iterable<OrmReadOnlyPersistentAttribute> getChildren() {
+		return IterableTools.cloneLive(this.children);
+	}
+
+	public int getChildrenSize() {
+		return this.children.size();
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

@@ -115,6 +115,8 @@ public abstract class AbstractEntityMappings
 	// Lookup of short class name to fully qualified class name for primitives, wrappers, array primitives
 	protected static Map<String, String> PRIMITIVE_CLASSES = null;
 
+	protected final Vector<OrmPersistentType> children = new Vector<OrmPersistentType>();
+
 
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
@@ -132,8 +134,9 @@ public abstract class AbstractEntityMappings
 		this.initializePersistentTypes();
 		this.sequenceGeneratorContainer = this.buildSequenceGeneratorContainer();
 		this.tableGeneratorContainer = this.buildTableGeneratorContainer();
-
 		this.queryContainer = this.buildQueryContainer();
+
+		this.initializeChildren();
 	}
 
 
@@ -174,6 +177,7 @@ public abstract class AbstractEntityMappings
 		this.updateNodes(this.getTableGenerators());
 
 		this.queryContainer.update();
+		this.updateChildren();
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -230,6 +234,24 @@ public abstract class AbstractEntityMappings
 		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
 			ormPersistentType.dispose();
 		}
+	}
+
+	//TODO I think children needs to include all managed types, 
+	//thus JPA 2.1 converters are going to appear in the structure and project explorer views??
+	protected void initializeChildren() {
+		this.children.addAll(this.persistentTypes);
+	}
+
+	protected void updateChildren() {
+		this.synchronizeCollection(this.persistentTypes, this.children, CHILDREN_COLLECTION);
+	}
+
+	public Iterable<OrmPersistentType> getChildren() {
+		return IterableTools.cloneLive(this.children);
+	}
+
+	public int getChildrenSize() {
+		return this.children.size();
 	}
 
 

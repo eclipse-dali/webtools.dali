@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.Collection;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
@@ -28,7 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
  * @since 2.3
  */
 public interface XmlFile
-	extends JpaStructureNode
+	extends JpaContextNode
 {
 	/**
 	 * Return the XML file's root element.
@@ -57,6 +59,20 @@ public interface XmlFile
 	 */
 	boolean isGenericMappingFile();
 
+
+	/**
+	 * Add the appropriate root structure nodes to the collection that
+	 * correspond to the given JPA file.
+	 * @see JpaFile#getRootStructureNodes()
+	 */
+	void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
+
+	/**
+	 * Dispose the structure node and its children.
+	 * Typically this would be used to update the structure node's
+	 * JPA file's root structure nodes.
+	 */
+	void dispose();
 
 	// ********** XML file root element **********
 

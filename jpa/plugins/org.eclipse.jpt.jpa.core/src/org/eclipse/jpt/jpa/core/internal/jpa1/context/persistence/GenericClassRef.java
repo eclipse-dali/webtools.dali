@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -125,6 +126,15 @@ public class GenericClassRef
 			this.javaPersistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
 		}
 	}
+
+	public Iterable<JpaStructureNode> getChildren() {
+		return EmptyIterable.instance();
+	}
+
+	public int getChildrenSize() {
+		return 0;
+	}
+
 
 
 	// ********** class name **********

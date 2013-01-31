@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.Collection;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.MappingFileDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -28,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
  * @since 2.1
  */
 public interface MappingFile
-	extends JpaStructureNode, PersistentTypeContainer, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends JpaContextNode, PersistentTypeContainer, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	MappingFileRef getParent();
 
@@ -60,6 +62,20 @@ public interface MappingFile
 	 * clients.
 	 */
 	Object getResourceMappingFile();
+
+	/**
+	 * Add the appropriate root structure nodes to the collection that
+	 * correspond to the given JPA file.
+	 * @see JpaFile#getRootStructureNodes()
+	 */
+	void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
+
+	/**
+	 * Dispose the structure node and its children.
+	 * Typically this would be used to update the structure node's
+	 * JPA file's root structure nodes.
+	 */
+	void dispose();
 
 
 	// ********** queries/generators **********
