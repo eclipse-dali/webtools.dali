@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
