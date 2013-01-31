@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -53,48 +53,72 @@ public final class StringTools {
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(String... strings) {
-		return concatenate(strings, EMPTY_STRING);
+		return (strings.length != 0) ? concatenate_(IteratorTools.iterator(strings)) : EMPTY_STRING;
 	}
-	
-	/**
-	 * Return a concatenation of the specified strings inserting the given delimiter between them
-	 */
-	public static String concatenate(String[] strings, String delim) {
-		return concatenate(new ArrayIterable<String>(strings), delim);
-	}
-	
+
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(Iterable<String> strings) {
-		return concatenate(strings, EMPTY_STRING);
-	}
-	
-	/**
-	 * Return a concatenation of the specified strings inserting the given delimiter between them
-	 */
-	public static String concatenate(Iterable<String> strings, String delim) {
-		return concatenate(strings.iterator(), delim);
+		return concatenate(strings.iterator());
 	}
 
 	/**
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(Iterator<String> strings) {
-		return concatenate(strings, EMPTY_STRING);
+		return strings.hasNext() ? concatenate_(strings) : EMPTY_STRING;
 	}
-	
+
 	/**
-	 * Return a concatenation of the specified strings inserting the given delimiter between them
+	 * Pre-condition: iterator is not empty
 	 */
-	public static String concatenate(Iterator<String> strings, String delim) {
+	private static String concatenate_(Iterator<String> strings) {
 		StringBuilder sb = new StringBuilder();
 		while (strings.hasNext()) {
 			sb.append(strings.next());
-			if (strings.hasNext()) {
-				sb.append(delim);
-			}
 		}
+		return sb.toString();
+	}
+
+	/**
+	 * Return a concatenation of the specified strings
+	 * inserting the specified separator between them.
+	 */
+	public static String concatenate(String[] strings, String separator) {
+		return (strings.length != 0) ? concatenate_(IteratorTools.iterator(strings), separator) : EMPTY_STRING;
+	}
+
+	/**
+	 * Return a concatenation of the specified strings
+	 * inserting the specified separator between them.
+	 */
+	public static String concatenate(Iterable<String> strings, String separator) {
+		return concatenate(strings.iterator(), separator);
+	}
+
+	/**
+	 * Return a concatenation of the specified strings
+	 * inserting the specified separator between them.
+	 */
+	public static String concatenate(Iterator<String> strings, String separator) {
+		return strings.hasNext() ? concatenate_(strings, separator) : EMPTY_STRING;
+	}
+
+	/**
+	 * Pre-condition: iterator is not empty
+	 */
+	private static String concatenate_(Iterator<String> strings, String separator) {
+		int separatorLength = separator.length();
+		if (separatorLength == 0) {
+			return concatenate_(strings);
+		}
+		StringBuilder sb = new StringBuilder();
+		while (strings.hasNext()) {
+			sb.append(strings.next());
+			sb.append(separator);
+		}
+		sb.setLength(sb.length() - separatorLength);  // chop off trailing separator
 		return sb.toString();
 	}
 
