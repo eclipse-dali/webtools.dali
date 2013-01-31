@@ -13,8 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -161,13 +161,8 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return IterableTools.downCast(IterableTools.transform(this.getPersistentType().getAttributes(), ReadOnlyPersistentAttribute.MAPPING_TRANSFORMER));
 	}
 
-	public Iterable<JavaAttributeMapping> getAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<JavaAttributeMapping>(this.getAttributeMappings()) {
-			@Override
-			protected boolean accept(JavaAttributeMapping attributeMapping) {
-				return ObjectTools.equals(attributeMapping.getKey(), mappingKey);
-			}
-		};
+	public Iterable<JavaAttributeMapping> getAttributeMappings(String mappingKey) {
+		return IterableTools.filter(this.getAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {
@@ -179,12 +174,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping attributeMapping) {
-				return ObjectTools.equals(attributeMapping.getKey(), mappingKey);
-			}
-		};
+		return IterableTools.filter(this.getAllAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
 	}
 
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
@@ -192,13 +182,9 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
-		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping attributeMapping) {
-				return (attributeMapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-			}
-		};
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
 	}
+
 
 	// ********** attribute overrides **********
 

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -65,12 +64,7 @@ public class TypeMappingTools {
 	 * specified type mapping.
 	 */
 	protected static Iterable<DerivedIdentity2_0> getMapsIdDerivedIdentities(TypeMapping typeMapping) {
-		return new FilteringIterable<DerivedIdentity2_0>(getDerivedIdentities(typeMapping)) {
-				@Override
-				protected boolean accept(DerivedIdentity2_0 derivedIdentity) {
-					return derivedIdentity.usesMapsIdDerivedIdentityStrategy();
-				}
-			};
+		return IterableTools.filter(getDerivedIdentities(typeMapping), DerivedIdentity2_0.USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 
 	/**

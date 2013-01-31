@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
@@ -58,6 +59,20 @@ public class XsdUtil {
 	public static boolean namespaceEquals(XSDNamedComponent comp, String namespace) {
 		String xsdNamespace = comp.getTargetNamespace();
 		return (xsdNamespace == null) ? StringTools.isBlank(namespace) : xsdNamespace.equals(namespace);
+	}
+	
+	public static class NamespaceEquals
+		extends FilterAdapter<XSDNamedComponent>
+	{
+		private final String namespace;
+		public NamespaceEquals(String namespace) {
+			super();
+			this.namespace = namespace;
+		}
+		@Override
+		public boolean accept(XSDNamedComponent component) {
+			return namespaceEquals(component, this.namespace);
+		}
 	}
 	
 	public static String getResolvedUri(String location) {

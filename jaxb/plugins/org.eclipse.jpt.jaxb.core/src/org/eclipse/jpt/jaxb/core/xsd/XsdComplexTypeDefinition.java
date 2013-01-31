@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.xsd;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -64,16 +64,28 @@ public class XsdComplexTypeDefinition
 		}
 	}
 	
-	protected Iterable<XsdAttributeUse> getAttributeUses(final String namespace) {
+	protected Iterable<XsdAttributeUse> getAttributeUses(String namespace) {
 		return IterableTools.transform(
-				new FilteringIterable<XSDAttributeUse>(getXSDComponent().getAttributeUses()) {
-					@Override
-					protected boolean accept(XSDAttributeUse attrUse) {
-						return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), namespace);
-					}
-				}, XsdUtil.<XsdAttributeUse>adapterTransformer());
+				IterableTools.filter(
+						getXSDComponent().getAttributeUses(),
+						new AttributeUsesNamespace(namespace)),
+				XsdUtil.<XsdAttributeUse>adapterTransformer());
 	}
 	
+	public static class AttributeUsesNamespace
+		extends FilterAdapter<XSDAttributeUse>
+	{
+		private final String namespace;
+		public AttributeUsesNamespace(String namespace) {
+			super();
+			this.namespace = namespace;
+		}
+		@Override
+		public boolean accept(XSDAttributeUse attrUse) {
+			return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), this.namespace);
+		}
+	}
+
 	@Override
 	public XsdElementDeclaration getElement(String namespace, String name, boolean recurseChildren) {
 		for (XsdElementDeclaration element : getElementDeclarations(namespace, recurseChildren)) {
@@ -101,12 +113,10 @@ public class XsdComplexTypeDefinition
 	
 	protected Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace, boolean recurseChildren) {
 		return IterableTools.transform(
-				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations(recurseChildren)) {
-					@Override
-					protected boolean accept(XSDElementDeclaration element) {
-						return XsdUtil.namespaceEquals(element, namespace);
-					}
-				}, XsdUtil.<XsdElementDeclaration>adapterTransformer());
+				IterableTools.filter(
+						getXSDElementDeclarations(recurseChildren),
+						new XsdUtil.NamespaceEquals(namespace)),
+				XsdUtil.<XsdElementDeclaration>adapterTransformer());
 	}
 	
 	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations(boolean recurseChildren) {
@@ -116,7 +126,7 @@ public class XsdComplexTypeDefinition
 	}
 	
 	
-	private class ElementFinder
+	class ElementFinder
 			extends XSDNodeVisitor {
 		
 		private boolean recurseChildren;
@@ -124,7 +134,7 @@ public class XsdComplexTypeDefinition
 		private List<XSDElementDeclaration> elements = new ArrayList<XSDElementDeclaration>();
 		
 		
-		private ElementFinder(boolean recurseChildren) {
+		ElementFinder(boolean recurseChildren) {
 			this.recurseChildren = recurseChildren;
 		}
 		
@@ -140,7 +150,7 @@ public class XsdComplexTypeDefinition
 			this.visitChildren = false;
 			super.visitXSDElementDeclaration(node);
 			if (! this.elements.contains(node)) {
-				elements.add(node);
+				this.elements.add(node);
 			}
 			this.visitChildren = cachedVisitChildren;
 		}

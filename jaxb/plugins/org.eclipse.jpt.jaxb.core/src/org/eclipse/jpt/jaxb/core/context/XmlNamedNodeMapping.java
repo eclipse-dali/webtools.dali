@@ -1,14 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2011 Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 
 /**
@@ -62,4 +65,15 @@ public interface XmlNamedNodeMapping
 	// ***** misc *****
 	
 	XsdFeature getXsdFeature();
+
+	Filter<JaxbAttributeMapping> MAPPING_IS_NAMED_NODE_MAPPING = new MappingIsNamedNodeMapping();
+	class MappingIsNamedNodeMapping
+		extends FilterAdapter<JaxbAttributeMapping>
+	{
+		@Override
+		public boolean accept(JaxbAttributeMapping mapping) {
+			return (mapping.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
+					|| mapping.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
+		}
+	}
 }

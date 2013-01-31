@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -276,12 +276,16 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	// ********** ID mappings **********
 
 	protected Iterable<AttributeMapping> getIdAttributeMappings() {
-		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping mapping) {
-				return GenericJavaMapsIdDerivedIdentityStrategy2_0.this.mappingIsIdMapping(mapping);
-			}
-		};
+		return IterableTools.filter(this.getAllAttributeMappings(), new MappingIsIdMapping());
+	}
+
+	public class MappingIsIdMapping
+		extends FilterAdapter<AttributeMapping>
+	{
+		@Override
+		public boolean accept(AttributeMapping mapping) {
+			return GenericJavaMapsIdDerivedIdentityStrategy2_0.this.mappingIsIdMapping(mapping);
+		}
 	}
 
 	protected boolean mappingIsIdMapping(AttributeMapping mapping) {

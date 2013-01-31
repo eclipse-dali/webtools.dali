@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -31,7 +32,6 @@ public interface ContentTypeReference {
 	 */
 	IContentType getContentType();
 
-
 	Transformer<ContentTypeReference, IContentType> CONTENT_TYPE_TRANSFORMER = new ContentTypeTransformer();
 	class ContentTypeTransformer
 		extends TransformerAdapter<ContentTypeReference, IContentType>
@@ -39,6 +39,20 @@ public interface ContentTypeReference {
 		@Override
 		public IContentType transform(ContentTypeReference ref) {
 			return ref.getContentType();
+		}
+	}
+
+	class ContentIsKindOf
+		extends FilterAdapter<ContentTypeReference>
+	{
+		private final IContentType contentType;
+		public ContentIsKindOf(IContentType contentType) {
+			super();
+			this.contentType = contentType;
+		}
+		@Override
+		public boolean accept(ContentTypeReference ref) {
+			return ref.getContentType().isKindOf(this.contentType);
 		}
 	}
 }

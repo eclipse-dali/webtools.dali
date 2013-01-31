@@ -18,8 +18,9 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
@@ -92,12 +93,7 @@ final class BinaryEnum
 	}
 	
 	private Iterable<IField> getEnumConstants(IType type) {
-		return new FilteringIterable<IField>(IterableTools.iterable(this.getFields(type))) {
-			@Override
-			protected boolean accept(IField jdtField) {
-				return fieldIsEnumConstant(jdtField);
-			}
-		};
+		return IterableTools.filter(IterableTools.iterable(this.getFields(type)), FIELD_IS_ENUM_CONSTANT);
 	}
 	
 	private IField[] getFields(IType type) {
@@ -111,17 +107,23 @@ final class BinaryEnum
 	}
 	
 	private static final IField[] EMPTY_FIELD_ARRAY = new IField[0];
-	
-	/* CU private */ boolean fieldIsEnumConstant(IField field) {
-		try {
-			return field.isEnumConstant();
-		}
-		catch (JavaModelException ex) {
-			JptCommonCorePlugin.instance().logError(ex);
-			return false;
+
+	private static final Filter<IField> FIELD_IS_ENUM_CONSTANT = new FieldIsEnumConstant();
+	/* CU private */ static class FieldIsEnumConstant
+		extends FilterAdapter<IField>
+	{
+		@Override
+		public boolean accept(IField field) {
+			try {
+				return field.isEnumConstant();
+			}
+			catch (JavaModelException ex) {
+				JptCommonCorePlugin.instance().logError(ex);
+				return false;
+			}
 		}
 	}
-	
+
 	/* CU private */ JavaResourceEnumConstant buildEnumConstant(IField jdtEnumConstant) {
 		return new BinaryEnumConstant(this, jdtEnumConstant);
 	}

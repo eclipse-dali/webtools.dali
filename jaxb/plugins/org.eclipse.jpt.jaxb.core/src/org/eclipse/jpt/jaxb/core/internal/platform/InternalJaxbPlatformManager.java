@@ -330,32 +330,14 @@ public class InternalJaxbPlatformManager
 	 * the specified facet version.
 	 */
 	private Iterable<JaxbPlatformConfig> selectJaxbPlatformConfigs(Iterable<JaxbPlatformConfig> configs, IProjectFacetVersion jaxbFacetVersion) {
-		return IterableTools.filter(configs, this.buildJaxbPlatformConfigFilter(jaxbFacetVersion));
-	}
-
-	private Filter<JaxbPlatformConfig> buildJaxbPlatformConfigFilter(IProjectFacetVersion jaxbFacetVersion) {
-		return new FacetVersionJaxbPlatformConfigFilter(jaxbFacetVersion);
-	}
-
-	/* CU private */ static class FacetVersionJaxbPlatformConfigFilter
-		extends Filter.Adapter<JaxbPlatformConfig>
-	{
-		private final IProjectFacetVersion jaxbFacetVersion;
-		FacetVersionJaxbPlatformConfigFilter(IProjectFacetVersion jaxbFacetVersion) {
-			super();
-			this.jaxbFacetVersion = jaxbFacetVersion;
-		}
-		@Override
-		public boolean accept(JaxbPlatformConfig config) {
-			return config.supportsJaxbFacetVersion(this.jaxbFacetVersion);
-		}
+		return IterableTools.filter(configs, new JaxbPlatformConfig.SupportsJaxbFacetVersion(jaxbFacetVersion));
 	}
 
 	/**
 	 * "Default" platforms (i.e. third-party platforms flagged as "default").
 	 */
 	private Iterable<JaxbPlatformConfig> getDefaultJaxbPlatformConfigs() {
-		return IterableTools.filter(this.getJaxbPlatformConfigs(), JaxbPlatformConfig.DEFAULT_FILTER);
+		return IterableTools.filter(this.getJaxbPlatformConfigs(), JaxbPlatformConfig.IS_DEFAULT);
 	}
 
 	/**

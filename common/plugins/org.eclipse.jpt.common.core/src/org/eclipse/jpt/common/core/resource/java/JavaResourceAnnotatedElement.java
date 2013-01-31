@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.core.resource.java;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
@@ -46,8 +48,8 @@ public interface JavaResourceAnnotatedElement
 	 * <br>
 	 * This is only used to return top-level annotations that are not container
 	 * or nestable annotations.
-	 * @see {@link #getContainerAnnotation(String)}
-	 * @see {@link #getAnnotations(String)}
+	 * @see #getContainerAnnotation(String)
+	 * @see #getAnnotations(String)
 	 */
 	Iterable<Annotation> getAnnotations();
 	
@@ -177,16 +179,52 @@ public interface JavaResourceAnnotatedElement
 	 * annotations.
 	 */
 	boolean isAnnotated();
+	Filter<JavaResourceAnnotatedElement> IS_ANNOTATED = new IsAnnotated();
+	class IsAnnotated
+		extends FilterAdapter<JavaResourceAnnotatedElement>
+	{
+		@Override
+		public boolean accept(JavaResourceAnnotatedElement element) {
+			return element.isAnnotated();
+		}
+	}
 
 	/**
 	 * Return whether the underlying JDT member is annotated with any of the given annotations.
 	 */
 	boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames);
 
+	class IsAnnotatedWithAnyOf
+		extends FilterAdapter<JavaResourceAnnotatedElement>
+	{
+		private final Iterable<String> annotationNames;
+		public IsAnnotatedWithAnyOf(Iterable<String> annotationNames) {
+			super();
+			this.annotationNames = annotationNames;
+		}
+		@Override
+		public boolean accept(JavaResourceAnnotatedElement element) {
+			return element.isAnnotatedWithAnyOf(this.annotationNames);
+		}
+	}
+
 	/**
 	 * Return the element's ASTNode type
 	 */
 	AstNodeType getAstNodeType();
+	class AstNodeTypeEquals
+		extends FilterAdapter<JavaResourceAnnotatedElement>
+	{
+		private final AstNodeType astNodeType;
+		public AstNodeTypeEquals(AstNodeType astNodeType) {
+			super();
+			this.astNodeType = astNodeType;
+		}
+		@Override
+		public boolean accept(JavaResourceAnnotatedElement element) {
+			return element.getAstNodeType() == this.astNodeType;
+		}
+	}
 	
 	/**
 	 * Return the text range for the member's name.
@@ -262,8 +300,8 @@ public interface JavaResourceAnnotatedElement
 		/**
 		 * Return whether the given astNodeType matches this type
 		 */
-		public boolean matches(int astNodeType) {
-			return this.astNodeType == astNodeType;
+		public boolean matches(int type) {
+			return this.astNodeType == type;
 		}
 	}
 }

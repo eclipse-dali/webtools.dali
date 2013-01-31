@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -40,6 +41,21 @@ public interface JaxbFile
 	 * Return the JPA file's content type.
 	 */
 	IContentType getContentType();
+
+	class ContentIsKindOf
+		extends FilterAdapter<JaxbFile>
+	{
+		private final IContentType contentType;
+		public ContentIsKindOf(IContentType contentType) {
+			super();
+			this.contentType = contentType;
+		}
+		@Override
+		public boolean accept(JaxbFile jaxbFile) {
+			return jaxbFile.getContentType().isKindOf(this.contentType);
+		}
+	}
+
 	
 	/**
 	 * Return the resource model corresponding to the JPA file; typically a JPA

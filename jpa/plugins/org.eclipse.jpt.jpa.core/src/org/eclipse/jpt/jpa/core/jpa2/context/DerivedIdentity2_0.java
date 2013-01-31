@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -73,6 +75,15 @@ public interface DerivedIdentity2_0
 	 * Return whether the mapping uses an ID strategy.
 	 */
 	boolean usesIdDerivedIdentityStrategy();
+	Filter<DerivedIdentity2_0> USES_ID_DERIVED_IDENTITY_STRATEGY = new UsesIdDerivedIdentityStrategy();
+	class UsesIdDerivedIdentityStrategy
+		extends FilterAdapter<DerivedIdentity2_0>
+	{
+		@Override
+		public boolean accept(DerivedIdentity2_0 identity) {
+			return identity.usesIdDerivedIdentityStrategy();
+		}
+	}
 
 	/**
 	 * Configure the mapping so it has an ID strategy.
@@ -101,6 +112,15 @@ public interface DerivedIdentity2_0
 	 * Return whether the mapping uses a "maps ID" strategy.
 	 */
 	boolean usesMapsIdDerivedIdentityStrategy();
+	Filter<DerivedIdentity2_0> USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new UsesMapsIdDerivedIdentityStrategy();
+	class UsesMapsIdDerivedIdentityStrategy
+		extends FilterAdapter<DerivedIdentity2_0>
+	{
+		@Override
+		public boolean accept(DerivedIdentity2_0 identity) {
+			return identity.usesMapsIdDerivedIdentityStrategy();
+		}
+	}
 
 	/**
 	 * Configure the mapping so it has a "maps ID" strategy.

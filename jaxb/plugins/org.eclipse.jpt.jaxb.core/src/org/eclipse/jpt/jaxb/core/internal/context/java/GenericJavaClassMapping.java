@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
@@ -43,6 +46,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRegistry.MethodIsElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -662,24 +666,27 @@ public class GenericJavaClassMapping
 	
 	public JaxbAttributeMapping getXmlIdMapping() {
 		Iterator<XmlNamedNodeMapping> allXmlIdMappings = 
-				new FilteringIterable<XmlNamedNodeMapping>(
-						new SubIterableWrapper<JaxbAttributeMapping, XmlNamedNodeMapping>(
-								new FilteringIterable<JaxbAttributeMapping>(
-										IterableTools.transform(getAllAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER)) {
-									@Override
-									protected boolean accept(JaxbAttributeMapping o) {
-										return (o.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
-												|| o.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
-									}
-								})) {
-					@Override
-					protected boolean accept(XmlNamedNodeMapping o) {
-						return o.getXmlID() != null;
-					}
-				}.iterator();
-		return (allXmlIdMappings.hasNext()) ? allXmlIdMappings.next() : null;
+				IterableTools.filter(
+						IterableTools.<JaxbAttributeMapping, XmlNamedNodeMapping>downCast(
+								IterableTools.filter(
+										IterableTools.transform(
+												getAllAttributes(),
+												JaxbPersistentAttribute.MAPPING_TRANSFORMER),
+										XmlNamedNodeMapping.MAPPING_IS_NAMED_NODE_MAPPING)),
+						MAPPING_HAS_XML_ID).iterator();
+		return allXmlIdMappings.hasNext() ? allXmlIdMappings.next() : null;
 	}
 	
+	protected static final Filter<XmlNamedNodeMapping> MAPPING_HAS_XML_ID = new MappingHasXmlID();
+	public static class MappingHasXmlID
+		extends FilterAdapter<XmlNamedNodeMapping>
+	{
+		@Override
+		public boolean accept(XmlNamedNodeMapping mapping) {
+			return mapping.getXmlID() != null;
+		}
+	}
+
 	protected Iterable<? extends JaxbAttributeMapping> getAttributeMappings() {
 		return IterableTools.transform(getAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER);
 	}

@@ -44,6 +44,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
@@ -70,7 +71,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -538,12 +538,10 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JpaFile> getJpaFiles(final IContentType contentType) {
-		return new FilteringIterable<JpaFile>(this.getJpaFiles()) {
-			@Override
-			protected boolean accept(JpaFile jpaFile) {
-				return jpaFile.getContentType().isKindOf(contentType);
-			}
-		};
+		return IterableTools.filter(
+				this.getJpaFiles(),
+				new ContentTypeReference.ContentIsKindOf(contentType)
+			);
 	}
 
 	@Override
@@ -825,12 +823,8 @@ public abstract class AbstractJpaProject
 	 * @see JavaResourceAbstractType#isAnnotated()
 	 */
 	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceTypes() {
-		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
-			@Override
-			protected boolean accept(JavaResourceAbstractType jraType) {
-				return jraType.isAnnotated();  // i.e. the type has a valid JPA type annotation
-			}
-		};
+		// i.e. the type has a valid JPA type annotation
+		return IterableTools.filter(this.getInternalSourceJavaResourceTypes(), JavaResourceAnnotatedElement.IS_ANNOTATED);
 	}
 
 	/**
@@ -850,13 +844,11 @@ public abstract class AbstractJpaProject
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
 	protected Iterable<JavaResourceAbstractType> getInternalMappedSourceJavaResourceTypes() {
-		final Iterable<String> typeMappingAnnotationNames = this.getTypeMappingAnnotationNames();
-		return new FilteringIterable<JavaResourceAbstractType>(this.getAnnotatedJavaSourceTypes()) {
-			@Override
-			protected boolean accept(JavaResourceAbstractType jraType) {
-				return jraType.isAnnotatedWithAnyOf(typeMappingAnnotationNames);
-			}
-		};
+		Iterable<String> typeMappingAnnotationNames = this.getTypeMappingAnnotationNames();
+		return IterableTools.filter(
+				this.getAnnotatedJavaSourceTypes(),
+				new JavaResourceAnnotatedElement.IsAnnotatedWithAnyOf(typeMappingAnnotationNames)
+			);
 	}
 
 	public Iterable<String> getTypeMappingAnnotationNames() {
@@ -996,13 +988,11 @@ public abstract class AbstractJpaProject
 		if (this.metamodelSourceFolderName == null) {
 			return EmptyIterable.instance();
 		}
-		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
-		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
-			@Override
-			protected boolean accept(JavaResourceAbstractType jrat) {
-				return MetamodelSynchronizer.MetamodelTools.isGeneratedMetamodelTopLevelType(jrat, genSourceFolder);
-			}
-		};
+		IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
+		return IterableTools.filter(
+				this.getInternalSourceJavaResourceTypes(),
+				new MetamodelSynchronizer.MetamodelTools.IsGeneratedMetamodelTopLevelType(genSourceFolder)
+			);
 	}
 
 	public JavaResourceAbstractType getGeneratedMetamodelTopLevelType(IFile file) {

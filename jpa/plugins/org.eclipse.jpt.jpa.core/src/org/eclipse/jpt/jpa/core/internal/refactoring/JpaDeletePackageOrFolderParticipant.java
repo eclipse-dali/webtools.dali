@@ -29,7 +29,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -174,19 +174,32 @@ public class JpaDeletePackageOrFolderParticipant
 	protected Iterable<IFile> getMappingFilesOnClasspath(final JpaProject jpaProject) {
 		final IJavaProject javaProject = jpaProject.getJavaProject();
 		final JpaPlatform jpaPlatform = jpaProject.getJpaPlatform();
-		return new FilteringIterable<IFile>(IterableTools.concatenate(
-				getPossibleMappingFilesInFolders(),
-				getPossibleMappingFilesInPackageFragments())) 
-			{
-				@Override
-				protected boolean accept(IFile file) {
-					if (javaProject.isOnClasspath(file)) {
-						IContentType contentType = jpaPlatform.getContentType(file);
-						return contentType != null && contentType.isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
-					}
-					return false;
-				}
-			};
+		return IterableTools.filter(
+				IterableTools.concatenate(
+					getPossibleMappingFilesInFolders(),
+					getPossibleMappingFilesInPackageFragments()
+				),
+				new MappingFileIsOnClasspath(javaProject, jpaPlatform));
+	}
+
+	public static class MappingFileIsOnClasspath
+		extends FilterAdapter<IFile>
+	{
+		private final IJavaProject javaProject;
+		private final JpaPlatform jpaPlatform;
+		public MappingFileIsOnClasspath(IJavaProject javaProject, JpaPlatform jpaPlatform) {
+			super();
+			this.javaProject = javaProject;
+			this.jpaPlatform = jpaPlatform;
+		}
+		@Override
+		public boolean accept(IFile file) {
+			if (this.javaProject.isOnClasspath(file)) {
+				IContentType contentType = this.jpaPlatform.getContentType(file);
+				return (contentType != null) && contentType.isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
+			}
+			return false;
+		}
 	}
 	
 	protected Iterable<IFile> getPossibleMappingFilesInFolders() {

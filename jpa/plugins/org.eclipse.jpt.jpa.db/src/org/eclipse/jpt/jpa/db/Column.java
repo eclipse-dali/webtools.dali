@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.db;
 
 import org.eclipse.jpt.common.utility.JavaType;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 
 /**
  * Database column
@@ -35,6 +37,15 @@ public interface Column
 	 * Return whether the column is part of its table's primary key.
 	 */
 	boolean isPartOfPrimaryKey();
+	Filter<Column> IS_PART_OF_PRIMARY_KEY = new IsPartOfPrimaryKey();
+	public static class IsPartOfPrimaryKey
+		extends FilterAdapter<Column>
+	{
+		@Override
+		public boolean accept(Column column) {
+			return column.isPartOfPrimaryKey();
+		}
+	}
 
 	/**
 	 * Return whether the column is part of one of its table's foreign keys.

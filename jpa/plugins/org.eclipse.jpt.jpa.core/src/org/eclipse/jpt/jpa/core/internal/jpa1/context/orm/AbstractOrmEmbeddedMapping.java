@@ -13,9 +13,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
@@ -123,17 +121,12 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 
 	protected Iterable<RelationshipMapping> allOverridableAssociations() {
 		return (this.targetEmbeddable != null) ?
-				new SubIterableWrapper<AttributeMapping, RelationshipMapping>(this.getAllOverridableAssociations_()) :
-				EmptyIterable.<RelationshipMapping>instance();
+				IterableTools.<AttributeMapping, RelationshipMapping>downCast(this.getAllOverridableAssociations_()) :
+				IterableTools.<RelationshipMapping>emptyIterable();
 	}
 
 	protected Iterable<AttributeMapping> getAllOverridableAssociations_() {
-		return new FilteringIterable<AttributeMapping>(this.targetEmbeddable.getAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping attributeMapping) {
-				return attributeMapping.isOverridableAssociationMapping();
-			}
-		};
+		return IterableTools.filter(this.targetEmbeddable.getAttributeMappings(), AttributeMapping.IS_OVERRIDABLE_ASSOCIATION_MAPPING);
 	}
 
 	@Override

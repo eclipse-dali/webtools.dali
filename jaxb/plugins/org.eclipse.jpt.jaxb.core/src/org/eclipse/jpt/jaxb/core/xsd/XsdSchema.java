@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.InstanceOfFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -89,25 +89,14 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions(final String namespace) {
-		if (XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001.equals(namespace)) {
-			return getBuiltInXSDTypeDefinitions();
-		}
-		return new FilteringIterable<XSDTypeDefinition>(getDeclaredXSDTypeDefinitions()) {
-			@Override
-			protected boolean accept(XSDTypeDefinition o) {
-				return XsdUtil.namespaceEquals(o, namespace);
-			}
-		};
+		return XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001.equals(namespace) ?
+				getBuiltInXSDTypeDefinitions() :
+				IterableTools.filter(getDeclaredXSDTypeDefinitions(), new XsdUtil.NamespaceEquals(namespace));
 	}
 	
 	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions(String namespace) {
 		return IterableTools.downCast(
-			new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions(namespace)) {
-				@Override
-				protected boolean accept(XSDTypeDefinition o) {
-					return o instanceof XSDSimpleTypeDefinition;
-				}
-			});
+			IterableTools.filter(getXSDTypeDefinitions(namespace), new InstanceOfFilter<XSDTypeDefinition>(XSDSimpleTypeDefinition.class)));
 	}
 	
 	public Iterable<XsdElementDeclaration> getElementDeclarations() {
@@ -116,12 +105,10 @@ public class XsdSchema
 	
 	public Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace) {
 		return IterableTools.transform(
-				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations()) {
-					@Override
-					protected boolean accept(XSDElementDeclaration o) {
-						return XsdUtil.namespaceEquals(o, namespace);
-					}
-				}, XsdUtil.<XsdElementDeclaration>adapterTransformer());
+				IterableTools.filter(
+						getXSDElementDeclarations(),
+						new XsdUtil.NamespaceEquals(namespace)),
+				XsdUtil.<XsdElementDeclaration>adapterTransformer());
 	}
 	
 	public XsdElementDeclaration getElementDeclaration(String namespace, String name) {

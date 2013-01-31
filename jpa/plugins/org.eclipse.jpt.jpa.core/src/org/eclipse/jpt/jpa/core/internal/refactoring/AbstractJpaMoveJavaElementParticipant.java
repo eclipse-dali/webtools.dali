@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -219,14 +219,9 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 		return IterableTools.children(this.getElementsOnClasspath(persistenceUnit.getJpaProject()), transformer);
 	}
 
-	protected Iterable<IJavaElement> getElementsOnClasspath(final JpaProject jpaProject) {
-		final IJavaProject javaProject = jpaProject.getJavaProject();
-		return new FilteringIterable<IJavaElement>(this.originalJavaElements.keySet()) {
-			@Override
-			protected boolean accept(IJavaElement javaElement) {
-				return javaProject.isOnClasspath(javaElement);
-			}
-		};
+	protected Iterable<IJavaElement> getElementsOnClasspath(JpaProject jpaProject) {
+		IJavaProject javaProject = jpaProject.getJavaProject();
+		return IterableTools.filter(this.originalJavaElements.keySet(), new JDTTools.JavaElementIsOnClasspath(javaProject));
 	}
 
 	protected abstract Iterable<ReplaceEdit> createPersistenceXmlReplaceEdits(PersistenceUnit persistenceUnit, IJavaElement javaElement, Object destination);

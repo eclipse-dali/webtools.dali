@@ -33,9 +33,9 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -393,12 +393,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<OrmReadOnlyPersistentAttribute> getAttributesNamed(final String attributeName) {
-		return new FilteringIterable<OrmReadOnlyPersistentAttribute>(this.getAttributes()) {
-			@Override
-			protected boolean accept(OrmReadOnlyPersistentAttribute attribute) {
-				return ObjectTools.equals(attributeName, attribute.getName());
-			}
-		};
+		return IterableTools.filter(this.getAttributes(), new ReadOnlyPersistentAttribute.NameEquals(attributeName));
 	}
 
 	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
@@ -857,12 +852,16 @@ public abstract class SpecifiedOrmPersistentType
 	 * specified in the <code>orm.xml</code> persistent type.
 	 */
 	protected Iterable<JavaResourceField> getDefaultJavaResourceFields() {
-		return new FilteringIterable<JavaResourceField>(this.getJavaResourceFields()) {
-				@Override
-				protected boolean accept(JavaResourceField javaResourceField) {
-					return SpecifiedOrmPersistentType.this.javaResourceFieldIsDefault(javaResourceField);
-				}
-			};
+		return IterableTools.filter(this.getJavaResourceFields(), new JavaResourceFieldIsDefault());
+	}
+
+	public class JavaResourceFieldIsDefault
+		extends FilterAdapter<JavaResourceField>
+	{
+		@Override
+		public boolean accept(JavaResourceField javaResourceField) {
+			return SpecifiedOrmPersistentType.this.javaResourceFieldIsDefault(javaResourceField);
+		}
 	}
 
 	protected Iterable<JavaResourceField> getJavaResourceFields() {

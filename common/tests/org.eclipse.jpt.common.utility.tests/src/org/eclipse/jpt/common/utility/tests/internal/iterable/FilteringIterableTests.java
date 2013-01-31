@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
@@ -73,32 +73,33 @@ public class FilteringIterableTests
 	}
 
 	private Iterable<String> buildIterable() {
-		return this.buildFilteringIterable(this.buildNestedIterable());
-	}
-
-	private Iterable<String> buildFilteringIterable(Iterable<String> nestedIterable) {
-		return new FilteringIterable<String>(nestedIterable) {
-			@Override
-			protected boolean accept(String s) {
-				return s.startsWith(PREFIX);
-			}
-		};
+		return IterableTools.filter(this.buildNestedIterable(), this.buildFilter());
 	}
 
 	private Filter<String> buildFilter() {
-		return new Filter<String>() {
-			public boolean accept(String s) {
-				return s.startsWith(PREFIX);
-			}
-		};
+		return new StringStartsWithPrefix();
+	}
+
+	/* CU private */ static class StringStartsWithPrefix
+		extends FilterAdapter<String>
+	{
+		@Override
+		public boolean accept(String s) {
+			return s.startsWith(PREFIX);
+		}
 	}
 
 	private Filter<Object> buildSuperFilter() {
-		return new Filter<Object>() {
-			public boolean accept(Object o) {
-				return o.toString().startsWith(PREFIX);
-			}
-		};
+		return new ObjectToStringStartsWithPrefix();
+	}
+
+	/* CU private */ static class ObjectToStringStartsWithPrefix
+		extends FilterAdapter<Object>
+	{
+		@Override
+		public boolean accept(Object o) {
+			return o.toString().startsWith(PREFIX);
+		}
 	}
 
 	private Iterable<String> buildNestedIterable() {

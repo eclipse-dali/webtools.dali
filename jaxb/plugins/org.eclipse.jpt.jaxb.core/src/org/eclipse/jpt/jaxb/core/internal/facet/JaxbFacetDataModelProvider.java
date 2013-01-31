@@ -18,7 +18,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -210,12 +209,7 @@ public abstract class JaxbFacetDataModelProvider
 	}
 	
 	protected Iterable<JaxbPlatformConfig> buildValidPlatformConfigs() {
-		return new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformConfigs()) {
-			@Override
-			protected boolean accept(JaxbPlatformConfig o) {
-				return o.supportsJaxbFacetVersion(getProjectFacetVersion());
-			}
-		};
+		return IterableTools.filter(this.getJaxbPlatformConfigs(), new JaxbPlatformConfig.SupportsJaxbFacetVersion(getProjectFacetVersion()));
 	}
 
 	protected Iterable<JaxbPlatformConfig> getJaxbPlatformConfigs() {

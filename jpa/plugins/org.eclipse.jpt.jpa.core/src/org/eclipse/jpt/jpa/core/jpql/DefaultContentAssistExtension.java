@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -172,7 +172,7 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Iterable<String> columnNames(String tableName, final String prefix) {
+	public Iterable<String> columnNames(String tableName, String prefix) {
 
 		Schema schema = getSchema();
 
@@ -190,12 +190,21 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 			return table.getSortedColumnIdentifiers();
 		}
 
-		return new FilteringIterable<String>(table.getSortedColumnIdentifiers()) {
-			@Override
-			protected boolean accept(String name) {
-				return ExpressionTools.startWithIgnoreCase(name, prefix);
-			}
-		};
+		return IterableTools.filter(table.getSortedColumnIdentifiers(), new ExpressionStartsWithIgnoreCase(prefix));
+	}
+
+	public static class ExpressionStartsWithIgnoreCase
+		extends FilterAdapter<String>
+	{
+		private final String prefix;
+		public ExpressionStartsWithIgnoreCase(String prefix) {
+			super();
+			this.prefix = prefix;
+		}
+		@Override
+		public boolean accept(String string) {
+			return ExpressionTools.startWithIgnoreCase(string, this.prefix);
+		}
 	}
 
 	protected Schema getSchema() {
@@ -241,19 +250,12 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Iterable<String> tableNames(final String prefix) {
+	public Iterable<String> tableNames(String prefix) {
 
 		Schema schema = getSchema();
 
-		if (schema == null) {
-			return Collections.emptyList();
-		}
-
-		return new FilteringIterable<String>(tableNames(schema)) {
-			@Override
-			protected boolean accept(String tableName) {
-				return StringTools.startsWithIgnoreCase(tableName, prefix);
-			}
-		};
+		return (schema == null) ?
+				IterableTools.<String>emptyIterable() :
+				IterableTools.filter(tableNames(schema), new StringTools.StartsWithIgnoreCase(prefix));
 	}
 }

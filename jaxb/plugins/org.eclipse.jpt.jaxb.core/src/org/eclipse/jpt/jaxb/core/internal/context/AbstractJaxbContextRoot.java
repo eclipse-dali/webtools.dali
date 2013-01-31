@@ -20,12 +20,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -258,31 +258,36 @@ public abstract class AbstractJaxbContextRoot
 	 * - all resource enums with @XmlEnum
 	 * - all types listed in jaxb.index files.
 	 */
+	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceAbstractType> calculateInitialTypes() {
 		return IterableTools.concatenate(
-				new FilteringIterable<JavaResourceAbstractType>(
-						getJaxbProject().getJavaSourceResourceTypes()) {
-					@Override
-					protected boolean accept(JavaResourceAbstractType o) {
-						if (o.getAstNodeType() == JavaResourceAbstractType.AstNodeType.TYPE) {
-							if (o.getAnnotation(JAXB.XML_REGISTRY) != null) {
-								return true;
-							}
-						}
-						if (o.getAstNodeType() == JavaResourceAbstractType.AstNodeType.ENUM) {
-							if (o.getAnnotation(JAXB.XML_ENUM) != null) {
-								return true;
-							}
-						}
-						return o.getAnnotation(JAXB.XML_TYPE) != null
-								|| o.getAnnotation(JAXB.XML_ROOT_ELEMENT) != null
-								|| o.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0;
-					}
-				},
+				IterableTools.filter(getJaxbProject().getJavaSourceResourceTypes(), JAVA_RESOURCE_TYPE_IS_ANNOTATED),
 				IterableTools.removeNulls(
 						IterableTools.transform(
 								IterableTools.children(getJaxbProject().getJaxbIndexResources(), JaxbIndexResource.CLASS_NAMES_TRANSFORMER),
 								new JavaResourceTypeTransformer())));
+	}
+	
+	public static final Filter<JavaResourceAbstractType> JAVA_RESOURCE_TYPE_IS_ANNOTATED = new JavaResourceTypeIsAnnotated();
+	public static class JavaResourceTypeIsAnnotated
+		extends FilterAdapter<JavaResourceAbstractType>
+	{
+		@Override
+		public boolean accept(JavaResourceAbstractType type) {
+			if (type.getAstNodeType() == JavaResourceAbstractType.AstNodeType.TYPE) {
+				if (type.getAnnotation(JAXB.XML_REGISTRY) != null) {
+					return true;
+				}
+			}
+			if (type.getAstNodeType() == JavaResourceAbstractType.AstNodeType.ENUM) {
+				if (type.getAnnotation(JAXB.XML_ENUM) != null) {
+					return true;
+				}
+			}
+			return type.getAnnotation(JAXB.XML_TYPE) != null
+					|| type.getAnnotation(JAXB.XML_ROOT_ELEMENT) != null
+					|| type.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0;
+		}
 	}
 	
 	protected class JavaResourceTypeTransformer
@@ -330,13 +335,9 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	protected JavaType buildType(JavaResourceAbstractType resourceType) {
-		TypeKind kind = calculateJaxbTypeKind(resourceType);
-		if (kind == TypeKind.ENUM) {
-			return buildJaxbEnum((JavaResourceEnum) resourceType);
-		}
-		else {
-			return buildJaxbClass((JavaResourceType) resourceType);
-		}
+		return (calculateJaxbTypeKind(resourceType) == TypeKind.ENUM) ?
+				buildJaxbEnum((JavaResourceEnum) resourceType) :
+				buildJaxbClass((JavaResourceType) resourceType);
 	}
 	
 	
@@ -445,52 +446,37 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	public Iterable<JavaType> getJavaTypes(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JavaType>(getJavaTypes()) {
-			@Override
-			protected boolean accept(JavaType o) {
-				return o.getTypeName().getPackageName().equals(jaxbPackage.getName());
-			}
-		};
+		return IterableTools.filter(getJavaTypes(), new JavaTypeIsInPackage(jaxbPackage));
+	}
+
+	public static class JavaTypeIsInPackage
+		extends FilterAdapter<JavaType>
+	{
+		private final JaxbPackage jaxbPackage;
+		public JavaTypeIsInPackage(JaxbPackage jaxbPackage) {
+			super();
+			this.jaxbPackage = jaxbPackage;
+		}
+		@Override
+		public boolean accept(JavaType javaType) {
+			return javaType.getTypeName().getPackageName().equals(this.jaxbPackage.getName());
+		}
 	}
 	
 	public Iterable<JavaClass> getJavaClasses() {
-		return new SubIterableWrapper<JavaType, JavaClass>(
-				new FilteringIterable<JavaType>(getJavaTypes()) {
-					@Override
-					protected boolean accept(JavaType o) {
-						return o.getKind() == TypeKind.CLASS;
-					}
-				});
+		return IterableTools.downCast(IterableTools.filter(getJavaTypes(), new JavaType.IsKind(TypeKind.CLASS)));
 	}
 	
 	public Iterable<JavaClass> getJavaClasses(JaxbPackage jaxbPackage) {
-		return new SubIterableWrapper<JavaType, JavaClass>(
-				new FilteringIterable<JavaType>(getJavaTypes(jaxbPackage)) {
-					@Override
-					protected boolean accept(JavaType o) {
-						return o.getKind() == TypeKind.CLASS;
-					}
-				});
+		return IterableTools.downCast(IterableTools.filter(getJavaTypes(jaxbPackage), new JavaType.IsKind(TypeKind.CLASS)));
 	}
 	
 	public Iterable<JavaEnum> getJavaEnums() {
-		return new SubIterableWrapper<JavaType, JavaEnum>(
-				new FilteringIterable<JavaType>(getJavaTypes()) {
-					@Override
-					protected boolean accept(JavaType o) {
-						return o.getKind() == TypeKind.ENUM;
-					}
-				});
+		return IterableTools.downCast(IterableTools.filter(getJavaTypes(), new JavaType.IsKind(TypeKind.ENUM)));
 	}
 	
 	public Iterable<JavaEnum> getJavaEnums(JaxbPackage jaxbPackage) {
-		return new SubIterableWrapper<JavaType, JavaEnum>(
-				new FilteringIterable<JavaType>(getJavaTypes(jaxbPackage)) {
-					@Override
-					protected boolean accept(JavaType o) {
-						return o.getKind() == TypeKind.ENUM;
-					}
-				});
+		return IterableTools.downCast(IterableTools.filter(getJavaTypes(jaxbPackage), new JavaType.IsKind(TypeKind.ENUM)));
 	}
 	
 	

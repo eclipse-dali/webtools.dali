@@ -43,6 +43,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompi
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
@@ -53,8 +54,8 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -347,12 +348,7 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected Iterable<JaxbFile> getJaxbFiles(final IContentType contentType) {
-		return new FilteringIterable<JaxbFile>(this.getJaxbFiles()) {
-			@Override
-			protected boolean accept(JaxbFile jaxbFile) {
-				return jaxbFile.getContentType().isKindOf(contentType);
-			}
-		};
+		return IterableTools.filter(this.getJaxbFiles(), new JaxbFile.ContentIsKindOf(contentType));
 	}
 
 	@Override
@@ -671,12 +667,7 @@ public abstract class AbstractJaxbProject
 	}
 	
 	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceResourceTypes() {
-		return new FilteringIterable<JavaResourceAbstractType>(getJavaSourceResourceTypes()) {
-			@Override
-			protected boolean accept(JavaResourceAbstractType type) {
-				return type.isAnnotated();
-			}
-		};
+		return IterableTools.filter(getJavaSourceResourceTypes(), JavaResourceAnnotatedElement.IS_ANNOTATED);
 	}
 	
 //	public Iterable<String> getAnnotatedJavaSourceClassNames() {
@@ -722,12 +713,7 @@ public abstract class AbstractJaxbProject
 	}
 	
 	public Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages() {
-		return new FilteringIterable<JavaResourcePackage>(this.getJavaResourcePackages()) {
-			@Override
-			protected boolean accept(JavaResourcePackage resourcePackage) {
-				return resourcePackage.isAnnotated();  // i.e. the package has a valid package annotation
-			}
-		};
+		return IterableTools.filter(this.getJavaResourcePackages(), JavaResourceAnnotatedElement.IS_ANNOTATED);
 	}
 	
 	public JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName) {

@@ -16,12 +16,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -130,13 +130,12 @@ public class GenericJarFile
 
 	//only accept types, enums aren't valid for JPA
 	protected Iterable<JavaResourceType> getJavaResourceTypes() {
-		return new SubIterableWrapper<JavaResourceAbstractType, JavaResourceType>(
-			new FilteringIterable<JavaResourceAbstractType>(this.getJavaResourceAbstractTypes()) {
-				@Override
-				protected boolean accept(JavaResourceAbstractType o) {
-					return o.getAstNodeType() == AstNodeType.TYPE;
-				}
-			});
+		return IterableTools.downCast(
+				IterableTools.filter(
+					this.getJavaResourceAbstractTypes(),
+					new JavaResourceAnnotatedElement.AstNodeTypeEquals(AstNodeType.TYPE)
+				)
+			);
 	}
 
 	/**

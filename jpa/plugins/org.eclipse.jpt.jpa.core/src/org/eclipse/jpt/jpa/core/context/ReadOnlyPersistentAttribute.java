@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -33,7 +35,8 @@ public interface ReadOnlyPersistentAttribute
 
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-	Transformer<ReadOnlyPersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
+
+		Transformer<ReadOnlyPersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
 		extends TransformerAdapter<ReadOnlyPersistentAttribute, String>
 	{
@@ -42,6 +45,21 @@ public interface ReadOnlyPersistentAttribute
 			return attribute.getName();
 		}
 	}
+
+	class NameEquals
+		extends FilterAdapter<ReadOnlyPersistentAttribute>
+	{
+		private final String attributeName;
+		public NameEquals(String attributeName) {
+			super();
+			this.attributeName = attributeName;
+		}
+		@Override
+		public boolean accept(ReadOnlyPersistentAttribute attribute) {
+			return ObjectTools.equals(this.attributeName, attribute.getName());
+		}
+	}
+
 
 
 	// ********** mapping **********

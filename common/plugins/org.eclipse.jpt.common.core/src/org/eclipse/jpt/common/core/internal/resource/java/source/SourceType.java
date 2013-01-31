@@ -43,7 +43,6 @@ import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -326,12 +325,7 @@ final class SourceType
 	}
 
 	protected Iterable<JavaResourceMethod> getConstructors() {
-		return new FilteringIterable<JavaResourceMethod>(this.getMethods()) {
-			@Override
-			protected boolean accept(JavaResourceMethod method) {
-				return method.isConstructor();
-			}
-		};
+		return IterableTools.filter(this.getMethods(), JavaResourceMethod.IS_CONSTRUCTOR);
 	}
 	
 

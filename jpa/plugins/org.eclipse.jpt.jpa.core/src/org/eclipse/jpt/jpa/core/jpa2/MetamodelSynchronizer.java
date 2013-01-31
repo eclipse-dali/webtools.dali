@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
 
@@ -117,6 +118,7 @@ public interface MetamodelSynchronizer {
 	}
 
 
+	// TODO
 	final class MetamodelTools {
 
 		/**
@@ -134,6 +136,20 @@ public interface MetamodelSynchronizer {
 				return false;
 			}
 			return isGeneratedMetamodelTopLevelType(jrat);
+		}
+
+		public static class IsGeneratedMetamodelTopLevelType
+			extends FilterAdapter<JavaResourceAbstractType>
+		{
+			private final IPackageFragmentRoot sourceFolder;
+			public IsGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder) {
+				super();
+				this.sourceFolder = sourceFolder;
+			}
+			@Override
+			public boolean accept(JavaResourceAbstractType jrat) {
+				return isGeneratedMetamodelTopLevelType(jrat, this.sourceFolder);
+			}
 		}
 
 		/**

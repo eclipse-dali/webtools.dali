@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -283,12 +283,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		 */
 		@Override
 		protected Iterable<String> getAllOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
-			return new FilteringIterable<String>(super.getAllOverridableAttributeNames_(overriddenTypeMapping)) {
-				@Override
-				protected boolean accept(String attributeName) {
-					return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
-				}
-			};
+			return IterableTools.filter(super.getAllOverridableAttributeNames_(overriddenTypeMapping), new AttributeIsOverridable(this));
 		}
 	}
 }

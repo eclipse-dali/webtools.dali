@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -29,6 +28,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -221,13 +221,8 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 	}
 	
 	private void addProjectTo(List<IAdaptable> selectedElements, IProject project) {
-		try {
-			if(project != null && project.hasNature(JavaCore.NATURE_ID))
-				selectedElements.add(JavaCore.create(project));
-		} 
-		catch(CoreException ex) {
-			// ignore selected element
-		}
+		if(project != null && ProjectTools.isJavaProject(project))
+			selectedElements.add(JavaCore.create(project));
 	}
 
 	protected IDataModel getDataModel() {

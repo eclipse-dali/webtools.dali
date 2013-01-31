@@ -15,7 +15,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -25,7 +24,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.dbws.eclipselink.core.internal.gen.DbwsGenerator;
 import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
@@ -39,9 +40,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 /**
  *  DbwsGeneratorUi
@@ -55,12 +53,14 @@ public class DbwsGeneratorUi
 	private static final String DRIVER_PROPERTY = "driver";		//$NON-NLS-1$
 	private static final String DBWS_BUILDER_CLASS_NAME = "org.eclipse.persistence.tools.dbws.DBWSBuilder";		//$NON-NLS-1$
 
+	public static final Filter<IProject> PROJECT_HAS_WEB_FACET = new ProjectTools.HasNature(WEB_FACET_ID);
+    
 	// ********** static methods **********
 
 	public static void generate(IFile xmlFile) {
 		IProject project = xmlFile.getProject();
 		
-		if( ! projectIsWebDynamic(project)) {
+		if( ! ProjectTools.hasFacet(project, WEB_FACET_ID)) {
 			throw new RuntimeException(JptDbwsEclipseLinkUiMessages.DBWS_GENERATOR_UI__NOT_WEB_DYNAMIC_PROJECT);
 		}
 		IPath xmlPath = xmlFile.getProjectRelativePath();
@@ -68,19 +68,6 @@ public class DbwsGeneratorUi
 		new DbwsGeneratorUi(project, xmlPath.toOSString()).generate();
 	}
 
-	public static boolean projectIsWebDynamic(IProject project) {
-
-		 IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet(WEB_FACET_ID);
-         IFacetedProject facetedProject = null;
-         try {
-             facetedProject = ProjectFacetsManager.create(project);
-         } 
-         catch (CoreException e) {
-             return false;
-         }
-         return (facetedProject != null) && facetedProject.hasProjectFacet(projectFacet);
-    }
-    
 	public static IPath getWebContentPath(IProject project){
 		IVirtualComponent component = ComponentCore.createComponent(project);
 		IPath modulePath = component.getRootFolder().getProjectRelativePath();

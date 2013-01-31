@@ -14,12 +14,10 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -346,30 +344,15 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<AttributeMapping> getAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(this.getAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping o) {
-				return ObjectTools.equals(o.getKey(), mappingKey);
-			}
-		};
+		return IterableTools.filter(this.getAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping o) {
-				return ObjectTools.equals(o.getKey(), mappingKey);
-			}
-		};
+		return IterableTools.filter(this.getAllAttributeMappings(), new AttributeMapping.KeyEquals(mappingKey));
 	}
 
 	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
-		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping attributeMapping) {
-				return (attributeMapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-			}
-		};
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
 	}
 
 	public Column resolveOverriddenColumn(String attributeName) {

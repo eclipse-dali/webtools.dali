@@ -35,7 +35,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -417,13 +416,8 @@ public abstract class AbstractJavaPersistentType
 		return this.convertToNames(this.getAllAttributes());
 	}
 
-	protected Iterable<JavaPersistentAttribute> getAttributesNamed(final String attributeName) {
-		return new FilteringIterable<JavaPersistentAttribute>(this.getAttributes()) {
-			@Override
-			protected boolean accept(JavaPersistentAttribute attribute) {
-				return ObjectTools.equals(attributeName, attribute.getName());
-			}
-		};
+	protected Iterable<JavaPersistentAttribute> getAttributesNamed(String attributeName) {
+		return IterableTools.filter(this.getAttributes(), new ReadOnlyPersistentAttribute.NameEquals(attributeName));
 	}
 
 	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {

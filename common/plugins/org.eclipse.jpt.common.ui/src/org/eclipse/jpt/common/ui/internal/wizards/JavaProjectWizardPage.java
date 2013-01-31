@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.wizards;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -23,10 +21,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -167,21 +162,11 @@ public class JavaProjectWizardPage extends WizardPage {
 	}
 	
 	protected Iterable<IProject> getJavaProjects() {
-	   return new FilteringIterable<IProject>(CollectionTools.collection(this.getProjects())) {
-	      @Override
-	      protected boolean accept(IProject next) {
-				try {
-					return next.hasNature(JavaCore.NATURE_ID);
-				}
-				catch (CoreException e) {
-					return false;
-				}
-	      }
-	   };
+	   return IterableTools.filter(this.getProjects(), ProjectTools.IS_JAVA_PROJECT);
 	}
 
-	protected Iterator<IProject> getProjects() {
-		return new ArrayIterator<IProject>(this.javaProject.getProject().getWorkspace().getRoot().getProjects());
+	protected Iterable<IProject> getProjects() {
+		return IterableTools.iterable(this.javaProject.getProject().getWorkspace().getRoot().getProjects());
 	}
 
 	// ********** inner classes **********

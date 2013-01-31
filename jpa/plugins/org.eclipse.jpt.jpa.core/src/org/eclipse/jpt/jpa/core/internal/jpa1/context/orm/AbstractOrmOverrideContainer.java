@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -319,12 +320,16 @@ public abstract class AbstractOrmOverrideContainer<
 	 * specified overrides.
 	 */
 	protected Iterable<String> getVirtualOverrideNames() {
-		return new FilteringIterable<String>(this.getPossibleVirtualOverrideNames()) {
-			@Override
-			protected boolean accept(String name) {
-				return AbstractOrmOverrideContainer.this.overrideIsVirtual(name);
-			}
-		};
+		return IterableTools.filter(this.getPossibleVirtualOverrideNames(), new OverrideIsVirtual());
+	}
+
+	public class OverrideIsVirtual
+		extends FilterAdapter<String>
+	{
+		@Override
+		public boolean accept(String name) {
+			return AbstractOrmOverrideContainer.this.overrideIsVirtual(name);
+		}
 	}
 
 	protected boolean overrideIsVirtual(String name) {

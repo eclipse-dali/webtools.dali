@@ -35,7 +35,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
@@ -243,12 +242,7 @@ final class BinaryType
 	}
 	
 	protected Iterable<JavaResourceMethod> getConstructors() {
-		return new FilteringIterable<JavaResourceMethod>(this.getMethods()) {
-			@Override
-			protected boolean accept(JavaResourceMethod method) {
-				return method.isConstructor();
-			}
-		};
+		return IterableTools.filter(this.getMethods(), JavaResourceMethod.IS_CONSTRUCTOR);
 	}
 	
 	

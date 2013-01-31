@@ -16,11 +16,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
@@ -300,26 +299,9 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected Iterable<Entity> buildDescendants() {
-		if (!isRootEntity()) {
-			return EmptyIterable.instance();
-		}
-		return new FilteringIterable<Entity>(this.getPersistenceUnit().getEntities()) {
-			@Override
-			protected boolean accept(Entity entity) {
-				return AbstractJavaEntity.this.entityIsDescendant(entity);
-			}
-		};
-	}
-
-	/**
-	 * Return whether specified entity is a descendant of the entity.
-	 */
-	protected boolean entityIsDescendant(Entity entity) {
-		String typeName = this.getPersistentType().getName();
-		String entityTypeName = entity.getPersistentType().getName();
-		String rootEntityTypeName = entity.getRootEntity().getPersistentType().getName();
-		return ObjectTools.notEquals(typeName, entityTypeName) &&
-				ObjectTools.equals(typeName, rootEntityTypeName);
+		return this.isRootEntity() ?
+				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.EntityIsDescendant(this)) :
+				IterableTools.<Entity>emptyIterable();
 	}
 
 
@@ -1552,12 +1534,16 @@ public abstract class AbstractJavaEntity
 	{
 		@Override
 		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {
-			return new FilteringIterable<String>(overriddenTypeMapping.getAllOverridableAttributeNames()) {
-					@Override
-					protected boolean accept(String attributeName) {
-						return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
-					}
-				};
+			return IterableTools.filter(overriddenTypeMapping.getAllOverridableAttributeNames(), new AttributeIsDerivedId());
+		}
+
+		public class AttributeIsDerivedId
+			extends FilterAdapter<String>
+		{
+			@Override
+			public boolean accept(String attributeName) {
+				return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
+			}
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -102,6 +104,16 @@ public interface MappingFileRef
 	 * Return whether the mapping file's persistence unit metadata exist.
 	 */
 	boolean persistenceUnitMetadataExists();
+
+	Filter<MappingFileRef> PERSISTENCE_UNIT_METADATA_EXISTS = new PersistenceUnitMetadataExists();
+	class PersistenceUnitMetadataExists
+		extends FilterAdapter<MappingFileRef>
+	{
+		@Override
+		public boolean accept(MappingFileRef mappingFileRef) {
+			return mappingFileRef.persistenceUnitMetadataExists();
+		}
+	}
 
 
 	// ********** misc **********

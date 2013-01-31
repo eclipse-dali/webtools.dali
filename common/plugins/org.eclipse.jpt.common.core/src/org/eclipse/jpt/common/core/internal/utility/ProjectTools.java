@@ -13,7 +13,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -55,6 +58,20 @@ public class ProjectTools {
 		return hasFacet(project, facet.getId());
 	}
 
+	public static class HasFacet
+		extends FilterAdapter<IProject>
+	{
+		private final String facetID;
+		public HasFacet(String facetID) {
+			super();
+			this.facetID = facetID;
+		}
+		@Override
+		public boolean accept(IProject project) {
+			return hasFacet(project, this.facetID);
+		}
+	}
+
 	/**
 	 * Return whether the specified project has the specified facet.
 	 */
@@ -63,6 +80,41 @@ public class ProjectTools {
 			return FacetedProjectFramework.hasProjectFacet(project, facetID);
 		} catch (CoreException ex) {
 			// problem reading the project metadata - assume facet does not exist and return 'false'
+			JptCommonCorePlugin.instance().logError(ex);
+			return false;
+		}
+	}
+
+	public static final Filter<IProject> IS_JAVA_PROJECT = new HasNature(JavaCore.NATURE_ID);
+	public static class HasNature
+		extends FilterAdapter<IProject>
+	{
+		private final String natureID;
+		public HasNature(String natureID) {
+			super();
+			this.natureID = natureID;
+		}
+		@Override
+		public boolean accept(IProject project) {
+			return hasNature(project, this.natureID);
+		}
+	}
+
+	/**
+	 * Return whether the specified project has the Java nature.
+	 */
+	public static boolean isJavaProject(IProject project) {
+		return hasNature(project, JavaCore.NATURE_ID);
+	}
+
+	/**
+	 * Return whether the specified project has the specified nature.
+	 */
+	public static boolean hasNature(IProject project, String natureID) {
+		try {
+			return project.hasNature(natureID);
+		} catch (CoreException ex) {
+			// problem reading the project - assume nature does not exist and return 'false'
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}

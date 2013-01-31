@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.platform;
 
 import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -65,12 +66,36 @@ public interface JaxbPlatformConfig {
 	 */
 	boolean supportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion);
 
+	class SupportsJaxbFacetVersion
+		extends FilterAdapter<JaxbPlatformConfig>
+	{
+		private final IProjectFacetVersion jaxbFacetVersion;
+		public SupportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion) {
+			super();
+			this.jaxbFacetVersion = jaxbFacetVersion;
+		}
+		@Override
+		public boolean accept(JaxbPlatformConfig config) {
+			return config.supportsJaxbFacetVersion(this.jaxbFacetVersion);
+		}
+	}
+
 	/**
 	 * Return whether the config's JAXB platform can be used as the default
 	 * JAXB platform for its {@link #supportsJaxbFacetVersion(IProjectFacetVersion)
 	 * supported JAXB facet versions}.
 	 */
 	boolean isDefault();
+
+	Filter<JaxbPlatformConfig> IS_DEFAULT = new IsDefault();
+	class IsDefault
+		extends Filter.Adapter<JaxbPlatformConfig>
+	{
+		@Override
+		public boolean accept(JaxbPlatformConfig config) {
+			return config.isDefault();
+		}
+	}
 
 	/**
 	 * Return config's group config.
@@ -82,14 +107,4 @@ public interface JaxbPlatformConfig {
 	 * config.
 	 */
 	String getPluginId();
-
-	Filter<JaxbPlatformConfig> DEFAULT_FILTER = new DefaultFilter();
-	/* CU private */ static class DefaultFilter
-		extends Filter.Adapter<JaxbPlatformConfig>
-	{
-		@Override
-		public boolean accept(JaxbPlatformConfig config) {
-			return config.isDefault();
-		}
-	}
 }

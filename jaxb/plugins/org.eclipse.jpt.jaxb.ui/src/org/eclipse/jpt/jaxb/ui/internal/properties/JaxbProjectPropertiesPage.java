@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
@@ -224,12 +223,9 @@ public class JaxbProjectPropertiesPage
 	
 	private CollectionValueModel<JaxbPlatformConfig> buildRegistryPlatformsModel() {
 		Iterable<JaxbPlatformConfig> enabledPlatforms = 
-			new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformConfigs()) {
-				@Override
-				protected boolean accept(JaxbPlatformConfig o) {
-					return o.supportsJaxbFacetVersion(getProjectFacetVersion());
-				}
-			};
+			IterableTools.filter(
+					this.getJaxbPlatformConfigs(),
+					new JaxbPlatformConfig.SupportsJaxbFacetVersion(getProjectFacetVersion()));
 		return new StaticCollectionValueModel<JaxbPlatformConfig>(enabledPlatforms);
 	}
 

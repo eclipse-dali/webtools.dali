@@ -1,17 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 3.1
  */
 public interface JavaType
-		extends JaxbContextNode, XmlAdaptable {
+		extends XmlAdaptable {
 	
 	// ***** kind *****
 	
@@ -44,6 +44,19 @@ public interface JavaType
 	 * {@link JavaType}s of {@link TypeKind} ENUM may safely be cast to {@link JavaEnum}
 	 */
 	TypeKind getKind();
+	class IsKind
+		extends FilterAdapter<JavaType>
+	{
+		private final TypeKind typeKind;
+		public IsKind(TypeKind typeKind) {
+			super();
+			this.typeKind = typeKind;
+		}
+		@Override
+		public boolean accept(JavaType type) {
+			return type.getKind() == this.typeKind;
+		}
+	}
 	
 	
 	// ***** type mapping *****

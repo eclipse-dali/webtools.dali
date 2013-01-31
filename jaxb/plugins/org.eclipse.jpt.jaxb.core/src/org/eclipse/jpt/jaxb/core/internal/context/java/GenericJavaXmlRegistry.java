@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012 Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.HashMap;
@@ -17,10 +17,11 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -110,14 +111,19 @@ public class GenericJavaXmlRegistry
 	}
 	
 	private Iterable<JavaResourceMethod> getResourceElementFactoryMethods() {
-		return new FilteringIterable<JavaResourceMethod>(getJavaResourceType().getMethods()) {
-			@Override
-			protected boolean accept(JavaResourceMethod method) {
-				return methodIsElementFactoryMethod(method);
-			}
-		};
+		return IterableTools.filter(getJavaResourceType().getMethods(), METHOD_IS_ELEMENT_FACTORY_METHOD);
 	}
 	
+	protected static final Filter<JavaResourceMethod> METHOD_IS_ELEMENT_FACTORY_METHOD = new MethodIsElementFactoryMethod();
+	public static class MethodIsElementFactoryMethod
+		extends FilterAdapter<JavaResourceMethod>
+	{
+		@Override
+		public boolean accept(JavaResourceMethod method) {
+			return methodIsElementFactoryMethod(method);
+		}
+	}
+
 	// Return methods with XmlElementDecl annotation
 	protected static boolean methodIsElementFactoryMethod(JavaResourceMethod method) {
 		return methodHasXmlElementDeclAnnotation(method);

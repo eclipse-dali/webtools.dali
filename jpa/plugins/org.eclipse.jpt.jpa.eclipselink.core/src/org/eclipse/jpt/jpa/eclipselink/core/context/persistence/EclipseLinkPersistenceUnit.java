@@ -24,13 +24,15 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.internal.filter.InstanceOfFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
@@ -585,22 +587,15 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkDynamicPersistentTypes() {
-		return new FilteringIterable<EclipseLinkOrmPersistentType>(this.getEclipseLinkOrmPersistentTypes()) {
-					@Override
-					protected boolean accept(EclipseLinkOrmPersistentType pType) {
-						return pType.isDynamic();
-					}
-				};
+		return IterableTools.filter(this.getEclipseLinkOrmPersistentTypes(), EclipseLinkOrmPersistentType.IS_DYNAMIC);
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkOrmPersistentTypes() {
 		return IterableTools.downCast(
-				new FilteringIterable<PersistentType>(this.getMappingFilePersistentTypes()) {
-					@Override
-					protected boolean accept(PersistentType pType) {
-						return pType instanceof EclipseLinkOrmPersistentType;
-					}
-				}
+				IterableTools.filter(
+					this.getMappingFilePersistentTypes(),
+					new InstanceOfFilter<PersistentType>(EclipseLinkOrmPersistentType.class)
+				)
 			);
 	}
 
@@ -938,12 +933,26 @@ public class EclipseLinkPersistenceUnit
 	 * excluding Entity which name equals "default".
 	 */
 	private Iterable<Property> getEntityPropertiesWithPrefix(String prefix) {
-	   return new FilteringIterable<Property>(this.getPropertiesWithNamePrefix(prefix)) {
-	      @Override
-	      protected boolean accept(Property next) {
-				return ! next.getName().endsWith("default"); //$NON-NLS-1$
-	      }
-	   };
+		return IterableTools.filter(
+				this.getPropertiesWithNamePrefix(prefix),
+				PROPERTY_NAME_DOES_NOT_END_WITH_DEFAULT
+			);
+	}
+
+	private static final Filter<Property> PROPERTY_NAME_DOES_NOT_END_WITH_DEFAULT = new PropertyNameDoesNotEndWith("default"); //$NON-NLS-1$
+	public static class PropertyNameDoesNotEndWith
+		extends FilterAdapter<Property>
+	{
+		private final String suffix;
+		public PropertyNameDoesNotEndWith(String suffix) {
+			super();
+			this.suffix = suffix;
+		}
+		@Override
+		public boolean accept(Property property) {
+			String propertyName = property.getName();
+			return (propertyName == null) || ! propertyName.endsWith(this.suffix);
+		}
 	}
 
 	private Property getLoggerProperty() {

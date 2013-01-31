@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -302,16 +302,20 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	protected Iterable<A> getRelevantOverrideAnnotations() {
-		return new FilteringIterable<A>(this.getOverrideAnnotations()) {
-			@Override
-			protected boolean accept(A annotation) {
-				String overrideName = annotation.getName();
-				return (overrideName != null) && this.getOwner().isRelevant(overrideName);
-			}
-			protected JavaOverrideContainer2_0.Owner getOwner() {
-				return AbstractJavaOverrideContainer.this.getOwner2_0();
-			}
-		};
+		return IterableTools.filter(this.getOverrideAnnotations(), new AnnotationIsRelevant());
+	}
+
+	public class AnnotationIsRelevant
+		extends FilterAdapter<A>
+	{
+		@Override
+		public boolean accept(A annotation) {
+			String overrideName = annotation.getName();
+			return (overrideName != null) && this.getOwner().isRelevant(overrideName);
+		}
+		protected JavaOverrideContainer2_0.Owner getOwner() {
+			return AbstractJavaOverrideContainer.this.getOwner2_0();
+		}
 	}
 
 	protected Iterable<A> getOverrideAnnotations() {
@@ -397,12 +401,16 @@ public abstract class AbstractJavaOverrideContainer<
 	 * specified overrides.
 	 */
 	protected Iterable<String> getVirtualOverrideNames() {
-		return new FilteringIterable<String>(this.getAllOverridableNames()) {
-			@Override
-			protected boolean accept(String name) {
-				return AbstractJavaOverrideContainer.this.overrideIsVirtual(name);
-			}
-		};
+		return IterableTools.filter(this.getAllOverridableNames(), new OverrideIsVirtual());
+	}
+
+	public class OverrideIsVirtual
+		extends FilterAdapter<String>
+	{
+		@Override
+		public boolean accept(String overrideName) {
+			return AbstractJavaOverrideContainer.this.overrideIsVirtual(overrideName);
+		}
 	}
 
 	protected boolean overrideIsVirtual(String name) {

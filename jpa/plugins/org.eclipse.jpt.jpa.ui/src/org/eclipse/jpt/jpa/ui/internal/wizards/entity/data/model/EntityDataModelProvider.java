@@ -212,13 +212,9 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			return WTPCommonPlugin.createErrorStatus(msg);
 		}
 		// Ensure the project is a java project.
-		try {
-			if (!project.hasNature(JavaCore.NATURE_ID)) {
-				String msg = J2EECommonMessages.ERR_JAVA_CLASS_NOT_JAVA_PROJECT;
-				return WTPCommonPlugin.createErrorStatus(msg);
-			}
-		} catch (CoreException e) {
-			J2EEPlugin.logError(e);
+		if (! ProjectTools.isJavaProject(project)) {
+			String msg = J2EECommonMessages.ERR_JAVA_CLASS_NOT_JAVA_PROJECT;
+			return WTPCommonPlugin.createErrorStatus(msg);
 		}
 		// Ensure the selected folder is a valid java source folder for the component
 		IContainer container = getJavaSourceContainer();

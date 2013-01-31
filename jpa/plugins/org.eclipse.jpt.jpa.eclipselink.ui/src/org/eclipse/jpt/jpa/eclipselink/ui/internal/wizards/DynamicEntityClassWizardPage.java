@@ -480,17 +480,13 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 					selectedProject = ProjectUtilities.getProject(projectNameFromModel);
 			}
 		} catch (Exception e) {}
-		try {
-			if (selectedProject == null)
-				selectedProject = getSelectedProject();
-			if (selectedProject != null && selectedProject.isAccessible()
-					&& selectedProject.hasNature(IModuleConstants.MODULE_NATURE_ID)) {
-				projectNameCombo.setText(selectedProject.getName());
-				validateProjectRequirements(selectedProject);
-				model.setProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME, selectedProject.getName());
-			}
-		} catch (CoreException ce) {
-			// Ignore
+		if (selectedProject == null)
+			selectedProject = getSelectedProject();
+		if (selectedProject != null && selectedProject.isAccessible()
+				&& ProjectTools.hasNature(selectedProject, IModuleConstants.MODULE_NATURE_ID)) {
+			projectNameCombo.setText(selectedProject.getName());
+			validateProjectRequirements(selectedProject);
+			model.setProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME, selectedProject.getName());
 		}
 		if (projectName == null && names.length > 0)
 			projectName = names[0];

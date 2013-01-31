@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -897,6 +898,20 @@ public final class StringTools {
 	 */
 	public static boolean startsWithIgnoreCase(String string, String prefix) {
 		return string.regionMatches(true, 0, prefix, 0, prefix.length());
+	}
+
+	public static class StartsWithIgnoreCase
+		extends FilterAdapter<String>
+	{
+		private final String prefix;
+		public StartsWithIgnoreCase(String prefix) {
+			super();
+			this.prefix = prefix;
+		}
+		@Override
+		public boolean accept(String string) {
+			return startsWithIgnoreCase(string, this.prefix);
+		}
 	}
 
 	/**

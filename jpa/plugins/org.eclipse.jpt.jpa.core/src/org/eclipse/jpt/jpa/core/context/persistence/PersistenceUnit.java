@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -532,6 +534,33 @@ public interface PersistenceUnit
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		String getName();
 		void setName(String name);
+		class NameEquals
+			extends FilterAdapter<Property>
+		{
+			private final String propertyName;
+			public NameEquals(String propertyName) {
+				super();
+				this.propertyName = propertyName;
+			}
+			@Override
+			public boolean accept(Property property) {
+				return ObjectTools.equals(this.propertyName, property.getName());
+			}
+		}
+		class NameStartsWith
+			extends FilterAdapter<Property>
+		{
+			private final String prefix;
+			public NameStartsWith(String prefix) {
+				super();
+				this.prefix = prefix;
+			}
+			@Override
+			public boolean accept(Property property) {
+				String propertyName = property.getName();
+				return (propertyName != null) && propertyName.startsWith(this.prefix);
+			}
+		}
 
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 		String getValue();

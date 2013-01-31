@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
-import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
@@ -202,24 +202,27 @@ public class ELJavaClassMapping
 	}
 	
 	protected Iterable<ELXmlNamedNodeMapping> getAllKeyMappings() {
-		return new FilteringIterable<ELXmlNamedNodeMapping>(
-				new SubIterableWrapper<JaxbAttributeMapping, ELXmlNamedNodeMapping>(
-						new FilteringIterable<JaxbAttributeMapping>(
-								IterableTools.transform(getAllAttributes(), JaxbPersistentAttribute.MAPPING_TRANSFORMER)) {
-							@Override
-							protected boolean accept(JaxbAttributeMapping o) {
-								return (o.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
-										|| o.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
-							}
-						})) {
-			@Override
-			protected boolean accept(ELXmlNamedNodeMapping o) {
-				return o.getXmlID() != null || o.getXmlKey() != null;
-			}
-		};
+		return IterableTools.filter(
+				IterableTools.<JaxbAttributeMapping, ELXmlNamedNodeMapping>downCast(
+						IterableTools.filter(
+								IterableTools.transform(
+										getAllAttributes(),
+										JaxbPersistentAttribute.MAPPING_TRANSFORMER),
+								XmlNamedNodeMapping.MAPPING_IS_NAMED_NODE_MAPPING)),
+				MAPPING_HAS_KEY);
 	}
 	
-	
+	protected static final Filter<ELXmlNamedNodeMapping> MAPPING_HAS_KEY = new MappingHasKey();
+	public static class MappingHasKey
+		extends FilterAdapter<ELXmlNamedNodeMapping>
+	{
+		@Override
+		public boolean accept(ELXmlNamedNodeMapping mapping) {
+			return (mapping.getXmlID() != null) || (mapping.getXmlKey() != null);
+		}
+	}
+
+
 	// ***** content assist *****
 	
 	@Override

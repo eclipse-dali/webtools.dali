@@ -9,8 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 
 /**
  * JPA attribute mapping.
@@ -61,6 +65,30 @@ public interface AttributeMapping
 	 */
 	String getKey();
 
+	class KeyEquals
+		extends FilterAdapter<AttributeMapping>
+	{
+		private final String mappingKey;
+		public KeyEquals(String mappingKey) {
+			super();
+			this.mappingKey = mappingKey;
+		}
+		@Override
+		public boolean accept(AttributeMapping mapping) {
+			return ObjectTools.equals(mapping.getKey(), this.mappingKey);
+		}
+	}
+
+	Filter<AttributeMapping> IS_NOT_TRANSIENT = new IsNotTransient();
+	public static class IsNotTransient
+		extends FilterAdapter<AttributeMapping>
+	{
+		@Override
+		public boolean accept(AttributeMapping mapping) {
+			return mapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+		}
+	}
+
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
 	 * The mapping must be a {@link ColumnMapping}.
@@ -72,6 +100,16 @@ public interface AttributeMapping
 	 * The mapping must be a {@link RelationshipMapping}.
 	 */
 	boolean isOverridableAssociationMapping();
+
+	Filter<AttributeMapping> IS_OVERRIDABLE_ASSOCIATION_MAPPING = new IsOverridableAssociationMapping();
+	public static class IsOverridableAssociationMapping
+		extends FilterAdapter<AttributeMapping>
+	{
+		@Override
+		public boolean accept(AttributeMapping mapping) {
+			return mapping.isOverridableAssociationMapping();
+		}
+	}
 
 	/**
 	 * Return the mapping for the type that contains the mapping's attribute.

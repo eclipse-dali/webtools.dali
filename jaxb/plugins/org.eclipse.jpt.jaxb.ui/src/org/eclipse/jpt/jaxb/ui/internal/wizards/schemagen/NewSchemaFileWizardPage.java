@@ -1,30 +1,27 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.PROJECT;
 import static org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen.SchemaGeneratorWizard.XSD_EXTENSION;
-
 import java.io.File;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
@@ -113,7 +110,7 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		
 		//TODO move this validation to the dataModel - see MappingFileNewFileWizardPage
 		// Validate Project
-		valid = this.projectIsJavaProject(this.getProject());
+		valid = ProjectTools.isJavaProject(this.getProject());
 		if( ! valid) {
 			this.setErrorMessage(JptJaxbUiMessages.NewSchemaFileWizardPage_errorNotJavaProject);
 			return valid;
@@ -130,15 +127,6 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 	}
 
 	// ********** internal methods **********
-
-	private boolean projectIsJavaProject(IProject project) {
-		try {
-			return (project != null) && (project.hasNature(JavaCore.NATURE_ID));
-		}
-		catch (CoreException e) {
-			return false;
-		}
-    }
 
     private IProject getProjectFromInitialSelection() {
 		Object firstElement = initialSelection.getFirstElement();

@@ -22,8 +22,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -201,13 +201,8 @@ public class JpaMoveMappingFileParticipant
 	}
 
 	protected Iterable<IFile> getOriginalFoldersOnClasspath(final JpaProject jpaProject) {
-		final IJavaProject javaProject = jpaProject.getJavaProject();
-		return new FilteringIterable<IFile>(this.originalMappingFiles.keySet()) {
-			@Override
-			protected boolean accept(IFile file) {
-				return javaProject.isOnClasspath(file);
-			}
-		};
+		IJavaProject javaProject = jpaProject.getJavaProject();
+		return IterableTools.filter(this.originalMappingFiles.keySet(), new JDTTools.ResourceIsOnClasspath(javaProject));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(PersistenceUnit persistenceUnit, IFile mappingFile, IFolder destination) {

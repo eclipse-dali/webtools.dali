@@ -41,9 +41,10 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.internal.filter.InstanceOfFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -551,13 +552,22 @@ public abstract class AbstractPersistenceUnit
 		return this.getSpecifiedMappingFileRefsSize() + 1;
 	}
 
-	public Iterable<MappingFileRef> getMappingFileRefsContaining(final String typeName) {
-		return new FilteringIterable<MappingFileRef> (this.getMappingFileRefs()) {
-			@Override
-			protected boolean accept(MappingFileRef mappingFileRef) {
-				return mappingFileRef.getPersistentType(typeName) != null;
-			}
-		};
+	public Iterable<MappingFileRef> getMappingFileRefsContaining(String typeName) {
+		return IterableTools.filter(this.getMappingFileRefs(), new MappingFileRefContains(typeName));
+	}
+
+	public static class MappingFileRefContains
+		extends FilterAdapter<MappingFileRef>
+	{
+		private final String typeName;
+		public MappingFileRefContains(String typeName) {
+			super();
+			this.typeName = typeName;
+		}
+		@Override
+		public boolean accept(MappingFileRef mappingFileRef) {
+			return mappingFileRef.getPersistentType(this.typeName) != null;
+		}
 	}
 
 	protected Iterable<MappingFile> getMappingFiles() {
@@ -957,12 +967,16 @@ public abstract class AbstractPersistenceUnit
 	 * in the persistence unit or any of its mapping files.
 	 */
 	protected Iterable<JavaResourceAbstractType> getImpliedClassResourceTypes_() {
-		return new FilteringIterable<JavaResourceAbstractType>(this.getJpaProject().getMappedJavaSourceTypes()) {
-				@Override
-				protected boolean accept(JavaResourceAbstractType jrat) {
-					return ! AbstractPersistenceUnit.this.specifiesPersistentType(jrat.getTypeBinding().getQualifiedName());
-				}
-			};
+		return IterableTools.filter(this.getJpaProject().getMappedJavaSourceTypes(), new SpecifiesPersistentType());
+	}
+
+	public class SpecifiesPersistentType
+		extends FilterAdapter<JavaResourceAbstractType>
+	{
+		@Override
+		public boolean accept(JavaResourceAbstractType jrat) {
+			return ! AbstractPersistenceUnit.this.specifiesPersistentType(jrat.getTypeBinding().getQualifiedName());
+		}
 	}
 
 	protected ContextCollectionContainer<ClassRef, JavaResourceAbstractType> buildImpliedClassRefContainer() {
@@ -1066,29 +1080,18 @@ public abstract class AbstractPersistenceUnit
 		return null;
 	}
 
-	public Iterable<Property> getPropertiesNamed(final String propertyName) {
+	public Iterable<Property> getPropertiesNamed(String propertyName) {
 		if (propertyName == null) {
 			throw new NullPointerException();
 		}
-		return new FilteringIterable<Property>(this.getProperties()) {
-			@Override
-			protected boolean accept(Property property) {
-				return ObjectTools.equals(property.getName(), propertyName);
-			}
-		};
+		return IterableTools.filter(this.getProperties(), new Property.NameEquals(propertyName));
 	}
 
 	public Iterable<Property> getPropertiesWithNamePrefix(final String propertyNamePrefix) {
 		if (propertyNamePrefix == null) {
 			throw new NullPointerException();
 		}
-		return new FilteringIterable<Property>(this.getProperties()) {
-			@Override
-			protected boolean accept(Property property) {
-				String pName = property.getName();
-				return (pName != null) && pName.startsWith(propertyNamePrefix);
-			}
-		};
+		return IterableTools.filter(this.getProperties(), new Property.NameStartsWith(propertyNamePrefix));
 	}
 
 	public Property addProperty() {
@@ -1884,12 +1887,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<TypeMapping> filterToEntities_(Iterable<TypeMapping> typeMappings) {
-		return new FilteringIterable<TypeMapping>(typeMappings) {
-				@Override
-				protected boolean accept(TypeMapping typeMapping) {
-					return typeMapping instanceof Entity;
-				}
-			};
+		return IterableTools.filter(typeMappings, new InstanceOfFilter<TypeMapping>(Entity.class));
 	}
 
 	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...
@@ -2202,12 +2200,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<MappingFileRef> getPersistenceUnitMetadataMappingFileRefs() {
-		return new FilteringIterable<MappingFileRef>(this.getMappingFileRefs()) {
-			@Override
-			protected boolean accept(MappingFileRef mappingFileRef) {
-				return mappingFileRef.persistenceUnitMetadataExists();
-			}
-		};
+		return IterableTools.filter(this.getMappingFileRefs(), MappingFileRef.PERSISTENCE_UNIT_METADATA_EXISTS);
 	}
 
 	protected void checkForDuplicateMappingFileRefs(List<IMessage> messages) {

@@ -14,12 +14,12 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -537,12 +537,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * mapping with transient attribute mappings being excluded
 	 */
 	protected Iterable<AttributeMapping> getAttributeMappings(TypeMapping typeMapping) {
-		return new FilteringIterable<AttributeMapping>(typeMapping.getAllAttributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping o) {
-				return !ObjectTools.equals(o.getKey(), MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-			}
-		};
+		return IterableTools.filter(typeMapping.getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
 	}
 	
 	/**
@@ -632,12 +627,7 @@ public abstract class AbstractPrimaryKeyValidator
 	// **************** derived id mappings ***********************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getDerivedIdMappings(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getAllSingleRelationshipMappings(typeMapping)) {
-			@Override
-			protected boolean accept(SingleRelationshipMapping2_0 o) {
-				return o.getDerivedIdentity().usesIdDerivedIdentityStrategy();
-			}
-		};
+		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getAllSingleRelationshipMappings(TypeMapping typeMapping) {
@@ -653,12 +643,7 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 
 	protected Iterable<SingleRelationshipMapping2_0> getDerivedIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings(typeMapping)) {
-			@Override
-			protected boolean accept(SingleRelationshipMapping2_0 o) {
-				return o.getDerivedIdentity().usesIdDerivedIdentityStrategy();
-			}
-		};
+		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getSingleRelationshipMappings(TypeMapping typeMapping) {
@@ -673,27 +658,37 @@ public abstract class AbstractPrimaryKeyValidator
 				);
 	}
 
+	public static final Filter<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
+	public static class TypeMappingUsesIdDerivedIdentityStrategy
+		extends FilterAdapter<SingleRelationshipMapping2_0>
+	{
+		@Override
+		public boolean accept(SingleRelationshipMapping2_0 mapping) {
+			return mapping.getDerivedIdentity().usesIdDerivedIdentityStrategy();
+		}
+	}
+
 	
 	// **************** maps id mappings **************************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappings(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getAllSingleRelationshipMappings(typeMapping)) {
-			@Override
-			protected boolean accept(SingleRelationshipMapping2_0 o) {
-				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
-			}
-		};
+		return IterableTools.filter(this.getAllSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings(typeMapping)) {
-			@Override
-			protected boolean accept(SingleRelationshipMapping2_0 o) {
-				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
-			}
-		};
+		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
+	public static final Filter<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
+	public static class TypeMappingUsesMapsIdDerivedIdentityStrategy
+		extends FilterAdapter<SingleRelationshipMapping2_0>
+	{
+		@Override
+		public boolean accept(SingleRelationshipMapping2_0 mapping) {
+			return mapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
+		}
+	}
+
 	
 	// **************** misc **************************************************
 	

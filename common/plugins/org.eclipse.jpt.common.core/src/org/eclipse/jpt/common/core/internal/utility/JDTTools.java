@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.core.internal.utility;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -21,6 +22,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -257,5 +259,33 @@ public final class JDTTools {
 			JptCommonCorePlugin.instance().logError(ex);
 		}
 		return false;
+	}
+
+	public static class ResourceIsOnClasspath
+		extends FilterAdapter<IResource>
+	{
+		private final IJavaProject javaProject;
+		public ResourceIsOnClasspath(IJavaProject javaProject) {
+			super();
+			this.javaProject = javaProject;
+		}
+		@Override
+		public boolean accept(IResource resource) {
+			return this.javaProject.isOnClasspath(resource);
+		}
+	}
+
+	public static class JavaElementIsOnClasspath
+		extends FilterAdapter<IJavaElement>
+	{
+		private final IJavaProject javaProject;
+		public JavaElementIsOnClasspath(IJavaProject javaProject) {
+			super();
+			this.javaProject = javaProject;
+		}
+		@Override
+		public boolean accept(IJavaElement javaElement) {
+			return this.javaProject.isOnClasspath(javaElement);
+		}
 	}
 }

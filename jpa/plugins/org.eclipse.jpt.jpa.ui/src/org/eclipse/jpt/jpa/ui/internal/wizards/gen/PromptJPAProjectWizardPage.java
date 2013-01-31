@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -21,10 +20,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -117,20 +114,28 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 	}
 
 	private Iterable<IProject> getJpaProjects() {
-		return new FilteringIterable<IProject>(CollectionTools.collection(this.getProjects())) {
-			@Override
-			protected boolean accept(IProject next) {
-				return projectIsValidSelection(getJpaProject(next));
-			}
-		};
+		return IterableTools.filter(this.getProjects(), new ProjectIsValidSelection());
+	}
+
+	protected class ProjectIsValidSelection
+		extends FilterAdapter<IProject>
+	{
+		@Override
+		public boolean accept(IProject project) {
+			return projectIsValidSelection(project);
+		}
+	}
+	
+	protected boolean projectIsValidSelection(IProject project) {
+		return this.getJpaProject(project) != null;
 	}
 	
 	protected boolean projectIsValidSelection(JpaProject jpaProject) {
-		return (jpaProject != null);
+		return jpaProject != null;
 	}
 	
-	private Iterator<IProject> getProjects() {
-		return new ArrayIterator<IProject>(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+	private Iterable<IProject> getProjects() {
+		return IterableTools.iterable(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 	}
 	
 	private JpaProject getJpaProject(IProject project) {

@@ -25,12 +25,13 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -556,17 +557,22 @@ public final class MappingTools {
 	 * Returns all the interfaces across the given project
 	 */
 	public static Iterable<IType> getJavaInterfaces(IJavaProject javaProject) {
-		return new FilteringIterable<IType>(getJavaTypes(javaProject)) {
-			@Override
-			protected boolean accept(IType type) {
-				try {
-					return type.isInterface();
-				} catch (JavaModelException e) {
-					JptJpaCorePlugin.instance().logError(e);
-				}
+		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_INTERFACE);
+	}
+
+	public static final Filter<IType> TYPE_IS_INTERFACE = new TypeIsInterface();
+	public static class TypeIsInterface
+		extends FilterAdapter<IType>
+	{
+		@Override
+		public boolean accept(IType type) {
+			try {
+				return type.isInterface();
+			} catch (JavaModelException e) {
+				JptJpaCorePlugin.instance().logError(e);
 				return false;
 			}
-		};
+		}
 	}
 	
 	/**
@@ -587,34 +593,44 @@ public final class MappingTools {
 	 * Returns all the classes across the given project
 	 */
 	public static Iterable<IType> getJavaClasses(IJavaProject javaProject) {
-		return new FilteringIterable<IType>(getJavaTypes(javaProject)) {
-			@Override
-			protected boolean accept(IType type) {
-				try {
-					return type.isClass();
-				} catch (JavaModelException e) {
-					JptJpaCorePlugin.instance().logError(e);
-				}
+		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_CLASS);
+	}
+	
+	public static final Filter<IType> TYPE_IS_CLASS = new TypeIsClass();
+	public static class TypeIsClass
+		extends FilterAdapter<IType>
+	{
+		@Override
+		public boolean accept(IType type) {
+			try {
+				return type.isClass();
+			} catch (JavaModelException e) {
+				JptJpaCorePlugin.instance().logError(e);
 				return false;
 			}
-		};
+		}
 	}
 	
 	/**
 	 * Returns all the enums across the given project
 	 */
 	public static Iterable<IType> getJavaEnums(IJavaProject javaProject) {
-		return new FilteringIterable<IType>(getJavaTypes(javaProject)) {
-			@Override
-			protected boolean accept(IType type) {
-				try {
-					return type.isEnum();
-				} catch (JavaModelException e) {
-					JptJpaCorePlugin.instance().logError(e);
-				}
+		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_ENUM);
+	}
+	
+	public static final Filter<IType> TYPE_IS_ENUM = new TypeIsEnum();
+	public static class TypeIsEnum
+		extends FilterAdapter<IType>
+	{
+		@Override
+		public boolean accept(IType type) {
+			try {
+				return type.isEnum();
+			} catch (JavaModelException e) {
+				JptJpaCorePlugin.instance().logError(e);
 				return false;
 			}
-		};
+		}
 	}
 	
 	/**

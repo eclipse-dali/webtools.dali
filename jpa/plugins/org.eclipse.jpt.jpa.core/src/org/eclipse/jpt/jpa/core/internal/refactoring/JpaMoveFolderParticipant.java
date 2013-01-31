@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -195,14 +195,9 @@ public class JpaMoveFolderParticipant
 		return IterableTools.children(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject()), transformer);
 	}
 
-	protected Iterable<IFolder> getOriginalFoldersOnClasspath(final JpaProject jpaProject) {
-		final IJavaProject javaProject = jpaProject.getJavaProject();
-		return new FilteringIterable<IFolder>(this.originalFolders.keySet()) {
-			@Override
-			protected boolean accept(IFolder folder) {
-				return javaProject.isOnClasspath(folder);
-			}
-		};
+	protected Iterable<IFolder> getOriginalFoldersOnClasspath(JpaProject jpaProject) {
+		IJavaProject javaProject = jpaProject.getJavaProject();
+		return IterableTools.filter(this.originalFolders.keySet(), new JDTTools.ResourceIsOnClasspath(javaProject));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(PersistenceUnit persistenceUnit, IFolder folder, IContainer destination) {

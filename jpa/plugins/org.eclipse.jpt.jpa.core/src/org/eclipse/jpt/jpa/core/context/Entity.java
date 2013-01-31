@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
@@ -276,6 +278,24 @@ public interface Entity
 	 */
 	Iterable<Entity> getDescendants();
 		String DESCENDANTS_COLLECTION = "descendants"; //$NON-NLS-1$
+
+	class EntityIsDescendant
+		extends FilterAdapter<Entity>
+	{
+		private final String rootTypeName;
+		public EntityIsDescendant(Entity entity) {
+			super();
+			if ( ! entity.isRootEntity()) {
+				throw new IllegalArgumentException("Entity must be root entity: " + entity); //$NON-NLS-1$
+			}
+			this.rootTypeName = entity.getPersistentType().getName();
+		}
+		@Override
+		public boolean accept(Entity entity) {
+			return ObjectTools.notEquals(this.rootTypeName, entity.getPersistentType().getName()) &&
+					ObjectTools.equals(this.rootTypeName, entity.getRootEntity().getPersistentType().getName());
+		}
+	}
 
 
 	// ********** validation **********

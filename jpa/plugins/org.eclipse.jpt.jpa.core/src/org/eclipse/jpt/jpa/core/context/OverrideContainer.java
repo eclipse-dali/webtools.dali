@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
@@ -178,6 +179,20 @@ public interface OverrideContainer
 		 * @see OverrideContainer#getTypeMapping()
 		 */
 		TypeMapping getTypeMapping();
+
+		class AttributeIsOverridable
+			extends FilterAdapter<String>
+		{
+			private final Owner owner;
+			public AttributeIsOverridable(Owner owner) {
+				super();
+				this.owner = owner;
+			}
+			@Override
+			public boolean accept(String attributeName) {
+				return ! this.owner.getTypeMapping().attributeIsDerivedId(attributeName);
+			}
+		}
 
 		/**
 		 * @see OverrideContainer#getOverridableTypeMapping()

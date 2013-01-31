@@ -20,10 +20,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
@@ -342,15 +340,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<Entity> buildDescendants() {
-		if (!isRootEntity()) {
-			return EmptyIterable.instance();
-		}
-		return new FilteringIterable<Entity>(this.getPersistenceUnit().getEntities()) {
-			@Override
-			protected boolean accept(Entity entity) {
-				return AbstractOrmEntity.this.entityIsDescendant(entity);
-			}
-		};
+		return this.isRootEntity() ?
+				IterableTools.filter(this.getPersistenceUnit().getEntities(), new Entity.EntityIsDescendant(this)) :
+				IterableTools.<Entity>emptyIterable();
 	}
 
 	/**
@@ -2015,11 +2007,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? this.getAllOverridableNames_(overriddenTypeMapping) : EmptyIterable.<String>instance();
+			return (overriddenTypeMapping != null) ? this.getAllOverridableNames_(overriddenTypeMapping) : IterableTools.<String>emptyIterable();
 		}
 
 		/**
-		 * pre-condition: <code>typeMapping</code> is not <code>null</code>
+		 * pre-condition: <code>overriddenTypeMapping</code> is not <code>null</code>
 		 */
 		protected abstract Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping);
 
@@ -2054,12 +2046,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 		@Override
 		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {
-			return new FilteringIterable<String>(overriddenTypeMapping.getAllOverridableAttributeNames()) {
-					@Override
-					protected boolean accept(String attributeName) {
-						return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
-					}
-				};
+			return IterableTools.filter(overriddenTypeMapping.getAllOverridableAttributeNames(), new AttributeIsOverridable(this));
 		}
 
 		public EList<XmlAttributeOverride> getXmlOverrides() {
