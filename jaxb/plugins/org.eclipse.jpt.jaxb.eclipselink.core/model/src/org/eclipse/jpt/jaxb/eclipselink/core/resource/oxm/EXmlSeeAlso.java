@@ -51,7 +51,8 @@ public class EXmlSeeAlso extends EBaseObjectImpl implements EBaseObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String CLASSES_EDEFAULT = null;
+	protected static final String CLASSES_EDEFAULT = "";
+	
 	/**
 	 * The cached value of the '{@link #getClasses() <em>Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -61,7 +62,7 @@ public class EXmlSeeAlso extends EBaseObjectImpl implements EBaseObject
 	 * @ordered
 	 */
 	protected String classes = CLASSES_EDEFAULT;
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -85,6 +86,7 @@ public class EXmlSeeAlso extends EBaseObjectImpl implements EBaseObject
 
 	/**
 	 * Returns the value of the '<em><b>Classes</b></em>' attribute.
+	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Classes</em>' attribute list isn't clear,
@@ -94,14 +96,14 @@ public class EXmlSeeAlso extends EBaseObjectImpl implements EBaseObject
 	 * @return the value of the '<em>Classes</em>' attribute.
 	 * @see #setClasses(String)
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlSeeAlso_Classes()
-	 * @model
+	 * @model default=""
 	 * @generated
 	 */
 	public String getClasses()
 	{
 		return classes;
 	}
-
+	
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso#getClasses <em>Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -249,7 +251,8 @@ public class EXmlSeeAlso extends EBaseObjectImpl implements EBaseObject
 	public static Translator buildTranslator() {
 		return new SimpleTranslator(
 				Oxm.XML_SEE_ALSO, 
-				OxmPackage.eINSTANCE.getEAbstractTypeMapping_XmlSeeAlso(), 
+				OxmPackage.eINSTANCE.getEAbstractTypeMapping_XmlSeeAlso(),
+				Translator.EMPTY_CONTENT_IS_SIGNIFICANT,
 				buildTranslatorChildren());
 	}
 	

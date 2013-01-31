@@ -391,6 +391,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 
 	/**
 	 * Returns the value of the '<em><b>Xml Accessor Order</b></em>' attribute.
+	 * The default value is <code>""</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -402,7 +403,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder
 	 * @see #setXmlAccessorOrder(EXmlAccessOrder)
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEJavaType_XmlAccessorOrder()
-	 * @model
+	 * @model default=""
 	 * @generated
 	 */
 	public EXmlAccessOrder getXmlAccessorOrder()

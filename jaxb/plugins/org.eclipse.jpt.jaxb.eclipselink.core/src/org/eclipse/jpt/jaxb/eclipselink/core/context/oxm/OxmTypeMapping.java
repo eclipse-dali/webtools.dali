@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping;
@@ -62,7 +63,15 @@ public interface OxmTypeMapping
 	
 	// ***** xml see also *****
 	
-	public OxmXmlSeeAlso getXmlSeeAlso();
+	String DEFAULT_XML_SEE_ALSO_PROPERTY = "defaultXmlSeeAlso";  //$NON-NLS-1$
 	
-	public OxmXmlSeeAlso addXmlSeeAlso();
+	XmlSeeAlso getDefaultXmlSeeAlso();
+	
+	String SPECIFIED_XML_SEE_ALSO_PROPERTY = "specifiedXmlSeeAlso";  //$NON-NLS-1$
+	
+	OxmXmlSeeAlso getSpecifiedXmlSeeAlso();
+	
+	public OxmXmlSeeAlso addSpecifiedXmlSeeAlso();
+	
+	void removeSpecifiedXmlSeeAlso();
 }

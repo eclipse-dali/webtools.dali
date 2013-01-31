@@ -60,8 +60,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
 	protected static final EXmlAccessType XML_ACCESSOR_TYPE_EDEFAULT = null;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlAccessorType() <em>Xml Accessor Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -71,15 +70,13 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EXmlAccessType xmlAccessorType = XML_ACCESSOR_TYPE_EDEFAULT;
-
-
+	
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
 	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = null;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlAccessorOrder() <em>Xml Accessor Order</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -89,8 +86,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EXmlAccessOrder xmlAccessorOrder = XML_ACCESSOR_ORDER_EDEFAULT;
-
-
+	
 	/**
 	 * The default value of the '{@link #getXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -100,8 +96,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected static final Boolean XML_MAPPING_METADATA_COMPLETE_EDEFAULT = null;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -111,8 +106,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected Boolean xmlMappingMetadataComplete = XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
-
-
+	
 	/**
 	 * The default value of the '{@link #getPackageName() <em>Package Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -122,8 +116,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected static final String PACKAGE_NAME_EDEFAULT = null;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getPackageName() <em>Package Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -133,8 +126,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected String packageName = PACKAGE_NAME_EDEFAULT;
-
-
+	
 	/**
 	 * The default value of the '{@link #getXmlNameTransformer() <em>Xml Name Transformer</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -144,8 +136,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected static final String XML_NAME_TRANSFORMER_EDEFAULT = null;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlNameTransformer() <em>Xml Name Transformer</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -155,8 +146,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected String xmlNameTransformer = XML_NAME_TRANSFORMER_EDEFAULT;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlSchema() <em>Xml Schema</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -166,8 +156,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EXmlSchema xmlSchema;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlSchemaType() <em>Xml Schema Type</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -177,8 +166,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EXmlSchemaType xmlSchemaType;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlSchemaTypes() <em>Xml Schema Types</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -188,8 +176,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EList<EXmlSchemaType> xmlSchemaTypes;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlJavaTypeAdapters() <em>Xml Java Type Adapters</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -199,8 +186,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EList<EXmlJavaTypeAdapter> xmlJavaTypeAdapters;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlRegistries() <em>Xml Registries</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -210,8 +196,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EList<EXmlRegistry> xmlRegistries;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getXmlEnums() <em>Xml Enums</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -221,8 +206,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @ordered
 	 */
 	protected EList<EXmlEnum> xmlEnums;
-
-
+	
 	/**
 	 * The cached value of the '{@link #getJavaTypes() <em>Java Types</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

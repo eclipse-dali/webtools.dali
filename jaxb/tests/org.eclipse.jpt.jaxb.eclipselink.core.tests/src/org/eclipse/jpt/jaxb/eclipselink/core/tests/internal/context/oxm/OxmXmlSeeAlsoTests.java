@@ -48,7 +48,7 @@ public class OxmXmlSeeAlsoTests
 		addOxmFile();
 		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
 		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
-		OxmXmlSeeAlso xmlSeeAlso = oxmFile.getXmlBindings().getJavaType(0).getXmlSeeAlso();
+		OxmXmlSeeAlso xmlSeeAlso = oxmFile.getXmlBindings().getJavaType(0).getSpecifiedXmlSeeAlso();
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		EXmlSeeAlso eXmlSeeAlso = eXmlBindings.getJavaTypes().get(0).getXmlSeeAlso();
@@ -90,7 +90,7 @@ public class OxmXmlSeeAlsoTests
 		addOxmFile();
 		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
 		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
-		OxmXmlSeeAlso xmlSeeAlso = oxmFile.getXmlBindings().getJavaType(0).getXmlSeeAlso();
+		OxmXmlSeeAlso xmlSeeAlso = oxmFile.getXmlBindings().getJavaType(0).getSpecifiedXmlSeeAlso();
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		EXmlSeeAlso eXmlSeeAlso = eXmlBindings.getJavaTypes().get(0).getXmlSeeAlso();

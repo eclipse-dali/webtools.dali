@@ -7380,7 +7380,7 @@ public class OxmPackage extends EPackageImpl
 		initEClass(eJavaTypeEClass, EJavaType.class, "EJavaType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEJavaType_Name(), ecorePackage.getEString(), "name", null, 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEJavaType_SuperType(), ecorePackage.getEString(), "superType", null, 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEJavaType_XmlAccessorOrder(), this.getEXmlAccessOrder(), "xmlAccessorOrder", null, 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEJavaType_XmlAccessorOrder(), this.getEXmlAccessOrder(), "xmlAccessorOrder", "", 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEJavaType_XmlAccessorType(), this.getEXmlAccessType(), "xmlAccessorType", null, 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEJavaType_XmlCustomizer(), ecorePackage.getEString(), "xmlCustomizer", null, 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEJavaType_XmlDiscriminatorNode(), ecorePackage.getEString(), "xmlDiscriminatorNode", null, 0, 1, EJavaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -7573,7 +7573,7 @@ public class OxmPackage extends EPackageImpl
 		initEAttribute(getEXmlSchemaType_Type(), ecorePackage.getEString(), "type", null, 0, 1, EXmlSchemaType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eXmlSeeAlsoEClass, EXmlSeeAlso.class, "EXmlSeeAlso", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEXmlSeeAlso_Classes(), ecorePackage.getEString(), "classes", null, 0, 1, EXmlSeeAlso.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEXmlSeeAlso_Classes(), ecorePackage.getEString(), "classes", "", 0, 1, EXmlSeeAlso.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eXmlTransformationEClass, EXmlTransformation.class, "EXmlTransformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEXmlTransformation_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, EXmlTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -42,7 +42,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="EJavaType" eSuperTypes="#//EAbstractTypeMapping #//EPropertyHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="superType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorOrder" eType="#//EXmlAccessOrder"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorOrder" eType="#//EXmlAccessOrder"
+        defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorType" eType="#//EXmlAccessType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlCustomizer" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlDiscriminatorNode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -295,7 +296,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EXmlSeeAlso">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EXmlTransformation" eSuperTypes="#//EJavaAttribute #//EAccessibleJavaAttribute #//EPropertyHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

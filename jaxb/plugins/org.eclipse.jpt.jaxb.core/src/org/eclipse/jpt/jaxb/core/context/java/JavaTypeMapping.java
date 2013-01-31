@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context.java;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 
 /**
  * Represents mapping metadata on a JavaType (specified or implied).
@@ -33,4 +34,10 @@ public interface JavaTypeMapping
 	
 	void setXmlTransient(boolean newValue);
 	
+	
+	// ***** XmlSeeAlso *****
+	
+	XmlSeeAlso addXmlSeeAlso();
+	
+	void removeXmlSeeAlso();
 }

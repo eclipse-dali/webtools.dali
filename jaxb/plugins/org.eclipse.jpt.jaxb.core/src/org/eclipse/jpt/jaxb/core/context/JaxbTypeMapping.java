@@ -70,10 +70,6 @@ public interface JaxbTypeMapping
 	
 	XmlSeeAlso getXmlSeeAlso();
 	
-	XmlSeeAlso addXmlSeeAlso();
-	
-	void removeXmlSeeAlso();
-	
 	
 	// ***** misc *****
 	

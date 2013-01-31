@@ -589,6 +589,98 @@ public class OxmJavaTypeTests
 		assertFalse(oxmMapping.isXmlTransient());
 	}
 	
+	public void testUpdateXmlSeeAlso() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType oxmMapping = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		JavaTypeMapping javaMapping = oxmMapping.getJavaType().getMapping();
+		
+		assertNull(javaMapping.getXmlSeeAlso());
+		assertNull(oxmMapping.getDefaultXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNull(oxmMapping.getXmlSeeAlso());
+		
+		javaMapping.addXmlSeeAlso();
+		
+		assertNotNull(javaMapping.getXmlSeeAlso());
+		assertNotNull(oxmMapping.getDefaultXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNotNull(oxmMapping.getXmlSeeAlso());
+		
+		xmlBindings.setXmlMappingMetadataComplete(true);
+		oxmResource.save();
+		
+		assertNotNull(javaMapping.getXmlSeeAlso());
+		assertNull(oxmMapping.getDefaultXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNull(oxmMapping.getXmlSeeAlso());
+		
+		xmlBindings.setXmlMappingMetadataComplete(false);
+		oxmResource.save();
+		
+		eJavaType.setXmlSeeAlso(OxmFactory.eINSTANCE.createEXmlSeeAlso());
+		oxmResource.save();
+		
+		assertNotNull(javaMapping.getXmlSeeAlso());
+		assertNotNull(oxmMapping.getDefaultXmlSeeAlso());
+		assertNotNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNotNull(oxmMapping.getXmlSeeAlso());
+		assertEquals(oxmMapping.getSpecifiedXmlSeeAlso(), oxmMapping.getXmlSeeAlso());
+		
+		eJavaType.setXmlSeeAlso(null);
+		oxmResource.save();
+		
+		assertNotNull(javaMapping.getXmlSeeAlso());
+		assertNotNull(oxmMapping.getDefaultXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNotNull(oxmMapping.getXmlSeeAlso());
+		
+		javaMapping.removeXmlSeeAlso();
+		
+		assertNull(javaMapping.getXmlSeeAlso());
+		assertNull(oxmMapping.getDefaultXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNull(oxmMapping.getXmlSeeAlso());
+	}
+	
+	public void testModifyXmlSeeAlso() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType oxmMapping = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNull(oxmMapping.getXmlSeeAlso());
+		
+		oxmMapping.addSpecifiedXmlSeeAlso();
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-see-also", true);
+		assertNotNull(eJavaType.getXmlSeeAlso());
+		assertNotNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNotNull(oxmMapping.getXmlSeeAlso());
+		
+		oxmMapping.removeSpecifiedXmlSeeAlso();
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-see-also", false);
+		assertNull(eJavaType.getXmlSeeAlso());
+		assertNull(oxmMapping.getSpecifiedXmlSeeAlso());
+		assertNull(oxmMapping.getXmlSeeAlso());
+	}
+	
 	public void testUpdateQNameName() throws Exception {
 		createClassWithXmlType();
 		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);

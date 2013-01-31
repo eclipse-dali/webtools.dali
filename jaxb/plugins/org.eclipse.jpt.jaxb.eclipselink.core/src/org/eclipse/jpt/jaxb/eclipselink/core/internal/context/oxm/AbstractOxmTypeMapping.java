@@ -24,6 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
+import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
@@ -64,7 +65,10 @@ public abstract class AbstractOxmTypeMapping
 	// qName - never null
 	protected JaxbQName qName;
 	
-	protected OxmXmlSeeAlso xmlSeeAlso;
+	// specifiedXmlSeeAlso
+	protected XmlSeeAlso defaultXmlSeeAlso;
+	protected OxmXmlSeeAlso specifiedXmlSeeAlso;
+	protected XmlSeeAlso xmlSeeAlso;
 	
 	
 	public AbstractOxmTypeMapping(OxmXmlBindings parent, EAbstractTypeMapping eTypeMapping) {
@@ -297,58 +301,95 @@ public abstract class AbstractOxmTypeMapping
 	
 	// ***** xml see also *****
 	
-	public OxmXmlSeeAlso getXmlSeeAlso() {
-		return this.xmlSeeAlso;
+	public XmlSeeAlso getDefaultXmlSeeAlso() {
+		return this.defaultXmlSeeAlso;
 	}
 	
-	protected void setXmlSeeAlso_(OxmXmlSeeAlso xmlSeeAlso) {
-		OxmXmlSeeAlso old = this.xmlSeeAlso;
-		this.xmlSeeAlso = xmlSeeAlso;
-		firePropertyChanged(XML_SEE_ALSO_PROPERTY, old, xmlSeeAlso);
+	protected void setDefaultXmlSeeAlso_(XmlSeeAlso xmlSeeAlso) {
+		XmlSeeAlso old = this.defaultXmlSeeAlso;
+		this.defaultXmlSeeAlso = xmlSeeAlso;
+		firePropertyChanged(DEFAULT_XML_SEE_ALSO_PROPERTY, old, xmlSeeAlso);
 	}
 	
-	public OxmXmlSeeAlso addXmlSeeAlso() {
+	public OxmXmlSeeAlso getSpecifiedXmlSeeAlso() {
+		return this.specifiedXmlSeeAlso;
+	}
+	
+	protected void setSpecifiedXmlSeeAlso_(OxmXmlSeeAlso xmlSeeAlso) {
+		OxmXmlSeeAlso old = this.specifiedXmlSeeAlso;
+		this.specifiedXmlSeeAlso = xmlSeeAlso;
+		firePropertyChanged(SPECIFIED_XML_SEE_ALSO_PROPERTY, old, xmlSeeAlso);
+	}
+	
+	public OxmXmlSeeAlso addSpecifiedXmlSeeAlso() {
 		EXmlSeeAlso eXmlSeeAlso = OxmFactory.eINSTANCE.createEXmlSeeAlso();
-		OxmXmlSeeAlso xmlSeeAlso = buildXmlSeeAlso(eXmlSeeAlso);
-		setXmlSeeAlso_(xmlSeeAlso);
+		OxmXmlSeeAlso xmlSeeAlso = buildSpecifiedXmlSeeAlso(eXmlSeeAlso);
+		setSpecifiedXmlSeeAlso_(xmlSeeAlso);
 		this.eTypeMapping.setXmlSeeAlso(eXmlSeeAlso);
 		return xmlSeeAlso;
 	}
 	
-	public void removeXmlSeeAlso() {
+	public void removeSpecifiedXmlSeeAlso() {
 		this.eTypeMapping.setXmlSeeAlso(null);
-		setXmlSeeAlso_(null);
+		setSpecifiedXmlSeeAlso_(null);
 	}
 	
-	protected OxmXmlSeeAlso buildXmlSeeAlso(EXmlSeeAlso eXmlSeeAlso) {
+	protected OxmXmlSeeAlso buildSpecifiedXmlSeeAlso(EXmlSeeAlso eXmlSeeAlso) {
 		return new OxmXmlSeeAlsoImpl(this, eXmlSeeAlso);
+	}
+	
+	public XmlSeeAlso getXmlSeeAlso() {
+		return this.xmlSeeAlso;
+	}
+	
+	protected void setXmlSeeAlso_(XmlSeeAlso xmlSeeAlso) {
+		XmlSeeAlso old = this.xmlSeeAlso;
+		this.xmlSeeAlso = xmlSeeAlso;
+		firePropertyChanged(XML_SEE_ALSO_PROPERTY, old, xmlSeeAlso);
 	}
 	
 	protected void initXmlSeeAlso() {
 		EXmlSeeAlso eXmlSeeAlso = this.eTypeMapping.getXmlSeeAlso();
-		this.xmlSeeAlso = (eXmlSeeAlso == null) ? null : buildXmlSeeAlso(eXmlSeeAlso);
+		this.specifiedXmlSeeAlso = (eXmlSeeAlso == null) ? null : buildSpecifiedXmlSeeAlso(eXmlSeeAlso);
 	}
 	
 	protected void syncXmlSeeAlso() {
 		EXmlSeeAlso eXmlSeeAlso = this.eTypeMapping.getXmlSeeAlso();
 		if (eXmlSeeAlso != null) {
-			if (this.xmlSeeAlso != null) {
-				this.xmlSeeAlso.synchronizeWithResourceModel();
+			if (this.specifiedXmlSeeAlso != null) {
+				this.specifiedXmlSeeAlso.synchronizeWithResourceModel();
 			}
 			else {
-				setXmlSeeAlso_(buildXmlSeeAlso(eXmlSeeAlso));
+				setSpecifiedXmlSeeAlso_(buildSpecifiedXmlSeeAlso(eXmlSeeAlso));
 			}
 		}
 		else {
-			if (this.xmlSeeAlso != null) {
-				setXmlSeeAlso_(null);
+			if (this.specifiedXmlSeeAlso != null) {
+				setSpecifiedXmlSeeAlso_(null);
 			}
 		}
 	}
 	
 	protected void updateXmlSeeAlso() {
-		if (this.xmlSeeAlso != null) {
-			this.xmlSeeAlso.update();
+		XmlSeeAlso defaultXmlSeeAlso = null;
+		
+		if (! getXmlBindings().isXmlMappingMetadataComplete()) {
+			JavaTypeMapping javaMapping = getJavaTypeMapping();
+			if (javaMapping != null) {
+				defaultXmlSeeAlso = javaMapping.getXmlSeeAlso();
+			}
+		}
+		
+		setDefaultXmlSeeAlso_(defaultXmlSeeAlso);
+		
+		XmlSeeAlso xmlSeeAlso = 
+				(this.specifiedXmlSeeAlso != null) ?
+						this.specifiedXmlSeeAlso
+						: this.defaultXmlSeeAlso;
+		setXmlSeeAlso_(xmlSeeAlso);
+		
+		if (this.specifiedXmlSeeAlso != null) {
+			this.specifiedXmlSeeAlso.update();
 		}
 	}
 	
