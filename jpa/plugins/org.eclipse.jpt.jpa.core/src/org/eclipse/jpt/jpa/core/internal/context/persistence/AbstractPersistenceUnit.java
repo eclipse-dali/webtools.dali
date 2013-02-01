@@ -349,18 +349,14 @@ public abstract class AbstractPersistenceUnit
 
 	protected void initializeChildren() {
 		CollectionTools.addAll(this.children, this.getMappingFileRefs());
-		CollectionTools.addAll(this.children, this.getSpecifiedClassRefs());
-
-		//TODO why are we not displaying these in the JPA Structure View for a persistence.xml?
-		//CollectionTools.addAll(this.children, this.getImpliedClassRefs());
+		CollectionTools.addAll(this.children, this.getClassRefs());
 		CollectionTools.addAll(this.children, this.getJarFileRefs());		
 	}
 
 	protected void updateChildren() {
 		Vector<JpaStructureNode> newChildren = new Vector<JpaStructureNode>();
 		CollectionTools.addAll(newChildren, this.getMappingFileRefs());
-		CollectionTools.addAll(newChildren, this.getSpecifiedClassRefs());
-		//CollectionTools.addAll(children, this.getImpliedClassRefs());
+		CollectionTools.addAll(newChildren, this.getClassRefs());
 		CollectionTools.addAll(newChildren, this.getJarFileRefs());
 
 		this.synchronizeCollection(newChildren, this.children, CHILDREN_COLLECTION);
@@ -388,16 +384,8 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void dispose() {
-		 //I assume we also need to dispose implied class refs, so I am not using the getChildren() api
-		//right now since that currently only builds specified class refs.
-		for (ClassRef classRef : this.getClassRefs()) {
-			classRef.dispose();
-		}
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			jarFileRef.dispose();
-		}
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			mappingFileRef.dispose();
+		for (JpaStructureNode child : this.getChildren()) {
+			child.dispose();
 		}
 	}
 
