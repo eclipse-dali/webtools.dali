@@ -119,12 +119,6 @@ public interface MappingFileRef
 	boolean isDefault();
 
 	/**
-	 * Return whether the specified text offset is within
-	 * the text representation of the mapping file.
-	 */
-	boolean containsOffset(int textOffset);
-
-	/**
 	 * @see MappingFile#getMappingFileQueries()
 	 */
 	Iterable<Query> getMappingFileQueries();

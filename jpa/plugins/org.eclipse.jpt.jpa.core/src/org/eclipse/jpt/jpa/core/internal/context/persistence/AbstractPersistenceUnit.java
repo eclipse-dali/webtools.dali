@@ -347,18 +347,6 @@ public abstract class AbstractPersistenceUnit
 		return this.xmlPersistenceUnit.getSelectionTextRange();
 	}
 
-	public void dispose() {
-		for (ClassRef classRef : this.getClassRefs()) {
-			classRef.dispose();
-		}
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			jarFileRef.dispose();
-		}
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			mappingFileRef.dispose();
-		}
-	}
-
 	protected void initializeChildren() {
 		CollectionTools.addAll(this.children, this.getMappingFileRefs());
 		CollectionTools.addAll(this.children, this.getSpecifiedClassRefs());
@@ -384,6 +372,33 @@ public abstract class AbstractPersistenceUnit
 
 	public int getChildrenSize() {
 		return this.children.size();
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlPersistenceUnit != null) && this.xmlPersistenceUnit.containsOffset(textOffset);
+	}
+
+	public JpaStructureNode getStructureNode(int textOffset) {
+		for (JpaStructureNode child : this.getChildren()) {
+			if (child.containsOffset(textOffset)) {
+				return child;
+			}
+		}
+		return this;
+	}
+
+	public void dispose() {
+		 //I assume we also need to dispose implied class refs, so I am not using the getChildren() api
+		//right now since that currently only builds specified class refs.
+		for (ClassRef classRef : this.getClassRefs()) {
+			classRef.dispose();
+		}
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+			jarFileRef.dispose();
+		}
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			mappingFileRef.dispose();
+		}
 	}
 
 
@@ -2096,29 +2111,6 @@ public abstract class AbstractPersistenceUnit
 
 	public XmlPersistenceUnit getXmlPersistenceUnit() {
 		return this.xmlPersistenceUnit;
-	}
-
-	public JpaStructureNode getStructureNode(int textOffset) {
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			if (jarFileRef.containsOffset(textOffset)) {
-				return jarFileRef;
-			}
-		}
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.containsOffset(textOffset)) {
-				return mappingFileRef;
-			}
-		}
-		for (ClassRef classRef : this.getClassRefs()) {
-			if (classRef.containsOffset(textOffset)) {
-				return classRef;
-			}
-		}
-		return this;
-	}
-
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlPersistenceUnit != null) && this.xmlPersistenceUnit.containsOffset(textOffset);
 	}
 
 	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextNode> nodes) {

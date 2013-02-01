@@ -458,8 +458,8 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this;
 	}
 
-	public boolean contains(int textOffset) {
-		return this.mapping.contains(textOffset);
+	public boolean containsOffset(int textOffset) {
+		return this.getXmlAttributeMapping().containsOffset(textOffset);
 	}
 
 	public TextRange getSelectionTextRange() {

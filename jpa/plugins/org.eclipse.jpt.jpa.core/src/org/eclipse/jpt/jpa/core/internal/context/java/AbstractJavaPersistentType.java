@@ -946,10 +946,10 @@ public abstract class AbstractJavaPersistentType
 	 */
 	public JpaStructureNode getStructureNode(int offset) {
 		this.resourceType.getJavaResourceCompilationUnit().synchronizeWithJavaSourceIfNecessary(); //TODO this new API? or just check isConsistent() right here?
-		if (this.contains(offset)) {
-			for (JavaPersistentAttribute persistentAttribute : this.getAttributes()) {
-				if (persistentAttribute.contains(offset)) {
-					return persistentAttribute;
+		if (this.containsOffset(offset)) {
+			for (JpaStructureNode child : this.getChildren()) {
+				if (child.containsOffset(offset)) {
+					return child;
 				}
 			}
 			return this;
@@ -957,7 +957,7 @@ public abstract class AbstractJavaPersistentType
 		return null;
 	}
 
-	protected boolean contains(int offset) {
+	public boolean containsOffset(int offset) {
 		TextRange fullTextRange = this.resourceType.getTextRange();
 		// 'fullTextRange' will be null if the type no longer exists in the java;
 		// the context model can be out of sync with the resource model

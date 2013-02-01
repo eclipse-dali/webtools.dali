@@ -107,6 +107,10 @@ public abstract class AbstractJarFileRef
 		return 0;
 	}
 
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
@@ -302,10 +306,6 @@ public abstract class AbstractJarFileRef
 
 	public PersistentType getPersistentType(String typeName) {
 		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
-	}
-
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
 	}
 
 

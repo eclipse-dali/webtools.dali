@@ -56,12 +56,6 @@ public interface ClassRef
 	 */
 	XmlJavaClassRef getXmlClassRef();
 
-	/**
-	 * Return whether the text representation of this persistence unit contains
-	 * the given text offset
-	 */
-	boolean containsOffset(int textOffset);
-
 
 	// ********** class name **********
 

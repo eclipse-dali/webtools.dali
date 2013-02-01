@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
   * 
- * @version 3.0
+ * @version 3.3
  * @since 2.0
 */
 public interface EntityMappings
@@ -152,8 +152,6 @@ public interface EntityMappings
 	String getDefaultPersistentTypePackage();
 
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
-
-	boolean containsOffset(int textOffset);
 
 	/**
 	 * Return the Java resource type for the specified class name

@@ -80,8 +80,6 @@ public interface OrmReadOnlyPersistentAttribute
 
 	boolean isFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter);
 
-	boolean contains(int textOffset);
-
 
 	// ********** virtual -> specified **********
 

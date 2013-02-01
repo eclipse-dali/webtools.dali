@@ -461,6 +461,15 @@ public abstract class AbstractJavaPersistentAttribute
 		return 0;
 	}
 
+	public boolean containsOffset(int offset) {
+		TextRange fullTextRange = this.getResourceAttribute().getTextRange();
+		// 'fullTextRange' will be null if the attribute no longer exists in the java;
+		// the context model can be out of sync with the resource model
+		// when a selection event occurs before the context model has a
+		// chance to sync with the resource model via the update thread
+		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
@@ -611,15 +620,6 @@ public abstract class AbstractJavaPersistentAttribute
 			contextType = contextType.getSuperPersistentType();
 		}
 		return null;
-	}
-	
-	public boolean contains(int offset) {
-		TextRange fullTextRange = this.getResourceAttribute().getTextRange();
-		// 'fullTextRange' will be null if the attribute no longer exists in the java;
-		// the context model can be out of sync with the resource model
-		// when a selection event occurs before the context model has a
-		// chance to sync with the resource model via the update thread
-		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 
 	@Override

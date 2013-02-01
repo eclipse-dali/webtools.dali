@@ -31,6 +31,13 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 public interface JpaStructureNode
 	extends JpaContextNode
 {
+
+	/**
+	 * Return whether the text representation of this structure node contains
+	 * the given text offset
+	 */
+	boolean containsOffset(int textOffset);
+
 	/**
 	 * Return the structure node at the specified offset in the structure node's
 	 * corresponding text file.

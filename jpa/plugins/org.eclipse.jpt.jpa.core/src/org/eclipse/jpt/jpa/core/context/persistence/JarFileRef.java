@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -90,9 +90,4 @@ public interface JarFileRef
 
 	XmlJarFileRef getXmlJarFileRef();
 
-	/**
-	 * Return whether the text representation of the JAR file ref contains
-	 * the specified text offset.
-	 */
-	boolean containsOffset(int textOffset);
 }

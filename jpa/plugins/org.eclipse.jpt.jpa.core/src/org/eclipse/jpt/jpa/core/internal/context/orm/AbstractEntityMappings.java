@@ -217,23 +217,8 @@ public abstract class AbstractEntityMappings
 		return EntityMappings.class;
 	}
 
-	public JpaStructureNode getStructureNode(int textOffset) {
-		for (OrmPersistentType persistentType: this.getPersistentTypes()) {
-			if (persistentType.contains(textOffset)) {
-				return persistentType.getStructureNode(textOffset);
-			}
-		}
-		return this;
-	}
-
 	public TextRange getSelectionTextRange() {
 		return this.xmlEntityMappings.getSelectionTextRange();
-	}
-
-	public void dispose() {
-		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
-			ormPersistentType.dispose();
-		}
 	}
 
 	//TODO I think children needs to include all managed types, 
@@ -252,6 +237,25 @@ public abstract class AbstractEntityMappings
 
 	public int getChildrenSize() {
 		return this.children.size();
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlEntityMappings != null) && this.xmlEntityMappings.containsOffset(textOffset);
+	}
+
+	public JpaStructureNode getStructureNode(int textOffset) {
+		for (JpaStructureNode child : this.getChildren()) {
+			if (child.containsOffset(textOffset)) {
+				return child.getStructureNode(textOffset);
+			}
+		}
+		return this;
+	}
+
+	public void dispose() {
+		for (JpaStructureNode child : this.getChildren()) {
+			child.dispose();
+		}
 	}
 
 
@@ -313,10 +317,6 @@ public abstract class AbstractEntityMappings
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlEntityMappings.getValidationTextRange();
 		return (textRange != null) ? textRange : this.getOrmXml().getValidationTextRange();
-	}
-
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlEntityMappings != null) && this.xmlEntityMappings.containsOffset(textOffset);
 	}
 
 

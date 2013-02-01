@@ -312,7 +312,7 @@ public class VirtualOrmPersistentAttribute
 		return this;
 	}
 
-	public boolean contains(int textOffset) {
+	public boolean containsOffset(int textOffset) {
 		return false;
 	}
 

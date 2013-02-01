@@ -321,10 +321,6 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.getTypeMapping().validatesAgainstDatabase();
 	}
 
-	public boolean contains(int textOffset) {
-		return this.xmlAttributeMapping.containsOffset(textOffset);
-	}
-
 	public TextRange getSelectionTextRange() {
 		return this.xmlAttributeMapping.getSelectionTextRange();
 	}

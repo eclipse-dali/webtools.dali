@@ -134,8 +134,6 @@ public interface OrmPersistentType
 
 	// ********** misc **********
 
-	boolean contains(int textOffset);
-
 	/**
 	 * Return the Java persistent type that is referred to by the
 	 * <code>orm.xml</code> persistent type.

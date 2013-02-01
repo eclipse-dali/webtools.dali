@@ -127,15 +127,6 @@ public class GenericClassRef
 		}
 	}
 
-	public Iterable<JpaStructureNode> getChildren() {
-		return EmptyIterable.instance();
-	}
-
-	public int getChildrenSize() {
-		return 0;
-	}
-
-
 
 	// ********** class name **********
 
@@ -250,10 +241,6 @@ public class GenericClassRef
 		return ! this.isVirtual();
 	}
 
-	public boolean containsOffset(int textOffset) {
-		return this.isNotVirtual() && this.xmlJavaClassRef.containsOffset(textOffset);
-	}
-
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getJavaClassName());
@@ -268,6 +255,18 @@ public class GenericClassRef
 
 	public Class<ClassRef> getType() {
 		return ClassRef.class;
+	}
+
+	public Iterable<JpaStructureNode> getChildren() {
+		return EmptyIterable.instance();
+	}
+
+	public int getChildrenSize() {
+		return 0;
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return this.isNotVirtual() && this.xmlJavaClassRef.containsOffset(textOffset);
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

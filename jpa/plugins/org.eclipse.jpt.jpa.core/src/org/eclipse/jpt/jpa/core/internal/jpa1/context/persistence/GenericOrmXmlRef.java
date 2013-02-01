@@ -79,12 +79,12 @@ public class GenericOrmXmlRef
 		return false;
 	}
 
+
+	// ********** JpaStructureNode implementation **********
+
 	public boolean containsOffset(int textOffset) {
 		return this.xmlMappingFileRef.containsOffset(textOffset);
 	}
-
-
-	// ********** JpaStructureNode implementation **********
 
 	public TextRange getSelectionTextRange() {
 		return this.xmlMappingFileRef.getFileNameTextRange();

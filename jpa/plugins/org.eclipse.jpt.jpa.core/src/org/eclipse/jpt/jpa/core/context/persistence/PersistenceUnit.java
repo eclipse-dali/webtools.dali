@@ -762,12 +762,6 @@ public interface PersistenceUnit
 	Embeddable getEmbeddable(String typeName);
 
 	/**
-	 * Return whether the text representation of this persistence unit contains
-	 * the given text offset
-	 */
-	boolean containsOffset(int textOffset);
-
-	/**
 	 * Synchronize the persistence unit's list of specified classes with the
 	 * types in the project currently annotated.
 	 */

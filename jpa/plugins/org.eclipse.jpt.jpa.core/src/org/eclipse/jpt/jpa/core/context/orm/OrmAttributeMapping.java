@@ -72,8 +72,6 @@ public interface OrmAttributeMapping
 
 	void removeXmlAttributeMappingFrom(Attributes resourceAttributes);
 
-	boolean contains(int textOffset);
-
 	TextRange getSelectionTextRange();
 
 	TextRange getNameTextRange();

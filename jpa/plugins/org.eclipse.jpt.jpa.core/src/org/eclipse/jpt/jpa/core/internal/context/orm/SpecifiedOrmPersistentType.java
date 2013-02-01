@@ -1132,10 +1132,14 @@ public abstract class SpecifiedOrmPersistentType
 		return this.children.size();
 	}
 
+	public boolean containsOffset(int textOffset) {
+		return this.getXmlTypeMapping().containsOffset(textOffset);
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (OrmPersistentAttribute attribute : this.getSpecifiedAttributes()) {
-			if (attribute.contains(textOffset)) {
-				return attribute;
+		for (JpaStructureNode child : this.getChildren()) {
+			if (child.containsOffset(textOffset)) {
+				return child;
 			}
 		}
 		return this;
@@ -1342,10 +1346,6 @@ public abstract class SpecifiedOrmPersistentType
 		}
 		int lastPeriod = className.lastIndexOf('.');
 		return (lastPeriod == -1) ? this.getDefaultPackage() : className.substring(0, lastPeriod);
-	}
-
-	public boolean contains(int textOffset) {
-		return this.mapping.containsOffset(textOffset);
 	}
 
 	public PersistentType getOverriddenPersistentType() {

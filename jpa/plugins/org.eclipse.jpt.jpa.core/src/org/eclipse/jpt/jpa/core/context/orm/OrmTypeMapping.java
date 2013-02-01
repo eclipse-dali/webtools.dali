@@ -121,8 +121,6 @@ public interface OrmTypeMapping
 	TextRange getClassTextRange();
 
 	TextRange getAttributesTextRange();
-	
-	boolean containsOffset(int textOffset);
 
 
 	// ********** Java type mapping **********

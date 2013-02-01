@@ -95,10 +95,6 @@ public class VirtualJavaPersistentAttribute
 		return false;
 	}
 
-	public boolean contains(int offset) {
-		throw new UnsupportedOperationException();
-	}
-
 	public String getTypeName() {
 		String typeName = this.xmlAttributeMapping.getAttributeType();
 		return typeName == null ? null : this.getEntityMappings().getFullyQualifiedName(typeName);
@@ -148,6 +144,9 @@ public class VirtualJavaPersistentAttribute
 
 	// ********** JpaStructureNode implementation **********
 
+	public boolean containsOffset(int offset) {
+		throw new UnsupportedOperationException();
+	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
 		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$

@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
@@ -222,10 +223,6 @@ public class GenericPersistence
 		return this.xmlPersistence;
 	}
 
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlPersistence == null) ? false : this.xmlPersistence.containsOffset(textOffset);
-	}
-
 
 	// ********** XmlContextNode implementation **********
 
@@ -254,27 +251,25 @@ public class GenericPersistence
 		return Persistence.class;
 	}
 
+	public TextRange getSelectionTextRange() {
+		return this.xmlPersistence.getSelectionTextRange();
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlPersistence == null) ? false : this.xmlPersistence.containsOffset(textOffset);
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (PersistenceUnit pu : this.getPersistenceUnits()) {
-			if (pu.containsOffset(textOffset)) {
-				return pu.getStructureNode(textOffset);
+		for (JpaStructureNode child : this.getChildren()) {
+			if (child.containsOffset(textOffset)) {
+				return child.getStructureNode(textOffset);
 			}
 		}
 		return this;
 	}
 
-	public TextRange getSelectionTextRange() {
-		return this.xmlPersistence.getSelectionTextRange();
-	}
-
-	public void dispose() {
-		for (PersistenceUnit pu : this.getPersistenceUnits()) {
-			pu.dispose();
-		}
-	}
-
 	protected void initializeChildren() {
-		this.children.add(this.persistenceUnit);
+		CollectionTools.addAll(this.children, this.getPersistenceUnits());
 	}
 
 	protected void updateChildren() {
@@ -287,6 +282,12 @@ public class GenericPersistence
 
 	public int getChildrenSize() {
 		return this.children.size();
+	}
+
+	public void dispose() {
+		for (JpaStructureNode child : this.getChildren()) {
+			child.dispose();
+		}
 	}
 
 

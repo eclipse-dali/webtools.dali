@@ -278,6 +278,10 @@ public class VirtualJavaPersistentType
 		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
 	}
 
+	public boolean containsOffset(int textOffset) {
+		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
 	}

@@ -471,10 +471,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	public TextRange getNameTextRange() {
 		return this.getValidationTextRange(this.xmlTypeMapping.getNameTextRange());
 	}
-	
-	public boolean containsOffset(int textOffset) {
-		return this.xmlTypeMapping.containsOffset(textOffset);
-	}
 
 
 	// ********** refactoring **********
