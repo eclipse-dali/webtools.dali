@@ -231,6 +231,33 @@ public class OxmJavaTypeTests
 		assertNull(javaType.getSpecifiedSuperTypeName());
 	}
 	
+	public void testUpdateSuperclass() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, "Foo");
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType javaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getSuperType());
+		assertNull(javaType.getSuperclass());
+		
+		eJavaType.setSuperType(PACKAGE_NAME + "." + TYPE_NAME);
+		oxmResource.save();
+		
+		assertNotNull(eJavaType.getSuperType());
+		assertNotNull(javaType.getSuperclass());
+		
+		eJavaType.setSuperType(null);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getSuperType());
+		assertNull(javaType.getSuperclass());
+	}
+	
 	public void testUpdateXmlTransient() throws Exception {
 		createClassWithXmlType();
 		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
