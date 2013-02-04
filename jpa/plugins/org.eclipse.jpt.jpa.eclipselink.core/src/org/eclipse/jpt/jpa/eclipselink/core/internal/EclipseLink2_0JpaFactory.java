@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
@@ -34,7 +32,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
@@ -54,9 +51,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
@@ -124,11 +119,6 @@ public class EclipseLink2_0JpaFactory
 	
 	public OrphanRemovable2_0 buildJavaOrphanRemoval(OrphanRemovalHolder2_0 parent) {
 		return new GenericJavaOrphanRemoval2_0(parent);
-	}
-
-	@Override
-	public JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation annotation) {
-		return new GenericJavaNamedQuery2_0(parent, (NamedQuery2_0Annotation) annotation);
 	}
 
 	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner) {

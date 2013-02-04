@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
@@ -71,11 +70,6 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory
 	
 	public OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalHolder2_0 parent) {
 		return new GenericOrmOrphanRemoval2_0(parent);
-	}
-
-	@Override
-	public OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
-		return new GenericOrmNamedQuery2_0(parent, resourceNamedQuery);
 	}
 
 	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, Table.Owner owner) {
