@@ -161,6 +161,76 @@ public class OxmJavaTypeTests
 		assertEquals("Foo", javaType.getTypeName().getSimpleName());
 	}
 	
+	public void testUpdateSuperTypeName() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType javaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getSuperType());
+		assertEquals("java.lang.Object", javaType.getSuperTypeName());
+		assertEquals("java.lang.Object", javaType.getDefaultSuperTypeName());
+		assertNull(javaType.getSpecifiedSuperTypeName());
+		
+		eJavaType.setSuperType("foo");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "super-type=\"foo\"", true);
+		assertEquals("foo", eJavaType.getSuperType());
+		assertEquals("foo", javaType.getSuperTypeName());
+		assertEquals("java.lang.Object", javaType.getDefaultSuperTypeName());
+		assertEquals("foo", javaType.getSpecifiedSuperTypeName());
+		
+		eJavaType.setSuperType(null);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "super-type", false);
+		assertNull(eJavaType.getSuperType());
+		assertEquals("java.lang.Object", javaType.getSuperTypeName());
+		assertEquals("java.lang.Object", javaType.getDefaultSuperTypeName());
+		assertNull(javaType.getSpecifiedSuperTypeName());
+	}
+	
+	public void testModifySuperTypeName() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType javaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getSuperType());
+		assertEquals("java.lang.Object", javaType.getSuperTypeName());
+		assertEquals("java.lang.Object", javaType.getDefaultSuperTypeName());
+		assertNull(javaType.getSpecifiedSuperTypeName());
+		
+		javaType.setSpecifiedSuperTypeName("foo");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "super-type=\"foo\"", true);
+		assertEquals("foo", eJavaType.getSuperType());
+		assertEquals("foo", javaType.getSuperTypeName());
+		assertEquals("java.lang.Object", javaType.getDefaultSuperTypeName());
+		assertEquals("foo", javaType.getSpecifiedSuperTypeName());
+		
+		javaType.setSpecifiedSuperTypeName(null);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "super-type", false);
+		assertNull(eJavaType.getSuperType());
+		assertEquals("java.lang.Object", javaType.getSuperTypeName());
+		assertEquals("java.lang.Object", javaType.getDefaultSuperTypeName());
+		assertNull(javaType.getSpecifiedSuperTypeName());
+	}
+	
 	public void testUpdateXmlTransient() throws Exception {
 		createClassWithXmlType();
 		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
@@ -361,7 +431,7 @@ public class OxmJavaTypeTests
 		oxmMapping.getQName().setSpecifiedName("foo");
 		oxmResource.save();
 		
-		assertFileContentsContains("oxm.xml","<xml-type", true);
+		assertFileContentsContains("oxm.xml", "<xml-type", true);
 		assertFileContentsContains("oxm.xml", "name=\"foo\"", true);
 		assertNotNull(eJavaType.getXmlType());
 		assertEquals("foo", eJavaType.getXmlType().getName());

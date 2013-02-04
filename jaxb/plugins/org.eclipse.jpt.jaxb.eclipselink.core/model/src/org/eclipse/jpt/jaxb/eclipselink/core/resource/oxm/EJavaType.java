@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.internal.utility.translators.StringAttributeTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -1140,6 +1141,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildSuperTypeTranslator(),
 			buildXmlTransientTranslator(),
 			EXmlType.buildTranslator(),
 			EXmlSeeAlso.buildTranslator(),
@@ -1152,5 +1154,12 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 			Oxm.NAME,
 			OxmPackage.eINSTANCE.getEJavaType_Name(), 
 			Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildSuperTypeTranslator() {
+		return new StringAttributeTranslator(
+			Oxm.SUPER_TYPE,
+			OxmPackage.eINSTANCE.getEJavaType_SuperType(), 
+			Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
 	}
 }

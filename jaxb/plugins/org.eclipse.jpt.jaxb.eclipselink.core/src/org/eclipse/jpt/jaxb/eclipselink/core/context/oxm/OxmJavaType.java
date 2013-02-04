@@ -50,6 +50,44 @@ public interface OxmJavaType
 	void setSpecifiedName(String newName);
 	
 	
+	// ***** supertype name *****
+	
+	/**
+	 * String associated with changes to the "superTypeName" property
+	 */
+	String SUPER_TYPE_NAME_PROPERTY = "superTypeName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the super-type name (may be null)
+	 */
+	String getSuperTypeName();
+	
+	/**
+	 * String associated with changes to the "defaultSuperTypeName" property
+	 */
+	String DEFAULT_SUPER_TYPE_NAME_PROPERTY = "defaultSuperTypeName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the default super-type name
+	 */
+	String getDefaultSuperTypeName();
+	
+	/**
+	 * String associated with changes to the "specifiedSuperTypeName" property
+	 */
+	String SPECIFIED_SUPER_TYPE_NAME_PROPERTY = "specifiedSuperTypeName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the super-type name specified in source
+	 */
+	String getSpecifiedSuperTypeName();
+	
+	/**
+	 * Set the super-type name in source
+	 */
+	void setSpecifiedSuperTypeName(String newSuperTypeName);
+	
+	
 	// ***** specified attributes *****
 	
 	String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$

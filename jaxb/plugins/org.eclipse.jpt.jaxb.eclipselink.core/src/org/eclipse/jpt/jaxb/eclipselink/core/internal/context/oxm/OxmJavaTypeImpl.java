@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
 import java.util.List;
 import java.util.Vector;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaJaxbClass;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
@@ -49,12 +51,23 @@ public class OxmJavaTypeImpl
 	
 	protected String specifiedName;
 	
+	// super-type
+	protected String superTypeName;
+	protected String defaultSuperTypeName;
+	protected String specifiedSuperTypeName;
+	
+	// superclass
+	protected JaxbClassMapping superclass;
+	
+	// accessor-order
 	protected XmlAccessOrder defaultAccessOrder;
 	protected XmlAccessOrder specifiedAccessOrder;
 	
+	// accessor-type
 	protected XmlAccessType defaultAccessType;
 	protected XmlAccessType specifiedAccessType;
 	
+	// java-attributes
 	protected final Vector<OxmJavaAttribute> specifiedAttributes;
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter;
 	
@@ -66,6 +79,7 @@ public class OxmJavaTypeImpl
 		this.specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
 		
 		initSpecifiedName();
+		initSuperTypeName();
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
 		initSpecifiedAccessType();
@@ -105,6 +119,7 @@ public class OxmJavaTypeImpl
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		setSpecifiedName_(buildSpecifiedName());
+		syncSuperTypeName();
 		syncSpecifiedAccessOrder();
 		syncSpecifiedAccessType();
 		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
@@ -113,6 +128,8 @@ public class OxmJavaTypeImpl
 	@Override
 	public void update() {
 		super.update();
+		updateSuperTypeName();
+		updateSuperclass();
 		updateDefaultAccessOrder();
 		updateDefaultAccessType();
 		ContextContainerTools.update(this.specifiedAttributeContainerAdapter);
@@ -126,8 +143,8 @@ public class OxmJavaTypeImpl
 	}
 	
 	public void setSpecifiedName(String newName) {
-		getETypeMapping().setName(newName);
 		setSpecifiedName_(newName);
+		getETypeMapping().setName(newName);
 	}
 	
 	protected void setSpecifiedName_(String newName) {
@@ -142,6 +159,88 @@ public class OxmJavaTypeImpl
 	
 	protected String buildSpecifiedName() {
 		return getETypeMapping().getName();
+	}
+	
+	
+	// ***** super-type name *****
+	
+	public String getSuperTypeName() {
+		return this.superTypeName;
+	}
+	
+	protected void setSuperTypeName_(String superTypeName) {
+		String old = this.superTypeName;
+		this.superTypeName = superTypeName;
+		firePropertyChanged(SUPER_TYPE_NAME_PROPERTY, old, superTypeName);
+	}
+	
+	public String getDefaultSuperTypeName() {
+		return this.defaultSuperTypeName;
+	}
+	
+	protected void setDefaultSuperTypeName_(String superTypeName) {
+		String old = this.defaultSuperTypeName;
+		this.defaultSuperTypeName = superTypeName;
+		firePropertyChanged(DEFAULT_SUPER_TYPE_NAME_PROPERTY, old, superTypeName);
+	}
+	
+	public String getSpecifiedSuperTypeName() {
+		return this.specifiedSuperTypeName;
+	}
+	
+	public void setSpecifiedSuperTypeName(String superTypeName) {
+		setSpecifiedSuperTypeName_(superTypeName);
+		getETypeMapping().setSuperType(superTypeName);
+	}
+	
+	protected void setSpecifiedSuperTypeName_(String superTypeName) {
+		String old = this.specifiedSuperTypeName;
+		this.specifiedSuperTypeName = superTypeName;
+		firePropertyChanged(SPECIFIED_SUPER_TYPE_NAME_PROPERTY, old, superTypeName);
+	}
+	
+	protected void initSuperTypeName() {
+		this.specifiedSuperTypeName = getETypeMapping().getSuperType();
+	}
+	
+	protected void syncSuperTypeName() {
+		setSpecifiedSuperTypeName_(getETypeMapping().getSuperType());
+	}
+	
+	protected void updateSuperTypeName() {
+		String defaultTypeName = null;
+		JavaType javaType = getJavaType();
+		if (javaType != null) {
+			JavaResourceAbstractType resourceType = javaType.getJavaResourceType();
+			if (resourceType.getAstNodeType() == JavaResourceAbstractType.AstNodeType.TYPE) {
+				defaultTypeName = ((JavaResourceType) resourceType).getSuperclassQualifiedName();
+			}
+		}
+		
+		setDefaultSuperTypeName_(defaultTypeName);
+		
+		String typeName = (this.specifiedSuperTypeName != null) ? 
+				this.specifiedSuperTypeName
+				: this.defaultSuperTypeName;
+		
+		setSuperTypeName_(typeName);
+	}
+	
+	
+	// ***** superclass *****
+	
+	public JaxbClassMapping getSuperclass() {
+		return this.superclass;
+	}
+	
+	protected void setSuperclass_(JaxbClassMapping superclass) {
+		JaxbClassMapping old = this.superclass;
+		this.superclass = superclass;
+		firePropertyChanged(SUPERCLASS_PROPERTY, old, superclass);
+	}
+	
+	protected void updateSuperclass() {
+		setSuperclass_(getContextRoot().getClassMapping(getSuperTypeName()));
 	}
 	
 	
@@ -396,14 +495,6 @@ public class OxmJavaTypeImpl
 	public void moveProp(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	
-	// ***** superclass *****
-	
-	public JaxbClassMapping getSuperclass() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	
