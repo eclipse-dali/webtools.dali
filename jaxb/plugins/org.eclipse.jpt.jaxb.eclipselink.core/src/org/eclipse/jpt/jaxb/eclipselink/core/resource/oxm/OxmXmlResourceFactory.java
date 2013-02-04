@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.wst.common.internal.emf.resource.EMF2DOMRenderer;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.RendererFactory;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -41,6 +42,10 @@ public class OxmXmlResourceFactory
 	
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
+		// set renderer to no validation => default-valued, unspecified attributes are not created
+		if (renderer instanceof EMF2DOMRenderer) {
+			((EMF2DOMRenderer) renderer).setValidating(false);
+		}
 		return new JptXmlResource(uri, renderer, EXmlBindings.CONTENT_TYPE, EXmlBindings.getRootTranslator());
 	}
 }
