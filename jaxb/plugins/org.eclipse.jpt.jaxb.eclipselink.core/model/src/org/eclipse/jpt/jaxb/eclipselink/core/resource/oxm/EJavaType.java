@@ -62,6 +62,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EList<EXmlProperty> xmlProperties;
+	
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -71,6 +72,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -80,6 +82,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #getSuperType() <em>Super Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -89,6 +92,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final String SUPER_TYPE_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getSuperType() <em>Super Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -98,15 +102,13 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected String superType = SUPER_TYPE_EDEFAULT;
+	
 	/**
-	 * The default value of the '{@link #getXmlAccessorOrder() <em>Xml Accessor Order</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlAccessorOrder()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = EXmlAccessOrder.ALPHABETICAL;
+	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getXmlAccessorOrder() <em>Xml Accessor Order</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -116,15 +118,13 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EXmlAccessOrder xmlAccessorOrder = XML_ACCESSOR_ORDER_EDEFAULT;
+	
 	/**
-	 * The default value of the '{@link #getXmlAccessorType() <em>Xml Accessor Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlAccessorType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EXmlAccessType XML_ACCESSOR_TYPE_EDEFAULT = EXmlAccessType.FIELD;
+	protected static final EXmlAccessType XML_ACCESSOR_TYPE_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getXmlAccessorType() <em>Xml Accessor Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -134,6 +134,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EXmlAccessType xmlAccessorType = XML_ACCESSOR_TYPE_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #getXmlCustomizer() <em>Xml Customizer</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -143,6 +144,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final String XML_CUSTOMIZER_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getXmlCustomizer() <em>Xml Customizer</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -152,6 +154,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected String xmlCustomizer = XML_CUSTOMIZER_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #getXmlDiscriminatorNode() <em>Xml Discriminator Node</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -161,6 +164,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final String XML_DISCRIMINATOR_NODE_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getXmlDiscriminatorNode() <em>Xml Discriminator Node</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -170,6 +174,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected String xmlDiscriminatorNode = XML_DISCRIMINATOR_NODE_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #getXmlDiscriminatorValue() <em>Xml Discriminator Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -179,6 +184,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final String XML_DISCRIMINATOR_VALUE_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getXmlDiscriminatorValue() <em>Xml Discriminator Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -188,6 +194,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected String xmlDiscriminatorValue = XML_DISCRIMINATOR_VALUE_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #isXmlInlineBinaryData() <em>Xml Inline Binary Data</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -197,6 +204,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final boolean XML_INLINE_BINARY_DATA_EDEFAULT = false;
+	
 	/**
 	 * The cached value of the '{@link #isXmlInlineBinaryData() <em>Xml Inline Binary Data</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -206,6 +214,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected boolean xmlInlineBinaryData = XML_INLINE_BINARY_DATA_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #getXmlNameTransformer() <em>Xml Name Transformer</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -215,6 +224,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected static final String XML_NAME_TRANSFORMER_EDEFAULT = null;
+	
 	/**
 	 * The cached value of the '{@link #getXmlNameTransformer() <em>Xml Name Transformer</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -224,6 +234,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected String xmlNameTransformer = XML_NAME_TRANSFORMER_EDEFAULT;
+	
 	/**
 	 * The cached value of the '{@link #getXmlVirtualAccessMethods() <em>Xml Virtual Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -233,6 +244,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EXmlVirtualAccessMethods xmlVirtualAccessMethods;
+	
 	/**
 	 * The cached value of the '{@link #getXmlJavaTypeAdapter() <em>Xml Java Type Adapter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -242,6 +254,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EXmlJavaTypeAdapter xmlJavaTypeAdapter;
+	
 	/**
 	 * The cached value of the '{@link #getXmlClassExtractor() <em>Xml Class Extractor</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -251,6 +264,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EXmlClassExtractor xmlClassExtractor;
+	
 	/**
 	 * The cached value of the '{@link #getJavaAttributes() <em>Java Attributes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -260,7 +274,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 	 * @ordered
 	 */
 	protected EList<EJavaAttribute> javaAttributes;
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1142,6 +1156,8 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 		return new Translator[] {
 			buildNameTranslator(),
 			buildSuperTypeTranslator(),
+			buildXmlAccessorOrderTranslator(),
+			buildXmlAccessorTypeTranslator(),
 			buildXmlTransientTranslator(),
 			EXmlType.buildTranslator(),
 			EXmlSeeAlso.buildTranslator(),
@@ -1161,5 +1177,19 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 			Oxm.SUPER_TYPE,
 			OxmPackage.eINSTANCE.getEJavaType_SuperType(), 
 			Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
+	}
+	
+	protected static Translator buildXmlAccessorOrderTranslator() {
+		return new Translator(
+			Oxm.XML_ACCESSOR_ORDER, 
+			OxmPackage.eINSTANCE.getEJavaType_XmlAccessorOrder(),
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
+	}
+	
+	protected static Translator buildXmlAccessorTypeTranslator() {
+		return new Translator(
+			Oxm.XML_ACCESSOR_TYPE, 
+			OxmPackage.eINSTANCE.getEJavaType_XmlAccessorType(),
+			Translator.DOM_ATTRIBUTE | Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
 	}
 }

@@ -11,12 +11,18 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.oxm;
 
 import java.beans.Introspector;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
+import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
@@ -256,6 +262,224 @@ public class OxmJavaTypeTests
 		
 		assertNull(eJavaType.getSuperType());
 		assertNull(javaType.getSuperclass());
+	}
+	
+	public void testUpdateXmlAccessOrder() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType oxmJavaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		OxmJavaType oxmSuperclass = xmlBindings.addJavaType(1);
+		oxmSuperclass.setSpecifiedName(PACKAGE_NAME + ".Superclass");
+		oxmJavaType.setSpecifiedSuperTypeName(PACKAGE_NAME + ".Superclass");
+		oxmResource.save();
+		JavaClassMapping javaClassMapping = ((JavaClass) oxmJavaType.getJavaType()).getMapping();
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getDefaultAccessOrder());
+		assertNull(oxmJavaType.getSpecifiedAccessOrder());
+		
+		javaClassMapping.setSpecifiedAccessOrder(XmlAccessOrder.ALPHABETICAL);
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, oxmJavaType.getDefaultAccessOrder());
+		assertNull(oxmJavaType.getSpecifiedAccessOrder());
+		
+		xmlBindings.setXmlMappingMetadataComplete(true);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getDefaultAccessOrder());
+		assertNull(oxmJavaType.getSpecifiedAccessOrder());
+		
+		javaClassMapping.setSpecifiedAccessOrder(null);
+		xmlBindings.setXmlMappingMetadataComplete(false);
+		oxmSuperclass.setSpecifiedAccessOrder(XmlAccessOrder.UNDEFINED);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getDefaultAccessOrder());
+		assertNull(oxmJavaType.getSpecifiedAccessOrder());
+		
+		oxmSuperclass.setSpecifiedAccessOrder(null);
+		xmlBindings.setSpecifiedAccessOrder(XmlAccessOrder.ALPHABETICAL);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, oxmJavaType.getDefaultAccessOrder());
+		assertNull(oxmJavaType.getSpecifiedAccessOrder());
+		
+		eJavaType.setXmlAccessorOrder(EXmlAccessOrder.UNDEFINED);
+		oxmResource.save();
+		
+		assertEquals(EXmlAccessOrder.UNDEFINED, eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, oxmJavaType.getDefaultAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getSpecifiedAccessOrder());
+		
+		xmlBindings.setSpecifiedAccessOrder(null);
+		eJavaType.setXmlAccessorOrder(null);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, oxmJavaType.getDefaultAccessOrder());
+		assertNull(oxmJavaType.getSpecifiedAccessOrder());
+	}
+	
+	public void testModifyXmlAccessOrder() throws Exception {
+		addOxmFile("oxm.xml", "test.oxm", "Foo");
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile("test.oxm");
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType javaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertNull(javaType.getSpecifiedAccessOrder());
+		
+		javaType.setSpecifiedAccessOrder(XmlAccessOrder.ALPHABETICAL);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-accessor-order=\"ALPHABETICAL\"", true);
+		assertEquals(EXmlAccessOrder.ALPHABETICAL, eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, javaType.getSpecifiedAccessOrder());
+		
+		javaType.setSpecifiedAccessOrder(XmlAccessOrder.UNDEFINED);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-accessor-order=\"UNDEFINED\"", true);
+		assertEquals(EXmlAccessOrder.UNDEFINED, eJavaType.getXmlAccessorOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, javaType.getSpecifiedAccessOrder());
+		
+		javaType.setSpecifiedAccessOrder(null);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-accessor-order", false);
+		assertNull(eJavaType.getXmlAccessorOrder());
+		assertNull(javaType.getSpecifiedAccessOrder());
+	}
+	
+	public void testUpdateXmlAccessType() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType oxmJavaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		OxmJavaType oxmSuperclass = xmlBindings.addJavaType(1);
+		oxmSuperclass.setSpecifiedName(PACKAGE_NAME + ".Superclass");
+		oxmJavaType.setSpecifiedSuperTypeName(PACKAGE_NAME + ".Superclass");
+		oxmResource.save();
+		JavaClassMapping javaClassMapping = ((JavaClass) oxmJavaType.getJavaType()).getMapping();
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, oxmJavaType.getDefaultAccessType());
+		assertNull(oxmJavaType.getSpecifiedAccessType());
+		
+		javaClassMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.FIELD, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.FIELD, oxmJavaType.getDefaultAccessType());
+		assertNull(oxmJavaType.getSpecifiedAccessType());
+		
+		xmlBindings.setXmlMappingMetadataComplete(true);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, oxmJavaType.getDefaultAccessType());
+		assertNull(oxmJavaType.getSpecifiedAccessType());
+		
+		javaClassMapping.setSpecifiedAccessType(null);
+		xmlBindings.setXmlMappingMetadataComplete(false);
+		oxmSuperclass.setSpecifiedAccessType(XmlAccessType.PROPERTY);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.PROPERTY, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.PROPERTY, oxmJavaType.getDefaultAccessType());
+		assertNull(oxmJavaType.getSpecifiedAccessType());
+		
+		oxmSuperclass.setSpecifiedAccessType(null);
+		xmlBindings.setSpecifiedAccessType(XmlAccessType.FIELD);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.FIELD, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.FIELD, oxmJavaType.getDefaultAccessType());
+		assertNull(oxmJavaType.getSpecifiedAccessType());
+		
+		eJavaType.setXmlAccessorType(EXmlAccessType.NONE);
+		oxmResource.save();
+		
+		assertEquals(EXmlAccessType.NONE, eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.NONE, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.FIELD, oxmJavaType.getDefaultAccessType());
+		assertEquals(XmlAccessType.NONE, oxmJavaType.getSpecifiedAccessType());
+		
+		xmlBindings.setSpecifiedAccessType(null);
+		eJavaType.setXmlAccessorType(null);
+		oxmResource.save();
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, oxmJavaType.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, oxmJavaType.getDefaultAccessType());
+		assertNull(oxmJavaType.getSpecifiedAccessType());
+	}
+	
+	public void testModifyXmlAccessType() throws Exception {
+		addOxmFile("oxm.xml", "test.oxm", "Foo");
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile("test.oxm");
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType javaType = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getXmlAccessorType());
+		assertNull(javaType.getSpecifiedAccessType());
+		
+		javaType.setSpecifiedAccessType(XmlAccessType.FIELD);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"FIELD\"", true);
+		assertEquals(EXmlAccessType.FIELD, eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.FIELD, javaType.getSpecifiedAccessType());
+		
+		javaType.setSpecifiedAccessType(XmlAccessType.PROPERTY);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"PROPERTY\"", true);
+		assertEquals(EXmlAccessType.PROPERTY, eJavaType.getXmlAccessorType());
+		assertEquals(XmlAccessType.PROPERTY, javaType.getSpecifiedAccessType());
+		
+		javaType.setSpecifiedAccessType(null);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-accessor-type", false);
+		assertNull(eJavaType.getXmlAccessorType());
+		assertNull(javaType.getSpecifiedAccessType());
 	}
 	
 	public void testUpdateXmlTransient() throws Exception {

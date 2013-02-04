@@ -29,13 +29,13 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
-import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -499,7 +499,7 @@ public abstract class AbstractJaxbContextRoot
 		return (type == null) ? null : type.getMapping();
 	}
 	
-	public JavaClassMapping getClassMapping(String typeName) {
+	public JaxbClassMapping getClassMapping(String typeName) {
 		JavaType type = getJavaType(typeName);
 		return (type == null || (type.getKind() != TypeKind.CLASS)) ? 
 				null : ((JavaClass) type).getMapping();

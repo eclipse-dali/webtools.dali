@@ -24,8 +24,10 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbProject;
@@ -62,6 +64,18 @@ public class ELJaxbContextRootImpl
 	public ELJaxbProject getJaxbProject() {
 		return (ELJaxbProject) super.getJaxbProject();
 	}
+	
+	@Override
+	public JaxbClassMapping getClassMapping(String typeName) {
+		OxmTypeMapping mapping = this.oxmTypeMappingMap.get(typeName);
+		if (mapping != null) {
+			return (mapping.getTypeKind() == TypeKind.CLASS) ? 
+					(JaxbClassMapping) mapping
+					: null;  // mapping is not a class mapping, return null
+		}
+		return super.getClassMapping(typeName);
+	}
+	
 	
 	// ***** initialize/update *****
 	

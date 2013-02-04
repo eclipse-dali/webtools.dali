@@ -240,7 +240,12 @@ public class OxmJavaTypeImpl
 	}
 	
 	protected void updateSuperclass() {
-		setSuperclass_(getContextRoot().getClassMapping(getSuperTypeName()));
+		if (this.superTypeName != null) {
+			setSuperclass_(getContextRoot().getClassMapping(this.superTypeName));
+		}
+		else {
+			setSuperclass_(null);
+		}
 	}
 	
 	
@@ -303,17 +308,12 @@ public class OxmJavaTypeImpl
 	/**
 	 * Default access order rules are TBD.  For now we
 	 * - check if specified on java class
+	 * - if not, use superclass setting if superclass exists
 	 * - if not, check if specified on xml bindings
 	 * - if not, return UNDEFINED
 	 */
 	protected XmlAccessOrder buildDefaultAccessOrder() {
 		XmlAccessOrder access;
-		
-		// TODO
-//		access = getSuperclassAccessOrder();
-//		if (access != null) {
-//			return access;
-//		}
 		
 		if (! getXmlBindings().isXmlMappingMetadataComplete()) {
 			JaxbClassMapping javaMapping = getJavaClassMapping();
@@ -324,6 +324,14 @@ public class OxmJavaTypeImpl
 				}
 			}
 		}
+		
+		if (this.superclass != null) {
+			access = getSuperclass().getAccessOrder();
+			if (access != null) {
+				return access;
+			}
+		}
+		
 		access = getXmlBindings().getSpecifiedAccessOrder();
 		if (access != null) {
 			return access;
@@ -387,17 +395,12 @@ public class OxmJavaTypeImpl
 	/**
 	 * Default access order rules are TBD.  For now we
 	 * - check if specified on java class
+	 * - if not, use superclass setting if superclass exists
 	 * - if not, check if specified on xml bindings
-	 * - if not, return PUBLIC_MEMBER
+	 * - if not, return UNDEFINED
 	 */
 	protected XmlAccessType buildDefaultAccessType() {
 		XmlAccessType access;
-		
-		// TODO
-//		access = getSuperclassAccessType();
-//		if (access != null) {
-//			return access;
-//		}
 		
 		if (! getXmlBindings().isXmlMappingMetadataComplete()) {
 			JaxbClassMapping javaMapping = getJavaClassMapping();
@@ -406,6 +409,13 @@ public class OxmJavaTypeImpl
 				if (access != null) {
 					return access;
 				}
+			}
+		}
+		
+		if (this.superclass != null) {
+			access = getSuperclass().getAccessType();
+			if (access != null) {
+				return access;
 			}
 		}
 		
