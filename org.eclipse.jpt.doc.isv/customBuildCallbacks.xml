@@ -1,25 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><!--  Copyright (c) 2012 Oracle. All rights reserved.  This program and the accompanying materials are made available under the  terms of the Eclipse Public License v1.0, which accompanies this distribution  and is available at http://www.eclipse.org/legal/epl-v10.html.  Contributors:    Oracle - initial API and implementation -->
-
-<!-- ===================================================================== --><!-- Custom targets called from a project's generated build.xml            --><!-- Set customBuildCallbacks=<path/to/this/file> in your build.properties.--><!-- ===================================================================== --><project name="Build specific targets and properties" default="noDefault">
-
-	<import file="${eclipse.pdebuild.templates}/plugins/customBuildCallbacks.xml" />
-	
-	<target name="noDefault">
-		<echo message="This file must be called with explicit targets" />
-	</target>
-	
-	<!-- ===================================================================== -->
-	<!-- Steps to do before the target gather.bin.parts                        -->
-	<!-- Available parameters :                                                -->	<!--   build.result.folder - folder containing the build results           -->	<!--   target.folder - destination folder                                  -->
-	<!--   destination.temp.folder - the directory plugins will be collected to -->
-	<!--   feature.directory - the directory containing the resulting feature   -->
-	<!-- ===================================================================== -->
-	<target name="pre.gather.bin.parts">
-		<antcall target="build.index"/>	
-	</target>
-	
-	<target name="build.index" description="Builds search index for the plug-in: org.eclipse.jpt.doc.isv." if="eclipse.running">
-		<ant antfile="buildDoc.xml" />
-	</target>
-
-</project>
