@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 
@@ -29,6 +30,28 @@ public interface NamedNativeQueryAnnotation
 	extends QueryAnnotation
 {
 	String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERY;
+
+
+	// ********** query **********
+
+	/**
+	 * Corresponds to the 'query' element of the *Query annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	String getQuery();
+		String QUERY_PROPERTY = "query"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'query' element of the *Query annotation.
+	 * Set to null to remove the element.
+	 */
+	void setQuery(String query);
+
+	/**
+	 * Return the {@link TextRange} for the 'query' element. If element
+	 * does not exist return the {@link TextRange} for the *Query annotation.
+	 */
+	List<TextRange> getQueryTextRanges();
 
 
 	// ********** result class **********

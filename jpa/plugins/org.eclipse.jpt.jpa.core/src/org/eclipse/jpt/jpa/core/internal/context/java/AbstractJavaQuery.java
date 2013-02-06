@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,8 +43,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	protected String name;
 
-	protected String query;
-
 	protected final ContextListContainer<JavaQueryHint, QueryHintAnnotation> hintContainer;
 
 
@@ -52,7 +50,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		super(parent);
 		this.queryAnnotation = queryAnnotation;
 		this.name = queryAnnotation.getName();
-		this.query = queryAnnotation.getQuery();
 		this.hintContainer = this.buildHintContainer();
 	}
 
@@ -63,7 +60,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.queryAnnotation.getName());
-		this.setQuery_(this.queryAnnotation.getQuery());
 		this.syncHints();
 	}
 
@@ -89,24 +85,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		String old = this.name;
 		this.name = name;
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
-	}
-
-
-	// ********** query **********
-
-	public String getQuery() {
-		return this.query;
-	}
-
-	public void setQuery(String query) {
-		this.queryAnnotation.setQuery(query);
-		this.setQuery_(query);
-	}
-
-	protected void setQuery_(String query) {
-		String old = this.query;
-		this.query = query;
-		this.firePropertyChanged(QUERY_PROPERTY, old, query);
 	}
 
 
@@ -198,7 +176,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateName(messages);
-		this.validateQuery(queryHelper, messages, reporter);
 	}
 
 	protected void validateName(List<IMessage> messages) {
@@ -215,24 +192,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		}
 	}
 
-	public void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		if (StringTools.isBlank(this.query)){
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
-					new String[] {this.name},
-					this,
-					this.getNameTextRange()
-				)
-			);
-		} else {
-			this.validateQuery_(queryHelper, messages, reporter);
-		}
-	}
-
-	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
-
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.queryAnnotation.getTextRange();
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
@@ -240,10 +199,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	public TextRange getNameTextRange() {
 		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange());
-	}
-
-	public List<TextRange> getQueryTextRanges() {
-		return this.queryAnnotation.getQueryTextRanges();
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
@@ -254,7 +209,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	protected boolean isEquivalentTo(Query other) {
 		return ObjectTools.equals(this.name, other.getName()) &&
-				ObjectTools.equals(this.query, other.getQuery()) &&
 				this.hintsAreEquivalentTo(other);
 	}
 

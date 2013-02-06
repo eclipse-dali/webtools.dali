@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -83,7 +83,7 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 	}
 
 	protected ModifiablePropertyValueModel<String> buildQueryHolder() {
-		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), Query.QUERY_PROPERTY) {
+		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getQuery();

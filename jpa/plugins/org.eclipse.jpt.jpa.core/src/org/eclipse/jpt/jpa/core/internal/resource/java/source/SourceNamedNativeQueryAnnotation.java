@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
@@ -37,6 +38,11 @@ public final class SourceNamedNativeQueryAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.NAMED_NATIVE_QUERIES);
+
+	DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
+	AnnotationElementAdapter<String> queryAdapter;
+	String query;
+	List<TextRange> queryTextRanges;
 
 	private DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
 	private AnnotationElementAdapter<String> resultClassAdapter;
@@ -71,6 +77,8 @@ public final class SourceNamedNativeQueryAnnotation
 			IndexedDeclarationAnnotationAdapter daa,
 			IndexedAnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
+		this.queryDeclarationAdapter = this.buildQueryDeclarationAdapter();
+		this.queryAdapter = this.buildQueryAdapter();
 		this.resultClassDeclarationAdapter = this.buildResultClassDeclarationAdapter();
 		this.resultClassAdapter = this.buildResultClassAdapter();
 		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
@@ -84,6 +92,9 @@ public final class SourceNamedNativeQueryAnnotation
 	@Override
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
+		
+		this.query = this.buildQuery(astAnnotation);
+		this.queryTextRanges = this.buildQueryTextRanges(astAnnotation);
 
 		this.resultClass = this.buildResultClass(astAnnotation);
 		this.resultClassTextRange = this.buildResultClassTextRange(astAnnotation);
@@ -95,6 +106,9 @@ public final class SourceNamedNativeQueryAnnotation
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
+		
+		this.syncQuery(this.buildQuery(astAnnotation));
+		this.queryTextRanges = this.buildQueryTextRanges(astAnnotation);
 
 		this.syncResultClass(this.buildResultClass(astAnnotation));
 		this.resultClassTextRange = this.buildResultClassTextRange(astAnnotation);
@@ -104,30 +118,67 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 
-	// ********** AbstractBaseNamedQueryAnnotation implementation **********
+	// ********** AbstractNamedNativeQueryAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	public String getNameElementName() {
 		return JPA.NAMED_NATIVE_QUERY__NAME;
 	}
 
 	@Override
-	String getQueryElementName() {
-		return JPA.NAMED_NATIVE_QUERY__QUERY;
-	}
-
-	@Override
-	String getHintsElementName() {
+	public String getHintsElementName() {
 		return JPA.NAMED_NATIVE_QUERY__HINTS;
 	}
 
 	@Override
-	QueryHintAnnotation buildHint(int index) {
+	public QueryHintAnnotation buildHint(int index) {
 		return SourceQueryHintAnnotation.buildNamedNativeQueryQueryHint(this, this.annotatedElement, this.daa, index);
 	}
 
 
 	// ********** NamedNativeQueryAnnotation implementation **********
+
+	String getQueryElementName() {
+		return JPA.NAMED_NATIVE_QUERY__QUERY;
+	}
+	
+	// ***** query
+	public String getQuery() {
+		return this.query;
+	}
+
+	public void setQuery(String query) {
+		if (this.attributeValueHasChanged(this.query, query)) {
+			this.query = query;
+			this.queryAdapter.setValue(query);
+		}
+	}
+
+	private void syncQuery(String annotationQuery) {
+		String old = this.query;
+		this.query = annotationQuery;
+		this.firePropertyChanged(QUERY_PROPERTY, old, annotationQuery);
+	}
+
+	private String buildQuery(Annotation astAnnotation) {
+		return this.queryAdapter.getValue(astAnnotation);
+	}
+
+	public List<TextRange> getQueryTextRanges() {
+		return this.queryTextRanges;
+	}
+
+	private List<TextRange> buildQueryTextRanges(Annotation astAnnotation) {
+		return this.getElementTextRanges(this.queryDeclarationAdapter, astAnnotation);
+	}
+
+	private DeclarationAnnotationElementAdapter<String> buildQueryDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, this.getQueryElementName());
+	}
+
+	private AnnotationElementAdapter<String> buildQueryAdapter() {
+		return this.buildStringElementAdapter(this.queryDeclarationAdapter);
+	}
 
 	// ***** result class
 	public String getResultClass() {
@@ -236,6 +287,7 @@ public final class SourceNamedNativeQueryAnnotation
 	@Override
 	public boolean isUnset() {
 		return super.isUnset() &&
+				(this.query == null) &&
 				(this.resultClass == null) &&
 				(this.resultSetMapping == null);
 	}

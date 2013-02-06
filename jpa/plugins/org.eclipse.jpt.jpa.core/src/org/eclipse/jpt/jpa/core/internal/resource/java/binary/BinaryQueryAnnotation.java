@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
-import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
@@ -23,20 +22,19 @@ import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 /**
  * javax.persistence.NamedQuery
  * javax.persistence.NamedNativeQuery
+ * javax.persistence.NamedStoredProcedureQuery
  */
-abstract class BinaryQueryAnnotation
+public abstract class BinaryQueryAnnotation
 	extends BinaryAnnotation
 	implements QueryAnnotation
 {
 	String name;
-	String query;
 	final Vector<QueryHintAnnotation> hints;
 
 
-	BinaryQueryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryQueryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
-		this.query = this.buildQuery();
 		this.hints = this.buildHints();
 	}
 
@@ -44,7 +42,6 @@ abstract class BinaryQueryAnnotation
 	public void update() {
 		super.update();
 		this.setName_(this.buildName());
-		this.setQuery_(this.buildQuery());
 		this.updateHints();
 	}
 
@@ -75,34 +72,9 @@ abstract class BinaryQueryAnnotation
 		return (String) this.getJdtMemberValue(this.getNameElementName());
 	}
 
-	abstract String getNameElementName();
+	public abstract String getNameElementName();
 
 	public TextRange getNameTextRange() {
-		throw new UnsupportedOperationException();
-	}
-
-	// ***** query
-	public String getQuery() {
-		return this.query;
-	}
-
-	public void setQuery(String query) {
-		throw new UnsupportedOperationException();
-	}
-
-	private void setQuery_(String query) {
-		String old = this.query;
-		this.query = query;
-		this.firePropertyChanged(QUERY_PROPERTY, old, query);
-	}
-
-	private String buildQuery() {
-		return (String) this.getJdtMemberValue(this.getQueryElementName());
-	}
-
-	abstract String getQueryElementName();
-
-	public List<TextRange> getQueryTextRanges() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -141,7 +113,7 @@ abstract class BinaryQueryAnnotation
 		return result;
 	}
 
-	abstract String getHintsElementName();
+	public abstract String getHintsElementName();
 
 	// TODO
 	private void updateHints() {

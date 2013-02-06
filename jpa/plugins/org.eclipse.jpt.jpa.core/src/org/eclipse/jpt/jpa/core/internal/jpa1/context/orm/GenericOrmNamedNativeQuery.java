@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.Collections;
 import java.util.List;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -170,10 +168,6 @@ public class GenericOrmNamedNativeQuery
 				)
 			);
 		}
-	}
-
-	public List<TextRange> getQueryTextRanges() {
-		return Collections.singletonList(this.xmlQuery.getQueryTextRange());
 	}
 
 	@Override

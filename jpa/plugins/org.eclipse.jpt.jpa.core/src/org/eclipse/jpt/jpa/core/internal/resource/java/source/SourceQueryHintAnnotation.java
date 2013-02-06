@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
@@ -48,6 +49,10 @@ public final class SourceQueryHintAnnotation
 
 	static SourceQueryHintAnnotation buildNamedNativeQueryQueryHint(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
 		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedNativeQueryQueryHintAnnotationAdapter(namedNativeQueryAdapter, index));
+	}
+	
+	public static SourceQueryHintAnnotation buildNamedStoredProcedureQuery2_1QueryHint(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter namedStoredProcedureQuery2_1Adapter, int index) {
+		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedStoredProcedureQuery2_1QueryHintAnnotationAdapter(namedStoredProcedureQuery2_1Adapter, index));
 	}
 	
 	public static SourceQueryHintAnnotation buildNestedSourceQueryHintAnnotation(
@@ -192,5 +197,8 @@ public final class SourceQueryHintAnnotation
 
 	private static IndexedDeclarationAnnotationAdapter buildNamedNativeQueryQueryHintAnnotationAdapter(DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(namedNativeQueryAdapter, JPA.NAMED_NATIVE_QUERY__HINTS, index, ANNOTATION_NAME);
+	}
+	private static IndexedDeclarationAnnotationAdapter buildNamedStoredProcedureQuery2_1QueryHintAnnotationAdapter(DeclarationAnnotationAdapter namedStoredProcedureQuery2_1Adapter, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(namedStoredProcedureQuery2_1Adapter, JPA2_1.NAMED_STORED_PROCEDURE_QUERY__HINTS, index, ANNOTATION_NAME);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,15 +47,6 @@ public interface Query
 			NamedQuery.class,
 			NamedNativeQuery.class
 		);
-
-	// ********** query **********
-
-	String QUERY_PROPERTY = "query"; //$NON-NLS-1$
-
-	String getQuery();
-
-	void setQuery(String query);
-
 
 	// ********** hints **********
 
@@ -112,10 +103,4 @@ public interface Query
 	 * Returns the {@link TextRange} of the name property.
 	 */
 	TextRange getNameTextRange();
-
-	/**
-	 * Returns the list of {@link TextRange} of the query property, which is either a single object
-	 * if the string is not split or many objects if the JPQL query is split into many strings.
-	 */
-	List<TextRange> getQueryTextRanges();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.List;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -28,9 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
  * <ul>
  * <li><code>javax.persistence.NamedQuery</code>
  * <li><code>javax.persistence.NamedNativeQuery</code>
+ * <li><code>javax.persistence.NamedStoredProcedureQuery</code>
  * </ul>
  */
-abstract class SourceQueryAnnotation
+public abstract class SourceQueryAnnotation
 	extends SourceAnnotation
 	implements QueryAnnotation
 {
@@ -39,20 +39,14 @@ abstract class SourceQueryAnnotation
 	String name;
 	TextRange nameTextRange;
 
-	DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
-	AnnotationElementAdapter<String> queryAdapter;
-	String query;
-	List<TextRange> queryTextRanges;
-
 	final QueryHintsAnnotationContainer hintsContainer = new QueryHintsAnnotationContainer();
 
 
-	SourceQueryAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceQueryAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
 		this.nameAdapter = this.buildNameAdapter();
-		this.queryDeclarationAdapter = this.buildQueryDeclarationAdapter();
-		this.queryAdapter = this.buildQueryAdapter();
+
 	}
 
 	@Override
@@ -60,8 +54,6 @@ abstract class SourceQueryAnnotation
 		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-		this.query = this.buildQuery(astAnnotation);
-		this.queryTextRanges = this.buildQueryTextRanges(astAnnotation);
 		this.hintsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
@@ -70,8 +62,6 @@ abstract class SourceQueryAnnotation
 		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-		this.syncQuery(this.buildQuery(astAnnotation));
-		this.queryTextRanges = this.buildQueryTextRanges(astAnnotation);
 		this.hintsContainer.synchronize(astAnnotation);
 	}
 
@@ -116,47 +106,8 @@ abstract class SourceQueryAnnotation
 		return this.buildStringElementAdapter(this.nameDeclarationAdapter);
 	}
 
-	abstract String getNameElementName();
+	protected abstract String getNameElementName();
 
-	// ***** query
-	public String getQuery() {
-		return this.query;
-	}
-
-	public void setQuery(String query) {
-		if (this.attributeValueHasChanged(this.query, query)) {
-			this.query = query;
-			this.queryAdapter.setValue(query);
-		}
-	}
-
-	private void syncQuery(String annotationQuery) {
-		String old = this.query;
-		this.query = annotationQuery;
-		this.firePropertyChanged(QUERY_PROPERTY, old, annotationQuery);
-	}
-
-	private String buildQuery(Annotation astAnnotation) {
-		return this.queryAdapter.getValue(astAnnotation);
-	}
-
-	public List<TextRange> getQueryTextRanges() {
-		return this.queryTextRanges;
-	}
-
-	private List<TextRange> buildQueryTextRanges(Annotation astAnnotation) {
-		return this.getElementTextRanges(this.queryDeclarationAdapter, astAnnotation);
-	}
-
-	private DeclarationAnnotationElementAdapter<String> buildQueryDeclarationAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, this.getQueryElementName());
-	}
-
-	private AnnotationElementAdapter<String> buildQueryAdapter() {
-		return this.buildStringElementAdapter(this.queryDeclarationAdapter);
-	}
-
-	abstract String getQueryElementName();
 
 	// ***** hints
 
@@ -184,9 +135,9 @@ abstract class SourceQueryAnnotation
 		this.hintsContainer.removeNestedAnnotation(index);
 	}
 
-	abstract QueryHintAnnotation buildHint(int index);
+	protected abstract QueryHintAnnotation buildHint(int index);
 
-	abstract String getHintsElementName();
+	protected abstract String getHintsElementName();
 
 
 	// ********** misc **********
@@ -195,7 +146,6 @@ abstract class SourceQueryAnnotation
 	public boolean isUnset() {
 		return super.isUnset() &&
 				(this.name == null) &&
-				(this.query == null) &&
 				this.hintsContainer.isEmpty();
 	}
 

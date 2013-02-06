@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
+import java.util.List;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -22,12 +23,14 @@ public final class BinaryNamedNativeQueryAnnotation
 	extends BinaryQueryAnnotation
 	implements NamedNativeQueryAnnotation
 {
+	private String query;
 	private String resultClass;
 	private String resultSetMapping;
 
 
 	public BinaryNamedNativeQueryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
+		this.query = this.buildQuery();
 		this.resultClass = this.buildResultClass();
 		this.resultSetMapping = this.buildResultSetMapping();
 	}
@@ -39,30 +42,53 @@ public final class BinaryNamedNativeQueryAnnotation
 	@Override
 	public void update() {
 		super.update();
+		this.setQuery_(this.buildQuery());
 		this.setResultClass_(this.buildResultClass());
 		this.setResultSetMapping_(this.buildResultSetMapping());
 	}
 
 
-	// ********** BinaryBaseNamedQueryAnnotation implementation **********
+	// ********** BinaryNamedNativeQueryAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	public String getNameElementName() {
 		return JPA.NAMED_NATIVE_QUERY__NAME;
 	}
 
 	@Override
-	String getQueryElementName() {
-		return JPA.NAMED_NATIVE_QUERY__QUERY;
-	}
-
-	@Override
-	String getHintsElementName() {
+	public String getHintsElementName() {
 		return JPA.NAMED_NATIVE_QUERY__HINTS;
 	}
 
 
 	// ********** NamedNativeQueryAnnotation implementation **********
+
+	String getQueryElementName() {
+		return JPA.NAMED_NATIVE_QUERY__QUERY;
+	}
+
+	// ***** query
+	public String getQuery() {
+		return this.query;
+	}
+
+	public void setQuery(String query) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setQuery_(String query) {
+		String old = this.query;
+		this.query = query;
+		this.firePropertyChanged(QUERY_PROPERTY, old, query);
+	}
+
+	private String buildQuery() {
+		return (String) this.getJdtMemberValue(this.getQueryElementName());
+	}
+
+	public List<TextRange> getQueryTextRanges() {
+		throw new UnsupportedOperationException();
+	}
 
 	// ***** result class
 	public String getResultClass() {

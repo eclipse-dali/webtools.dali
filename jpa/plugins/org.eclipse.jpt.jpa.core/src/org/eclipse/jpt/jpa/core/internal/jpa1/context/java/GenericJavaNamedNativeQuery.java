@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,15 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,6 +32,8 @@ public class GenericJavaNamedNativeQuery
 	extends AbstractJavaQuery<NamedNativeQueryAnnotation>
 	implements JavaNamedNativeQuery
 {
+	protected String query;
+
 	protected String resultClass;
 	protected String fullyQualifiedResultClass;
 
@@ -37,6 +42,7 @@ public class GenericJavaNamedNativeQuery
 
 	public GenericJavaNamedNativeQuery(JavaQueryContainer parent, NamedNativeQueryAnnotation queryAnnotation) {
 		super(parent, queryAnnotation);
+		this.query = queryAnnotation.getQuery();
 		this.resultClass = queryAnnotation.getResultClass();
 		this.resultSetMapping = queryAnnotation.getResultSetMapping();
 	}
@@ -47,6 +53,7 @@ public class GenericJavaNamedNativeQuery
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
+		this.setQuery_(this.queryAnnotation.getQuery());
 		this.setResultClass_(this.queryAnnotation.getResultClass());
 		this.setResultSetMapping_(this.queryAnnotation.getResultSetMapping());
 	}
@@ -56,6 +63,24 @@ public class GenericJavaNamedNativeQuery
 		super.update();
 		this.setFullyQualifiedResultClass(this.buildFullyQualifiedResultClass());
 	}
+
+	// ********** query **********
+
+	public String getQuery() {
+		return this.query;
+	}
+
+	public void setQuery(String query) {
+		this.queryAnnotation.setQuery(query);
+		this.setQuery_(query);
+	}
+
+	protected void setQuery_(String query) {
+		String old = this.query;
+		this.query = query;
+		this.firePropertyChanged(QUERY_PROPERTY, old, query);
+	}
+
 
 	// ********** result class **********
 
@@ -123,8 +148,23 @@ public class GenericJavaNamedNativeQuery
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		// nothing yet
+	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateQuery(messages, reporter);
+	}
+
+	protected void validateQuery(List<IMessage> messages, IReporter reporter) {
+		if (StringTools.isBlank(this.query)){
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+					new String[] {this.name},
+					this,
+					this.getNameTextRange()
+				)
+			);
+		} 
 	}
 
 	@Override
@@ -134,7 +174,8 @@ public class GenericJavaNamedNativeQuery
 	}
 	
 	protected boolean isEquivalentTo(NamedNativeQuery other) {
-		return ObjectTools.equals(this.resultClass, other.getResultClass()) &&
+		return 	ObjectTools.equals(this.query, other.getQuery()) &&
+				ObjectTools.equals(this.resultClass, other.getResultClass()) &&
 				ObjectTools.equals(this.resultSetMapping, other.getResultSetMapping());
 	}
 

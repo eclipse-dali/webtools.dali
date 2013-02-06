@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.core.tests.internal.JptJpaCoreTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.resource.java.JavaResource2_0Tests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.resource.java.JavaResource2_1Tests;
 import org.eclipse.jpt.jpa.core.tests.internal.resource.java.JptJavaResourceTests;
 
 /**
@@ -29,6 +30,7 @@ public class JptJpaCoreResourceModelTests
 		if (JptJpaCoreTests.requiredJarsExists()) {
 			suite.addTest(JptJavaResourceTests.suite());
 			suite.addTest(JavaResource2_0Tests.suite());
+			suite.addTest(JavaResource2_1Tests.suite());
 		} else {
 			suite.addTest(TestSuite.warning(JptJpaCoreTests.buildMissingJarErrorMessage()));
 		}
