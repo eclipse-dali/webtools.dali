@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
  * add/remove elements to/from it but never changes. This is useful
  * for passing to methods that require a "collecting parameter" but the
  * client will ignore the resulting "collection".
+ * @param <E> the type of elements maintained by the list
  */
 public final class NullList<E>
 	implements List<E>, Serializable

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.collection.Bag;
 
 /**
  * Thread-safe implementation of the {@link Bag} interface.
+ * @param <E> the type of elements maintained by the bag
  */
 public class SynchronizedBag<E>
 	implements Bag<E>, Serializable
@@ -205,6 +206,20 @@ public class SynchronizedBag<E>
 
 
 	// ********** Object overrides **********
+
+	@Override
+	public boolean equals(Object o) {
+		synchronized (this.mutex) {
+			return this.bag.equals(o);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		synchronized (this.mutex) {
+			return this.bag.hashCode();
+		}
+	}
 
 	@Override
 	public String toString() {

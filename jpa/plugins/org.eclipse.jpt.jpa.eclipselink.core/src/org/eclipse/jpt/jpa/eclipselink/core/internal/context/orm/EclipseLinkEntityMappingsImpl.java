@@ -424,8 +424,7 @@ public class EclipseLinkEntityMappingsImpl
 	//*************** get method *****************
 
 	public String getGetMethod() {
-		String specifiedGetMethod = this.getSpecifiedGetMethod();
-		return (specifiedGetMethod != null) ? specifiedGetMethod : this.defaultGetMethod;
+		return (this.specifiedGetMethod != null) ? this.specifiedGetMethod : this.defaultGetMethod;
 	}
 
 	public String getDefaultGetMethod() {
@@ -470,8 +469,7 @@ public class EclipseLinkEntityMappingsImpl
 	//*************** set method *****************
 
 	public String getSetMethod() {
-		String specifiedSetMethod = this.getSpecifiedSetMethod();
-		return (specifiedSetMethod != null) ? specifiedSetMethod : this.defaultSetMethod;
+		return (this.specifiedSetMethod != null) ? this.specifiedSetMethod : this.defaultSetMethod;
 	}
 
 	public String getDefaultSetMethod() {

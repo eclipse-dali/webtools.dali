@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.StackIterable;
  * Thread-safe implementation of the {@link Stack} interface.
  * This also provides protocol for suspending a thread until the
  * stack is empty or not empty, with optional time-outs.
+ * @param <E> the type of elements maintained by the stack
  */
 public class SynchronizedStack<E>
 	implements Stack<E>, Serializable

@@ -130,10 +130,9 @@ public class EclipseLinkOrmPersistentTypeImpl
 
 	@Override
 	protected JavaPersistentType buildJavaPersistentType(JavaResourceType javaResourceType) {
-		if (this.isDynamic()) {
-			return this.buildVirtualJavaPersistentType();
-		}
-		return super.buildJavaPersistentType(javaResourceType);
+		return this.isDynamic() ?
+				this.buildVirtualJavaPersistentType() :
+				super.buildJavaPersistentType(javaResourceType);
 	}
 
 	protected JavaPersistentType buildVirtualJavaPersistentType() {

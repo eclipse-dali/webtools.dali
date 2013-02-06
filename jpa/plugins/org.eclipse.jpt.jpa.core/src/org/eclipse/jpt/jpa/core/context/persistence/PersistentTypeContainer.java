@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 
@@ -40,6 +41,16 @@ public interface PersistentTypeContainer {
 	 */
 	Iterable<? extends PersistentType> getPersistentTypes();
 
+	Transformer<PersistentTypeContainer, Iterable<? extends PersistentType>> TRANSFORMER = new PersistentTypesTransformer();
+	class PersistentTypesTransformer
+		extends TransformerAdapter<PersistentTypeContainer, Iterable<? extends PersistentType>>
+	{
+		@Override
+		public Iterable<? extends PersistentType> transform(PersistentTypeContainer container) {
+			return container.getPersistentTypes();
+		}
+	}
+
 	/**
 	 * Return the persistent type with the specified name.
 	 * Return <code>null</code> if the persistent type is not found.
@@ -52,16 +63,4 @@ public interface PersistentTypeContainer {
 	 * </ul>
 	 */
 	PersistentType getPersistentType(String typeName);
-
-
-	Transformer<PersistentTypeContainer, Iterable<? extends PersistentType>> TRANSFORMER =
-		new Transformer<PersistentTypeContainer, Iterable<? extends PersistentType>>() {
-			public Iterable<? extends PersistentType> transform(PersistentTypeContainer container) {
-				return container.getPersistentTypes();
-			}
-			@Override
-			public String toString() {
-				return "PersistentTypeContainer.TRANSFORMER"; //$NON-NLS-1$
-			}
-		};
 }

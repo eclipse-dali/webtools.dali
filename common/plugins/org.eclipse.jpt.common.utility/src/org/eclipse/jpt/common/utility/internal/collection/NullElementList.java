@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.NullElementListIterator;
 
 /**
  * A <em>read-only</em> "null element" list.
+ * @param <E> the type of elements maintained by the list
  */
 public class NullElementList<E>
 	extends AbstractRepeatingElementList<E>

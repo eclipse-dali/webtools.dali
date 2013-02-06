@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,8 +51,7 @@ public class OrmEclipseLinkPersistentAttribute
 	//*************** get method *****************
 
 	public String getGetMethod() {
-		String specifiedGetMethod = this.getSpecifiedGetMethod();
-		return (specifiedGetMethod != null) ? specifiedGetMethod : this.getDefaultGetMethod();
+		return (this.specifiedGetMethod != null) ? this.specifiedGetMethod : this.getDefaultGetMethod();
 	}
 
 	public String getDefaultGetMethod() {
@@ -90,8 +89,7 @@ public class OrmEclipseLinkPersistentAttribute
 
 	//*************** set method *****************
 	public String getSetMethod() {
-		String specifiedSetMethod = this.getSpecifiedSetMethod();
-		return (specifiedSetMethod != null) ? specifiedSetMethod : this.getDefaultSetMethod();
+		return (this.specifiedSetMethod != null) ? this.specifiedSetMethod : this.getDefaultSetMethod();
 	}
 
 	public String getDefaultSetMethod() {

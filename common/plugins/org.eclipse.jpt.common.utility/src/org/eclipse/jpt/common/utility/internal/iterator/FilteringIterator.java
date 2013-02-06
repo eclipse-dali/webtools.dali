@@ -71,7 +71,7 @@ public class FilteringIterator<E>
 
 	/**
 	 * Load next with the next valid entry from the nested
-	 * iterator. If there are none, next is set to <code>END</code>.
+	 * iterator. If there are none, the done flag is set to <code>true</code>.
 	 */
 	private void loadNext() {
 		this.done = true;
