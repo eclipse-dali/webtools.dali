@@ -129,6 +129,11 @@ public abstract class AbstractJavaPersistentType
 		return ClassNameTools.simpleName(this.name);
 	}
 
+	public String getTypeQualifiedName() {
+		String packageName = this.getPackageName();
+		return StringTools.isBlank(packageName) ? this.name : this.name.substring(packageName.length() + 1);
+	}
+
 	protected void setName(String name) {
 		String old = this.name;
 		this.name = name;
@@ -951,8 +956,12 @@ public abstract class AbstractJavaPersistentType
 		return null;
 	}
 
+	public TextRange getFullTextRange() {
+		return this.resourceType.getTextRange();
+	}
+
 	public boolean containsOffset(int offset) {
-		TextRange fullTextRange = this.resourceType.getTextRange();
+		TextRange fullTextRange = this.getFullTextRange();
 		// 'fullTextRange' will be null if the type no longer exists in the java;
 		// the context model can be out of sync with the resource model
 		// when a selection event occurs before the context model has a
@@ -965,9 +974,19 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		IResource resource = this.getResource();
-		// the resource can be null if the resource type is "external"
-		if (resource != null && resource.equals(jpaFile.getFile())) {
+		// the type's resource can be null if the resource type is "external"
+		if (ObjectTools.equals(this.getResource(), jpaFile.getFile())) {
+			for (JpaStructureNode root : rootStructureNodes) {
+				// the JPA file is a java file, so the already-added root nodes must be
+				// Java persistent types
+				JavaPersistentType jpt = (JavaPersistentType) root;
+				if (jpt.getName().equals(this.name)) {
+					// no duplicates -
+					// the first one found is used as a root in the structure view,
+					// the others are ignored...
+					return;
+				}
+			}
 			rootStructureNodes.add(this);
 		}
 	}

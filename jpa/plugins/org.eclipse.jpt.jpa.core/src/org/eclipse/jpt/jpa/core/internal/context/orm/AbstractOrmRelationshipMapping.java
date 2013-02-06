@@ -107,7 +107,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	protected String buildFullyQualifiedTargetEntity() {
 		return (this.specifiedTargetEntity == null) ?
 				this.defaultTargetEntity :
-				this.getEntityMappings().getFullyQualifiedName(this.specifiedTargetEntity);
+				this.getEntityMappings().qualify(this.specifiedTargetEntity);
 	}
 
 	// ********** target entity **********

@@ -312,6 +312,10 @@ public class VirtualOrmPersistentAttribute
 		return this;
 	}
 
+	public TextRange getFullTextRange() {
+		return null;
+	}
+
 	public boolean containsOffset(int textOffset) {
 		return false;
 	}

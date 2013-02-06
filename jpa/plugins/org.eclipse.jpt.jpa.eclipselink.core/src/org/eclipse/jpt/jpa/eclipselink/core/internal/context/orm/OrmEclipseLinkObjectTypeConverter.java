@@ -108,7 +108,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected String buildFullyQualifiedDataType() {
-		return this.getMappingFileRoot().getFullyQualifiedName(this.dataType);
+		return this.getMappingFileRoot().qualify(this.dataType);
 	}
 
 	protected boolean dataTypeIsFor(String typeName) {
@@ -155,7 +155,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected String buildFullyQualifiedObjectType() {
-		return this.getMappingFileRoot().getFullyQualifiedName(this.objectType);
+		return this.getMappingFileRoot().qualify(this.objectType);
 	}
 
 	protected boolean objectTypeIsFor(String typeName) {

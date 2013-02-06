@@ -78,8 +78,12 @@ public class GenericPersistence
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.persistenceUnit != null) {
-			this.persistenceUnit.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		if (this.getResource().equals(jpaFile.getFile())) {
+			rootStructureNodes.add(this);
+		} else {
+			if (this.persistenceUnit != null) {
+				this.persistenceUnit.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			}
 		}
 	}
 
@@ -255,8 +259,12 @@ public class GenericPersistence
 		return this.xmlPersistence.getSelectionTextRange();
 	}
 
+	public TextRange getFullTextRange() {
+		return this.xmlPersistence.getFullTextRange();
+	}
+
 	public boolean containsOffset(int textOffset) {
-		return (this.xmlPersistence == null) ? false : this.xmlPersistence.containsOffset(textOffset);
+		return this.xmlPersistence.containsOffset(textOffset);
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

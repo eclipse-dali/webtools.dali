@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
  * Interface implemented by any object to appear in the JPA Structure view
- * and JPA Details View. This interface is also used by the JPA Selection
+ * and JPA Details view. This interface is also used by the JPA Selection
  * Managers.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -31,10 +31,17 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 public interface JpaStructureNode
 	extends JpaContextNode
 {
+	/**
+	 * Return the text range for the structure node's <em>full</em> text
+	 * representation.
+	 * @see #getSelectionTextRange()
+	 */
+	TextRange getFullTextRange();
 
 	/**
-	 * Return whether the text representation of this structure node contains
-	 * the given text offset
+	 * Return whether the structure node's full text representation contains
+	 * the specified text offset.
+	 * @see #getFullTextRange()
 	 */
 	boolean containsOffset(int textOffset);
 
@@ -47,6 +54,7 @@ public interface JpaStructureNode
 	/**
 	 * Return the text range to be used to select text in the editor
 	 * corresponding to the structure node.
+	 * @see #getFullTextRange()
 	 */
 	TextRange getSelectionTextRange();
 

@@ -53,6 +53,10 @@ public class VirtualOrmXmlRef
 
 	// ********** JpaStructureNode implementation **********
 
+	public TextRange getFullTextRange() {
+		return null;
+	}
+
 	public boolean containsOffset(int textOffset) {
 		return false;
 	}

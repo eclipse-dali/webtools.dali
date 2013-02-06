@@ -39,6 +39,7 @@ public interface PersistentType
 	 * The enclosing type separator is <code>'.'</code>,
 	 * as opposed to <code>'$'</code>.
 	 * @see #getSimpleName()
+	 * @see #getTypeQualifiedName()
 	 */
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
@@ -55,8 +56,17 @@ public interface PersistentType
 	/**
 	 * Return the persistent type's simple name.
 	 * @see #getName()
+	 * @see #getTypeQualifiedName()
 	 */
 	String getSimpleName();
+
+	/**
+	 * Return the persistent type's type-qualified name; i.e. the type's
+	 * name without its package qualification.
+	 * @see #getName()
+	 * @see #getSimpleName()
+	 */
+	String getTypeQualifiedName();
 
 
 	// ********** mapping **********

@@ -458,6 +458,10 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this;
 	}
 
+	public TextRange getFullTextRange() {
+		return this.getXmlAttributeMapping().getFullTextRange();
+	}
+
 	public boolean containsOffset(int textOffset) {
 		return this.getXmlAttributeMapping().containsOffset(textOffset);
 	}

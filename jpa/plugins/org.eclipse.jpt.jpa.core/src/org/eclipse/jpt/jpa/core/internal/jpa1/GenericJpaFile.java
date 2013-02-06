@@ -114,28 +114,30 @@ public class GenericJpaFile
 	}
 
 	/**
-	 * <li>The JPA file for a persistence.xml will have one root structure node: Persistence
-	 * <li>The JPA file for an orm xml file will have one root structure node: EntityMappings
-	 * <li>The JPA file for a java file can have multiple root structure nodes only if there
-	 * are inner classes. The top-level class and inner classes will be included only 
-	 * if they are either annotated or listed in the persistence.xml. The root structure
-	 * node will be an instanceof JavaPersistentType
+	 * <li>The JPA file for a <code>persistence.xml</code> will have one root
+	 * structure node: <code>Persistence</code>
+	 * <li>The JPA file for an <code>orm.xml</code> file will have one root
+	 * structure node: <code>EntityMappings</code>
+	 * <li>The JPA file for a java file can have multiple root structure nodes
+	 * only if there are static member classes (in EclipseLink!).
+	 * The top-level class and member
+	 * classes will be included only if they are either annotated or listed in
+	 * the <code>persistence.xml</code>. The root structure nodes will be
+	 * instances of <code>JavaPersistentType</code>.
 	 * <br><br>
-	 * If a class is listed in both the persistence.xml and also in an orm.xml file
-	 * the root structure node will be the JavaPersistentType that was built by the OrmPersistentType
-	 * listed in the orm.xml file. Mapping files will take precendence over the class-ref
-	 * in the persistence.xml, but you will currently only have 1 root structure node. There
-	 * are validation warnings for these scenarios.
+	 * If a class is listed in both the <code>persistence.xml</code> and an
+	 * <code>orm.xml</code> file, the root structure node will be the
+	 * <code>JavaPersistentType</code> that was built by the
+	 * <code>OrmPersistentType</code> listed in the <code>orm.xml</code> file.
+	 * Mapping files will take precendence over the class ref in the
+	 * <code>persistence.xml</code>. Likewise, if the same class is listed in
+	 * multiple mapping files, only the first <code>JavaPersistentType</code>
+	 * will be added to the list of root structure nodes.
+	 * There are validation warnings for these scenarios.
 	 * <br><br>
-	 * TODO we have discussed having a "primary root" node along with a collection of
-	 * root structure nodes that includes all the JavaPersistentTypes as they are
-	 * listed via the persistence.xml class-refs, any of the mapping-file-refs, or the jar-file-refs.
-	 * <br><br>
-	 * bug 390616 is about selection  problems when there are static inner classes. When
-	 * fixing this bug we need to make sure to handle the possibility that there will
-	 * be an unannotated top-level class with an annotated static inner class. Would like
-	 * to change the inner classes to not be root structure nodes, but instead be 
-	 * nested under the top-level class in the structure view. 
+	 * TODO we have discussed having a "primary" root node along with a
+	 * collection of "secondary" root nodes that includes all the
+	 * <code>JavaPersistentType</code>s described above.
 	 */
 	public void updateRootStructureNodes() {
 		PersistenceXml persistenceXml = this.getPersistenceXml();
@@ -148,14 +150,29 @@ public class GenericJpaFile
 		this.synchronizeCollection(newRootStructureNodes, this.rootStructureNodes, ROOT_STRUCTURE_NODES_COLLECTION);
 	}
 
+	/**
+	 * If we have multiple root nodes, it's reasonable to assume their text
+	 * ranges are either exclusive or nested; therefore we need only find the
+	 * closest text range "start".
+	 */
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (JpaStructureNode rootNode : this.getRootStructureNodes()) {
-			JpaStructureNode node = rootNode.getStructureNode(textOffset);
-			if (node != null) {
-				return node;
+		JpaStructureNode closestNode = null;
+		int closestDistance = -1;
+		for (JpaStructureNode currentNode : this.getRootStructureNodes()) {
+			if (currentNode.containsOffset(textOffset)) {
+				int currentDistance = textOffset - currentNode.getFullTextRange().getOffset();
+				if (closestNode == null) {
+					closestNode = currentNode;
+					closestDistance = currentDistance;
+				} else {
+					if (currentDistance < closestDistance) {
+						closestNode = currentNode;
+						closestDistance = currentDistance;
+					}
+				}
 			}
 		}
-		return null;
+		return (closestNode == null) ? null : closestNode.getStructureNode(textOffset);
 	}
 
 

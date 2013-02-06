@@ -170,7 +170,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	protected String buildFullyQualifiedParentClass() {
 		return (this.specifiedParentClass == null) ?
 				this.defaultParentClass :
-				this.getEntityMappings().getFullyQualifiedName(this.specifiedParentClass);
+				this.getEntityMappings().qualify(this.specifiedParentClass);
 	}
 
 	// ********** parent class **********

@@ -84,9 +84,9 @@ public abstract class AbstractJarFileRef
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.jarFile != null) {
-			this.jarFile.gatherRootStructureNodes(jpaFile, rootStructureNodes);
-		}
+		// structure nodes are for the structure view, which is associated
+		// with the editor - .jar files do not have an editor(!)
+		throw new UnsupportedOperationException();
 	}
 
 	// ********** JpaStructureNode implementation **********
@@ -107,8 +107,12 @@ public abstract class AbstractJarFileRef
 		return 0;
 	}
 
+	public TextRange getFullTextRange() {
+		return this.xmlJarFileRef.getFullTextRange();
+	}
+
 	public boolean containsOffset(int textOffset) {
-		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
+		return this.xmlJarFileRef.containsOffset(textOffset);
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
@@ -120,9 +124,7 @@ public abstract class AbstractJarFileRef
 	}
 
 	public void dispose() {
-		if (this.jarFile != null) {
-			this.jarFile.dispose();
-		}
+		// NOP
 	}
 
 
@@ -148,7 +150,6 @@ public abstract class AbstractJarFileRef
 		if (this.firePropertyChanged(FILE_NAME_PROPERTY, old, fileName)) {
 			// clear out the jar file here, it will be rebuilt during "update"
 			if (this.jarFile != null) {
-				this.jarFile.dispose();
 				this.setJarFile(null);
 			}
 		}
@@ -193,7 +194,6 @@ public abstract class AbstractJarFileRef
 		JavaResourcePackageFragmentRoot jrpfr = this.resolveJavaResourcePackageFragmentRoot();
 		if (jrpfr == null) {
 			if (this.jarFile != null) {
-				this.jarFile.dispose();
 				this.setJarFile(null);
 			}
 		} else {
@@ -203,7 +203,6 @@ public abstract class AbstractJarFileRef
 				if (this.jarFile.getJarResourcePackageFragmentRoot() == jrpfr) {
 					this.jarFile.update();
 				} else {
-					this.jarFile.dispose();
 					this.setJarFile(this.buildJarFile(jrpfr));
 				}
 			}

@@ -35,8 +35,10 @@ public interface OrmTypeMapping
 	// ********** class **********
 
 	/**
+	 * Member class names will be qualified with a <code>'$'</code>
+	 * between each declaring class name and member class name.
 	 * <strong>NB:</strong> This may be an unqualified name to be prefixed by the
-	 * entity mappings's package value.
+	 * entity mappings's 'package' value.
 	 * 
 	 * @see EntityMappings#getPackage()
 	 */

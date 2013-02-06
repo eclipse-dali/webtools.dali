@@ -392,7 +392,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	protected String buildFullyQualifiedMapKeyClass() {
 		return (this.specifiedMapKeyClass == null) ?
 				this.defaultMapKeyClass :
-				this.getEntityMappings().getFullyQualifiedName(this.specifiedMapKeyClass);
+				this.getEntityMappings().qualify(this.specifiedMapKeyClass);
 	}
 
 	// ********** map key class **********

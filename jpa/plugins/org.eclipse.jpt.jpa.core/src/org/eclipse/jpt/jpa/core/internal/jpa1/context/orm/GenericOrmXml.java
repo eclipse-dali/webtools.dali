@@ -273,14 +273,9 @@ public class GenericOrmXml
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.root == null) {
-			return;
+		if (this.root != null) {
+			this.root.gatherRootStructureNodes(jpaFile, rootStructureNodes);
 		}
-		if (this.getResource().equals(jpaFile.getFile())) {
-			rootStructureNodes.add(this.root); 
-			return;
-		}
-		this.root.gatherRootStructureNodes(jpaFile, rootStructureNodes);
 	}
 
 	public void dispose() {

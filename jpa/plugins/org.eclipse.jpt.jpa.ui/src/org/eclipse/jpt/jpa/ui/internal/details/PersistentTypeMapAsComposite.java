@@ -57,7 +57,7 @@ public class PersistentTypeMapAsComposite
 		}
 
 		public String getName() {
-			return getSubject().getSimpleName();
+			return getSubject().getTypeQualifiedName();
 		}
 
 		public Iterable<MappingUiDefinition> getMappingUiDefinitions() {

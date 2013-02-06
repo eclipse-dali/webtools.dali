@@ -93,7 +93,7 @@ public class PersistentTypeItemLabelProvider
 		}
 		@Override
 		protected String buildValue_() {
-			return this.subject.getSimpleName();
+			return this.subject.getTypeQualifiedName();
 		}
 	}
 	

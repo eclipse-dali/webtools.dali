@@ -76,8 +76,7 @@ public class GenericClassRef
 		super(parent);
 		this.xmlJavaClassRef = xmlJavaClassRef;
 		this.className = xmlJavaClassRef.getJavaClass();
-		JavaResourceAbstractType resourceType = this.resolveJavaResourceType();
-		this.initializeJavaPersistentType(resourceType);
+		this.initializeJavaPersistentType(this.resolveJavaResourceType());
 	}
 
 	/**
@@ -91,8 +90,8 @@ public class GenericClassRef
 		this.initializeJavaPersistentType(resourceType);
 	}
 
-	protected void initializeJavaPersistentType(JavaResourceAbstractType resourceType) {
-		this.resourceType = resourceType;
+	protected void initializeJavaPersistentType(JavaResourceAbstractType jrat) {
+		this.resourceType = jrat;
 		if (this.resourceType != null && this.resourceType.getAstNodeType() == AstNodeType.TYPE) {
 			this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) this.resourceType);
 		}
@@ -271,6 +270,10 @@ public class GenericClassRef
 
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
+	}
+
+	public TextRange getFullTextRange() {
+		return this.isVirtual() ? null : this.xmlJavaClassRef.getFullTextRange();
 	}
 
 	public TextRange getSelectionTextRange() {

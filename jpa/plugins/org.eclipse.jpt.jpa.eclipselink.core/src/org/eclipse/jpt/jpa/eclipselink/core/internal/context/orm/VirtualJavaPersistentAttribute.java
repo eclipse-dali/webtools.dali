@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-
 import java.util.Collection;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
@@ -76,7 +75,7 @@ public class VirtualJavaPersistentAttribute
 	}
 
 	public JavaAttributeMapping setMappingKey(String key) {
-		throw new UnsupportedOperationException("cannot set anything on a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public Accessor getAccessor() {
@@ -97,7 +96,7 @@ public class VirtualJavaPersistentAttribute
 
 	public String getTypeName() {
 		String typeName = this.xmlAttributeMapping.getAttributeType();
-		return typeName == null ? null : this.getEntityMappings().getFullyQualifiedName(typeName);
+		return typeName == null ? null : this.getEntityMappings().qualify(typeName);
 	}
 	
 	public String getTypeName(PersistentType contextType) {
@@ -134,7 +133,7 @@ public class VirtualJavaPersistentAttribute
 	}
 
 	public boolean isVirtual() {
-		throw new UnsupportedOperationException("Owing orm persistent attribute is specified, this should not be called."); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public JavaPersistentAttribute getJavaPersistentAttribute() {
@@ -144,36 +143,40 @@ public class VirtualJavaPersistentAttribute
 
 	// ********** JpaStructureNode implementation **********
 
+	public TextRange getFullTextRange() {
+		throw new UnsupportedOperationException();
+	}
+
 	public boolean containsOffset(int offset) {
 		throw new UnsupportedOperationException();
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public TextRange getSelectionTextRange() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public ContextType getContextType() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public Class<? extends JpaStructureNode> getType() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public int getChildrenSize() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public void dispose() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public AccessType getAccess() {
@@ -185,7 +188,7 @@ public class VirtualJavaPersistentAttribute
 	}
 
 	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
-		throw new UnsupportedOperationException("cannot set anything on a virtual java persistent attribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public AccessType getDefaultAccess() {
@@ -255,11 +258,13 @@ public class VirtualJavaPersistentAttribute
 	// ********** metamodel **********
 
 	public String getMetamodelContainerFieldTypeName() {
-		throw new UnsupportedOperationException("parent OrmPersistentAttribute implements this"); //$NON-NLS-1$
+		// parent OrmPersistentAttribute implements this
+		throw new UnsupportedOperationException();
 	}
 
 	public String getMetamodelContainerFieldMapKeyTypeName() {
-		throw new UnsupportedOperationException("parent OrmPersistentAttribute implements this"); //$NON-NLS-1$
+		// parent OrmPersistentAttribute implements this
+		throw new UnsupportedOperationException();
 	}
 
 
@@ -428,7 +433,8 @@ public class VirtualJavaPersistentAttribute
 	}
 
 	public String getPrimaryKeyColumnName() {
-		throw new UnsupportedOperationException("Owing orm persistent attribute should handle, this should not be called."); //$NON-NLS-1$
+		// parent OrmPersistentAttribute implements this
+		throw new UnsupportedOperationException();
 	}
 
 	public IJavaElement getJavaElement() {

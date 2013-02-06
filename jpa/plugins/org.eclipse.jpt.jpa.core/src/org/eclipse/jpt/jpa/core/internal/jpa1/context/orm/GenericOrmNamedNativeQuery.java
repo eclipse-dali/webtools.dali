@@ -112,7 +112,7 @@ public class GenericOrmNamedNativeQuery
 	}
 
 	protected String buildFullyQualifiedResultClass() {
-		return this.getMappingFileRoot().getFullyQualifiedName(this.resultClass);
+		return this.getMappingFileRoot().qualify(this.resultClass);
 	}
 
 	public char getResultClassEnclosingTypeSeparator() {

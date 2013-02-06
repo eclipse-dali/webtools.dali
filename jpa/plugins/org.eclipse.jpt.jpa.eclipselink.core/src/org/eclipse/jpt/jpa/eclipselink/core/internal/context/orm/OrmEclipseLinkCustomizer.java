@@ -125,7 +125,7 @@ public class OrmEclipseLinkCustomizer
 		return (this.specifiedCustomizerClass == null) ?
 			//this is the fully qualified java customizer class name
 			this.defaultCustomizerClass :
-			this.getEntityMappings().getFullyQualifiedName(this.specifiedCustomizerClass);
+			this.getEntityMappings().qualify(this.specifiedCustomizerClass);
 	}
 
 

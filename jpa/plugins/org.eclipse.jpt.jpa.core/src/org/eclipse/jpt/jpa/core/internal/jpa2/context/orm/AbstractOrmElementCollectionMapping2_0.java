@@ -268,7 +268,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected String buildFullyQualifiedTargetClass() {
 		return (this.specifiedTargetClass == null) ?
 				this.defaultTargetClass :
-				this.getEntityMappings().getFullyQualifiedName(this.specifiedTargetClass);
+				this.getEntityMappings().qualify(this.specifiedTargetClass);
 	}
 
 	// ********** target class **********
@@ -808,7 +808,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected String buildFullyQualifiedMapKeyClass() {
 		return (this.specifiedMapKeyClass == null) ?
 				this.defaultMapKeyClass :
-				this.getEntityMappings().getFullyQualifiedName(this.specifiedMapKeyClass);
+				this.getEntityMappings().qualify(this.specifiedMapKeyClass);
 	}
 
 	// ********** map key class **********

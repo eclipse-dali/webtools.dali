@@ -84,7 +84,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected String buildFullyQualifiedConverterClass() {
-		return this.getMappingFileRoot().getFullyQualifiedName(this.converterClass);
+		return this.getMappingFileRoot().qualify(this.converterClass);
 	}
 
 	protected JavaResourceAbstractType getConverterJavaResourceType() {

@@ -303,17 +303,9 @@ public abstract class AbstractPersistenceUnit
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			mappingFileRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
-			if (!rootStructureNodes.isEmpty()) {//short-circuit so we only get one rootStructureNode
-				return;
-			}
 		}
-		//TODO if we decide to gather all rootStructureNodes then we need to only check specifiedClassRefs
-		//if we have already found a particular javaPersistentType listed in a mapping file.
 		for (ClassRef classRef : this.getClassRefs()) {
 			classRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
-		}
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			jarFileRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
 		}
 	}
 
@@ -371,8 +363,12 @@ public abstract class AbstractPersistenceUnit
 		return this.children.size();
 	}
 
+	public TextRange getFullTextRange() {
+		return this.xmlPersistenceUnit.getFullTextRange();
+	}
+
 	public boolean containsOffset(int textOffset) {
-		return (this.xmlPersistenceUnit != null) && this.xmlPersistenceUnit.containsOffset(textOffset);
+		return this.xmlPersistenceUnit.containsOffset(textOffset);
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

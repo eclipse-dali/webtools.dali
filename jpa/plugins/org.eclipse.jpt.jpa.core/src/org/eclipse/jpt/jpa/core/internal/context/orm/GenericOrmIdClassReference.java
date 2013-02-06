@@ -104,7 +104,7 @@ public class GenericOrmIdClassReference
 		return (this.specifiedIdClassName == null) ?
 			//this is the fully qualified java id class name
 			this.defaultIdClassName :
-			this.getEntityMappings().getFullyQualifiedName(this.specifiedIdClassName);
+			this.getEntityMappings().qualify(this.specifiedIdClassName);
 	}
 
 

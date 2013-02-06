@@ -135,7 +135,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	protected String buildFullyQualifiedAttributeType() {
 		return (this.specifiedAttributeType == null) ?
 				this.defaultAttributeType :
-				this.getEntityMappings().getFullyQualifiedName(this.specifiedAttributeType);
+				this.getEntityMappings().qualify(this.specifiedAttributeType);
 	}
 
 	// ********** attribute type **********

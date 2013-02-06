@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -164,9 +164,7 @@ public abstract class EBaseObjectImpl
 	}
 	
 	protected IDOMNode getTextNode() {
-		// TODO bjv null check no longer needed? (orm nodes are no longer virtual)
-		// virtual objects have no node
-		return (this.node == null) ? null : selectTextNode(this.node.getChildNodes());
+		return this.selectTextNode(this.node.getChildNodes());
 	}
 
 	
@@ -191,8 +189,7 @@ public abstract class EBaseObjectImpl
 	}
 	
 	protected IDOMAttr getAttributeNode(String attributeName) {
-		return (this.node == null) ? // virtual objects have no node
-			null : (IDOMAttr) this.node.getAttributes().getNamedItem(attributeName);
+		return (IDOMAttr) this.node.getAttributes().getNamedItem(attributeName);
 	}
 	
 	/**
@@ -209,7 +206,6 @@ public abstract class EBaseObjectImpl
 	 * Returns the first element node with the given name, if one exists
 	 */
 	protected IDOMNode getElementNode(String elementName) {
-		if (this.node == null) return null; // virtual objects have no node
 		NodeList children = this.node.getChildNodes();
 		for (int i = 0; i < children.getLength(); i ++) {
 			IDOMNode child = (IDOMNode) children.item(i);
@@ -229,7 +225,7 @@ public abstract class EBaseObjectImpl
 		return this.getFullTextRange();
 	}
 	
-	protected TextRange getFullTextRange() {
+	public TextRange getFullTextRange() {
 		return this.buildTextRange(this.node);
 	}
 
@@ -256,7 +252,7 @@ public abstract class EBaseObjectImpl
 	}
 
 	public boolean containsOffset(int textOffset) {
-		return (this.node == null) ? false : this.node.contains(textOffset);
+		return this.node.contains(textOffset);
 	}
 
 
@@ -339,6 +335,8 @@ public abstract class EBaseObjectImpl
 	protected static class XmlEAdapterList<E extends Object & Adapter>
 		extends EAdapterList<E>
 	{
+		private static final long serialVersionUID = 1L;
+
 		public XmlEAdapterList(EBaseObjectImpl jpaEObject) {
 			super(jpaEObject);
 		}

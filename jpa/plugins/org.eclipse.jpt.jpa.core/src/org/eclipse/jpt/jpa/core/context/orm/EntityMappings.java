@@ -63,13 +63,14 @@ public interface EntityMappings
 	 * qualified class name is specified for a class and the two disagree."
 	 * <p>
 	 * Partial packages are not supported. The package element should only be used
-	 * if a class is not qualified (does not have a '.')
-	 * 
+	 * if a class is not qualified (i.e. it does not have a <code>'.'</code>)
+	 * <p>
 	 * <strong>NB:</strong> No mention of how to resolve duplicates in the
 	 * "default" package:<ul>
 	 * <li><code>Bar</code> (in "default" package) vs. <code>foo.Bar</code>
 	 * </ul>
-	 * when package is specified as <code>foo</code>.
+	 * when package is specified as <code>foo</code> and class is specified as
+	 * <code>Bar</code>.
 	 */
 	String getPackage();
 	void setPackage(String package_);
@@ -196,10 +197,10 @@ public interface EntityMappings
 
 	/**
 	 * If the specified class name is not qualified (i.e. it does not contain a
-	 * <code>'.'</code>), prepend the default package name. Inner classes must
+	 * <code>'.'</code>), prepend the default package name. Member classes must
 	 * be qualified with a <code>'$'</code> for this to work correctly.
 	 * 
 	 * @see #getPackage()
 	 */
-	String getFullyQualifiedName(String className);
+	String qualify(String className);
 }

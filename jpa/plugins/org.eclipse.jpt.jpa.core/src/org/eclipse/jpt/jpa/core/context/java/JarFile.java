@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.Collection;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.JpaFile;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 
@@ -55,22 +52,7 @@ public interface JarFile
 	// ********** misc **********
 
 	/**
-	 * Add the appropriate root structure nodes to the collection that
-	 * correspond to the given JPA file.
-	 * @see JpaFile#getRootStructureNodes()
-	 */
-	void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
-
-	/**
-	 * Dispose the structure node and its children.
-	 * Typically this would be used to update the structure node's
-	 * JPA file's root structure nodes.
-	 */
-	void dispose();
-
-	/**
 	 * Return true if this jar file exists in the given folder
 	 */
 	boolean isIn(IFolder folder);
-
 }

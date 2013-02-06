@@ -85,7 +85,7 @@ public class VirtualJavaPersistentType
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		//none
+		// NOP - virtual types do not have a corresponding Java type
 	}
 
 
@@ -101,6 +101,10 @@ public class VirtualJavaPersistentType
 
 	public String getSimpleName() {
 		return this.getParent().getSimpleName();
+	}
+
+	public String getTypeQualifiedName() {
+		return this.getParent().getTypeQualifiedName();
 	}
 
 
@@ -263,31 +267,35 @@ public class VirtualJavaPersistentType
 	// ********** JpaStructureNode implementation **********
 
 	public ContextType getContextType() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public Class<? extends JpaStructureNode> getType() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public ListIterable<JpaStructureNode> getChildren() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public int getChildrenSize() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
+	}
+
+	public TextRange getFullTextRange() {
+		throw new UnsupportedOperationException();
 	}
 
 	public boolean containsOffset(int textOffset) {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 	public TextRange getSelectionTextRange() {
-		throw new UnsupportedOperationException("There is no resource for a virtual java persistent type"); //$NON-NLS-1$
+		throw new UnsupportedOperationException();
 	}
 
 

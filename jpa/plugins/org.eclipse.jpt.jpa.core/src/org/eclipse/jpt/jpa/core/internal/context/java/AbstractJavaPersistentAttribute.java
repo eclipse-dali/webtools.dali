@@ -461,8 +461,12 @@ public abstract class AbstractJavaPersistentAttribute
 		return 0;
 	}
 
+	public TextRange getFullTextRange() {
+		return this.getResourceAttribute().getTextRange();
+	}
+
 	public boolean containsOffset(int offset) {
-		TextRange fullTextRange = this.getResourceAttribute().getTextRange();
+		TextRange fullTextRange = this.getFullTextRange();
 		// 'fullTextRange' will be null if the attribute no longer exists in the java;
 		// the context model can be out of sync with the resource model
 		// when a selection event occurs before the context model has a

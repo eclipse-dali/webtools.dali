@@ -211,12 +211,23 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected String buildName() {
-		return this.getEntityMappings().getFullyQualifiedName(this.getMappingClassName());		
+		return this.getEntityMappings().qualify(this.getMappingClassName());		
 	}
 
 	public String getSimpleName(){
 		String className = this.getName();
 		return StringTools.isBlank(className) ? null : ClassNameTools.simpleName(className);
+	}
+
+	public String getTypeQualifiedName() {
+		String className = this.getMappingClassName();
+		if (className == null) {
+			return null;
+		}
+		int lastPeriod = className.lastIndexOf('.');
+		className = (lastPeriod == -1) ? className : className.substring(lastPeriod + 1);
+		className = className.replace('$', '.');
+		return className;
 	}
 
 	protected String getMappingClassName() {
@@ -1129,6 +1140,10 @@ public abstract class SpecifiedOrmPersistentType
 
 	public int getChildrenSize() {
 		return this.children.size();
+	}
+
+	public TextRange getFullTextRange() {
+		return this.getXmlTypeMapping().getFullTextRange();
 	}
 
 	public boolean containsOffset(int textOffset) {

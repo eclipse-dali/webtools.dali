@@ -181,10 +181,11 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		for (PersistentType persistentType : this.getPersistentTypes()) {
-			persistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
-			if (!rootStructureNodes.isEmpty()) { //short-circuit, first one wins
-				return;
+		if (this.getResource().equals(jpaFile.getFile())) {
+			rootStructureNodes.add(this);
+		} else {
+			for (PersistentType persistentType : this.getPersistentTypes()) {
+				persistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
 			}
 		}
 	}
@@ -239,8 +240,12 @@ public abstract class AbstractEntityMappings
 		return this.children.size();
 	}
 
+	public TextRange getFullTextRange() {
+		return this.xmlEntityMappings.getFullTextRange();
+	}
+
 	public boolean containsOffset(int textOffset) {
-		return (this.xmlEntityMappings != null) && this.xmlEntityMappings.containsOffset(textOffset);
+		return this.xmlEntityMappings.containsOffset(textOffset);
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
@@ -270,7 +275,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	public String getDefaultPersistentTypePackage() {
-		return this.getPackage();
+		return this.package_;
 	}
 
 	protected boolean isXmlMappingMetadataComplete() {
@@ -546,11 +551,15 @@ public abstract class AbstractEntityMappings
 	}
 
 	/**
-	 * className passed in must have - $ for inner class
-	 * className is qualified or not qualified
-	 * append package if the name is not qualified
+	 * If the specified class name does not include a package, prefix it with
+	 * the entity mapping's package.
+	 * <br>
+	 * If the specified class is a member class, the member class name must be
+	 * separated from the declaring class name with a <code>'$'</code>.
+	 * The returned class name will have any <code>'$'</code>s replaced with
+	 * <code>'.'</code>s.
 	 */
-	public String getFullyQualifiedName(String className) {
+	public String qualify(String className) {
 		if (StringTools.isBlank(className)) {
 			return null;
 		}
@@ -559,31 +568,32 @@ public abstract class AbstractEntityMappings
 			return primitiveClassName;
 		}
 
-	    //No global package defined or the class name is qualified, use the className. 
-		//Otherwise, prepend the global package name.
-		if (this.getPackage() != null && className.indexOf('.') == -1) {
+	    // If the global package is not defined or the class name is qualified,
+		// simply use the class name. 
+		// Otherwise, prepend the global package name.
+		if ((this.package_ != null) && (className.indexOf('.') == -1)) {
 			className = this.prependGlobalPackage(className);
 		}
-		// static inner class listed in orm.xml will use '$', replace with '.'
+		// member classes listed in orm.xml will use '$' - replace with '.'
 		className = className.replace('$', '.');
 		return className;
 	}
 
 	protected Object resolveType(TypeLookupAdapter adapter, String className) {
-		if (className == null) {
-			return null;
-		}
-		return adapter.resolveType(this, this.getFullyQualifiedName(className));
+		return (className == null) ? null : adapter.resolveType(this, this.qualify(className));
 	}
 
 	/**
-	 * preconditions: 
-	 * 		getPackage() is not null
-	 * 		unqualifiedClassName is not qualified (contains no '.')
+	 * Pre-conditions:<ul>
+	 * <li>the entity mapping's package is not <code>null</code>
+	 * <li>the specified unqualified class name is not qualified;
+	 * i.e. it does not contain any <code>'.'</code>s (it <em>may</em>
+	 * contain <code>'$'</code>s)
+	 * </ul>
 	 */
 	protected String prependGlobalPackage(String unqualifiedClassName) {
 		// Format of global package is "foo.bar"
-		return this.getPackage() + '.' + unqualifiedClassName;
+		return this.package_ + '.' + unqualifiedClassName;
 	}
 
 	protected interface TypeLookupAdapter {
@@ -1248,5 +1258,4 @@ public abstract class AbstractEntityMappings
 	private Iterable<String> getCandidatePackages() {
 		return this.getPersistenceUnit().getPackageNames();
 	}
-
 }
