@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
@@ -98,8 +99,11 @@ public class OxmJavaTypeImpl
 	}
 	
 	@Override
-	protected JavaClass buildJavaType(JavaResourceType resourceType) {
-		return new GenericJavaJaxbClass(this, resourceType);
+	protected JavaClass buildJavaType(JavaResourceAbstractType resourceType) {
+		if (resourceType.getAstNodeType() == AstNodeType.TYPE) {
+			return new GenericJavaJaxbClass(this, (JavaResourceType) resourceType);
+		}
+		return null;
 	}
 	
 	@Override
@@ -159,6 +163,23 @@ public class OxmJavaTypeImpl
 	
 	protected String buildSpecifiedName() {
 		return getETypeMapping().getName();
+	}
+	
+	
+	// ***** type name *****
+	
+	@Override
+	protected void updateTypeName() {
+		String fqName = this.typeName.getFullyQualifiedName();
+		String newFqName = getXmlBindings().getQualifiedName(this.specifiedName);
+		if (! ObjectTools.equals(fqName, newFqName)) {
+			setTypeName_(buildTypeName());
+		}
+	}
+	
+	@Override
+	protected TypeName buildTypeName() {
+		return new OxmTypeName(getXmlBindings().getQualifiedName(this.specifiedName));
 	}
 	
 	
@@ -246,23 +267,6 @@ public class OxmJavaTypeImpl
 		else {
 			setSuperclass_(null);
 		}
-	}
-	
-	
-	// ***** type name *****
-	
-	@Override
-	protected void updateTypeName() {
-		String fqName = this.typeName.getFullyQualifiedName();
-		String newFqName = getXmlBindings().getQualifiedName(this.specifiedName);
-		if (! ObjectTools.equals(fqName, newFqName)) {
-			setTypeName_(buildTypeName());
-		}
-	}
-	
-	@Override
-	protected TypeName buildTypeName() {
-		return new OxmTypeName(getXmlBindings().getQualifiedName(this.specifiedName));
 	}
 	
 	
