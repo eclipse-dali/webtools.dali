@@ -19,6 +19,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class StringAttributeTranslator
 		extends Translator {
 	
+	public StringAttributeTranslator(String domNameAndPath, EStructuralFeature aFeature) {
+		super(domNameAndPath, aFeature, Translator.DOM_ATTRIBUTE);
+	}
+	
 	public StringAttributeTranslator(String domNameAndPath, EStructuralFeature aFeature, int style) {
 		super(domNameAndPath, aFeature, Translator.DOM_ATTRIBUTE | style);
 	}
