@@ -27,7 +27,7 @@ public class OxmXmlSeeAlsoImpl
 	public OxmXmlSeeAlsoImpl(OxmTypeMapping parent, EXmlSeeAlso eXmlSeeAlso) {
 		super(parent);
 		this.eXmlSeeAlso = eXmlSeeAlso;
-		this.classesContainer = new ClassesContainer();
+		initClasses();
 	}
 	
 	
@@ -61,6 +61,7 @@ public class OxmXmlSeeAlsoImpl
 	}
 	
 	protected void initClasses() {
+		this.classesContainer = new ClassesContainer();
 		this.classesContainer.initialize();
 	}
 	
