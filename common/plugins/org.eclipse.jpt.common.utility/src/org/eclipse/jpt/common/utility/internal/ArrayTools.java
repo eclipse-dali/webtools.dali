@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -858,7 +858,7 @@ public final class ArrayTools {
 		int current = 0;
 		for (char[] array : arrays) {
 			int arrayLength = array.length;
-			if (arrayLength != 0) {
+			if (arrayLength > 0) {
 				System.arraycopy(array, 0, result, current, arrayLength);
 				current += arrayLength;
 			}
@@ -883,7 +883,7 @@ public final class ArrayTools {
 		int current = 0;
 		for (int[] array : arrays) {
 			int arrayLength = array.length;
-			if (arrayLength != 0) {
+			if (arrayLength > 0) {
 				System.arraycopy(array, 0, result, current, arrayLength);
 				current += arrayLength;
 			}
@@ -1632,6 +1632,14 @@ public final class ArrayTools {
 	// ********** move **********
 
 	/**
+	 * Move the specified element from its current position to the specified target
+	 * index. Return the altered array.
+	 */
+	public static <E> E[] move(E[] array, int targetIndex, E element) {
+		return move(array, targetIndex, indexOf(array, element));
+	}
+
+	/**
 	 * Move an element from the specified source index to the specified target
 	 * index. Return the altered array.
 	 */
@@ -2152,11 +2160,11 @@ public final class ArrayTools {
 		if ((newLength == 0) && (index == 0)) {
 			return result;  // performance tweak
 		}
-		if (index != 0) {
+		if (index > 0) {
 			System.arraycopy(array, 0, result, 0, index);
 		}
 		int length2 = newLength - index;
-		if (length2 != 0) {
+		if (length2 > 0) {
 			System.arraycopy(array, index + length, result, index, length2);
 		}
 		return result;
@@ -2176,11 +2184,11 @@ public final class ArrayTools {
 			return CharArrayTools.EMPTY_CHAR_ARRAY;  // performance tweak
 		}
 		char[] result = new char[newLength];
-		if (index != 0) {
+		if (index > 0) {
 			System.arraycopy(array, 0, result, 0, index);
 		}
 		int length2 = newLength - index;
-		if (length2 != 0) {
+		if (length2 > 0) {
 			System.arraycopy(array, index + length, result, index, length2);
 		}
 		return result;
@@ -2200,11 +2208,11 @@ public final class ArrayTools {
 			return EMPTY_INT_ARRAY;  // performance tweak
 		}
 		int[] result = new int[newLength];
-		if (index != 0) {
+		if (index > 0) {
 			System.arraycopy(array, 0, result, 0, index);
 		}
 		int length2 = newLength - index;
-		if (length2 != 0) {
+		if (length2 > 0) {
 			System.arraycopy(array, index + length, result, index, length2);
 		}
 		return result;
@@ -2258,6 +2266,51 @@ public final class ArrayTools {
 			}
 		}
 		return array;
+	}
+
+
+	// ********** resize **********
+
+	/**
+	 * Resize the specified array to the specified length.
+	 * If the resize length is equal to the array's length,
+	 * return the array unchanged.
+	 * If the resize length is less than the array's length,
+	 * return a new array filled with the first elements from the specified array.
+	 * If the resize length is greater than the array's length,
+	 * return a new array filled with the elements from the specified array,
+	 * followed by <code>null</code> elements.
+	 */
+	public static <E> E[] resize(E[] array, int length) {
+		int arrayLength = array.length;
+		if (arrayLength == length) {
+			return array;
+		}
+		if (arrayLength > length) {
+			return subArray(array, 0, length);
+		}
+		// arrayLength < length
+		return expand(array, arrayLength, length);
+	}
+
+	/**
+	 * Expand the specified array by the specified expansion size,
+	 * adding <code>null</code> elements to the end.
+	 */
+	public static <E> E[] expand(E[] array, int expansionSize) {
+		if (expansionSize == 0) {
+			return array;
+		}
+		int arrayLength = array.length;
+		return expand(array, arrayLength, arrayLength + expansionSize);
+	}
+
+	private static <E> E[] expand(E[] array, int arrayLength, int length) {
+		E[] result = newInstance(array, length);
+		if (arrayLength > 0) {
+			System.arraycopy(array, 0, result, 0, arrayLength);
+		}
+		return result;
 	}
 
 

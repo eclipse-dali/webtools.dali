@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1758,6 +1758,26 @@ public class ArrayToolsTests
 
 	// ********** move **********
 
+	public void testMoveObjectArrayIntObject() {
+		String[] array = new String[] { "0", "1", "2", "3", "4", "5" };
+
+		String[] result = ArrayTools.move(array, 4, "2");
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result));
+
+		result = ArrayTools.move(array, 0, "5");
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result));
+
+		result = ArrayTools.move(array, 2, "4");
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result));
+
+		result = ArrayTools.move(array, 4, "3");
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result));
+	}
+
 	public void testMoveObjectArrayIntInt() {
 		String[] array = new String[] { "0", "1", "2", "3", "4", "5" };
 
@@ -2399,6 +2419,29 @@ public class ArrayToolsTests
 		int[] a = new int[] { 0, 1, 0, 7, 0, 99 };
 		a = ArrayTools.replaceAll(a, 0, 13);
 		assertTrue(Arrays.equals(new int[] { 13, 1, 13, 7, 13, 99 }, a));
+	}
+
+
+	// ********** resize **********
+
+	public void testResizeObjectArrayInt_equal() {
+		String[] a1 = new String[] { "0", "1", "2", "3", "4", "5" };
+		String[] a2 = a1.clone();
+		String[] a3 = ArrayTools.resize(a1, a2.length);
+		assertTrue(Arrays.equals(a2, a3));
+		assertSame(a1, a3);
+	}
+
+	public void testResizeObjectArrayInt_shorter() {
+		String[] a1 = new String[] { "0", "1", "2", "3", "4", "5" };
+		String[] a2 = new String[] { "0", "1", "2" };
+		assertTrue(Arrays.equals(a2, ArrayTools.resize(a1, a2.length)));
+	}
+
+	public void testResizeObjectArrayInt_longer() {
+		String[] a1 = new String[] { "0", "1", "2", "3", "4", "5" };
+		String[] a2 = new String[] { "0", "1", "2", "3", "4", "5", null, null };
+		assertTrue(Arrays.equals(a2, ArrayTools.resize(a1, a2.length)));
 	}
 
 

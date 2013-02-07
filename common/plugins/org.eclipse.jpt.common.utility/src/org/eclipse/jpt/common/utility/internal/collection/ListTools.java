@@ -300,6 +300,14 @@ public final class ListTools {
 	// ********** move **********
 
 	/**
+	 * Move the specified element from its current position to the specified
+	 * index. Return the altered list.
+	 */
+	public static <E> List<E> move(List<E> list, int index, E element) {
+		return move(list, index, list.indexOf(element));
+	}
+
+	/**
 	 * Move an element from the specified source index to the specified target
 	 * index. Return the altered list.
 	 */

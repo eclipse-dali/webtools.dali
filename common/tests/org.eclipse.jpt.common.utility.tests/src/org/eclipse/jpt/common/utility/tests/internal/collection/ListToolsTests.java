@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -399,24 +399,45 @@ public class ListToolsTests
 
 	// ********** move **********
 
+	public void testMoveListIntObject() {
+		List<String> list = new ArrayList<String>();
+		CollectionTools.addAll(list, new String[] { "0", "1", "2", "3", "4", "5" });
+
+		List<String> result = ListTools.move(list, 4, "2");
+		assertSame(list, result);  // the list is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
+
+		result = ListTools.move(list, 0, "5");
+		assertSame(list, result);  // the list is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
+
+		result = ListTools.move(list, 2, "4");
+		assertSame(list, result);  // the list is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
+
+		result = ListTools.move(list, 2, "4");
+		assertSame(list, result);  // the list is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
+	}
+
 	public void testMoveListIntIntRandomAccess() {
 		List<String> list = new ArrayList<String>();
 		CollectionTools.addAll(list, new String[] { "0", "1", "2", "3", "4", "5" });
 
 		List<String> result = ListTools.move(list, 4, 2);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
 
 		result = ListTools.move(list, 0, 5);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 2);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 	}
 
@@ -425,19 +446,19 @@ public class ListToolsTests
 		CollectionTools.addAll(list, new String[] { "0", "1", "2", "3", "4", "5" });
 
 		List<String> result = ListTools.move(list, 4, 2);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
 
 		result = ListTools.move(list, 0, 5);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 2);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 	}
 
@@ -445,35 +466,35 @@ public class ListToolsTests
 		List<String> list = new ArrayList<String>(Arrays.asList(new String[] { "0", "1", "2", "3", "4", "5" }));
 
 		List<String> result = ListTools.move(list, 4, 2, 1);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
 
 		result = ListTools.move(list, 0, 5, 1);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 4, 1);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 4, 2);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 0, 1, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "0", "3", "2", "4", "5", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 1, 0, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 1, 1, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 1, 0, 0);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 	}
 
@@ -481,35 +502,35 @@ public class ListToolsTests
 		List<String> list = new LinkedList<String>(Arrays.asList(new String[] { "0", "1", "2", "3", "4", "5" }));
 
 		List<String> result = ListTools.move(list, 4, 2, 1);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
 
 		result = ListTools.move(list, 0, 5, 1);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 4, 1);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 
 		result = ListTools.move(list, 2, 4, 2);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 0, 1, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "0", "3", "2", "4", "5", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 1, 0, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 1, 1, 4);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 
 		result = ListTools.move(list, 1, 0, 0);
-		assertSame(list, result);  // the array is modified in place and returned
+		assertSame(list, result);  // the list is modified in place and returned
 		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
 	}
 
