@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
@@ -202,9 +203,9 @@ public class GenericJavaEnumMappingTests
 	public void testModifyXmlRootElement() throws Exception {
 		createEnumWithXmlType();
 		
-		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
-		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
-		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
+		JavaEnum javaEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
+		JavaEnumMapping enumMapping = javaEnum.getMapping();
+		JavaResourceEnum resourceEnum = javaEnum.getJavaResourceType();
 		
 		assertNull(enumMapping.getXmlRootElement());
 		
