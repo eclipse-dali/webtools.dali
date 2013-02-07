@@ -700,7 +700,7 @@ public final class IterableTools {
 	 * by its children etc. as determined by the specified transformer.
 	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graphIterable(E root, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public static <E> GraphIterable<E> graphIterable(E root, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return graphIterable(singletonIterable(root), transformer);
 	}
 
@@ -709,7 +709,7 @@ public final class IterableTools {
 	 * by their children etc. as determined by the specified transformer.
 	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graphIterable(E[] roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public static <E> GraphIterable<E> graphIterable(E[] roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return graphIterable(Arrays.asList(roots), transformer);
 	}
 
@@ -718,7 +718,7 @@ public final class IterableTools {
 	 * by their children etc. as determined by the specified transformer.
 	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graphIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public static <E> GraphIterable<E> graphIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return new GraphIterable<E>(roots, transformer);
 	}
 
@@ -859,7 +859,7 @@ public final class IterableTools {
 	 * with the specified root and transformer.
 	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> treeIterable(E root, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public static <E> TreeIterable<E> treeIterable(E root, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return treeIterable(singletonIterable(root), transformer);
 	}
 
@@ -868,7 +868,7 @@ public final class IterableTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> treeIterable(E[] roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public static <E> TreeIterable<E> treeIterable(E[] roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return treeIterable(iterable(roots), transformer);
 	}
 
@@ -877,7 +877,7 @@ public final class IterableTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> treeIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public static <E> TreeIterable<E> treeIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return new TreeIterable<E>(roots, transformer);
 	}
 

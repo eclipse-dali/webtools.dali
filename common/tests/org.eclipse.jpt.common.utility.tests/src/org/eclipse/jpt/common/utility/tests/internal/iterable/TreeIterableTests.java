@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,8 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-
 import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -35,7 +33,7 @@ public class TreeIterableTests extends TestCase {
 	}
 
 	public void testIterator1() {
-		for (TreeNode tn : IterableTools.treeIterable(this.buildTree(), this.buildTransformer())) {
+		for (TreeNode tn : ObjectTools.tree(this.buildTree(), this.buildTransformer())) {
 			assertTrue(this.nodes.contains(tn));
 		}
 	}
@@ -50,10 +48,10 @@ public class TreeIterableTests extends TestCase {
 		assertNotNull(IterableTools.treeIterable(this.buildTree(), this.buildTransformer()).toString());
 	}
 
-	private Transformer<TreeNode, Iterator<? extends TreeNode>> buildTransformer() {
-		return new Transformer<TreeNode, Iterator<? extends TreeNode>>() {
-			public Iterator<? extends TreeNode> transform(TreeNode next) {
-				return next.children();
+	private Transformer<TreeNode, Iterable<? extends TreeNode>> buildTransformer() {
+		return new Transformer<TreeNode, Iterable<? extends TreeNode>>() {
+			public Iterable<? extends TreeNode> transform(TreeNode next) {
+				return next.getChildren();
 			}
 		};
 	}
@@ -102,8 +100,8 @@ public class TreeIterableTests extends TestCase {
 			this.children.add(child);
 		}
 
-		public Iterator<TreeNode> children() {
-			return this.children.iterator();
+		public Iterable<TreeNode> getChildren() {
+			return this.children;
 		}
 
 		public int childrenSize() {

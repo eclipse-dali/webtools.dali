@@ -48,6 +48,18 @@ public final class TransformerTools {
 	}
 
 	/**
+	 * Wrap the specified transformer converting it
+	 * into one that converts the same input object into an <em>iterator</em>
+	 * of objects of the same type as the input object.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer; also the
+	 *   type of object returned by the output iterator
+	 */
+	public static <I> IterableTransformerWrapper<I> iterableTransformerWrapper(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
+		return new IterableTransformerWrapper<I>(transformer);
+	}
+
+	/**
 	 * Return a transformer that simply casts the specified transformer's return type.
 	 * @see LateralTransformerWrapper
 	 */

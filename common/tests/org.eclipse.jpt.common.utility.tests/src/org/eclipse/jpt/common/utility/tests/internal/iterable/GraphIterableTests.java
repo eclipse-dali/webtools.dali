@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -62,7 +61,7 @@ public class GraphIterableTests
 	public void testMissingMisterRogers() {
 		boolean exCaught = false;
 		try {
-			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), Transformer.Disabled.<GraphNode, Iterator<? extends GraphNode>>instance())) {
+			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), Transformer.Disabled.<GraphNode, Iterable<? extends GraphNode>>instance())) {
 				assertTrue(this.nodes.contains(gn));
 			}
 			fail();
@@ -72,10 +71,10 @@ public class GraphIterableTests
 		assertTrue(exCaught);
 	}
 
-	private Transformer<GraphNode, Iterator<? extends GraphNode>> buildTransformer() {
-		return new Transformer<GraphNode, Iterator<? extends GraphNode>>() {
-			public Iterator<GraphNode> transform(GraphNode node) {
-				return node.neighbors();
+	private Transformer<GraphNode, Iterable<? extends GraphNode>> buildTransformer() {
+		return new Transformer<GraphNode, Iterable<? extends GraphNode>>() {
+			public Iterable<GraphNode> transform(GraphNode node) {
+				return node.getNeighbors();
 			}
 		};
 	}
@@ -121,8 +120,8 @@ public class GraphIterableTests
 			this.neighbors = ListTools.list(neighbors);
 		}
 
-		public Iterator<GraphNode> neighbors() {
-			return this.neighbors.iterator();
+		public Iterable<GraphNode> getNeighbors() {
+			return this.neighbors;
 		}
 
 		public int neighborsSize() {

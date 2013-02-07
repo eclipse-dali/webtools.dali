@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -56,13 +57,13 @@ public class GraphIterable<E>
 	 * Construct an iterable containing the nodes of a graph 
 	 * with the specified roots and transformer.
 	 */
-	public GraphIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
+	public GraphIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		super();
 		if ((roots == null) || (transformer == null)) {
 			throw new NullPointerException();
 		}
 		this.roots = roots;
-		this.transformer = transformer;
+		this.transformer = TransformerTools.iterableTransformerWrapper(transformer);
 	}
 
 	public Iterator<E> iterator() {

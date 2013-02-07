@@ -336,17 +336,17 @@ final class SourceType
 	}
 
 	public Iterable<JavaResourceType> getAllTypes() {
-		return IterableTools.treeIterable(this, TYPES_TRANSFORMER);
+		return ObjectTools.tree(this, TYPES_TRANSFORMER);
 	}
 
-	private static final Transformer<JavaResourceType, Iterator<? extends JavaResourceType>> TYPES_TRANSFORMER = new TypesTransformer();
+	private static final Transformer<JavaResourceType, Iterable<? extends JavaResourceType>> TYPES_TRANSFORMER = new TypesTransformer();
 
 	/* CU private */ static class TypesTransformer
-		extends TransformerAdapter<JavaResourceType, Iterator<? extends JavaResourceType>>
+		extends TransformerAdapter<JavaResourceType, Iterable<? extends JavaResourceType>>
 	{
 		@Override
-		public Iterator<? extends JavaResourceType> transform(JavaResourceType type) {
-			return type.getTypes().iterator();
+		public Iterable<? extends JavaResourceType> transform(JavaResourceType type) {
+			return type.getTypes();
 		}
 	}
 
