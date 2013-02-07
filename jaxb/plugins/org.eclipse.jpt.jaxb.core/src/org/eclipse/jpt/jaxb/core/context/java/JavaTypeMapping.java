@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context.java;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 
 /**
@@ -33,6 +34,13 @@ public interface JavaTypeMapping
 	// ***** XmlTransient *****
 	
 	void setXmlTransient(boolean newValue);
+	
+	
+	// ***** XmlRootElement *****
+	
+	XmlRootElement addXmlRootElement();
+	
+	void removeXmlRootElement();
 	
 	
 	// ***** XmlSeeAlso *****

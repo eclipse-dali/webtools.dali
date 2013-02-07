@@ -1161,6 +1161,7 @@ public class EJavaType extends EAbstractTypeMapping implements EPropertyHolder
 			buildXmlAccessorTypeTranslator(),
 			buildXmlTransientTranslator(),
 			EXmlType.buildTranslator(),
+			EXmlRootElement.buildTranslator(),
 			EXmlSeeAlso.buildTranslator(),
 			new EJavaAttribute.JavaAttributesTranslator()
 		};

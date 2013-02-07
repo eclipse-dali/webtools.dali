@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
@@ -28,10 +29,16 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping;
 public interface OxmTypeMapping
 		extends JaxbTypeMapping {
 	
+	// ***** misc *****
+	
 	/**
 	 * Resource model element
 	 */
 	EAbstractTypeMapping getETypeMapping();
+	
+	OxmXmlBindings getXmlBindings();
+	
+	ELJaxbPackage getJaxbPackage();
 	
 	
 	// ***** type name *****
@@ -45,8 +52,6 @@ public interface OxmTypeMapping
 	
 	JavaType getJavaType();
 	
-	ELJaxbPackage getJaxbPackage();
-	
 	
 	// ***** xml transient *****
 	
@@ -59,6 +64,21 @@ public interface OxmTypeMapping
 	Boolean getSpecifiedXmlTransient();
 	
 	void setSpecifiedXmlTransient(Boolean newValue);
+	
+	
+	// ***** xml root element *****
+	
+	String DEFAULT_XML_ROOT_ELEMENT_PROPERTY = "defaultXmlRootElement";  //$NON-NLS-1$
+	
+	XmlRootElement getDefaultXmlRootElement();
+	
+	String SPECIFIED_XML_ROOT_ELEMENT_PROPERTY = "specifiedXmlRootElement";  //$NON-NLS-1$
+	
+	OxmXmlRootElement getSpecifiedXmlRootElement();
+	
+	public OxmXmlRootElement addSpecifiedXmlRootElement();
+	
+	void removeSpecifiedXmlRootElement();
 	
 	
 	// ***** xml see also *****

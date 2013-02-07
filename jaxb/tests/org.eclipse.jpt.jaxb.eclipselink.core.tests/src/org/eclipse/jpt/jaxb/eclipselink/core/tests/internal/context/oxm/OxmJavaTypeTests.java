@@ -589,6 +589,98 @@ public class OxmJavaTypeTests
 		assertFalse(oxmMapping.isXmlTransient());
 	}
 	
+	public void testUpdateXmlRootElement() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType oxmMapping = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		JavaTypeMapping javaMapping = oxmMapping.getJavaType().getMapping();
+		
+		assertNull(javaMapping.getXmlRootElement());
+		assertNull(oxmMapping.getDefaultXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNull(oxmMapping.getXmlRootElement());
+		
+		javaMapping.addXmlRootElement();
+		
+		assertNotNull(javaMapping.getXmlRootElement());
+		assertNotNull(oxmMapping.getDefaultXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNotNull(oxmMapping.getXmlRootElement());
+		
+		xmlBindings.setXmlMappingMetadataComplete(true);
+		oxmResource.save();
+		
+		assertNotNull(javaMapping.getXmlRootElement());
+		assertNull(oxmMapping.getDefaultXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNull(oxmMapping.getXmlRootElement());
+		
+		xmlBindings.setXmlMappingMetadataComplete(false);
+		oxmResource.save();
+		
+		eJavaType.setXmlRootElement(OxmFactory.eINSTANCE.createEXmlRootElement());
+		oxmResource.save();
+		
+		assertNotNull(javaMapping.getXmlRootElement());
+		assertNotNull(oxmMapping.getDefaultXmlRootElement());
+		assertNotNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNotNull(oxmMapping.getXmlRootElement());
+		assertEquals(oxmMapping.getSpecifiedXmlRootElement(), oxmMapping.getXmlRootElement());
+		
+		eJavaType.setXmlRootElement(null);
+		oxmResource.save();
+		
+		assertNotNull(javaMapping.getXmlRootElement());
+		assertNotNull(oxmMapping.getDefaultXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNotNull(oxmMapping.getXmlRootElement());
+		
+		javaMapping.removeXmlRootElement();
+		
+		assertNull(javaMapping.getXmlRootElement());
+		assertNull(oxmMapping.getDefaultXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNull(oxmMapping.getXmlRootElement());
+	}
+	
+	public void testModifyXmlRootElement() throws Exception {
+		createClassWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmJavaType oxmMapping = xmlBindings.getJavaType(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EJavaType eJavaType = eXmlBindings.getJavaTypes().get(0);
+		
+		assertNull(eJavaType.getXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNull(oxmMapping.getXmlRootElement());
+		
+		oxmMapping.addSpecifiedXmlRootElement();
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-root-element", true);
+		assertNotNull(eJavaType.getXmlRootElement());
+		assertNotNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNotNull(oxmMapping.getXmlRootElement());
+		
+		oxmMapping.removeSpecifiedXmlRootElement();
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-root-element", false);
+		assertNull(eJavaType.getXmlRootElement());
+		assertNull(oxmMapping.getSpecifiedXmlRootElement());
+		assertNull(oxmMapping.getXmlRootElement());
+	}
+	
 	public void testUpdateXmlSeeAlso() throws Exception {
 		createClassWithXmlType();
 		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);

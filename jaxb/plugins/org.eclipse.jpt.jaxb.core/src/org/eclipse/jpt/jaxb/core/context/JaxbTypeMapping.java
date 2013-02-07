@@ -59,10 +59,6 @@ public interface JaxbTypeMapping
 	
 	XmlRootElement getXmlRootElement();
 	
-	XmlRootElement addXmlRootElement();
-	
-	void removeXmlRootElement();
-	
 	
 	// ***** XmlSeeAlso *****
 	

@@ -31,13 +31,16 @@ import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlRootElement;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlSeeAlso;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EAbstractTypeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlRootElement;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlSeeAlso;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
@@ -63,9 +66,14 @@ public abstract class AbstractOxmTypeMapping
 	protected boolean xmlTransient;
 	
 	// qName - never null
-	protected JaxbQName qName;
+	protected final JaxbQName qName;
 	
-	// specifiedXmlSeeAlso
+	// xmlRootElement
+	protected XmlRootElement defaultXmlRootElement;
+	protected OxmXmlRootElement specifiedXmlRootElement;
+	protected XmlRootElement xmlRootElement;
+	
+	// xmlSeeAlso
 	protected XmlSeeAlso defaultXmlSeeAlso;
 	protected OxmXmlSeeAlso specifiedXmlSeeAlso;
 	protected XmlSeeAlso xmlSeeAlso;
@@ -78,12 +86,8 @@ public abstract class AbstractOxmTypeMapping
 		initTypeName();
 		initXmlTransient();
 		this.qName = buildQName();
+		initXmlRootElement();
 		initXmlSeeAlso();
-	}
-	
-	
-	protected OxmXmlBindings getXmlBindings() {
-		return (OxmXmlBindings) super.getParent();
 	}
 	
 	
@@ -95,6 +99,7 @@ public abstract class AbstractOxmTypeMapping
 		syncJavaType();
 		syncXmlTransient();
 		this.qName.synchronizeWithResourceModel();
+		syncXmlRootElement();
 		syncXmlSeeAlso();
 	}
 	
@@ -105,14 +110,19 @@ public abstract class AbstractOxmTypeMapping
 		updateJavaType();
 		updateXmlTransient();
 		this.qName.update();
+		updateXmlRootElement();
 		updateXmlSeeAlso();
 	}
 	
 	
-	// *****
+	// ***** misc ****
 	
 	public EAbstractTypeMapping getETypeMapping() {
 		return this.eTypeMapping;
+	}
+	
+	public OxmXmlBindings getXmlBindings() {
+		return (OxmXmlBindings) super.getParent();
 	}
 	
 	public ELJaxbPackage getJaxbPackage() {
@@ -283,19 +293,96 @@ public abstract class AbstractOxmTypeMapping
 	
 	// ***** xml root element *****
 	
+	public XmlRootElement getDefaultXmlRootElement() {
+		return this.defaultXmlRootElement;
+	}
+	
+	protected void setDefaultXmlRootElement_(XmlRootElement xmlRootElement) {
+		XmlRootElement old = this.defaultXmlRootElement;
+		this.defaultXmlRootElement = xmlRootElement;
+		firePropertyChanged(DEFAULT_XML_ROOT_ELEMENT_PROPERTY, old, xmlRootElement);
+	}
+	
+	public OxmXmlRootElement getSpecifiedXmlRootElement() {
+		return this.specifiedXmlRootElement;
+	}
+	
+	protected void setSpecifiedXmlRootElement_(OxmXmlRootElement xmlRootElement) {
+		OxmXmlRootElement old = this.specifiedXmlRootElement;
+		this.specifiedXmlRootElement = xmlRootElement;
+		firePropertyChanged(SPECIFIED_XML_ROOT_ELEMENT_PROPERTY, old, xmlRootElement);
+	}
+	
+	public OxmXmlRootElement addSpecifiedXmlRootElement() {
+		EXmlRootElement eXmlRootElement = OxmFactory.eINSTANCE.createEXmlRootElement();
+		OxmXmlRootElement xmlRootElement = buildSpecifiedXmlRootElement(eXmlRootElement);
+		setSpecifiedXmlRootElement_(xmlRootElement);
+		this.eTypeMapping.setXmlRootElement(eXmlRootElement);
+		return xmlRootElement;
+	}
+	
+	public void removeSpecifiedXmlRootElement() {
+		this.eTypeMapping.setXmlRootElement(null);
+		setSpecifiedXmlRootElement_(null);
+	}
+	
+	protected OxmXmlRootElement buildSpecifiedXmlRootElement(EXmlRootElement eXmlRootElement) {
+		return new OxmXmlRootElementImpl(this, eXmlRootElement);
+	}
+	
 	public XmlRootElement getXmlRootElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.xmlRootElement;
 	}
 	
-	public XmlRootElement addXmlRootElement() {
-		// TODO Auto-generated method stub
-		return null;
+	protected void setXmlRootElement_(XmlRootElement xmlRootElement) {
+		XmlRootElement old = this.xmlRootElement;
+		this.xmlRootElement = xmlRootElement;
+		firePropertyChanged(XML_ROOT_ELEMENT_PROPERTY, old, xmlRootElement);
 	}
 	
-	public void removeXmlRootElement() {
-		// TODO Auto-generated method stub
+	protected void initXmlRootElement() {
+		EXmlRootElement eXmlRootElement = this.eTypeMapping.getXmlRootElement();
+		this.specifiedXmlRootElement = (eXmlRootElement == null) ? null : buildSpecifiedXmlRootElement(eXmlRootElement);
+	}
+	
+	protected void syncXmlRootElement() {
+		EXmlRootElement eXmlRootElement = this.eTypeMapping.getXmlRootElement();
+		if (eXmlRootElement != null) {
+			if (this.specifiedXmlRootElement != null) {
+				this.specifiedXmlRootElement.synchronizeWithResourceModel();
+			}
+			else {
+				setSpecifiedXmlRootElement_(buildSpecifiedXmlRootElement(eXmlRootElement));
+			}
+		}
+		else {
+			if (this.specifiedXmlRootElement != null) {
+				setSpecifiedXmlRootElement_(null);
+			}
+		}
+	}
+	
+	protected void updateXmlRootElement() {
+		XmlRootElement defaultXmlRootElement = null;
 		
+		if (! getXmlBindings().isXmlMappingMetadataComplete()) {
+			JavaTypeMapping javaMapping = getJavaTypeMapping();
+			if (javaMapping != null) {
+				defaultXmlRootElement = javaMapping.getXmlRootElement();
+			}
+		}
+		
+		setDefaultXmlRootElement_(defaultXmlRootElement);
+		
+		XmlRootElement xmlRootElement = 
+				(this.specifiedXmlRootElement != null) ?
+						this.specifiedXmlRootElement
+						: this.defaultXmlRootElement;
+		setXmlRootElement_(xmlRootElement);
+		
+		if (this.specifiedXmlRootElement != null) {
+			this.specifiedXmlRootElement.update();
+		}
 	}
 	
 	
@@ -414,13 +501,31 @@ public abstract class AbstractOxmTypeMapping
 	}
 	
 	public XsdTypeDefinition getXsdTypeDefinition() {
-		// TODO Auto-generated method stub
+		JaxbPackage jaxbPackage = getJaxbPackage();
+		XsdSchema xsdSchema = (jaxbPackage == null) ? null : jaxbPackage.getXsdSchema();
+		if (xsdSchema == null) {
+			return null;
+		}
+		
+		if (! StringTools.isBlank(this.qName.getName())) {
+			return xsdSchema.getTypeDefinition(this.qName.getNamespace(), this.qName.getName());
+		}
+		
+		if (this.xmlRootElement != null) {
+			XsdElementDeclaration xsdElement 
+					= xsdSchema.getElementDeclaration(
+							this.xmlRootElement.getQName().getNamespace(), 
+							this.xmlRootElement.getQName().getName());
+			if (xsdElement != null) {
+				return xsdElement.getType();
+			}
+		}
+		
 		return null;
 	}
 	
 	public boolean hasRootElementInHierarchy() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.xmlRootElement != null;
 	}
 	
 	
