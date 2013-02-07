@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.GenericAnnotationProvider;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
@@ -134,26 +135,26 @@ public abstract class JavaResourceModelTestCase
 		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 	
-	protected JavaResourcePackage buildJavaResourcePackage(ICompilationUnit cu) {
+	protected JavaResourcePackage buildJavaResourcePackage(ICompilationUnit cu) throws JavaModelException {
 		JavaResourcePackageInfoCompilationUnit pkgCu = 
 				new SourcePackageInfoCompilationUnit(
 						cu,
-						this.buildAnnotationProvider(),
+						this.buildAndVerifyAnnotationProvider(),
 						NullAnnotationEditFormatter.instance(),
 						CommandExecutor.Default.instance());
 		this.javaResourceCompilationUnit = pkgCu;
 		return pkgCu.getPackage();
 	}
 
-	protected JavaResourceType buildJavaResourceType(ICompilationUnit cu) {
+	protected JavaResourceType buildJavaResourceType(ICompilationUnit cu) throws JavaModelException {
 		return (JavaResourceType) this.buildJavaResourceType_(cu);
 	}
 
-	protected JavaResourceEnum buildJavaResourceEnum(ICompilationUnit cu) {
+	protected JavaResourceEnum buildJavaResourceEnum(ICompilationUnit cu) throws JavaModelException {
 		return (JavaResourceEnum) this.buildJavaResourceType_(cu);
 	}
 
-	private JavaResourceAbstractType buildJavaResourceType_(ICompilationUnit cu) {
+	private JavaResourceAbstractType buildJavaResourceType_(ICompilationUnit cu) throws JavaModelException {
 		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
 		return this.hackJavaResourceType();
 	}
@@ -174,15 +175,22 @@ public abstract class JavaResourceModelTestCase
 		return (JavaResourceAbstractType) ObjectTools.get(this.javaResourceCompilationUnit, "primaryType");
 	}
 
-	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {
+	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) throws JavaModelException  {
 		if (this.javaResourceCompilationUnit != null) {
 			throw new IllegalStateException();
 		}
 		return new SourceTypeCompilationUnit(
 				cu,
-				this.buildAnnotationProvider(),
+				this.buildAndVerifyAnnotationProvider(),
 				NullAnnotationEditFormatter.instance(),
-				CommandExecutor.Default.instance());
+				CommandExecutor.Default.instance()
+		);
+	}
+
+	protected AnnotationProvider buildAndVerifyAnnotationProvider() throws JavaModelException {
+		AnnotationProvider annotationProvider = this.buildAnnotationProvider();
+		this.verifyAnnotationClassesExist(annotationProvider);
+		return annotationProvider;
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {
@@ -192,4 +200,29 @@ public abstract class JavaResourceModelTestCase
 	protected abstract AnnotationDefinition[] annotationDefinitions();
 	
 	protected abstract NestableAnnotationDefinition[] nestableAnnotationDefinitions();
+
+
+	private void verifyAnnotationClassesExist(AnnotationProvider annotationProvider) throws JavaModelException  {
+		for (String annotationName : this.getAllAnnotationNames(annotationProvider)) {
+			if (getJavaProject().getJavaProject().findType(annotationName) == null) {
+				//if running the tests with jre 1.5, the javax.annotation.Generated class will not be found
+				if (!annotationName.equals("javax.annotation.Generated")) {
+					fail(errorMissingAnnotationClass(annotationName));			
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Iterable<String> getAllAnnotationNames(AnnotationProvider annotationProvider) {
+		return IterableTools.concatenate(
+			annotationProvider.getAnnotationNames(),
+			annotationProvider.getContainerAnnotationNames(),
+			annotationProvider.getNestableAnnotationNames());
+	}
+
+	/*********** private **********/
+	private static String errorMissingAnnotationClass(String annotationName) {
+		return "Annotation class " + annotationName + " is not on the classpath. Check the Java system property org.eclipse.jpt.jpa.jar";		
+	}
 }
