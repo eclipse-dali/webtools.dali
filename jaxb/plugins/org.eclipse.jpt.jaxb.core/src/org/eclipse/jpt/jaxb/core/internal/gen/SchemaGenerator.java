@@ -36,7 +36,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 
 /**
  *  SchemaGenerator
@@ -257,7 +257,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 	
 	private void generateJaxbPropertiesFile(IProgressMonitor monitor) {
 		SubMonitor sm = SubMonitor.convert(monitor, 1);
-		sm.subTask(JptJaxbCoreMessages.SchemaGenerator_creatingJAXBPropertiesFileTask);
+		sm.subTask(JptJaxbCoreMessages.SCHEMA_GENERATOR_CREATING_JAXB_PROPERTIES_FILE_TASK);
 
 		IPackageFragment packageFragment = this.findPackageFragementForSourceClassName(this.sourceClassNames[0]);
 

@@ -17,7 +17,7 @@ import java.util.Vector;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -48,7 +48,7 @@ public class SelectXMLCatalogIdPanel extends Composite {
 		this.setLayoutData(gd);
 
 		Label label = new Label(this, SWT.NONE);
-		label.setText(JptJaxbUiMessages.SchemaWizardPage_xmlCatalogTableTitle);
+		label.setText(JptJaxbUiMessages.SCHEMA_WIZARD_PAGE_XML_CATALOG_TABLE_TITLE);
 
 		tableViewer = createTableViewer(this, resourceManager);
 		tableViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -57,8 +57,8 @@ public class SelectXMLCatalogIdPanel extends Composite {
 
 	protected XMLCatalogTableViewer createTableViewer(Composite parent, ResourceManager resourceManager) {
 		String headings[] = new String[2];
-		headings[0] = JptJaxbUiMessages.SchemaWizardPage_xmlCatalogKeyColumn;
-		headings[1] = JptJaxbUiMessages.SchemaWizardPage_xmlCatalogUriColumn;
+		headings[0] = JptJaxbUiMessages.SCHEMA_WIZARD_PAGE_XML_CATALOG_KEY_COLUMN;
+		headings[1] = JptJaxbUiMessages.SCHEMA_WIZARD_PAGE_XML_CATALOG_URI_COLUMN;
 
 		XMLCatalogTableViewer theTableViewer = new XMLCatalogTableViewer(parent, headings, resourceManager) {
 

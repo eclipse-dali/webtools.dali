@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -112,8 +112,8 @@ public class SchemaWizardPage
 	    	}
 	    	this.selectSourcePanel.update();
 			
-			this.setTitle(JptJaxbUiMessages.SchemaWizardPage_title);
-			this.setDescription(JptJaxbUiMessages.SchemaWizardPage_desc);
+			this.setTitle(JptJaxbUiMessages.SCHEMA_WIZARD_PAGE_TITLE);
+			this.setDescription(JptJaxbUiMessages.SCHEMA_WIZARD_PAGE_DESC);
 			this.selectSourcePanel.setFilterExtensions(browseXSDFilterExtensions);
 		}
 		this.selectSourcePanel.setVisibleHelper(visible);
@@ -204,7 +204,7 @@ public class SchemaWizardPage
 		URI uri = this.getLocalSchemaURI();
 		if (uri != null) {
 			if (! URIHelper.isReadableURI(uri.toString(), false)) {
-				errorMessage = JptJaxbUiMessages.SchemaWizardPage_errorUriCannotBeLocated;
+				errorMessage = JptJaxbUiMessages.SCHEMA_WIZARD_PAGE_ERROR_URI_CANNOT_BE_LOCATED;
 			}
 		}
 		return errorMessage;

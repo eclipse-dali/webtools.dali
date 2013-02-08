@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -47,8 +47,8 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 	}
 
 	protected void initialize() {
-		this.setTitle(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_title);
-		this.setDescription(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_desc);
+		this.setTitle(JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_TITLE);
+		this.setDescription(JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_DESC);
 	}
 		
 	// ********** UI components **********
@@ -209,20 +209,20 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			GridLayout layout = new GridLayout(3, false);
 			proxyGroup.setLayout(layout);
 			proxyGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			proxyGroup.setText(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxyGroup);
+			proxyGroup.setText(JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_PROXY_GROUP);
 
 			SelectionListener proxyButtonListener = this.buildProxyRadioButtonListener();
 
 			this.noProxyRadioButton = buildRadioButton(proxyGroup, 
-									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_noProxy, proxyButtonListener, 3);
+									JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_NO_PROXY, proxyButtonListener, 3);
 			
 			this.proxyRadioButton = buildRadioButton(proxyGroup, 
-									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxy, proxyButtonListener, 1);
+									JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_PROXY, proxyButtonListener, 1);
 			this.proxyText = buildText(proxyGroup, 1);
 			new Label(proxyGroup, SWT.WRAP); //empty label for spacing
 
 			this.proxyFileRadioButton = buildRadioButton(proxyGroup, 
-									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxyFile, proxyButtonListener, 1);
+									JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_PROXY_FILE, proxyButtonListener, 1);
 			this.proxyFileText = buildText(proxyGroup, 1);
 			this.browseButton = this.buildBrowseButton(proxyGroup);
 			
@@ -241,7 +241,7 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 
 			// Browse buttons
 			Button browseButton = new Button(buttonComposite, SWT.PUSH);
-			browseButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_browseButton);
+			browseButton.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_BROWSE_BUTTON);
 			gridData = new GridData();
 			gridData.horizontalAlignment= GridData.FILL;
 			gridData.grabExcessHorizontalSpace= true;
@@ -305,7 +305,7 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			String projectPath = ((ClassesGeneratorWizard)wizard).getJavaProject().getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
-			dialog.setText(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_chooseAProxyFile);
+			dialog.setText(JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_CHOOSE_A_PROXY_FILE);
 			dialog.setFilterPath(projectPath);
 
 			return dialog.open();
@@ -370,37 +370,37 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		// ********** UI components **********
 
 		private Button buildUsesStrictValidationCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_useStrictValidation, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_USE_STRICT_VALIDATION, listener, 5);
 			checkBox.setSelection(this.usesStrictValidation());
 			return checkBox;
 		}
 
 		private Button buildMakesReadOnlyCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_makeReadOnly, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_MAKE_READ_ONLY, listener, 5);
 			checkBox.setSelection(this.makesReadOnly());
 			return checkBox;
 		}
 
 		private Button buildSuppressesPackageInfoGenCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_suppressPackageInfoGen, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_SUPPRESS_PACKAGE_INFO_GEN, listener, 5);
 			checkBox.setSelection(this.suppressesPackageInfoGen());
 			return checkBox;
 		}
 		
 		private Button buildSuppressesHeaderGenCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_suppressesHeaderGen, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_SUPPRESSES_HEADER_GEN, listener, 5);
 			checkBox.setSelection(this.suppressesHeaderGen());
 			return checkBox;
 		}
 	
 		private Button buildIsVerboseCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_verbose, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_VERBOSE, listener, 5);
 			checkBox.setSelection(this.isVerbose());
 			return checkBox;
 		}
 		
 		private Button buildIsQuietCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_quiet, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_QUIET, listener, 5);
 			checkBox.setSelection(this.isQuiet());
 			return checkBox;
 		}
@@ -583,42 +583,42 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		// ********** UI components **********
 		
 		private Button buildTreatsAsXmlSchemaCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_treatsAsXmlSchema, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_TREATS_AS_XML_SCHEMA, listener, 5);
 			checkBox.setSelection(this.treatsAsXmlSchema());
 			return checkBox;
 		}
 
 		private Button buildTreatsAsRelaxNgCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_treatsAsRelaxNg, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_TREATS_AS_RELAX_NG, listener, 5);
 			checkBox.setSelection(this.treatsAsRelaxNg());
 			return checkBox;
 		}
 		private Button buildTreatsAsRelaxNgCompactCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_treatsAsRelaxNgCompact, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_TREATS_AS_RELAX_NG_COMPACT, listener, 5);
 			checkBox.setSelection(this.treatsAsRelaxNgCompact());
 			return checkBox;
 		}
 
 		private Button buildTreatsAsDtdCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_treatsAsDtd, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_TREATS_AS_DTD, listener, 5);
 			checkBox.setSelection(this.treatsAsDtd());
 			return checkBox;
 		}
 
 		private Button buildTreatsAsWsdlCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_treatsAsWsdl, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_TREATS_AS_WSDL, listener, 5);
 			checkBox.setSelection(this.treatsAsWsdl());
 			return checkBox;
 		}
 	
 		private Button buildVersionCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_showsVersion, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_SHOWS_VERSION, listener, 5);
 			checkBox.setSelection(this.showsVersion());
 			return checkBox;
 		}
 	
 		private Button buildHelpCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_showsHelp, listener, 5);
+			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.CLASSES_GENERATOR_OPTIONS_WIZARD_PAGE_SHOWS_HELP, listener, 5);
 			checkBox.setSelection(this.showsHelp());
 			return checkBox;
 		}

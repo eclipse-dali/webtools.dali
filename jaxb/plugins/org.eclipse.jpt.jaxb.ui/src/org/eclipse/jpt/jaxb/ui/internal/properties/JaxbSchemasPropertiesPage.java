@@ -74,7 +74,7 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.SelectFileOrXMLCatalogIdPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -124,7 +124,7 @@ public class JaxbSchemasPropertiesPage
 		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
 		this.schemasModel = new SchemasModel(this.jaxbProjectModel, this.trigger);
 		this.schemasSelectionModel = new SimpleCollectionValueModel<Schema>();
-		setDescription(JptJaxbUiMessages.SchemasPage_description);
+		setDescription(JptJaxbUiMessages.SCHEMAS_PAGE_DESCRIPTION);
 	}
 	
 	private ResourceManager buildResourceManager() {
@@ -145,7 +145,7 @@ public class JaxbSchemasPropertiesPage
 		
 		Button revertButton = getDefaultsButton();
 		
-		revertButton.setText(JptJaxbUiMessages.SchemasPage_revert);
+		revertButton.setText(JptJaxbUiMessages.SCHEMAS_PAGE_REVERT);
 		
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		Point minButtonSize = revertButton.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
@@ -182,7 +182,7 @@ public class JaxbSchemasPropertiesPage
 		pageComponent.setLayoutData(data);
 		
 		Label schemasLabel = new Label(pageComponent, SWT.LEFT);
-		schemasLabel.setText(JptJaxbUiMessages.SchemasPage_schemas);
+		schemasLabel.setText(JptJaxbUiMessages.SCHEMAS_PAGE_SCHEMAS);
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.horizontalSpan = 2;
@@ -239,7 +239,7 @@ public class JaxbSchemasPropertiesPage
 		groupComponent.setLayoutData(data);
 		
 		Button addButton = new Button(groupComponent, SWT.PUSH);
-		addButton.setText(JptJaxbUiMessages.SchemasPage_addButtonLabel);
+		addButton.setText(JptJaxbUiMessages.SCHEMAS_PAGE_ADD_BUTTON_LABEL);
 		addButton.addSelectionListener(
 				new SelectionAdapter() {
 					@Override
@@ -250,7 +250,7 @@ public class JaxbSchemasPropertiesPage
 		setButtonLayoutData(addButton);
 		
 		Button editButton = new Button(groupComponent, SWT.PUSH);
-		editButton.setText(JptJaxbUiMessages.SchemasPage_editButtonLabel);
+		editButton.setText(JptJaxbUiMessages.SCHEMAS_PAGE_EDIT_BUTTON_LABEL);
 		editButton.addSelectionListener(
 				new SelectionAdapter() {
 					@Override
@@ -262,7 +262,7 @@ public class JaxbSchemasPropertiesPage
 		setButtonLayoutData(editButton);
 		
 		Button removeButton = new Button(groupComponent, SWT.PUSH);
-		removeButton.setText(JptJaxbUiMessages.SchemasPage_removeButtonLabel);
+		removeButton.setText(JptJaxbUiMessages.SCHEMAS_PAGE_REMOVE_BUTTON_LABEL);
 		removeButton.addSelectionListener(
 				new SelectionAdapter() {
 					@Override
@@ -610,7 +610,7 @@ public class JaxbSchemasPropertiesPage
 		
 		static String namespaceDisplayString(String namespace) {
 			if (null == namespace || StringTools.EMPTY_STRING.equals(namespace)) {
-				return JptJaxbUiMessages.SchemasPage_noNamespaceText;
+				return JptJaxbUiMessages.SCHEMAS_PAGE_NO_NAMESPACE_TEXT;
 			}
 			
 			return namespace;
@@ -679,9 +679,9 @@ public class JaxbSchemasPropertiesPage
 		public String columnName(int columnIndex) {
 			switch (columnIndex) {
 				case NAMESPACE_COLUMN :
-					return JptJaxbUiMessages.SchemasPage_namespaceColumnLabel;
+					return JptJaxbUiMessages.SCHEMAS_PAGE_NAMESPACE_COLUMN_LABEL;
 				case LOCATION_COLUMN :
-					return JptJaxbUiMessages.SchemasPage_locationColumnLabel;
+					return JptJaxbUiMessages.SCHEMAS_PAGE_LOCATION_COLUMN_LABEL;
 				default :
 					return null;
 			}
@@ -765,12 +765,12 @@ public class JaxbSchemasPropertiesPage
 			
 			this.mode = (this.currentSchema == null) ? Mode.ADD : Mode.EDIT;
 			if (this.mode == Mode.ADD) {
-				this.defaultMessage = JptJaxbUiMessages.SchemasPage_addSchemaMessage;
+				this.defaultMessage = JptJaxbUiMessages.SCHEMAS_PAGE_ADD_SCHEMA_MESSAGE;
 				this.location.setValue(null);
 				this.namespace.setValue(null);
 			}
 			else {
-				this.defaultMessage = JptJaxbUiMessages.SchemasPage_editSchemaMessage;
+				this.defaultMessage = JptJaxbUiMessages.SCHEMAS_PAGE_EDIT_SCHEMA_MESSAGE;
 				this.location.setValue(currentSchema.getLocation());
 				this.namespace.setValue(currentSchema.getNamespace());
 			}
@@ -781,10 +781,10 @@ public class JaxbSchemasPropertiesPage
 		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
 			if (this.mode == Mode.ADD) {
-				newShell.setText(JptJaxbUiMessages.SchemasPage_addSchemaDialogTitle);
+				newShell.setText(JptJaxbUiMessages.SCHEMAS_PAGE_ADD_SCHEMA_DIALOG_TITLE);
 			}
 			else {
-				newShell.setText(JptJaxbUiMessages.SchemasPage_editSchemaDialogTitle);
+				newShell.setText(JptJaxbUiMessages.SCHEMAS_PAGE_EDIT_SCHEMA_DIALOG_TITLE);
 			}
 		}
 		
@@ -794,10 +794,10 @@ public class JaxbSchemasPropertiesPage
 			
 			setMessage(this.defaultMessage);
 			if (this.mode == Mode.ADD) {
-				setTitle(JptJaxbUiMessages.SchemasPage_addSchemaTitle);
+				setTitle(JptJaxbUiMessages.SCHEMAS_PAGE_ADD_SCHEMA_TITLE);
 			}
 			else {
-				setTitle(JptJaxbUiMessages.SchemasPage_editSchemaTitle);
+				setTitle(JptJaxbUiMessages.SCHEMAS_PAGE_EDIT_SCHEMA_TITLE);
 			}
 			
 			Composite composite = new Composite(dialogArea, SWT.NONE);
@@ -805,7 +805,7 @@ public class JaxbSchemasPropertiesPage
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			
 			Label locationLabel = new Label(composite, SWT.NULL);
-			locationLabel.setText(JptJaxbUiMessages.SchemasPage_locationLabel);
+			locationLabel.setText(JptJaxbUiMessages.SCHEMAS_PAGE_LOCATION_LABEL);
 			locationLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 			
 			final Text locationText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -821,7 +821,7 @@ public class JaxbSchemasPropertiesPage
 					});
 			
 			Button browseButton = new Button(composite, SWT.PUSH);
-			browseButton.setText(JptJaxbUiMessages.SchemasPage_browseButtonLabel);
+			browseButton.setText(JptJaxbUiMessages.SCHEMAS_PAGE_BROWSE_BUTTON_LABEL);
 			browseButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 			browseButton.addSelectionListener(
 					new SelectionListener() {
@@ -835,7 +835,7 @@ public class JaxbSchemasPropertiesPage
 					});
 			
 			Label namespaceLabel = new Label(composite, SWT.NULL);
-			namespaceLabel.setText(JptJaxbUiMessages.SchemasPage_namespaceLabel);
+			namespaceLabel.setText(JptJaxbUiMessages.SCHEMAS_PAGE_NAMESPACE_LABEL);
 			namespaceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 			
 			final Text namespaceText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -912,13 +912,13 @@ public class JaxbSchemasPropertiesPage
 		
 		private void validate() {
 			if (this.resolvedSchema == null) {
-				setErrorMessage(JptJaxbUiMessages.SchemasPage_schemaUnresolvedMessage);
+				setErrorMessage(JptJaxbUiMessages.SCHEMAS_PAGE_SCHEMA_UNRESOLVED_MESSAGE);
 			}
 			else if (isDuplicateNamespace()) {
-				setErrorMessage(JptJaxbUiMessages.SchemasPage_duplicateNamespaceMessage);
+				setErrorMessage(JptJaxbUiMessages.SCHEMAS_PAGE_DUPLICATE_NAMESPACE_MESSAGE);
 			}
 			else if (StringTools.isBlank(this.location.getValue())) {
-				setErrorMessage(JptJaxbUiMessages.SchemasPage_noLocationMessage);
+				setErrorMessage(JptJaxbUiMessages.SCHEMAS_PAGE_NO_LOCATION_MESSAGE);
 			}
 			else {
 				setErrorMessage(null);
@@ -963,7 +963,7 @@ public class JaxbSchemasPropertiesPage
 		@Override
 		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText(JptJaxbUiMessages.SchemasPage_chooseLocationTitle);
+			newShell.setText(JptJaxbUiMessages.SCHEMAS_PAGE_CHOOSE_LOCATION_TITLE);
 		}
 		
 		@Override

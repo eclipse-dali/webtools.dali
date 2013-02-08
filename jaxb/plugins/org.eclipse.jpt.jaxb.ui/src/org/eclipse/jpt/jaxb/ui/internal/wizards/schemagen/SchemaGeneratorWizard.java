@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.core.internal.operations.SchemaFileCreationDataModelProvider;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.INewWizard;
@@ -65,7 +65,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 	
 	public SchemaGeneratorWizard() {
 		super();
-		setWindowTitle(JptJaxbUiMessages.SchemaGeneratorWizard_title);
+		setWindowTitle(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_TITLE);
 		setDefaultPageImageDescriptor(JptJaxbUiImages.SCHEMA_GEN_BANNER);
 	}
 	
@@ -205,8 +205,8 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 	protected NewSchemaFileWizardPage buildNewSchemaFileWizardPage(IStructuredSelection selection) {
 		return new NewSchemaFileWizardPage(
 				"Page_1", selection, this.getDataModel(),	   //$NON-NLS-1$
-				JptJaxbUiMessages.SchemaGeneratorProjectWizardPage_title, 
-				JptJaxbUiMessages.SchemaGeneratorProjectWizardPage_desc);
+				JptJaxbUiMessages.SCHEMA_GENERATOR_PROJECT_WIZARD_PAGE_TITLE, 
+				JptJaxbUiMessages.SCHEMA_GENERATOR_PROJECT_WIZARD_DESC);
 	}
 	
 	protected SchemaGeneratorWizardPage buildSchemaGeneratorWizardPage(IStructuredSelection selection) {
@@ -250,7 +250,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 		protected GenerateSchemaJob(IJavaProject javaProject, String[] sourceClassNames, String targetSchema, 
 										IPath targetLocation, boolean useMoxy) {
 			
-			super(JptJaxbUiMessages.SchemaGeneratorWizard_generatingSchema, javaProject);
+			super(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_GENERATING_SCHEMA, javaProject);
 			
 			this.sourceClassNames = sourceClassNames;
 			this.targetSchema = targetSchema;
@@ -275,7 +275,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 
 		@Override
 		protected String getJobName() {
-			return NLS.bind(JptJaxbUiMessages.SchemaGeneratorWizard_generateSchemaTask, this.targetSchema);
+			return NLS.bind(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_GENERATE_SCHEMA_TASK, this.targetSchema);
 		}
 
 		@Override

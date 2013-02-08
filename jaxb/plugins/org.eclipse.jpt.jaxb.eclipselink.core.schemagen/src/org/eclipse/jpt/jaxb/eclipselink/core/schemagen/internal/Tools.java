@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.schemagen.internal;
 
 import static java.util.logging.Level.SEVERE;
@@ -14,6 +14,7 @@ import static java.util.logging.Level.SEVERE;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.logging.Level;
+import org.eclipse.jpt.jaxb.eclipselink.core.schemagen.JptJaxbEclipseLinkCoreSchemagenMessages;
 
 /**
  *  Tools
@@ -70,7 +71,7 @@ public final class Tools
 
 	public static String stripProtocol(String uri) {
 
-		 return uri.replaceFirst("http://", EMPTY_STRING);
+		 return uri.replaceFirst("http://", EMPTY_STRING); //$NON-NLS-1$
 	}
 
 
@@ -115,7 +116,7 @@ public final class Tools
 	// ********** NLS utilities **********
 
 	public static String getString(String key) {
-		return JptEclipseLinkJaxbCoreMessages.getString(key);
+		return JptJaxbEclipseLinkCoreSchemagenMessages.getString(key);
 	}
 	
 	public static String bind(String key, Object argument) {

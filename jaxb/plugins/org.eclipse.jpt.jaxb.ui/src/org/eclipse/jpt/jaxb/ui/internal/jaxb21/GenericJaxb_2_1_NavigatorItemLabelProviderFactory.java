@@ -19,7 +19,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
@@ -67,7 +67,7 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 	protected ItemExtendedLabelProvider buildJaxbContextRootProvider(JaxbContextRoot root, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 					JptJaxbUiImages.JAXB_CONTENT,
-					JptJaxbUiMessages.JaxbContent_label,
+					JptJaxbUiMessages.JAXB_CONTENT_LABEL,
 					this.buildJaxbContextRootDescription(root),
 					manager
 				);
@@ -75,7 +75,7 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 
 	protected String buildJaxbContextRootDescription(JaxbContextRoot root) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(JptJaxbUiMessages.JaxbContent_label);
+		sb.append(JptJaxbUiMessages.JAXB_CONTENT_LABEL);
 		sb.append(" - ");  //$NON-NLS-1$
 		sb.append(root.getResource().getFullPath().makeRelative());
 		return sb.toString();

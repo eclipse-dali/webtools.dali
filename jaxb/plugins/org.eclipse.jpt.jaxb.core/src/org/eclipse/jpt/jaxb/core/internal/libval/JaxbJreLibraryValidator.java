@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
+import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.GenericJaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -30,7 +30,7 @@ public class JaxbJreLibraryValidator
 				= (JaxbLibraryProviderInstallOperationConfig) config;
 		
 		if (! jaxbConfig.getJaxbPlatformConfig().getGroupConfig().getId().equals(GenericJaxbPlatformDefinition.GROUP_ID)) {
-			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JreLibraryValidator_invalidPlatform);
+			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JRE_LIBRARY_VALIDATOR_INVALID_PLATFORM);
 		}
 		
 		IProjectFacetVersion jaxbVersion = config.getProjectFacetVersion();
@@ -43,7 +43,7 @@ public class JaxbJreLibraryValidator
 		
 		// null here implies something prior to jaxb 2.1
 		if (jreJaxbVersion == null || jreJaxbVersion.compareTo(jaxbVersion) < 0) {
-			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JreLibraryValidator_invalidJavaLibrary, jaxbVersion.getVersionString());
+			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JRE_LIBRARY_VALIDATOR_INVALID_JAVA_LIBRARY, jaxbVersion.getVersionString());
 		}
 		
 		// runtime portion of validation - warn if java facet is insufficient to provide jaxb api.
@@ -52,7 +52,7 @@ public class JaxbJreLibraryValidator
 		
 		// null here implies something prior to jaxb 2.1
 		if (javaJaxbVersion == null || javaJaxbVersion.compareTo(jaxbVersion) < 0) {
-			return JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptJaxbCoreMessages.JreLibraryValidator_invalidJavaFacet, javaVersion.getVersionString(), jaxbVersion.getVersionString());
+			return JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptJaxbCoreMessages.JRE_LIBRARY_VALIDATOR_INVALID_JAVA_FACET, javaVersion.getVersionString(), jaxbVersion.getVersionString());
 		}
 		
 		// TODO - check for xjc classes when we support jdk version of xjc

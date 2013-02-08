@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
@@ -112,13 +112,13 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		// Validate Project
 		valid = ProjectTools.isJavaProject(this.getProject());
 		if( ! valid) {
-			this.setErrorMessage(JptJaxbUiMessages.NewSchemaFileWizardPage_errorNotJavaProject);
+			this.setErrorMessage(JptJaxbUiMessages.NEW_SCHEMA_FILE_WIZARD_PAGE_ERROR_NOT_JAVA_PROJECT);
 			return valid;
 		}
 		// Validate XSD file not exists.
 		valid = this.xsdFileNotExists();
 		if( ! valid) {
-			this.setMessage(JptJaxbUiMessages.NewSchemaFileWizardPage_overwriteExistingSchemas, IMessageProvider.WARNING);
+			this.setMessage(JptJaxbUiMessages.NEW_SCHEMA_FILE_WIZARD_PAGE_OVERWRITE_EXISTING_SCHEMAS, IMessageProvider.WARNING);
 			return true;
 		}
 		this.setErrorMessage(null);

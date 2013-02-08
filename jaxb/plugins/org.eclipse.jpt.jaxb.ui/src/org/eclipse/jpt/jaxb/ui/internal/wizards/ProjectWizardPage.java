@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -71,7 +71,7 @@ public class ProjectWizardPage extends WizardPage
 	public ProjectWizardPage() {
 		super("Java Project"); //$NON-NLS-1$
 
-		this.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
+		this.setDescription(JptJaxbUiMessages.CLASSES_GENERATOR_PROJECT_WIZARD_PAGE_DESC);
 	}
 	
 	public ProjectWizardPage(IJavaProject javaProject) {
@@ -134,7 +134,7 @@ public class ProjectWizardPage extends WizardPage
 			composite.setLayout(new GridLayout(2, false));
 
 			// Project
-			this.buildLabel(composite, JptJaxbUiMessages.JavaProjectWizardPage_project);
+			this.buildLabel(composite, JptJaxbUiMessages.JAVA_PROJECT_WIZARD_PAGE_PROJECT);
 			this.projectCombo = this.buildProjectCombo(composite, this.buildProjectComboSelectionListener());
 			this.updateProjectCombo();
 

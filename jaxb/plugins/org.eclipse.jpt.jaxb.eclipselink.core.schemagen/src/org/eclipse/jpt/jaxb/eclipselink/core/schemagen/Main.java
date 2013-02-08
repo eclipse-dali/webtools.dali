@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,6 @@ import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.jpt.jaxb.eclipselink.core.schemagen.internal.JptEclipseLinkJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.schemagen.internal.Tools;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
@@ -84,14 +83,14 @@ public class Main
 			this.generateSchema(jaxbContext);
 		}
         else {
-        	Tools.logMessage(INFO, Tools.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName));
+        	Tools.logMessage(INFO, Tools.bind(JptJaxbEclipseLinkCoreSchemagenMessages.SCHEMA_NOT_CREATED, this.targetSchemaName));
         	this.generationFailed();
         }
 		System.out.flush();
 	}
 	
 	private JAXBContext buildJaxbContext() {
-		Tools.logMessage(INFO, Tools.getString(JptEclipseLinkJaxbCoreMessages.LOADING_CLASSES));
+		Tools.logMessage(INFO, Tools.getString(JptJaxbEclipseLinkCoreSchemagenMessages.LOADING_CLASSES));
         JAXBContext jaxbContext = null;
 		try {
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -112,7 +111,7 @@ public class Main
 	}
 	
 	private void generateSchema(JAXBContext jaxbContext) {
-		Tools.logMessage(INFO, Tools.getString(JptEclipseLinkJaxbCoreMessages.GENERATING_SCHEMA));
+		Tools.logMessage(INFO, Tools.getString(JptJaxbEclipseLinkCoreSchemagenMessages.GENERATING_SCHEMA));
 		System.out.flush();
 
     	SchemaOutputResolver schemaOutputResolver = 
@@ -135,7 +134,7 @@ public class Main
 				Tools.logMessage(INFO, className);
 			}
 			catch (ClassNotFoundException e) {
-				Tools.logMessage(SEVERE, Tools.bind(JptEclipseLinkJaxbCoreMessages.NOT_FOUND, className));
+				Tools.logMessage(SEVERE, Tools.bind(JptJaxbEclipseLinkCoreSchemagenMessages.NOT_FOUND, className));
 			}
 		}
 		System.out.flush();
@@ -150,7 +149,7 @@ public class Main
 		}
 		else if(linkedEx != null && linkedEx instanceof ClassNotFoundException) {
 			String errorMessage = Tools.bind(
-				JptEclipseLinkJaxbCoreMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
+				JptJaxbEclipseLinkCoreSchemagenMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
 			Tools.logMessage(SEVERE, errorMessage);
 		}
 		else {
@@ -161,7 +160,7 @@ public class Main
 	private void handleClassCastException(ClassCastException ex) {
 		String message = ex.getMessage();
 		if(message != null && message.indexOf(CANNOT_BE_CAST_TO_JAXBCONTEXT) > -1) {
-			Tools.logMessage(SEVERE, Tools.getString(JptEclipseLinkJaxbCoreMessages.PROPERTIES_FILE_NOT_FOUND));
+			Tools.logMessage(SEVERE, Tools.getString(JptJaxbEclipseLinkCoreSchemagenMessages.PROPERTIES_FILE_NOT_FOUND));
 		}
 		else {
 			ex.printStackTrace();
@@ -256,7 +255,7 @@ class JptSchemaOutputResolver extends SchemaOutputResolver {
         StreamResult result = new StreamResult(file);
         result.setSystemId(file.toURI().toURL().toString());
 
-        Tools.logMessage(INFO, Tools.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_GENERATED, file));
+        Tools.logMessage(INFO, Tools.bind(JptJaxbEclipseLinkCoreSchemagenMessages.SCHEMA_GENERATED, file));
         return result;
     }
 

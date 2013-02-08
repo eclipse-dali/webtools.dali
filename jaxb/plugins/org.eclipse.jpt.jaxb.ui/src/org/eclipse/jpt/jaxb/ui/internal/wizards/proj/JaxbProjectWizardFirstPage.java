@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.wizards.proj;
 
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetCreationWizardPage;
@@ -21,8 +21,8 @@ public class JaxbProjectWizardFirstPage
 	
 	public JaxbProjectWizardFirstPage(IDataModel dataModel, String pageName) {
 		super(dataModel, pageName);
-		setTitle(JptJaxbUiMessages.JaxbProjectWizard_firstPage_title);
-		setDescription(JptJaxbUiMessages.JaxbProjectWizard_firstPage_desc);
+		setTitle(JptJaxbUiMessages.JAXB_PROJECT_WIZARD_FIRST_PAGE_TITLE);
+		setDescription(JptJaxbUiMessages.JAXB_PROJECT_WIZARD_FIRST_PAGE_DESC);
 		//setInfopopID(JpaJaxbHelpContextIds.NEW_JAXB_PROJECT);
 	}
 	

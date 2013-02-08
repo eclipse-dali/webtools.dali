@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -41,7 +41,7 @@ public class GenericJaxbUserLibraryValidator
 		// null here implies something prior to jaxb 2.1
 		if (jreJaxbVersion != null) {
 			if (jreJaxbVersion.compareTo(jaxbVersion) < 0) {
-				return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.UserLibraryValidator_incompatibleJavaLibrary, jaxbVersion.getVersionString());
+				return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.USER_LIBRARY_VALIDATOR_INCOMPATIBLE_JAVA_LIBRARY, jaxbVersion.getVersionString());
 			}
 		}
 		// if jre is enough for jaxb version, we don't look for classes in the library
@@ -66,7 +66,7 @@ public class GenericJaxbUserLibraryValidator
 		
 		// null here implies something prior to jaxb 2.1
 		if (javaJaxbVersion != null && javaJaxbVersion.compareTo(jaxbVersion) < 0) {
-			return JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptJaxbCoreMessages.UserLibraryValidator_incompatibleJavaFacet, javaVersion.getVersionString(), jaxbVersion.getVersionString());
+			return JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptJaxbCoreMessages.USER_LIBRARY_VALIDATOR_INCOMPATIBLE_JAVA_FACET, javaVersion.getVersionString(), jaxbVersion.getVersionString());
 		}
 		
 		return Status.OK_STATUS;

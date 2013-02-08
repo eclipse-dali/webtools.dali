@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.facet;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 public class JaxbFacetVersionChangeDataModelProvider
@@ -39,7 +39,7 @@ public class JaxbFacetVersionChangeDataModelProvider
 		
 		if (status.isOK()) {
 			if (! getPlatformConfig().supportsJaxbFacetVersion(getProjectFacetVersion())) {
-				status = buildErrorStatus(JptJaxbCoreMessages.JaxbFacetConfig_validatePlatformDoesNotSupportFacetVersion);
+				status = buildErrorStatus(JptJaxbCoreMessages.JAXB_FACET_CONFIG_VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
 			}
 		}
 		

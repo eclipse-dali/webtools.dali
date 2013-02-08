@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
 /**
@@ -45,7 +45,7 @@ public class GenerateJaxbClassesJob extends AbstractJptGenerateJob {
 		ClassesGeneratorOptions generatorOptions,
 		ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 		
-		super(JptJaxbUiMessages.GenerateJaxbClassesJob_generatingClasses, javaProject);
+		super(JptJaxbUiMessages.GENERATE_JAXB_CLASSES_JOB_GENERATING_CLASSES, javaProject);
 		if (javaProject == null) {
 			throw new RuntimeException("Project is null");		//$NON-NLS-1$
 		}
@@ -86,7 +86,7 @@ public class GenerateJaxbClassesJob extends AbstractJptGenerateJob {
 
 	@Override
 	protected String getJobName() {
-		return JptJaxbUiMessages.GenerateJaxbClassesJob_generatingClassesTask;
+		return JptJaxbUiMessages.GENERATE_JAXB_CLASSES_JOB_GENERATING_CLASSES_TASK;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,8 +48,8 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 	}
 
 	protected void initialize() {
-		this.setTitle(JptJaxbUiMessages.ClassesGeneratorExtensionOptionsWizardPage_title);
-		this.setDescription(JptJaxbUiMessages.ClassesGeneratorExtensionOptionsWizardPage_desc);
+		this.setTitle(JptJaxbUiMessages.CLASSES_GENERATOR_EXTENSION_OPTIONS_WIZARD_PAGE_TITLE);
+		this.setDescription(JptJaxbUiMessages.CLASSES_GENERATOR_EXTENSION_OPTIONS_WIZARD_PAGE_DESC);
 	}
 
 	// ********** UI components **********
@@ -144,14 +144,14 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 
 			// Classpath
 			Label classpathLabel = new Label(composite, SWT.NONE);
-			classpathLabel.setText(JptJaxbUiMessages.ClassesGeneratorExtensionOptionsWizardPage_classpath);
+			classpathLabel.setText(JptJaxbUiMessages.CLASSES_GENERATOR_EXTENSION_OPTIONS_WIZARD_PAGE_CLASSPATH);
 			GridData gridData = new GridData();
 			gridData.verticalIndent = 5;
 			classpathLabel.setLayoutData(gridData);
 			this.classpathText = this.buildClasspathText(composite);
 			
 			Label additionalArgsLabel = new Label(composite, SWT.NONE);
-			additionalArgsLabel.setText(JptJaxbUiMessages.ClassesGeneratorExtensionOptionsWizardPage_additionalArguments);
+			additionalArgsLabel.setText(JptJaxbUiMessages.CLASSES_GENERATOR_EXTENSION_OPTIONS_WIZARD_PAGE_ADDITIONAL_ARGUMENTS);
 			gridData = new GridData();
 			gridData.verticalIndent = 5;
 			additionalArgsLabel.setLayoutData(gridData);
@@ -165,7 +165,7 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 			GridData gridData = new GridData();
 			gridData.verticalIndent = 5;
 			checkBox.setLayoutData(gridData);
-			checkBox.setText(JptJaxbUiMessages.ClassesGeneratorExtensionOptionsWizardPage_allowExtensions);
+			checkBox.setText(JptJaxbUiMessages.CLASSES_GENERATOR_EXTENSION_OPTIONS_WIZARD_PAGE_ALLOW_EXTENSIONS);
 			checkBox.setSelection(this.allowsExtensions());
 			checkBox.addSelectionListener(listener);
 			return checkBox;

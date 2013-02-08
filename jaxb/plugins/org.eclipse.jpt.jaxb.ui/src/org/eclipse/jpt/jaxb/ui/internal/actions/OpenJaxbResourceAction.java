@@ -16,7 +16,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbenchPage;
@@ -85,7 +85,7 @@ public class OpenJaxbResourceAction
 			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
 		} 
 		catch (Exception e) {
-			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJaxbUiMessages.Error_openingEditor, e.getMessage());
+			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJaxbUiMessages.ERROR_OPENING_EDITOR, e.getMessage());
 		}
 	}
 }

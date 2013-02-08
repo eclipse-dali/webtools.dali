@@ -40,7 +40,7 @@ import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -103,7 +103,7 @@ public class ClassesGeneratorWizard
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources(workbench.getDisplay()));
 		this.selection = sel;
 		
-		this.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
+		this.setWindowTitle(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_TITLE);
 		this.setDefaultPageImageDescriptor(JptJaxbUiImages.CLASSES_GEN_BANNER);
 		this.setNeedsProgressMonitor(true);
 	}
@@ -119,9 +119,9 @@ public class ClassesGeneratorWizard
 			this.javaProject = this.getJavaProjectFromSelection(this.selection);
 		}
 		this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
-		this.projectWizardPage.setTitle(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_title);
-		this.projectWizardPage.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
-		this.projectWizardPage.setDestinationLabel(JptJaxbUiMessages.JavaProjectWizardPage_destinationProject);
+		this.projectWizardPage.setTitle(JptJaxbUiMessages.CLASSES_GENERATOR_PROJECT_WIZARD_PAGE_TITLE);
+		this.projectWizardPage.setDescription(JptJaxbUiMessages.CLASSES_GENERATOR_PROJECT_WIZARD_PAGE_DESC);
+		this.projectWizardPage.setDestinationLabel(JptJaxbUiMessages.JAVA_PROJECT_WIZARD_PAGE_DESTINATION_PROJECT);
 		this.addPage(this.projectWizardPage);
 		
 		// SchemaWizardPage
@@ -365,7 +365,7 @@ public class ClassesGeneratorWizard
 			JptJaxbUiPlugin.instance().logError(e);
 			
 			this.logError(NLS.bind(
-				JptJaxbUiMessages.ClassesGeneratorWizard_couldNotCreate, 
+				JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_COULD_NOT_CREATE, 
 				folder.getProjectRelativePath().toOSString()));
 		}
 	}
@@ -421,7 +421,7 @@ public class ClassesGeneratorWizard
 	private void displayError(String message) {
 		MessageDialog.openError(
 				this.getShell(),
-				JptJaxbUiMessages.ClassesGeneratorWizard_errorDialogTitle,
+				JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_ERROR_DIALOG_TITLE,
 				message
 			);
 	}
@@ -438,8 +438,8 @@ public class ClassesGeneratorWizard
 
 		OverwriteConfirmerDialog(Shell parent) {
 			super(ID, parent,
-					JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningTitle,
-					JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningMessage,
+					JptJaxbUiMessages.CLASSES_GENERATOR_UI_GENERATING_CLASSES_WARNING_TITLE,
+					JptJaxbUiMessages.CLASSES_GENERATOR_UI_GENERATING_CLASSES_WARNING_MESSAGE,
 					MessageDialog.WARNING,
 					new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL},
 					1);

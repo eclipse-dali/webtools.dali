@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.proj;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.proj.model.JaxbProjectCreationDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -26,12 +26,12 @@ public class JaxbProjectWizard
 	
 	public JaxbProjectWizard() {
 		super();
-		setWindowTitle(JptJaxbUiMessages.JaxbProjectWizard_title);
+		setWindowTitle(JptJaxbUiMessages.JAXB_PROJECT_WIZARD_TITLE);
 	}
 	
 	public JaxbProjectWizard(IDataModel dataModel) {
 		super(dataModel);
-		setWindowTitle(JptJaxbUiMessages.JaxbProjectWizard_title);
+		setWindowTitle(JptJaxbUiMessages.JAXB_PROJECT_WIZARD_TITLE);
 	}
 	
 	

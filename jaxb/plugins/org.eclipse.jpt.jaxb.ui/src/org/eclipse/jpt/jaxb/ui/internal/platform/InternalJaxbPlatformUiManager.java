@@ -23,8 +23,8 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.InternalJaxbWorkbench;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
@@ -170,7 +170,7 @@ public class InternalJaxbPlatformUiManager
 	// ********** logging **********
 
 	private void logMissingJaxbPlatform(IConfigurationElement element, String jaxbPlatformID) {
-		this.logError(JptJaxbUiMessages.JaxbPlatformUi_missingJaxbPlatform,
+		this.logError(JptJaxbUiMessages.JAXB_PLATFORM_UI_MISSING_JAXB_PLATFORM,
 				jaxbPlatformID,
 				element.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
 				element.getContributor().getName()

@@ -31,6 +31,7 @@ import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
@@ -76,7 +77,7 @@ public class ClassesGeneratorUi {
 	 */
 	protected void generate() {
 		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.xsdFile);
-		wizard.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
+		wizard.setWindowTitle(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_TITLE);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		int returnCode = dialog.open();
@@ -158,7 +159,7 @@ public class ClassesGeneratorUi {
 	private void displayError(String message) {
 		MessageDialog.openError(
 				this.getShell(),
-				JptJaxbUiMessages.ClassesGeneratorWizard_errorDialogTitle,
+				JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_ERROR_DIALOG_TITLE,
 				message
 			);
 	}
@@ -227,8 +228,8 @@ public class ClassesGeneratorUi {
 
 		OverwriteConfirmerDialog(Shell parent) {
 			super(ID, parent,
-					JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningTitle,
-					JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningMessage,
+					JptJaxbUiMessages.CLASSES_GENERATOR_UI_GENERATING_CLASSES_WARNING_TITLE,
+					JptJaxbUiMessages.CLASSES_GENERATOR_UI_GENERATING_CLASSES_WARNING_MESSAGE,
 					MessageDialog.WARNING,
 					new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL},
 					1);

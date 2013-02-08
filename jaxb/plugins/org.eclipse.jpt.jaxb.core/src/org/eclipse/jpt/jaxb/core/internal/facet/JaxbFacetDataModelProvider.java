@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
@@ -269,7 +269,7 @@ public abstract class JaxbFacetDataModelProvider
 	
 	protected IStatus validatePlatform() {
 		return (getPlatformConfig() == null) ? 
-				buildErrorStatus(JptJaxbCoreMessages.JaxbFacetConfig_validatePlatformNotSpecified) 
+				buildErrorStatus(JptJaxbCoreMessages.JAXB_FACET_CONFIG_VALIDATE_PLATFORM_NOT_SPECIFIED) 
 				: OK_STATUS;
 	}
 	

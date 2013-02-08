@@ -43,7 +43,7 @@ import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConf
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
@@ -163,7 +163,7 @@ public class JaxbProjectPropertiesPage
 		Control libraryProviderComposite = createInstallLibraryPanel(
 				parent, 
 				getLibraryInstallDelegate(), 
-				JptJaxbUiMessages.JaxbFacetWizardPage_jaxbImplementationLabel);
+				JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_JAXB_IMPLEMENTATION_LABEL);
 		
  		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
  		
@@ -187,7 +187,7 @@ public class JaxbProjectPropertiesPage
 	
 	private void buildPlatformGroup(Composite composite) {
 		Group group = new Group(composite, SWT.NONE);
-		group.setText(JptJaxbUiMessages.JaxbFacetWizardPage_platformLabel);
+		group.setText(JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_PLATFORM_LABEL);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
@@ -198,7 +198,7 @@ public class JaxbProjectPropertiesPage
 				platformDropDown,
 				JAXB_PLATFORM_CONFIG_LABEL_CONVERTER);
 		
-		buildFacetsPageLink(group, JptJaxbUiMessages.JaxbFacetWizardPage_facetsPageLink);
+		buildFacetsPageLink(group, JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_FACETS_PAGE_LINK);
 	}
 	
 	/**

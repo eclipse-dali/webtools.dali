@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.swt.SWT;
@@ -36,8 +36,8 @@ public abstract class JaxbFacetPage
 	
 	protected JaxbFacetPage(String pageName) {
 		super(pageName);
-		setTitle(JptJaxbUiMessages.JaxbFacetWizardPage_title);
-		setDescription(JptJaxbUiMessages.JaxbFacetWizardPage_desc);
+		setTitle(JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_TITLE);
+		setDescription(JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_DESC);
 		setImageDescriptor(JptJaxbUiImages.JAXB_PROJECT_BANNER);
 	}
 	
@@ -168,7 +168,7 @@ public abstract class JaxbFacetPage
 		
 		public PlatformGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptJaxbUiMessages.JaxbFacetWizardPage_platformLabel);
+			group.setText(JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_PLATFORM_LABEL);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 //			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
@@ -189,7 +189,7 @@ public abstract class JaxbFacetPage
 			Composite librariesComposite 
 					= (Composite) LibraryProviderFrameworkUi.createInstallLibraryPanel(
 							composite, librariesInstallDelegate, 
-							JptJaxbUiMessages.JaxbFacetWizardPage_jaxbImplementationLabel);
+							JptJaxbUiMessages.JAXB_FACET_WIZARD_PAGE_JAXB_IMPLEMENTATION_LABEL);
 			librariesComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 //			PlatformUI.getWorkbench().getHelpSystem().setHelp(librariesComposite, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);			
 		}

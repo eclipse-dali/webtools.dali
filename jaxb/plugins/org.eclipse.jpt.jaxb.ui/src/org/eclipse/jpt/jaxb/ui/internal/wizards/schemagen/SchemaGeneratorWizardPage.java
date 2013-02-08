@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.filters.ContainerFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.EmptyInnerPackageFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonArchiveOrExternalElementFilter;
@@ -76,8 +76,8 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		super("JAXB Schema Generator", selection, null);	//$NON-NLS-1$
 
 		this.setUsesMoxy(false);
-		this.setTitle(JptJaxbUiMessages.SchemaGeneratorWizardPage_title);
-		this.setDescription(JptJaxbUiMessages.SchemaGeneratorWizardPage_desc);
+		this.setTitle(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_PAGE_TITLE);
+		this.setDescription(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_PAGE_DESC);
 	}
 
 	// ********** IDialogPage implementation  **********
@@ -152,7 +152,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	protected boolean validateSourceGroup() {
 		if(this.getAllCheckedItems().length == 0) {
 			if(this.getErrorMessage() == null) {
-				this.setErrorMessage(JptJaxbUiMessages.SchemaGeneratorWizardPage_errorNoPackage);
+				this.setErrorMessage(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_PAGE_ERROR_NO_PACKAGE);
 			}
 			return false;
 		}
@@ -169,18 +169,18 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		setMessage(null);
 		
 		if( ! this.genericJaxbIsOnClasspath()) {
-			this.displayWarning(JptJaxbUiMessages.SchemaGeneratorWizardPage_jaxbLibrariesNotAvailable);
+			this.displayWarning(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_PAGE_JAXB_LIBRARIES_NOT_AVAILABLE);
 		}
 		else if(this.usesMoxy() && ! this.moxyIsOnClasspath()) {
 			//this message is being truncated by the wizard width in some cases
-			this.displayWarning(JptJaxbUiMessages.SchemaGeneratorWizardPage_moxyLibrariesNotAvailable);
+			this.displayWarning(JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_PAGE_MOXY_LIBRARIES_NOT_AVAILABLE);
 		}
 
 		//this code will intelligently remove our classpath warnings when they are present but no longer apply (as an alternative 
 		//to setting the message to null continuously as is currently done)
 //		else if( this.getMessage() != null){
-//			if (this.getMessage().equals(JptJaxbUiMessages.ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable) ||
-//					this.getMessage().equals(JptJaxbUiMessages.ClassesGeneratorWizardPage_moxyLibrariesNotAvailable)) { 
+//			if (this.getMessage().equals(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_jaxbLibrariesNotAvailable) ||
+//					this.getMessage().equals(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_moxyLibrariesNotAvailable)) { 
 //				setMessage(null);
 //			}
 //		}
@@ -323,7 +323,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		GridData gridData = new GridData();
 		gridData.verticalIndent = 10;
 		checkBox.setLayoutData(gridData);
-		checkBox.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_usesMoxyImplementation);
+		checkBox.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_USES_MOXY_IMPLEMENTATION);
 		checkBox.setSelection(this.usesMoxy());
 		checkBox.addSelectionListener(this.buildUsesMoxySelectionListener());
 		
@@ -365,7 +365,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 			buildSchemaComposite(composite);
 
 			// Input Tree
-			createPlainLabel(composite, JptJaxbUiMessages.SchemaGeneratorWizardPage_packages);
+			createPlainLabel(composite, JptJaxbUiMessages.SCHEMA_GENERATOR_WIZARD_PAGE_PACKAGES);
 			this.inputGroup = this.createInputGroup(composite);
 	
 		}

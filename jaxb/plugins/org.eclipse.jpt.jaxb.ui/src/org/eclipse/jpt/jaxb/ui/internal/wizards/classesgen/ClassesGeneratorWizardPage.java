@@ -62,7 +62,7 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -110,7 +110,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		super(true, "Classes Generator"); //$NON-NLS-1$
 
 		this.resourceManager = resourceManager;
-		this.setDescription(JptJaxbUiMessages.ClassesGeneratorWizardPage_desc);
+		this.setDescription(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_DESC);
 	}
 
 	// ********** UI components **********
@@ -223,7 +223,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			}
 
 			String schemaName = ((ClassesGeneratorWizard) getWizard()).getLocalSchemaUri().lastSegment();
-			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaName));
+			this.setTitle(NLS.bind(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_TITLE, schemaName));
 		}
 	}
 
@@ -278,8 +278,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
 		dialog.setValidator(validator);
 		dialog.setComparator(new JavaElementComparator());
-		dialog.setTitle(JptJaxbUiMessages.ClassesGeneratorWizardPage_sourceFolderSelectionDialog_title);
-		dialog.setMessage(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseSourceFolderDialog_desc);
+		dialog.setTitle(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_SOURCE_FOLDER_SELECTION_DIALOG_TITLE);
+		dialog.setMessage(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_CHOOSE_SOURCE_FOLDER_DIALOG_DESC);
 		dialog.addFilter(filter);
 		//set the java project as the input instead of the workspace like the NewContainerWizardPage was doing
 		//******************************************************//
@@ -325,7 +325,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		gridData.horizontalIndent = 5;
 		gridData.verticalIndent = 5;
 		checkBox.setLayoutData(gridData);
-		checkBox.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_usesMoxyImplementation);
+		checkBox.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_USES_MOXY_IMPLEMENTATION);
 		checkBox.setSelection(this.usesMoxy());
 		checkBox.addSelectionListener(this.buildUsesMoxySelectionListener());
 		
@@ -359,18 +359,18 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		setMessage(null);
 		
 		if( ! this.genericJaxbIsOnClasspath()) {
-			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable);
+			this.displayWarning(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_JAXB_LIBRARIES_NOT_AVAILABLE);
 		}
 		else if(this.usesMoxy() && ! this.eclipseLinkMoxyIsOnClasspath()) {
 			//this message is being truncated by the wizard width in some cases
-			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_moxyLibrariesNotAvailable);
+			this.displayWarning(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_MOXY_LIBRARIES_NOT_AVAILABLE);
 		}
 
 		//this code will intelligently remove our classpath warnings when they are present but no longer apply (as an alternative 
 		//to setting the message to null continuously as is currently done)
 //		else if( this.getMessage() != null){
-//			if (this.getMessage().equals(JptJaxbUiMessages.ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable) ||
-//					this.getMessage().equals(JptJaxbUiMessages.ClassesGeneratorWizardPage_moxyLibrariesNotAvailable)) { 
+//			if (this.getMessage().equals(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_jaxbLibrariesNotAvailable) ||
+//					this.getMessage().equals(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_moxyLibrariesNotAvailable)) { 
 //				setMessage(null);
 //			}
 //		}
@@ -553,7 +553,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			
 			// Catalog
 			Label catalogLabel = new Label(composite, SWT.NONE);
-			catalogLabel.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_catalog);
+			catalogLabel.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_CATALOG);
 			gridData = new GridData();
 			gridData.verticalIndent = 5;
 			catalogLabel.setLayoutData(gridData);
@@ -563,7 +563,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			// Bindings files
 			this.bindingsFileNames = new ArrayList<String>();
 			Label bindingsFileLabel = new Label(composite, SWT.NONE);
-			bindingsFileLabel.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_bindingsFiles);
+			bindingsFileLabel.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_BINDINGS_FILES);
 			bindingsFileLabel.setLayoutData(new GridData());
 			this.buildBindingsFileTable(composite);
 		}
@@ -601,7 +601,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 			// Browse buttons
 			Button browseButton = new Button(buttonComposite, SWT.PUSH);
-			browseButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_browseButton);
+			browseButton.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_BROWSE_BUTTON);
 			gridData = new GridData();
 			gridData.horizontalAlignment= GridData.FILL;
 			gridData.verticalIndent = 5;
@@ -666,7 +666,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			buttonComposite.setLayoutData(gridData);
 			// Add button
 			Button addButton = new Button(buttonComposite, SWT.PUSH);
-			addButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_addButton);
+			addButton.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_ADD_BUTTON);
 			gridData =  new GridData();
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.grabExcessHorizontalSpace= true;
@@ -684,7 +684,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			});
 			// Remove button
 			Button removeButton = new Button(buttonComposite, SWT.PUSH);
-			removeButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_removeButton);
+			removeButton.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_REMOVE_BUTTON);
 			gridData =  new GridData();
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.grabExcessHorizontalSpace= true;
@@ -752,7 +752,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			String projectPath= getJavaProject().getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
-			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog);
+			dialog.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_CHOOSE_A_CATALOG);
 			dialog.setFilterPath(projectPath);
 			dialog.setFilterExtensions(new String[] {XML_FILTER});
 
@@ -812,7 +812,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		@Override
 		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
+			newShell.setText(JptJaxbUiMessages.CLASSES_GENERATOR_WIZARD_PAGE_CHOOSE_A_BINDINGS_FILE);
 		}
 		
 		@Override

@@ -64,8 +64,8 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
-		this.setTitle(JptJpaUiMessages.DatabaseSchemaWizardPage_title);
-		this.setMessage(JptJpaUiMessages.DatabaseSchemaWizardPage_desc);
+		this.setTitle(JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_title);
+		this.setMessage(JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_desc);
 	}
 
 	public void createControl(Composite parent) {
@@ -155,28 +155,28 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 			Group group = new Group(composite, SWT.NONE);
 			group.setLayout(new GridLayout(2, false));  // false = do not make columns equal width
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			group.setText(JptJpaUiMessages.DatabaseSchemaWizardPage_schemaSettings);
+			group.setText(JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_schemaSettings);
 			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
 
 			// schema combo-box
-			this.buildLabel(group, 1, JptJpaUiMessages.DatabaseSchemaWizardPage_schema);
+			this.buildLabel(group, 1, JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_schema);
 			this.schemaComboBox = this.buildComboBox(group, this.buildSchemaComboBoxSelectionListener());
 			
 			String message = (this.projectHasAConnection()) ?
-				JptJpaUiMessages.DatabaseSchemaWizardPage_schemaInfo :
-				JptJpaUiMessages.DatabaseSchemaWizardPage_connectionInfo;
+				JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_schemaInfo :
+				JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_connectionInfo;
 			
 			this.buildLabel(group, 2, message);
 
 			// add project's connection link
 			if( ! this.projectHasAConnection()) {
 				this.addJpaProjectConnectionLink = this.buildLink(group, 
-							JptJpaUiMessages.DatabaseSchemaWizardPage_addConnectionToProject, 
+							JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_addConnectionToProject, 
 							this.buildAddJpaProjectConnectionLinkListener());
 			}
 
 			// reconnect link
-			this.reconnectLink = this.buildLink(group, JptJpaUiMessages.DatabaseSchemaWizardPage_connectLink, this.buildReconnectLinkSelectionListener());
+			this.reconnectLink = this.buildLink(group, JptJpaUiMessages.DatabaseSCHEMA_WIZARD_PAGE_connectLink, this.buildReconnectLinkSelectionListener());
 			this.reconnectLink.setEnabled(true);
 
 			this.selectedSchema = this.getDefaultSchema();
