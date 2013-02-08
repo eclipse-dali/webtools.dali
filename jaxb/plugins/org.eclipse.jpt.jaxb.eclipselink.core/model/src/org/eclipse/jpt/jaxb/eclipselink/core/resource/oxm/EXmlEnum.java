@@ -3,22 +3,18 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
-import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.internal.utility.translators.StringAttributeTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -326,5 +322,38 @@ public class EXmlEnum extends EAbstractTypeMapping
 		result.append(')');
 		return result.toString();
 	}
+	
+	
+	// ***** text range *****
+	
+	public TextRange getJavaEnumTextRange() {
+		return getAttributeTextRange(Oxm.JAVA_ENUM);
+	}
+	
 
-} // EXmlEnum
+	// ***** translators *****
+	
+	public static Translator buildTranslator() {
+		return new SimpleTranslator(Oxm.XML_ENUMS + "/" + Oxm.XML_ENUM, OxmPackage.eINSTANCE.getEXmlBindings_XmlEnums(), buildTranslatorChildren());
+	}
+	
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildJavaEnumTranslator(),
+			buildValueTranslator()
+		};
+	}
+	
+	protected static Translator buildJavaEnumTranslator() {
+		return new StringAttributeTranslator(
+			Oxm.JAVA_ENUM,
+			OxmPackage.eINSTANCE.getEXmlEnum_JavaEnum());
+	}
+	
+	protected static Translator buildValueTranslator() {
+		return new StringAttributeTranslator(
+			Oxm.VALUE,
+			OxmPackage.eINSTANCE.getEXmlEnum_Value(), 
+			Translator.IGNORE_DEFAULT_ATTRIBUTE_VALUE);
+	}
+}

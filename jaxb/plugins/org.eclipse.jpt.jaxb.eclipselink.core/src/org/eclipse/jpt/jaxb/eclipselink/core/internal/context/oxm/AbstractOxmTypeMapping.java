@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
 import java.beans.Introspector;
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -197,7 +198,7 @@ public abstract class AbstractOxmTypeMapping
 		}
 	}
 	
-	protected abstract JavaType buildJavaType(JavaResourceType resourceType);
+	protected abstract JavaType buildJavaType(JavaResourceAbstractType resourceType);
 	
 	protected JavaResourceType resolveJavaResourceType() {
 		String fqName = getTypeName().getFullyQualifiedName();

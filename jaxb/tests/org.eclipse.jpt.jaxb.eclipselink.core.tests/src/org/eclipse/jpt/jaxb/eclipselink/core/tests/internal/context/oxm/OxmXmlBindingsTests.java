@@ -18,10 +18,12 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
 @SuppressWarnings("nls")
 public class OxmXmlBindingsTests
@@ -320,6 +322,104 @@ public class OxmXmlBindingsTests
 		assertFileContentsContains("oxm.xml", "package-name=", false);
 		assertNull(eXmlBindings.getPackageName());
 		assertNull(xmlBindings.getSpecifiedPackageName());
+	}
+	
+	public void testUpdateXmlEnums() throws Exception {
+		addOxmFile("oxm.xml", "test.oxm");
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile("test.oxm");
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		
+		assertEquals(0, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(0, xmlBindings.getXmlEnumsSize());
+		
+		EXmlEnum eXmlEnum = OxmFactory.eINSTANCE.createEXmlEnum();
+		eXmlEnum.setJavaEnum("test.oxm.Foo");
+		eXmlBindings.getXmlEnums().add(eXmlEnum);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-enums", true);
+		assertFileContentsContains("oxm.xml", "test.oxm.Foo", true);
+		assertEquals(1, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(1, xmlBindings.getXmlEnumsSize());
+		assertNotNull(xmlBindings.getXmlEnum("test.oxm.Foo"));
+		
+		eXmlEnum = OxmFactory.eINSTANCE.createEXmlEnum();
+		eXmlEnum.setJavaEnum("test.oxm.Bar");
+		eXmlBindings.getXmlEnums().add(eXmlEnum);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
+		assertEquals(2, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(2, xmlBindings.getXmlEnumsSize());
+		assertNotNull(xmlBindings.getXmlEnum("test.oxm.Bar"));
+		
+		eXmlBindings.getXmlEnums().remove(0);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "test.oxm.Foo", false);
+		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
+		assertEquals(1, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(1, xmlBindings.getXmlEnumsSize());
+		assertNull(xmlBindings.getXmlEnum("test.oxm.Foo"));
+		assertNotNull(xmlBindings.getXmlEnum("test.oxm.Bar"));
+		
+		eXmlBindings.getXmlEnums().remove(0);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "java-types", false);
+		assertEquals(0, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(0, xmlBindings.getXmlEnumsSize());
+	}
+	
+	public void testModifyXmlEnums() throws Exception {
+		addOxmFile("oxm.xml", "test.oxm");
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile("test.oxm");
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		
+		assertEquals(0, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(0, xmlBindings.getXmlEnumsSize());
+		
+		OxmXmlEnum xmlEnum = xmlBindings.addXmlEnum(0);
+		xmlEnum.setSpecifiedJavaEnum("test.oxm.Foo");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-enums", true);
+		assertFileContentsContains("oxm.xml", "test.oxm.Foo", true);
+		assertEquals(1, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(1, xmlBindings.getXmlEnumsSize());
+		assertNotNull(xmlBindings.getXmlEnum("test.oxm.Foo"));
+		
+		xmlEnum = xmlBindings.addXmlEnum(0);
+		xmlEnum.setSpecifiedJavaEnum("test.oxm.Bar");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
+		assertEquals(2, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(2, xmlBindings.getXmlEnumsSize());
+		assertNotNull(xmlBindings.getXmlEnum("test.oxm.Bar"));
+		
+		xmlBindings.removeXmlEnum(1);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "test.oxm.Foo", false);
+		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
+		assertEquals(1, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(1, xmlBindings.getXmlEnumsSize());
+		assertNull(xmlBindings.getXmlEnum("test.oxm.Foo"));
+		assertNotNull(xmlBindings.getXmlEnum("test.oxm.Bar"));
+		
+		xmlBindings.removeXmlEnum(0);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "xml-enums", false);
+		assertEquals(0, IterableTools.size(eXmlBindings.getXmlEnums()));
+		assertEquals(0, xmlBindings.getXmlEnumsSize());
 	}
 	
 	public void testUpdateJavaTypes() throws Exception {

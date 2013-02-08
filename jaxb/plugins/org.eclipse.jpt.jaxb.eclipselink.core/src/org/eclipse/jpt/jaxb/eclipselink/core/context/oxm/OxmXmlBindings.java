@@ -72,6 +72,26 @@ public interface OxmXmlBindings
 	OxmXmlSchema getXmlSchema();
 	
 	
+	// ***** xml enums *****
+	
+	final static String XML_ENUMS_LIST = "xmlEnums"; //$NON-NLS-1$
+	
+	ListIterable<OxmXmlEnum> getXmlEnums();
+	
+	int getXmlEnumsSize();
+	
+	OxmXmlEnum getXmlEnum(int index);
+	
+	OxmXmlEnum addXmlEnum(int index);
+	
+	void removeXmlEnum(int index);
+	
+	/**
+	 * Return the first xml enum with the given qualified name
+	 */
+	OxmXmlEnum getXmlEnum(String qualifiedName);
+	
+	
 	// ***** java types *****
 	
 	final static String JAVA_TYPES_LIST = "javaTypes"; //$NON-NLS-1$

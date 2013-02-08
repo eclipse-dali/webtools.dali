@@ -37,7 +37,8 @@ public class GenericJavaEnumMapping
 		extends AbstractJavaTypeMapping
 		implements JavaEnumMapping {
 	
-	protected String specifiedXmlEnumValue;
+	protected String value;
+	protected String specifiedValue;
 
 	protected final EnumConstantContainer enumConstantContainer;
 
@@ -46,7 +47,7 @@ public class GenericJavaEnumMapping
 		super(parent);
 		this.enumConstantContainer = new EnumConstantContainer();
 		
-		initXmlEnumValue();
+		initValue();
 		initEnumConstants();
 	}
 	
@@ -62,7 +63,7 @@ public class GenericJavaEnumMapping
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		syncXmlEnumValue();
+		syncValue();
 		syncEnumConstants();
 	}
 	
@@ -75,52 +76,62 @@ public class GenericJavaEnumMapping
 
 	// ***** XmlEnum.value *****
 	
-	public String getXmlEnumValue() {
-		return (this.specifiedXmlEnumValue != null) ? this.specifiedXmlEnumValue : DEFAULT_XML_ENUM_VALUE;
+	public String getValue() {
+		return this.value;
 	}
 	
-	public String getSpecifiedXmlEnumValue() {
-		return this.specifiedXmlEnumValue;
+	protected void setValue_(String value) {
+		String old = this.value;
+		this.value = value;
+		firePropertyChanged(VALUE_PROPERTY, old, value);
 	}
 	
-	public void setSpecifiedXmlEnumValue(String xmlEnumValue) {
-		getXmlEnumAnnotation().setValue(xmlEnumValue);
-		setSpecifiedXmlEnumValue_(xmlEnumValue);	
+	public String getSpecifiedValue() {
+		return this.specifiedValue;
 	}
 	
-	protected void setSpecifiedXmlEnumValue_(String xmlEnumValue) {
-		String old = this.specifiedXmlEnumValue;
-		this.specifiedXmlEnumValue = xmlEnumValue;
-		firePropertyChanged(SPECIFIED_XML_ENUM_VALUE_PROPERTY, old, xmlEnumValue);
+	public void setSpecifiedValue(String value) {
+		getXmlEnumAnnotation().setValue(value);
+		setSpecifiedValue_(value);	
 	}
 	
-	public String getFullyQualifiedXmlEnumValue() {
-		return (this.specifiedXmlEnumValue != null) ? 
-				getXmlEnumAnnotation().getFullyQualifiedValueClassName()
-				: DEFAULT_XML_ENUM_VALUE;
+	protected void setSpecifiedValue_(String value) {
+		String old = this.specifiedValue;
+		this.specifiedValue = value;
+		firePropertyChanged(SPECIFIED_VALUE_PROPERTY, old, value);
 	}
 	
 	protected XmlEnumAnnotation getXmlEnumAnnotation() {
 		return (XmlEnumAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_ENUM);
 	}
 	
-	protected String getResourceXmlEnumValue() {
+	protected String getResourceValue() {
 		return getXmlEnumAnnotation().getValue();
 	}
 	
-	protected void initXmlEnumValue() {
-		this.specifiedXmlEnumValue = getResourceXmlEnumValue();
+	protected void initValue() {
+		String value = getXmlEnumAnnotation().getFullyQualifiedValueClassName();
+		if (value == null) {
+			value = DEFAULT_VALUE;
+		}
+		this.value = value;
+		this.specifiedValue = getResourceValue();
 	}
 	
-	protected void syncXmlEnumValue() {
-		setSpecifiedXmlEnumValue_(getResourceXmlEnumValue());
+	protected void syncValue() {
+		String value = getXmlEnumAnnotation().getFullyQualifiedValueClassName();
+		if (value == null) {
+			value = DEFAULT_VALUE;
+		}
+		setValue_(value);
+		setSpecifiedValue_(getResourceValue());
 	}
 	
 	
 	// ***** enum constants *****
 	
 	public Iterable<JaxbEnumConstant> getEnumConstants() {
-		return this.enumConstantContainer.getContextElements();
+		return IterableTools.cast(this.enumConstantContainer.getContextElements());
 	}
 	
 	public int getEnumConstantsSize() {
@@ -153,10 +164,10 @@ public class GenericJavaEnumMapping
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
-		if (this.specifiedXmlEnumValue != null) {
+		if (this.specifiedValue != null) {
 			return IterableTools.concatenate(
 					super.getNonTransientReferencedXmlTypeNames(),
-					IterableTools.singletonIterable(getFullyQualifiedXmlEnumValue()));
+					IterableTools.singletonIterable(getValue()));
 		}
 		return super.getNonTransientReferencedXmlTypeNames();
 	}
@@ -170,7 +181,7 @@ public class GenericJavaEnumMapping
 	}
 	
 	protected XsdTypeDefinition getValueXsdTypeDefinition_() {
-		String fqXmlEnumValue = getFullyQualifiedXmlEnumValue();
+		String fqXmlEnumValue = getValue();
 		
 		JavaType jaxbType = getContextRoot().getJavaType(fqXmlEnumValue);
 		if (jaxbType != null) {
@@ -266,7 +277,7 @@ public class GenericJavaEnumMapping
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
-							new String[] { getFullyQualifiedXmlEnumValue() },
+							new String[] { getValue() },
 							this,
 							getXmlEnumValueTextRange()));
 		}

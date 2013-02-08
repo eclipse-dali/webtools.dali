@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
  */
 public interface JaxbEnumConstant
 		extends JaxbContextNode {
-
+	
 	JavaResourceEnumConstant getResourceEnumConstant();
 
 	/**
@@ -36,11 +36,13 @@ public interface JaxbEnumConstant
 	String getName();
 
 
+	// ***** xml enum value *****
+	
 	/**
 	 * Return the enum constant's value, whether specified or default.
 	 */
 	String getValue();
-
+	
 	/**
 	 * The default value will be the name of the enum constant.
 	 * It will be used if the XmlEnumValue annotation is null.
@@ -48,11 +50,9 @@ public interface JaxbEnumConstant
 	 */
 	String getDefaultValue();
 	
-	/**
-	 * Corresponds to the XmlEnumValue annotation 'value' element
-	 */
+	String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
+	
 	String getSpecifiedValue();
-	void setSpecifiedValue(String value);
-		String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
-
+	
+	void setSpecifiedValue(String value);	
 }

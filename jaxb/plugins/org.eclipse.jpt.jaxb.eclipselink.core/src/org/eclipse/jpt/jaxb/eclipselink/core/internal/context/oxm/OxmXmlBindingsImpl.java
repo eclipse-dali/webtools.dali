@@ -16,8 +16,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
@@ -26,9 +24,11 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlSchema;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -50,6 +50,8 @@ public class OxmXmlBindingsImpl
 	
 	protected final OxmXmlSchema xmlSchema;
 	
+	protected final ContextListContainer<OxmXmlEnum, EXmlEnum> xmlEnumContainer;
+	
 	protected final ContextListContainer<OxmJavaType, EJavaType> javaTypeContainer;
 	
 	
@@ -62,6 +64,7 @@ public class OxmXmlBindingsImpl
 		this.specifiedPackageName = buildSpecifiedPackageName();
 		// impliedPackageName not built until update, as it depends on sub-nodes
 		this.xmlSchema = buildXmlSchema();
+		this.xmlEnumContainer = buildXmlEnumContainer();
 		this.javaTypeContainer = buildJavaTypeContainer();
 	}
 	
@@ -85,6 +88,7 @@ public class OxmXmlBindingsImpl
 		setXmlMappingMetadataComplete_(buildXmlMappingMetadataComplete());
 		setSpecifiedPackageName_(buildSpecifiedPackageName());
 		this.xmlSchema.synchronizeWithResourceModel();
+		this.xmlEnumContainer.synchronizeWithResourceModel();
 		this.javaTypeContainer.synchronizeWithResourceModel();
 	}
 	
@@ -93,6 +97,7 @@ public class OxmXmlBindingsImpl
 		super.update();
 		setImpliedPackageName_(buildImpliedPackageName());
 		this.xmlSchema.update();
+		this.xmlEnumContainer.update();
 		this.javaTypeContainer.update();
 	}
 	
@@ -270,6 +275,84 @@ public class OxmXmlBindingsImpl
 	
 	// ***** java types *****
 	
+	public ListIterable<OxmXmlEnum> getXmlEnums() {
+		return this.xmlEnumContainer.getContextElements();
+	}
+	
+	public int getXmlEnumsSize() {
+		return this.xmlEnumContainer.getContextElementsSize();
+	}
+	
+	public OxmXmlEnum getXmlEnum(int index) {
+		return this.xmlEnumContainer.getContextElement(index);
+	}
+	
+	public OxmXmlEnum getXmlEnum(String qualifiedName) {
+		for (OxmXmlEnum xmlEnum : getXmlEnums()) {
+			if (ObjectTools.equals(xmlEnum.getTypeName().getFullyQualifiedName(), qualifiedName)) {
+				return xmlEnum;
+			}
+		}
+		return null;
+	}
+	
+	public OxmXmlEnum addXmlEnum(int index) {
+		EXmlEnum eXmlEnum = OxmFactory.eINSTANCE.createEXmlEnum();
+		OxmXmlEnum xmlEnum = this.xmlEnumContainer.addContextElement(index, eXmlEnum);
+		this.eXmlBindings.getXmlEnums().add(index, eXmlEnum);
+		return xmlEnum;
+	}
+	
+	public void removeXmlEnum(int index) {
+		removeXmlEnum_(index);
+		this.eXmlBindings.getXmlEnums().remove(index);
+	}
+	
+	protected void removeXmlEnum_(int index) {
+		this.xmlEnumContainer.removeContextElement(index);
+	}
+	
+	protected ListIterable<EXmlEnum> getEXmlEnums() {
+		return IterableTools.cloneLive(this.eXmlBindings.getXmlEnums());
+	}
+	
+	protected OxmXmlEnum buildXmlEnum(EXmlEnum eXmlEnum) {
+		return new OxmXmlEnumImpl(this, eXmlEnum);
+	}
+	
+	protected ContextListContainer<OxmXmlEnum, EXmlEnum> buildXmlEnumContainer() {
+		XmlEnumContainer container = new XmlEnumContainer();
+		container.initialize();
+		return container;
+	}
+	
+	protected class XmlEnumContainer
+			extends ContextListContainer<OxmXmlEnum, EXmlEnum> {
+		@Override
+		protected String getContextElementsPropertyName() {
+			return XML_ENUMS_LIST;
+		}
+		@Override
+		protected OxmXmlEnum buildContextElement(EXmlEnum resourceElement) {
+			return OxmXmlBindingsImpl.this.buildXmlEnum(resourceElement);
+		}
+		@Override
+		protected ListIterable<EXmlEnum> getResourceElements() {
+			return OxmXmlBindingsImpl.this.getEXmlEnums();
+		}
+		@Override
+		protected EXmlEnum getResourceElement(OxmXmlEnum contextElement) {
+			return contextElement.getETypeMapping();
+		}
+//		@Override
+//		protected void disposeElement(OxmJavaType element) {
+//			element.dispose();
+//		}
+	}
+	
+	
+	// ***** java types *****
+	
 	public ListIterable<OxmJavaType> getJavaTypes() {
 		return this.javaTypeContainer.getContextElements();
 	}
@@ -349,12 +432,14 @@ public class OxmXmlBindingsImpl
 	// ***** misc *****
 	
 	public Iterable<OxmTypeMapping> getTypeMappings() {
-		// TODO xml-enums
-		return new SuperIterableWrapper<OxmTypeMapping>(getJavaTypes());
+		return IterableTools.concatenate(getXmlEnums(), getJavaTypes());
 	}
 	
 	public OxmTypeMapping getTypeMapping(String typeName) {
-		// TODO xml-enums
+		OxmTypeMapping mapping = getXmlEnum(typeName);
+		if (mapping != null) {
+			return mapping;
+		}
 		return getJavaType(typeName);
 	}
 	
@@ -371,6 +456,9 @@ public class OxmXmlBindingsImpl
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
+		for (OxmXmlEnum xmlEnum : getXmlEnums()) {
+			xmlEnum.validate(messages, reporter);
+		}
 		for (OxmJavaType javaType : getJavaTypes()) {
 			javaType.validate(messages, reporter);
 		}

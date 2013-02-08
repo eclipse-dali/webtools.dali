@@ -28,26 +28,26 @@ public interface JaxbEnumMapping
 	
 	// ***** XmlEnum.value *****
 	
-	/**
-	 * Return the type specified for the XmlEnum.value, or "java.lang.String" if unspecified
-	 */
-	String getXmlEnumValue();
+	String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
-	String SPECIFIED_XML_ENUM_VALUE_PROPERTY = "specifiedXmlEnum"; //$NON-NLS-1$
+	/**
+	 * Return the fully qualified type, specified or not
+	 */
+	String getValue();
+	
+	String SPECIFIED_VALUE_PROPERTY = "specifiedXmlEnum"; //$NON-NLS-1$
 	
 	/**
 	 * Return the value of the XmlEnum.value element
 	 */
-	String getSpecifiedXmlEnumValue();
+	String getSpecifiedValue();
 	
-	void setSpecifiedXmlEnumValue(String xmlEnumValue);
+	void setSpecifiedValue(String value);
 	
 	/**
-	 * Return the value of the XmlEnum.value element, taking into consideration imports
+	 * The default value if nothing else is specified
 	 */
-	String getFullyQualifiedXmlEnumValue();
-	
-	String DEFAULT_XML_ENUM_VALUE = "java.lang.String"; //$NON-NLS-1$
+	String DEFAULT_VALUE = "java.lang.String"; //$NON-NLS-1$
 	
 	
 	// ***** enum constants *****

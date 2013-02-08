@@ -953,6 +953,7 @@ public class EXmlBindings extends ERootObjectImpl
 			buildXmlMappingMetadataCompleteTranslator(),
 			buildPackageNameTranslator(),
 			EXmlSchema.buildTranslator(),
+			EXmlEnum.buildTranslator(),
 			EJavaType.buildTranslator()
 		};
 	}

@@ -248,43 +248,43 @@ public class GenericJavaEnumMappingTests
 		assertNull(enumMapping.getXmlRootElement());
 	}
 
-	public void testModifyXmlEnumValue() throws Exception {
+	public void testModifyValue() throws Exception {
 		createEnumWithXmlType();
 		
 		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
-		assertNull(enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals(JaxbEnumMapping.DEFAULT_XML_ENUM_VALUE, enumMapping.getXmlEnumValue());
+		assertNull(enumMapping.getSpecifiedValue());
+		assertEquals(JaxbEnumMapping.DEFAULT_VALUE, enumMapping.getValue());
 		
-		enumMapping.setSpecifiedXmlEnumValue("Integer");
+		enumMapping.setSpecifiedValue("Integer");
 		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(JAXB.XML_ENUM);
 		assertEquals("Integer", xmlEnumAnnotation.getValue());
-		assertEquals("Integer", enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals("Integer", enumMapping.getXmlEnumValue());
+		assertEquals("Integer", enumMapping.getSpecifiedValue());
+		assertEquals("Integer", enumMapping.getValue());
 		
-		enumMapping.setSpecifiedXmlEnumValue(null);
+		enumMapping.setSpecifiedValue(null);
 		xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(JAXB.XML_ENUM);
-		assertNull(enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals(JaxbEnumMapping.DEFAULT_XML_ENUM_VALUE, enumMapping.getXmlEnumValue());
+		assertNull(enumMapping.getSpecifiedValue());
+		assertEquals(JaxbEnumMapping.DEFAULT_VALUE, enumMapping.getValue());
 		
 		resourceEnum.addAnnotation(JAXB.XML_TYPE);
 		resourceEnum.removeAnnotation(JAXB.XML_ENUM);
 		enumMapping = ((JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0)).getMapping();
-		assertNull(enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals(JaxbEnumMapping.DEFAULT_XML_ENUM_VALUE, enumMapping.getXmlEnumValue());
+		assertNull(enumMapping.getSpecifiedValue());
+		assertEquals(JaxbEnumMapping.DEFAULT_VALUE, enumMapping.getValue());
 	}
 	
-	public void testUpdateXmlEnumValue() throws Exception {
+	public void testUpdateValue() throws Exception {
 		createEnumWithXmlType();
 		
 		JavaEnum jaxbEnum = (JavaEnum) IterableTools.get(getContextRoot().getJavaTypes(), 0);
 		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
 		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
 		
-		assertNull(enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals(JaxbEnumMapping.DEFAULT_XML_ENUM_VALUE, enumMapping.getXmlEnumValue());
+		assertNull(enumMapping.getSpecifiedValue());
+		assertEquals(JaxbEnumMapping.DEFAULT_VALUE, enumMapping.getValue());
 		
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceEnum);
 		annotatedElement.edit(
@@ -294,8 +294,8 @@ public class GenericJavaEnumMappingTests
 						GenericJavaEnumMappingTests.this.addXmlEnumTypeMemberValuePair(declaration, JAXB.XML_ENUM__VALUE, "String");
 					}
 				});
-		assertEquals("String", enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals("String", enumMapping.getXmlEnumValue());
+		assertEquals("String", enumMapping.getSpecifiedValue());
+		assertEquals("String", enumMapping.getValue());
 		
 		//remove the factoryClass member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -304,8 +304,8 @@ public class GenericJavaEnumMappingTests
 				GenericJavaEnumMappingTests.this.values(xmlEnumAnnotation).remove(0);
 			}
 		});
-		assertNull(enumMapping.getSpecifiedXmlEnumValue());
-		assertEquals(JaxbEnumMapping.DEFAULT_XML_ENUM_VALUE, enumMapping.getXmlEnumValue());
+		assertNull(enumMapping.getSpecifiedValue());
+		assertEquals(JaxbEnumMapping.DEFAULT_VALUE, enumMapping.getValue());
 	}
 
 	public void testUpdateEnumConstants() throws Exception {
