@@ -24,10 +24,10 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
 import org.eclipse.persistence.jpa.jpql.ContentAssistExtension;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
@@ -242,7 +242,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 					problemTextRange
 				);
 
-				message.setBundleName("jpa_jpql_validation");
+				message.setBundleName("jpt_jpa_core_jpql_validation");
 				messages.add(message);
 
 				// Done traversing the list of TextRanges
@@ -279,7 +279,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	protected String getValidationPreference(NamedQuery namedQuery) {
 		return JpaPreferences.getProblemSeverity(
 			namedQuery.getResource().getProject(),
-			JpaValidationMessages.JPQL_QUERY_VALIDATION
+			JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION
 		);
 	}
 

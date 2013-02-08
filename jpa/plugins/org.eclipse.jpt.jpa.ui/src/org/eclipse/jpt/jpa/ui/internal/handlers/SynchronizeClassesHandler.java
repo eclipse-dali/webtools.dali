@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -133,7 +133,7 @@ public class SynchronizeClassesHandler extends AbstractHandler
 			if (monitor.isCanceled()) {
 				return;
 			}
-			SubMonitor sm = SubMonitor.convert(monitor, JptUiMessages.SynchronizingClasses_TaskName, 20);
+			SubMonitor sm = SubMonitor.convert(monitor, JptJpaUiMessages.SynchronizingClasses_TaskName, 20);
 
 			JpaProject jpaProject = this.getJpaProject();
 			if (jpaProject == null) {

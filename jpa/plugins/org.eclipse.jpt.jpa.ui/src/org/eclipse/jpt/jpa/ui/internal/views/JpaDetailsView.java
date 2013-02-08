@@ -23,8 +23,8 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
 import org.eclipse.swt.SWT;
@@ -162,7 +162,7 @@ public class JpaDetailsView
 	}
 
 	private Control buildDefaultPage() {
-		return this.widgetFactory.createLabel(this.pageBook, JptUiMessages.JpaDetailsView_viewNotAvailable);
+		return this.widgetFactory.createLabel(this.pageBook, JptJpaUiMessages.JpaDetailsView_viewNotAvailable);
 	}
 
 	private Manager buildManager() {

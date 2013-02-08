@@ -75,7 +75,7 @@ public class JpaDeleteMappingFileParticipant
 	
 	@Override
 	public String getName() {
-		return JpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_PARTICIPANT_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_PARTICIPANT_NAME;
 	}
 
 	@Override
@@ -106,14 +106,14 @@ public class JpaDeleteMappingFileParticipant
 	public RefactoringStatus checkConditions(IProgressMonitor monitor, CheckConditionsContext context) throws OperationCanceledException {
 		//since the progress bar will hang if a large JPA project is being loaded, 
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
-		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
+		monitor.subTask(JptJpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
 		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {
 			return null;
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, size*10 + 1);
-		sm.subTask(JpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_SUB_TASK_NAME);
+		sm.subTask(JptJpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_SUB_TASK_NAME);
 		ResourceChangeChecker checker = (ResourceChangeChecker) context.getChecker(ResourceChangeChecker.class);
 		IResourceChangeDescriptionFactory deltaFactory = checker.getDeltaFactory();
 
@@ -162,8 +162,8 @@ public class JpaDeleteMappingFileParticipant
 			return null;
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, this.persistenceXmlMappingFileDeleteEdits.size());
-		sm.subTask(JpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_SUB_TASK_NAME);
-		CompositeChange compositeChange = new CompositeChange(JpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_CHANGE_NAME);
+		sm.subTask(JptJpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_SUB_TASK_NAME);
+		CompositeChange compositeChange = new CompositeChange(JptJpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_CHANGE_NAME);
 		for (IFile persistenceXmlFile : this.persistenceXmlMappingFileDeleteEdits.keySet()) {
 			if (sm.isCanceled()) {
 				throw new OperationCanceledException();
@@ -188,7 +188,7 @@ public class JpaDeleteMappingFileParticipant
 	protected void addPersistenceXmlDeleteMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {
 		TextChange textChange = getTextChange(persistenceXmlFile);
 		if (textChange == null) {
-			textChange = new TextFileChange(JpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME, persistenceXmlFile);
+			textChange = new TextFileChange(JptJpaCoreRefactoringMessages.JPA_DELETE_MAPPING_FILE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME, persistenceXmlFile);
 			MultiTextEdit multiTextEdit = new MultiTextEdit();
 			textChange.setEdit(multiTextEdit);
 			compositeChange.add(textChange);

@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 
 public class EntityTableDescriptionProvider
 	implements AbstractNamedColumnValidator.TableDescriptionProvider
 {
 	public String getColumnTableDescriptionMessage() {
-		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
+		return JptJpaCoreValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 }

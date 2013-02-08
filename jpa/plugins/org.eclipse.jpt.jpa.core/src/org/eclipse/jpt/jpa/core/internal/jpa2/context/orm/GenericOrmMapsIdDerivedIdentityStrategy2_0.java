@@ -25,12 +25,12 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -244,11 +244,11 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		AttributeMapping attributeMapping = this.getDerivedIdAttributeMapping();
 		if (attributeMapping == null) {
 			// there is no defaulting, so only use the 'resolved' error, even if the name is an empty string
-			messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}));
+			messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}));
 		} else {
 			// test whether attribute mapping is allowable
 			if ( ! IterableTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}));
+				messages.add(this.buildMessage(JptJpaCoreValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}));
 			}
 		}
 	}
@@ -258,7 +258,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected IMessage buildMessage(String msgID, String[] parms) {
-		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
+		String attributeDescription = NLS.bind(JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.proj;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.perspective.JpaPerspectiveFactory;
 import org.eclipse.jpt.jpa.ui.internal.wizards.proj.model.JpaProjectCreationDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -26,12 +26,12 @@ public class JpaProjectWizard
 	
 	public JpaProjectWizard() {
 		super();
-		setWindowTitle(JptUiMessages.JpaProjectWizard_title);
+		setWindowTitle(JptJpaUiMessages.JpaProjectWizard_title);
 	}
 	
 	public JpaProjectWizard(IDataModel dataModel) {
 		super(dataModel);
-		setWindowTitle(JptUiMessages.JpaProjectWizard_title);
+		setWindowTitle(JptJpaUiMessages.JpaProjectWizard_title);
 	}
 	
 	

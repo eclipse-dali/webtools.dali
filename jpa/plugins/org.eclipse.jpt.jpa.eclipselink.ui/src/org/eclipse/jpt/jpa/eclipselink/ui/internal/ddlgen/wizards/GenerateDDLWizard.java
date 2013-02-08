@@ -27,9 +27,9 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.DatabaseSchemaWizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -56,7 +56,7 @@ public class GenerateDDLWizard extends Wizard {
 		super();
 		this.jpaProject = jpaProject;
 		this.puName = puName;
-		this.setWindowTitle(JptUiMessages.GenerateDDLWizard_title); 
+		this.setWindowTitle(JptJpaUiMessages.GenerateDDLWizard_title); 
 	}
 
 	// ********** IWizard implementation  **********
@@ -149,8 +149,8 @@ public class GenerateDDLWizard extends Wizard {
 
 		OverwriteConfirmerDialog(Shell parent) {
 			super(ID, parent,
-					EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle,
-					NLS.bind(EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage, CR,  CR + CR),
+					JptJpaEclipseLinkUiMessages.ECLIPSELINK_DDL_GENERATOR_UI_GENERATING_DDL_WARNING_TITLE,
+					NLS.bind(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DDL_GENERATOR_UI_GENERATING_DDL_WARNING_MESSAGE, CR,  CR + CR),
 					MessageDialog.WARNING,
 					new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL},
 					1);
@@ -175,7 +175,7 @@ public class GenerateDDLWizard extends Wizard {
 
 		protected GenerateDDLJob(String puName, JpaProject jpaProject, OutputMode outputMode) {
 			
-			super(EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB, jpaProject.getJavaProject());
+			super(JptJpaEclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB, jpaProject.getJavaProject());
 
 			this.puName = puName;
 			this.jpaProject = jpaProject;
@@ -199,7 +199,7 @@ public class GenerateDDLWizard extends Wizard {
 
 		@Override
 		protected String getJobName() {
-			return EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_TASK;
+			return JptJpaEclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_TASK;
 		}
 
 		@Override

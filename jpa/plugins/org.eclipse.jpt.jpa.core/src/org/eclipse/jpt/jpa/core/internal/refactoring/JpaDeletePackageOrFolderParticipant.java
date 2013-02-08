@@ -69,7 +69,7 @@ public class JpaDeletePackageOrFolderParticipant
 	
 	@Override
 	public String getName() {
-		return JpaCoreRefactoringMessages.JPA_DELETE_PACKAGE_OR_FOLDER_REFACTORING_PARTICIPANT_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_DELETE_PACKAGE_OR_FOLDER_REFACTORING_PARTICIPANT_NAME;
 	}
 
 	@Override

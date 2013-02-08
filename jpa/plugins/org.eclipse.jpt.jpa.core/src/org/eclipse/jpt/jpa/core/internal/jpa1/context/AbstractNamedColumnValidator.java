@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -209,7 +209,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 	
 		protected String getColumnTableNotValidMessage() {
-			return JpaValidationMessages.COLUMN_TABLE_NOT_VALID;
+			return JptJpaCoreValidationMessages.COLUMN_TABLE_NOT_VALID;
 		}
 	
 		protected String getColumnTableDescriptionMessage()  {
@@ -232,7 +232,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 	
 		protected String getVirtualAttributeColumnTableNotValidMessage() {
-			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID;
+			return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID;
 		}
 	}
 }

@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTableValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class CollectionTableValidator
 	extends AbstractTableValidator
@@ -23,31 +23,31 @@ public class CollectionTableValidator
 
 	@Override
 	protected String getUnresolvedCatalogMessage() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG;
+		return JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedCatalogMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG;
 	}
 
 	@Override
 	protected String getUnresolvedSchemaMessage() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA;
+		return JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedSchemaMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	}
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME;
 	}
 }

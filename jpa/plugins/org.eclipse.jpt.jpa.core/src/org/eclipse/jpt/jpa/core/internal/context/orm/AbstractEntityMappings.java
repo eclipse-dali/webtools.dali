@@ -35,6 +35,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
@@ -53,12 +54,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
@@ -67,6 +66,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -697,7 +697,7 @@ public abstract class AbstractEntityMappings
 
 	protected void addMappedSuperclasses(AbstractPersistenceUnit.MappedType[] types, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 5);
-		sm.setTaskName(JptCoreMessages.MAKE_PERSISTENT_PROCESSING_MAPPED_SUPERCLASSES);
+		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_MAPPED_SUPERCLASSES);
 		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(types, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, sm.newChild(4));
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
@@ -706,7 +706,7 @@ public abstract class AbstractEntityMappings
 		for (OrmPersistentType persistentType : addedItems) {
 			mappedSuperclasses.add((XmlMappedSuperclass) persistentType.getMapping().getXmlTypeMapping());	
 		}
-		sm.subTask(JptCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
+		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
 		//use addAll to minimize change notifications to our model
 		this.xmlEntityMappings.getMappedSuperclasses().addAll(mappedSuperclasses);
 		sm.worked(1);
@@ -714,7 +714,7 @@ public abstract class AbstractEntityMappings
 
 	protected void addEntities(AbstractPersistenceUnit.MappedType[] types, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 5);
-		sm.setTaskName(JptCoreMessages.MAKE_PERSISTENT_PROCESSING_ENTITIES);
+		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_ENTITIES);
 		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(types, MappingKeys.ENTITY_TYPE_MAPPING_KEY, sm.newChild(4));
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
@@ -723,7 +723,7 @@ public abstract class AbstractEntityMappings
 		for (OrmPersistentType persistentType : addedItems) {
 			entities.add((XmlEntity) persistentType.getMapping().getXmlTypeMapping());	
 		}
-		sm.subTask(JptCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
+		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
 		//use addAll to minimize change notifications to our model
 		this.xmlEntityMappings.getEntities().addAll(0, entities);
 		sm.worked(1);
@@ -731,7 +731,7 @@ public abstract class AbstractEntityMappings
 
 	protected void addEmbeddables(AbstractPersistenceUnit.MappedType[] types, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 5);
-		sm.setTaskName(JptCoreMessages.MAKE_PERSISTENT_PROCESSING_EMBEDDABLES);
+		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_EMBEDDABLES);
 		List<OrmPersistentType> addedItems = this.addOrmPersistentTypes(types, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, sm.newChild(4));
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
@@ -740,7 +740,7 @@ public abstract class AbstractEntityMappings
 		for (OrmPersistentType persistentType : addedItems) {
 			embeddables.add((XmlEmbeddable) persistentType.getMapping().getXmlTypeMapping());	
 		}
-		sm.subTask(JptCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
+		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
 		//use addAll to minimize change notifications to our model
 		this.xmlEntityMappings.getEmbeddables().addAll(0, embeddables);
 		sm.worked(1);
@@ -752,7 +752,7 @@ public abstract class AbstractEntityMappings
 		for(AbstractPersistenceUnit.MappedType type : types) {
 			if (type.getMappingKey() == mappingKey) {
 				String className = type.getFullyQualifiedName();
-				sm.subTask(NLS.bind(JptCoreMessages.MAKE_PERSISTENT_BUILDING_PERSISTENT_TYPE, className));
+				sm.subTask(NLS.bind(JptJpaCoreMessages.MAKE_PERSISTENT_BUILDING_PERSISTENT_TYPE, className));
 				OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(type.getMappingKey());
 				XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceNodeFactory());
 
@@ -769,7 +769,7 @@ public abstract class AbstractEntityMappings
 		sm.worked(1);
 
 		int index = this.calculateInsertionIndex(addedItems.get(0));
-		sm.subTask(JptCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
+		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
 		this.addItemsToList(index, addedItems, this.persistentTypes, PERSISTENT_TYPES_LIST);
 		sm.worked(9);
 		return addedItems;
@@ -1113,7 +1113,7 @@ public abstract class AbstractEntityMappings
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,
-					JpaValidationMessages.XML_VERSION_NOT_LATEST,
+					JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST,
 					this,
 					this.xmlEntityMappings.getVersionTextRange()
 				)

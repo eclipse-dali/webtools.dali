@@ -83,7 +83,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		// Strategy widgets
 		this.addCheckBox(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_strategy,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_STRATEGY,
 			buildMultitenantHolder(),
 			null);
 		this.addMultitenantStrategyCombo(container).getControl();
@@ -91,7 +91,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		// Include criteria tri-state check box
 		TriStateCheckBox includeCriteriaCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteria,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA,
 			buildIncludeCriteriaHolder(),
 			buildIncludeCriteriaStringHolder(),
 			EclipseLinkHelpContextIds.MULTITENANCY_INCLUDE_CRITERIA);
@@ -104,7 +104,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(
 			container,
-			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumns_groupLabel
+			JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMNS_GROUP_LABEL
 		);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -113,7 +113,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		// Override Default Tenant Discriminator Columns check box
 		addCheckBox(
 			tenantDiscriminatorColumnGroupPane,
-			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancy_overrideDefaultTenantDiscriminatorColumns,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_OVERRIDE_DEFAULT_TENANT_DISCRIMINATOR_COLUMNS,
 			buildOverrideDefaultTenantDiscriminatorColumnHolder(),
 			null
 		);
@@ -159,11 +159,11 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			protected String displayString(EclipseLinkMultitenantType2_3 value) {
 				switch (value) {
 					case SINGLE_TABLE :
-						return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_single_table;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_SINGLE_TABLE;
 					case TABLE_PER_TENANT :
-						return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_table_per_tenant;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_TABLE_PER_TENANT;
 					case VPD :
-						return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_vpd;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_VPD;
 					default :
 						throw new IllegalStateException();
 				}
@@ -206,9 +206,9 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteriaWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA_WITH_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteria;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA;
 			}
 		};
 	}

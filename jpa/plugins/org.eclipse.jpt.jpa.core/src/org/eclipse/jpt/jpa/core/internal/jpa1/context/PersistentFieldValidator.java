@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistentFieldValidator
@@ -31,10 +31,10 @@ public class PersistentFieldValidator
 	@Override
 	protected void validateMappedAttribute(List<IMessage> messages) {
 		if (this.fieldAccessor.isFinal()) {
-			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
+			messages.add(this.buildAttributeMessage(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
 		}
 		if (this.fieldAccessor.isPublic()) {
-			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
+			messages.add(this.buildAttributeMessage(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
 		}
 	}
 }

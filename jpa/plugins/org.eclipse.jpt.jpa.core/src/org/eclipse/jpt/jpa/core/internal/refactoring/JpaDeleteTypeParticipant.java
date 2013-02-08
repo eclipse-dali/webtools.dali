@@ -30,7 +30,7 @@ public class JpaDeleteTypeParticipant
 
 	@Override
 	public String getName() {
-		return JpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_PARTICIPANT_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_PARTICIPANT_NAME;
 	}
 
 

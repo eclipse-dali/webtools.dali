@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -68,7 +68,7 @@ public class JavaNullTypeMapping
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
+				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
 				new String[] {this.getPersistentType().getName()},
 				this,
 				this.getValidationTextRange()

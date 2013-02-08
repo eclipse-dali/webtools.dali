@@ -20,9 +20,9 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -330,7 +330,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
+					JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
 					new String[] {this.getName()},
 					this,
 					this.mapping.getClassTextRange()

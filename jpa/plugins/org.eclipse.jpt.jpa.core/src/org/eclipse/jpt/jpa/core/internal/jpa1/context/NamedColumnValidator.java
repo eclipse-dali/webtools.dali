@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class NamedColumnValidator
 	extends AbstractNamedColumnValidator<ReadOnlyBaseColumn>
@@ -38,11 +38,11 @@ public class NamedColumnValidator
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME;
 	}
 }

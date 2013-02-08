@@ -51,10 +51,10 @@ public class EclipseLinkStructConverterComposite
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_NAME_TEXT_LABEL);
 		this.addText(container, buildNameTextHolder());
 
-		Hyperlink classHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_classLabel);
+		Hyperlink classHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_CLASS_LABEL);
 		this.addClassChooser(container, classHyperlink);
 	}
 

@@ -19,10 +19,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -131,7 +131,7 @@ public class GenericOrmAttributeOverride
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED,
+						JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange()

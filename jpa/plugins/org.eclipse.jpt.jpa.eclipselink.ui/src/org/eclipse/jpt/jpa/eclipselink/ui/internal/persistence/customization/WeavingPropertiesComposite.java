@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Weaving;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -45,13 +45,13 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Weaving
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LABEL);
 		this.addWeavingCombo(container);
 
 		// Weaving Lazy
 		TriStateCheckBox weavingLazyCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL,
 			this.buildWeavingLazyHolder(),
 			this.buildWeavingLazyStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -63,7 +63,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 		// Weaving Fetch Groups
 		TriStateCheckBox weavingFetchGroupsCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL,
 			this.buildWeavingFetchGroupsHolder(),
 			this.buildWeavingFetchGroupsStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -75,7 +75,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 		// Weaving Internal
 		TriStateCheckBox weavingInternalCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingInternalLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL,
 			this.buildWeavingInternalHolder(),
 			this.buildWeavingInternalStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -87,7 +87,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 		// Weaving Eager
 		TriStateCheckBox weavingEagerCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL,
 			this.buildWeavingEagerHolder(),
 			this.buildWeavingEagerStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -99,7 +99,7 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 		// Weaving Change Tracking
 		TriStateCheckBox weavingChangeTrackingCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL,
 			this.buildWeavingChangeTrackingHolder(),
 			this.buildWeavingChangeTrackingStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -133,11 +133,11 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			protected String displayString(Weaving value) {
 				switch (value) {
 					case true_ :
-						return EclipseLinkUiMessages.WeavingComposite_true_;
+						return JptJpaEclipseLinkUiMessages.WEAVING_COMPOSITE_TRUE_;
 					case false_ :
-						return EclipseLinkUiMessages.WeavingComposite_false_;
+						return JptJpaEclipseLinkUiMessages.WEAVING_COMPOSITE_FALSE_;
 					case static_ :
-						return EclipseLinkUiMessages.WeavingComposite_static_;
+						return JptJpaEclipseLinkUiMessages.WEAVING_COMPOSITE_STATIC_;
 					default :
 						throw new IllegalStateException();
 				}
@@ -183,9 +183,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL;
 			}
 		};
 	}
@@ -228,9 +228,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL;
 			}
 		};
 	}
@@ -273,9 +273,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingInternalLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingInternalLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL;
 			}
 		};
 	}
@@ -319,9 +319,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL;
 			}
 		};
 	}
@@ -364,9 +364,9 @@ public class WeavingPropertiesComposite extends Pane<Customization>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL;
 			}
 		};
 	}

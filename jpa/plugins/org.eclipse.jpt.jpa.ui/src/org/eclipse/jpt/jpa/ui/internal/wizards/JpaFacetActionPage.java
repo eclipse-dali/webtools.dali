@@ -13,8 +13,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.swt.SWT;
@@ -40,8 +40,8 @@ public abstract class JpaFacetActionPage
 
 	protected JpaFacetActionPage(String pageName) {
 		super(pageName);
-		setTitle(JptUiMessages.JpaFacetWizardPage_title);
-		setDescription(JptUiMessages.JpaFacetWizardPage_description);
+		setTitle(JptJpaUiMessages.JpaFacetWizardPage_title);
+		setDescription(JptJpaUiMessages.JpaFacetWizardPage_description);
 		setImageDescriptor(JptJpaUiImages.JPA_PROJECT_BANNER);
 	}
 	
@@ -160,7 +160,7 @@ public abstract class JpaFacetActionPage
 		
 		public PlatformGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
+			group.setText(JptJpaUiMessages.JpaFacetWizardPage_platformLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
@@ -181,7 +181,7 @@ public abstract class JpaFacetActionPage
 			final Composite librariesComposite 
 				= (Composite) LibraryProviderFrameworkUi.createInstallLibraryPanel(
 					composite, librariesInstallDelegate, 
-					JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel );
+					JptJpaUiMessages.JpaFacetWizardPage_jpaImplementationLabel );
 			librariesComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(librariesComposite, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);			
 		}
@@ -197,15 +197,15 @@ public abstract class JpaFacetActionPage
 		
 		public PersistentClassManagementGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
+			group.setText(JptJpaUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
-			discoverClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
+			discoverClassesButton = createButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
 			synchHelper.synchRadio(discoverClassesButton, DISCOVER_ANNOTATED_CLASSES, null);
 			
-			listClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_listClassesButton, SWT.RADIO);
+			listClassesButton = createButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_listClassesButton, SWT.RADIO);
 			synchHelper.synchRadio(listClassesButton, LIST_ANNOTATED_CLASSES, null);
 		}
 	}

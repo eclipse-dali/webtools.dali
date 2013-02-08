@@ -20,10 +20,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.AccessType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -162,13 +162,13 @@ public class OrmFileCreationDataModelProvider
 	
 	protected DataModelPropertyDescriptor accessPropertyDescriptor(String accessType) {
 		return (accessType == null) ?
-				new DataModelPropertyDescriptor(null, JptCoreMessages.NONE) :
+				new DataModelPropertyDescriptor(null, JptJpaCoreMessages.NONE) :
 				new DataModelPropertyDescriptor(accessType);
 	}
 	
 	DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {
 		return StringTools.isBlank(persistenceUnitName) ?
-				new DataModelPropertyDescriptor(null, JptCoreMessages.NONE) :
+				new DataModelPropertyDescriptor(null, JptJpaCoreMessages.NONE) :
 				new DataModelPropertyDescriptor(persistenceUnitName);
 	}
 	
@@ -199,10 +199,10 @@ public class OrmFileCreationDataModelProvider
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		if (addToPUnit) {
 			if (StringTools.isBlank(pUnitName)) {
-				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName);
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName);
 			}
 			if (getPersistenceUnit() == null) {
-				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName);
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName);
 			}
 		}
 		return Status.OK_STATUS;

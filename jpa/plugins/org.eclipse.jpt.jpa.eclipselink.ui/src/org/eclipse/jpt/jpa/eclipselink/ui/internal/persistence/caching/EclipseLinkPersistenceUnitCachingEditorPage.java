@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.FlushClearCache;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -40,8 +40,8 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 	protected void initializeLayout(Composite container) {
 		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle);
-		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription);
+		section.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SECTION_TITLE);
+		section.setDescription(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SECTION_DESCRIPTION);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
@@ -68,7 +68,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 		entitiesComposite.getControl().setLayoutData(gridData);
 
 		// Flush Clear Cache
-		this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
+		this.addLabel(client, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_FLUSH_CLEAR_CACHE_LABEL);
 		this.addFlushClearCacheCombo(client);
 	}
 
@@ -99,11 +99,11 @@ public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 			protected String displayString(FlushClearCache value) {
 				switch (value) {
 					case drop :
-						return EclipseLinkUiMessages.FlushClearCacheComposite_drop;
+						return JptJpaEclipseLinkUiMessages.FLUSH_CLEAR_CACHE_COMPOSITE_DROP;
 					case drop_invalidate :
-						return EclipseLinkUiMessages.FlushClearCacheComposite_drop_invalidate;
+						return JptJpaEclipseLinkUiMessages.FLUSH_CLEAR_CACHE_COMPOSITE_DROP_INVALIDATE;
 					case merge :
-						return EclipseLinkUiMessages.FlushClearCacheComposite_merge;
+						return JptJpaEclipseLinkUiMessages.FLUSH_CLEAR_CACHE_COMPOSITE_MERGE;
 					default :
 						throw new IllegalStateException();
 				}

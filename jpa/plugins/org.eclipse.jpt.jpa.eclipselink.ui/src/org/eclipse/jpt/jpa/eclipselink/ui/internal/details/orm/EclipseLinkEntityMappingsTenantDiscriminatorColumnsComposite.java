@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorC
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -45,13 +45,13 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(
 			container,
-			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumns_groupLabel
+			JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMNS_GROUP_LABEL
 		);
 
 		// Override Default Tenant Discriminator Columns check box
 		addCheckBox(
 			tenantDiscriminatorColumnGroupPane,
-			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancy_overrideDefaultTenantDiscriminatorColumns,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_OVERRIDE_DEFAULT_TENANT_DISCRIMINATOR_COLUMNS,
 			buildOverrideDefaultTenantDiscriminatorColumnHolder(),
 			null
 		);

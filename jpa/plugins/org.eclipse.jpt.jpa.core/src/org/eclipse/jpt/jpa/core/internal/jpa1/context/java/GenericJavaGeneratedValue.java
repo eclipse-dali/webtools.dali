@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -206,7 +206,7 @@ public class GenericJavaGeneratedValue
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.UNRESOLVED_GENERATOR_NAME, //TODO KFB need a different message for virtual
+					JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME, //TODO KFB need a different message for virtual
 					new String[] {generator},
 					this.getAttributeMapping(),
 					this.getAttributeMapping().getPersistentAttribute().getValidationTextRange()
@@ -217,7 +217,7 @@ public class GenericJavaGeneratedValue
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.UNRESOLVED_GENERATOR_NAME,
+						JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME,
 						new String[] {generator},
 						this.getAttributeMapping(),
 						this.getGeneratorTextRange()

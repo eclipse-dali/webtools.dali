@@ -11,12 +11,12 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OverrideValidator.OverrideDescriptionProvider;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 
 public class MappedSuperclassOverrideDescriptionProvider implements OverrideDescriptionProvider
 {
 	public String getOverrideDescriptionMessage() {
-		return JpaValidationDescriptionMessages.ON_MAPPED_SUPERCLASS;
+		return JptJpaCoreValidationDescriptionMessages.ON_MAPPED_SUPERCLASS;
 	}
 
 }

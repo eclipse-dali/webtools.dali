@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.persistence.jpa.jpql.util.XmlEscapeCharacterConverter;
 import org.eclipse.swt.graphics.Image;
@@ -136,7 +136,7 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 			return buildProposals(namedQuery, jpqlQuery, tokenStart, tokenEnd, position[0], resourceManager);
 		}
 		catch (Exception ex) {
-			JptJpaUiPlugin.instance().logError(ex, JptUiMessages.JpaJpqlSseCompletionProposalComputer_Error);
+			JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JpaJpqlSseCompletionProposalComputer_Error);
 		}
 		finally {
 			monitor.done();

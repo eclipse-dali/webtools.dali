@@ -15,7 +15,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -82,7 +82,7 @@ public class JpaPreferencesPage extends PreferencePage
 		parent.setLayout(layout);
 
 		Label description = new Label(parent, SWT.NONE);
-		description.setText(JptUiMessages.JpaPreferencesPage_description);
+		description.setText(JptJpaUiMessages.JpaPreferencesPage_description);
 
 		this.addEntityGenGroup(parent);
 		this.addJpqlEditorGroup(parent);
@@ -145,12 +145,12 @@ public class JpaPreferencesPage extends PreferencePage
 
 		// Entity Gen group box
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(JptUiMessages.JpaPreferencesPage_entityGen);
+		group.setText(JptJpaUiMessages.JpaPreferencesPage_entityGen);
 		group.setLayout(new GridLayout(2, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// default package
-		this.buildLabel(group, 1, JptUiMessages.JpaPreferencesPage_entityGen_defaultPackageLabel);
+		this.buildLabel(group, 1, JptJpaUiMessages.JpaPreferencesPage_entityGen_defaultPackageLabel);
 		this.defaultPackageText = this.buildText(group, 1);
 		this.defaultPackageText.setText(JpaPreferences.getEntityGenDefaultPackageName());
 	}
@@ -159,7 +159,7 @@ public class JpaPreferencesPage extends PreferencePage
 
 		// JPQL Editing group box
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor);
+		group.setText(JptJpaUiMessages.JpaPreferencesPage_jpqlEditor);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -170,24 +170,24 @@ public class JpaPreferencesPage extends PreferencePage
 		layout.marginBottom = 10;
 		jpqlQueryTextAreaComposite.setLayout(layout);
 
-		this.buildLabel(jpqlQueryTextAreaComposite, 1, JptUiMessages.JpaPreferencesPage_jpqlEditor_textAreaNumberOfLines);
+		this.buildLabel(jpqlQueryTextAreaComposite, 1, JptJpaUiMessages.JpaPreferencesPage_jpqlEditor_textAreaNumberOfLines);
 		this.numberOfLinesInJpqlQuerySpinner = new Spinner(jpqlQueryTextAreaComposite, SWT.BORDER);
 		this.numberOfLinesInJpqlQuerySpinner.setValues(this.numberOfLinesInJpqlQueryTextArea, 0, 100, 0, 1, 10);
 		this.numberOfLinesInJpqlQuerySpinner.addSelectionListener(buildNumberOfLinesInJpqlQuerySelectionListener());
 
 		// Top description
 		Label description = new Label(group, SWT.NONE);
-		description.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_description);
+		description.setText(JptJpaUiMessages.JpaPreferencesPage_jpqlEditor_description);
 
 		// Uppercase radio button
 		this.lowerCaseRadioButton = new Button(group, SWT.RADIO);
-		this.lowerCaseRadioButton.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton);
+		this.lowerCaseRadioButton.setText(JptJpaUiMessages.JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton);
 		this.lowerCaseRadioButton.addSelectionListener(this.buildLowercaseSelectionListener());
 		this.lowerCaseRadioButton.setSelection(this.lowercase);
 
 		// Uppercase radio button
 		this.upperCaseRadioButton = new Button(group, SWT.RADIO);
-		this.upperCaseRadioButton.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_upperCaseRadioButton);
+		this.upperCaseRadioButton.setText(JptJpaUiMessages.JpaPreferencesPage_jpqlEditor_upperCaseRadioButton);
 		this.upperCaseRadioButton.addSelectionListener(this.buildUppercaseSelectionListener());
 		this.upperCaseRadioButton.setSelection( ! this.lowercase);
 
@@ -195,7 +195,7 @@ public class JpaPreferencesPage extends PreferencePage
 
 		// Match Case of First Letter check box
 		this.matchFirstCharacterCaseCheckBox = new Button(group, SWT.CHECK);
-		this.matchFirstCharacterCaseCheckBox.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton);
+		this.matchFirstCharacterCaseCheckBox.setText(JptJpaUiMessages.JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton);
 		this.matchFirstCharacterCaseCheckBox.addSelectionListener(buildMatchFirstCharacterCaseSelectionListener());
 		this.matchFirstCharacterCaseCheckBox.setSelection(this.matchFirstCharacterCase);
 	}

@@ -65,7 +65,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableD
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -78,6 +77,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -983,7 +983,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+					JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 					new String[] {this.getFullyQualifiedAttributeType()},
 					this,
 					this.getAttributeTypeTextRange()
@@ -1030,7 +1030,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
+					JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getMapKeyClassTextRange()
@@ -1049,7 +1049,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
 						new String[] {this.getFullyQualifiedMapKeyClass()},
 						this,
 						this.getMapKeyClassTextRange()
@@ -1062,7 +1062,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+					JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					new String[] {this.getFullyQualifiedMapKeyClass()},
 					this,
 					this.getMapKeyClassTextRange()

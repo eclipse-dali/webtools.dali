@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
@@ -57,7 +57,7 @@ public class JavaEclipseLinkMappedSuperclass2_3Composite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets
@@ -75,7 +75,7 @@ public class JavaEclipseLinkMappedSuperclass2_3Composite
 	protected void initializeMultitenancyCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_multitenancy);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_MULTITENANCY);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

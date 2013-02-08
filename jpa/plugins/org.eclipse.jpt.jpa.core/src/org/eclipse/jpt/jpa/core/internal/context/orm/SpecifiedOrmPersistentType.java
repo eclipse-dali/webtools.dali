@@ -59,13 +59,13 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -1270,7 +1270,7 @@ public abstract class SpecifiedOrmPersistentType
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
+					JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
 					new String[] {this.getName()},
 					this,
 					this.mapping.getClassTextRange()

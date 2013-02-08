@@ -40,6 +40,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
@@ -53,13 +54,13 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.VirtualOrmXmlRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
+import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -69,8 +70,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUn
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
@@ -78,6 +77,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.Eclipse
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -619,7 +619,7 @@ public class EclipseLinkPersistenceUnit
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING,
+						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING,
 						new String[] {property.getName()},
 						this.getPersistenceUnit(),
 						property.getValidationTextRange()
@@ -630,7 +630,7 @@ public class EclipseLinkPersistenceUnit
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_LEGACY_DESCRIPTOR_CUSTOMIZER,
+						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_LEGACY_DESCRIPTOR_CUSTOMIZER,
 						new String[] {property.getName()},
 						this.getPersistenceUnit(),
 						property.getValidationTextRange()
@@ -654,7 +654,7 @@ public class EclipseLinkPersistenceUnit
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED,
+						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED,
 						new String[] {cachingProperty.getName()},
 						this.getPersistenceUnit(),
 						cachingProperty.getValidationTextRange()
@@ -678,7 +678,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED,
 							EMPTY_STRING_ARRAY,
 							this.getPersistenceUnit(),
 							loggerProperty.getValidationTextRange()
@@ -688,7 +688,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_NOT_EXIST,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_EXIST,
 							new String[] {loggerProperty.getValue()},
 							this.getPersistenceUnit(),
 							loggerProperty.getValidationTextRange()
@@ -700,7 +700,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_IMPLEMENTS_SESSION_LOG,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_IMPLEMENTS_SESSION_LOG,
 							new String[] {loggerProperty.getValue()},
 							this.getPersistenceUnit(),
 							loggerProperty.getValidationTextRange()
@@ -719,7 +719,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED,
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED,
 							EMPTY_STRING_ARRAY,
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange()
@@ -729,7 +729,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_EXIST,
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_EXIST,
 							new String[] {handlerProperty.getValue()},
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange()
@@ -739,7 +739,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_VALID,
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_VALID,
 							new String[] {handlerProperty.getValue()},
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange()
@@ -751,7 +751,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_IMPLEMENTS_EXCEPTION_HANDLER,
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_IMPLEMENTS_EXCEPTION_HANDLER,
 							new String[] {handlerProperty.getValue()},
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange()
@@ -775,7 +775,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED,
 							EMPTY_STRING_ARRAY,
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange()
@@ -785,7 +785,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_EXIST,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_EXIST,
 							new String[] {profilerProperty.getValue()},
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange()
@@ -795,7 +795,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_VALID,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_VALID,
 							new String[] {profilerProperty.getValue()},
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange()
@@ -807,7 +807,7 @@ public class EclipseLinkPersistenceUnit
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER,
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER,
 							new String[] {profilerProperty.getValue()},
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange()
@@ -827,7 +827,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED,
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED,
 									EMPTY_STRING_ARRAY,
 									this.getPersistenceUnit(),
 									property.getValidationTextRange()
@@ -837,7 +837,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_EXIST,
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_EXIST,
 									new String[] {property.getValue()},
 									this.getPersistenceUnit(),
 									property.getValidationTextRange()
@@ -847,7 +847,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_VALID,
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_VALID,
 									new String[] {property.getValue()},
 									this.getPersistenceUnit(),
 									property.getValidationTextRange()
@@ -859,7 +859,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_IMPLEMENTS_SESSION_CUSTOMIZER,
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_IMPLEMENTS_SESSION_CUSTOMIZER,
 									new String[] {property.getValue()},
 									this.getPersistenceUnit(),
 									property.getValidationTextRange()
@@ -1011,7 +1011,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+							JptJpaEclipseLinkCoreValidationMessages.CONVERTER_DUPLICATE_NAME,
 							parms,
 							dup,
 							dup.getNameTextRange()
@@ -1063,7 +1063,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.LOW_SEVERITY,
-							EclipseLinkJpaValidationMessages.GENERATOR_EQUIVALENT,
+							JptJpaEclipseLinkCoreValidationMessages.GENERATOR_EQUIVALENT,
 							parms,
 							dup,
 							dup.getNameTextRange()
@@ -1088,7 +1088,7 @@ public class EclipseLinkPersistenceUnit
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.LOW_SEVERITY,
-							EclipseLinkJpaValidationMessages.QUERY_EQUIVALENT,
+							JptJpaEclipseLinkCoreValidationMessages.QUERY_EQUIVALENT,
 							parms,
 							dup,
 							dup.getNameTextRange()
@@ -1161,18 +1161,18 @@ public class EclipseLinkPersistenceUnit
 		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
 		HashMap<String, ArrayList<JavaQuery>> convertibleJavaQueries = this.getEclipseLinkConvertibleJavaQueries();
 		int work = this.calculateCumulativeSize(convertibleJavaQueries.values());
-		SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
+		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
 		for (Map.Entry<String, ArrayList<JavaQuery>> entry : convertibleJavaQueries.entrySet()) {
 			this.convertJavaQueriesWithSameName(queryContainer, entry, sm.newChild(entry.getValue().size()));
 		}
-		sm.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
+		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaQueriesWithSameName(OrmQueryContainer queryContainer, Map.Entry<String, ArrayList<JavaQuery>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
+			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
-		monitor.setTaskName(NLS.bind(JptCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_QUERY, entry.getKey()));
+		monitor.setTaskName(NLS.bind(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_QUERY, entry.getKey()));
 
 		ArrayList<JavaQuery> javaQueriesWithSameName = entry.getValue();
 		JavaQuery first = javaQueriesWithSameName.get(0);
@@ -1218,18 +1218,18 @@ public class EclipseLinkPersistenceUnit
 	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
 		HashMap<String, ArrayList<JavaGenerator>> convertibleJavaGenerators = this.getEclipseLinkConvertibleJavaGenerators();
 		int work = this.calculateCumulativeSize(convertibleJavaGenerators.values());
-		SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
+		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
 		for (Map.Entry<String, ArrayList<JavaGenerator>> entry : convertibleJavaGenerators.entrySet()) {
 			this.convertJavaGeneratorsWithSameName(entityMappings, entry, sm.newChild(entry.getValue().size()));
 		}
-		sm.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
+		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaGeneratorsWithSameName(EntityMappings entityMappings, Map.Entry<String, ArrayList<JavaGenerator>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
+			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
-		monitor.setTaskName(NLS.bind(JptCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_GENERATOR, entry.getKey()));
+		monitor.setTaskName(NLS.bind(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_GENERATOR, entry.getKey()));
 
 		ArrayList<JavaGenerator> javaGeneratorsWithSameName = entry.getValue();
 		JavaGenerator first = javaGeneratorsWithSameName.get(0);
@@ -1274,16 +1274,16 @@ public class EclipseLinkPersistenceUnit
 		OrmEclipseLinkConverterContainer ormConverterContainer = entityMappings.getConverterContainer();
 		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
 		int work = this.calculateCumulativeSize(convertibleJavaConverters.values());
-		SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
+		SubMonitor sm = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, work);
 		for (Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry : convertibleJavaConverters.entrySet()) {
 			this.convertJavaConvertersWithSameName(ormConverterContainer, entry, sm.newChild(entry.getValue().size()));
 		}
-		sm.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
+		sm.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaConvertersWithSameName(OrmEclipseLinkConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
+			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
 		monitor.setTaskName(NLS.bind(JptJpaEclipseLinkCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_CONVERTER, entry.getKey()));
 

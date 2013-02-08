@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
@@ -554,7 +554,7 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor buildConnectionDescriptor(String connectionName) {
-		String description = (connectionName == null) ? JptCoreMessages.NONE : null;
+		String description = (connectionName == null) ? JptJpaCoreMessages.NONE : null;
 		return new DataModelPropertyDescriptor(connectionName, description);
 	}
 	
@@ -658,7 +658,7 @@ public abstract class JpaFacetDataModelProvider
 	
 	protected IStatus validatePlatform() {
 		return (this.getPlatformConfig() == null) ?
-					JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED) :
+					JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED) :
 					OK_STATUS;
 	}
 	
@@ -670,10 +670,10 @@ public abstract class JpaFacetDataModelProvider
 	protected IStatus validateNonNullConnection(String connectionName) {
 		ConnectionProfile cp = this.getConnectionProfile(connectionName);
 		if (cp == null) {
-			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName);
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName);
 		}
 		if ( ! cp.isActive()) {
-			return JptJpaCorePlugin.instance().buildStatus(IStatus.INFO, JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
+			return JptJpaCorePlugin.instance().buildStatus(IStatus.INFO, JptJpaCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
 		}
 		return OK_STATUS;
 	}
@@ -681,7 +681,7 @@ public abstract class JpaFacetDataModelProvider
 	protected IStatus validateUserOverrideDefaultCatalog() {
 		if (this.userWantsToOverrideDefaultCatalog()) {
 			if (this.getUserOverrideDefaultCatalog() == null) {
-				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
 			}
 		}
 		return OK_STATUS;
@@ -690,7 +690,7 @@ public abstract class JpaFacetDataModelProvider
 	protected IStatus validateUserOverrideDefaultSchema() {
 		if (this.userWantsToOverrideDefaultSchema()) {
 			if (this.getUserOverrideDefaultSchema() == null) {
-				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
 			}
 		}
 		return OK_STATUS;

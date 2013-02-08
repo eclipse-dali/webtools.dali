@@ -13,7 +13,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.platform.base.AbstractJpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.GenericJavaGeneratorConversionWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.GenericJavaQueryConversionWizardPage;
@@ -31,7 +31,7 @@ public class GenericJpaPlatformUi
 	// ********** DDL generation **********
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		this.displayMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
+		this.displayMessage(JptJpaUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptJpaUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
 	
 	// ********** metadata conversion **********

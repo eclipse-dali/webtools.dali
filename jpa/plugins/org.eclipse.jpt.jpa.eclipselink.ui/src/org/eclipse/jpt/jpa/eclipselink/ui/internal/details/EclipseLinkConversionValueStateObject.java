@@ -73,16 +73,16 @@ final class EclipseLinkConversionValueStateObject extends AbstractNode
 
 	private void addDataValueProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.dataValue)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_STATE_OBJECT_DATA_VALUE_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 		else if (this.dataValues.contains(this.dataValue)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueAlreadyExists, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_STATE_OBJECT_DATA_VALUE_ALREADY_EXISTS, IMessageProvider.ERROR));
 		}
 	}
 
 	private void addObjectValueProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.objectValue)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_objectValueMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_STATE_OBJECT_OBJECT_VALUE_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 	}
 

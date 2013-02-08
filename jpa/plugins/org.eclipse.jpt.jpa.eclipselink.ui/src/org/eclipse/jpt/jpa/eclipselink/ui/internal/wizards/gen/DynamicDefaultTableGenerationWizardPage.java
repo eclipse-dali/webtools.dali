@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.SelectEclipseLinkMappingFileDialog;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
@@ -73,7 +73,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 	@Override
 	protected void createDomainJavaClassesPropertiesGroup(Composite composite, int columns) {
 		Group parent = new Group( composite, SWT.NONE);
-		parent.setText( JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_defaultTablePage_domainJavaClass);
+		parent.setText( JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__DEFAULT_TABLE_PAGE__DOMAIN_JAVA_CLASS);
 		parent.setLayout(new GridLayout( columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;
@@ -92,7 +92,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));	
 
 		this.xmlMappingFileLabel = new Label(composite, SWT.LEFT);
-		this.xmlMappingFileLabel.setText(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_defaultTablePage_xmlMappingFile);
+		this.xmlMappingFileLabel.setText(JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__DEFAULT_TABLE_PAGE__XML_MAPPING_FILE);
 		this.xmlMappingFileLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
 		this.xmlMappingFileText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -132,8 +132,8 @@ public class DynamicDefaultTableGenerationWizardPage extends
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		SelectMappingFileDialog dialog = new SelectEclipseLinkMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
-		dialog.setTitle(JptUiMessages.SelectMappingFileDialog_title);
-		dialog.setMessage(JptUiMessages.SelectMappingFileDialog_message);
+		dialog.setTitle(JptJpaUiMessages.SelectMappingFileDialog_title);
+		dialog.setMessage(JptJpaUiMessages.SelectMappingFileDialog_message);
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.xmlMappingFileText.getText();

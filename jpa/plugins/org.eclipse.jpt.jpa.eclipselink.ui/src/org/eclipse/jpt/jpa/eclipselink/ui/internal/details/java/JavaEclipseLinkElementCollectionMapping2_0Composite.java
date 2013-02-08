@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollection
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
@@ -53,7 +53,7 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCHCOMPOSITE_LABEL);
 		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Collection table widgets

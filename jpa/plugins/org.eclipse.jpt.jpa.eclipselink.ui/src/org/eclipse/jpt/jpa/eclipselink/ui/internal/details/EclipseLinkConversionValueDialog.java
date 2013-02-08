@@ -59,8 +59,8 @@ public class EclipseLinkConversionValueDialog
 
 	private static String buildTitle(EclipseLinkConversionValue conversionValue) {
 		return (conversionValue == null) ?
-				EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValue :
-				EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValue;
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_ADD_CONVERSION_VALUE :
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_EDIT_CONVERSION_VALUE;
 	}
 
 	@Override
@@ -85,15 +85,15 @@ public class EclipseLinkConversionValueDialog
 	@Override
 	protected String getDescriptionTitle() {
 		return (this.isAddDialog()) ?
-			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValueDescriptionTitle :
-			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValueDescriptionTitle;
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_ADD_CONVERSION_VALUE_DESCRIPTION_TITLE :
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_EDIT_CONVERSION_VALUE_DESCRIPTION_TITLE;
 	}
 	
 	@Override
 	protected String getDescription() {
 		return (this.isAddDialog()) ?
-			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_addConversionValueDescription :
-			EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_editConversionValueDescription;
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_ADD_CONVERSION_VALUE_DESCRIPTION :
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_EDIT_CONVERSION_VALUE_DESCRIPTION;
 	}
 	
 	@Override
@@ -162,13 +162,13 @@ public class EclipseLinkConversionValueDialog
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.addLabel(container,EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_dataValue);
+			this.addLabel(container,JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_DATA_VALUE);
 			this.dataValueText = this.addText(
 				container,
 				buildDataValueHolder()
 			);
 			
-			this.addLabel(container,EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_objectValue);
+			this.addLabel(container,JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERSION_VALUE_DIALOG_OBJECT_VALUE);
 			this.objectValueText = this.addText(
 				container,
 				buildObjectValueHolder()

@@ -67,7 +67,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper.EscapeType;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
 import org.eclipse.swt.SWT;
@@ -488,7 +488,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 		// Add the context assist icon at the top left corner of the StyledText
 		ControlDecoration decoration = new ControlDecoration(styledText, SWT.LEFT | SWT.TOP);
-		decoration.setDescriptionText(NLS.bind(JptUiMessages.JpqlContentProposalProvider_Description, key));
+		decoration.setDescriptionText(NLS.bind(JptJpaUiMessages.JpqlContentProposalProvider_Description, key));
 		decoration.setImage(contentAssistImage());
 		decoration.setShowOnlyOnFocus(true);
 	}
@@ -525,7 +525,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	private ResourceBundle resourceBundle() {
 		if (resourceBundle == null) {
 			resourceBundle = ResourceBundle.getBundle(
-				"jpa_jpql_validation",
+				"jpt_jpa_core_jpql_validation",
 				Locale.getDefault(),
 				JpaJpqlQueryHelper.class.getClassLoader()
 			);

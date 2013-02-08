@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -81,7 +81,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
+			JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_GROUP_TITLE
 		);
 	}
 
@@ -173,8 +173,8 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			return null;
 		}
-		typeSelectionDialog.setTitle(EclipseLinkUiMessages.CachingEntityListComposite_dialogTitle);
-		typeSelectionDialog.setMessage(EclipseLinkUiMessages.CachingEntityListComposite_dialogMessage);
+		typeSelectionDialog.setTitle(JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_DIALOG_TITLE);
+		typeSelectionDialog.setMessage(JptJpaEclipseLinkUiMessages.CACHING_ENTITY_LIST_COMPOSITE_DIALOG_MESSAGE);
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];

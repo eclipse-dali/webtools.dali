@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -147,26 +147,26 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		hyperLink.setLayoutData(gridData);
 
 		// Driver
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_driverLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_DRIVER_LABEL);
 		this.initializeJdbcDriverClassChooser(container);
 
 		// Url
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_urlLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_URL_LABEL);
 		this.addText(container, buildUrlHolder());
 
 		// User
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_userLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_USER_LABEL);
 		this.addText(container, buildUserHolder());
 
 		// Password
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_passwordLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_PASSWORD_LABEL);
 		this.addPasswordText(container, buildPasswordHolder());
 
 		// Bind Parameters
 
 		TriStateCheckBox bindParametersCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL,
 			this.buildBindParametersHolder(),
 			this.buildBindParametersStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
@@ -237,9 +237,9 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL;
 			}
 		};
 	}
@@ -312,8 +312,8 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		 */
 		protected ConnectionSelectionDialog() {
 			super(JdbcConnectionPropertiesComposite.this.getShell_(), false);
-			setMessage(EclipseLinkUiMessages.JdbcConnectionPropertiesComposite_ConnectionDialog_Message);
-			setTitle(EclipseLinkUiMessages.JdbcConnectionPropertiesComposite_ConnectionDialog_Title);
+			setMessage(JptJpaEclipseLinkUiMessages.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_MESSAGE);
+			setTitle(JptJpaEclipseLinkUiMessages.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_TITLE);
 			setListLabelProvider(buildLabelProvider());
 			setDetailsLabelProvider(buildLabelProvider());
 		}

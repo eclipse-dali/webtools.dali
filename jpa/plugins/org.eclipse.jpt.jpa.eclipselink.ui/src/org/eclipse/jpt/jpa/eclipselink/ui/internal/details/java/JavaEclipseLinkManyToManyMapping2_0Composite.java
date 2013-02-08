@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
@@ -60,7 +60,7 @@ public class JavaEclipseLinkManyToManyMapping2_0Composite
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCHCOMPOSITE_LABEL);
 		new EclipseLinkJoinFetchComboViewer(this, this.buildJoinFetchModel(), container);
 
 		// Cascade widgets

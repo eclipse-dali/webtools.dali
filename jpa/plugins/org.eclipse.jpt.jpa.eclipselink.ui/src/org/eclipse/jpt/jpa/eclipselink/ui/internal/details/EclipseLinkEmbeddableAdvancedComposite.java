@@ -31,11 +31,11 @@ public class EclipseLinkEmbeddableAdvancedComposite extends EclipseLinkTypeMappi
 	@Override
 	protected void initializeLayout(Composite container) {
 		// customizer class chooser
-		Hyperlink customizerHyperlink = addHyperlink(container, EclipseLinkUiDetailsMessages.EclipseLinkCustomizerComposite_classLabel);
+		Hyperlink customizerHyperlink = addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CUSTOMIZER_COMPOSITE_CLASS_LABEL);
 		new EclipseLinkCustomizerClassChooser(this, this.buildCustomizerHolder(), container, customizerHyperlink);
 
 		// change tracking type
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_label); 
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CHANGE_TRACKING_COMPOSITE_LABEL); 
 		new EclipseLinkChangeTrackingComboViewer(this, this.buildChangeTrackingHolder(), container);
 	}
 }

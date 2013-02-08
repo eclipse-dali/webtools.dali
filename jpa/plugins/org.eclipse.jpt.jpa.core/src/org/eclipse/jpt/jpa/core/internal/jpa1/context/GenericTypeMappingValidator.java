@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericTypeMappingValidator
@@ -26,17 +26,17 @@ public class GenericTypeMappingValidator
 	protected void validateType(List<IMessage> messages) {
 		JavaResourceType jrt = this.getJavaResourceType();
 		if (jrt.isFinal()) {
-			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_FINAL_CLASS));
+			messages.add(this.buildTypeMessage(JptJpaCoreValidationMessages.TYPE_MAPPING_FINAL_CLASS));
 		}
 		if (jrt.getTypeBinding().isMemberTypeDeclaration()) {
-			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS));
+			messages.add(this.buildTypeMessage(JptJpaCoreValidationMessages.TYPE_MAPPING_MEMBER_CLASS));
 		}
 		if (jrt.hasNoArgConstructor()) {
 			if (jrt.hasPrivateNoArgConstructor()) {
-				messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR));
+				messages.add(this.buildTypeMessage(JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR));
 			}
 		} else {
-			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
+			messages.add(this.buildTypeMessage(JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
 		}
 	}
 }

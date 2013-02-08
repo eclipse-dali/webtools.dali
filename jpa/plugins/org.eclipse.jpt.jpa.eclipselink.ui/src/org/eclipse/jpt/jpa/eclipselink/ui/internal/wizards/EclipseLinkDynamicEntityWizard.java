@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
@@ -45,7 +45,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 
 	public EclipseLinkDynamicEntityWizard(IDataModel model) {
 		super(model);
-        setWindowTitle(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_title);
+        setWindowTitle(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TITLE);
         setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}
 
@@ -153,7 +153,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
     protected String getProjectName(IStructuredSelection iSelection) {
     	IProject iProject = this.extractProject(iSelection);
     	return iProject == null? 
-    			EclipseLinkUiMessages.DynamicEntityClassWizardPage_emptyString : 
+    			JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_EMPTY_STRING : 
     			iProject.getName();
 	}
 }

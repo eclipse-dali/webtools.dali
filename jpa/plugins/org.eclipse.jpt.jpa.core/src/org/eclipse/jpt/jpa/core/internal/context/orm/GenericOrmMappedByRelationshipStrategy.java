@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedByMapping;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -176,7 +176,7 @@ public class GenericOrmMappedByRelationshipStrategy
 		if (mappedByMapping == null) {
 			messages.add(
 				this.buildMessage(
-					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+					JptJpaCoreValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 					new String[] {this.mappedByAttribute}
 				)
 			);
@@ -186,7 +186,7 @@ public class GenericOrmMappedByRelationshipStrategy
 		if ( ! this.getRelationship().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
 				this.buildMessage(
-					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+					JptJpaCoreValidationMessages.MAPPING_INVALID_MAPPED_BY,
 					new String[] {this.mappedByAttribute}
 				)
 			);
@@ -198,7 +198,7 @@ public class GenericOrmMappedByRelationshipStrategy
 		if ( ! ((RelationshipMapping) mappedByMapping).isRelationshipOwner()) {
 			messages.add(
 				this.buildMessage(
-					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+					JptJpaCoreValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 					new String[] {this.mappedByAttribute}
 				)
 			);
@@ -207,7 +207,7 @@ public class GenericOrmMappedByRelationshipStrategy
 
 	protected IMessage buildMessage(String msgID, String[] parms) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
-		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
+		String attributeDescription = NLS.bind(JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

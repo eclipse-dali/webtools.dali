@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 
@@ -95,14 +95,14 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		IContainer container = this.getContainer();
 		IProject project = container.getProject();
 		if ( ! ProjectTools.hasFacet(project, JpaProject.FACET)) {
-			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_NOT_JPA);
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PROJECT_NOT_JPA);
 		}
 		if (! hasSupportedPlatform(project)) {
-			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
 		}
 		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
 		if ( ! resourceLocator.locationIsValid(container)) {
-			return JptJpaCorePlugin.instance().buildWarningStatus(JptCoreMessages.VALIDATE_CONTAINER_QUESTIONABLE);
+			return JptJpaCorePlugin.instance().buildWarningStatus(JptJpaCoreMessages.VALIDATE_CONTAINER_QUESTIONABLE);
 		}
 		return Status.OK_STATUS;
 	}

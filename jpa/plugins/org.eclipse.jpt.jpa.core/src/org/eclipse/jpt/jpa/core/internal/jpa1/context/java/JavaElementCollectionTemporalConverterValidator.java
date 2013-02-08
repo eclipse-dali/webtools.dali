@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTemporalConverterValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class JavaElementCollectionTemporalConverterValidator extends AbstractTemporalConverterValidator
 {
@@ -32,12 +32,12 @@ public class JavaElementCollectionTemporalConverterValidator extends AbstractTem
 
 	@Override
 	protected String getInvalidTemporalMappingType() {
-		return JpaValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE;
+		return JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE;
 	}
 
 	@Override
 	protected String getVirtualAttributeInvalidTemporalMappingType() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE;
 	}
 
 }

@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
@@ -44,7 +44,7 @@ public class JavaEclipseLinkMappedSuperclass1_2Composite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets

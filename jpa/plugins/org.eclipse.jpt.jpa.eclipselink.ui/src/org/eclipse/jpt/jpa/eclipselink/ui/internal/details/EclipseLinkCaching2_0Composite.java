@@ -89,13 +89,13 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 
 		final PropertyValueModel<Boolean> cacheableEnableModel = buildCacheableEnabler(cacheableHolder);
 
-		Label cacheTypeLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_label, cacheableEnableModel);
+		Label cacheTypeLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_LABEL, cacheableEnableModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		cacheTypeLabel.setLayoutData(gridData);
 		new EclipseLinkCacheTypeComboViewer(this, container, cacheableEnableModel);
 
-		Label cacheSizeLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheSizeComposite_size, cacheableEnableModel);
+		Label cacheSizeLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_SIZE_COMPOSITE_SIZE, cacheableEnableModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		cacheSizeLabel.setLayoutData(gridData);
@@ -109,7 +109,7 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 		gridData.horizontalIndent = 16;
 		gridData.horizontalSpan = 2;
 		advancedSection.setLayoutData(gridData);
-		advancedSection.setText(EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_advanced);
+		advancedSection.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_ADVANCED);
 
 
 		advancedSection.addExpansionListener(new ExpansionAdapter() {

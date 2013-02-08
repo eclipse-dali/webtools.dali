@@ -25,10 +25,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -183,7 +183,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.QUERY_NAME_UNDEFINED,
+					JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getNameTextRange()

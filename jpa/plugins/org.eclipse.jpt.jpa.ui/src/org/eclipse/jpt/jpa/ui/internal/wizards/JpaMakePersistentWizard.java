@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -44,7 +44,7 @@ public class JpaMakePersistentWizard
 		this.jpaProject = jpaProject;
 		this.selectedTypes = selectedTypes;
 		this.resourceManager = this.buildResourceManager();
-		this.setWindowTitle(JptUiMessages.JpaMakePersistentWizardPage_title);
+		this.setWindowTitle(JptJpaUiMessages.JpaMakePersistentWizardPage_title);
 		this.setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}
 

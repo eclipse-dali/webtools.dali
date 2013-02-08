@@ -99,4 +99,6 @@ Export-Package: org.eclipse.jpt.jpa.core,
  org.eclipse.jpt.jpa.core.resource.orm.v2_0,
  org.eclipse.jpt.jpa.core.resource.orm.v2_1,
  org.eclipse.jpt.jpa.core.resource.persistence,
- org.eclipse.jpt.jpa.core.resource.persistence.v2_0
+ org.eclipse.jpt.jpa.core.resource.persistence.v2_0,
+ org.eclipse.jpt.jpa.core.resource.persistence.v2_1,
+ org.eclipse.jpt.jpa.core.validation

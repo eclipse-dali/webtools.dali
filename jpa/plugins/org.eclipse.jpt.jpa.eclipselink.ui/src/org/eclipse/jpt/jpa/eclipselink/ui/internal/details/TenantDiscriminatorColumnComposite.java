@@ -55,19 +55,19 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_nameLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_NAME_LABEL);
 		this.addNameCombo(container);
 
 		// Table widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_tableLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_TABLE_LABEL);
 		this.addTableCombo(container);
 
 		// Context property widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_contextPropertyLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_CONTEXT_PROPERTY_LABEL);
 		this.addContextPropertyCombo(container);
 
 		// Discriminator Type widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_discriminatorTypeLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_DISCRIMINATOR_TYPE_LABEL);
 		this.addDiscriminatorTypeCombo(container);
 
 		// Length widgets
@@ -75,13 +75,13 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 		this.addLengthCombo(container);
 
 		// Column Definition widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_columnDefinitionLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_COLUMN_DEFINITION_LABEL);
 		this.addText(container, this.buildColumnDefinitionHolder(getSubjectHolder()));
 
 		// Primary key tri-state check box
 		TriStateCheckBox pkCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKey,
+			JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY,
 			buildPrimaryKeyHolder(),
 			buildPrimaryKeyStringHolder(),
 			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
@@ -390,9 +390,9 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKeyWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY_WITH_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKey;
+				return JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY;
 			}
 		};
 	}

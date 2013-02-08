@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -84,8 +84,8 @@ public abstract class OverrideValidator
 
 	protected String getUnresolvedOverrideTypeMessage() {
 		return this.override.isVirtual() ?
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE :
-				JpaValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE;
+				JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE :
+				JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE;
 	}
 
 	protected boolean validateName(List<IMessage> messages) {

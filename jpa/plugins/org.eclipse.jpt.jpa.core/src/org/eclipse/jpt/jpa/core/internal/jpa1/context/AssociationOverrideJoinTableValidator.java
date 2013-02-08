@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class AssociationOverrideJoinTableValidator
@@ -46,7 +46,7 @@ public class AssociationOverrideJoinTableValidator
 	protected IMessage buildVirtualOverrideUnresolvedNameMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
+			JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
 			new String[] {
 				this.override.getName(),
 				this.table.getName()
@@ -66,7 +66,7 @@ public class AssociationOverrideJoinTableValidator
 	protected IMessage buildVirtualOverrideUnresolvedCatalogMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
+			JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
 			new String[] {
 				this.override.getName(),
 				this.table.getCatalog()
@@ -86,7 +86,7 @@ public class AssociationOverrideJoinTableValidator
 	protected IMessage buildVirtualOverrideUnresolvedSchemaMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
+			JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 			new String[] {
 				this.override.getName(),
 				this.table.getSchema()

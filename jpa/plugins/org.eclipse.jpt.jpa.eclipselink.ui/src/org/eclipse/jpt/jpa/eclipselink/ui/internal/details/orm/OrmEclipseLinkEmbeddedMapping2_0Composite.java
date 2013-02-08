@@ -13,8 +13,8 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
@@ -46,11 +46,11 @@ public class OrmEclipseLinkEmbeddedMapping2_0Composite
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Attribute type widgets
-		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.OrmAttributeTypeComposite_attributeType);
+		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ORM_ATTRIBUTE_TYPE_COMPOSITE_ATTRIBUTE_TYPE);
 		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Overrides widgets

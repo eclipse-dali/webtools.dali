@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
 public class JpaFacetVersionChangeDataModelProvider
@@ -123,7 +123,7 @@ public class JpaFacetVersionChangeDataModelProvider
 		
 		if (status.isOK()) {
 			if (! getPlatformConfig().supportsJpaFacetVersion(getProjectFacetVersion())) {
-				status = JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
+				status = JptJpaCorePlugin.instance().buildErrorStatus(JptJpaCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
 			}
 		}
 		

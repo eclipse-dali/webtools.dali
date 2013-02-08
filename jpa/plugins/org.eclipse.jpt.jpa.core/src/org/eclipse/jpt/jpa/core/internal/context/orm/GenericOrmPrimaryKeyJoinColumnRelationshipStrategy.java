@@ -27,12 +27,12 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -195,7 +195,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	public String getColumnTableNotValidDescription() {
-		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
+		return JptJpaCoreValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 	protected TypeMapping getTypeMapping() {

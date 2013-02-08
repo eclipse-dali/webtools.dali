@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class TableValidator
 	extends AbstractTableValidator
@@ -21,7 +21,7 @@ public class TableValidator
 
 	@Override
 	protected String getUnresolvedCatalogMessage() {
-		return JpaValidationMessages.TABLE_UNRESOLVED_CATALOG;
+		return JptJpaCoreValidationMessages.TABLE_UNRESOLVED_CATALOG;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class TableValidator
 
 	@Override
 	protected String getUnresolvedSchemaMessage() {
-		return JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA;
+		return JptJpaCoreValidationMessages.TABLE_UNRESOLVED_SCHEMA;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class TableValidator
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.TABLE_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.TABLE_UNRESOLVED_NAME;
 	}
 
 	@Override

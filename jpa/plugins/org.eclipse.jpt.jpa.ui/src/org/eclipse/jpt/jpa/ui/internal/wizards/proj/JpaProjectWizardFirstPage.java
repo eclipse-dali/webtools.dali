@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.facet.FacetTools;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.proj.model.JpaProjectCreationDataModelProperties;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -30,8 +30,8 @@ public class JpaProjectWizardFirstPage
 	
 	public JpaProjectWizardFirstPage(IDataModel dataModel, String pageName) {
 		super(dataModel, pageName);
-		setTitle(JptUiMessages.NewJpaProjectWizard_firstPage_title);
-		setDescription(JptUiMessages.NewJpaProjectWizard_firstPage_description);
+		setTitle(JptJpaUiMessages.NewJpaProjectWizard_firstPage_title);
+		setDescription(JptJpaUiMessages.NewJpaProjectWizard_firstPage_description);
 		setInfopopID(JpaHelpContextIds.NEW_JPA_PROJECT);
 	}
 	

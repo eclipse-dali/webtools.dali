@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -46,17 +46,17 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// LoggingLevel:
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggingLevelLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_LOGGING_LEVEL_LABEL);
 		this.addLoggingLevelCombo(container);
 
 		this.logPropertiesComposite(container);
 
 		// LoggingFile:
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggingFileLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_LOGGING_FILE_LABEL);
 		this.addLogFileLocationComposite(container);
 		
 		// Logger:
-		Hyperlink loggerHyperlink = this.addHyperlink(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggerLabel);
+		Hyperlink loggerHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_LOGGER_LABEL);
 		new LoggerClassChooser(this, container, loggerHyperlink);
 	}
 
@@ -64,7 +64,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		// Timestamp:
 		TriStateCheckBox timestampCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL,
 			this.buildTimestampHolder(),
 			this.buildTimestampStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_TIMESTAMP
@@ -76,7 +76,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		// Thread:
 		TriStateCheckBox threadCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL,
 			this.buildThreadHolder(),
 			this.buildThreadStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_THREAD
@@ -86,7 +86,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		// Session:
 		TriStateCheckBox sessionCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL,
 			this.buildSessionHolder(),
 			this.buildSessionStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_SESSION
@@ -96,7 +96,7 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		// Exceptions:
 		TriStateCheckBox exceptionsCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL,
 			this.buildExceptionsHolder(),
 			this.buildExceptionsStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_EXCEPTIONS
@@ -133,23 +133,23 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 			protected String displayString(LoggingLevel value) {
 				switch (value) {
 					case all :
-						return EclipseLinkUiMessages.LoggingLevelComposite_all;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_ALL;
 					case config :
-						return EclipseLinkUiMessages.LoggingLevelComposite_config;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_CONFIG;
 					case fine :
-						return EclipseLinkUiMessages.LoggingLevelComposite_fine;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_FINE;
 					case finer :
-						return EclipseLinkUiMessages.LoggingLevelComposite_finer;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_FINER;
 					case finest :
-						return EclipseLinkUiMessages.LoggingLevelComposite_finest;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_FINEST;
 					case info :
-						return EclipseLinkUiMessages.LoggingLevelComposite_info;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_INFO;
 					case off :
-						return EclipseLinkUiMessages.LoggingLevelComposite_off;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_OFF;
 					case severe :
-						return EclipseLinkUiMessages.LoggingLevelComposite_severe;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_SEVERE;
 					case warning :
-						return EclipseLinkUiMessages.LoggingLevelComposite_warning;
+						return JptJpaEclipseLinkUiMessages.LOGGING_LEVEL_COMPOSITE_WARNING;
 					default :
 						throw new IllegalStateException();
 				}
@@ -218,12 +218,12 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 	
 			@Override
 			protected String getDefaultString() {
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultStdout;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_DEFAULT_STDOUT;
 			}
 	
 			@Override
 			protected String getDialogTitle() {
-				return EclipseLinkUiMessages.LoggingFileLocationComposite_dialogTitle;
+				return JptJpaEclipseLinkUiMessages.LOGGING_FILE_LOCATION_COMPOSITE_DIALOG_TITLE;
 			}
 	
 			@Override
@@ -256,9 +256,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL;
 			}
 		};
 	}
@@ -300,9 +300,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL;
 			}
 		};
 	}
@@ -345,9 +345,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL;
 			}
 		};
 	}
@@ -390,9 +390,9 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL;
 			}
 		};
 	}

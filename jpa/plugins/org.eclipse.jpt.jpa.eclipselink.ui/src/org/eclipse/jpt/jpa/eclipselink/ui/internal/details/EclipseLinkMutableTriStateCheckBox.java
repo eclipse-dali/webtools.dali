@@ -61,7 +61,7 @@ public class EclipseLinkMutableTriStateCheckBox extends Pane<EclipseLinkMutable>
 	protected void initializeLayout(Composite container) {
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkMutableComposite_mutableLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL,
 			buildMutableHolder(),
 			buildMutableStringHolder(),
 			null
@@ -89,9 +89,9 @@ public class EclipseLinkMutableTriStateCheckBox extends Pane<EclipseLinkMutable>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkMutableComposite_mutableLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkMutableComposite_mutableLabel;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL;
 			}
 		};
 	}

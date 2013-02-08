@@ -50,13 +50,13 @@ public class EclipseLinkTypeConverterComposite
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_NAME_TEXT_LABEL);
 		this.addText(container, buildNameTextHolder());
 		
-		Hyperlink dataTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.EclipseLinkTypeConverterComposite_dataTypeLabel);
+		Hyperlink dataTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_CONVERTER_COMPOSITE_DATA_TYPE_LABEL);
 		this.addDataTypeChooser(container, dataTypeHyperlink);
 		
-		Hyperlink objectTypeHyperlink = this.addHyperlink(container,  EclipseLinkUiDetailsMessages.EclipseLinkTypeConverterComposite_objectTypeLabel);
+		Hyperlink objectTypeHyperlink = this.addHyperlink(container,  JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_CONVERTER_COMPOSITE_OBJECT_TYPE_LABEL);
 		this.addObjectTypeChooser(container, objectTypeHyperlink);
 	}
 	

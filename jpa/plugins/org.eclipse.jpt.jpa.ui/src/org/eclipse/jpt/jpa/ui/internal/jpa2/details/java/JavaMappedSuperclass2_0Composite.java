@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
@@ -61,7 +61,7 @@ public class JavaMappedSuperclass2_0Composite
 	protected Control initializeMappedSuperclassSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, buildAccessReferenceModel(), container);
 
 		// Id class widgets

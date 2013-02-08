@@ -29,11 +29,11 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -255,17 +255,17 @@ public class GenericRootContextNode
 					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
 				return DefaultJpaValidationMessages.buildMessage(
 					severity,
-					JpaValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT,
+					JptJpaCoreValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT,
 					file);
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				severity,
-				JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
+				JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
 				file);
 		}
 		return DefaultJpaValidationMessages.buildMessage(
 			severity,
-			JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
+			JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML,
 			this);
 	}
 
@@ -300,7 +300,7 @@ public class GenericRootContextNode
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
+						JptJpaCoreValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
 						new String[] {jrat.getTypeBinding().getQualifiedName()},
 						jrat.getFile(),
 						jrat.getNameTextRange()
@@ -311,7 +311,7 @@ public class GenericRootContextNode
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
+						JptJpaCoreValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
 						new String[] {jrat.getName()},
 						jrat.getFile(),
 						jrat.getNameTextRange()

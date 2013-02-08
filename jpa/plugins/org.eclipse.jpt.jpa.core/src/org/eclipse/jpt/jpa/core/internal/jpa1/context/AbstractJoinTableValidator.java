@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public abstract class AbstractJoinTableValidator
 	extends AbstractTableValidator
@@ -26,16 +26,16 @@ public abstract class AbstractJoinTableValidator
 
 	@Override
 	protected String getUnresolvedCatalogMessage() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
+		return JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
 	}
 
 	@Override
 	protected String getUnresolvedSchemaMessage() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
+		return JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
 	}
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
 	}
 }

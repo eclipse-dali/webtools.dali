@@ -28,7 +28,7 @@ public class JpaMoveTypeParticipant
 
 	@Override
 	public String getName() {
-		return JpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_PARTICIPANT_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_PARTICIPANT_NAME;
 	}
 
 	@Override
@@ -88,26 +88,26 @@ public class JpaMoveTypeParticipant
 
 	@Override
 	protected String getCheckConditionsSubTaskName() {
-		return JpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_SUB_TASK_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_SUB_TASK_NAME;
 	}
 
 	@Override
 	protected String getCreateChangeSubTaskName() {
-		return JpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_SUB_TASK_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_SUB_TASK_NAME;
 	}
 
 	@Override
 	protected String getCompositeChangeName() {
-		return JpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_CHANGE_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_CHANGE_NAME;
 	}
 
 	@Override
 	protected String getPersistenceXmlChangeName() {
-		return JpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME;
 	}
 
 	@Override
 	protected String getMappingFileChangeName() {
-		return JpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_CHANGE_MAPPING_FILE_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_MOVE_TYPE_REFACTORING_CHANGE_MAPPING_FILE_NAME;
 	}
 }

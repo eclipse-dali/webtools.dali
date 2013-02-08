@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 import org.eclipse.swt.SWT;
@@ -60,10 +60,10 @@ public class SelectMappingFileDialog
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		Button newButton = new Button(composite, SWT.PUSH);
-		newButton.setText(JptUiMessages.SelectMappingFileDialog_newButton);
+		newButton.setText(JptJpaUiMessages.SelectMappingFileDialog_newButton);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_END);
 		newButton.setLayoutData(browseButtonData);		
-		newButton.setToolTipText(JptUiMessages.SelectMappingFileDialog_newButtonToolTip);
+		newButton.setToolTipText(JptJpaUiMessages.SelectMappingFileDialog_newButtonToolTip);
 		newButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				openNewMappingFileWizard();

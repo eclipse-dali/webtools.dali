@@ -23,8 +23,8 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -46,7 +46,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmReadOnlyPersistentAttribute unmappedPersistentAttribute) {
 		super(parentShell);
 		this.unmappedPersistentAttribute = unmappedPersistentAttribute;
-		setTitle(JptUiMessages.AddPersistentAttributeDialog_title);
+		setTitle(JptJpaUiMessages.AddPersistentAttributeDialog_title);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout(2, false));
 
-		createLabel(composite, 1, JptUiMessages.AddPersistentAttributeDialog_attributeLabel);
+		createLabel(composite, 1, JptJpaUiMessages.AddPersistentAttributeDialog_attributeLabel);
 
 		attributeText = createText(composite, 1);
 //		attributeText.addModifyListener(
@@ -70,7 +70,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		attributeText.setText(unmappedPersistentAttribute.getName());
 		attributeText.setEditable(false);
 
-		createLabel(composite, 1, JptUiMessages.AddPersistentClassDialog_mappingLabel);
+		createLabel(composite, 1, JptJpaUiMessages.AddPersistentClassDialog_mappingLabel);
 
 		mappingCombo = new ComboViewer(createCombo(composite, 1));
 		mappingCombo.getCombo().setFocus();
@@ -170,7 +170,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 //
 		String mappingKey = getMappingKey();
 		if (mappingKey == null) {
-			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptUiMessages.AddPersistentAttributeDialog_noMappingKeyError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiMessages.AddPersistentAttributeDialog_noMappingKeyError));
 			return;
 		}
 

@@ -41,11 +41,11 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -523,7 +523,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
+				JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
 				new String[] {name, javaType.getName()},
 				this.mapping,
 				this.mapping.getNameTextRange()

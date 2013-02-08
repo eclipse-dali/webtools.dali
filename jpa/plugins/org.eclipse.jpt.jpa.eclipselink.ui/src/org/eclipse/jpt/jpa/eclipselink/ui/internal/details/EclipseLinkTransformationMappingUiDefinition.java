@@ -49,11 +49,11 @@ public class EclipseLinkTransformationMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkTransformationMappingUiProvider_label;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TRANSFORMATION_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkTransformationMappingUiProvider_linkLabel;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TRANSFORMATION_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@SuppressWarnings("unchecked")

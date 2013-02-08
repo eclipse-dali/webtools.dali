@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGenerators2_0Composite;
 import org.eclipse.swt.layout.GridData;
@@ -107,7 +107,7 @@ public class EclipseLinkEntityMappingsDetailsPageManager2_3
 	protected void initializeMultitenancyCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_multitenancy);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_MULTITENANCY);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

@@ -15,7 +15,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
 import org.eclipse.swt.SWT;
@@ -251,7 +251,7 @@ public class JpaStructureView
 			this.composite = new Composite(parent, SWT.NULL);
 			this.composite.setLayout(new FillLayout());
 			Label label = new Label(this.composite, SWT.LEFT | SWT.TOP | SWT.WRAP);
-			label.setText(JptUiMessages.JpaStructureView_structureNotAvailable);
+			label.setText(JptJpaUiMessages.JpaStructureView_structureNotAvailable);
 		}
 
 		@Override

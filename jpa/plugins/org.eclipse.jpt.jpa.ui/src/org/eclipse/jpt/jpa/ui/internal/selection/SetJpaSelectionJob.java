@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
 /**
  * This job will not run until any currently outstanding Dali <em>updates</em> etc.
@@ -56,7 +56,7 @@ class SetJpaSelectionJob
 
 
 	SetJpaSelectionJob(Manager manager, JpaStructureNode selection) {
-		super(JptUiMessages.SetJpaSelection_jobName);
+		super(JptJpaUiMessages.SetJpaSelection_jobName);
 		this.setJpaSelectionRunnable = new SetJpaSelectionRunnable(manager, selection);
 		// if the selection is null we don't need a scheduling rule -
 		// the JPA selection can be set to null at any time

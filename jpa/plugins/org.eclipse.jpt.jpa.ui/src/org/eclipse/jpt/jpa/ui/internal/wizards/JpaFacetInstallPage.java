@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -98,7 +98,7 @@ public class JpaFacetInstallPage
 		
 		public ConnectionGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptUiMessages.JpaFacetWizardPage_connectionLabel);
+			group.setText(JptJpaUiMessages.JpaFacetWizardPage_connectionLabel);
 			group.setLayout(new GridLayout(3, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
@@ -117,7 +117,7 @@ public class JpaFacetInstallPage
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			connectionLink.setLayoutData(data);
-			connectionLink.setText(JptUiMessages.JpaFacetWizardPage_connectionLink);
+			connectionLink.setText(JptJpaUiMessages.JpaFacetWizardPage_connectionLink);
 			connectionLink.addSelectionListener(
 				new SelectionAdapter() {
 					@Override
@@ -131,7 +131,7 @@ public class JpaFacetInstallPage
 			data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			connectLink.setLayoutData(data);
-			connectLink.setText(JptUiMessages.JpaFacetWizardPage_connectLink);
+			connectLink.setText(JptJpaUiMessages.JpaFacetWizardPage_connectLink);
 			connectLink.setEnabled(false);
 			connectLink.addSelectionListener(
 				new SelectionAdapter() {
@@ -141,12 +141,12 @@ public class JpaFacetInstallPage
 					}
 				});
 			
-			addDriverLibraryButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_addDriverLibraryLabel, SWT.CHECK);
+			addDriverLibraryButton = createButton(group, 3, JptJpaUiMessages.JpaFacetWizardPage_addDriverLibraryLabel, SWT.CHECK);
 			addDriverLibraryButton.setSelection(false);
 			synchHelper.synchCheckbox(addDriverLibraryButton, USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, null);
 			
 			driverLibraryLabel = new Label(group, SWT.LEFT);
-			driverLibraryLabel.setText(JptUiMessages.JpaFacetWizardPage_driverLibraryLabel);
+			driverLibraryLabel.setText(JptJpaUiMessages.JpaFacetWizardPage_driverLibraryLabel);
 			GridData gd = new GridData();
 			gd.horizontalSpan = 1;
 			driverLibraryLabel.setLayoutData(gd);
@@ -156,12 +156,12 @@ public class JpaFacetInstallPage
 				driverLibraryCombo, DB_DRIVER_NAME, 
 				new Control[] {driverLibraryLabel});
 			
-			overrideDefaultCatalogButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel, SWT.CHECK);
+			overrideDefaultCatalogButton = createButton(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel, SWT.CHECK);
 			overrideDefaultCatalogButton.setSelection(false);
 			synchHelper.synchCheckbox(overrideDefaultCatalogButton, USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, null);
 			
 			defaultCatalogLabel = new Label(group, SWT.LEFT);
-			defaultCatalogLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
+			defaultCatalogLabel.setText(JptJpaUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
 			gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultCatalogLabel.setLayoutData(gd);
@@ -171,12 +171,12 @@ public class JpaFacetInstallPage
 				defaultCatalogCombo, USER_OVERRIDE_DEFAULT_CATALOG, 
 				new Control[] {defaultCatalogLabel});
 			
-			overrideDefaultSchemaButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
+			overrideDefaultSchemaButton = createButton(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
 			overrideDefaultSchemaButton.setSelection(false);
 			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, null);
 			
 			defaultSchemaLabel = new Label(group, SWT.LEFT);
-			defaultSchemaLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
+			defaultSchemaLabel.setText(JptJpaUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
 			gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultSchemaLabel.setLayoutData(gd);
@@ -233,10 +233,10 @@ public class JpaFacetInstallPage
 		private void updateConnectLink(ConnectionProfile cp) {
 			connectLink.setEnabled((cp != null) && cp.isDisconnected());
 			if (cp != null && cp.isConnected()) {
-				updateConnectLinkText(JptUiMessages.JpaFacetWizardPage_connectedText);
+				updateConnectLinkText(JptJpaUiMessages.JpaFacetWizardPage_connectedText);
 			}
 			else {
-				updateConnectLinkText(JptUiMessages.JpaFacetWizardPage_connectLink);
+				updateConnectLinkText(JptJpaUiMessages.JpaFacetWizardPage_connectLink);
 			}
 		}
 		
@@ -259,7 +259,7 @@ public class JpaFacetInstallPage
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_CREATE_ORM);
 
 			createOrmXmlButton = new Button(group, SWT.CHECK);
-			createOrmXmlButton.setText(JptUiMessages.JpaFacetWizardPage_createOrmXmlButton);
+			createOrmXmlButton.setText(JptJpaUiMessages.JpaFacetWizardPage_createOrmXmlButton);
 			synchHelper.synchCheckbox(createOrmXmlButton, CREATE_ORM_XML, null);
 		}
 	}

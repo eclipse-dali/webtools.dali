@@ -37,12 +37,12 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProv
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -462,7 +462,7 @@ public abstract class AbstractJavaIdMapping
 
 	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildMessage(
-				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
+				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				EMPTY_STRING_ARRAY
 			);
 	}
@@ -483,8 +483,8 @@ public abstract class AbstractJavaIdMapping
 
 	protected String getAttributeDescriptionTemplate() {
 		return this.getPersistentAttribute().isVirtual() ?
-				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+				JptJpaCoreValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC;
 	}
 
 	protected TextRange getTextRange() {

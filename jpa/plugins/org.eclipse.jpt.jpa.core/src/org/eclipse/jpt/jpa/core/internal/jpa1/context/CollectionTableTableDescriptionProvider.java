@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 
 public class CollectionTableTableDescriptionProvider
 	implements AbstractNamedColumnValidator.TableDescriptionProvider
 {
 	public String getColumnTableDescriptionMessage() {
-		return JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE;
+		return JptJpaCoreValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE;
 	}
 }

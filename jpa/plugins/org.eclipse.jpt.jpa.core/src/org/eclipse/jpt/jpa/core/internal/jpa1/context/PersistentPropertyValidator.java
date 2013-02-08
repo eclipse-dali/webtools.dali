@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistentPropertyValidator
@@ -33,10 +33,10 @@ public class PersistentPropertyValidator
 	//TODO validation for annotated setter? - would apply to EclipseLink too
 	protected void validateMappedAttribute(List<IMessage> messages) {
 		if (this.propertyAccessor.getResourceGetter() != null && this.propertyAccessor.getResourceGetter().isFinal()) {
-			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER));
+			messages.add(this.buildAttributeMessage(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER));
 		}
 		if (this.propertyAccessor.getResourceSetter() != null && this.propertyAccessor.getResourceSetter().isFinal()) {
-			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_SETTER));
+			messages.add(this.buildAttributeMessage(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_SETTER));
 		}
 	}
 }

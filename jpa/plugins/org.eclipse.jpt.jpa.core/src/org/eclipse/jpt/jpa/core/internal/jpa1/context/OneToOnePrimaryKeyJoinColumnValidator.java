@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class OneToOnePrimaryKeyJoinColumnValidator
 	extends PrimaryKeyJoinColumnValidator
@@ -25,21 +25,21 @@ public class OneToOnePrimaryKeyJoinColumnValidator
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 }

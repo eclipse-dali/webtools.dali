@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class AssociationOverrideValidator
 	extends OverrideValidator
@@ -34,16 +34,16 @@ public class AssociationOverrideValidator
 
 	@Override
 	protected String getVirtualOverrideUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVALID_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVALID_NAME;
 	}
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.ASSOCIATION_OVERRIDE_INVALID_NAME;
+		return JptJpaCoreValidationMessages.ASSOCIATION_OVERRIDE_INVALID_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVALID_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVALID_NAME;
 	}
 }

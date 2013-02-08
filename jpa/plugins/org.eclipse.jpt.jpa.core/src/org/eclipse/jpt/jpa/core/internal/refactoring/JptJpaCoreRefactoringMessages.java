@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,16 @@ package org.eclipse.jpt.jpa.core.internal.refactoring;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Localized messages used by Dali core.
+ * Localized messages used by Dali JPA core refactoring.
  */
-public class JpaCoreRefactoringMessages {
+public class JptJpaCoreRefactoringMessages {
 
+	private static final String BUNDLE_NAME = "jpt_jpa_core_refactoring"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaCoreRefactoringMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
+	
 	public static String JPA_DELETE_TYPE_REFACTORING_PARTICIPANT_NAME;
 	public static String JPA_DELETE_PACKAGE_OR_FOLDER_REFACTORING_PARTICIPANT_NAME;
 	public static String JPA_DELETE_TYPE_REFACTORING_CHANGE_NAME;
@@ -68,14 +74,7 @@ public class JpaCoreRefactoringMessages {
 	public static String JPA_MOVE_FOLDER_REFACTORING_CHANGE_PERSISTENCE_XML_NAME;
 	public static String JPA_MOVE_FOLDER_REFACTORING_SUB_TASK_NAME;
 
-	private static final String BUNDLE_NAME = "jpa_core_refactoring"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JpaCoreRefactoringMessages.class;
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
-	}
-	
-	private JpaCoreRefactoringMessages() {
+	private JptJpaCoreRefactoringMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

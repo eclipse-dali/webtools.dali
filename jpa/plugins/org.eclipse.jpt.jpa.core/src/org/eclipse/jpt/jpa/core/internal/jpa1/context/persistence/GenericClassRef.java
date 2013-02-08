@@ -31,8 +31,8 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -360,7 +360,7 @@ public class GenericClassRef
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
 					this,
 					this.getValidationTextRange()
 				)
@@ -372,7 +372,7 @@ public class GenericClassRef
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
 					new String[] {this.getJavaClassName()},
 					this,
 					this.getValidationTextRange()
@@ -386,7 +386,7 @@ public class GenericClassRef
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
+						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
 						new String[] {this.getJavaClassName()},
 						this,
 						this.getValidationTextRange()
@@ -399,7 +399,7 @@ public class GenericClassRef
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
+						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
 						new String[] {this.getJavaClassName()},
 						this,
 						this.getValidationTextRange()
@@ -421,7 +421,7 @@ public class GenericClassRef
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
 					new String[] {this.getJavaClassName(), mappingFileRef.getFileName()},
 					this,
 					this.getValidationTextRange()

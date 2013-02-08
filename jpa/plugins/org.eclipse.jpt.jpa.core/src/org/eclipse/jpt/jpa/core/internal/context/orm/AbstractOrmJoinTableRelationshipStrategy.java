@@ -19,10 +19,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTableContainer;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -185,7 +185,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy
 	}
 
 	public String getColumnTableNotValidDescription() {
-		return JpaValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE;
+		return JptJpaCoreValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE;
 	}
 
 	public String getJoinTableDefaultName() {

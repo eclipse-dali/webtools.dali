@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
 public class JpaRootContextNodeModelItemLabelProvider
 	extends AbstractItemExtendedLabelProvider<JpaRootContextNodeModel>
@@ -57,7 +57,7 @@ public class JpaRootContextNodeModelItemLabelProvider
 	{
 		@Override
 		public String transform(JpaRootContextNode root) {
-			String text = JptUiMessages.JpaContent_label;
+			String text = JptJpaUiMessages.JpaContent_label;
 			return (root != null) ? text : "[" + text + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
@@ -79,7 +79,7 @@ public class JpaRootContextNodeModelItemLabelProvider
 			}
 
 			StringBuilder sb = new StringBuilder();
-			sb.append(JptUiMessages.JpaContent_label);
+			sb.append(JptJpaUiMessages.JpaContent_label);
 			sb.append(" - ");  //$NON-NLS-1$
 			sb.append(root.getResource().getFullPath().makeRelative());
 			return sb.toString();

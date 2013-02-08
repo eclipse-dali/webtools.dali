@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractNamedColumnValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class OrderColumnValidator
 	extends AbstractNamedColumnValidator<OrderColumn2_0>
@@ -25,11 +25,11 @@ public class OrderColumnValidator
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME;
 	}
 }

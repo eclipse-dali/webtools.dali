@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractEntityMappingsDetailsPageManager;
@@ -101,7 +101,7 @@ public abstract class AbstractEclipseLinkEntityMappingsDetailsPageManager
 	protected void initializeConvertersCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_CONVERTERS);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

@@ -50,12 +50,12 @@ public class GenerateDynamicEntitiesFromSchemaWizard
 
 	public GenerateDynamicEntitiesFromSchemaWizard() {
 		super();
-		this.setWindowTitle(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_generateEntities);
+		this.setWindowTitle(JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__GENERATE_ENTITIES);
 	}
 	
 	public GenerateDynamicEntitiesFromSchemaWizard( JpaProject jpaProject, IStructuredSelection selection) {
 		super(jpaProject, selection);
-		this.setWindowTitle(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_generateEntities);
+		this.setWindowTitle(JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__GENERATE_ENTITIES);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		super.init(workbench, selection);
 		
-		this.setWindowTitle(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_generateEntities);
+		this.setWindowTitle(JptJpaEclipseLinkUiDynamicEntityGenMessages.GENERATE_DYNAMIC_ENTITIES_WIZARD__GENERATE_ENTITIES);
 	}
 
 	@Override

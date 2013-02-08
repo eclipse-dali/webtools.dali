@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,13 +16,13 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 
 public class EclipseLinkJavaConverterConversionWizardPage
 	extends EclipseLinkJavaMetadataConversionWizardPage
 {
 	public EclipseLinkJavaConverterConversionWizardPage(JpaProject jpaProject) {
-		super(jpaProject, EclipseLinkUiMessages.JavaConverterConversionWizardPage_title, EclipseLinkUiMessages.JavaConverterConversionWizardPage_description);
+		super(jpaProject, JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_EQUIVALENT_CONVERTERS_WARNING_TITLE, JptJpaEclipseLinkUiMessages.JAVA_CONVERTER_CONVERSION_WIZARD_PAGE_DESCRIPTION);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class EclipseLinkJavaConverterConversionWizardPage
 
 	@Override
 	protected String getMissingJavaMetadataWarningMessage() {
-		return EclipseLinkUiMessages.JavaMetadataConversion_noConvertersToConvert;
+		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_noConvertersToConvert;
 	}
 
 	/**
@@ -65,11 +65,11 @@ public class EclipseLinkJavaConverterConversionWizardPage
 
 	@Override
 	public String getEquivalentJavaMetadataWarningDialogTitle() {
-		return EclipseLinkUiMessages.JavaMetadataConversion_equivalentConvertersWarningTitle;
+		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_EQUIVALENT_CONVERTERS_WARNING_TITLE;
 	}
 
 	@Override
 	public String getEquivalentJavaMetadataWarningDialogMessage() {
-		return EclipseLinkUiMessages.JavaMetadataConversion_equivalentConvertersWarningMessage;
+		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_EQUIVALENT_CONVERTERS_WARNING_MESSAGE;
 	}
 }

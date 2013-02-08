@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.swt.graphics.Image;
@@ -119,7 +119,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 				return computeCompletionProposals((JavaContentAssistInvocationContext) context, monitor);
 			}
 			catch (Exception ex) {
-				JptJpaUiPlugin.instance().logError(ex, JptUiMessages.JpaJpqlJavaCompletionProposalComputer_Error);
+				JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JpaJpqlJavaCompletionProposalComputer_Error);
 			}
 			finally {
 				monitor.done();

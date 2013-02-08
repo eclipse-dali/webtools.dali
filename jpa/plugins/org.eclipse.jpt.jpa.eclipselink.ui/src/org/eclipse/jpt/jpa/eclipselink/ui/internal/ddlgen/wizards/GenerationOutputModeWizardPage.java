@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -32,8 +32,8 @@ public class GenerationOutputModeWizardPage extends WizardPage {
 	
 	public GenerationOutputModeWizardPage() {
 		super("Database Schema"); //$NON-NLS-1$
-		this.setTitle(EclipseLinkUiMessages.GenerationOutputModeWizardPage_title);
-		this.setMessage(EclipseLinkUiMessages.GenerationOutputModeWizardPage_desc);
+		this.setTitle(JptJpaEclipseLinkUiMessages.GENERATION_OUTPUT_MODE_WIZARD_PAGE_TITLE);
+		this.setMessage(JptJpaEclipseLinkUiMessages.GENERATION_OUTPUT_MODE_WIZARD_PAGE_DESC);
 	}
 
 	public void createControl(Composite parent) {
@@ -73,19 +73,19 @@ public class GenerationOutputModeWizardPage extends WizardPage {
 			GridLayout layout = new GridLayout(3, false);
 			outputModeGroup.setLayout(layout);
 			outputModeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			outputModeGroup.setText(EclipseLinkUiMessages.GenerationOutputModeWizardPage_generationOutputMode);
+			outputModeGroup.setText(JptJpaEclipseLinkUiMessages.GENERATION_OUTPUT_MODE_WIZARD_PAGE_GENERATION_OUTPUT_MODE);
 			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
 
 			SelectionListener outputModeButtonListener = this.buildOutputModeRadioButtonListener();
 
 			this.databaseButton = this.buildRadioButton(outputModeGroup, 
-				EclipseLinkUiMessages.OutputModeComposite_database, outputModeButtonListener, 3);
+				JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_DATABASE, outputModeButtonListener, 3);
 			
 			this.sqlScriptButton = this.buildRadioButton(outputModeGroup, 
-				EclipseLinkUiMessages.OutputModeComposite_sql_script, outputModeButtonListener, 3);
+				JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_SQL_SCRIPT, outputModeButtonListener, 3);
 			
 			this.bothButton = this.buildRadioButton(outputModeGroup, 
-				EclipseLinkUiMessages.OutputModeComposite_both, outputModeButtonListener, 3);
+				JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_BOTH, outputModeButtonListener, 3);
 
 			this.databaseButton.setSelection(true);
 			this.outputModeButtonChanged();

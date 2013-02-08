@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCaching2_0Composite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -64,7 +64,7 @@ public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Com
 	protected void initializeExistenceCheckingComposite(Composite container) {
 		this.addCheckBox( 
                  container, 
-                 EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_label, 
+                 JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXISTENCE_CHECKING_COMPOSITE_LABEL, 
                  buildExistenceCheckingHolder(), 
                  null);
 		this.addExistenceCheckingTypeCombo(container);

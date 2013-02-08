@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
@@ -52,7 +52,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPageDefinition
 	}
 
 	public String getTitleText() {
-		return EclipseLinkUiMessages.PersistenceXmlCachingTab_title;
+		return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_TITLE;
 	}
 
 	public String getHelpID() {

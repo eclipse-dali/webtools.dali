@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryContext;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractExpressionVisitor;
@@ -119,7 +119,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 				parentType,
 				element,
 				region,
-				JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
+				JptJpaUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
 			);
 		}
 
@@ -128,7 +128,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 			addOpenDeclarationHyperlink(
 				fieldType,
 				region,
-				JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaredType
+				JptJpaUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaredType
 			);
 		}
 	}
@@ -222,7 +222,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 		return buildOpenDeclarationHyperlink(
 			type,
 			region,
-			JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
+			JptJpaUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
 		);
 	}
 

@@ -30,8 +30,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
@@ -354,7 +354,7 @@ public abstract class AbstractJarFileRef
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,
 					this,
 					this.getValidationTextRange()
 				)
@@ -365,7 +365,7 @@ public abstract class AbstractJarFileRef
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.NORMAL_SEVERITY,
-				JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,
+				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,
 				this,
 				this.getValidationTextRange()
 			)
@@ -375,7 +375,7 @@ public abstract class AbstractJarFileRef
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,
 					new String[] {this.xmlJarFileRef.getFileName()},
 					this,
 					this.getValidationTextRange()

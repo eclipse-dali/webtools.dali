@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTemporalConverterValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class OrmTemporalConverterValidator extends AbstractTemporalConverterValidator
 {
@@ -27,7 +27,7 @@ public class OrmTemporalConverterValidator extends AbstractTemporalConverterVali
 
 	@Override
 	protected String getInvalidTemporalMappingType() {
-		return JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE;
+		return JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE;
 	}
 
 	@Override

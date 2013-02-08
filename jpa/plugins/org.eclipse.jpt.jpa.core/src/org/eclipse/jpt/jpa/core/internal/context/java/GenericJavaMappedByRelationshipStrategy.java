@@ -23,11 +23,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationship;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -209,7 +209,7 @@ public class GenericJavaMappedByRelationshipStrategy
 		if (mappedByMapping == null) {
 			messages.add(
 				this.buildMessage(
-					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+					JptJpaCoreValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 					new String[] {this.mappedByAttribute}
 				)
 			);
@@ -219,7 +219,7 @@ public class GenericJavaMappedByRelationshipStrategy
 		if ( ! this.getRelationship().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
 				this.buildMessage(
-					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+					JptJpaCoreValidationMessages.MAPPING_INVALID_MAPPED_BY,
 					new String[] {this.mappedByAttribute}
 				)
 			);
@@ -231,7 +231,7 @@ public class GenericJavaMappedByRelationshipStrategy
 		if ( ! ((RelationshipMapping) mappedByMapping).isRelationshipOwner()) {
 			messages.add(
 				this.buildMessage(
-					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+					JptJpaCoreValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 					new String[] {this.mappedByAttribute}
 				)
 			);
@@ -241,8 +241,8 @@ public class GenericJavaMappedByRelationshipStrategy
 	protected IMessage buildMessage(String msgID, String[] parms) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
-				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+				JptJpaCoreValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC;
 		TextRange textRange = attribute.isVirtual() ?
 				attribute.getValidationTextRange() :
 				this.getValidationTextRange();

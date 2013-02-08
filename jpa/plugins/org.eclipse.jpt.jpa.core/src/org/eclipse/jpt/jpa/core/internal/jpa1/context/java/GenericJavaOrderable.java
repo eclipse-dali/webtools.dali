@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -444,7 +444,7 @@ public class GenericJavaOrderable
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+							JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 							new String[] {this.getPersistentAttribute().getName()},
 							this.getAttributeMapping(),
 							this.getPersistentAttribute().getValidationTextRange()
@@ -455,7 +455,7 @@ public class GenericJavaOrderable
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+						JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 						new String[] {this.getPersistentAttribute().getName()},
 						this.getAttributeMapping(),
 						this.getOrderByAnnotationTextRange()

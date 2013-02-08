@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -80,7 +80,7 @@ public class MappingFileWizard extends Wizard
 	public MappingFileWizard(IDataModel dataModel) {
 		super();
 		this.dataModel = dataModel;
-		setWindowTitle(JptUiMessages.MappingFileWizard_title);
+		setWindowTitle(JptJpaUiMessages.MappingFileWizard_title);
 		setDefaultPageImageDescriptor(JptJpaUiImages.JPA_FILE_BANNER);
 	}
 	
@@ -198,15 +198,15 @@ public class MappingFileWizard extends Wizard
 	protected MappingFileNewFileWizardPage buildMappingFileNewFileWizardPage() {
 		return new MappingFileNewFileWizardPage(
 				"Page_1", this.mungedSelection, getDataModel(),
-				JptUiMessages.MappingFileWizardPage_newFile_title, 
-				JptUiMessages.MappingFileWizardPage_newFile_desc);
+				JptJpaUiMessages.MappingFileWizardPage_newFile_title, 
+				JptJpaUiMessages.MappingFileWizardPage_newFile_desc);
 	}
 	
 	protected MappingFileOptionsWizardPage buildMappingFileOptionsWizardPage() {
 		return new MappingFileOptionsWizardPage(
 				"Page_2", getDataModel(),
-				JptUiMessages.MappingFileWizardPage_options_title, 
-				JptUiMessages.MappingFileWizardPage_options_desc);
+				JptJpaUiMessages.MappingFileWizardPage_options_title, 
+				JptJpaUiMessages.MappingFileWizardPage_options_desc);
 	}
 	
 	@Override

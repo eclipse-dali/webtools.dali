@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching.EclipseLinkPersistenceUnitCachingEditorPage;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.swt.layout.GridData;
@@ -51,8 +51,8 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 	protected void initializeLayout(Composite container) {
 		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle);
-		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription);
+		section.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SECTION_TITLE);
+		section.setDescription(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SECTION_DESCRIPTION);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
@@ -74,16 +74,16 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 
 		// Defaults
 		// Default Cache Type
-		Label cacheTypeLabel = this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultCacheTypeLabel);
+		Label cacheTypeLabel = this.addLabel(client, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_CACHE_TYPE_LABEL);
 		Combo cacheTypeCombo = this.buildDefaultCacheTypeCombo(client).getControl();
 
 		// Default Cache Size
-		Label cacheSizeLabel = this.addLabel(client, EclipseLinkUiMessages.DefaultCacheSizeComposite_defaultCacheSize);
+		Label cacheSizeLabel = this.addLabel(client, JptJpaEclipseLinkUiMessages.DEFAULT_CACHE_SIZE_COMPOSITE_DEFAULT_CACHE_SIZE);
 		Combo cacheSizeCombo = this.addDefaultCacheSizeCombo(client).getControl();
 
 
 		// Flush Clear Cache
-		Label flushClearCacheLabel = this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
+		Label flushClearCacheLabel = this.addLabel(client, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_FLUSH_CLEAR_CACHE_LABEL);
 		Combo flushClearCacheCombo = this.addFlushClearCacheCombo(client).getControl();
 
 		this.controlEnabledState(
@@ -214,17 +214,17 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 			protected String displayString(CacheType value) {
 				switch (value) {
 					case full :
-						return EclipseLinkUiMessages.CacheTypeComposite_full;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_FULL;
 					case weak :
-						return EclipseLinkUiMessages.CacheTypeComposite_weak;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_WEAK;
 					case soft :
-						return EclipseLinkUiMessages.CacheTypeComposite_soft;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_SOFT;
 					case soft_weak :
-						return EclipseLinkUiMessages.CacheTypeComposite_soft_weak;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_SOFT_WEAK;
 					case hard_weak :
-						return EclipseLinkUiMessages.CacheTypeComposite_hard_weak;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_HARD_WEAK;
 					case none  :
-						return EclipseLinkUiMessages.CacheTypeComposite_none;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_NONE;
 					default :
 						throw new IllegalStateException();
 				}

@@ -7,17 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal;
+package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Localized messages used by Dali core.
+ * Localized messages used by Dali JPA core.
  */
-// TODO bjv rename...
-public class JptCoreMessages {
-	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;
+public class JptJpaCoreMessages {
+
+	private static final String BUNDLE_NAME = "jpt_jpa_core"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaCoreMessages.class;
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
@@ -72,7 +72,7 @@ public class JptCoreMessages {
 	public static String MAKE_PERSISTENT_ADD_TO_PERSISTENCE_XML_RESOURCE_MODEL;
 	public static String MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML;
 
-	private JptCoreMessages() {
+	private JptJpaCoreMessages() {
 		throw new UnsupportedOperationException();
 	}
 }

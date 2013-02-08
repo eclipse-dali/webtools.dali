@@ -14,9 +14,9 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 
 public class OrmEclipseLinkCustomConverter
@@ -70,7 +70,7 @@ public class OrmEclipseLinkCustomConverter
 
 	@Override
 	protected String getEclipseLinkConverterInterfaceErrorMessage() {
-		return EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER;
+		return JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER;
 	}
 
 	@Override

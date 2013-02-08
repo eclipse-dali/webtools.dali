@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -268,7 +268,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
 					this,
 					this.getValidationTextRange()
 				)
@@ -290,15 +290,15 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		if ( ! file.exists()) {
 			return DefaultJpaValidationMessages.buildMessage(
 					severity,
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
 					new String[] {this.fileName},
 					this,
 					this.getValidationTextRange()
 				);
 		}
 		String msgText = this.mappingFileContentIsUnsupported() ?
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
-					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE;
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE;
 		return DefaultJpaValidationMessages.buildMessage(
 				severity,
 				msgText,

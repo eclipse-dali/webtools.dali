@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,21 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal;
+package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Localized messages used by Dali UI.
- *
- * @version 3.3
- * @since 1.0
+ * Localized messages used by Dali JPA UI.
  */
-// TODO bjv rename...
-public class JptUiMessages {
-	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
+public class JptJpaUiMessages {
 
+	private static final String BUNDLE_NAME = "jpt_jpa_ui"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaUiMessages.class;
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
@@ -178,12 +174,12 @@ public class JptUiMessages {
 	public static String SynchronizingClasses_TaskName;
 
 	public static String JavaMetadataConversionWizard_title;
-	public static String JavaMetadataConversion_warning;
-	public static String JavaMetadataConversion_mappingFileDoesNotExist;
-	public static String JavaMetadataConversion_mappingFileVersionIsInvalid;
-	public static String JavaMetadataConversion_mappingFileNotListedInPersistenceXml;
-	public static String JavaMetadataConversion_noGeneratorsToConvert;
-	public static String JavaMetadataConversion_noQueriesToConvert;
+	public static String JAVA_METADATA_CONVERSION_warning;
+	public static String JAVA_METADATA_CONVERSION_mappingFileDoesNotExist;
+	public static String JAVA_METADATA_CONVERSION_mappingFileVersionIsInvalid;
+	public static String JAVA_METADATA_CONVERSION_mappingFileNotListedInPersistenceXml;
+	public static String JAVA_METADATA_CONVERSION_noGeneratorsToConvert;
+	public static String JAVA_METADATA_CONVERSION_noQueriesToConvert;
 	public static String JavaMetadataConversionWizardPage_mappingFileBrowseButton;
 	public static String JavaMetadataConversionWizardPage_mappingFileBrowseButtonToolTip;
 	public static String JavaMetadataConversionWizardPage_label;
@@ -203,7 +199,7 @@ public class JptUiMessages {
 	public static String JpaXmlEditor_page_help;
 	public static String JpaXmlEditor_sourcePage;
 
-	private JptUiMessages() {
+	private JptJpaUiMessages() {
 		throw new UnsupportedOperationException();
 	}
 }

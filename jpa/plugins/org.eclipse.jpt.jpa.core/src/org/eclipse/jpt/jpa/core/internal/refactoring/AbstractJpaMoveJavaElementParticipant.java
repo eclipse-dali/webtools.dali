@@ -107,7 +107,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 	 */
 	@Override
 	public RefactoringStatus checkConditions(IProgressMonitor monitor, CheckConditionsContext context) throws OperationCanceledException {
-		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
+		monitor.subTask(JptJpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
 		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {

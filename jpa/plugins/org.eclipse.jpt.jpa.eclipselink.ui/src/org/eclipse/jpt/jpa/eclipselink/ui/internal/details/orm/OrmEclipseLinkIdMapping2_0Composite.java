@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableTriStateCheckBox;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
@@ -69,11 +69,11 @@ public class OrmEclipseLinkIdMapping2_0Composite
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Attribute type widgets
-		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.OrmAttributeTypeComposite_attributeType);
+		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ORM_ATTRIBUTE_TYPE_COMPOSITE_ATTRIBUTE_TYPE);
 		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Mutable widgets

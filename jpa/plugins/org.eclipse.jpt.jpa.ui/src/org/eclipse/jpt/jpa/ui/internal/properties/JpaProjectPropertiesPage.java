@@ -69,7 +69,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
@@ -85,8 +85,8 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
@@ -519,7 +519,7 @@ public class JpaProjectPropertiesPage
 		Control libraryProviderComposite = createInstallLibraryPanel(
 				parent,
 				this.getLibraryInstallDelegate(),
-				JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
+				JptJpaUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
 
  		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		SWTTools.controlEnabledState(this.jpaProjectNotNullFlagModel, libraryProviderComposite);
@@ -550,7 +550,7 @@ public class JpaProjectPropertiesPage
 
 	private void buildPlatformGroup(Composite composite) {
 		Group group = new Group(composite, SWT.NONE);
-		group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
+		group.setText(JptJpaUiMessages.JpaFacetWizardPage_platformLabel);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -561,7 +561,7 @@ public class JpaProjectPropertiesPage
 				jpaPlatformDropDown,
 				JPA_PLATFORM_CONFIG_LABEL_CONVERTER);
 
-		Link facetsPageLink = this.buildFacetsPageLink(group, JptUiMessages.JpaFacetWizardPage_facetsPageLink);
+		Link facetsPageLink = this.buildFacetsPageLink(group, JptJpaUiMessages.JpaFacetWizardPage_facetsPageLink);
 
 		SWTTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, jpaPlatformDropDown, facetsPageLink);
 	}
@@ -671,7 +671,7 @@ public class JpaProjectPropertiesPage
 
 	private void buildConnectionGroup(Composite composite) {
 		Group group = new Group(composite, SWT.NONE);
-		group.setText(JptUiMessages.JpaFacetWizardPage_connectionLabel);
+		group.setText(JptJpaUiMessages.JpaFacetWizardPage_connectionLabel);
 		group.setLayout(new GridLayout(3, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -685,7 +685,7 @@ public class JpaProjectPropertiesPage
 				SIMPLE_STRING_CONVERTER
 			);
 
-		Link addConnectionLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_connectionLink);
+		Link addConnectionLink = this.buildLink(group, JptJpaUiMessages.JpaFacetWizardPage_connectionLink);
 		addConnectionLink.addSelectionListener(new AddConnectionLinkListener());  // the link will be GCed
 
 		this.connectLink = this.buildLink(group, this.buildConnectLinkText());
@@ -693,20 +693,20 @@ public class JpaProjectPropertiesPage
 		this.connectLink.addSelectionListener(new ConnectLinkListener());  // the link will be GCed
 
 		// override default catalog
-		Button overrideDefaultCatalogCheckBox = this.buildCheckBox(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel);
+		Button overrideDefaultCatalogCheckBox = this.buildCheckBox(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel);
 		SWTTools.bind(this.userOverrideDefaultCatalogFlagModel, overrideDefaultCatalogCheckBox);
 
-		Label defaultCatalogLabel = this.buildLabel(group, JptUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
+		Label defaultCatalogLabel = this.buildLabel(group, JptJpaUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
 		Combo defaultCatalogDropDown = this.buildDropDown(group);
 		SWTTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
 
 		SWTTools.controlEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
 
 		// override default schema
-		Button overrideDefaultSchemaButton = this.buildCheckBox(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel);
+		Button overrideDefaultSchemaButton = this.buildCheckBox(group, 3, JptJpaUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel);
 		SWTTools.bind(this.userOverrideDefaultSchemaFlagModel, overrideDefaultSchemaButton);
 
-		Label defaultSchemaLabel = this.buildLabel(group, JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
+		Label defaultSchemaLabel = this.buildLabel(group, JptJpaUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
 		Combo defaultSchemaDropDown = this.buildDropDown(group);
 		SWTTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
 
@@ -719,7 +719,7 @@ public class JpaProjectPropertiesPage
 			new TransformerAdapter<String, String>() {
 				@Override
 				public String transform(String string) {
-					return (string != null) ? string : JptUiMessages.JpaFacetWizardPage_none;
+					return (string != null) ? string : JptJpaUiMessages.JpaFacetWizardPage_none;
 				}
 			};
 
@@ -743,8 +743,8 @@ public class JpaProjectPropertiesPage
 	private String buildConnectLinkText() {
 		ConnectionProfile connectionProfile = this.getConnectionProfile();
 		return ((connectionProfile != null) && connectionProfile.isConnected()) ?
-				JptUiMessages.JpaFacetWizardPage_connectedText :
-				JptUiMessages.JpaFacetWizardPage_connectLink;
+				JptJpaUiMessages.JpaFacetWizardPage_connectedText :
+				JptJpaUiMessages.JpaFacetWizardPage_connectLink;
 	}
 
 	private void updateConnectLinkText(String text) {
@@ -800,14 +800,14 @@ public class JpaProjectPropertiesPage
 
 	private void buildPersistentClassManagementGroup(Composite composite) {
 		Group group = new Group(composite, SWT.NONE);
-		group.setText(JptUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
+		group.setText(JptJpaUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Button discoverClassesRadioButton = this.buildRadioButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton);
+		Button discoverClassesRadioButton = this.buildRadioButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_discoverClassesButton);
 		SWTTools.bind(this.discoverAnnotatedClassesModel, discoverClassesRadioButton);
 
-		Button listClassesRadioButton = this.buildRadioButton(group, 1, JptUiMessages.JpaFacetWizardPage_listClassesButton);
+		Button listClassesRadioButton = this.buildRadioButton(group, 1, JptJpaUiMessages.JpaFacetWizardPage_listClassesButton);
 		SWTTools.bind(this.listAnnotatedClassesModel, listClassesRadioButton);
 
 		SWTTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, discoverClassesRadioButton, listClassesRadioButton);
@@ -818,11 +818,11 @@ public class JpaProjectPropertiesPage
 
 	private void buildMetamodelGroup(Composite composite) {
 		Group group = new Group(composite, SWT.NONE);
-		group.setText(JptUiMessages.JpaFacetWizardPage_metamodelLabel);
+		group.setText(JptJpaUiMessages.JpaFacetWizardPage_metamodelLabel);
 		group.setLayout(new GridLayout(3, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Link metamodelSourceFolderLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_metamodelSourceFolderLink);
+		Link metamodelSourceFolderLink = this.buildLink(group, JptJpaUiMessages.JpaFacetWizardPage_metamodelSourceFolderLink);
 		metamodelSourceFolderLink.addSelectionListener(new MetamodelSourceFolderLinkListener());  // the link will be GCed
 		Combo metamodelSourceFolderDropDown = this.buildDropDown(group);
 		SWTTools.bind(
@@ -931,11 +931,11 @@ public class JpaProjectPropertiesPage
 		if ( ! StringTools.isBlank(connectionName)) {
 			if (connectionProfile == null) {
 				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(NLS.bind(
-						JptCoreMessages.VALIDATE_CONNECTION_INVALID,
+						JptJpaCoreMessages.VALIDATE_CONNECTION_INVALID,
 						connectionName)));
 			}
 			else if ( ! connectionProfile.isActive()) {
-				statuses.get(INFO_STATUS).add(this.buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED));
+				statuses.get(INFO_STATUS).add(this.buildInfoStatus(JptJpaCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED));
 			}
 		}
 
@@ -943,13 +943,13 @@ public class JpaProjectPropertiesPage
 		if (this.userOverrideDefaultCatalogFlagIsSet()) {
 			String defaultCatalog = this.getUserOverrideDefaultCatalog();
 			if (StringTools.isBlank(defaultCatalog)) {
-				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED));
+				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(JptJpaCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED));
 			}
 			else if ((connectionProfile != null)
 					&& connectionProfile.isConnected()
 					&& ! IterableTools.contains(this.catalogChoicesModel, defaultCatalog)) {
 				statuses.get(WARNING_STATUS).add(this.buildWarningStatus(NLS.bind(
-						JptCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_CATALOG,
+						JptJpaCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_CATALOG,
 						defaultCatalog
 				)));
 			}
@@ -959,13 +959,13 @@ public class JpaProjectPropertiesPage
 		if (this.userOverrideDefaultSchemaFlagIsSet()) {
 			String defaultSchema = this.getUserOverrideDefaultSchema();
 			if (StringTools.isBlank(defaultSchema)) {
-				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED));
+				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(JptJpaCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED));
 			}
 			else if ((connectionProfile != null)
 					&& connectionProfile.isConnected()
 					&& ! IterableTools.contains(this.schemaChoicesModel, defaultSchema)) {
 				statuses.get(WARNING_STATUS).add(this.buildWarningStatus(NLS.bind(
-						JptCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_SCHEMA,
+						JptJpaCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_SCHEMA,
 						defaultSchema
 				)));
 			}
@@ -984,7 +984,7 @@ public class JpaProjectPropertiesPage
 
 		if ( ! libInstallDelegate.getLibraryProvider().isEnabledFor(
 				this.getFacetedProject(), this.getProjectFacetVersion(), enablementVariables)) {
-			this.addStatus(this.buildErrorStatus(JptCoreMessages.VALIDATE_LIBRARY_PROVIDER_INVALID), statuses);
+			this.addStatus(this.buildErrorStatus(JptJpaCoreMessages.VALIDATE_LIBRARY_PROVIDER_INVALID), statuses);
 		}
 	}
 

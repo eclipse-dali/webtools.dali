@@ -27,7 +27,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -146,7 +146,7 @@ public class ConvertJavaProjectToJpaCommandHandler
 		public void run(IProgressMonitor monitor)
 				throws InvocationTargetException, InterruptedException {
 			
-			monitor.beginTask(JptUiMessages.convertToJpa_convertingProject, 1000);
+			monitor.beginTask(JptJpaUiMessages.convertToJpa_convertingProject, 1000);
 			try {
 				IProgressMonitor createProgressMonitor = new SubProgressMonitor(monitor, 100);
 				IFacetedProject fproj = ProjectFacetsManager.create(this.project, true, createProgressMonitor);
@@ -155,12 +155,12 @@ public class ConvertJavaProjectToJpaCommandHandler
 					throw new InterruptedException();
 				}
 				
-				monitor.setTaskName(JptUiMessages.convertToJpa_detectingTechnologies);				
+				monitor.setTaskName(JptJpaUiMessages.convertToJpa_detectingTechnologies);				
 				IProgressMonitor detectProgressMonitor = new SubProgressMonitor(monitor, 400);
 				this.fprojwc = fproj.createWorkingCopy();
 				this.fprojwc.detect(detectProgressMonitor);
 
-				monitor.setTaskName(JptUiMessages.convertToJpa_installingJpaFacet);
+				monitor.setTaskName(JptJpaUiMessages.convertToJpa_installingJpaFacet);
 				this.fprojwc.addProjectFacet(JpaProject.FACET.getDefaultVersion());
 			}
 			catch (CoreException e) {

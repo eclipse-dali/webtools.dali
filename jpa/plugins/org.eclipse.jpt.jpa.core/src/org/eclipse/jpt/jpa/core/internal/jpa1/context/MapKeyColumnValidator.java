@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class MapKeyColumnValidator
 	extends AbstractNamedColumnValidator<ReadOnlyBaseColumn>
@@ -31,12 +31,12 @@ public class MapKeyColumnValidator
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME;
 	}
 
 
@@ -51,12 +51,12 @@ public class MapKeyColumnValidator
 
 		@Override
 		protected String getColumnTableNotValidMessage() {
-			return JpaValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID;
+			return JptJpaCoreValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
 		protected String getVirtualAttributeColumnTableNotValidMessage() {
-			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID;
+			return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID;
 		}
 	}
 }

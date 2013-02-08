@@ -43,9 +43,9 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.layout.GridLayout;
@@ -201,7 +201,7 @@ public class JpaXmlEditor
 	private void addXMLSourceEditorPage() {
 		try {
 			int index = this.addPage(this.structuredTextEditor, this.getEditorInput());
-			this.setPageText(index, JptUiMessages.JpaXmlEditor_sourcePage);
+			this.setPageText(index, JptJpaUiMessages.JpaXmlEditor_sourcePage);
 		}
 		catch (PartInitException e) {
 			JptJpaUiPlugin.instance().logError(e);
@@ -550,7 +550,7 @@ public class JpaXmlEditor
 			final String helpID;
 
 			HelpAction(String helpID) {
-				super(JptUiMessages.JpaXmlEditor_page_help);
+				super(JptJpaUiMessages.JpaXmlEditor_page_help);
 				this.helpID = helpID;
 			}
 

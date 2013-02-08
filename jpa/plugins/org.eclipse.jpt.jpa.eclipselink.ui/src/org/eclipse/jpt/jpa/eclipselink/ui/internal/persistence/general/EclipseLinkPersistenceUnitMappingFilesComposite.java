@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
 import org.eclipse.osgi.util.NLS;
@@ -38,7 +38,7 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		this.addMappingFilesList(container);
 		this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrm,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM,
 			this.buildExcludeEclipselinkOrmHolder(),
 			this.buildExcludeEclipselinkOrmStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
@@ -77,9 +77,9 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 			protected String transform(Boolean b) {
 				if (b != null) {
 					String defaultStringValue = b.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrmWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM_WITH_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrm;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM;
 			}
 		};
 	}	

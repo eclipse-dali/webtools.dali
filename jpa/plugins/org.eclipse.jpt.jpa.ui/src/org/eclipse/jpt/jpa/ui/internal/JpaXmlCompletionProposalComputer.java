@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
@@ -116,11 +117,11 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 						if (matchString.startsWith("\"") && newMatchString.startsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
 							proposal = new CompletionProposal(
 									convertedPossibleValue, rOffset, rLength + 1, convertedPossibleValue.length(), null, 
-									possibleValue, null, JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+									possibleValue, null, JptJpaUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
 						} else {
 							proposal = new CompletionProposal(
 									convertedPossibleValue, rOffset, rLength, convertedPossibleValue.length(), null, 
-									possibleValue, null, JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+									possibleValue, null, JptJpaUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
 						}
 					} else {
 						// do not give the addition message with normal values
@@ -191,7 +192,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 
 								this.getImage(context, JptJpaUiImages.JPA_CONTENT), proposedValue, null, 
-								JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+								JptJpaUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
 					} else {
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 

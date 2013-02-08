@@ -13,7 +13,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.orm;
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
 import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.*;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -75,7 +75,7 @@ public class MappingFileOptionsWizardPage
 		composite.setLayoutData(data);
 		
 		this.accessLabel = new Label(composite, SWT.NONE);
-		this.accessLabel.setText(JptUiMessages.MappingFileWizardPage_accessLabel);
+		this.accessLabel.setText(JptJpaUiMessages.MappingFileWizardPage_accessLabel);
 		data = new GridData();
 		this.accessLabel.setLayoutData(data);
 		
@@ -88,7 +88,7 @@ public class MappingFileOptionsWizardPage
 		new Label(composite, SWT.NONE);
 		
 		this.addToPersistenceUnitButton = new Button(composite, SWT.CHECK | SWT.BEGINNING);
-		this.addToPersistenceUnitButton.setText(JptUiMessages.MappingFileWizardPage_addToPersistenceUnitButton);
+		this.addToPersistenceUnitButton.setText(JptJpaUiMessages.MappingFileWizardPage_addToPersistenceUnitButton);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 3;
 		data.verticalIndent = 10;
@@ -96,7 +96,7 @@ public class MappingFileOptionsWizardPage
 		this.synchHelper.synchCheckbox(this.addToPersistenceUnitButton, ADD_TO_PERSISTENCE_UNIT, null);
 		
 		this.persistenceUnitLabel = new Label(composite, SWT.NONE);
-		this.persistenceUnitLabel.setText(JptUiMessages.MappingFileWizardPage_persistenceUnitLabel);
+		this.persistenceUnitLabel.setText(JptJpaUiMessages.MappingFileWizardPage_persistenceUnitLabel);
 		data = new GridData();
 		data.horizontalIndent = 10;
 		this.persistenceUnitLabel.setLayoutData(data);

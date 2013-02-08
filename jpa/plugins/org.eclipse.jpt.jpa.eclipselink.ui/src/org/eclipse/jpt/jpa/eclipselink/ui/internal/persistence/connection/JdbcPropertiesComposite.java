@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -43,7 +43,7 @@ public class JdbcPropertiesComposite<T extends Connection>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.JdbcPropertiesComposite_EclipseLinkConnectionPool_GroupBox,
+			JptJpaEclipseLinkUiMessages.JDBC_PROPERTIES_COMPOSITE_ECLIPSELINK_CONNECTION_POOL_GROUP_BOX,
 			2,
 			null
 		);
@@ -76,7 +76,7 @@ public class JdbcPropertiesComposite<T extends Connection>
 				ExpandableComposite.TWISTIE | 
 				ExpandableComposite.EXPANDED |
 				ExpandableComposite.CLIENT_INDENT);
-		readConnectionSection.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle);
+		readConnectionSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_READ_CONNECTIONS_SECTION_TITLE);
 		
 		Composite readConnectionClient = this.getWidgetFactory().createComposite(readConnectionSection);
 		GridLayout gridLayout = new GridLayout(2, false);
@@ -87,7 +87,7 @@ public class JdbcPropertiesComposite<T extends Connection>
 		// Read Connections Shared
 		TriStateCheckBox sharedCheckBox = this.addTriStateCheckBoxWithDefault(
 				readConnectionClient,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_read_Connections_Shared_Label,
 			this.buildReadConnectionsSharedHolder(),
 			this.buildReadConnectionsSharedStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
@@ -97,11 +97,11 @@ public class JdbcPropertiesComposite<T extends Connection>
 		sharedCheckBox.getCheckBox().setLayoutData(gridData);
 		
 		// Read Connections Minimum
-		this.addLabel(readConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMinLabel);
+		this.addLabel(readConnectionClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_READ_CONNECTIONS_MIN_LABEL);
 		this.addReadConnectionsMinCombo(readConnectionClient);
 
 		// Read Connections Maximum
-		this.addLabel(readConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMaxLabel);
+		this.addLabel(readConnectionClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_READ_CONNECTIONS_MAX_LABEL);
 		this.addReadConnectionsMaxCombo(readConnectionClient);
 		
 		readConnectionSection.setClient(readConnectionClient);
@@ -114,7 +114,7 @@ public class JdbcPropertiesComposite<T extends Connection>
 				ExpandableComposite.TWISTIE | 
 				ExpandableComposite.EXPANDED |
 				ExpandableComposite.CLIENT_INDENT);
-		writeConnectionSection.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle);
+		writeConnectionSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_WRITE_CONNECTIONS_SECTION_TITLE);
 		
 		Composite writeConnectionClient = this.getWidgetFactory().createComposite(writeConnectionSection);
 		GridLayout gridLayout = new GridLayout(2, false);
@@ -123,11 +123,11 @@ public class JdbcPropertiesComposite<T extends Connection>
 		writeConnectionClient.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Write Connections Minimum
-		this.addLabel(writeConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMinLabel);
+		this.addLabel(writeConnectionClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_WRITE_CONNECTIONS_MIN_LABEL);
 		this.addWriteConnectionsMinCombo(writeConnectionClient);
 
 		// Write Connections Maximum
-		this.addLabel(writeConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMaxLabel);
+		this.addLabel(writeConnectionClient, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_WRITE_CONNECTIONS_MAX_LABEL);
 		this.addWriteConnectionsMaxCombo(writeConnectionClient);
 		
 		writeConnectionSection.setClient(writeConnectionClient);
@@ -155,9 +155,9 @@ public class JdbcPropertiesComposite<T extends Connection>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_READ_CONNECTIONS_SHARED_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_read_Connections_Shared_Label;
 			}
 		};
 	}

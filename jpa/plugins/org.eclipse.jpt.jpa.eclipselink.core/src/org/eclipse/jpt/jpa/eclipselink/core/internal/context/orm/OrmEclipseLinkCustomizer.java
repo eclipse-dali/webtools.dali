@@ -28,9 +28,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCustomizerHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -262,7 +262,7 @@ public class OrmEclipseLinkCustomizer
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
+							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
 							EMPTY_STRING_ARRAY,
 							this,
 							this.getValidationTextRange()
@@ -276,7 +276,7 @@ public class OrmEclipseLinkCustomizer
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
+							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
 							this.getValidationTextRange()
@@ -288,7 +288,7 @@ public class OrmEclipseLinkCustomizer
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
+							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
 							this.getValidationTextRange()
@@ -299,7 +299,7 @@ public class OrmEclipseLinkCustomizer
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
+							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
 							this.getValidationTextRange()

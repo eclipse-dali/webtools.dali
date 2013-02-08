@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -76,7 +77,7 @@ public class DefaultEclipseLinkJpaValidationMessages {
 //			if (prefSeverity != JpaValidationPreferences.NO_SEVERITY_PREFERENCE){
 //				severity = prefSeverity;
 //			}
-			IMessage message = new EclipseLinkMessage(EclipseLinkJpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
+			IMessage message = new EclipseLinkMessage(JptJpaEclipseLinkCoreValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
 			// TODO "EclipseLink JPA" validation marker?
 			message.setMarkerId(JpaValidator.MARKER_ID);
 			return message;

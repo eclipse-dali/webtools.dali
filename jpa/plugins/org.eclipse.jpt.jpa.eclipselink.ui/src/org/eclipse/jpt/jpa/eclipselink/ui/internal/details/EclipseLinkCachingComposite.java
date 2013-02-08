@@ -82,7 +82,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		//Shared Check box, uncheck this and the rest of the panel is disabled
 		TriStateCheckBox sharedCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_sharedLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL,
 			buildSpecifiedSharedHolder(),
 			buildSharedStringHolder(),
 			EclipseLinkHelpContextIds.CACHING_SHARED
@@ -93,13 +93,13 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 
 		final PropertyValueModel<Boolean> sharedCacheEnableModel = buildSharedCacheEnabler();
 		
-		Label cacheTypeLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_label, sharedCacheEnableModel);
+		Label cacheTypeLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_LABEL, sharedCacheEnableModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		cacheTypeLabel.setLayoutData(gridData);
 		new EclipseLinkCacheTypeComboViewer(this, container, sharedCacheEnableModel);
 
-		Label cacheSizeLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheSizeComposite_size, sharedCacheEnableModel);
+		Label cacheSizeLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_SIZE_COMPOSITE_SIZE, sharedCacheEnableModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		cacheSizeLabel.setLayoutData(gridData);
@@ -110,7 +110,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		final Section advancedSection = this.getWidgetFactory().createSection(container,
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.CLIENT_INDENT);
-		advancedSection.setText(EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_advanced);
+		advancedSection.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_ADVANCED);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalIndent = 16;
 		gridData.horizontalSpan = 2;
@@ -139,7 +139,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 
 		TriStateCheckBox alwaysRefreshCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkAlwaysRefreshComposite_alwaysRefreshLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_LABEL,
 			buildAlwaysRefreshHolder(),
 			buildAlwaysRefreshStringHolder(),
 			sharedCacheEnableModel,
@@ -151,7 +151,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 
 		TriStateCheckBox refreshOnlyIfNewerCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkRefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_LABEL,
 			buildRefreshOnlyIfNewerHolder(),
 			buildRefreshOnlyIfNewerStringHolder(),
 			sharedCacheEnableModel,
@@ -163,7 +163,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 
 		TriStateCheckBox disableHitsCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkDisableHitsComposite_disableHitsLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_LABEL,
 			buildDisableHitsHolder(),
 			buildDisableHitsStringHolder(),
 			sharedCacheEnableModel,
@@ -173,7 +173,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		gridData.horizontalSpan = 2;
 		disableHitsCheckBox.getCheckBox().setLayoutData(gridData);
 
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_label, sharedCacheEnableModel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_COORDINATION_TYPE_COMPOSITE_LABEL, sharedCacheEnableModel);
 		this.addCacheCoordinationTypeCombo(container, sharedCacheEnableModel);
 		return container;
 	}
@@ -212,9 +212,9 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_sharedLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_sharedLabel;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL;
 			}
 		};
 	}
@@ -255,9 +255,9 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkAlwaysRefreshComposite_alwaysRefreshDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkAlwaysRefreshComposite_alwaysRefreshLabel;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_LABEL;
 			}
 		};
 	}
@@ -300,9 +300,9 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkRefreshOnlyIfNewerComposite_refreshOnlyIfNewerDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkRefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_LABEL;
 			}
 		};
 	}
@@ -342,9 +342,9 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkDisableHitsComposite_disableHitsDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkDisableHitsComposite_disableHitsLabel;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_LABEL;
 			}
 		};
 	}
@@ -390,13 +390,13 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			protected String displayString(EclipseLinkCacheCoordinationType value) {
 				switch (value) {
 					case INVALIDATE_CHANGED_OBJECTS :
-						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_invalidate_changed_objects;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_COORDINATION_TYPE_COMPOSITE_INVALIDATE_CHANGED_OBJECTS;
 					case SEND_NEW_OBJECTS_WITH_CHANGES :
-						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_send_new_objects_with_changes;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_COORDINATION_TYPE_COMPOSITE_SEND_NEW_OBJECTS_WITH_CHANGES;
 					case SEND_OBJECT_CHANGES :
-						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_send_object_changes;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_COORDINATION_TYPE_COMPOSITE_SEND_OBJECT_CHANGES;
 					case NONE :
-						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_none;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_COORDINATION_TYPE_COMPOSITE_NONE;
 					default :
 						throw new IllegalStateException();
 				}
@@ -449,13 +449,13 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			protected String displayString(EclipseLinkExistenceType value) {
 				switch (value) {
 					case CHECK_CACHE :
-						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_check_cache;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXISTENCE_CHECKING_COMPOSITE_CHECK_CACHE;
 					case CHECK_DATABASE :
-						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_check_database;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXISTENCE_CHECKING_COMPOSITE_CHECK_DATABASE;
 					case ASSUME_EXISTENCE :
-						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_assume_existence;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXISTENCE_CHECKING_COMPOSITE_ASSUME_EXISTENCE;
 					case ASSUME_NON_EXISTENCE :
-						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_assume_non_existence;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXISTENCE_CHECKING_COMPOSITE_ASSUME_NON_EXISTENCE;
 					default :
 						throw new IllegalStateException();
 				}

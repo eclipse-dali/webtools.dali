@@ -10,15 +10,15 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.conversion.java;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.GenericJavaGeneratorConversionWizardPage;
 
 public class EclipseLinkJavaGeneratorConversionWizardPage
 	extends EclipseLinkJavaMetadataConversionWizardPage
 {
 	public EclipseLinkJavaGeneratorConversionWizardPage(JpaProject jpaProject) {
-		super(jpaProject, JptUiMessages.JavaGeneratorConversionWizardPage_title, JptUiMessages.JavaGeneratorConversionWizardPage_description);
+		super(jpaProject, JptJpaUiMessages.JavaGeneratorConversionWizardPage_title, JptJpaUiMessages.JavaGeneratorConversionWizardPage_description);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class EclipseLinkJavaGeneratorConversionWizardPage
 
 	@Override
 	protected String getMissingJavaMetadataWarningMessage() {
-		return JptUiMessages.JavaMetadataConversion_noGeneratorsToConvert;
+		return JptJpaUiMessages.JAVA_METADATA_CONVERSION_noGeneratorsToConvert;
 	}
 
 	@Override
@@ -43,11 +43,11 @@ public class EclipseLinkJavaGeneratorConversionWizardPage
 
 	@Override
 	public String getEquivalentJavaMetadataWarningDialogTitle() {
-		return EclipseLinkUiMessages.JavaMetadataConversion_equivalentGeneratorsWarningTitle;
+		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_EQUIVALENT_GENERATORS_WARNING_TITLE;
 	}
 
 	@Override
 	public String getEquivalentJavaMetadataWarningDialogMessage() {
-		return EclipseLinkUiMessages.JavaMetadataConversion_equivalentGeneratorsWarningMessage;
+		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_EQUIVALENT_GENERATORS_WARNING_MESSAGE;
 	}
 }

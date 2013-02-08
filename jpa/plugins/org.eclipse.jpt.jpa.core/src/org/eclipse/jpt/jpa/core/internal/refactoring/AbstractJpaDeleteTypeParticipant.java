@@ -109,7 +109,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 	public RefactoringStatus checkConditions(IProgressMonitor monitor, CheckConditionsContext context) throws OperationCanceledException {
 		//since the progress bar will hang if a large JPA project is being loaded, 
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
-		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
+		monitor.subTask(JptJpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
 		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {
@@ -155,7 +155,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 	 * This will be appended to the main refactoring task named : 'Checking preconditions...'
 	 */
 	protected String getCheckConditionsSubTaskName() {
-		return JpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_SUB_TASK_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_SUB_TASK_NAME;
 	}
 
 	@Override
@@ -165,7 +165,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, this.persistenceXmlDeleteEdits.size() + this.mappingFilePersistentTypeDeleteEdits.size());
 		sm.subTask(this.getCreateChangeSubTaskName());
-		CompositeChange compositeChange = new CompositeChange(JpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_CHANGE_NAME);
+		CompositeChange compositeChange = new CompositeChange(JptJpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_CHANGE_NAME);
 		for (IFile persistenceXmlFile : this.persistenceXmlDeleteEdits.keySet()) {
 			this.addPersistenceXmlDeleteTypeChange(persistenceXmlFile, compositeChange);
 			sm.worked(1);
@@ -186,7 +186,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 	 * This will be appended to the main refactoring task named : 'Creating workspace modifications...'
 	 */
 	protected String getCreateChangeSubTaskName() {
-		return JpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_SUB_TASK_NAME;
+		return JptJpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_SUB_TASK_NAME;
 	}
 
 	protected void createDeleteEdits(IProgressMonitor monitor, JpaProject jpaProject) throws OperationCanceledException {
@@ -240,7 +240,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 
 		TextChange textChange = getTextChange(persistenceXmlFile);
 		if (textChange == null) {
-			textChange = new TextFileChange(JpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME, persistenceXmlFile);
+			textChange = new TextFileChange(JptJpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME, persistenceXmlFile);
 			//TODO probably need to figure out TextEditGroups since these can be used to show check boxes under the file in the preview dialog
 			//also used to add edits to existing changes??
 			MultiTextEdit multiTextEdit = new MultiTextEdit();
@@ -274,7 +274,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 
 		TextChange textChange = getTextChange(mappingFile);
 		if (textChange == null) {
-			textChange = new TextFileChange(JpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_CHANGE_MAPPING_FILE_NAME, mappingFile);
+			textChange = new TextFileChange(JptJpaCoreRefactoringMessages.JPA_DELETE_TYPE_REFACTORING_CHANGE_MAPPING_FILE_NAME, mappingFile);
 			MultiTextEdit multiTextEdit = new MultiTextEdit();
 			textChange.setEdit(multiTextEdit);
 			compositeChange.add(textChange);

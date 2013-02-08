@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
 public class JavaMetadataConversionWizard
 	extends Wizard
@@ -24,7 +24,7 @@ public class JavaMetadataConversionWizard
 			throw new NullPointerException();
 		}
 		this.page = page;
-		this.setWindowTitle(JptUiMessages.JavaMetadataConversionWizard_title);
+		this.setWindowTitle(JptJpaUiMessages.JavaMetadataConversionWizard_title);
 		this.setDefaultPageImageDescriptor(JptJpaUiImages.JPA_FILE_BANNER);
 	}
 

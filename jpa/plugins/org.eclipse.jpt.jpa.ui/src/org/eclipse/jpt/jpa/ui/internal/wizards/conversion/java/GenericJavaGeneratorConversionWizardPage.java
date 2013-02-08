@@ -12,13 +12,13 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
 public class GenericJavaGeneratorConversionWizardPage
 	extends GenericJavaMetadataConversionWizardPage
 {
 	public GenericJavaGeneratorConversionWizardPage(JpaProject jpaProject) {
-		super(jpaProject, JptUiMessages.JavaGeneratorConversionWizardPage_title, JptUiMessages.JavaGeneratorConversionWizardPage_description);
+		super(jpaProject, JptJpaUiMessages.JavaGeneratorConversionWizardPage_title, JptJpaUiMessages.JavaGeneratorConversionWizardPage_description);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class GenericJavaGeneratorConversionWizardPage
 
 	@Override
 	protected String getMissingJavaMetadataWarningMessage() {
-		return 	JptUiMessages.JavaMetadataConversion_noGeneratorsToConvert;
+		return 	JptJpaUiMessages.JAVA_METADATA_CONVERSION_noGeneratorsToConvert;
 	}
 
 	@Override

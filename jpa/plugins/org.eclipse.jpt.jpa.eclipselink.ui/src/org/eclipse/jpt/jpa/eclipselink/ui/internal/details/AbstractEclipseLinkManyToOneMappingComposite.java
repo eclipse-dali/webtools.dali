@@ -84,7 +84,7 @@ public abstract class AbstractEclipseLinkManyToOneMappingComposite<T extends Ecl
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCHCOMPOSITE_LABEL);
 		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Optional widgets

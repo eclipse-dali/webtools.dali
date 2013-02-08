@@ -52,8 +52,8 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -409,7 +409,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	private Button buildSelectAllButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
-			JptUiMessages.General_selectAll,
+			JptJpaUiMessages.General_selectAll,
 			this.resourceManager.createImage(JptCommonUiImages.SELECT_ALL_BUTTON));
 		
 		button.addSelectionListener(this.buildSelectAllSelectionListener());
@@ -418,7 +418,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	private Button buildDeselectAllButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
-			JptUiMessages.General_deselectAll,
+			JptJpaUiMessages.General_deselectAll,
 			this.resourceManager.createImage(JptCommonUiImages.DESELECT_ALL_BUTTON));
 		
 		button.addSelectionListener(this.buildDeselectAllSelectionListener());
@@ -427,7 +427,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 	private Button buildRefreshTablesButton(Composite parent) {
 		Button button = this.buildSelectionButton(parent,
-			JptUiMessages.General_refresh,
+			JptJpaUiMessages.General_refresh,
 			this.resourceManager.createImage(JptCommonUiImages.REFRESH_BUTTON));
 		
 		button.addSelectionListener(this.buildRefreshTablesSelectionListener());

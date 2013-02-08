@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
@@ -47,7 +47,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPageDefinition
 	}
 
 	public String getTitleText() {
-		return EclipseLinkUiMessages.PersistenceXmlOptionsTab_title;
+		return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TITLE;
 	}
 
 	public String getHelpID() {

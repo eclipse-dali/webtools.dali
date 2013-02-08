@@ -41,7 +41,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -253,7 +253,7 @@ public class JpaStructurePage
 
 	private void setTreeViewerJpaFile(JpaFile jpaFile) {
 		if (jpaFile == null || jpaFile.getResourceModel().getResourceType() == null) {
-			this.setTreeViewerMessage(JptUiMessages.JpaStructureView_structureNotAvailable);
+			this.setTreeViewerMessage(JptJpaUiMessages.JpaStructureView_structureNotAvailable);
 		} 
 		else if (! jpaFile.getJpaProject().getJpaPlatform().supportsResourceType(jpaFile.getResourceModel().getResourceType())) {
 			this.setTreeViewerMessage(this.buildMissingStructureProviderMessage(jpaFile));
@@ -274,7 +274,7 @@ public class JpaStructurePage
 	}
 
 	private String buildMissingStructureProviderMessage(JpaFile jpaFile) {
-		return NLS.bind(JptUiMessages.JpaStructureView_structureProviderNotAvailable, jpaFile.getResourceModel().getResourceType());
+		return NLS.bind(JptJpaUiMessages.JpaStructureView_structureProviderNotAvailable, jpaFile.getResourceModel().getResourceType());
 	}
 
 	private void setTreeViewerJpaFile(JpaFile jpaFile, ItemTreeStateProviderFactoryProvider factoryProvider) {
@@ -448,7 +448,7 @@ public class JpaStructurePage
 		} else {
 			if (selection.size() > 1) {
 				Integer size = Integer.valueOf(selection.size());
-				String msg = NLS.bind(JptUiMessages.JpaStructureView_numItemsSelected, size);
+				String msg = NLS.bind(JptJpaUiMessages.JpaStructureView_numItemsSelected, size);
 				this.getStatusLineManager().setMessage(msg);
 			} else {
 				Object first = selection.getFirstElement();

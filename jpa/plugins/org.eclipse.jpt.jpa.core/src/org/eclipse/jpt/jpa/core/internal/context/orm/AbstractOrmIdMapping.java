@@ -33,14 +33,14 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProv
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -424,7 +424,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildMessage(
-				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
+				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				EMPTY_STRING_ARRAY,
 				this.column.getValidationTextRange()
 			);
@@ -445,7 +445,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 	protected String getAttributeDescriptionTemplate() {
-		return JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		return JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC;
 	}
 
 	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {

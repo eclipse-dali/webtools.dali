@@ -43,6 +43,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.gen.JptJpaGenMessages;
 import org.eclipse.jpt.jpa.gen.internal.plugin.JptJpaGenPlugin;
 import org.eclipse.jpt.jpa.gen.internal.util.CompilationUnitModifier;
 import org.eclipse.jpt.jpa.gen.internal.util.FileUtil;
@@ -72,7 +73,7 @@ public class PackageGenerator {
 				generator.doGenerate(sm.newChild(19));
 			}
 		} catch (Exception e) {
-			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Error_Generating_Entities, e));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.ERROR_GENERATING_ENTITIES, e));
 		}
 	}
 	
@@ -200,7 +201,7 @@ public class PackageGenerator {
 		Path path = new Path( templatesPath);
 		URL url = FileLocator.find(bundle, path, null);
 		if (url == null) {
-			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.TEMPLATES_NOT_FOUND));
 		}		
 		URL templUrl = FileLocator.resolve(url);
 		
@@ -214,7 +215,7 @@ public class PackageGenerator {
 		
 
 		if (templDir == null || !templDir.exists()) {
-			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.TEMPLATES_NOT_FOUND));
 		}
 		return templDir;
 	}
@@ -265,7 +266,7 @@ public class PackageGenerator {
 	 */
 	protected void generateClass(ORMGenTable table, String templateDirPath, IProgressMonitor monitor) throws Exception {
 
-		String subTaskName = NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName());
+		String subTaskName = NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName());
 		SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 10);
 
 		try {
@@ -301,7 +302,7 @@ public class PackageGenerator {
 			javaFile.refreshLocal(1, sm.newChild(1));
 			
 		} catch (Throwable e) {
-			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound);
+			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.TEMPLATES_NOT_FOUND);
 		}
 	}
 	
@@ -432,7 +433,7 @@ public class PackageGenerator {
 			for (Iterator<String> names = tableNames.iterator(); names.hasNext();) {
 				
 				ORMGenTable table = this.customizer.getTable(names.next());
-				String subTaskName = NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName());
+				String subTaskName = NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName());
 				SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 10);
 		    
 				if (sm.isCanceled()) {
@@ -448,7 +449,7 @@ public class PackageGenerator {
 			
 			//Embeddables need to come after entities in the XML
 			for (ORMGenTable table : compositeKeyTables) {
-				SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName()), 1);
+				SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName()), 1);
 			    if (table.isCompositeKey()) {
 			    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "embeddable.vm")); //$NON-NLS-1$
 			    }
@@ -468,7 +469,7 @@ public class PackageGenerator {
 		    xmlFile.refreshLocal(1, null);
 			
 		} catch (Throwable e) {
-			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound);
+			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.TEMPLATES_NOT_FOUND);
 		}
 	}
 	

@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.AddVirtualAttributeDialog;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
@@ -98,16 +98,16 @@ public class DynamicEntityFieldTableSection extends Composite {
 		mTableWidget.setLayoutData(data);
 
 		TableColumn nameColumn = new TableColumn(mTableWidget, SWT.NONE);
-		nameColumn.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_nameColumnLabel);
+		nameColumn.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_NAME_COLUMN_LABEL);
 
 		TableColumn mappingTypeColumn = new TableColumn(mTableWidget, SWT.NONE);
-		mappingTypeColumn.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_mappingTypeColumnLabel);
+		mappingTypeColumn.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_MAPPING_TYPE_COLUMN_LABEL);
 
 		TableColumn attrTypeColumn = new TableColumn(mTableWidget, SWT.NONE);
-		attrTypeColumn.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_attributeTypeColumnLabel);
+		attrTypeColumn.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_ATTRIBUTE_TYPE_COLUMN_LABEL);
 
 		TableColumn targetTypeColumn = new TableColumn(mTableWidget, SWT.NONE);
-		targetTypeColumn.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_targetTypeColumnLabel);
+		targetTypeColumn.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_TARGET_TYPE_COLUMN_LABEL);
 
 		mTableViewer = new TableViewer(mTableWidget);
 		mTableViewer.setContentProvider(new EntityRowContentProvider());
@@ -127,7 +127,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		buttonComposition.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
 
 		addButton = new Button(buttonComposition, SWT.PUSH);
-		addButton.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_addButtonLabel); 
+		addButton.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_ADD_BUTTON_LABEL); 
 		addButton.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL));
 		addButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -140,7 +140,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		});
 
 		editButton = new Button(buttonComposition, SWT.PUSH);
-		editButton.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_editButtonLabel);
+		editButton.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_EDIT_BUTTON_LABEL);
 		editButton.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL));
 		editButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -154,7 +154,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		editButton.setEnabled(false);
 
 		removeButton = new Button(buttonComposition, SWT.PUSH);
-		removeButton.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_removeButtonLabel);
+		removeButton.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_REMOVE_BUTTON_LABEL);
 		removeButton.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL));
 		removeButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -443,7 +443,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		public AddFieldDialog(Shell shell, JpaProject jpaProject) {
 			super(shell, null);
 			this.jpaProject = jpaProject;
-			setTitle(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_addDynamicEntityFieldDialog_title);
+			setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_ADD_DYNAMIC_ENTITY_FIELD_DIALOG_TITLE);
 		}
 
 		/* Create the area of dialog

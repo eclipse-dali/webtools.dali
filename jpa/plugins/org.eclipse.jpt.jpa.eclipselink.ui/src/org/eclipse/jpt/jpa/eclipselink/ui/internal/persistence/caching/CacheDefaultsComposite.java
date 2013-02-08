@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -42,7 +42,7 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.CacheDefaultsComposite_groupTitle,
+			JptJpaEclipseLinkUiMessages.CACHE_DEFAULTS_COMPOSITE_GROUP_TITLE,
 			2,
 			null
 		);
@@ -51,17 +51,17 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 	@Override
 	protected void initializeLayout(Composite parent) {
 		// Default Cache Type
-		addLabel(parent, EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultCacheTypeLabel);
+		addLabel(parent, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_CACHE_TYPE_LABEL);
 		buildDefaultCacheTypeCombo(parent);
 
 		// Default Cache Size
-		addLabel(parent, EclipseLinkUiMessages.DefaultCacheSizeComposite_defaultCacheSize);
+		addLabel(parent, JptJpaEclipseLinkUiMessages.DEFAULT_CACHE_SIZE_COMPOSITE_DEFAULT_CACHE_SIZE);
 		addDefaultCacheSizeCombo(parent);
 
 		// Default Shared Cache
 		TriStateCheckBox sharedCacheCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_DEFAULT_LABEL,
 			this.buildDefaultSharedCacheHolder(),
 			this.buildDefaultSharedCacheStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SHARED
@@ -98,17 +98,17 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 			protected String displayString(CacheType value) {
 				switch (value) {
 					case full :
-						return EclipseLinkUiMessages.CacheTypeComposite_full;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_FULL;
 					case weak :
-						return EclipseLinkUiMessages.CacheTypeComposite_weak;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_WEAK;
 					case soft :
-						return EclipseLinkUiMessages.CacheTypeComposite_soft;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_SOFT;
 					case soft_weak :
-						return EclipseLinkUiMessages.CacheTypeComposite_soft_weak;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_SOFT_WEAK;
 					case hard_weak :
-						return EclipseLinkUiMessages.CacheTypeComposite_hard_weak;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_HARD_WEAK;
 					case none  :
-						return EclipseLinkUiMessages.CacheTypeComposite_none;
+						return JptJpaEclipseLinkUiMessages.CACHE_TYPE_COMPOSITE_NONE;
 					default :
 						throw new IllegalStateException();
 				}
@@ -186,9 +186,9 @@ public class CacheDefaultsComposite<T extends Caching> extends Pane<T>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_SHARED_CACHE_DEFAULT_LABEL, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_DEFAULT_LABEL;
 			}
 		};
 	}

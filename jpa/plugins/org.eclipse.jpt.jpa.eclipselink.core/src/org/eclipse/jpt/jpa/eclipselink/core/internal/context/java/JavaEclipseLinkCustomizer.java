@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -176,7 +176,7 @@ public class JavaEclipseLinkCustomizer
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
+							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
 							this.getCustomizerClassTextRange()
@@ -187,7 +187,7 @@ public class JavaEclipseLinkCustomizer
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
+							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
 							this.getCustomizerClassTextRange()

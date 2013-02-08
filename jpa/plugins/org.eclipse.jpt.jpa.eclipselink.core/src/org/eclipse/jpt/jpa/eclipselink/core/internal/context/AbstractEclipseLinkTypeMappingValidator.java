@@ -13,9 +13,9 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTypeMappingValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapping>
@@ -30,10 +30,10 @@ public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapp
 	protected void validateType(List<IMessage> messages) {
 		JavaResourceType jrt = this.getJavaResourceType();
 		if (jrt.getTypeBinding().isMemberTypeDeclaration() && ! jrt.isStatic()) {
-			messages.add(this.buildEclipseLinkTypeMessage(EclipseLinkJpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS_NOT_STATIC));
+			messages.add(this.buildEclipseLinkTypeMessage(JptJpaEclipseLinkCoreValidationMessages.TYPE_MAPPING_MEMBER_CLASS_NOT_STATIC));
 		}
 		if ( ! jrt.hasNoArgConstructor()) {
-			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
+			messages.add(this.buildTypeMessage(JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
 		}
 	}
 

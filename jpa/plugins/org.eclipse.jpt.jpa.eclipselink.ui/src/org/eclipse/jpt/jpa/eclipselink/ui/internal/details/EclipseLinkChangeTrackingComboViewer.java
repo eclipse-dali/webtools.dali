@@ -67,13 +67,13 @@ public class EclipseLinkChangeTrackingComboViewer extends EnumFormComboViewer<Ec
 	protected String displayString(EclipseLinkChangeTrackingType value) {
 		switch (value) {
 			case ATTRIBUTE :
-				return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_attribute;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CHANGE_TRACKING_COMPOSITE_ATTRIBUTE;
 			case AUTO :
-				return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_auto;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CHANGE_TRACKING_COMPOSITE_AUTO;
 			case DEFERRED :
-				return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_deferred;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CHANGE_TRACKING_COMPOSITE_DEFERRED;
 			case OBJECT :
-				return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_object;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CHANGE_TRACKING_COMPOSITE_OBJECT;
 			default :
 				throw new IllegalStateException();
 		}

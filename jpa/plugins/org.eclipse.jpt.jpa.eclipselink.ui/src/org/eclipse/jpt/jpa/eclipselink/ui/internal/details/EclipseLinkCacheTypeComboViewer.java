@@ -69,19 +69,19 @@ public class EclipseLinkCacheTypeComboViewer extends EnumFormComboViewer<Eclipse
 	protected String displayString(EclipseLinkCacheType value) {
 		switch (value) {
 			case FULL :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_full;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_FULL;
 			case WEAK :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_weak;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_WEAK;
 			case SOFT :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_soft;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_SOFT;
 			case SOFT_WEAK :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_soft_weak;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_SOFT_WEAK;
 			case HARD_WEAK :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_hard_weak;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_HARD_WEAK;
 			case CACHE :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_cache;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_CACHE;
 			case NONE :
-				return EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_none;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_NONE;
 			default :
 				throw new IllegalStateException();
 		}

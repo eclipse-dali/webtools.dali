@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -45,7 +45,7 @@ public class EclipseLinkEntityPrimaryKeyValidator
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED,
+						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED,
 						new String[0],
 						typeMapping(),
 						idClassReference().getValidationTextRange()));

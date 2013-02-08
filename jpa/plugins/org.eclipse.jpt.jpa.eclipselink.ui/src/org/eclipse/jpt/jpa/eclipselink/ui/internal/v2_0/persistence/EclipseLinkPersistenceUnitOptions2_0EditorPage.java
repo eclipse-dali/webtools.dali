@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceUnitOptionsEditorPage;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
@@ -78,7 +78,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 
 		TriStateCheckBox checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL,
 			this.buildTemporalMutableHolder(),
 			this.buildTemporalMutableStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
@@ -433,7 +433,7 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 				String name = (String) element;
 
 				if (name == null) {
-					name = EclipseLinkUiMessages.PersistenceXmlOptionsTab_noName;
+					name = JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_NO_NAME;
 				}
 				return name;
 			}

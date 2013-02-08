@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -111,13 +111,13 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 
 		switch (Profiler.valueOf(profilerName)) {
 			case no_profiler: {
-				return EclipseLinkUiMessages.ProfilerComposite_no_profiler;
+				return JptJpaEclipseLinkUiMessages.PROFILER_COMPOSITE_NO_PROFILER;
 			}
 			case performance_profiler: {
-				return EclipseLinkUiMessages.ProfilerComposite_performance_profiler;
+				return JptJpaEclipseLinkUiMessages.PROFILER_COMPOSITE_PERFORMANCE_PROFILER;
 			}
 			case query_monitor: {
-				return EclipseLinkUiMessages.ProfilerComposite_query_monitor;
+				return JptJpaEclipseLinkUiMessages.PROFILER_COMPOSITE_QUERY_MONITOR;
 			}
 			default: {
 				return null;

@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
@@ -108,8 +108,8 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 */
 	public DynamicEntityClassWizardPage(IDataModel model, String pageName) {
 		super(model, pageName);
-		setDescription(EclipseLinkUiMessages.DynamicEntityClassWizardPage_desc);
-		this.setTitle(EclipseLinkUiMessages.DynamicEntityClassWizardPage_title);
+		setDescription(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_DESC);
+		this.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_TITLE);
 		setPageComplete(false);
 		this.projectName = null;
 	}
@@ -168,7 +168,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	private void addProjectNameGroup(Composite parent) {
 		// set up project name label
 		projectNameLabel = new Label(parent, SWT.NONE);
-		projectNameLabel.setText(EclipseLinkUiMessages.DynamicEntityClassWizardPage_projectNameLabel); 
+		projectNameLabel.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_PROJECT_NAME_LABEL); 
 		GridData data = new GridData();
 		projectNameLabel.setLayoutData(data);
 		// set up project name entry field
@@ -196,7 +196,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 */
 	private void addPackageGroup(Composite composite) {
 		packageLabel = new Label(composite, SWT.LEFT);
-		packageLabel.setText(EclipseLinkUiMessages.DynamicEntityClassWizardPage_javaPackageLabel);
+		packageLabel.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_JAVA_PACKAGE_LABEL);
 		packageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		packageText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -212,7 +212,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 		}
 
 		packageButton = new Button(composite, SWT.PUSH);
-		packageButton.setText(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_browseBttonLabel);
+		packageButton.setText(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_BROWSE_BUTTON_LABEL);
 		packageButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		packageButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
@@ -231,7 +231,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 */
 	private void addClassNameGroup(Composite composite) {
 		classLabel = new Label(composite, SWT.LEFT);
-		classLabel.setText(EclipseLinkUiMessages.DynamicEntityClassWizardPage_classNameLabel);
+		classLabel.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_CLASS_NAME_LABEL);
 		classLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		classText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -247,7 +247,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 */
 	private void addEntityNameGroup(Composite composite) {
 		entityNameLabel = new Label(composite, SWT.LEFT);
-		entityNameLabel.setText(EclipseLinkUiMessages.DynamicEntityClassWizardPage_entityName);
+		entityNameLabel.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_ENTITY_NAME);
 		entityNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		entityNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -263,9 +263,9 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * This group is used to manage the table settings for the dynamic entity
 	 */
 	private void addEntityTableGroup(Composite composite) {
-		Group group = createGroup(composite, EclipseLinkUiMessages.DynamicEntityClassWizardPage_tableNameGroup);
-		tableNameCheckButton= createTableNameCheckButton(group, EclipseLinkUiMessages.DynamicEntityClassWizardPage_useDefult, IEntityDataModelProperties.TABLE_NAME_DEFAULT);		
-		tableNameText = createNameGroup(group, EclipseLinkUiMessages.DynamicEntityClassWizardPage_tableName, IEntityDataModelProperties.TABLE_NAME);
+		Group group = createGroup(composite, JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_TABLE_NAME_GROUP);
+		tableNameCheckButton= createTableNameCheckButton(group, JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_USE_DEFULT, IEntityDataModelProperties.TABLE_NAME_DEFAULT);		
+		tableNameText = createNameGroup(group, JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_TABLE_NAME, IEntityDataModelProperties.TABLE_NAME);
 		tableNameText.setEnabled(!tableNameCheckButton.getSelection());
 	}
 	
@@ -275,8 +275,8 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * where the dynamic entity will be created
 	 */
 	private void addMappingXMLGroup(Composite parent) {
-		Group group = createGroup(parent, EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlGroup);
-		createBrowseGroup(group, EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlNameLabel, IEntityDataModelProperties.XML_NAME);
+		Group group = createGroup(parent, JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_XML_GROUP);
+		createBrowseGroup(group, JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_XML_NAME_LABEL, IEntityDataModelProperties.XML_NAME);
 		this.ormXmlNameText.setText(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 
@@ -361,7 +361,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 		this.ormXmlNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		this.browseButton = new Button(composite, SWT.PUSH);
-		this.browseButton.setText(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_browseBttonLabel);
+		this.browseButton.setText(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_BROWSE_BUTTON_LABEL);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		browseButtonData.horizontalSpan = 1;
 		this.browseButton.setLayoutData(browseButtonData);		
@@ -395,8 +395,8 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		SelectMappingFileDialog dialog = new SelectEclipseLinkMappingFileDialog(getShell(), project, labelProvider, contentProvider);
-		dialog.setTitle(EclipseLinkUiMessages.DynamicEntityClassWizardPage_chooseXMLDialog_title);
-		dialog.setMessage(EclipseLinkUiMessages.DynamicEntityClassWizardPage_chooseXMLDialog_msg);
+		dialog.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_CHOOSE_XML_DIALOG_TITLE);
+		dialog.setMessage(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_CHOOSE_XML_DIALOG_MSG);
 		dialog.addFilter(filter);
 		dialog.setInput(project);
 			
@@ -516,16 +516,16 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	protected void handlePackageButtonPressed() {
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), new JavaElementLabelProvider(
 				JavaElementLabelProvider.SHOW_DEFAULT));
-		dialog.setTitle(EclipseLinkUiMessages.DynamicEntityClassWizardPage_packageSelectionDialog_title);
-		dialog.setMessage(EclipseLinkUiMessages.DynamicEntityClassWizardPage_packageSelectionDialog_desc);
-		dialog.setEmptyListMessage(EclipseLinkUiMessages.DynamicEntityClassWizardPage_packageSelectionDialog_msg);
+		dialog.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_PACKAGE_SELECTION_DIALOG_TITLE);
+		dialog.setMessage(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_PACKAGE_SELECTION_DIALOG_DESC);
+		dialog.setEmptyListMessage(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_PACKAGE_SELECTION_DIALOG_MSG);
 		dialog.setElements(this.getPackages());
 		if (dialog.open() == Window.OK) {
 			IPackageFragment fragment = (IPackageFragment) dialog.getFirstResult();
 			if (fragment != null) {
 				packageText.setText(fragment.getElementName());
 			} else {
-				packageText.setText(EclipseLinkUiMessages.DynamicEntityClassWizardPage_emptyString);
+				packageText.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_EMPTY_STRING);
 			}
 		}
 	}

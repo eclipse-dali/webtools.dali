@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -117,13 +117,13 @@ public class LoggerClassChooser extends ClassChooserComboPane<Logging>
 
 		switch (Logger.valueOf(loggerName)) {
 			case default_logger: {
-				return EclipseLinkUiMessages.LoggerComposite_default_logger;
+				return JptJpaEclipseLinkUiMessages.LOGGER_COMPOSITE_DEFAULT_LOGGER;
 			}
 			case java_logger: {
-				return EclipseLinkUiMessages.LoggerComposite_java_logger;
+				return JptJpaEclipseLinkUiMessages.LOGGER_COMPOSITE_JAVA_LOGGER;
 			}
 			case server_logger: {
-				return EclipseLinkUiMessages.LoggerComposite_server_logger;
+				return JptJpaEclipseLinkUiMessages.LOGGER_COMPOSITE_SERVER_LOGGER;
 			}
 			default: {
 				return null;

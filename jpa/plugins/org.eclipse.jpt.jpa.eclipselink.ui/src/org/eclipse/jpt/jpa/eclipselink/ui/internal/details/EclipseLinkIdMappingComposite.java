@@ -81,14 +81,14 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
 			container, 
-			EclipseLinkUiDetailsMessages.TypeSection_converted, 
+			JptJpaEclipseLinkUiDetailsMessages.TYPE_SECTION_CONVERTED, 
 			buildConverterBooleanHolder(EclipseLinkConvert.class), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 		
 		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterHolder);
 		PropertyValueModel<Boolean> convertEnabledModel = this.buildNonNullEclipseLinkConvertModel(convertModel);
-		Label convertLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_converterNameLabel, convertEnabledModel);
+		Label convertLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERT_COMPOSITE_CONVERTER_NAME_LABEL, convertEnabledModel);
 		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
 		convertLabel.setLayoutData(gridData);
@@ -118,7 +118,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 	protected void initializeConvertersCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_CONVERTERS);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {

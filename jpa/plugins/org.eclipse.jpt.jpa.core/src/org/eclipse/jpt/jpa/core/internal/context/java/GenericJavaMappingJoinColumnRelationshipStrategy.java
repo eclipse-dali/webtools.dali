@@ -27,10 +27,10 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericJavaMappingJoinColumnRelationshipStrategy
@@ -136,7 +136,7 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 	// ********** validation **********
 
 	public String getColumnTableNotValidDescription() {
-		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
+		return JptJpaCoreValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 

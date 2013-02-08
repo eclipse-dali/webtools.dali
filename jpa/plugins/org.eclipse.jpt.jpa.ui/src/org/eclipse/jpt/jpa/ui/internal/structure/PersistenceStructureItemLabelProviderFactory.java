@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.ClassRefItemLabelProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.JarFileRefItemLabelProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.MappingFileRefItemLabelProvider;
@@ -69,7 +69,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	protected ItemExtendedLabelProvider buildPersistenceProvider(Persistence item, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 					JptJpaUiImages.PERSISTENCE,
-					JptUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel,
+					JptJpaUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel,
 					this.buildPersistenceDescription(item),
 					manager
 				);
@@ -77,7 +77,7 @@ public class PersistenceStructureItemLabelProviderFactory
 
 	protected String buildPersistenceDescription(Persistence item) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(JptUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel);
+		sb.append(JptJpaUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel);
 		sb.append(" - ");  //$NON-NLS-1$
 		sb.append(item.getResource().getFullPath().makeRelative());
 		return sb.toString();

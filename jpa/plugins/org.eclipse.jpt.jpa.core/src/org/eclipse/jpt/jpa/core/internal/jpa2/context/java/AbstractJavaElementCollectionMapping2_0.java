@@ -84,7 +84,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.CollectionTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
@@ -105,6 +104,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1525,7 +1525,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
+								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
 								new String[] {this.getName(), 
 										embeddable.getName(), relationshipMapping.getName()},
 								this,
@@ -1536,7 +1536,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
+								JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
 								new String[] {embeddable.getName(), relationshipMapping.getName()},
 								this,
 								this.getValidationTextRange()
@@ -1553,7 +1553,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
+								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 								new String[] {this.getName(), embeddable.getName(), elementCollectionMappings.iterator().next().getName()},
 								this,
 								this.getVirtualPersistentAttributeTextRange()
@@ -1563,7 +1563,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
+								JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 								new String[] {embeddable.getName(), elementCollectionMappings.iterator().next().getName()},
 								this,
 								this.getValidationTextRange()
@@ -1580,7 +1580,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						new String[] {this.getName()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1591,7 +1591,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange()
@@ -1608,7 +1608,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1618,7 +1618,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange()
@@ -1636,7 +1636,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), targetClass},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1646,7 +1646,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {targetClass},
 						this,
 						this.getTargetClassTextRange()
@@ -1682,7 +1682,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1692,7 +1692,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getMapKeyClassTextRange()
@@ -1710,7 +1710,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1720,7 +1720,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getFullyQualifiedMapKeyClass()},
 						this,
 						this.getMapKeyClassTextRange()

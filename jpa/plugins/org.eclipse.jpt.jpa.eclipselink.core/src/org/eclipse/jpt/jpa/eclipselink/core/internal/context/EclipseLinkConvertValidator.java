@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -69,7 +69,7 @@ public class EclipseLinkConvertValidator
 		messages.add(
 			DefaultEclipseLinkJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
+				JptJpaEclipseLinkCoreValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
 				new String[] {
 					converterName,
 					this.getAttributeMapping().getName()

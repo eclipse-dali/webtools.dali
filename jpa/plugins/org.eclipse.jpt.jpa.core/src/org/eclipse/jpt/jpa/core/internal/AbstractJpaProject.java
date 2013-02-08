@@ -78,11 +78,11 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
@@ -91,6 +91,7 @@ import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
@@ -1072,7 +1073,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected String buildSynchronizeMetamodelJobName() {
-		return NLS.bind(JptCoreMessages.METAMODEL_SYNC_JOB_NAME, this.getName());
+		return NLS.bind(JptJpaCoreMessages.METAMODEL_SYNC_JOB_NAME, this.getName());
 	}
 
 	/**
@@ -1480,7 +1481,7 @@ public abstract class AbstractJpaProject
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
+					JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
 					this
 				)
 			);
@@ -1493,7 +1494,7 @@ public abstract class AbstractJpaProject
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
-					JpaValidationMessages.PROJECT_NO_CONNECTION,
+					JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION,
 					this
 				)
 			);
@@ -1504,7 +1505,7 @@ public abstract class AbstractJpaProject
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
-					JpaValidationMessages.PROJECT_INVALID_CONNECTION,
+					JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION,
 					new String[] {cpName},
 					this
 				)
@@ -1515,7 +1516,7 @@ public abstract class AbstractJpaProject
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
-					JpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
+					JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION,
 					new String[] {cpName},
 					this
 				)
@@ -1868,7 +1869,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected String buildSynchronizeContextModelJobName() {
-		return NLS.bind(JptCoreMessages.CONTEXT_MODEL_SYNC_JOB_NAME, this.getName());
+		return NLS.bind(JptJpaCoreMessages.CONTEXT_MODEL_SYNC_JOB_NAME, this.getName());
 	}
 
 	/**
@@ -1950,7 +1951,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected String buildUpdateJobName() {
-		return NLS.bind(JptCoreMessages.UPDATE_JOB_NAME, this.getName());
+		return NLS.bind(JptJpaCoreMessages.UPDATE_JOB_NAME, this.getName());
 	}
 
 	@Override

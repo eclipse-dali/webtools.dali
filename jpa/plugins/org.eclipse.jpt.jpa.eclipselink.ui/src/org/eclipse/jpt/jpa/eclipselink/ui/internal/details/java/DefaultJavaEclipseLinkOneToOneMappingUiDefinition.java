@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingUiDefinition;
 
@@ -45,10 +45,10 @@ public class DefaultJavaEclipseLinkOneToOneMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToOneMappingUiProvider_label;
+		return JptJpaEclipseLinkUiDetailsMessages.DEFAULT_ECLIPSELINK_ONE_TO_ONE_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToOneMappingUiProvider_linkLabel;
+		return JptJpaEclipseLinkUiDetailsMessages.DEFAULT_ECLIPSELINK_ONE_TO_ONE_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 }

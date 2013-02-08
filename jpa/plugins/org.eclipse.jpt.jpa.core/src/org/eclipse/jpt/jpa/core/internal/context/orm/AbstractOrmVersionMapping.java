@@ -29,11 +29,11 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProv
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -281,7 +281,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,
-							JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
+							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 							new String[] {this.getName()},
 							this,
 							this.getNameTextRange()

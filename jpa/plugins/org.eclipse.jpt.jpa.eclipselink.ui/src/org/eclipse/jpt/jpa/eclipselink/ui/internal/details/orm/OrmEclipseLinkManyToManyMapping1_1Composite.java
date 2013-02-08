@@ -16,8 +16,8 @@ import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.AbstractEclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
@@ -55,11 +55,11 @@ public class OrmEclipseLinkManyToManyMapping1_1Composite
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Attribute type widgets
-		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.OrmAttributeTypeComposite_attributeType);
+		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ORM_ATTRIBUTE_TYPE_COMPOSITE_ATTRIBUTE_TYPE);
 		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
@@ -67,7 +67,7 @@ public class OrmEclipseLinkManyToManyMapping1_1Composite
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCHCOMPOSITE_LABEL);
 		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Cascade widgets

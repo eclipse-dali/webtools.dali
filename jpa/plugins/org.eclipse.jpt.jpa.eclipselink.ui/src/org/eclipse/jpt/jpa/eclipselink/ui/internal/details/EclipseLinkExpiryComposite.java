@@ -72,7 +72,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 
 	@Override
 	protected Composite addComposite(Composite container) {
-		Group group = this.getWidgetFactory().createGroup(container, EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_expirySection);
+		Group group = this.getWidgetFactory().createGroup(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_EXPIRY_SECTION);
 
 		GridLayout layout = new GridLayout(4, false);
 		layout.marginHeight = 0;
@@ -91,7 +91,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		// No Expiry radio button
 		Button button = addRadioButton(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_noExpiry,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_NO_EXPIRY,
 			buildNoExpiryHolder(),
 			null
 		);
@@ -103,14 +103,14 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		// Time To Live Expiry radio button
 		addRadioButton(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiry,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_TIME_TO_LIVE_EXPIRY,
 			buildExpiryHolder(),
 			null
 		);
 
 		Label expireAfterLabel = this.addLabel(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryExpireAfter,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_TIME_TO_LIVE_EXPIRY_EXPIRE_AFTER,
 			this.getTtlEnabled()
 		);
 		gridData = new GridData();
@@ -121,7 +121,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		
 		this.addLabel(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_TIME_TO_LIVE_EXPIRY_MILLISECONDS,
 			this.getTtlEnabled()
 		);
 
@@ -129,7 +129,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		// Daily Expiry radio button
 		addRadioButton(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_dailyExpiry,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_DAILY_EXPIRY,
 			buildTimeOfDayExpiryBooleanHolder(),
 			null
 		);
@@ -137,7 +137,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		PropertyValueModel<Boolean> todEnabled = this.buildTimeOfDayExpiryEnabler();
 		Label expireAtLabel = addLabel(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeOfDayExpiryExpireAt,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_TIME_OF_DAY_EXPIRY_EXPIRE_AT,
 			todEnabled
 		);
 		gridData = new GridData();

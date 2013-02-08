@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.swt.widgets.Composite;
@@ -36,7 +36,7 @@ public class JavaEmbeddable2_0Composite
 		Composite sectionClient = this.addSubPane(embeddableSection, 2, 0, 0, 0, 0);
 
 		// Access type widgets
-		this.addLabel(sectionClient, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(sectionClient, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), sectionClient);
 
 		return sectionClient;

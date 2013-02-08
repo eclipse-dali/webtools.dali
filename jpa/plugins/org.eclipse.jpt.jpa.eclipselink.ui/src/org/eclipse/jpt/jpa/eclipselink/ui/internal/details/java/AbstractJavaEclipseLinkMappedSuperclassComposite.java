@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverte
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkNonEmbeddableTypeMappingAdvancedComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
@@ -55,7 +55,7 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends
 	protected void initializeCachingCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_CACHING);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -83,7 +83,7 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends
 	protected void initializeConvertersCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_CONVERTERS);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -111,7 +111,7 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite<T extends
 	protected void initializeAdvancedCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_advanced);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_ADVANCED);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

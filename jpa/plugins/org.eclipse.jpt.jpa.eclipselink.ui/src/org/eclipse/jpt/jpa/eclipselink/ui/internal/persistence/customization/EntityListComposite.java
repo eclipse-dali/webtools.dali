@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -87,7 +87,7 @@ public class EntityListComposite extends Pane<Customization>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.CustomizationEntityListComposite_groupTitle
+			JptJpaEclipseLinkUiMessages.CUSTOMIZATION_ENTITY_LIST_COMPOSITE_GROUP_TITLE
 		);
 	}
 
@@ -105,7 +105,7 @@ public class EntityListComposite extends Pane<Customization>
 		);
 
 		// Entity Customization property pane
-		Hyperlink customizationHyperlink = this.addHyperlink(container, EclipseLinkUiMessages.PersistenceXmlCustomizationTab_customizerLabel);
+		Hyperlink customizationHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_CUSTOMIZER_LABEL);
 		this.initializeClassChooser(container, customizationHyperlink);
 	}
 
@@ -173,8 +173,8 @@ public class EntityListComposite extends Pane<Customization>
 			JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			return null;
 		}
-		typeSelectionDialog.setTitle(EclipseLinkUiMessages.CustomizationEntityListComposite_dialogTitle);
-		typeSelectionDialog.setMessage(EclipseLinkUiMessages.CustomizationEntityListComposite_dialogMessage);
+		typeSelectionDialog.setTitle(JptJpaEclipseLinkUiMessages.CUSTOMIZATION_ENTITY_LIST_COMPOSITE_DIALOG_TITLE);
+		typeSelectionDialog.setMessage(JptJpaEclipseLinkUiMessages.CUSTOMIZATION_ENTITY_LIST_COMPOSITE_DIALOG_MESSAGE);
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];

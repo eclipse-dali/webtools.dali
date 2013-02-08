@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 
-import org.eclipse.jpt.jpa.gen.internal.JptGenMessages;
+import org.eclipse.jpt.jpa.gen.JptJpaGenMessages;
 
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.osgi.util.NLS;
@@ -61,7 +61,7 @@ public class FileUtil
 		throws IOException
 	{
 		if (!f.delete()) {
-			String msgId = f.isDirectory() ?  JptGenMessages.Delete_Folder_Error :  JptGenMessages.Delete_File_Error;
+			String msgId = f.isDirectory() ?  JptJpaGenMessages.DELETE_FOLDER_ERROR :  JptJpaGenMessages.DELETE_FILE_ERROR;
 			throw new IOException( NLS.bind(msgId,f.getPath()));
 		}
 	}
@@ -88,7 +88,7 @@ public class FileUtil
 		throws IOException
 	{
 		if (dest.exists() && !dest.canWrite())
-			throw new IOException( NLS.bind(JptGenMessages.File_Read_Only_Error, dest.getPath()));  //throw with a clear error because otherwise FileOutputStream throws FileNotFoundException!
+			throw new IOException( NLS.bind(JptJpaGenMessages.FILE_READ_ONLY_ERROR, dest.getPath()));  //throw with a clear error because otherwise FileOutputStream throws FileNotFoundException!
 		java.io.FileOutputStream fout = new java.io.FileOutputStream(dest.getPath(), false/*append*/);
 		try {
 			fout.write(bytes);

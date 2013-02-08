@@ -28,11 +28,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -321,7 +321,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
+							JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
 							new String[] {this.getName()},
 							this,
 							this.getVirtualPersistentAttributeTextRange()
@@ -332,7 +332,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
+							JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
 							new String[] {this.getName()},
 							this,
 							this.getValidationTextRange()
@@ -352,7 +352,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -362,7 +362,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						new String[] {this.getFullyQualifiedTargetEntity()},
 						this,
 						this.getTargetEntityTextRange()

@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -54,7 +54,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NO_PK,
+						JptJpaCoreValidationMessages.ENTITY_NO_PK,
 						EMPTY_STRING_ARRAY,
 						entity(),
 						entity().getValidationTextRange()));
@@ -79,7 +79,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
+						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
 						EMPTY_STRING_ARRAY,
 						entity(),
 						idClassReference().getValidationTextRange()));
@@ -91,7 +91,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
+						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
 						EMPTY_STRING_ARRAY,
 						each,
 						getAttributeMappingTextRange(each)));

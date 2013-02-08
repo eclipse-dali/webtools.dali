@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
@@ -52,7 +52,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPageDefinition
 	}
 
 	public String getTitleText() {
-		return EclipseLinkUiMessages.PersistenceXmlConnectionTab_title;
+		return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_TITLE;
 	}
 
 	public String getHelpID() {

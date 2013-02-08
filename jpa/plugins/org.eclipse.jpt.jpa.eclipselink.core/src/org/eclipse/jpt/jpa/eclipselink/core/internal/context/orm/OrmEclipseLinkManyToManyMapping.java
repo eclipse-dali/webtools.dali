@@ -26,8 +26,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibl
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -146,7 +146,7 @@ public class OrmEclipseLinkManyToManyMapping
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						EclipseLinkJpaValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
+						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						new String[] {this.getName()},
 						this,
 						this.getAttributeTypeTextRange()
@@ -160,7 +160,7 @@ public class OrmEclipseLinkManyToManyMapping
 					messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
+							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 							new String[] {this.getFullyQualifiedAttributeType()},
 							this,
 							this.getAttributeTypeTextRange()

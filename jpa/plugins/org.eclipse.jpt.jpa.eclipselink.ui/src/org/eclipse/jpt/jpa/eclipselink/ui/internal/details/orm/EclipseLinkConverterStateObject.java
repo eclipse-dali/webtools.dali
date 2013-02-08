@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 
 /**
  * This is the state object used by the <code>EclipseLinkConverterDialog</code>, which stores
@@ -74,7 +74,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 		if (this.converterContainer.getNumberSupportedConverters() <= this.converterContainer.getConvertersSize()) {
 			currentProblems.add(
 				buildProblem(
-					EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_maxConvertersErrorMessage, 
+					JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_MAX_CONVERTERS_ERROR_MESSAGE, 
 					IMessageProvider.ERROR,
 					Integer.valueOf(this.converterContainer.getNumberSupportedConverters())));
 			return false;
@@ -84,18 +84,18 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.name)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_STATE_OBJECT_NAME_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		} 
 		else if (names().contains(this.name)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameExists, IMessageProvider.WARNING));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_STATE_OBJECT_NAME_EXISTS, IMessageProvider.WARNING));
 		} else if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameIsReserved, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_STATE_OBJECT_NAME_IS_RESERVED, IMessageProvider.ERROR));
 		}
 	}
 
 	private void addConverterTypeProblemsTo(List<Problem> currentProblems) {
 		if (this.converterType == null) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_STATE_OBJECT_TYPE_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 	}
 

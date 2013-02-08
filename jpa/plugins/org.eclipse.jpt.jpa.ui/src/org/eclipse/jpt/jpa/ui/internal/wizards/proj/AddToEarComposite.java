@@ -15,7 +15,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,20 +49,20 @@ public class AddToEarComposite {
 		Group group = new Group(parent, SWT.NONE);
 		group.setLayoutData(gdhfill());
 		group.setLayout(new GridLayout(3, false));
-		group.setText(JptUiMessages.AddToEarComposite_earMemberShip);
+		group.setText(JptJpaUiMessages.AddToEarComposite_earMemberShip);
 		
 		this.addToEar = new Button(group, SWT.CHECK);
-		this.addToEar.setText(JptUiMessages.AddToEarComposite_addToEarLabel);
+		this.addToEar.setText(JptJpaUiMessages.AddToEarComposite_addToEarLabel);
 		GridDataFactory.defaultsFor(this.addToEar).span(3, 1).applyTo(this.addToEar);
 		this.synchhelper.synchCheckbox(addToEar, ADD_TO_EAR, null);
 		
 		this.label = new Label(group, SWT.NULL);
-		this.label.setText(JptUiMessages.AddToEarComposite_earProjectLabel);
+		this.label.setText(JptJpaUiMessages.AddToEarComposite_earProjectLabel);
 		this.combo = new Combo(group, SWT.NONE);
 		this.combo.setLayoutData(gdhfill());
 		
 		this.newButton = new Button(group, SWT.PUSH);
-		this.newButton.setText(JptUiMessages.AddToEarComposite_newButtonLabel);
+		this.newButton.setText(JptJpaUiMessages.AddToEarComposite_newButtonLabel);
 		GridDataFactory.defaultsFor(this.newButton).applyTo(this.newButton);
 		
 		this.newButton.addSelectionListener(

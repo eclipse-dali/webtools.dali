@@ -38,8 +38,8 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.text.edits.DeleteEdit;
@@ -509,7 +509,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
+					JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
 					this,
 					this.getClassTextRange()
 				)

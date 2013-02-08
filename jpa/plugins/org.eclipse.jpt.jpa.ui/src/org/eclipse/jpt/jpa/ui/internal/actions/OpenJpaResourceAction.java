@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IEditorDescriptor;
@@ -44,7 +44,7 @@ public class OpenJpaResourceAction
 
 
 	public OpenJpaResourceAction() {
-		super(JptUiMessages.OpenJpaResourceAction_open);
+		super(JptJpaUiMessages.OpenJpaResourceAction_open);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class OpenJpaResourceAction
 			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
 		}
 		catch (Exception e) {
-			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptUiMessages.OpenJpaResourceAction_error, e.getMessage());
+			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptJpaUiMessages.OpenJpaResourceAction_error, e.getMessage());
 		}
 	}
 

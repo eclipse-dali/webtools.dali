@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.NewDynamicEntityClassOperation;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
@@ -190,7 +190,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 */
 	private IStatus validateJavaPackage(String packName) {		
 		if (packName == null || packName.equals(EMPTY_STRING)) {
-			return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.DynamicEntityClassWizardPage_defaultPackageWarning);
+			return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_DEFAULT_PACKAGE_WARNING);
 		}			
 		// Use standard java conventions to validate the package name
 		IStatus javaStatus = JavaConventions.validatePackageName(packName, JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
@@ -220,10 +220,10 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		if (project != null) {
 			JptXmlResource ormXmlResource = StringTools.isBlank(xmlName) ? null : getOrmXmlResource(xmlName);
 			if (ormXmlResource == null) {
-				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityClassWizardPage_invalidXMLName);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_INVALID_XML_NAME);
 			}
 			else if (this.getJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
-				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlNotListedError);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_CLASS_WIZARD_PAGE_XML_NOT_LISTED_ERROR);
 			}
 		}
 		return Status.OK_STATUS;
@@ -250,7 +250,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			// Ensure there are no dynamic entity fields that have the same name in the table
 			boolean hasDuplicates = hasDuplicatesInEntityFields(fields);
 			if (hasDuplicates) {
-				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_duplicateEntityFieldsError);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_DUPLICATE_ENTITY_FIELDS_ERROR);
 			}
 			// Ensure ID and EmbeddedID mapping are not defined at the same time
 			// and also ensure there's no multiple EmbeddedID mappings defined
@@ -286,9 +286,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		IStatus validateFieldMappingTypeStatus = Status.OK_STATUS;
 		Iterable<String> mappingKeys = this.getMappingKeys(fields);
 		if (hasIDAndEmbeddedIDMappingDefined(mappingKeys)) {
-			validateFieldMappingTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_bothIDAndEmbeddedIDDefinedError);
+			validateFieldMappingTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_BOTH_ID_AND_EMBEDDED_ID_DEFINED_ERROR);
 		} else if (hasMultipleEmbeddedIDMappings(mappingKeys)) {
-			validateFieldMappingTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_multipleEmbeddedIDsDefinedError);
+			validateFieldMappingTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_MULTIPLE_EMBEDDED_IDS_DEFINED_ERROR);
 		}
 		if (!validateFieldMappingTypeStatus.isOK()) {
 			return validateFieldMappingTypeStatus.getMessage();
@@ -330,14 +330,14 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 				continue;
 			}
 			if (field.isKey() && !field.couldTypeBePKType()) {
-				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidPKType, field.getFqnAttributeType());
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_INVALID_PK_TYPE, field.getFqnAttributeType());
 				break;				
 			}
 			String sig = null;
 			try {
 				sig = Signature.createTypeSignature(field.getFqnAttributeType(), true);
 			} catch (IllegalArgumentException e) {
-				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, e.getLocalizedMessage());
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_INVALID_ARGUMENT, e.getLocalizedMessage());
 				break;
 			}
 			if (sig == null) {
@@ -370,7 +370,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			}
 			String sig = Signature.createTypeSignature(field.getFqnAttributeType(), true);
 			if (sig == null) {
-				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnAttributeType());
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_NOT_IN_PROJECT_CLASSPATH, field.getFqnAttributeType());
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -392,7 +392,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				} 
 				if (type == null) {
-					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnAttributeType());
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_NOT_IN_PROJECT_CLASSPATH, field.getFqnAttributeType());
 					break;
 				}
 			} else {
@@ -406,7 +406,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				}
 				if (type == null) {
-					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnAttributeType());
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_NOT_IN_PROJECT_CLASSPATH, field.getFqnAttributeType());
 					break;
 				}
 			}
@@ -429,7 +429,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			try {
 				sig = Signature.createTypeSignature(field.getFqnTargetType(), true);
 			} catch (IllegalArgumentException e) {
-				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, e.getLocalizedMessage());
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_INVALID_ARGUMENT, e.getLocalizedMessage());
 				break;
 			}
 			if (sig == null){
@@ -463,7 +463,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			}
 			String sig = Signature.createTypeSignature(field.getFqnTargetType(), true);
 			if (sig == null) {
-				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnTargetType());
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_NOT_IN_PROJECT_CLASSPATH, field.getFqnTargetType());
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -485,7 +485,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				} 
 				if (type == null) {
-					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnTargetType());
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_NOT_IN_PROJECT_CLASSPATH, field.getFqnTargetType());
 					break;
 				}
 			} else {
@@ -499,7 +499,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				}
 				if (type == null) {
-					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnTargetType());
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_NOT_IN_PROJECT_CLASSPATH, field.getFqnTargetType());
 					break;
 				}
 			}
@@ -547,7 +547,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 */
 	private IStatus validatePrimaryKeyFieldsList(ArrayList<DynamicEntityField> pkFields) {
 		return (pkFields.size() > 1) ?
-				JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.INFO, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_applyEmbeddedIdMappingInfo) :
+				JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.INFO, JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_APPLY_EMBEDDED_ID_MAPPING_INFO) :
 				null;
 	}
 
@@ -577,24 +577,24 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		//there is no need for a separate validation of it.
 		for (String name : this.getJavaTypeNames()) {
 			if (ObjectTools.equals(name, fullyQualifiedName)) {
-				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeExistsWarning, fullyQualifiedName);
+				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_EXISTS_WARNING, fullyQualifiedName);
 
 			} else if (StringTools.equalsIgnoreCase(name, fullyQualifiedName)) {
-				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeWithDiffCaseExistsWarning, fullyQualifiedName);
+				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_TYPE_WITH_DIFF_CASE_EXISTS_WARNING, fullyQualifiedName);
 			}
 		}
 		PersistenceUnit pu = this.getPersistenceUnit();
 		if (pu != null) {
 			for (String name : ((EclipseLinkPersistenceUnit)this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames()) {
 				if (ObjectTools.equals(name, fullyQualifiedName)) {
-					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeExistsError, fullyQualifiedName);
+					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_DYNAMIC_TYPE_EXISTS_ERROR, fullyQualifiedName);
 
 				} else if (StringTools.equalsIgnoreCase(name, fullyQualifiedName)) {
-					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeWithDiffCaseExistsError, fullyQualifiedName);
+					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_DYNAMIC_TYPE_WITH_DIFF_CASE_EXISTS_ERROR, fullyQualifiedName);
 				}
 			}
 		} else {
-			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_persistenceUnitNotFoundError);
+			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.ECLIPSELINK_DYNAMIC_ENTITY_WIZARD_PERSISTENCE_UNIT_NOT_FOUND_ERROR);
 		}
 		return Status.OK_STATUS;
 	}

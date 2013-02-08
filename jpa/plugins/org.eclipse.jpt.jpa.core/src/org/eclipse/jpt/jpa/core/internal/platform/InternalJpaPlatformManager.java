@@ -27,8 +27,8 @@ import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaWorkspace;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -262,7 +262,7 @@ public class InternalJpaPlatformManager
 			return config;
 		}
 
-		this.logError(JptCoreMessages.INVALID_FACET, jpaFacetVersion);
+		this.logError(JptJpaCoreMessages.INVALID_FACET, jpaFacetVersion);
 		return null;
 	}
 

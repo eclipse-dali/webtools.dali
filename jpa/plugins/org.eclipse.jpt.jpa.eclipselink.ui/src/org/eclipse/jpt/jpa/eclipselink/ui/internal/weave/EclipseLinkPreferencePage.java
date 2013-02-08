@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.builder.EclipseLinkStaticWeavingBuilderConfigurator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -43,7 +43,7 @@ public class EclipseLinkPreferencePage extends PropertyPage {
 	
 	public EclipseLinkPreferencePage() {
 		super();
-		setDescription(EclipseLinkUiMessages.EclipselinkPreferencePage_description);
+		setDescription(JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_DESCRIPTION);
 	}
 	
 	// ********** overrides **********
@@ -198,37 +198,37 @@ public class EclipseLinkPreferencePage extends PropertyPage {
 			layout.verticalSpacing= convertVerticalDLUsToPixels(0);
 			weavingGroup.setLayout(layout);
 			weavingGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			weavingGroup.setText(EclipseLinkUiMessages.EclipselinkPreferencePage_staticWeavingGroupBox);
+			weavingGroup.setText(JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_STATIC_WEAVING_GROUP_BOX);
 			
 			// checkbox
 			this.staticWeaveClassesCheckBox = this.buildStaticWeaveCheckBox(weavingGroup, 
-																	EclipseLinkUiMessages.EclipselinkPreferencePage_weaveClassesOnBuildLabel, 
+																	JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_WEAVE_CLASSES_ON_BUILD_LABEL, 
 																	this.buildStaticWeaveCheckBoxListener(), 3);
 			// source
-			this.sourceLabel = this.buildLabel(weavingGroup, 1, EclipseLinkUiMessages.EclipselinkPreferencePage_sourceLabel);
+			this.sourceLabel = this.buildLabel(weavingGroup, 1, JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_SOURCE_LABEL);
 			this.sourceFolderText = this.buildText(weavingGroup, 1);
 			this.browseSourceButton = this.buildBrowseButton(weavingGroup,
 									this.buildBrowseSourceButtonSelectionListener(
-										EclipseLinkUiMessages.EclipselinkPreferencePage_selectSourceLabel, 
-										EclipseLinkUiMessages.EclipselinkPreferencePage_sourceFolderSelectionLabel));	
+										JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_SELECT_SOURCE_LABEL, 
+										JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_SOURCE_FOLDER_SELECTION_LABEL));	
 			// target
-			this.targetLabel = this.buildLabel(weavingGroup, 1, EclipseLinkUiMessages.EclipselinkPreferencePage_targetLabel);
+			this.targetLabel = this.buildLabel(weavingGroup, 1, JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_TARGET_LABEL);
 			this.targetFolderText = this.buildText(weavingGroup, 1);
 			this.browseTargetButton = this.buildBrowseButton(weavingGroup,
 									this.buildBrowseTargetButtonSelectionListener(
-										EclipseLinkUiMessages.EclipselinkPreferencePage_selectTargetLabel, 
-										EclipseLinkUiMessages.EclipselinkPreferencePage_targetFolderSelectionLabel));
+										JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_SELECT_TARGET_LABEL, 
+										JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_TARGET_FOLDER_SELECTION_LABEL));
 			// log level combo-box
-			this.logLevelLabel = this.buildLabel(weavingGroup, 1, EclipseLinkUiMessages.EclipselinkPreferencePage_logLevelLabel);
+			this.logLevelLabel = this.buildLabel(weavingGroup, 1, JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_LOG_LEVEL_LABEL);
 			this.logLevelComboBox = this.buildLogLevelComboBox(weavingGroup, 1);
 			this.buildFiller(weavingGroup);
 			// persistenceInfo
-			this.persistenceInfoLabel = this.buildLabel(weavingGroup, 1, EclipseLinkUiMessages.EclipselinkPreferencePage_persistenceInfoLabel);
+			this.persistenceInfoLabel = this.buildLabel(weavingGroup, 1, JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_PERSISTENCE_INFO_LABEL);
 			this.persistenceInfoText = this.buildText(weavingGroup, 1);
 			this.browsePersistenceInfoButton = this.buildBrowseButton(weavingGroup,
 									this.buildBrowsePersistenceInfoButtonSelectionListener(
-										EclipseLinkUiMessages.EclipselinkPreferencePage_selectPersistenceInfoLabel, 
-										EclipseLinkUiMessages.EclipselinkPreferencePage_persistenceInfoFolderSelectionLabel));
+										JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_SELECT_PERSISTENCE_INFO_LABEL, 
+										JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_PERSISTENCE_INFO_FOLDER_SELECTION_LABEL));
 
 			// initialize staticWeave checkbox
 			this.staticWeaveClassesCheckBox.setSelection(projectHasStaticWeavingBuilder());
@@ -346,7 +346,7 @@ public class EclipseLinkPreferencePage extends PropertyPage {
 
 			// Browse buttons
 			Button browseButton = new Button(buttonComposite, SWT.PUSH);
-			browseButton.setText(EclipseLinkUiMessages.EclipselinkPreferencePage_browse);
+			browseButton.setText(JptJpaEclipseLinkUiMessages.ECLIPSELINK_PREFERENCE_PAGE_BROWSE);
 			gridData = new GridData();
 			gridData.horizontalAlignment= GridData.FILL;
 			gridData.grabExcessHorizontalSpace= true;

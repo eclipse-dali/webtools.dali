@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.gen.internal.PackageGenerator;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -262,7 +262,7 @@ public class GenerateEntitiesFromSchemaWizard
 		final OverwriteConfirmer confirmer;
 		final boolean generateXml;
 		public GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer, boolean generateXml) {
-			super(JptUiMessages.EntitiesGenerator_jobName);
+			super(JptJpaUiMessages.EntitiesGenerator_jobName);
 			this.customizer = customizer;
 			this.jpaProject = jpaProject;
 			this.confirmer = confirmer;
@@ -348,8 +348,8 @@ public class GenerateEntitiesFromSchemaWizard
 
 		OverwriteConfirmerDialog(Shell parent, String className) {
 			super(ID, parent,
-					JptUiMessages.OverwriteConfirmerDialog_title,
-					NLS.bind(JptUiMessages.OverwriteConfirmerDialog_text, className),
+					JptJpaUiMessages.OverwriteConfirmerDialog_title,
+					NLS.bind(JptJpaUiMessages.OverwriteConfirmerDialog_text, className),
 					MessageDialog.WARNING,
 					new String[] {IDialogConstants.YES_LABEL, 
 									IDialogConstants.YES_TO_ALL_LABEL, 

@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.AbstractValidator;
 import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.ValidationState;
@@ -129,7 +130,7 @@ public class JpaValidator
 	private IMessage buildValidationFailedMessage(IProject project) {
 		return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JPA_VALIDATION_FAILED,
+					JptJpaCoreValidationMessages.JPA_VALIDATION_FAILED,
 					project
 				);
 	}

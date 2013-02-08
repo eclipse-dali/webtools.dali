@@ -22,8 +22,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -112,7 +112,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
+					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED,
 					this,
 					this.getConverterClassTextRange()
 				)
@@ -125,7 +125,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_EXISTS,
+					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
 					new String[] {this.getFullyQualifiedConverterClass()},
 					this,
 					this.getConverterClassTextRange()

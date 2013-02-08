@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -78,7 +78,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	@Override
 	protected void initializeLayout(Composite container) {
 		Section sessionOptionsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		sessionOptionsSection.setText(EclipseLinkUiMessages.PersistenceXmlOptionsTab_sessionSectionTitle);
+		sessionOptionsSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSION_SECTION_TITLE);
 		Control sessionOptionsComposite = this.initializeSessionOptionsSection(sessionOptionsSection);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
@@ -86,7 +86,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		sessionOptionsSection.setClient(sessionOptionsComposite);
 
 		Section schemaGenerationSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		schemaGenerationSection.setText(EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_sectionTitle);
+		schemaGenerationSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_SECTION_TITLE);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
 		schemaGenerationSection.setLayoutData(gridData);
@@ -94,7 +94,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		schemaGenerationSection.setClient(schemaGenerationComposite);
 
 		Section loggingSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		loggingSection.setText(EclipseLinkUiMessages.PersistenceXmlLoggingTab_sectionTitle);
+		loggingSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SECTION_TITLE);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
 		loggingSection.setLayoutData(gridData);
@@ -102,7 +102,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		loggingSection.setClient(loggingComposite);
 
 		Section miscellaneousSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		miscellaneousSection.setText(EclipseLinkUiMessages.PersistenceXmlOptionsTab_miscellaneousSectionTitle);
+		miscellaneousSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_MISCELLANEOUS_SECTION_TITLE);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
 		miscellaneousSection.setLayoutData(gridData);
@@ -121,7 +121,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		layout.marginRight  = 0;
 		Composite container = this.addPane(section, layout);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlOptionsTab_sessionName);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSION_NAME);
 		Combo sessionNameCombo = addEditableCombo(
 			container,
 			this.buildDefaultSessionNameListHolder(),
@@ -132,7 +132,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		SWTUtil.attachDefaultValueHandler(sessionNameCombo);
 
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlOptionsTab_sessionsXml);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_SESSIONS_XML);
 		Combo sessionsXmlCombo = addEditableCombo(
 			container,
 			this.buildDefaultSessionsXmlFileNameListHolder(),
@@ -142,7 +142,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		SWTUtil.attachDefaultValueHandler(sessionsXmlCombo);
 
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlOptionsTab_targetDatabaseLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TARGET_DATABASE_LABEL);
 		Combo targetDatabaseCombo = addEditableCombo(
 			container,
 			this.buildTargetDatabaseListHolder(),
@@ -153,7 +153,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		SWTUtil.attachDefaultValueHandler(targetDatabaseCombo);
 
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlOptionsTab_targetServerLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TARGET_SERVER_LABEL);
 		Combo targetServerCombo = addEditableCombo(
 			container,
 			this.buildTargetServerListHolder(),
@@ -163,12 +163,12 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 		SWTUtil.attachDefaultValueHandler(targetServerCombo);
 
-		Hyperlink eventListenerLink = addHyperlink(container, EclipseLinkUiMessages.PersistenceXmlOptionsTab_eventListenerLabel);
+		Hyperlink eventListenerLink = addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_EVENT_LISTENER_LABEL);
 		this.initializeEventListenerClassChooser(container, eventListenerLink);
 
 		TriStateCheckBox includeDescriptorQueriesCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_INCLUDE_DESCRIPTOR_QUERIES_LABEL,
 			this.buildIncludeDescriptorQueriesHolder(),
 			this.buildIncludeDescriptorQueriesStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
@@ -192,7 +192,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		Composite container = this.addSubPane(section);
 		this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL,
 			this.buildTemporalMutableHolder(),
 			this.buildTemporalMutableStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
@@ -356,55 +356,55 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	private String buildTargetDatabaseDisplayString(String targetDatabaseName) {
 		switch (TargetDatabase.valueOf(targetDatabaseName)) {
 			case attunity :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_attunity;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ATTUNITY;
 			case auto :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_auto;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_AUTO;
 			case cloudscape :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_cloudscape;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_CLOUDSCAPE;
 			case database :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_database;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_DATABASE;
 			case db2 :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_db2;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_DB2;
 			case db2mainframe :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_db2mainframe;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_DB2_MAINFRAME;
 			case dbase :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_dbase;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_DBASE;
 			case derby :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_derby;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_DERBY;
 			case hsql :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_hsql;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_HSQL;
 			case informix :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_informix;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_INFORMIX;
 			case javadb :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_javadb;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_JAVADB;
 			case maxdb :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_maxdb;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_MAXDB;
 			case mysql :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_mysql;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_MYSQL;
 			case oracle :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ORACLE;
 			case oracle10 :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle10;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ORACLE10;
 			case oracle11 :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle11;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ORACLE11;
 			case oracle8 :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle8;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ORACLE8;
 			case oracle9 :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle9;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_ORACLE9;
 			case pointbase :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_pointbase;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_POINTBASE;
 			case postgresql :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_postgresql;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_POSTGRESQL;
 			case sqlanywhere :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_sqlanywhere;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_SQLANYWHERE;
 			case sqlserver :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_sqlserver;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_SQLSERVER;
 			case sybase :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_sybase;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_SYBASE;
 			case symfoware :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_symfoware;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_SYMFOWARE;
 			case timesten :
-				return EclipseLinkUiMessages.TargetDatabaseComposite_timesten;
+				return JptJpaEclipseLinkUiMessages.TARGET_DATABASE_COMPOSITE_TIMESTEN;
 			default :
 				throw new IllegalStateException();
 		}
@@ -516,27 +516,27 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	private String buildTargetServerDisplayString(String targetServerName) {
 		switch (TargetServer.valueOf(targetServerName)) {
 			case jboss :
-				return EclipseLinkUiMessages.TargetServerComposite_jboss;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_JBOSS;
 			case netweaver_7_1 :
-				return EclipseLinkUiMessages.TargetServerComposite_netweaver_7_1;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_NETWEAVER_7_1;
 			case none :
-				return EclipseLinkUiMessages.TargetServerComposite_none;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_NONE;
 			case oc4j :
-				return EclipseLinkUiMessages.TargetServerComposite_oc4j;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_OC4J;
 			case sunas9 :
-				return EclipseLinkUiMessages.TargetServerComposite_sunas9;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_SUNAS9;
 			case weblogic :
-				return EclipseLinkUiMessages.TargetServerComposite_weblogic;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_WEBLOGIC;
 			case weblogic_10 :
-				return EclipseLinkUiMessages.TargetServerComposite_weblogic_10;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_WEBLOGIC_10;
 			case weblogic_9 :
-				return EclipseLinkUiMessages.TargetServerComposite_weblogic_9;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_WEBLOGIC_9;
 			case websphere :
-				return EclipseLinkUiMessages.TargetServerComposite_websphere;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_WEBSPHERE;
 			case websphere_6_1 :
-				return EclipseLinkUiMessages.TargetServerComposite_websphere_6_1;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_WEBSPHERE_6_1;
 			case websphere_7 :
-				return EclipseLinkUiMessages.TargetServerComposite_websphere_7;
+				return JptJpaEclipseLinkUiMessages.TARGET_SERVER_COMPOSITE_WEBSPHERE_7;
 			default :
 				throw new IllegalStateException();
 		}
@@ -696,9 +696,9 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_INCLUDE_DESCRIPTOR_QUERIES_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_INCLUDE_DESCRIPTOR_QUERIES_LABEL;
 			}
 		};
 	}
@@ -741,9 +741,9 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL;
 			}
 		};
 	}

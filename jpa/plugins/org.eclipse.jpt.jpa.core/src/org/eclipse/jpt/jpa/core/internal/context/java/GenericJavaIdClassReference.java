@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -261,7 +261,7 @@ public class GenericJavaIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()
@@ -273,7 +273,7 @@ public class GenericJavaIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()
@@ -285,7 +285,7 @@ public class GenericJavaIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()
@@ -297,7 +297,7 @@ public class GenericJavaIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()

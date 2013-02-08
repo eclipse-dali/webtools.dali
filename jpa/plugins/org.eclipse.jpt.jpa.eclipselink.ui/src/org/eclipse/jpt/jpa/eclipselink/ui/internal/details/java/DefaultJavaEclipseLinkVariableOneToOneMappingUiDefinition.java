@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -54,11 +54,11 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 	}	
 	
 	public String getLabel() {
-		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkVariableOneToOneMappingUiProvider_label;
+		return JptJpaEclipseLinkUiDetailsMessages.DEFAULT_ECLIPSELINK_VARIABLE_ONE_TO_ONE_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
+		return JptJpaEclipseLinkUiDetailsMessages.DEFAULT_ECLIPSELINK_VARIABLE_ONE_TO_ONE_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -85,7 +85,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.CollectionTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
@@ -107,6 +106,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -1466,7 +1466,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+					JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 					new String[] {this.getFullyQualifiedAttributeType()},
 					this,
 					this.getAttributeTypeTextRange()
@@ -1554,7 +1554,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
+						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
 						new String[] {embeddable.getName(), relationshipMapping.getName()},
 						this,
 						this.getValidationTextRange()
@@ -1569,7 +1569,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
+						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 						new String[] {embeddable.getName(), elementCollectionMappings.iterator().next().getName()},
 						this,
 						this.getValidationTextRange()
@@ -1583,7 +1583,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+					JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getTargetClassTextRange()
@@ -1602,7 +1602,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
+						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
 						new String[] {this.getFullyQualifiedTargetClass()},
 						this,
 						this.getTargetClassTextRange()
@@ -1615,7 +1615,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+					JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 					new String[] {this.getFullyQualifiedTargetClass()},
 					this,
 					this.getTargetClassTextRange()
@@ -1639,7 +1639,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
+					JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getMapKeyClassTextRange()
@@ -1658,7 +1658,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
 						new String[] {this.getFullyQualifiedMapKeyClass()},
 						this,
 						this.getMapKeyClassTextRange()
@@ -1671,7 +1671,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+					JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					new String[] {this.getFullyQualifiedMapKeyClass()},
 					this,
 					this.getMapKeyClassTextRange()

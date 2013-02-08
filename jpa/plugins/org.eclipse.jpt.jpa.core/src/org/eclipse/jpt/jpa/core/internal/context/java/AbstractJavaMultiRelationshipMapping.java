@@ -63,7 +63,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -74,6 +73,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -973,7 +973,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						new String[] {getName()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -984,7 +984,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange()
@@ -1035,7 +1035,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1045,7 +1045,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange()
@@ -1064,7 +1064,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
 						this,
 						this.getVirtualPersistentAttributeTextRange()
@@ -1075,7 +1075,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getFullyQualifiedMapKeyClass()},
 						this,
 						this.getMapKeyClassTextRange()

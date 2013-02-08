@@ -72,13 +72,13 @@ public class EclipseLinkObjectTypeConverterComposite
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_NAME_TEXT_LABEL);
 		this.addText(container, buildNameTextHolder());
 		
-		Hyperlink dataTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_dataTypeLabel);
+		Hyperlink dataTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_DATA_TYPE_LABEL);
 		this.addDataTypeChooser(container, dataTypeHyperlink);
 		
-		Hyperlink objectTypeHyperlink = this.addHyperlink(container,  EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_objectTypeLabel);
+		Hyperlink objectTypeHyperlink = this.addHyperlink(container,  JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_OBJECT_TYPE_LABEL);
 		this.addObjectTypeChooser(container, objectTypeHyperlink);
 		
 		Composite conversionValuesTable = addConversionValuesTable(container);
@@ -86,7 +86,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		gridData.horizontalSpan = 2;
 		conversionValuesTable.setLayoutData(gridData);
 
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_defaultObjectValueLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_DEFAULT_OBJECT_VALUE_LABEL);
 		this.addEditableCombo(
 			container,
 			buildDefaultObjectValueListHolder(),
@@ -225,7 +225,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		// Join Columns group pane
 		Group conversionValuesGroupPane = addTitledGroup(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_conversionValuesGroupTitle
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_CONVERSION_VALUES_GROUP_TITLE
 		);
 
 		// Conversion Values add/remove list pane
@@ -266,7 +266,7 @@ public class EclipseLinkObjectTypeConverterComposite
 
 			@Override
 			public String optionalButtonText() {
-				return EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_conversionValueEdit;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_CONVERSION_VALUE_EDIT;
 			}
 
 			@Override
@@ -460,11 +460,11 @@ public class EclipseLinkObjectTypeConverterComposite
 
 			switch (columnIndex) {
 				case ConversionValueColumnAdapter.DATA_VALUE_COLUMN: {
-					return EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_conversionValuesDataValueColumn;
+					return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_CONVERSION_VALUES_DATA_VALUE_COLUMN;
 				}
 
 				case ConversionValueColumnAdapter.OBJECT_VALUE_COLUMN: {
-					return EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_conversionValuesObjectValueColumn;
+					return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_CONVERSION_VALUES_OBJECT_VALUE_COLUMN;
 				}
 
 				default: {

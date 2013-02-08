@@ -33,11 +33,11 @@ import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -387,7 +387,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
+					JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getTargetEntityTextRange()
@@ -401,7 +401,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TARGET_ENTITY_NOT_EXIST,
+						JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST,
 						new String[] {this.getFullyQualifiedTargetEntity()},
 						this,
 						this.getTargetEntityTextRange()
@@ -414,7 +414,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+					JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 					new String[] {this.getFullyQualifiedTargetEntity()},
 					this,
 					this.getTargetEntityTextRange()

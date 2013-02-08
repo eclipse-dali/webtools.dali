@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -60,14 +60,14 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 	@Override
 	protected void initializeLayout(Composite parent) {
 		Section weavingSection = this.getWidgetFactory().createSection(parent, ExpandableComposite.TITLE_BAR);
-		weavingSection.setText(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingPropertiesGroupBox);
+		weavingSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_PROPERTIES_GROUP_BOX);
 		weavingSection.setClient(this.initializeWeavingSection(weavingSection));
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
 		weavingSection.setLayoutData(gridData);
 
 		Section customizersSection = this.getWidgetFactory().createSection(parent, ExpandableComposite.TITLE_BAR);
-		customizersSection.setText(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_customizersSection);
+		customizersSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_CUSTOMIZERS_SECTION);
 		customizersSection.setClient(this.initializeCustomizersSection(customizersSection));
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
@@ -75,7 +75,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 		customizersSection.setLayoutData(gridData);
 
 		Section otherSection = this.getWidgetFactory().createSection(parent, ExpandableComposite.TITLE_BAR);
-		otherSection.setText(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_otherSection);
+		otherSection.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_OTHER_SECTION);
 		otherSection.setClient(this.initializeOtherSection(otherSection));
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
@@ -92,7 +92,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 		// Validation Only
 		TriStateCheckBox validationOnlyCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL,
 			this.buildValidationOnlyModel(),
 			this.buildValidationOnlyStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -105,7 +105,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 
 		TriStateCheckBox validateSchemaCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validateSchemaLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL,
 			this.buildValidateSchemaModel(),
 			this.buildValidateSchemaStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -117,7 +117,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 		// Throw Exceptions
 		TriStateCheckBox throwExceptionsCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_throwExceptionsLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL,
 			this.buildThrowExceptionsHolder(),
 			this.buildThrowExceptionsStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -127,11 +127,11 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 		throwExceptionsCheckBox.getCheckBox().setLayoutData(gridData);
 
 		// Exception Handler
-		Hyperlink exceptionHandlerHyperlink = this.addHyperlink(container, EclipseLinkUiMessages.PersistenceXmlCustomizationTab_exceptionHandlerLabel);
+		Hyperlink exceptionHandlerHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_EXCEPTION_HANDLER_LABEL);
 		this.initializeExceptionHandlerClassChooser(container, exceptionHandlerHyperlink);
 
 		// Profiler:
-		Hyperlink profilerHyperlink = this.addHyperlink(container, EclipseLinkUiMessages.PersistenceXmlCustomizationTab_profilerLabel);
+		Hyperlink profilerHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_PROFILER_LABEL);
 		new ProfilerClassChooser(this, container, profilerHyperlink);
 		
 		return container;
@@ -175,9 +175,9 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL;
 			}
 		};
 	}
@@ -220,9 +220,9 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validateSchemaLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validateSchemaLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL;
 			}
 		};
 	}
@@ -264,9 +264,9 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customi
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_throwExceptionsLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_throwExceptionsLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL;
 			}
 		};
 	}

@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -84,7 +84,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
+					JptJpaCoreValidationMessages.GENERATOR_NAME_UNDEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getNameTextRange()

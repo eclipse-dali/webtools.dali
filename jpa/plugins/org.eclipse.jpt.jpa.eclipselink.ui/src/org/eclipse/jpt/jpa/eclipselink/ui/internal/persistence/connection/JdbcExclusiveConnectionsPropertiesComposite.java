@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.ExclusiveConnectionMode;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
@@ -41,7 +41,7 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.JdbcExclusiveConnectionsPropertiesComposite_GroupBox,
+			JptJpaEclipseLinkUiMessages.JDBC_EXCLUSIVE_CONNECTIONS_PROPERTIES_COMPOSITE_GROUP_BOX,
 			2,
 			null
 		);
@@ -51,13 +51,13 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 	protected void initializeLayout(Composite container) {
 
 		// Exclusive connection mode
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_exclusiveConnectionModeLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_EXCLUSIVE_CONNECTION_MODE_LABEL);
 		this.addExclusiveConnectionModeCombo(container);
 
 		// Lazy Connection
 		TriStateCheckBox lazyConnectionCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_lazyConnectionLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL,
 			this.buildLazyConnectionHolder(),
 			this.buildLazyConnectionStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
@@ -90,11 +90,11 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 			protected String displayString(ExclusiveConnectionMode value) {
 				switch (value) {
 					case always :
-						return EclipseLinkUiMessages.JdbcExclusiveConnectionModeComposite_always;
+						return JptJpaEclipseLinkUiMessages.JDBC_EXCLUSIVE_CONNECTION_MODE_COMPOSITE_ALWAYS;
 					case isolated :
-						return EclipseLinkUiMessages.JdbcExclusiveConnectionModeComposite_isolated;
+						return JptJpaEclipseLinkUiMessages.JDBC_EXCLUSIVE_CONNECTION_MODE_COMPOSITE_ISOLATED;
 					case transactional :
-						return EclipseLinkUiMessages.JdbcExclusiveConnectionModeComposite_transactional;
+						return JptJpaEclipseLinkUiMessages.JDBC_EXCLUSIVE_CONNECTION_MODE_COMPOSITE_TRANSACTIONAL;
 					default :
 						throw new IllegalStateException();
 				}
@@ -136,9 +136,9 @@ public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_lazyConnectionLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_lazyConnectionLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL;
 			}
 		};
 	}

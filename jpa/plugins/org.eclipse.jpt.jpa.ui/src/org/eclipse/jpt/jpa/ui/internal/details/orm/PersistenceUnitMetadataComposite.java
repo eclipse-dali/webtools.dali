@@ -23,8 +23,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -290,7 +290,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		this.addCatalogCombo(container);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, getPersistenceUnitDefaultsHolder(), container);
 
 		// Delimited Identifiers check-box

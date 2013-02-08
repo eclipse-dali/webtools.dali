@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
@@ -56,7 +56,7 @@ public class JavaEclipseLinkManyToOneMapping2_0Composite
 		new FetchTypeComboViewer(this, container);
 
 		// Join fetch widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCHCOMPOSITE_LABEL);
 		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Optional widgets

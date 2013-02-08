@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -43,7 +43,7 @@ public class ConnectionPropertiesComposite<T extends Connection>
 	protected Composite addComposite(Composite container) {
 		return addTitledGroup(
 			container,
-			EclipseLinkUiMessages.ConnectionPropertiesComposite_Database_GroupBox,
+			JptJpaEclipseLinkUiMessages.CONNECTION_PROPERTIES_COMPOSITE_DATABASE_GROUP_BOX,
 			2,
 			null
 		);
@@ -53,12 +53,12 @@ public class ConnectionPropertiesComposite<T extends Connection>
 	protected void initializeLayout(Composite container) {
 		// JTA Data Source
 		PropertyValueModel<Boolean> jtaEnabled = this.buildJTADataSourceHolder();
-		addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_jtaDataSourceLabel, jtaEnabled);
+		addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_JTA_DATA_SOURCE_LABEL, jtaEnabled);
 		addText(container, this.buildJtaDataSourceHolder(), this.getHelpID(), jtaEnabled);
 
 		// Non-JTA Data Source
 		PropertyValueModel<Boolean> nonJtaEnabled = this.buildNonJTADataSourceHolder();
-		addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_nonJtaDataSourceLabel, nonJtaEnabled);
+		addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NON_JTA_DATA_SOURCE_LABEL, nonJtaEnabled);
 		addText(container, buildNonJtaDataSourceHolder(), this.getHelpID(), nonJtaEnabled);
 
 

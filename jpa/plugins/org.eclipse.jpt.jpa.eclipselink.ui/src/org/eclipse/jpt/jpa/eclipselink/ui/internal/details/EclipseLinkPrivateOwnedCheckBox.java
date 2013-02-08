@@ -57,7 +57,7 @@ public class EclipseLinkPrivateOwnedCheckBox extends Pane<EclipseLinkPrivateOwne
 	protected void initializeLayout(Composite container) {
 		this.checkBox = addCheckBox(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkPrivateOwnedComposite_privateOwnedLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_PRIVATE_OWNED_COMPOSITE_PRIVATE_OWNED_LABEL,
 			buildPrivateOwnedHolder(),
 			null
 		);

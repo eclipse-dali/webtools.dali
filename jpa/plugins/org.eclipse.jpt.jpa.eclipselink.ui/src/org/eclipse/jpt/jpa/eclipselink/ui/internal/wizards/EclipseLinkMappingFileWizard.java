@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileNewFileWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileOptionsWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
@@ -33,7 +33,7 @@ public class EclipseLinkMappingFileWizard
 	
 	public EclipseLinkMappingFileWizard(IDataModel dataModel) {
 		super(dataModel);
-		setWindowTitle(EclipseLinkUiMessages.MappingFileWizard_title);
+		setWindowTitle(JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_TITLE);
 	}
 	
 	
@@ -41,16 +41,16 @@ public class EclipseLinkMappingFileWizard
 	protected MappingFileNewFileWizardPage buildMappingFileNewFileWizardPage() {
 		return new MappingFileNewFileWizardPage(
 				"Page_1", this.mungedSelection, getDataModel(),
-				EclipseLinkUiMessages.MappingFileWizardPage_newFile_title, 
-				EclipseLinkUiMessages.MappingFileWizardPage_newFile_desc);
+				JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_PAGE_NEW_FILE_TITLE, 
+				JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_PAGE_NEW_FILE_DESC);
 	}
 	
 	@Override
 	protected MappingFileOptionsWizardPage buildMappingFileOptionsWizardPage() {
 		return new MappingFileOptionsWizardPage(
 				"Page_2", getDataModel(),
-				EclipseLinkUiMessages.MappingFileWizardPage_options_title, 
-				EclipseLinkUiMessages.MappingFileWizardPage_options_desc);
+				JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_PAGE_OPTIONS_TITLE, 
+				JptJpaEclipseLinkUiMessages.MAPPING_FILE_WIZARD_PAGE_OPTIONS_DESC);
 	}
 	
 	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {

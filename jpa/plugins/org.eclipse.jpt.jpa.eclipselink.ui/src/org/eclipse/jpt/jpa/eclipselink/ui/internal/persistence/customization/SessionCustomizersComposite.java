@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -98,7 +98,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 				String name = (String) element;
 
 				if (name == null) {
-					name = EclipseLinkUiMessages.PersistenceXmlCustomizationTab_noName;
+					name = JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_NO_NAME;
 				}
 				return name;
 			}
@@ -165,7 +165,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sessionCustomizerLabel
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_SESSION_CUSTOMIZER_LABEL
 		);
 	}
 

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -47,7 +47,7 @@ public class EclipseLinkConverterDialog
 			Shell parentShell,
 			ResourceManager resourceManager,
 			EclipseLinkConverterContainer converterContainer) {
-		super(parentShell, resourceManager, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_addConverter);
+		super(parentShell, resourceManager, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_DIALOG_ADD_CONVERTER);
 		this.converterContainer = converterContainer;
 	}
 
@@ -60,12 +60,12 @@ public class EclipseLinkConverterDialog
 
 	@Override
 	protected String getDescriptionTitle() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_addConverterDescriptionTitle;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_DIALOG_ADD_CONVERTER_DESCRIPTION_TITLE;
 	}
 	
 	@Override
 	protected String getDescription() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_addConverterDescription;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_DIALOG_ADD_CONVERTER_DESCRIPTION;
 	}
 	
 	@Override
@@ -119,10 +119,10 @@ public class EclipseLinkConverterDialog
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_name);
+			this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_DIALOG_NAME);
 			this.nameText = this.addText(container, buildNameHolder());
 			
-			this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_converterType);
+			this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_DIALOG_CONVERTER_TYPE);
 			this.addCombo(
 				container, 
 				buildConverterTypeListHolder(), 
@@ -143,16 +143,16 @@ public class EclipseLinkConverterDialog
 						return null;
 					}
 					if (value == EclipseLinkCustomConverter.class) {
-						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_customConverter;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_CUSTOM_CONVERTER;
 					}
 					if (value == EclipseLinkObjectTypeConverter.class) {
-						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_objectTypeConverter;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_OBJECT_TYPE_CONVERTER;
 					}
 					if (value == EclipseLinkStructConverter.class) {
-						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_structConverter;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_STRUCT_CONVERTER;
 					}
 					if (value == EclipseLinkTypeConverter.class) {
-						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_typeConverter;
+						return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTERS_COMPOSITE_TYPE_CONVERTER;
 					}
 					return value.getSimpleName();
 				}

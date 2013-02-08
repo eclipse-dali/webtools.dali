@@ -49,11 +49,11 @@ public class EclipseLinkBasicCollectionMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkBasicCollectionMappingUiProvider_label;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_BASIC_COLLECTION_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkBasicCollectionMappingUiProvider_linkLabel;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_BASIC_COLLECTION_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@SuppressWarnings("unchecked")

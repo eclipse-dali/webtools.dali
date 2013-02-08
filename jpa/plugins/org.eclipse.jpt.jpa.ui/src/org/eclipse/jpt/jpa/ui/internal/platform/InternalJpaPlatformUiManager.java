@@ -24,8 +24,8 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiManager;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.InternalJpaWorkbench;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
@@ -169,7 +169,7 @@ public class InternalJpaPlatformUiManager
 	// ********** logging **********
 
 	private void logMissingJpaPlatform(IConfigurationElement element, String jpaPlatformID) {
-		this.logError(JptUiMessages.JpaPlatformUi_missingJpaPlatform,
+		this.logError(JptJpaUiMessages.JpaPlatformUi_missingJpaPlatform,
 				jpaPlatformID,
 				element.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
 				element.getContributor().getName()

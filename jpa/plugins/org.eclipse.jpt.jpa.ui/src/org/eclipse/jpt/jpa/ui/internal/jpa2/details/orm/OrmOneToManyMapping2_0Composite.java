@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
@@ -60,7 +60,7 @@ public class OrmOneToManyMapping2_0Composite
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets

@@ -17,8 +17,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -168,7 +168,7 @@ public class GenericOrmGeneratedValue
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.UNRESOLVED_GENERATOR_NAME,
+				JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME,
 				new String[] {generator},
 				this.getParent(),
 				this.getGeneratorTextRange()

@@ -150,7 +150,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode>
 	String buildTenantDiscriminatorColumnLabel(ReadOnlyTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
 		if (tenantDiscriminatorColumn.isVirtual() || tenantDiscriminatorColumn.getSpecifiedName() == null) {
 			return NLS.bind(
-				EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_defaultTenantDiscriminatorColumnNameLabel,
+				JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_DEFAULT_TENANT_DISCRIMINATOR_COLUMN_NAME_LABEL,
 				tenantDiscriminatorColumn.getName()
 			);
 		}

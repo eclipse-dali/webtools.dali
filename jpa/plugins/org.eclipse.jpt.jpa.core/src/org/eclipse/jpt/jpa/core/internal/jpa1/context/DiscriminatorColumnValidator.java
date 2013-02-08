@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class DiscriminatorColumnValidator
 	extends AbstractNamedColumnValidator<ReadOnlyNamedColumn>
@@ -22,7 +22,7 @@ public class DiscriminatorColumnValidator
 
 	@Override
 	protected String getUnresolvedNameMessage() {
-		return JpaValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
+		return JptJpaCoreValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override

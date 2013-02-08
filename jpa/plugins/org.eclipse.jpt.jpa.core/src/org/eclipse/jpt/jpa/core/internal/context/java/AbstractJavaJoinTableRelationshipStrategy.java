@@ -21,8 +21,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -146,7 +146,7 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy
 	}
 
 	public String getColumnTableNotValidDescription() {
-		return JpaValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE;
+		return JptJpaCoreValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE;
 	}
 
 	public String getJoinTableDefaultName() {

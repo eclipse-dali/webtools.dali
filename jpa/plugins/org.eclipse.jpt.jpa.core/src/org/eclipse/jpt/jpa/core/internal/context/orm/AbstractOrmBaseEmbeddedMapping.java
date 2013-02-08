@@ -40,9 +40,9 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescript
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -207,7 +207,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
+				JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
 				new String[] {this.getFullyQualifiedAttributeType()},
 				this,
 				this.getAttributeTypeTextRange()

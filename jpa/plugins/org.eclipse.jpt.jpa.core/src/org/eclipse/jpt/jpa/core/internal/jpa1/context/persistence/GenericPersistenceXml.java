@@ -24,10 +24,10 @@ import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -240,7 +240,7 @@ public class GenericPersistenceXml
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
+					JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
 					this
 				)
 			);

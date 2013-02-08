@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationTyp
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -49,19 +49,19 @@ public class PersistenceXmlSchemaGenerationComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// DDL Generation Type:
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_DDL_GENERATION_TYPE_LABEL);
 		this.addDdlGenerationTypeCombo(container);
 
 		// Output Mode:
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_outputModeLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_OUTPUT_MODE_LABEL);
 		this.addBuildOutputModeCombo(container);
 
 		// DDL Generation Location
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationLocationLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_DDL_GENERATION_LOCATION_LABEL);
 		this.buildDdlGenerationLocationComposite(container);
 
 		// Create DDL File Name:
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_createDdlFileNameLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_CREATE_DDL_FILE_NAME_LABEL);
 		Combo ddlFileNameCombo = addEditableCombo(
 			container,
 			this.buildDefaultCreateDdlFileNameListHolder(),
@@ -72,7 +72,7 @@ public class PersistenceXmlSchemaGenerationComposite
 		SWTUtil.attachDefaultValueHandler(ddlFileNameCombo);
 
 		// Drop DDL File Name:
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_dropDdlFileNameLabel);
+		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_DROP_DDL_FILE_NAME_LABEL);
 		Combo dropDDLCombo = addEditableCombo(
 			container,
 			this.buildDefaultDropDdlFileNameListHolder(),
@@ -107,11 +107,11 @@ public class PersistenceXmlSchemaGenerationComposite
 			protected String displayString(DdlGenerationType value) {
 				switch (value) {
 					case create_tables :
-						return EclipseLinkUiMessages.DdlGenerationTypeComposite_create_tables;
+						return JptJpaEclipseLinkUiMessages.DDL_GENERATION_TYPE_COMPOSITE_CREATE_TABLES;
 					case drop_and_create_tables :
-						return EclipseLinkUiMessages.DdlGenerationTypeComposite_drop_and_create_tables;
+						return JptJpaEclipseLinkUiMessages.DDL_GENERATION_TYPE_COMPOSITE_DROP_AND_CREATE_TABLES;
 					case none :
-						return EclipseLinkUiMessages.DdlGenerationTypeComposite_none;
+						return JptJpaEclipseLinkUiMessages.DDL_GENERATION_TYPE_COMPOSITE_NONE;
 					default :
 						throw new IllegalStateException();
 				}
@@ -159,11 +159,11 @@ public class PersistenceXmlSchemaGenerationComposite
 			protected String displayString(OutputMode value) {
 				switch (value) {
 					case both :
-						return EclipseLinkUiMessages.OutputModeComposite_both;
+						return JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_BOTH;
 					case database :
-						return EclipseLinkUiMessages.OutputModeComposite_database;
+						return JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_DATABASE;
 					case sql_script :
-						return EclipseLinkUiMessages.OutputModeComposite_sql_script;
+						return JptJpaEclipseLinkUiMessages.OUTPUT_MODE_COMPOSITE_SQL_SCRIPT;
 					default :
 						throw new IllegalStateException();
 				}
@@ -334,17 +334,17 @@ public class PersistenceXmlSchemaGenerationComposite
 
 			@Override
 			protected String getDefaultString() {
-				return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultDot;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_SCHEMA_GENERATION_TAB_DEFAULT_DOT;
 			}
 
 			@Override
 			protected String getDialogMessage() {
-				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogMessage;
+				return JptJpaEclipseLinkUiMessages.DDL_GENERATION_LOCATION_COMPOSITE_DIALOG_MESSAGE;
 			}
 
 			@Override
 			protected String getDialogTitle() {
-				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogTitle;
+				return JptJpaEclipseLinkUiMessages.DDL_GENERATION_LOCATION_COMPOSITE_DIALOG_TITLE;
 			}
 		};
 	}

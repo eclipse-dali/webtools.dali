@@ -54,6 +54,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -83,10 +84,8 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
@@ -104,6 +103,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -1584,18 +1584,18 @@ public abstract class AbstractPersistenceUnit
 
 	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
 		ArrayList<JavaGenerator> convertibleJavaGenerators = this.getConvertibleJavaGenerators();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaGenerators.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaGenerators.size());
 		for (JavaGenerator generator : convertibleJavaGenerators) {
 			this.convertJavaGenerator(entityMappings, generator, subMonitor.newChild(1));
 		}
-		subMonitor.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
+		subMonitor.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaGenerator(EntityMappings entityMappings, JavaGenerator generator, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
+			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
-		monitor.setTaskName(NLS.bind(JptCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_GENERATOR, generator.getName()));
+		monitor.setTaskName(NLS.bind(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_GENERATOR, generator.getName()));
 		generator.convertTo(entityMappings);
 		generator.delete();  // delete any converted generators
 	}
@@ -1671,18 +1671,18 @@ public abstract class AbstractPersistenceUnit
 	public void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor) {
 		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
 		ArrayList<JavaQuery> convertibleJavaQueries = this.getConvertibleJavaQueries();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaQueries.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, JptJpaCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaQueries.size());
 		for (JavaQuery query : convertibleJavaQueries) {
 			this.convertJavaQuery(queryContainer, query, subMonitor.newChild(1));
 		}
-		subMonitor.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
+		subMonitor.setTaskName(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaQuery(OrmQueryContainer queryContainer, JavaQuery query, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
+			throw new OperationCanceledException(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
-		monitor.setTaskName(NLS.bind(JptCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_QUERY, query.getName()));
+		monitor.setTaskName(NLS.bind(JptJpaCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_QUERY, query.getName()));
 		query.convertTo(queryContainer);
 		query.delete();  // delete any converted queries
 	}
@@ -2031,7 +2031,7 @@ public abstract class AbstractPersistenceUnit
 			this.listInPersistenceXml(mappedTypes, sm.newChild(4));
 		}
 		else {
-			sm.subTask(JptCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
+			sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
 			//TODO have to call this since I am modifying only the Java resource model
 			//in the non-'list in persisistence.xml' case
 			this.getJpaProject().synchronizeContextModel();
@@ -2041,7 +2041,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void annotateClasses(AbstractPersistenceUnit.MappedType[] mappedTypes, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, mappedTypes.length);
-		sm.setTaskName(JptCoreMessages.MAKE_PERSISTENT_PROCESSING_JAVA_CLASSES);
+		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_PROCESSING_JAVA_CLASSES);
 		// TODO modify the context model - need to have API for creating a JavaPersistentType with a given mappingKey.
 		// be careful not to modify the context model in such a way that you end up with updates being run for
 		// every persistent type added.
@@ -2050,7 +2050,7 @@ public abstract class AbstractPersistenceUnit
 				return;
 			}
 			String typeName = mappedType.getFullyQualifiedName();
-			sm.subTask(NLS.bind(JptCoreMessages.MAKE_PERSISTENT_ANNOTATING_CLASS, typeName));
+			sm.subTask(NLS.bind(JptJpaCoreMessages.MAKE_PERSISTENT_ANNOTATING_CLASS, typeName));
 			JavaResourceAbstractType type = this.getJpaProject().getJavaResourceType(typeName);
 			type.addAnnotation(this.getJavaTypeMappingDefinition(mappedType.getMappingKey()).getAnnotationName());
 			sm.worked(1);
@@ -2059,7 +2059,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void listInPersistenceXml(AbstractPersistenceUnit.MappedType[] mappedTypes, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 11);
-		sm.setTaskName(JptCoreMessages.MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML);
+		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML);
 		Collection<XmlJavaClassRef> addedXmlClassRefs = new ArrayList<XmlJavaClassRef>();
 		Collection<ClassRef> addedClassRefs = new ArrayList<ClassRef>();
 		for (AbstractPersistenceUnit.MappedType mappedType : mappedTypes) {
@@ -2072,10 +2072,10 @@ public abstract class AbstractPersistenceUnit
 			return;
 		}
 		sm.worked(1);
-		sm.subTask(JptCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
+		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
 		this.specifiedClassRefContainer.addAll(this.getSpecifiedClassRefsSize(), addedClassRefs);
 		sm.worked(5);
-		sm.subTask(JptCoreMessages.MAKE_PERSISTENT_ADD_TO_PERSISTENCE_XML_RESOURCE_MODEL);
+		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_PERSISTENCE_XML_RESOURCE_MODEL);
 		this.xmlPersistenceUnit.getClasses().addAll(addedXmlClassRefs);
 		sm.worked(5);
 	}
@@ -2185,7 +2185,7 @@ public abstract class AbstractPersistenceUnit
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
+						JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
 						new String[] {mappingFileRef.getFileName()},
 						mappingFileRef.getMappingFile(),
 						mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
@@ -2210,7 +2210,7 @@ public abstract class AbstractPersistenceUnit
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
+								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
 								parms,
 								dup,
 								dup.getValidationTextRange()
@@ -2251,7 +2251,7 @@ public abstract class AbstractPersistenceUnit
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.NORMAL_SEVERITY,
-								JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
+								JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
 								parms,
 								dup,
 								dup.getValidationTextRange()
@@ -2299,7 +2299,7 @@ public abstract class AbstractPersistenceUnit
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
+								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
 								parms,
 								dup,
 								dup.getValidationTextRange()
@@ -2347,7 +2347,7 @@ public abstract class AbstractPersistenceUnit
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
+								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
 								parms,
 								dup,
 								dup.getValidationTextRange()
@@ -2423,7 +2423,7 @@ public abstract class AbstractPersistenceUnit
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+						JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME,
 						parms,
 						dup,
 						dup.getNameTextRange()
@@ -2473,7 +2473,7 @@ public abstract class AbstractPersistenceUnit
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.QUERY_DUPLICATE_NAME,
+						JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME,
 						parms,
 						dup,
 						dup.getNameTextRange()
@@ -2528,7 +2528,7 @@ public abstract class AbstractPersistenceUnit
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NAME_DUPLICATED,
+						JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED,
 						parms,
 						dup,
 						dup.getNameTextRange()

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
 /**
  * This factory builds item label providers for an <code>orm.xml</code> file
@@ -49,7 +49,7 @@ public class OrmStructureItemLabelProviderFactory
 	protected ItemExtendedLabelProvider buildEntityMappingsProvider(EntityMappings entityMappings, ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
 					JptJpaUiImages.ENTITY_MAPPINGS,
-					JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel,
+					JptJpaUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel,
 					this.buildEntityMappingsDescription(entityMappings),
 					manager
 				);
@@ -57,7 +57,7 @@ public class OrmStructureItemLabelProviderFactory
 
 	protected String buildEntityMappingsDescription(EntityMappings entityMappings) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel);
+		sb.append(JptJpaUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel);
 		sb.append(" - ");  //$NON-NLS-1$
 		sb.append(entityMappings.getResource().getFullPath().makeRelative());
 		return sb.toString();

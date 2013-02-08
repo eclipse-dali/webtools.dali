@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
@@ -50,8 +50,8 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	protected void initializeLayout(Composite container) {
 		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionTitle);
-		section.setDescription(EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionDescription);
+		section.setText(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_SECTION_TITLE);
+		section.setDescription(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_SECTION_DESCRIPTION);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
@@ -66,11 +66,11 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		section.setClient(client);
 
 		//transaction type
-		this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel);
+		this.addLabel(client, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_TRANSACTION_TYPE_LABEL);
 		this.addTransactionTypeCombo(client);
 
 		//batch writing
-		this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlConnectionTab_batchWritingLabel);
+		this.addLabel(client, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BATCH_WRITING_LABEL);
 		this.addBatchWritingCombo(client);
 
 
@@ -78,7 +78,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		ModifiablePropertyValueModel<Boolean> cacheStatementsHolder = buildCacheStatementsHolder();
 		this.addTriStateCheckBox(
 				client,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_cacheStatementsLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_CACHE_STATEMENTS_LABEL,
 			cacheStatementsHolder,
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
@@ -89,7 +89,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 		TriStateCheckBox nativeSqlCheckBox = this.addTriStateCheckBoxWithDefault(
 			client,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL,
 			this.buildNativeSqlHolder(),
 			this.buildNativeSqlStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
@@ -127,9 +127,9 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 			protected String displayString(PersistenceUnitTransactionType value) {
 				switch (value) {
 					case JTA :
-						return EclipseLinkUiMessages.TransactionTypeComposite_jta;
+						return JptJpaEclipseLinkUiMessages.TRANSACTION_TYPE_COMPOSITE_JTA;
 					case RESOURCE_LOCAL :
-						return EclipseLinkUiMessages.TransactionTypeComposite_resource_local;
+						return JptJpaEclipseLinkUiMessages.TRANSACTION_TYPE_COMPOSITE_RESOURCE_LOCAL;
 					default :
 						throw new IllegalStateException();
 				}
@@ -211,13 +211,13 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 			protected String displayString(BatchWriting value) {
 				switch (value) {
 					case buffered :
-						return EclipseLinkUiMessages.BatchWritingComposite_buffered;
+						return JptJpaEclipseLinkUiMessages.BATCH_WRITING_COMPOSITE_BUFFERED;
 					case jdbc :
-						return EclipseLinkUiMessages.BatchWritingComposite_jdbc;
+						return JptJpaEclipseLinkUiMessages.BATCH_WRITING_COMPOSITE_JDBC;
 					case none :
-						return EclipseLinkUiMessages.BatchWritingComposite_none;
+						return JptJpaEclipseLinkUiMessages.BATCH_WRITING_COMPOSITE_NONE;
 					case oracle_jdbc :
-						return EclipseLinkUiMessages.BatchWritingComposite_oracle_jdbc;
+						return JptJpaEclipseLinkUiMessages.BATCH_WRITING_COMPOSITE_ORACLE_JDBC;
 					default :
 						throw new IllegalStateException();
 				}
@@ -261,9 +261,9 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel;
+				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL;
 			}
 		};
 	}

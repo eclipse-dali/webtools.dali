@@ -57,7 +57,7 @@ public abstract class AbstractEclipseLinkManyToManyMappingComposite<T extends Ec
 		new FetchTypeComboViewer(this, container);
 		
 		// Join fetch widgets
-		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCHCOMPOSITE_LABEL);
 		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchModel(), container);
 
 		// Cascade widgets
@@ -81,7 +81,7 @@ public abstract class AbstractEclipseLinkManyToManyMappingComposite<T extends Ec
 	protected void initializeConvertersCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		section.setText(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_MAPPING_COMPOSITE_CONVERTERS);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

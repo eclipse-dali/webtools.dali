@@ -19,9 +19,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -161,7 +161,7 @@ public class GenericOrmNamedNativeQuery
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+					JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
 					new String[] {this.name},
 					this,
 					this.getNameTextRange()

@@ -72,9 +72,9 @@ public class EclipseLinkJoinFetchComboViewer extends EnumFormComboViewer<Eclipse
 	protected String displayString(EclipseLinkJoinFetchType value) {
 		switch (value) {
 			case INNER :
-				return EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_inner;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCH_COMPOSITE_INNER;
 			case OUTER :
-				return EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_outer;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_JOIN_FETCH_COMPOSITE_OUTER;
 			default :
 				throw new IllegalStateException();
 		}

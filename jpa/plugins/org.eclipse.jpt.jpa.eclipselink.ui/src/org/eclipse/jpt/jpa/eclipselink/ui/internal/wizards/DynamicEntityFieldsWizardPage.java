@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.swt.SWT;
@@ -30,8 +30,8 @@ public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
 
 	public DynamicEntityFieldsWizardPage(IDataModel model, String pageName) {
 		super(model, pageName);
-		this.setTitle(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_title);
-		this.setDescription(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_desc);
+		this.setTitle(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_TITLE);
+		this.setDescription(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_DESC);
 	}
 
 	/*
@@ -75,7 +75,7 @@ public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
 		groupGridData.horizontalSpan = 3;
 		group.setLayoutData(groupGridData);
 		group.setLayout(new GridLayout(3, false));
-		group.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_entityFieldGroup);
+		group.setText(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_ENTITY_FIELD_GROUP);
 		new DynamicEntityFieldTableSection(group, model, IEntityDataModelProperties.ENTITY_FIELDS);
 	}
 
@@ -85,7 +85,7 @@ public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
 	protected IStatus validateProjectName() {
 		// check for empty
 		if (model.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME) == null || model.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME).trim().length() == 0) {
-			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_noJpaProjects);
+			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(JptJpaEclipseLinkUiMessages.DYNAMIC_ENTITY_FIELDS_WIZARD_PAGE_NO_JPA_PROJECTS);
 		}
 		return Status.OK_STATUS;
 	}

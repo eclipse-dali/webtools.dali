@@ -29,11 +29,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -306,7 +306,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING, //TODO KFB - different message for virtual attribute
+							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING, //TODO KFB - different message for virtual attribute
 							new String[] {this.getName()},
 							this,
 							this.getVirtualPersistentAttributeTextRange()
@@ -317,7 +317,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
+						JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 						new String[] {this.getName()},
 						this,
 						this.getValidationTextRange()

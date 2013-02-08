@@ -60,7 +60,7 @@ public class EclipseLinkReadOnlyTriStateCheckBox extends Pane<EclipseLinkReadOnl
 	protected void initializeLayout(Composite container) {
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkReadOnlyComposite_readOnlyLabel,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_LABEL,
 			buildSpecifiedReadOnlyHolder(),
 			buildReadOnlyStringHolder(),
 			null
@@ -90,9 +90,9 @@ public class EclipseLinkReadOnlyTriStateCheckBox extends Pane<EclipseLinkReadOnl
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkReadOnlyComposite_readOnlyWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_WITH_DEFAULT, defaultStringValue);
 				}
-				return EclipseLinkUiDetailsMessages.EclipseLinkReadOnlyComposite_readOnlyLabel;
+				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_LABEL;
 			}
 		};
 	}

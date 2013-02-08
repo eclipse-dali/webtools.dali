@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal;
 
 import org.eclipse.jpt.common.core.tests.PreferencesTests;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 /**
  * <strong>NB:</strong> These tests are to test for backward-compatibility!
@@ -133,9 +133,9 @@ public class JpaPreferencesTests
 
 	public void testProblemSeverity_Project() throws Exception {
 		String value = JpaPreferences.PROBLEM_INFO;
-		JpaPreferences.setProblemSeverity(this.getProject(), JpaValidationMessages.NO_JPA_PROJECT, value);
+		JpaPreferences.setProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT, value);
 		this.flushProjectPrefs();
-		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JpaValidationMessages.NO_JPA_PROJECT));
+		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT));
 		assertEquals(value, this.readProjectPrefs().getProperty(PROBLEM_NO_JPA_PROJECT));
 	}
 	// DO NOT CHANGE THIS CONSTANT - as it is testing backward-compatibility
@@ -143,11 +143,11 @@ public class JpaPreferencesTests
 
 	public void testProblemSeverity_Workspace() throws Exception {
 		String value = JpaPreferences.PROBLEM_WARNING;
-		JpaPreferences.setProblemSeverity(JpaValidationMessages.NO_JPA_PROJECT, value);
+		JpaPreferences.setProblemSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT, value);
 		this.flushWorkspacePrefs();
 		// verify workspace pref affects project-level pref
-		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JpaValidationMessages.NO_JPA_PROJECT));
-		assertEquals(value, JpaPreferences.getProblemSeverity(JpaValidationMessages.NO_JPA_PROJECT));
+		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT));
+		assertEquals(value, JpaPreferences.getProblemSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT));
 		assertEquals(value, this.readWorkspacePrefs().getProperty(PROBLEM_NO_JPA_PROJECT));
 	}
 }

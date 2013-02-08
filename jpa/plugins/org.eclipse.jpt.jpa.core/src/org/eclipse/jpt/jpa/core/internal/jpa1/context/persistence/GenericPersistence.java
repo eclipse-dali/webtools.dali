@@ -28,12 +28,12 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -314,7 +314,7 @@ public class GenericPersistence
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.LOW_SEVERITY,
-						JpaValidationMessages.XML_VERSION_NOT_LATEST,
+						JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST,
 						this,
 						this.xmlPersistence.getVersionTextRange()));
 		}
@@ -334,7 +334,7 @@ public class GenericPersistence
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
+					JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
 					this,
 					this.getValidationTextRange()
 				)
@@ -347,7 +347,7 @@ public class GenericPersistence
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
+					JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
 					this,
 					this.getValidationTextRange()
 				)

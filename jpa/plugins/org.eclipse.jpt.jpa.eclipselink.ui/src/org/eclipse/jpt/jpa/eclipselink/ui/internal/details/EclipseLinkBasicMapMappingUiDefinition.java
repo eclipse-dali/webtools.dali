@@ -49,11 +49,11 @@ public class EclipseLinkBasicMapMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkBasicMapMappingUiProvider_label;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_BASIC_MAP_MAPPING_UI_PROVIDER_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkBasicMapMappingUiProvider_linkLabel;
+		return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_BASIC_MAP_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	@SuppressWarnings("unchecked")

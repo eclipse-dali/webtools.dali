@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.validation;
+package org.eclipse.jpt.jpa.core.validation;
 
 @SuppressWarnings("nls")
-// TODO bjv rename to JptJpaValidationMessages
-public interface JpaValidationMessages {
+public interface JptJpaCoreValidationMessages {
 
-	public static final String BUNDLE_NAME = "jpa_validation";
+	public static final String BUNDLE_NAME = "jpt_jpa_core_validation";
 
 	//Content is organized based on the categories and entries in each categories are listed alphabetically.
 	//If adding a new entry, please be sure to add it to the corresponding category at the right place.
@@ -303,5 +302,4 @@ public interface JpaValidationMessages {
 	public static final String QUERY_DUPLICATE_NAME = "QUERY_DUPLICATE_NAME";
 	public static final String QUERY_NAME_UNDEFINED = "QUERY_NAME_UNDEFINED";
 	public static final String QUERY_STATEMENT_UNDEFINED = "QUERY_STATEMENT_UNDEFINED";
-
 }

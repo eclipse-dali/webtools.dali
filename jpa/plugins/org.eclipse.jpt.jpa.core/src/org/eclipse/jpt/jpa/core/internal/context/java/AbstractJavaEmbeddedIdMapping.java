@@ -21,9 +21,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -112,7 +112,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
+								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								new String[] {this.getName()},
 								this.attributeOverrideContainer,
 								this.getVirtualPersistentAttributeTextRange()
@@ -122,7 +122,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
+								JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								EMPTY_STRING_ARRAY,
 								this.attributeOverrideContainer,
 								this.attributeOverrideContainer.getValidationTextRange()
@@ -146,7 +146,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									new String[] {this.getName()},
 									this,
 									this.getVirtualPersistentAttributeTextRange()
@@ -156,7 +156,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									EMPTY_STRING_ARRAY,
 									this,
 									this.getValidationTextRange()
@@ -177,7 +177,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 						messages.add(
 								DefaultJpaValidationMessages.buildMessage(
 										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
+										JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										new String[] {this.getName()},
 										this,
 										this.getVirtualPersistentAttributeTextRange()
@@ -187,7 +187,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 						messages.add(
 								DefaultJpaValidationMessages.buildMessage(
 										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
+										JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										EMPTY_STRING_ARRAY,
 										this,
 										this.getValidationTextRange()
@@ -205,7 +205,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									new String[] {this.getName()},
 									this,
 									this.getVirtualPersistentAttributeTextRange()
@@ -215,7 +215,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									EMPTY_STRING_ARRAY,
 									this,
 									this.getValidationTextRange()
@@ -234,7 +234,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									new String[] {this.getName()},
 									this,
 									this.getVirtualPersistentAttributeTextRange()
@@ -244,7 +244,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									EMPTY_STRING_ARRAY,
 									this,
 									this.getValidationTextRange()
@@ -266,7 +266,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									new String[] {this.getName()},
 									this,
 									this.getVirtualPersistentAttributeTextRange()
@@ -276,7 +276,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									EMPTY_STRING_ARRAY,
 									this,
 									this.getValidationTextRange()

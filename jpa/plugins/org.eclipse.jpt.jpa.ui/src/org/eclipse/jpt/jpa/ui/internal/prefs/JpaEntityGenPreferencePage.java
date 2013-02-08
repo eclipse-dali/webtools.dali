@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,7 +32,7 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 	
 	public JpaEntityGenPreferencePage() {
 		super();
-		this.setDescription(JptUiMessages.JpaEntityGenPreferencePage_Description); 
+		this.setDescription(JptJpaUiMessages.JpaEntityGenPreferencePage_Description); 
 	}
 	
 	// ********** overrides **********
@@ -94,12 +94,12 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 			super();
 			// Entity Gen group box
 			Group group = new Group(parent, SWT.NONE);
-			group.setText(JptUiMessages.JpaEntityGenPreferencePage_generalGroup_title);
+			group.setText(JptJpaUiMessages.JpaEntityGenPreferencePage_generalGroup_title);
 			group.setLayout(new GridLayout(2, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			// default package
-			this.buildLabel(group, 1, JptUiMessages.JpaEntityGenPreferencePage_defaultPackageLabel);
+			this.buildLabel(group, 1, JptJpaUiMessages.JpaEntityGenPreferencePage_defaultPackageLabel);
 			this.defaultPackageText = this.buildText(group, 1);
 			
 			this.initializeFromPreferences();

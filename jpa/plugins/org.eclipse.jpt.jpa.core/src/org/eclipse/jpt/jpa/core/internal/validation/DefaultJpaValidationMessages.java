@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -98,7 +99,7 @@ public class DefaultJpaValidationMessages {
 		public IMessage buildMessage(int severity, String messageID, String[] parms, IResource targetObject) {
 			// check for preference override
 			severity = this.getProblemSeverity(targetObject, messageID, severity);
-			IMessage message = new Message(JpaValidationMessages.BUNDLE_NAME, severity, messageID, parms, targetObject);
+			IMessage message = new Message(JptJpaCoreValidationMessages.BUNDLE_NAME, severity, messageID, parms, targetObject);
 			message.setMarkerId(JpaValidator.MARKER_ID);
 			return message;
 		}

@@ -44,7 +44,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant;
@@ -52,6 +51,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -696,7 +696,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
-					EclipseLinkJpaValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
+					JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getValidationTextRange()
@@ -709,7 +709,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.LOW_SEVERITY,
-						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED,
+						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange()
@@ -720,7 +720,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
+						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
 						new String[] {targetDatabase},
 						this,
 						this.getValidationTextRange()
@@ -733,7 +733,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
+						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getXmlMultitenant().getValidationTextRange()
@@ -756,7 +756,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
-					EclipseLinkJpaValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED,
+					JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getXmlMultitenant().getIncludeCriteriaTextRange()

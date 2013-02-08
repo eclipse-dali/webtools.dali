@@ -102,7 +102,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MappedSuperclassOverrideDe
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEntity2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Inheritance;
@@ -115,6 +114,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -1743,7 +1743,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.ENTITY_NAME_MISSING,
+							JptJpaCoreValidationMessages.ENTITY_NAME_MISSING,
 							new String[] {this.getClass_()}, 
 							this,
 							this.getNameTextRange()
@@ -1776,7 +1776,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
+						JptJpaCoreValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
 						new String[] {this.getName()},
 						this,
 						this.table.getValidationTextRange()
@@ -1790,7 +1790,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
+						JptJpaCoreValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
 						new String[] {this.getName()},
 						this,
 						this.table.getValidationTextRange()
@@ -1826,7 +1826,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED,
+						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getDiscriminatorColumnTextRange()
@@ -1837,7 +1837,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED,
+						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getDiscriminatorColumnTextRange()
@@ -1854,7 +1854,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,
+						JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getDiscriminatorValueTextRange()
@@ -1865,7 +1865,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED,
+						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getDiscriminatorValueTextRange()
@@ -1885,7 +1885,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM,
+						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM,
 						new String[] {this.getName()},
 						this,
 						this.getInheritanceStrategyTextRange()
@@ -1896,7 +1896,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM,
+						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM,
 						new String[] {this.getName()},
 						this,
 						this.getInheritanceStrategyTextRange()

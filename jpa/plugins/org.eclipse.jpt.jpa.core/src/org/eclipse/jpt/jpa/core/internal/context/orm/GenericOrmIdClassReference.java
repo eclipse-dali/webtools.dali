@@ -28,10 +28,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -354,7 +354,7 @@ public class GenericOrmIdClassReference
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
+								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
 								EMPTY_STRING_ARRAY, 
 								this,
 								this.getValidationTextRange()
@@ -367,7 +367,7 @@ public class GenericOrmIdClassReference
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
+								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
 								new String[] {this.getFullyQualifiedIdClassName()},
 								this,
 								this.getValidationTextRange()
@@ -383,7 +383,7 @@ public class GenericOrmIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()
@@ -395,7 +395,7 @@ public class GenericOrmIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()
@@ -407,7 +407,7 @@ public class GenericOrmIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()
@@ -419,7 +419,7 @@ public class GenericOrmIdClassReference
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange()

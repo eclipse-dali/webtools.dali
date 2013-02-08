@@ -60,10 +60,11 @@ import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
+import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -277,7 +278,7 @@ class InternalJpaProjectManager
 			if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
 				JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build JPA project: {0}", project.getName()); //$NON-NLS-1$
 				BuildJpaProjectCommand command = new BuildJpaProjectCommand(project);
-				this.execute(command, NLS.bind(JptCoreMessages.BUILD_JPA_PROJECT_JOB_NAME, project.getName()), project);
+				this.execute(command, NLS.bind(JptJpaCoreMessages.BUILD_JPA_PROJECT_JOB_NAME, project.getName()), project);
 			}
 		}
 	}
@@ -344,7 +345,7 @@ class InternalJpaProjectManager
 	private void clearJpaProjects_(ExtendedJobCommandExecutor oldCE) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: clear JPA projects"); //$NON-NLS-1$
 		ClearJpaProjectsCommand command = new ClearJpaProjectsCommand();
-		oldCE.waitToExecute(command, JptCoreMessages.DISPOSE_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
+		oldCE.waitToExecute(command, JptJpaCoreMessages.DISPOSE_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "end: clear JPA projects"); //$NON-NLS-1$
 	}
 
@@ -378,7 +379,7 @@ class InternalJpaProjectManager
 	public Iterable<JpaProject> waitToGetJpaProjects() throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA projects"); //$NON-NLS-1$
 		GetJpaProjectsCommand command = new GetJpaProjectsCommand();
-		this.waitToExecute(command, JptCoreMessages.GET_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
+		this.waitToExecute(command, JptJpaCoreMessages.GET_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
 		return command.result;
 	}
 
@@ -420,7 +421,7 @@ class InternalJpaProjectManager
 	JpaProject waitToGetJpaProject(IProject project) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA project: {0}", project.getName()); //$NON-NLS-1$
 		GetJpaProjectCommand command = new GetJpaProjectCommand(project);
-		this.waitToExecute(command, NLS.bind(JptCoreMessages.GET_JPA_PROJECT_JOB_NAME, project.getName()), project);
+		this.waitToExecute(command, NLS.bind(JptJpaCoreMessages.GET_JPA_PROJECT_JOB_NAME, project.getName()), project);
 		return command.result;
 	}
 
@@ -438,7 +439,7 @@ class InternalJpaProjectManager
 	private boolean waitToGetJpaProject(ModifiableObjectReference<JpaProject> jpaProjectRef, IProject project, long timeout) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA project (time-out): {0}", project.getName()); //$NON-NLS-1$
 		GetJpaProjectCommand command = new GetJpaProjectCommand(project);
-		boolean result = this.waitToExecute(command, JptCoreMessages.GET_JPA_PROJECT_JOB_NAME, project, timeout);
+		boolean result = this.waitToExecute(command, JptJpaCoreMessages.GET_JPA_PROJECT_JOB_NAME, project, timeout);
 		if (result) {
 			jpaProjectRef.setValue(command.result);
 		} else {
@@ -500,7 +501,7 @@ class InternalJpaProjectManager
 	JpaProject rebuildJpaProject(IProject project) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
 		RebuildJpaProjectCommand command = new RebuildJpaProjectCommand(project);
-		this.waitToExecute(command, NLS.bind(JptCoreMessages.REBUILD_JPA_PROJECT_JOB_NAME, project.getName()), project);
+		this.waitToExecute(command, NLS.bind(JptJpaCoreMessages.REBUILD_JPA_PROJECT_JOB_NAME, project.getName()), project);
 		return command.result;
 	}
 
@@ -541,7 +542,7 @@ class InternalJpaProjectManager
 	Iterable<IMessage> buildValidationMessages(IProject project, IReporter reporter) throws InterruptedException {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build validation messages: {0}", project.getName()); //$NON-NLS-1$
 		BuildValidationMessagesCommand command = new BuildValidationMessagesCommand(project, reporter);
-		this.waitToExecute(command, NLS.bind(JptCoreMessages.BUILD_VALIDATION_MESSAGES_JOB_NAME, project.getName()), project);
+		this.waitToExecute(command, NLS.bind(JptJpaCoreMessages.BUILD_VALIDATION_MESSAGES_JOB_NAME, project.getName()), project);
 		return command.result;
 	}
 
@@ -586,7 +587,7 @@ class InternalJpaProjectManager
 	private IMessage buildNoJpaProjectMessage(IProject project) {
 		return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.NO_JPA_PROJECT,
+					JptJpaCoreValidationMessages.NO_JPA_PROJECT,
 					project
 				);
 	}
@@ -723,7 +724,7 @@ class InternalJpaProjectManager
 	/* CU private */ void projectChanged(IResourceDelta delta) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: project changed: {0}", delta.getResource()); //$NON-NLS-1$
 		ProjectChangeEventHandlerCommand command = new ProjectChangeEventHandlerCommand(delta);
-		this.execute(command, JptCoreMessages.PROJECT_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
+		this.execute(command, JptJpaCoreMessages.PROJECT_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
 	}
 
 	/* CU private */ class ProjectChangeEventHandlerCommand
@@ -769,7 +770,7 @@ class InternalJpaProjectManager
 	/* CU private */ void projectPostCleanBuild(IProject project) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: post clean build: {0}", project.getName()); //$NON-NLS-1$
 		ProjectPostCleanBuildEventHandlerCommand command = new ProjectPostCleanBuildEventHandlerCommand(project);
-		this.execute(command, NLS.bind(JptCoreMessages.PROJECT_POST_CLEAN_BUILD_EVENT_HANDLER_JOB_NAME, project.getName()), project);
+		this.execute(command, NLS.bind(JptJpaCoreMessages.PROJECT_POST_CLEAN_BUILD_EVENT_HANDLER_JOB_NAME, project.getName()), project);
 	}
 
 	/* CU private */ class ProjectPostCleanBuildEventHandlerCommand
@@ -813,7 +814,7 @@ class InternalJpaProjectManager
 	/* CU private */ void checkForJpaFacetTransition(IProject project) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
 		FacetFileChangeEventHandlerCommand command = new FacetFileChangeEventHandlerCommand(project);
-		this.execute(command, NLS.bind(JptCoreMessages.FACET_FILE_CHANGE_EVENT_HANDLER_JOB_NAME, project.getName()), project);
+		this.execute(command, NLS.bind(JptJpaCoreMessages.FACET_FILE_CHANGE_EVENT_HANDLER_JOB_NAME, project.getName()), project);
 	}
 
 	/* CU private */ class FacetFileChangeEventHandlerCommand
@@ -854,7 +855,7 @@ class InternalJpaProjectManager
 		if (this.handleJavaElementChangedEvent(event)) {
 			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
 			JavaChangeEventHandlerCommand command = new JavaChangeEventHandlerCommand(event);
-			this.execute(command, JptCoreMessages.JAVA_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
+			this.execute(command, JptJpaCoreMessages.JAVA_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
 		}
 	}
 
