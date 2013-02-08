@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,10 +13,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 
@@ -58,14 +56,14 @@ public class StaticListValueModel<E>
 	public Iterator<E> iterator() {
 		// we can cast here since our constructors require the elements to be
 		// of type E and ArrayIterator is read-only
-		return (Iterator<E>) new ArrayIterator<Object>(this.elements);
+		return (Iterator<E>) IteratorTools.iterator(this.elements);
 	}
 
 	@SuppressWarnings("unchecked")
 	public ListIterator<E> listIterator() {
 		// we can cast here since our constructors require the elements to be
 		// of type E and ArrayListIterator is read-only
-		return (ListIterator<E>) new ArrayListIterator<Object>(this.elements);
+		return (ListIterator<E>) IteratorTools.listIterator(this.elements);
 	}
 
 	public int size() {

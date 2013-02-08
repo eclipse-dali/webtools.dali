@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 
@@ -35,7 +34,7 @@ public class JpaAnnotationProvider
 
 	public JpaAnnotationProvider(JpaAnnotationDefinitionProvider... annotationDefinitionProviders) {
 		super();
-		this.annotationDefinitionProviders = new ArrayIterable<JpaAnnotationDefinitionProvider>(annotationDefinitionProviders);
+		this.annotationDefinitionProviders = IterableTools.iterable(annotationDefinitionProviders);
 	}
 
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.resource;
 
 import java.io.ByteArrayInputStream;
@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex.JaxbIndexResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
@@ -34,12 +33,14 @@ public class JaxbIndexResourceTests
 	}
 	
 	
+	@SuppressWarnings("resource")
 	private IFile createJaxbIndex(IPath projectRelativePath, String... classNames) throws Exception {
 		IFolder folder = getJavaProject().getProject().getFolder(projectRelativePath);
 		if (! folder.exists()) {
 			folder.create(true, false, null);
 		}
 		IFile jaxbIndex = getJavaProject().getProject().getFile(projectRelativePath.append(new Path(JAXB_INDEX)));
+		// stream is closed by IFile.create(...)
 		InputStream stream = inputStream(classNames);
 		jaxbIndex.create(stream, true, null);
 		return jaxbIndex;
@@ -63,13 +64,13 @@ public class JaxbIndexResourceTests
 		
 		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
-				new ArrayIterable<String>(new String[] {"test.foo", "test.bar"})));
+				IterableTools.iterable(new String[] {"test.foo", "test.bar"})));
 		
 		setClassNames(jaxbIndex, "foo", "bar", "baz");
 		
 		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
-				new ArrayIterable<String>(new String[] {"test.foo", "test.bar", "test.baz"})));
+				IterableTools.iterable(new String[] {"test.foo", "test.bar", "test.baz"})));
 		
 		setClassNames(jaxbIndex);
 		
@@ -80,13 +81,13 @@ public class JaxbIndexResourceTests
 		
 		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
-				new ArrayIterable<String>(new String[] {"foo", "bar"})));
+				IterableTools.iterable(new String[] {"foo", "bar"})));
 		
 		setClassNames(jaxbIndex, "foo", "bar", "baz");
 		
 		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
-				new ArrayIterable<String>(new String[] {"foo", "bar", "baz"})));
+				IterableTools.iterable(new String[] {"foo", "bar", "baz"})));
 		
 		setClassNames(jaxbIndex);
 		

@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -518,7 +519,7 @@ public final class IteratorTools {
 	 * @see CloneIterator
 	 */
 	public static <E> CloneIterator<E> clone(Collection<? extends E> collection) {
-		return new CloneIterator<E>(collection);
+		return clone(collection, ParameterizedCommand.Disabled.instance());
 	}
 
 	/**
@@ -536,7 +537,7 @@ public final class IteratorTools {
 	 * @see CloneIterator
 	 */
 	public static <E> CloneListIterator<E> clone(List<? extends E> list) {
-		return new CloneListIterator<E>(list);
+		return clone(list, Adapter.ReadOnly.<E>instance());
 	}
 
 	/**

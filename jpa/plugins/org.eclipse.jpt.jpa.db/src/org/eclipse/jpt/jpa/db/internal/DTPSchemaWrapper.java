@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -67,11 +67,11 @@ final class DTPSchemaWrapper
 	// ***** tables
 
 	public Iterable<Table> getTables() {
-		return new ArrayIterable<Table>(this.getTableArray());
+		return IterableTools.<Table>iterable(this.getTableArray());
 	}
 
 	private Iterable<DTPTableWrapper> getTableWrappers() {
-		return new ArrayIterable<DTPTableWrapper>(this.getTableArray());
+		return IterableTools.iterable(this.getTableArray());
 	}
 
 	private synchronized DTPTableWrapper[] getTableArray() {
@@ -167,11 +167,11 @@ final class DTPSchemaWrapper
 	// ***** sequences
 
 	public Iterable<Sequence> getSequences() {
-		return new ArrayIterable<Sequence>(this.getSequenceArray());
+		return IterableTools.<Sequence>iterable(this.getSequenceArray());
 	}
 
 	private Iterable<DTPSequenceWrapper> getSequenceWrappers() {
-		return new ArrayIterable<DTPSequenceWrapper>(this.getSequenceArray());
+		return IterableTools.iterable(this.getSequenceArray());
 	}
 
 	private synchronized DTPSequenceWrapper[] getSequenceArray() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
@@ -442,7 +442,7 @@ public class CollectionToolsTests
 		c.add("d");
 		c.add("d");
 		String[] a = new String[] { "a", "d" };
-		Iterator<String> iterator = new ArrayIterator<String>(a);
+		Iterator<String> iterator = IteratorTools.iterator(a);
 		assertTrue(CollectionTools.removeAll(c, iterator));
 		assertEquals(2, c.size());
 		assertFalse(c.contains("a"));
@@ -450,7 +450,7 @@ public class CollectionToolsTests
 		assertTrue(c.contains("c"));
 		assertFalse(c.contains("d"));
 
-		iterator = new ArrayIterator<String>(a);
+		iterator = IteratorTools.iterator(a);
 		assertFalse(CollectionTools.removeAll(c, iterator));
 	}
 
@@ -463,7 +463,7 @@ public class CollectionToolsTests
 		c.add("d");
 		c.add("d");
 		String[] a = new String[] { "a", "d" };
-		Iterator<String> iterator = new ArrayIterator<String>(a);
+		Iterator<String> iterator = IteratorTools.iterator(a);
 		assertTrue(CollectionTools.removeAll(c, iterator));
 		assertEquals(2, c.size());
 		assertFalse(c.contains("a"));
@@ -471,7 +471,7 @@ public class CollectionToolsTests
 		assertTrue(c.contains("c"));
 		assertFalse(c.contains("d"));
 
-		iterator = new ArrayIterator<String>(a);
+		iterator = IteratorTools.iterator(a);
 		assertFalse(CollectionTools.removeAll(c, iterator));
 	}
 

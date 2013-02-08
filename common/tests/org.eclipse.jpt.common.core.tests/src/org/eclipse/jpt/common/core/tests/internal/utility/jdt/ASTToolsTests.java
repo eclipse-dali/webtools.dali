@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 @SuppressWarnings("nls")
 public class ASTToolsTests
@@ -123,7 +123,7 @@ public class ASTToolsTests
 		createAnnotationAndMembers(annotationName, "Class[] foo();");
 		
 		ICompilationUnit cu = createTestType(
-				new ArrayIterator<String>(new String[] {fqOtherClassName, fqOtherClassName2, fqAnnotationName}),
+				IteratorTools.iterator(new String[] {fqOtherClassName, fqOtherClassName2, fqAnnotationName}),
 				"@TestAnnotation(foo={" + otherClassName + ".class, " + otherClassName2 + ".class})");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter(fqAnnotationName);
 		DeclarationAnnotationElementAdapter<String[]> daea = 
@@ -151,7 +151,7 @@ public class ASTToolsTests
 		createAnnotationAndMembers(annotationName, "Class[] foo();");
 		
 		ICompilationUnit cu = createTestType(
-				new ArrayIterator<String>(new String[] {fqOtherClassName, fqOtherClassName2, fqAnnotationName}),
+				IteratorTools.iterator(new String[] {fqOtherClassName, fqOtherClassName2, fqAnnotationName}),
 				"@TestAnnotation(foo={1, " + otherClassName + ".class})");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter(fqAnnotationName);
 		DeclarationAnnotationElementAdapter<String[]> daea = 
@@ -179,7 +179,7 @@ public class ASTToolsTests
 		createAnnotationAndMembers(annotationName, "Class[] foo();");
 		
 		ICompilationUnit cu = createTestType(
-				new ArrayIterator<String>(new String[] {fqOtherClassName, fqOtherClassName2, fqAnnotationName}),
+				IteratorTools.iterator(new String[] {fqOtherClassName, fqOtherClassName2, fqAnnotationName}),
 				"@TestAnnotation(foo={@TestAnnotation(), " + otherClassName + ".class}");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter(fqAnnotationName);
 		DeclarationAnnotationElementAdapter<String[]> daea = 

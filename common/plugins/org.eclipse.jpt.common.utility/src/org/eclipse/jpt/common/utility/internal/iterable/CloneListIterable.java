@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
- * Pull together mutator state and behavior for subclasses.
+ * Pull together adapter state and behavior for subclasses.
  * 
  * @param <E> the type of elements returned by the list iterable's list iterator
  * 
@@ -25,10 +25,6 @@ public abstract class CloneListIterable<E>
 {
 	final CloneListIterator.Adapter<E> adapter;
 
-
-	protected CloneListIterable() {
-		this(CloneListIterator.Adapter.ReadOnly.<E>instance());
-	}
 
 	protected CloneListIterable(CloneListIterator.Adapter<E> adapter) {
 		super();

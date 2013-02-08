@@ -13,7 +13,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
@@ -97,7 +97,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 
 	// ********* parameters ***********
 	public ListIterable<StoredProcedureParameter2_1Annotation> getParameters() {
-		return new LiveCloneListIterable<StoredProcedureParameter2_1Annotation>(this.parameters);
+		return IterableTools.cloneLive(this.parameters);
 	}
 
 	public int getParametersSize() {
@@ -140,7 +140,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 
 	// *********** result classes **********
 	public ListIterable<String> getResultClasses() {
-		return new LiveCloneListIterable<String>(this.resultClasses);
+		return IterableTools.cloneLive(this.resultClasses);
 	}
 
 	public int getResultClassesSize() {
@@ -195,7 +195,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 
 	// *********** result set mappings **********
 	public ListIterable<String> getResultSetMappings() {
-		return new LiveCloneListIterable<String>(this.resultSetMappings);
+		return IterableTools.cloneLive(this.resultSetMappings);
 	}
 
 	public int getResultSetMappingsSize() {

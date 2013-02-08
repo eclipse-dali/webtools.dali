@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 
@@ -37,7 +37,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -50,7 +50,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -63,7 +63,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -76,7 +76,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -89,7 +89,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -102,7 +102,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -115,7 +115,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_JOIN_COLUMN, JPA2_0.MAP_KEY_JOIN_COLUMNS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {

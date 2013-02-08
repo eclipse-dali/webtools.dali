@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2012 SAP AG.
+ * Copyright (c) 2005, 2013 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
-
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -66,7 +65,6 @@ import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -1333,7 +1331,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		@SuppressWarnings("unchecked")
 		synchronized public void run() {
 			try {
-				ArrayIterator<JavaPersistentAttribute> it = (ArrayIterator<JavaPersistentAttribute>) event.getItems().iterator();
+				Iterator<JavaPersistentAttribute> it = (Iterator<JavaPersistentAttribute>) event.getItems().iterator();
 				Set<Shape> shapesToRemove = new HashSet<Shape>();
 				while (it.hasNext()) {
 					JavaPersistentAttribute at = it.next();
@@ -1412,7 +1410,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				ContainerShape entShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(jpt);
 				
 				// remove invalidated relations (if any)
-				ArrayIterator<JavaPersistentAttribute> it = (ArrayIterator<JavaPersistentAttribute>) event.getItems().iterator();
+				Iterator<JavaPersistentAttribute> it = (Iterator<JavaPersistentAttribute>) event.getItems().iterator();
 				while (it.hasNext()) {
 					JavaPersistentAttribute at = it.next();
 					if(at.getMapping() == null || at.getMapping().getMappingAnnotation() == null){

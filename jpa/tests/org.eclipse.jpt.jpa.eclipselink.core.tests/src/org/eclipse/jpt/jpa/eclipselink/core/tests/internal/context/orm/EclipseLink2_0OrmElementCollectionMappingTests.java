@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -77,7 +77,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -130,7 +130,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE, JPA.ATTRIBUTE_OVERRIDE, JPA.COLUMN);
+				return IteratorTools.iterator(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE, JPA.ATTRIBUTE_OVERRIDE, JPA.COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -154,7 +154,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -176,7 +176,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -198,7 +198,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -243,7 +243,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -290,7 +290,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>("java.util.Collection");
+				return IteratorTools.iterator("java.util.Collection");
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {

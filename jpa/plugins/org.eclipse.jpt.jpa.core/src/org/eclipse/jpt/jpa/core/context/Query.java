@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -43,7 +43,7 @@ public interface Query
 	 */
 	Class<? extends Query> getType();
 		@SuppressWarnings("unchecked")
-		Iterable<Class<? extends Query>> TYPES = new ArrayIterable<Class<? extends Query>>(
+		Iterable<Class<? extends Query>> TYPES = IterableTools.iterable(
 			NamedQuery.class,
 			NamedNativeQuery.class
 		);

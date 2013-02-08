@@ -16,7 +16,7 @@ import java.util.Map;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -119,7 +119,7 @@ public abstract class AbstractJaxbPlatformDefinition
 	// ********** resource models **********
 	
 	public ListIterable<JaxbResourceModelProvider> getResourceModelProviders() {
-		return new ArrayListIterable<JaxbResourceModelProvider>(getResourceModelProviders_());
+		return IterableTools.listIterable(getResourceModelProviders_());
 	}
 	
 	protected synchronized JaxbResourceModelProvider[] getResourceModelProviders_() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
@@ -72,7 +72,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.QUERY_HINT, JPA2_0.LOCK_MODE_TYPE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.QUERY_HINT, JPA2_0.LOCK_MODE_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -91,7 +91,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -110,7 +110,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERY, JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERY, JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -125,7 +125,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.NAMED_NATIVE_QUERY);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -140,7 +140,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.QUERY_HINT, JPA2_0.LOCK_MODE_TYPE);
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS, JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.QUERY_HINT, JPA2_0.LOCK_MODE_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -159,7 +159,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS, JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -454,7 +454,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.TABLE_GENERATOR, JPA.SEQUENCE_GENERATOR);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.TABLE_GENERATOR, JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -472,7 +472,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.TABLE_GENERATOR, JPA.SEQUENCE_GENERATOR);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.TABLE_GENERATOR, JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -495,7 +495,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.TABLE_GENERATOR, JPA.SEQUENCE_GENERATOR);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.TABLE_GENERATOR, JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

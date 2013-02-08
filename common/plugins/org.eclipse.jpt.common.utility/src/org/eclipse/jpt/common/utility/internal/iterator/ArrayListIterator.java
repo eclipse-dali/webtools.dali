@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,22 +31,6 @@ public class ArrayListIterator<E>
 {
 	private final int min;
 
-
-	/**
-	 * Construct a list iterator for the specified array.
-	 */
-	public ArrayListIterator(E... array) {
-		this(array, 0);
-	}
-
-	/**
-	 * Construct a list iterator for the specified array,
-	 * starting at the specified start index and continuing for
-	 * the rest of the array.
-	 */
-	public ArrayListIterator(E[] array, int start) {
-		this(array, start, array.length);
-	}
 
 	/**
 	 * Construct a list iterator for the specified array,

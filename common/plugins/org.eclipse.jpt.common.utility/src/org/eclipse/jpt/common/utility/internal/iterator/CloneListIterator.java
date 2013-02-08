@@ -50,36 +50,26 @@ public class CloneListIterator<E>
 	}
 
 
-	// ********** constructors **********
-
-	/**
-	 * Construct a list iterator on a copy of the specified list.
-	 * The modification methods will not be supported.
-	 */
-	public CloneListIterator(List<? extends E> list) {
-		this(list, Adapter.ReadOnly.<E>instance());
-	}
-
 	/**
 	 * Construct a list iterator on a copy of the specified list.
 	 * Use the specified adapter to modify the original list.
 	 */
-	public CloneListIterator(List<? extends E> list, Adapter<E> mutator) {
-		this(list.toArray(), mutator);
+	public CloneListIterator(List<? extends E> list, Adapter<E> adapter) {
+		this(list.toArray(), adapter);
 	}
 
 	/**
 	 * Internal constructor used by subclasses.
 	 */
-	protected CloneListIterator(Object[] array, Adapter<E> mutator) {
+	protected CloneListIterator(Object[] array, Adapter<E> adapter) {
 		super();
-		if (mutator == null) {
+		if (adapter == null) {
 			throw new NullPointerException();
 		}
 		// build a copy of the list and keep it in sync with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
 		this.listIterator = ListTools.list(array).listIterator();
-		this.adapter = mutator;
+		this.adapter = adapter;
 		this.cursor = 0;
 		this.state = State.UNKNOWN;
 	}
@@ -162,7 +152,7 @@ public class CloneListIterator<E>
 	}
 
 
-	//********** member interface **********
+	//********** adapter interface **********
 
 	/**
 	 * Used by {@link CloneListIterator} to add elements to,

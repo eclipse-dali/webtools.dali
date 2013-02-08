@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -997,7 +997,7 @@ public class ChangeSupport
 	 */
 	public <E> boolean addItemsToCollection(E[] items, Collection<E> collection, String collectionName) {
 		return (items.length != 0)
-				&& this.addItemsToCollection_(new ArrayIterator<E>(items), collection, collectionName);
+				&& this.addItemsToCollection_(IteratorTools.iterator(items), collection, collectionName);
 	}
 
 	/**
@@ -1076,7 +1076,7 @@ public class ChangeSupport
 	public boolean removeItemsFromCollection(Object[] items, Collection<?> collection, String collectionName) {
 		return (items.length != 0)
 				&& ( ! collection.isEmpty())
-				&& this.removeItemsFromCollection_(new ArrayIterator<Object>(items), collection, collectionName);
+				&& this.removeItemsFromCollection_(IteratorTools.iterator(items), collection, collectionName);
 	}
 
 	/**
@@ -1140,7 +1140,7 @@ public class ChangeSupport
 		if (items.length == 0) {
 			return this.clearCollection_(collection, collectionName);
 		}
-		return this.retainItemsInCollection_(new ArrayIterator<Object>(items), collection, collectionName);
+		return this.retainItemsInCollection_(IteratorTools.iterator(items), collection, collectionName);
 	}
 
 	/**
@@ -2126,7 +2126,7 @@ public class ChangeSupport
 	public boolean removeItemsFromList(Object[] items, List<?> list, String listName) {
 		return (items.length != 0)
 				&& ( ! list.isEmpty())
-				&& this.removeItemsFromList_(new ArrayIterator<Object>(items), list, listName);
+				&& this.removeItemsFromList_(IteratorTools.iterator(items), list, listName);
 	}
 
 	/**
@@ -2187,7 +2187,7 @@ public class ChangeSupport
 		if (items.length == 0) {
 			return this.clearList_(list, listName);
 		}
-		return this.retainItemsInList_(new ArrayIterator<Object>(items), list, listName);
+		return this.retainItemsInList_(IteratorTools.iterator(items), list, listName);
 	}
 
 	/**

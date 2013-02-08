@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmGeneratorContainer;
@@ -140,6 +140,6 @@ public class OrmEclipseLinkGeneratorContainer
 
 	@Override
 	protected Iterable<Generator> getGenerators_() {
-		return new ArrayIterable<Generator>(this.sequenceGenerator, this.tableGenerator, this.uuidGenerator);
+		return IterableTools.<Generator>iterable(this.sequenceGenerator, this.tableGenerator, this.uuidGenerator);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AccessType;
@@ -31,7 +31,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
+				return IteratorTools.iterator(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			
 			@Override
@@ -45,7 +45,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
+				return IteratorTools.iterator(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 		
 			@Override
@@ -59,7 +59,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
+				return IteratorTools.iterator(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			
 			@Override

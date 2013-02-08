@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
@@ -49,7 +48,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -62,7 +61,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.MULTITENANT);
+				return IteratorTools.iterator(JPA.ENTITY, EclipseLink.MULTITENANT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -76,7 +75,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.MULTITENANT, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
+				return IteratorTools.iterator(JPA.ENTITY, EclipseLink.MULTITENANT, EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -90,7 +89,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.MULTITENANT, EclipseLink.TENANT_DISCRIMINATOR_COLUMN, EclipseLink.TENANT_DISCRIMINATOR_COLUMNS);
+				return IteratorTools.iterator(JPA.ENTITY, EclipseLink.MULTITENANT, EclipseLink.TENANT_DISCRIMINATOR_COLUMN, EclipseLink.TENANT_DISCRIMINATOR_COLUMNS);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -104,7 +103,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(
+				return IteratorTools.iterator(
 					JPA.MAPPED_SUPERCLASS,
 					EclipseLink.MULTITENANT,
 					EclipseLink.TENANT_DISCRIMINATOR_COLUMN);
@@ -122,7 +121,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(
+				return IteratorTools.iterator(
 					JPA.ENTITY,
 					JPA.INHERITANCE,
 					EclipseLink.MULTITENANT,

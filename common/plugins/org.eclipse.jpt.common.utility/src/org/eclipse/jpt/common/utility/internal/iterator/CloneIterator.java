@@ -44,17 +44,6 @@ public class CloneIterator<E>
 	private boolean removeAllowed;
 
 
-	// ********** constructors **********
-
-	/**
-	 * Construct an iterator on a copy of the specified collection.
-	 * Use the specified command to remove objects from the
-	 * original collection.
-	 */
-	public CloneIterator(Collection<? extends E> collection) {
-		this(collection, ParameterizedCommand.Disabled.<E>instance());
-	}
-
 	/**
 	 * Construct an iterator on a copy of the specified collection.
 	 * Use the specified command to remove objects from the
@@ -72,14 +61,11 @@ public class CloneIterator<E>
 		if (removeCommand == null) {
 			throw new NullPointerException();
 		}
-		this.iterator = new ArrayIterator<Object>(array);
+		this.iterator = IteratorTools.iterator(array);
 		this.current = null;
 		this.removeCommand = removeCommand;
 		this.removeAllowed = false;
 	}
-
-
-	// ********** Iterator implementation **********
 
 	public boolean hasNext() {
 		return this.iterator.hasNext();

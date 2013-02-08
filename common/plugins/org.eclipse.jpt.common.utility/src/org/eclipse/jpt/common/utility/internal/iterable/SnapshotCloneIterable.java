@@ -47,18 +47,6 @@ public class SnapshotCloneIterable<E>
 	private final Object[] array;
 
 
-	// ********** constructors **********
-
-	/**
-	 * Construct a "snapshot" iterable for the specified collection.
-	 * The {@link Iterator#remove()} operation will not be supported
-	 * by the iterator returned by {@link #iterator()}.
-	 */
-	public SnapshotCloneIterable(Collection<? extends E> collection) {
-		super();
-		this.array = collection.toArray();
-	}
-
 	/**
 	 * Construct a "snapshot" iterable for the specified collection.
 	 * The specified command will be used by any generated iterators to
@@ -68,9 +56,6 @@ public class SnapshotCloneIterable<E>
 		super(removeCommand);
 		this.array = collection.toArray();
 	}
-
-
-	// ********** Iterable implementation **********
 
 	public Iterator<E> iterator() {
 		return new LocalCloneIterator<E>(this.array, this.removeCommand);

@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -161,14 +160,14 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		JavaBaseTemporalConverter.ElementCollectionAdapter.instance(),
 		JavaLobConverter.Adapter.instance()
 	};
-	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
 
 	protected static final JavaConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
 		JavaBaseEnumeratedConverter.MapKeyAdapter.instance(),
 		JavaBaseTemporalConverter.MapKeyAdapter.instance()
 	};
-	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
+	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
 	protected AbstractJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {

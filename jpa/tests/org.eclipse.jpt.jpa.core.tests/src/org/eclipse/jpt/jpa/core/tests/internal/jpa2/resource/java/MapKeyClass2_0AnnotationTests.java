@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 
@@ -31,7 +31,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_CLASS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_CLASS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -44,7 +44,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_CLASS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_CLASS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -57,7 +57,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_0.MAP_KEY_CLASS);
+				return IteratorTools.iterator(JPA2_0.MAP_KEY_CLASS);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {

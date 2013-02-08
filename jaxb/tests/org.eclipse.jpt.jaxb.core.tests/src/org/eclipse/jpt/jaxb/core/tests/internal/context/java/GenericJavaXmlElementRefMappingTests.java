@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
 import java.util.Iterator;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
@@ -48,7 +48,7 @@ public class GenericJavaXmlElementRefMappingTests
 			
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF);
+				return IteratorTools.iterator(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF);
 			}
 			
 			@Override
@@ -68,7 +68,7 @@ public class GenericJavaXmlElementRefMappingTests
 			
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF, JAXB.JAXB_ELEMENT);
+				return IteratorTools.iterator(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF, JAXB.JAXB_ELEMENT);
 			}
 			
 			@Override
@@ -89,7 +89,7 @@ public class GenericJavaXmlElementRefMappingTests
 			
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF, JAXB.XML_ROOT_ELEMENT);
+				return IteratorTools.iterator(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF, JAXB.XML_ROOT_ELEMENT);
 			}
 			
 			@Override

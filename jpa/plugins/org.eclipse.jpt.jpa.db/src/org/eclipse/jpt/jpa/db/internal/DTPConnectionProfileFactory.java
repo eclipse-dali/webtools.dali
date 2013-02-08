@@ -16,7 +16,6 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.enablement.jdt.classpath.DriverClasspathContainer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -81,7 +80,7 @@ public final class DTPConnectionProfileFactory
 	}
 
 	private synchronized Iterable<IConnectionProfile> getDTPConnectionProfiles() {
-		return new ArrayIterable<IConnectionProfile>(this.dtpProfileManager.getProfiles());
+		return IterableTools.iterable(this.dtpProfileManager.getProfiles());
 	}
 
 

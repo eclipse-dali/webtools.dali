@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -40,7 +40,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -53,7 +53,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES, JPA.JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES, JPA.JOIN_COLUMN);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -66,7 +66,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -81,7 +81,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -94,7 +94,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -107,7 +107,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -120,7 +120,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -133,7 +133,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE, JPA.UNIQUE_CONSTRAINT);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -146,7 +146,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -159,7 +159,7 @@ public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.ASSOCIATION_OVERRIDES, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -246,6 +245,6 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected Iterable<Generator> getGenerators_() {
-		return new ArrayIterable<Generator>(this.sequenceGenerator, this.tableGenerator);
+		return IterableTools.<Generator>iterable(this.sequenceGenerator, this.tableGenerator);
 	}
 }

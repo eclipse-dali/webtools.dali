@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -33,7 +33,7 @@ public class EclipseLink1_1OrmPersistentTypeTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.COLUMN);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -61,7 +61,7 @@ public class EclipseLink1_1OrmPersistentTypeTests
 //		return this.createTestType(new DefaultAnnotationWriter() {
 //			@Override
 //			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
+//				return IteratorTools.iterator(JPA.ENTITY, JPA.BASIC, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
 //			}
 //			@Override
 //			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -87,7 +87,7 @@ public class EclipseLink1_1OrmPersistentTypeTests
 //		return this.createTestType(new DefaultAnnotationWriter() {
 //			@Override
 //			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
+//				return IteratorTools.iterator(JPA.ENTITY, JPA.BASIC, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
 //			}
 //			@Override
 //			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -108,7 +108,7 @@ public class EclipseLink1_1OrmPersistentTypeTests
 //		return this.createTestType(new DefaultAnnotationWriter() {
 //			@Override
 //			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JPA.ENTITY, JPA.ACCESS, JPA.ACCESS_TYPE);
+//				return IteratorTools.iterator(JPA.ENTITY, JPA.ACCESS, JPA.ACCESS_TYPE);
 //			}
 //			@Override
 //			public void appendTypeAnnotationTo(StringBuilder sb) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -29,7 +29,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		return createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.ONE_TO_ONE, JPA.MANY_TO_ONE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.ONE_TO_ONE, JPA.MANY_TO_ONE);
 			}
 			
 			@Override
@@ -43,7 +43,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA.TRANSIENT, JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA.TRANSIENT, JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -70,7 +70,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

@@ -43,28 +43,13 @@ public class LiveCloneListIterable<E>
 	private final List<? extends E> list;
 
 
-	// ********** constructors **********
-
-	/**
-	 * Construct a "live" list iterable for the specified list.
-	 * The {@link ListIterator} mutation operations will not be supported
-	 * by the list iterator returned by {@link #iterator()}.
-	 */
-	public LiveCloneListIterable(List<? extends E> list) {
-		super();
-		if (list == null) {
-			throw new NullPointerException();
-		}
-		this.list = list;
-	}
-
 	/**
 	 * Construct a "live" list iterable for the specified list.
 	 * The specified mutator will be used by any generated list iterators to
 	 * modify the original list.
 	 */
-	public LiveCloneListIterable(List<? extends E> list, CloneListIterator.Adapter<E> mutator) {
-		super(mutator);
+	public LiveCloneListIterable(List<? extends E> list, CloneListIterator.Adapter<E> adapter) {
+		super(adapter);
 		if (list == null) {
 			throw new NullPointerException();
 		}

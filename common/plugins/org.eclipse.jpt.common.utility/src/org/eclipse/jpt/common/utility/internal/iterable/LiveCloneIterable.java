@@ -44,21 +44,6 @@ public class LiveCloneIterable<E>
 	private final Collection<? extends E> collection;
 
 
-	// ********** constructors **********
-
-	/**
-	 * Construct a "live" iterable for the specified collection.
-	 * The {@link Iterator#remove()} operation will not be supported
-	 * by the iterator returned by {@link #iterator()}.
-	 */
-	public LiveCloneIterable(Collection<? extends E> collection) {
-		super();
-		if (collection == null) {
-			throw new NullPointerException();
-		}
-		this.collection = collection;
-	}
-
 	/**
 	 * Construct a "live" iterable for the specified collection.
 	 * The specified command will be used by any generated iterators to

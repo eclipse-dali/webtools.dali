@@ -24,7 +24,6 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -206,7 +205,7 @@ public class SimpleJavaResourceLocator
 	}
 
 	protected Iterable<IPackageFragmentRoot> getPackageFragmentRoots(IProject project) throws JavaModelException {
-		return new ArrayIterable<IPackageFragmentRoot>(this.getPackageFragmentRootsArray(project));
+		return IterableTools.iterable(this.getPackageFragmentRootsArray(project));
 	}
 
 	protected IPackageFragmentRoot[] getPackageFragmentRootsArray(IProject project) throws JavaModelException {

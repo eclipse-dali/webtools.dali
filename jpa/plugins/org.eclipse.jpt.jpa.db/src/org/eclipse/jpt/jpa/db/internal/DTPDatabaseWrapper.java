@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -155,11 +155,11 @@ final class DTPDatabaseWrapper
 	}
 
 	public Iterable<Catalog> getCatalogs() {
-		return new ArrayIterable<Catalog>(this.getCatalogArray());
+		return IterableTools.<Catalog>iterable(this.getCatalogArray());
 	}
 
 	private Iterable<DTPCatalogWrapper> getCatalogWrappers() {
-		return new ArrayIterable<DTPCatalogWrapper>(this.getCatalogArray());
+		return IterableTools.iterable(this.getCatalogArray());
 	}
 
 	private synchronized DTPCatalogWrapper[] getCatalogArray() {

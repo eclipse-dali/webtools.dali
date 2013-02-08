@@ -69,7 +69,6 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -1189,7 +1188,7 @@ public abstract class AbstractJpaProject
 		};
 
 	protected Iterable<IPackageFragmentRoot> getPackageFragmentRoots() throws JavaModelException {
-		return new ArrayIterable<IPackageFragmentRoot>(this.getJavaProject().getPackageFragmentRoots());
+		return IterableTools.iterable(this.getJavaProject().getPackageFragmentRoots());
 	}
 
 

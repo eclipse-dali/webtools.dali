@@ -23,7 +23,9 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -1337,7 +1339,7 @@ public final class ArrayTools {
 	 * Return an iterable corresponding to the specified array.
 	 */
 	public static <E> ArrayIterable<E> iterable(E[] array) {
-		return new ArrayIterable<E>(array);
+		return IterableTools.iterable(array);
 	}
 
 	/**
@@ -1346,7 +1348,7 @@ public final class ArrayTools {
 	 * the rest of the array.
 	 */
 	public static <E> ArrayIterable<E> iterable(E[] array, int start) {
-		return new ArrayIterable<E>(array, start);
+		return IterableTools.iterable(array, start);
 	}
 
 	/**
@@ -1355,7 +1357,7 @@ public final class ArrayTools {
 	 * the specified end index, exclusive.
 	 */
 	public static <E> ArrayIterable<E> iterable(E[] array, int start, int end) {
-		return new ArrayIterable<E>(array, start, end);
+		return IterableTools.iterable(array, start, end);
 	}
 
 
@@ -1365,7 +1367,7 @@ public final class ArrayTools {
 	 * Return an iterator corresponding to the specified array.
 	 */
 	public static <E> ArrayIterator<E> iterator(E[] array) {
-		return new ArrayIterator<E>(array);
+		return IteratorTools.iterator(array);
 	}
 
 	/**
@@ -1374,7 +1376,7 @@ public final class ArrayTools {
 	 * the rest of the array.
 	 */
 	public static <E> ArrayIterator<E> iterator(E[] array, int start) {
-		return new ArrayIterator<E>(array, start);
+		return IteratorTools.iterator(array, start);
 	}
 
 	/**
@@ -1383,7 +1385,7 @@ public final class ArrayTools {
 	 * the specified end index, exclusive.
 	 */
 	public static <E> ArrayIterator<E> iterator(E[] array, int start, int end) {
-		return new ArrayIterator<E>(array, start, end);
+		return IteratorTools.iterator(array, start, end);
 	}
 
 

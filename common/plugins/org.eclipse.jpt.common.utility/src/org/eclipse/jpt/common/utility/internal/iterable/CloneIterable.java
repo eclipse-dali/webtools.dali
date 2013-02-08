@@ -25,12 +25,6 @@ public abstract class CloneIterable<E>
 	final ParameterizedCommand<? super E> removeCommand;
 
 
-	// ********** constructors **********
-
-	protected CloneIterable() {
-		this(ParameterizedCommand.Disabled.<E>instance());
-	}
-
 	protected CloneIterable(ParameterizedCommand<? super E> removeCommand) {
 		super();
 		if (removeCommand == null) {

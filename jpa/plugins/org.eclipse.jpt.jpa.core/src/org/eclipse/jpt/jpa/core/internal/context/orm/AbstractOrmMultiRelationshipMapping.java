@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -121,7 +120,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		OrmBaseEnumeratedConverter.MapKeyAdapter.instance(),
 		OrmBaseTemporalConverter.MapKeyAdapter.instance()
 	};
-	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
+	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);

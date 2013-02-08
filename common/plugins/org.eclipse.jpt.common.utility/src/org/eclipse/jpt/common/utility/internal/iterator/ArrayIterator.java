@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,22 +30,6 @@ public class ArrayIterator<E>
 	/* private-protected */ int cursor;
 	private final int max;
 
-
-	/**
-	 * Construct an iterator for the specified array.
-	 */
-	public ArrayIterator(E... array) {
-		this(array, 0);
-	}
-
-	/**
-	 * Construct an iterator for the specified array,
-	 * starting at the specified start index and continuing for
-	 * the rest of the array.
-	 */
-	public ArrayIterator(E[] array, int start) {
-		this(array, start, array.length);
-	}
 
 	/**
 	 * Construct an iterator for the specified array,

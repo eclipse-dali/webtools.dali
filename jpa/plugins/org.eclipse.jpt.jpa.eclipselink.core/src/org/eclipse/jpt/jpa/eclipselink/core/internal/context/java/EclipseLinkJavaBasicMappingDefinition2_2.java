@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
@@ -57,7 +56,7 @@ public class EclipseLinkJavaBasicMappingDefinition2_2
 		EclipseLink.STRUCT_CONVERTERS,
 		EclipseLink.TYPE_CONVERTERS,
 	};
-	public static final Iterable<String> ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	public static final Iterable<String> ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(ECLIPSE_LINK2_2_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	@SuppressWarnings("unchecked")
 	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = IterableTools.concatenate(

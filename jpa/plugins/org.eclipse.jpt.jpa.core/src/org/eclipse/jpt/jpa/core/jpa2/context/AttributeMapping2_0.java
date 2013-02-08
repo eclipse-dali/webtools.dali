@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 
 /**
@@ -41,5 +41,5 @@ public interface AttributeMapping2_0
 
 	@SuppressWarnings("nls")
 	Iterable<String> STANDARD_METAMODEL_FIELD_MODIFIERS =
-		new ArrayIterable<String>(new String[] { "public", "static", "volatile" });
+		IterableTools.iterable(new String[] { "public", "static", "volatile" });
 }

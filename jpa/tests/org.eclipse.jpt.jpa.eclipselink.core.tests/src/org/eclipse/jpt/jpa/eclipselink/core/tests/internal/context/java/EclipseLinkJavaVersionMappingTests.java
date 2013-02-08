@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
@@ -37,7 +37,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.VERSION);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -56,7 +56,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, EclipseLink.CONVERT);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.VERSION, EclipseLink.CONVERT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -75,7 +75,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, EclipseLink.MUTABLE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.VERSION, EclipseLink.MUTABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -94,7 +94,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, EclipseLink.MUTABLE, "java.util.Date");
+				return IteratorTools.iterator(JPA.ENTITY, JPA.VERSION, EclipseLink.MUTABLE, "java.util.Date");
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

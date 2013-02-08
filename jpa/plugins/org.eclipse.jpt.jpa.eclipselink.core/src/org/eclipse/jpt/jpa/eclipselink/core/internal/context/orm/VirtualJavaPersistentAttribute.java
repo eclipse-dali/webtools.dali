@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -328,7 +328,7 @@ public class VirtualJavaPersistentAttribute
 		new MapJpaContainerDefinition(java.util.Map.class, JPA2_0.MAP_ATTRIBUTE)
 	};
 
-	protected static final Iterable<JpaContainerDefinition> JPA_CONTAINER_DEFINITIONS = new ArrayIterable<JpaContainerDefinition>(JPA_CONTAINER_DEFINITION_ARRAY);
+	protected static final Iterable<JpaContainerDefinition> JPA_CONTAINER_DEFINITIONS = IterableTools.iterable(JPA_CONTAINER_DEFINITION_ARRAY);
 
 
 	/**

@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 
@@ -29,7 +29,7 @@ public class XmlEnumAnnotationTests extends JaxbJavaResourceModelTestCase {
 		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_ENUM);
+				return IteratorTools.iterator(JAXB.XML_ENUM);
 			}
 			@Override
 			public void appendEnumAnnotationTo(StringBuilder sb) {
@@ -42,7 +42,7 @@ public class XmlEnumAnnotationTests extends JaxbJavaResourceModelTestCase {
 		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_ENUM);
+				return IteratorTools.iterator(JAXB.XML_ENUM);
 			}
 			@Override
 			public void appendEnumAnnotationTo(StringBuilder sb) {

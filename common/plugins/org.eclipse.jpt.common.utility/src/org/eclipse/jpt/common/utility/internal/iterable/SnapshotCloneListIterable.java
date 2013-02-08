@@ -47,25 +47,13 @@ public class SnapshotCloneListIterable<E>
 	private final Object[] array;
 
 
-	// ********** constructors **********
-
-	/**
-	 * Construct a "snapshot" list iterable for the specified list.
-	 * The {@link ListIterator} modify operations will not be supported
-	 * by the list iterator returned by {@link #iterator()}.
-	 */
-	public SnapshotCloneListIterable(List<? extends E> list) {
-		super();
-		this.array = list.toArray();
-	}
-
 	/**
 	 * Construct a "snapshot" list iterable for the specified list.
 	 * The specified mutator will be used by any generated list iterators to
 	 * modify the original list.
 	 */
-	public SnapshotCloneListIterable(List<? extends E> list, CloneListIterator.Adapter<E> mutator) {
-		super(mutator);
+	public SnapshotCloneListIterable(List<? extends E> list, CloneListIterator.Adapter<E> adapter) {
+		super(adapter);
 		this.array = list.toArray();
 	}
 

@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
@@ -209,7 +208,7 @@ public final class JDTTools {
 	}
 
 	private static Iterable<IPackageFragmentRoot> getPackageFragmentRoots_(IJavaProject javaProject) throws JavaModelException {
-		return new ArrayIterable<IPackageFragmentRoot>(javaProject.getPackageFragmentRoots());
+		return IterableTools.iterable(javaProject.getPackageFragmentRoots());
 	}
 
 	public static boolean typeIsEnum(IType type) {

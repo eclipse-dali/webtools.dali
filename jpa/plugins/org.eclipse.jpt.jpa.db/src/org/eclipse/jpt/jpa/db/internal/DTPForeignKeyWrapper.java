@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.NOTFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -87,7 +86,7 @@ final class DTPForeignKeyWrapper
 	// ***** column pairs
 
 	public Iterable<ColumnPair> getColumnPairs() {
-		return new ArrayIterable<ColumnPair>(this.getColumnPairArray());
+		return IterableTools.<ColumnPair>iterable(this.getColumnPairArray());
 	}
 
 	public LocalColumnPair getColumnPair() {
@@ -99,7 +98,7 @@ final class DTPForeignKeyWrapper
 	}
 
 	private Iterable<LocalColumnPair> getLocalColumnPairs() {
-		return new ArrayIterable<LocalColumnPair>(this.getColumnPairArray());
+		return IterableTools.iterable(this.getColumnPairArray());
 	}
 
 	private synchronized LocalColumnPair[] getColumnPairArray() {

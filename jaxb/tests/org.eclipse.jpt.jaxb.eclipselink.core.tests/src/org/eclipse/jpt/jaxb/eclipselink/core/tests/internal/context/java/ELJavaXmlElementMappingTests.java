@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
@@ -47,7 +47,7 @@ public class ELJavaXmlElementMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT);
+				return IteratorTools.iterator(JAXB.XML_TYPE, JAXB.XML_ELEMENT);
 			}
 			
 			@Override
@@ -66,7 +66,7 @@ public class ELJavaXmlElementMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, ELJaxb.XML_PATH);
+				return IteratorTools.iterator(JAXB.XML_TYPE, ELJaxb.XML_PATH);
 			}
 			
 			@Override

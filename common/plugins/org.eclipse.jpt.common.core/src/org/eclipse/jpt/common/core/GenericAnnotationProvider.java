@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
@@ -54,7 +53,7 @@ public final class GenericAnnotationProvider
 	
 	
 	protected Iterable<AnnotationDefinition> getAnnotationDefinitions() {
-		return new ArrayIterable<AnnotationDefinition>(this.annotationDefinitions);
+		return IterableTools.iterable(this.annotationDefinitions);
 	}
 	
 	protected AnnotationDefinition getAnnotationDefinition(String annotationName) {
@@ -95,7 +94,7 @@ public final class GenericAnnotationProvider
 	}
 
 	protected Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions() {
-		return new ArrayIterable<NestableAnnotationDefinition>(this.nestableAnnotationDefinitions);
+		return IterableTools.iterable(this.nestableAnnotationDefinitions);
 	}
 
 	protected NestableAnnotationDefinition getNestableAnnotationDefinition(String annotationName) {

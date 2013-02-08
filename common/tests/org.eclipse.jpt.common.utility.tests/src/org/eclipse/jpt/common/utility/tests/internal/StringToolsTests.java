@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
 public class StringToolsTests
@@ -717,7 +717,7 @@ public class StringToolsTests
 	
 	public void testConcatenate() throws Exception {
 		String[] array = new String[0];
-		Iterable<String> iterable = new ArrayIterable<String>(array);
+		Iterable<String> iterable = IterableTools.iterable(array);
 		
 		String result = "";
 		
@@ -740,7 +740,7 @@ public class StringToolsTests
 		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
 		
 		array = new String[] {"foo", "bar", "baz"};
-		iterable = new ArrayIterable<String>(array);
+		iterable = IterableTools.iterable(array);
 		
 		result = "foobarbaz";
 		

@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -475,7 +474,7 @@ public abstract class AbstractPrimaryKeyValidator
 		MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY
 	};
 	
-	protected static final Iterable<String> ID_MAPPING_KEYS = new ArrayIterable<String>(ID_MAPPING_KEYS_ARRAY);
+	protected static final Iterable<String> ID_MAPPING_KEYS = IterableTools.iterable(ID_MAPPING_KEYS_ARRAY);
 
 	protected Iterable<String> getSingleRelationshipMappingKeys() {
 		return SINGLE_RELATIONSHIP_MAPPING_KEYS;
@@ -486,7 +485,7 @@ public abstract class AbstractPrimaryKeyValidator
 		MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY
 	};
 	
-	protected static final Iterable<String> SINGLE_RELATIONSHIP_MAPPING_KEYS = new ArrayIterable<String>(SINGLE_RELATIONSHIP_MAPPING_KEYS_ARRAY);
+	protected static final Iterable<String> SINGLE_RELATIONSHIP_MAPPING_KEYS = IterableTools.iterable(SINGLE_RELATIONSHIP_MAPPING_KEYS_ARRAY);
 
 	
 	// **************** id class **********************************************

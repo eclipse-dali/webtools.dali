@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
@@ -35,7 +35,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -48,7 +48,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -61,7 +61,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -73,7 +73,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -87,7 +87,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES, JPA.UNIQUE_CONSTRAINT);
+				return IteratorTools.iterator(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -100,7 +100,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.UNIQUE_CONSTRAINT);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -115,7 +115,7 @@ public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLES, JPA.SECONDARY_TABLE, JPA.PRIMARY_KEY_JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.SECONDARY_TABLES, JPA.SECONDARY_TABLE, JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

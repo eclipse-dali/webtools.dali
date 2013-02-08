@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
@@ -83,7 +83,7 @@ public class GenericJavaClassMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ACCESS_TYPE, JAXB.XML_ACCESSOR_TYPE);
+				return IteratorTools.iterator(JAXB.XML_TYPE, JAXB.XML_ACCESS_TYPE, JAXB.XML_ACCESSOR_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -97,7 +97,7 @@ public class GenericJavaClassMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ACCESS_ORDER, JAXB.XML_ACCESSOR_ORDER);
+				return IteratorTools.iterator(JAXB.XML_TYPE, JAXB.XML_ACCESS_ORDER, JAXB.XML_ACCESSOR_ORDER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

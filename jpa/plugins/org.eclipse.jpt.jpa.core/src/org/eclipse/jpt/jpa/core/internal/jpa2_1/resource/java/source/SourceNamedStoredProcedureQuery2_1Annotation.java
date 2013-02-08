@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryHintAnnotation;
@@ -247,7 +247,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 
 	// ***** result classes
 	public ListIterable<String> getResultClasses() {
-		return new LiveCloneListIterable<String>(this.resultClasses);
+		return IterableTools.cloneLive(this.resultClasses);
 	}
 
 	public int getResultClassesSize() {
@@ -317,7 +317,7 @@ public final class SourceNamedStoredProcedureQuery2_1Annotation
 
 	// ***** result set mappings
 	public ListIterable<String> getResultSetMappings() {
-		return new LiveCloneListIterable<String>(this.resultSetMappings);
+		return IterableTools.cloneLive(this.resultSetMappings);
 	}
 
 	public int getResultSetMappingsSize() {

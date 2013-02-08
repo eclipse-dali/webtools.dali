@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,8 @@
 package org.eclipse.jpt.common.utility.model.event;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -93,14 +92,14 @@ public final class ListReplaceEvent extends ListEvent {
 	 * Return the new items that replaced the old items in the list.
 	 */
 	public Iterable<?> getNewItems() {
-		return new ArrayIterable<Object>(this.newItems);
+		return IterableTools.iterable(this.newItems);
 	}
 
 	/**
 	 * Return the old items that were replaced by the new items in the list.
 	 */
 	public Iterable<?> getOldItems() {
-		return new ArrayIterable<Object>(this.oldItems);
+		return IterableTools.iterable(this.oldItems);
 	}
 
 	/**

@@ -455,7 +455,7 @@ public final class IterableTools {
 	 * @see LiveCloneIterable
 	 */
 	public static <E> LiveCloneIterable<E> cloneLive(Collection<? extends E> collection) {
-		return new LiveCloneIterable<E>(collection);
+		return cloneLive(collection, ParameterizedCommand.Disabled.instance());
 	}
 
 	/**
@@ -473,7 +473,7 @@ public final class IterableTools {
 	 * @see LiveCloneListIterable
 	 */
 	public static <E> LiveCloneListIterable<E> cloneLive(List<? extends E> list) {
-		return new LiveCloneListIterable<E>(list);
+		return cloneLive(list, CloneListIterator.Adapter.ReadOnly.<E>instance());
 	}
 
 	/**
@@ -491,7 +491,7 @@ public final class IterableTools {
 	 * @see SnapshotCloneIterable
 	 */
 	public static <E> SnapshotCloneIterable<E> cloneSnapshot(Collection<? extends E> collection) {
-		return new SnapshotCloneIterable<E>(collection);
+		return cloneSnapshot(collection, ParameterizedCommand.Disabled.instance());
 	}
 
 	/**
@@ -509,7 +509,7 @@ public final class IterableTools {
 	 * @see SnapshotCloneListIterable
 	 */
 	public static <E> SnapshotCloneListIterable<E> cloneSnapshot(List<? extends E> list) {
-		return new SnapshotCloneListIterable<E>(list);
+		return cloneSnapshot(list, CloneListIterator.Adapter.ReadOnly.<E>instance());
 	}
 
 	/**

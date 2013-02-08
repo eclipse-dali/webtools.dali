@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
@@ -34,7 +34,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.JOIN_TABLE);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -47,7 +47,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.JOIN_TABLE);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -60,7 +60,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.JOIN_TABLE);
 			}
 			
 			@Override
@@ -74,7 +74,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE);
+				return IteratorTools.iterator(JPA.JOIN_TABLE);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -87,7 +87,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.UNIQUE_CONSTRAINT);
+				return IteratorTools.iterator(JPA.JOIN_TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -100,7 +100,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -113,7 +113,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
+				return IteratorTools.iterator(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
@@ -31,7 +31,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE, EclipseLink.CACHE_TYPE);
+				return IteratorTools.iterator(EclipseLink.CACHE, EclipseLink.CACHE_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -44,7 +44,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE, EclipseLink.CACHE_TYPE);
+				return IteratorTools.iterator(EclipseLink.CACHE, EclipseLink.CACHE_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -57,7 +57,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE);
+				return IteratorTools.iterator(EclipseLink.CACHE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -70,7 +70,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE);
+				return IteratorTools.iterator(EclipseLink.CACHE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -83,7 +83,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE, EclipseLink.TIME_OF_DAY);
+				return IteratorTools.iterator(EclipseLink.CACHE, EclipseLink.TIME_OF_DAY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -96,7 +96,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE);
+				return IteratorTools.iterator(EclipseLink.CACHE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -109,7 +109,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE);
+				return IteratorTools.iterator(EclipseLink.CACHE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -122,7 +122,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE);
+				return IteratorTools.iterator(EclipseLink.CACHE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -135,7 +135,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE);
+				return IteratorTools.iterator(EclipseLink.CACHE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -148,7 +148,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE, EclipseLink.CACHE_COORDINATION_TYPE);
+				return IteratorTools.iterator(EclipseLink.CACHE, EclipseLink.CACHE_COORDINATION_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -161,7 +161,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLink.CACHE, EclipseLink.CACHE_ISOLATION_TYPE);
+				return IteratorTools.iterator(EclipseLink.CACHE, EclipseLink.CACHE_ISOLATION_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

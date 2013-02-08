@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode2_1;
@@ -31,7 +31,7 @@ public class StoredProcedureParameter2_1AnnotationTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA2_1.NAMED_STORED_PROCEDURE_QUERY, JPA2_1.NAMED_STORED_PROCEDURE_PARAMETER, JPA2_1.PARAMETER_MODE);
+				return IteratorTools.iterator(JPA2_1.NAMED_STORED_PROCEDURE_QUERY, JPA2_1.NAMED_STORED_PROCEDURE_PARAMETER, JPA2_1.PARAMETER_MODE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
@@ -301,7 +300,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY
 	};
 	
-	protected static final Iterable<String> ID_MAPPING_KEYS = new ArrayIterable<String>(ID_MAPPING_KEYS_ARRAY);
+	protected static final Iterable<String> ID_MAPPING_KEYS = IterableTools.iterable(ID_MAPPING_KEYS_ARRAY);
 
 
 	// ********** validation **********

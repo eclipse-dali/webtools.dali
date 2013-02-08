@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -39,7 +39,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ONE_TO_MANY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -57,7 +57,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLink.PRIVATE_OWNED);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLink.PRIVATE_OWNED);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -76,7 +76,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLink.JOIN_FETCH);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLink.JOIN_FETCH);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -95,7 +95,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return IteratorTools.iterator(JPA.ENTITY);
 			}
 			
 			@Override

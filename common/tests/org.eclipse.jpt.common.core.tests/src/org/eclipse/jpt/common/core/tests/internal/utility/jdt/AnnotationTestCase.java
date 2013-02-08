@@ -51,7 +51,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -146,7 +146,7 @@ public abstract class AnnotationTestCase
 				new DefaultAnnotationWriter() {
 					@Override
 					public Iterator<String> imports() {
-						return new ArrayIterator<String>(imports);
+						return IteratorTools.iterator(imports);
 					}
 					
 					@Override

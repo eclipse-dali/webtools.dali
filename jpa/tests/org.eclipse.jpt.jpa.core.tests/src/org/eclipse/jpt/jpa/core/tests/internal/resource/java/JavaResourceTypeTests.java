@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceEmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceEntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
@@ -42,7 +42,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return IteratorTools.iterator(JPA.ENTITY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -55,7 +55,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>("javax.persistence.Foo");
+				return IteratorTools.iterator("javax.persistence.Foo");
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -73,7 +73,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.EMBEDDABLE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.EMBEDDABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -94,7 +94,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return IteratorTools.iterator(JPA.ENTITY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -108,7 +108,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.EMBEDDABLE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.EMBEDDABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -124,7 +124,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 //		return this.createTestType(new DefaultAnnotationWriter() {
 //			@Override
 //			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JPA.ENTITY + i);
+//				return IteratorTools.iterator(JPA.ENTITY + i);
 //			}
 //			@Override
 //			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -170,7 +170,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.TABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -188,7 +188,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 //		return this.createTestType(new DefaultAnnotationWriter() {
 //			@Override
 //			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE, JPA.ID_CLASS);
+//				return IteratorTools.iterator(JPA.ENTITY, JPA.TABLE, JPA.ID_CLASS);
 //			}
 //			@Override
 //			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -206,7 +206,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.TABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -223,7 +223,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.SECONDARY_TABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -237,7 +237,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -252,7 +252,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -267,7 +267,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -282,7 +282,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return IteratorTools.iterator(JPA.ENTITY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

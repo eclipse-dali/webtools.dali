@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * An <code>ArrayIterable</code> provides an {@link Iterable}
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
  * 
  * @param <E> the type of elements returned by the iterable's iterator
  * 
- * @see ArrayIterator
+ * @see org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator
  * @see ArrayListIterable
  */
 public class ArrayIterable<E>
@@ -28,22 +28,6 @@ public class ArrayIterable<E>
 	final E[] array;
 	final int start;
 	final int end;
-
-	/**
-	 * Construct an iterable for the specified array.
-	 */
-	public ArrayIterable(E... array) {
-		this(array, 0);
-	}
-
-	/**
-	 * Construct an iterable for the specified array,
-	 * starting at the specified start index and continuing for
-	 * the rest of the array.
-	 */
-	public ArrayIterable(E[] array, int start) {
-		this(array, start, array.length);
-	}
 
 	/**
 	 * Construct an iterable for the specified array,
@@ -64,7 +48,7 @@ public class ArrayIterable<E>
 	}
 
 	public Iterator<E> iterator() {
-		return new ArrayIterator<E>(this.array, this.start, this.end);
+		return IteratorTools.iterator(this.array, this.start, this.end);
 	}
 
 	@Override

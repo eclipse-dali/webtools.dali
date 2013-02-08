@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
@@ -51,11 +51,11 @@ final class DTPTableWrapper
 	// ********** columns **********
 
 	public Iterable<Column> getColumns() {
-		return new ArrayIterable<Column>(this.getColumnArray());
+		return IterableTools.<Column>iterable(this.getColumnArray());
 	}
 
 	private Iterable<DTPColumnWrapper> getColumnWrappers() {
-		return new ArrayIterable<DTPColumnWrapper>(this.getColumnArray());
+		return IterableTools.iterable(this.getColumnArray());
 	}
 
 	private synchronized DTPColumnWrapper[] getColumnArray() {
@@ -123,7 +123,7 @@ final class DTPTableWrapper
 	// ********** primary key columns **********
 
 	public Iterable<Column> getPrimaryKeyColumns() {
-		return new ArrayIterable<Column>(this.getPrimaryKeyColumnArray());
+		return IterableTools.<Column>iterable(this.getPrimaryKeyColumnArray());
 	}
 
 	public DTPColumnWrapper getPrimaryKeyColumn() {
@@ -176,7 +176,7 @@ final class DTPTableWrapper
 	// ********** foreign keys **********
 
 	public Iterable<ForeignKey> getForeignKeys() {
-		return new ArrayIterable<ForeignKey>(this.getForeignKeyArray());
+		return IterableTools.<ForeignKey>iterable(this.getForeignKeyArray());
 	}
 
 	private synchronized DTPForeignKeyWrapper[] getForeignKeyArray() {

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 
@@ -32,7 +32,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.NAMED_QUERIES, JPA.NAMED_QUERY);
+				return IteratorTools.iterator(JPA.NAMED_QUERIES, JPA.NAMED_QUERY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -53,7 +53,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.NAMED_QUERIES, JPA.NAMED_QUERY);
+				return IteratorTools.iterator(JPA.NAMED_QUERIES, JPA.NAMED_QUERY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -66,7 +66,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.QUERY_HINT);
+				return IteratorTools.iterator(JPA.NAMED_QUERIES, JPA.NAMED_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -80,7 +80,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.NAMED_QUERY, JPA.QUERY_HINT);
+				return IteratorTools.iterator(JPA.NAMED_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

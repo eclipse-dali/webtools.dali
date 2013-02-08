@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
@@ -43,7 +43,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS);
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -74,7 +74,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, EclipseLink.READ_ONLY);
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS, EclipseLink.READ_ONLY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -88,7 +88,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, EclipseLink.CUSTOMIZER);
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS, EclipseLink.CUSTOMIZER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -102,7 +102,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, EclipseLink.CHANGE_TRACKING);
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS, EclipseLink.CHANGE_TRACKING);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
