@@ -262,7 +262,7 @@ public class GenericJavaEnumMappingTests
 		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(JAXB.XML_ENUM);
 		assertEquals("Integer", xmlEnumAnnotation.getValue());
 		assertEquals("Integer", enumMapping.getSpecifiedValue());
-		assertEquals("Integer", enumMapping.getValue());
+		assertEquals("java.lang.Integer", enumMapping.getValue());
 		
 		enumMapping.setSpecifiedValue(null);
 		xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(JAXB.XML_ENUM);
@@ -295,7 +295,7 @@ public class GenericJavaEnumMappingTests
 					}
 				});
 		assertEquals("String", enumMapping.getSpecifiedValue());
-		assertEquals("String", enumMapping.getValue());
+		assertEquals("java.lang.String", enumMapping.getValue());
 		
 		//remove the factoryClass member value pair
 		annotatedElement.edit(new Member.Editor() {
