@@ -180,7 +180,7 @@ public abstract class AbstractOxmTypeMapping
 			setJavaType(null);
 		}
 		else {
-			JavaResourceType resourceType = this.resolveJavaResourceType();
+			JavaResourceAbstractType resourceType = this.resolveJavaResourceType();
 			if (resourceType != null) {
 				if (this.javaType == null 
 						// using == here because it is possible that the names are the same, but the location has changed
@@ -200,14 +200,14 @@ public abstract class AbstractOxmTypeMapping
 	
 	protected abstract JavaType buildJavaType(JavaResourceAbstractType resourceType);
 	
-	protected JavaResourceType resolveJavaResourceType() {
+	protected JavaResourceAbstractType resolveJavaResourceType() {
 		String fqName = getTypeName().getFullyQualifiedName();
 		if (StringTools.isBlank(fqName)) {
 			return null;
 		}
 		// return type whether it's a class, interface, or enum. 
 		// building javaType will resolve problem if there is one.
-		return (JavaResourceType) getJaxbProject().getJavaResourceType(fqName);
+		return (JavaResourceAbstractType) getJaxbProject().getJavaResourceType(fqName);
 	}
 	
 	public JavaTypeMapping getJavaTypeMapping() {

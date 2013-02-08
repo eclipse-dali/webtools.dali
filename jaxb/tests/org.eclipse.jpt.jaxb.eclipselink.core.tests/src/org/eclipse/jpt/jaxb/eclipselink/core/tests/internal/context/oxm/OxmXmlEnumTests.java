@@ -1,6 +1,8 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.oxm;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
+import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
@@ -31,7 +33,7 @@ public class OxmXmlEnumTests
 		addOxmFile(fileName, sb);
 	}
 	
-	public void testUpdateXmlEnum() throws Exception {
+	public void testUpdateName() throws Exception {
 		addOxmFile("oxm.xml", "test.oxm", "Foo");
 		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
 		OxmFile oxmFile = root.getOxmFile("test.oxm");
@@ -145,5 +147,92 @@ public class OxmXmlEnumTests
 		assertEquals("Foo", xmlEnum.getSpecifiedJavaEnum());
 		assertEquals("test.oxm2.Foo", xmlEnum.getTypeName().getFullyQualifiedName());
 		assertEquals("Foo", xmlEnum.getTypeName().getSimpleName());
+	}
+	
+	public void testUpdateValue() throws Exception {
+		createEnumWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmXmlEnum xmlEnum = xmlBindings.getXmlEnum(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EXmlEnum eXmlEnum = eXmlBindings.getXmlEnums().get(0);
+		JavaEnumMapping javaEnumMapping = ((JavaEnum) xmlEnum.getJavaType()).getMapping();
+		
+		assertNull(eXmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getDefaultValue());
+		assertNull(xmlEnum.getSpecifiedValue());
+		
+		javaEnumMapping.setSpecifiedValue("java.util.Date");
+		
+		assertNull(eXmlEnum.getValue());
+		assertEquals("java.util.Date", xmlEnum.getValue());
+		assertEquals("java.util.Date", xmlEnum.getDefaultValue());
+		assertNull(xmlEnum.getSpecifiedValue());
+		
+		xmlBindings.setXmlMappingMetadataComplete(true);
+		oxmResource.save();
+		
+		assertNull(eXmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getDefaultValue());
+		assertNull(xmlEnum.getSpecifiedValue());
+		
+		javaEnumMapping.setSpecifiedValue(null);
+		xmlBindings.setXmlMappingMetadataComplete(false);
+		eXmlEnum.setValue("java.lang.Integer");
+		oxmResource.save();
+		
+		assertEquals("java.lang.Integer", eXmlEnum.getValue());
+		assertEquals("java.lang.Integer", xmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getDefaultValue());
+		assertEquals("java.lang.Integer", xmlEnum.getSpecifiedValue());
+		
+		eXmlEnum.setValue(null);
+		oxmResource.save();
+		
+		assertNull(eXmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getValue());
+		assertEquals("java.lang.String", xmlEnum.getDefaultValue());
+		assertNull(xmlEnum.getSpecifiedValue());
+	}
+	
+	public void testModifyValue() throws Exception {
+		createEnumWithXmlType();
+		addOxmFile("oxm.xml", PACKAGE_NAME, TYPE_NAME);
+		ELJaxbContextRoot root = (ELJaxbContextRoot) getJaxbProject().getContextRoot();
+		OxmFile oxmFile = root.getOxmFile(PACKAGE_NAME);
+		OxmXmlBindings xmlBindings = oxmFile.getXmlBindings();
+		OxmXmlEnum xmlEnum = xmlBindings.getXmlEnum(0);
+		JptXmlResource oxmResource = oxmFile.getOxmResource();
+		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
+		EXmlEnum eXmlEnum = eXmlBindings.getXmlEnums().get(0);
+		
+		assertNull(eXmlEnum.getValue());
+		assertNull(xmlEnum.getSpecifiedValue());
+		
+		xmlEnum.setSpecifiedValue("java.util.Date");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "value=\"java.util.Date\"", true);
+		assertEquals("java.util.Date", eXmlEnum.getValue());
+		assertEquals("java.util.Date", xmlEnum.getSpecifiedValue());
+		
+		xmlEnum.setSpecifiedValue("java.lang.Integer");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "value=\"java.lang.Integer\"", true);
+		assertEquals("java.lang.Integer", eXmlEnum.getValue());
+		assertEquals("java.lang.Integer", xmlEnum.getSpecifiedValue());
+		
+		xmlEnum.setSpecifiedValue(null);
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "value", false);
+		assertNull(eXmlEnum.getValue());
+		assertNull(xmlEnum.getSpecifiedValue());
 	}
 }
