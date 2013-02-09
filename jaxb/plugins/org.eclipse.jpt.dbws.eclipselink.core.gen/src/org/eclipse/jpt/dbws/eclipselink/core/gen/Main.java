@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.dbws.eclipselink.core.gen;
 
 import static java.util.logging.Level.INFO;
@@ -18,7 +18,6 @@ import java.util.logging.Level;
 
 import javax.wsdl.WSDLException;
 
-import org.eclipse.jpt.dbws.eclipselink.core.gen.internal.JptDbwsCoreMessages;
 import org.eclipse.jpt.dbws.eclipselink.core.gen.internal.Tools;
 import org.eclipse.persistence.oxm.XMLContext;
 import org.eclipse.persistence.oxm.XMLUnmarshaller;
@@ -71,7 +70,7 @@ public class Main
 
     	DBWSBuilderModel model = this.buildBuilderModel(this.builderFile);
 		if(model == null) {
-			this.logMessage(INFO, JptDbwsCoreMessages.NO_GENERATION_PERFORMED);
+			this.logMessage(INFO, JptDbwsEclipseLinkCoreGenMessages.NO_GENERATION_PERFORMED);
 			this.generationFailed();
 		}
 
@@ -91,16 +90,16 @@ public class Main
 			builder.start();
 		}
 		catch(WSDLException e) {
-			this.logMessage(SEVERE, JptDbwsCoreMessages.WSDL_EXCEPTION, e.getMessage());
+			this.logMessage(SEVERE, JptDbwsEclipseLinkCoreGenMessages.WSDL_EXCEPTION, e.getMessage());
 			this.generationFailed();
 		}
 		catch(Exception e) {
 			//TODO Clean-up Stage dir. ?
-			this.logMessage(SEVERE, JptDbwsCoreMessages.GENERATION_FAILED, e.getMessage());
+			this.logMessage(SEVERE, JptDbwsEclipseLinkCoreGenMessages.GENERATION_FAILED, e.getMessage());
 			e.printStackTrace();
 			this.generationFailed();
 		}
-		this.logMessage(INFO, JptDbwsCoreMessages.GENERATION_COMPLETED);
+		this.logMessage(INFO, JptDbwsEclipseLinkCoreGenMessages.GENERATION_COMPLETED);
         return;
 
 	}
@@ -140,7 +139,7 @@ public class Main
         
         DBWSBuilderModel model = (DBWSBuilderModel)unmarshaller.unmarshal(builderFile);
         if(model.properties.size() == 0) {
-        	this.logMessage(SEVERE, JptDbwsCoreMessages.NO_OPERATIONS_SPECIFIED);
+        	this.logMessage(SEVERE, JptDbwsEclipseLinkCoreGenMessages.NO_OPERATIONS_SPECIFIED);
             return null;
         }
         return model;
@@ -151,7 +150,7 @@ public class Main
         File builderFile = new File(builderFileName);
         if( ! (builderFile.exists() && builderFile.isFile())) {
         	this.logMessage(SEVERE, 
-        		JptDbwsCoreMessages.UNABLE_TO_LOCATE_BUILDER_XML, builderFileName);
+        		JptDbwsEclipseLinkCoreGenMessages.UNABLE_TO_LOCATE_BUILDER_XML, builderFileName);
         	return null;
         }
         return builderFile;
@@ -179,7 +178,7 @@ public class Main
 			Class.forName(jdbcDriverName);
 		}
 		catch (ClassNotFoundException cnfe) {
-			this.logMessage(SEVERE, JptDbwsCoreMessages.DRIVER_NOT_ON_CLASSPATH, jdbcDriverName);
+			this.logMessage(SEVERE, JptDbwsEclipseLinkCoreGenMessages.DRIVER_NOT_ON_CLASSPATH, jdbcDriverName);
 			return false;
 		}
 		return true;
