@@ -82,7 +82,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedStoredProcedureQuery_2_1> namedStoredProcedureQueries;
+	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
 
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
@@ -307,7 +307,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 
 	/**
 	 * Returns the value of the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Stored Procedure Queries</em>' containment reference list isn't clear,
@@ -319,11 +319,11 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedStoredProcedureQuery_2_1> getNamedStoredProcedureQueries()
+	public EList<XmlNamedStoredProcedureQuery> getNamedStoredProcedureQueries()
 	{
 		if (namedStoredProcedureQueries == null)
 		{
-			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery_2_1>(XmlNamedStoredProcedureQuery_2_1.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES);
+			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery>(XmlNamedStoredProcedureQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES);
 		}
 		return namedStoredProcedureQueries;
 	}
@@ -865,7 +865,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		{
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES:
 				getNamedStoredProcedureQueries().clear();
-				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery_2_1>)newValue);
+				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();

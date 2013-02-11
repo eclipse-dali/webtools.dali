@@ -762,7 +762,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlQueryContainer_2_1" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredProcedureQueries"
-          upperBound="-1" eType="#//v2_1/XmlNamedStoredProcedureQuery_2_1" containment="true"
+          upperBound="-1" eType="#//XmlNamedStoredProcedureQuery" containment="true"
           resolveProxies="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlSecondaryTable_2_1" abstract="true"

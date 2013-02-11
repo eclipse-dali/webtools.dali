@@ -3290,7 +3290,7 @@ public class OrmV2_1Package extends EPackageImpl
 		initEReference(getXmlOneToOne_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlQueryContainer_2_1EClass, XmlQueryContainer_2_1.class, "XmlQueryContainer_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlQueryContainer_2_1_NamedStoredProcedureQueries(), this.getXmlNamedStoredProcedureQuery_2_1(), null, "namedStoredProcedureQueries", null, 0, -1, XmlQueryContainer_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlQueryContainer_2_1_NamedStoredProcedureQueries(), theOrmPackage.getXmlNamedStoredProcedureQuery(), null, "namedStoredProcedureQueries", null, 0, -1, XmlQueryContainer_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlSecondaryTable_2_1EClass, XmlSecondaryTable_2_1.class, "XmlSecondaryTable_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlSecondaryTable_2_1_PrimaryKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "primaryKeyForeignKey", null, 0, 1, XmlSecondaryTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
