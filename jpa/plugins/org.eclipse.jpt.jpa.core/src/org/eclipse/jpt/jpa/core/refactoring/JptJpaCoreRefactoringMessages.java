@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.refactoring;
+package org.eclipse.jpt.jpa.core.refactoring;
 
 import org.eclipse.osgi.util.NLS;
 

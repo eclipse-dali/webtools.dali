@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.refactoring.JptJpaCoreRefactoringMessages;
 import org.eclipse.text.edits.ReplaceEdit;
 
 //TODO RenameTypeArguments.updateSimilarDeclarations() - http://www.eclipse.org/jdt/ui/r3_2/RenameType.html
