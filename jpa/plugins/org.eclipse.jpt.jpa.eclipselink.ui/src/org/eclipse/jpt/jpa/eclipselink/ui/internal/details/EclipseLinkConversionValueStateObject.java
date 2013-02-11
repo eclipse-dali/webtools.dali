@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.jpt.common.utility.node.Problem;
+import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 
 /**
  * This is the state object used by the <code>NewNameDialog</code>, which stores

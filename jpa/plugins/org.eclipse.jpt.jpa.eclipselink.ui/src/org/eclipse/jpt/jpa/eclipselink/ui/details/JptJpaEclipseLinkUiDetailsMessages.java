@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
+package org.eclipse.jpt.jpa.eclipselink.ui.details;
 
 import org.eclipse.osgi.util.NLS;
 

@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.FetchableMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
+import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingComposite;

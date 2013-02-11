@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen;
+package org.eclipse.jpt.jpa.eclipselink.ui.wizards.gen;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -31,5 +31,4 @@ public class JptJpaEclipseLinkUiDynamicEntityGenMessages {
 	private JptJpaEclipseLinkUiDynamicEntityGenMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }
