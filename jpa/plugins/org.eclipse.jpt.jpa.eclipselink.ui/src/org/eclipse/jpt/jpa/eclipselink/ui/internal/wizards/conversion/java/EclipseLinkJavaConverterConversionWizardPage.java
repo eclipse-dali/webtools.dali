@@ -32,7 +32,7 @@ public class EclipseLinkJavaConverterConversionWizardPage
 
 	@Override
 	protected String getMissingJavaMetadataWarningMessage() {
-		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_noConvertersToConvert;
+		return JptJpaEclipseLinkUiMessages.JAVA_METADATA_CONVERSION_NO_CONVERTERS_TO_CONVERT;
 	}
 
 	/**
