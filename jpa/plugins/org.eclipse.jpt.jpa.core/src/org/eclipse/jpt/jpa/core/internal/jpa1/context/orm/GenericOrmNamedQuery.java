@@ -20,7 +20,6 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper.EscapeType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -148,7 +148,7 @@ public final class GenericOrmNamedQuery
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+					JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
 					new String[] {this.name},
 					this,
 					this.getNameTextRange()

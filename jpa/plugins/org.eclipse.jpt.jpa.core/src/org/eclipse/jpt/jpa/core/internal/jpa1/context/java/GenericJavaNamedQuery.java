@@ -19,13 +19,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -151,7 +151,7 @@ public class GenericJavaNamedQuery
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+							JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
 							new String[] {this.name},
 							this,
 							this.getNameTextRange()
