@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -52,8 +53,8 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 	public AssociationTablesPage(ORMGenCustomizer customizer, ResourceManager resourceManager) {
 		super(customizer,  "AssociationTablesPage");
 		this.resourceManager = resourceManager;
-		setTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_title);
-		setDescription(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_desc);
+		setTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_title);
+		setDescription(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_desc);
 	}
 
 	public void createControl(Composite composite) {
@@ -68,10 +69,10 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		assocKindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		assocKindGroup.setLayout(layout);
 		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_TABLES);
-		assocKindGroup.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocKind);
+		assocKindGroup.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocKind);
 
-		simpleAssoBtn = createButton(assocKindGroup, 3, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_simpleAssoc, SWT.RADIO);
-		mtmAssoBtn = createButton(assocKindGroup, 3, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_m2mAssoc, SWT.RADIO);
+		simpleAssoBtn = createButton(assocKindGroup, 3, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_simpleAssoc, SWT.RADIO);
+		mtmAssoBtn = createButton(assocKindGroup, 3, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_m2mAssoc, SWT.RADIO);
 
 		
 		Group assocTablesGroup = new Group(parent, SWT.NULL);
@@ -82,9 +83,9 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		assocTablesGroup.setLayout(layout);
 		
 		
-		assocTablesGroup.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocTables );
+		assocTablesGroup.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocTables );
 		
-		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_table1);
+		createLabel(assocTablesGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_table1);
 		table1TextField = createText(assocTablesGroup, 1);
 		table1TextField.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -109,7 +110,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 			}
 		});
 
-		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_table2);
+		createLabel(assocTablesGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_table2);
 		table2TextField = createText(assocTablesGroup, 1);
 		table2TextField.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -133,7 +134,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 			}
 		});
 		
-		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_intermediateTable );
+		createLabel(assocTablesGroup, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_intermediateTable );
 		joinTableTextField = createText(assocTablesGroup, 1);
 		joinTableTextField.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -220,16 +221,16 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 
 	private String buildTableErrorMessage() {
 		if ( !IterableTools.contains(this.customizer.getTableNames(), this.table1TextField.getText()) ) {
-			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table1TextField.getText());
+			return NLS.bind(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table1TextField.getText());
 		} else if ( !IterableTools.contains(this.customizer.getTableNames(), this.table2TextField.getText()) ) {
-			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table2TextField.getText());
+			return NLS.bind(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table2TextField.getText());
 		}
 		return null;
 	}
 	
 	private String buildJoinTableErrorMessage() {
 		if (!IterableTools.contains(this.getAllTableNames(this.customizer.getSchema()), this.joinTableTextField.getText())) {
-			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_join_table, this.joinTableTextField.getText());
+			return NLS.bind(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_join_table, this.joinTableTextField.getText());
 		}
 		return null;
 	}

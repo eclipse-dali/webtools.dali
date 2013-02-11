@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -34,8 +35,8 @@ public class CardinalityPage extends NewAssociationWizardPage {
 	
 	protected CardinalityPage(ORMGenCustomizer customizer) {
 		super( customizer , "CardinalityPage" );
-		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_cardinalityPage_title);
-		setDescription( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_cardinalityPage_desc);
+		setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_cardinalityPage_title);
+		setDescription( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_cardinalityPage_desc);
 	}
 
 	public void createControl(Composite parent) {
@@ -49,26 +50,26 @@ public class CardinalityPage extends NewAssociationWizardPage {
 		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_CARDINALITY);
 
 		CardinalitySelectionListener selectionListener = new CardinalitySelectionListener();
-		cardinalityButtons[0] = createRadioButton( composite, 1, JptUiEntityGenMessages.manyToOne);
+		cardinalityButtons[0] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.manyToOne);
 		cardinalityButtons[0].addSelectionListener( selectionListener );
 		//Default cardinality is MTO
 		cardinalityButtons[0].setSelection(true);
 		getWizardDataModel().put(NewAssociationWizard.ASSOCIATION_CADINALITY, Association.MANY_TO_ONE);		
 
-		mtoDescLabel = createLabel(composite,1, JptUiEntityGenMessages.manyToOneDesc);
+		mtoDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.manyToOneDesc);
 		
-		cardinalityButtons[1] = createRadioButton( composite, 1, JptUiEntityGenMessages.oneToMany);
+		cardinalityButtons[1] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.oneToMany);
 		cardinalityButtons[1].addSelectionListener( selectionListener );
 		
-		otmDescLabel = createLabel(composite,1, JptUiEntityGenMessages.manyToOneDesc);
+		otmDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.manyToOneDesc);
 
-		cardinalityButtons[2] = createRadioButton( composite, 1, JptUiEntityGenMessages.oneToOne);
+		cardinalityButtons[2] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.oneToOne);
 		cardinalityButtons[2].addSelectionListener( selectionListener );
 
-		otoDescLabel = createLabel(composite,1, JptUiEntityGenMessages.oneToOneDesc);
+		otoDescLabel = createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.oneToOneDesc);
 
-		cardinalityButtons[3] = createRadioButton( composite, 1, JptUiEntityGenMessages.manyToMany);
-		mtmDescLabel= createLabel(composite,1, JptUiEntityGenMessages.manyToManyDesc);
+		cardinalityButtons[3] = createRadioButton( composite, 1, JptJpaUiWizardsEntityGenMessages.manyToMany);
+		mtmDescLabel= createLabel(composite,1, JptJpaUiWizardsEntityGenMessages.manyToManyDesc);
 		
 		setControl(composite);
 		this.setPageComplete( true );
@@ -104,14 +105,14 @@ public class CardinalityPage extends NewAssociationWizardPage {
 
 	private void updateDescriptionText(String s1, String s2) {
 		//MTO
-		String msg = String.format(JptUiEntityGenMessages.manyToOneDesc, s2, s1);
+		String msg = String.format(JptJpaUiWizardsEntityGenMessages.manyToOneDesc, s2, s1);
 		mtoDescLabel.setText( msg );
 		//OTM
-		msg = String.format(JptUiEntityGenMessages.manyToOneDesc, s1, s2);
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.manyToOneDesc, s1, s2);
 		otmDescLabel.setText( msg );
-		msg = String.format(JptUiEntityGenMessages.oneToOneDesc, s1, s2);
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.oneToOneDesc, s1, s2);
 		otoDescLabel.setText( msg );
-		msg = String.format(JptUiEntityGenMessages.manyToManyDesc, s1, s2, s2, s1);
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.manyToManyDesc, s1, s2, s2, s1);
 		mtmDescLabel.setText( msg );
 	}
 

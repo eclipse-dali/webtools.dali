@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,10 +22,11 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -102,7 +103,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsOrmMessages.EntityMappingsSection_title);
+		section.setText(JptJpaUiDetailsOrmMessages.ENTITY_MAPPINGS_SECTION_TITLE);
 		section.setClient(this.initializeEntityMappingsSection(section));
 	}
 	
@@ -110,15 +111,15 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Package widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.EntityMappingsDetailsPage_package);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ENTITY_MAPPINGS_DETAILS_PAGE_PACKAGE);
 		new OrmPackageChooser(this, container);
 
 		// Schema widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ENTITY_MAPPINGS_DETAILS_PAGE_SCHEMA);
 		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ENTITY_MAPPINGS_DETAILS_PAGE_CATALOG);
 		this.addCatalogCombo(container);
 
 		// Access type widgets
@@ -131,7 +132,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	protected void initializePersistenceUnitMetadataCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_persistenceUnitSection);
+		section.setText(JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_PERSISTENCE_UNIT_SECTION);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -258,7 +259,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsOrmMessages.OrmGeneratorsComposite_groupBox);
+		section.setText(JptJpaUiDetailsOrmMessages.ORM_GENERATORS_COMPOSITE_GROUP_BOX);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
@@ -277,7 +278,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	protected void initializeQueriesCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.EntityComposite_queries);
+		section.setText(JptJpaUiDetailsMessages.EntityComposite_queries);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

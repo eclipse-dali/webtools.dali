@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ReferenceTableComposite;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -33,7 +34,7 @@ public class CollectionTable2_0Composite
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_title,
+			JptJpaUiDetailsMessages2_0.COLLECTION_TABLE_COMPOSITE_TITLE,
 			2,
 			null
 		);
@@ -42,21 +43,21 @@ public class CollectionTable2_0Composite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages2_0.CollectionTable2_0Composite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages2_0.COLLECTION_TABLE_COMPOSITE_NAME);
 		this.addTableCombo(container, JpaHelpContextIds.MAPPING_COLLECTION_TABLE_NAME);
 		
 		// schema widgets
-		this.addLabel(container, JptUiDetailsMessages2_0.CollectionTable2_0Composite_schema);
+		this.addLabel(container, JptJpaUiDetailsMessages2_0.COLLECTION_TABLE_COMPOSITE_SCHEMA);
 		addSchemaCombo(container, JpaHelpContextIds.MAPPING_COLLECTION_TABLE_SCHEMA);
 		
 		// catalog widgets
-		this.addLabel(container, JptUiDetailsMessages2_0.CollectionTable2_0Composite_catalog);
+		this.addLabel(container, JptJpaUiDetailsMessages2_0.COLLECTION_TABLE_COMPOSITE_CATALOG);
 		addCatalogCombo(container, JpaHelpContextIds.MAPPING_COLLECTION_TABLE_CATALOG);
 
 		// Join Columns group pane
 		Group joinColumnGroupPane = addTitledGroup(
 			container,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_joinColumn
+			JptJpaUiDetailsMessages2_0.COLLECTION_TABLE_COMPOSITE_JOIN_COLUMN
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -65,7 +66,7 @@ public class CollectionTable2_0Composite
 		// Override Default Join Columns check box
 		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
 			joinColumnGroupPane,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_overrideDefaultJoinColumns,
+			JptJpaUiDetailsMessages2_0.COLLECTION_TABLE_COMPOSITE_OVERRIDE_DEFAULT_JOIN_COLUMNS,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);

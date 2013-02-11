@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jpt.jpa.gen.internal.AssociationRole;
 import org.eclipse.jpt.jpa.gen.internal.util.StringUtil;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -69,7 +70,7 @@ public class CascadeDialog extends TrayDialog {
      */
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText(JptUiEntityGenMessages.selectCascadeDlgTitle);
+        newShell.setText(JptJpaUiWizardsEntityGenMessages.selectCascadeDlgTitle);
 		this.getHelpSystem().setHelp(newShell, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_SELECT_CASCADE);
     }
 	
@@ -101,7 +102,7 @@ public class CascadeDialog extends TrayDialog {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.widthHint = 275;
 		group.setLayoutData(gd);
-		group.setText(JptUiEntityGenMessages.cascade);
+		group.setText(JptJpaUiWizardsEntityGenMessages.cascade);
 
 		for( int i=0; i< ALL_CASCADES.length; i ++ ){
 			Button checkbox = new Button(group, SWT.CHECK);

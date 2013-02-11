@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -40,7 +41,7 @@ public class DerivedIdentity2_0Pane
 	protected Composite addComposite(Composite container) {
 		Section section = getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages2_0.DerivedIdentity_title);
+		section.setText(JptJpaUiDetailsMessages2_0.DERIVED_IDENTITY_TITLE);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		client.setLayout(new GridLayout(2, false));
@@ -55,7 +56,7 @@ public class DerivedIdentity2_0Pane
 		//null derived identity
 		Button nullDerivedIdentityButton = this.addRadioButton(
 			container,
-			JptUiDetailsMessages2_0.DerivedIdentity_nullDerivedIdentity,
+			JptJpaUiDetailsMessages2_0.DERIVED_IDENTITY_NULL_DERIVED_IDENTITY,
 			buildUsesNullDerivedIdentityStrategyHolder(),
 			null);
 		((GridData) nullDerivedIdentityButton.getLayoutData()).horizontalSpan = 2;
@@ -63,7 +64,7 @@ public class DerivedIdentity2_0Pane
 		//id derived identity
 		Button button = this.addRadioButton(
 			container,
-			JptUiDetailsMessages2_0.DerivedIdentity_idDerivedIdentity,
+			JptJpaUiDetailsMessages2_0.DERIVED_IDENTITY_ID_DERIVED_IDENTITY,
 			buildUsesIdDerivedIdentityStrategyHolder(),
 			null);
 		((GridData) button.getLayoutData()).horizontalSpan = 2;
@@ -72,7 +73,7 @@ public class DerivedIdentity2_0Pane
 		ModifiablePropertyValueModel<Boolean> usesMapsIdModel = buildUsesMapsIdDerivedIdentityStrategyHolder();
 		this.addRadioButton(
 			container,
-			JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
+			JptJpaUiDetailsMessages2_0.DERIVED_IDENTITY_MAPS_ID_DERIVED_IDENTITY,
 			usesMapsIdModel,
 			null);
 
@@ -197,7 +198,7 @@ public class DerivedIdentity2_0Pane
 		
 		@Override
 		protected String buildNullDefaultValueEntry() {
-			return buildNonNullDefaultValueEntry(JptUiDetailsMessages2_0.DerivedIdentity_mapsIdUnspecifiedValue);
+			return buildNonNullDefaultValueEntry(JptJpaUiDetailsMessages2_0.DERIVED_IDENTITY_MAPS_ID_UNSPECIFIED_VALUE);
 		}
 	}
 }

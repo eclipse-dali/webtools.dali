@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -74,7 +75,7 @@ public class TableComposite extends Pane<Entity>
 	protected Composite addComposite(Composite parent) {
 		Group tableGroupPane = this.addTitledGroup(
 			parent,
-			JptUiDetailsMessages.TableComposite_tableSection,
+			JptJpaUiDetailsMessages.TableComposite_tableSection,
 			2,
 			null
 		);
@@ -87,15 +88,15 @@ public class TableComposite extends Pane<Entity>
 		PropertyValueModel<Boolean> enabledModel = buildTableEnabledModel();
 
 		// Table widgets
-		this.addLabel(container, JptUiDetailsMessages.TableChooser_label, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableChooser_label, enabledModel);
 		this.addTableCombo(subjectHolder, enabledModel, container);
 
 		// Catalog widgets
-		this.addLabel(container, JptUiDetailsMessages.CatalogChooser_label, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.CatalogChooser_label, enabledModel);
 		this.addCatalogCombo(subjectHolder, enabledModel, container);
 
 		// Schema widgets
-		this.addLabel(container, JptUiDetailsMessages.SchemaChooser_label, enabledModel);
+		this.addLabel(container, JptJpaUiDetailsMessages.SchemaChooser_label, enabledModel);
 		this.addSchemaCombo(subjectHolder, enabledModel, container);
 	}
 	

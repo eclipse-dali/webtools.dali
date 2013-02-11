@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
@@ -49,7 +49,7 @@ public abstract class AbstractJavaEclipseLinkEntity2_xComposite<T extends JavaEc
 		tableComposite.getControl().setLayoutData(gridData);
 
 		// Entity name widgets
-		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
 		new EntityNameCombo(this, container);
 
 		// Access type widgets
@@ -57,7 +57,7 @@ public abstract class AbstractJavaEclipseLinkEntity2_xComposite<T extends JavaEc
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);	
 
 		// Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BaseEmbeddedMapping;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractEmbeddedMappingOverridesComposite<T extends BaseEmbeddedMapping>
@@ -30,7 +31,7 @@ public abstract class AbstractEmbeddedMappingOverridesComposite<T extends BaseEm
 	protected Composite addComposite(Composite container) {
 		return addTitledGroup(
 			container,
-			JptUiDetailsMessages.OverridesComposite_attributeOverridesGroup);
+			JptJpaUiDetailsMessages.OverridesComposite_attributeOverridesGroup);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -124,7 +125,7 @@ public class QueryHintsComposite extends Pane<Query>
 	protected Composite addComposite(Composite parent) {
 		return this.addTitledGroup(
 			parent,
-			JptUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
+			JptJpaUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
 		);
 	}
 
@@ -182,11 +183,11 @@ public class QueryHintsComposite extends Pane<Query>
 
 			switch (columnIndex) {
 				case QueryHintColumnAdapter.NAME_COLUMN_INDEX: {
-					return JptUiDetailsMessages.QueryHintsComposite_nameColumn;
+					return JptJpaUiDetailsMessages.QueryHintsComposite_nameColumn;
 				}
 
 				case QueryHintColumnAdapter.VALUE_COLUMN_INDEX: {
-					return JptUiDetailsMessages.QueryHintsComposite_valueColumn;
+					return JptJpaUiDetailsMessages.QueryHintsComposite_valueColumn;
 				}
 
 				default: {

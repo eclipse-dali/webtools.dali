@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractVersionMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -46,7 +46,7 @@ public class OrmVersionMapping2_0Composite
 		columnComposite.getControl().setLayoutData(gridData);
 
 		// Name widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ORM_MAPPING_NAME_CHOOSER_NAME);
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Access type widgets

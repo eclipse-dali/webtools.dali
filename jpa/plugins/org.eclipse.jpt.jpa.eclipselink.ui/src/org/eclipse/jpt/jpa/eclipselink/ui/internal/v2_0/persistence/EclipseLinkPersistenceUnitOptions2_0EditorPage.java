@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceUnitOptionsEditorPage;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -88,27 +88,27 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 		checkBox.getCheckBox().setLayoutData(gridData);
 
 		this.optionsModel = this.buildOptions2_0Model();
-		this.addLabel(container, JptUiPersistence2_0Messages.LockingConfigurationComposite_lockTimeoutLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.LOCKING_CONFIGURATION_COMPOSITE_LOCK_TIMEOUT_LABEL);
 		this.addLockTimeoutCombo(container);
 
-		this.addLabel(container, JptUiPersistence2_0Messages.QueryConfigurationComposite_queryTimeoutLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.QUERY_CONFIGURATION_COMPOSITE_QUERY_TIMEOUT_LABEL);
 		this.addQueryTimeoutCombo(container);
 
 
 		// ValidationMode
-		this.addLabel(container, JptUiPersistence2_0Messages.ValidationModeComposite_validationModeLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_VALIDATION_MODE_LABEL);
 		this.addValidationModeCombo(container);
 
 		// ValidationGroupPrePersist
-		this.addLabel(container, JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPrePersistLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.VALIDATION_CONFIGURATION_COMPOSITE_GROUP_PRE_PERSIST_LABEL);
 		this.addPrePersistListPane(container);
 
 		// ValidationGroupPreUpdate
-		this.addLabel(container, JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreUpdateLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.VALIDATION_CONFIGURATION_COMPOSITE_GROUP_PRE_UPDATE_LABEL);
 		this.addPreUpdateListPane(container);
 
 		// ValidationGroupPreRemove
-		this.addLabel(container, JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreRemoveLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.VALIDATION_CONFIGURATION_COMPOSITE_GROUP_PRE_REMOVE_LABEL);
 		this.addPreRemoveListPane(container);
 
 		return container;
@@ -222,11 +222,11 @@ class EclipseLinkPersistenceUnitOptions2_0EditorPage
 			protected String displayString(ValidationMode value) {
 				switch (value) {
 					case AUTO :
-						return JptUiPersistence2_0Messages.ValidationModeComposite_auto;
+						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_AUTO;
 					case CALLBACK :
-						return JptUiPersistence2_0Messages.ValidationModeComposite_callback;
+						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_CALLBACK;
 					case NONE :
-						return JptUiPersistence2_0Messages.ValidationModeComposite_none;
+						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_NONE;
 					default :
 						throw new IllegalStateException();
 				}

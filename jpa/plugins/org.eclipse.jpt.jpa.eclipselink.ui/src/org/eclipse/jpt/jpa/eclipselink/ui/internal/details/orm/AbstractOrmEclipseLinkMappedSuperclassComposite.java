@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMess
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkNonEmbeddableTypeMappingAdvancedComposite;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappedSuperclassComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
@@ -62,7 +62,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Java class widgets
-		Hyperlink javaClassHyperlink = addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
+		Hyperlink javaClassHyperlink = addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
 		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
 
 		// Access type widgets
@@ -70,7 +70,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Metadata complete widgets
@@ -160,7 +160,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+		section.setText(JptJpaUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
 
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override

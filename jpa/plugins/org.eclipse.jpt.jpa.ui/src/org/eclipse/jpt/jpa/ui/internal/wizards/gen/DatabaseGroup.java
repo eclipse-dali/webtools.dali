@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -86,11 +87,11 @@ public class DatabaseGroup
 		this.resourceManager = resourceManager;
 
 		// connection combo-box
-		this.buildLabel(parent, 1, JptUiEntityGenMessages.connection);
+		this.buildLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.connection);
 		this.connectionComboBox = this.buildConnectionComboBox(parent, widthHint);
 
 		// add connection button
-		Button addConnectionButton = this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, this.resourceManager.createImage(JptCommonUiImages.ADD_CONNECTION_BUTTON), this.buildAddConnectionLinkSelectionListener());
+		Button addConnectionButton = this.buildButton(parent, JptJpaUiWizardsEntityGenMessages.addConnectionLink, this.resourceManager.createImage(JptCommonUiImages.ADD_CONNECTION_BUTTON), this.buildAddConnectionLinkSelectionListener());
 		addConnectionButton.setLayoutData(new GridData());
 
 		// A composite holds the reconnect button & text
@@ -106,11 +107,11 @@ public class DatabaseGroup
 		comp.setLayout(gridLayout);
 
 		// reconnection button
-		this.reconnectButton = this.buildButton(comp, JptUiEntityGenMessages.connectLink, this.resourceManager.createImage(JptCommonUiImages.RECONNECT_BUTTON),  this.buildReconnectLinkSelectionListener());
-		this.buildLabel(comp, 1, JptUiEntityGenMessages.schemaInfo);
+		this.reconnectButton = this.buildButton(comp, JptJpaUiWizardsEntityGenMessages.connectLink, this.resourceManager.createImage(JptCommonUiImages.RECONNECT_BUTTON),  this.buildReconnectLinkSelectionListener());
+		this.buildLabel(comp, 1, JptJpaUiWizardsEntityGenMessages.schemaInfo);
 
 		// schema combo-box
-		this.buildLabel(parent, 1, JptUiEntityGenMessages.schema);
+		this.buildLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.schema);
 		this.schemaComboBox = this.buildSchemaComboBox(parent);
 		// filler
 		new Label(parent, SWT.NULL);
@@ -336,7 +337,7 @@ public class DatabaseGroup
 				public void run(final IProgressMonitor monitor) 
 			    	throws InvocationTargetException, InterruptedException
 			    {
-					monitor.beginTask(JptUiEntityGenMessages.connectingToDatabase, 10);
+					monitor.beginTask(JptJpaUiWizardsEntityGenMessages.connectingToDatabase, 10);
 					final SynchronizedBoolean finished = new SynchronizedBoolean(false);
 					Thread t = new Thread() {
 						@Override

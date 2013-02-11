@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -45,7 +46,7 @@ public class PersistenceUnitGeneralEditorPage
 	@Override
 	protected void initializeLayout(Composite container) {
 		Section generalSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		generalSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general);
+		generalSection.setText(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_GENERAL);
 		Control generalComposite = this.buildGeneralComposite(generalSection);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
@@ -53,16 +54,16 @@ public class PersistenceUnitGeneralEditorPage
 		generalSection.setClient(generalComposite);
 
 		Section classesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
-		classesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_mappedClasses);
-		classesSection.setDescription(JptUiPersistenceMessages.PersistenceUnitClassesComposite_description);
+		classesSection.setText(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_MAPPED_CLASSES);
+		classesSection.setDescription(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_DESCRIPTION);
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3);
 		classesSection.setLayoutData(gridData);
 		Control classesComposite = this.buildClassesComposite(classesSection);
 		classesSection.setClient(classesComposite);
 
 		Section mappingFilesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
-		mappingFilesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors);
-		mappingFilesSection.setDescription(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description);
+		mappingFilesSection.setText(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_JPA_MAPPING_DESCRIPTORS);
+		mappingFilesSection.setDescription(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_JPA_MAPPING_DESCRIPTORS_DESCRIPTION);
 		Control mappingFilesComposite = this.buildMappingFilesComposite(mappingFilesSection);
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gridData.verticalIndent = 5;
@@ -70,7 +71,7 @@ public class PersistenceUnitGeneralEditorPage
 		mappingFilesSection.setClient(mappingFilesComposite);
 
 		Section jarFilesSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR);
-		jarFilesSection.setText(JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jarFiles);
+		jarFilesSection.setText(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_JAR_FILES);
 		Control jarFilesComposite = this.buildJarFilesComposite(jarFilesSection);
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gridData.verticalIndent = 5;

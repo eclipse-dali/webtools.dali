@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 SAP AG, Walldorf and others. All rights reserved.
+ * Copyright (c) 2008, 2013 SAP AG, Walldorf and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityDataModelProvider;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEEditorUtility;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -46,7 +47,7 @@ public class EntityWizard
 
     public EntityWizard(IDataModel model) {
 		super(model);
-        setWindowTitle(EntityWizardMsg.ENTITY_WIZARD_TITLE);
+        setWindowTitle(JptJpaUiWizardsEntityMessages.ENTITY_WIZARD_TITLE);
         setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}    
  
@@ -59,8 +60,8 @@ public class EntityWizard
 		EntityClassWizardPage page1 = new EntityClassWizardPage(
 		        getDataModel(),
 		        "pageOne", //$NON-NLS-1$
-		        EntityWizardMsg.ENTITY_WIZARD_PAGE_DESCRIPTION,
-		        EntityWizardMsg.ENTITY_WIZARD_PAGE_TITLE);
+		        JptJpaUiWizardsEntityMessages.ENTITY_WIZARD_PAGE_DESCRIPTION,
+		        JptJpaUiWizardsEntityMessages.ENTITY_WIZARD_PAGE_TITLE);
 		page1.setProjectName(this.initialProjectName);
 		addPage(page1);
 		EntityFieldsWizardPage page2 = new EntityFieldsWizardPage(getDataModel(), "pageTwo"); //$NON-NLS-1$

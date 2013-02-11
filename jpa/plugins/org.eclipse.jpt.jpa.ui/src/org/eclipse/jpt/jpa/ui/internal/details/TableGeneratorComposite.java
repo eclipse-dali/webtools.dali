@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
@@ -97,37 +98,37 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_name);
 		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
 
 		// Table widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_table);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_table);
 		this.addTableNameCombo(container);
 
 		// Schema widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_schema);
 		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_catalog);
 		this.addCatalogCombo(container);
 
 		// Primary Key Column widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_pkColumn);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_pkColumn);
 		this.addPkColumnCombo(container);
 
 		// Value Column widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_valueColumn);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_valueColumn);
 		this.addValueColumnCombo(container);
 
 		// Primary Key Column Value widgets
-		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_pkColumnValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.TableGeneratorComposite_pkColumnValue);
 		this.addPkColumnValueCombo(container);
 
-		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_allocationSize);
+		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_allocationSize);
 		this.addAllocationSizeCombo(container);
 
-		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_initialValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_initialValue);
 		this.addInitialValueCombo(container);
 	}	
 

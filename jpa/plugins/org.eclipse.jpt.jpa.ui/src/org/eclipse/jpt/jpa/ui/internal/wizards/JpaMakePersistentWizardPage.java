@@ -82,8 +82,8 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -324,8 +324,8 @@ public class JpaMakePersistentWizardPage
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		SelectMappingFileDialog dialog = new SelectMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
-		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
-		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
+		dialog.setTitle(JptJpaUiWizardsEntityMessages.MAPPING_XML_TITLE);
+		dialog.setMessage(JptJpaUiWizardsEntityMessages.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
 			
 		JptXmlResource resource = this.jpaProject.getMappingFileXmlResource(new Path(getMappingFileLocation()));

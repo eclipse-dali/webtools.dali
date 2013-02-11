@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -44,8 +45,8 @@ public class PersistenceUnitConnection2_0EditorPage
 	protected void initializeLayout(Composite container) {
 		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiPersistence2_0Messages.GenericPersistenceUnit2_0ConnectionComposite_sectionTitle);
-		section.setDescription(JptUiPersistence2_0Messages.GenericPersistenceUnit2_0ConnectionComposite_sectionDescription);
+		section.setText(JptJpaUiPersistenceMessages2_0.PERSISTENCE_UNIT_CONNECTION_COMPOSITE_SECTION_TITLE);
+		section.setDescription(JptJpaUiPersistenceMessages2_0.PERSISTENCE_UNIT_CONNECTION_COMPOSITE_SECTION_DESCRIPTION);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
@@ -59,13 +60,13 @@ public class PersistenceUnitConnection2_0EditorPage
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 		section.setClient(client);
 
-		this.addLabel(client, JptUiPersistence2_0Messages.TransactionTypeComposite_transactionTypeLabel);
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.TRANSACTION_TYPE_COMPOSITE_TRANSACTION_TYPE_LABEL);
 		this.buildTransactionTypeCombo(client);
 
 		//Connection properties
 		Group group = this.addTitledGroup(
 				client,
-			JptUiPersistence2_0Messages.ConnectionPropertiesComposite_Database_GroupBox
+			JptJpaUiPersistenceMessages2_0.CONNECTION_PROPERTIES_COMPOSITE_DATABASE_GROUP_BOX
 		);
 		group.setLayout(new GridLayout(2, false));
 		
@@ -75,18 +76,18 @@ public class PersistenceUnitConnection2_0EditorPage
 
 		// JTA Data Source
 		PropertyValueModel<Boolean> jtaEnabled = this.buildJTADataSourceModel();
-		this.addLabel(group, JptUiPersistence2_0Messages.DataSourcePropertiesComposite_jtaDataSourceLabel, jtaEnabled);
+		this.addLabel(group, JptJpaUiPersistenceMessages2_0.DATA_SOURCE_PROPERTIES_COMPOSITE_JTA_DATA_SOURCE_LABEL, jtaEnabled);
 		this.addText(group, this.buildJtaDataSourceModel(), JpaHelpContextIds.PERSISTENCE_XML_CONNECTION, jtaEnabled);
 
 		// Non-JTA Data Source
 		PropertyValueModel<Boolean> nonJTAEnabled = this.buildNonJTADataSourceModel();
-		this.addLabel(group, JptUiPersistence2_0Messages.DataSourcePropertiesComposite_nonJtaDataSourceLabel, nonJTAEnabled);
+		this.addLabel(group, JptJpaUiPersistenceMessages2_0.DATA_SOURCE_PROPERTIES_COMPOSITE_NON_JTA_DATA_SOURCE_LABEL, nonJTAEnabled);
 		this.addText(group, this.buildNonJtaDataSourceModel(), JpaHelpContextIds.PERSISTENCE_XML_CONNECTION, nonJTAEnabled);
 
 		
 		Group jdbcConnectionPropertiesGroup = this.addTitledGroup(
 			group,
-			JptUiPersistence2_0Messages.JdbcPropertiesComposite_JdbcConnectionProperties_GroupBox
+			JptJpaUiPersistenceMessages2_0.JDBC_PROPERTIES_COMPOSITE_JDBC_CONNECTION_PROPERTIES_GROUP_BOX
 		);		
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -133,9 +134,9 @@ public class PersistenceUnitConnection2_0EditorPage
 			protected String displayString(PersistenceUnitTransactionType value) {
 				switch (value) {
 					case JTA :
-						return JptUiPersistence2_0Messages.TransactionTypeComposite_jta;
+						return JptJpaUiPersistenceMessages2_0.TRANSACTION_TYPE_COMPOSITE_JTA;
 					case RESOURCE_LOCAL :
-						return JptUiPersistence2_0Messages.TransactionTypeComposite_resource_local;
+						return JptJpaUiPersistenceMessages2_0.TRANSACTION_TYPE_COMPOSITE_RESOURCE_LOCAL;
 					default :
 						throw new IllegalStateException();
 				}

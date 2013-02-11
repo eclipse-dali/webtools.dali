@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
@@ -123,7 +124,7 @@ public abstract class PersistenceUnitJarFilesComposite
 		@Override
 		protected String transform_(JarFileRef jarFileRef) {
 			String name = jarFileRef.getFileName();
-			return (name != null) ? name : JptUiPersistenceMessages.PersistenceUnitJarFilesComposite_noFileName;
+			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_JAR_FILES_COMPOSITE_NO_FILE_NAME;
 		}
 	}
 	
@@ -134,8 +135,8 @@ public abstract class PersistenceUnitJarFilesComposite
 			getShell(), buildJarFileDeploymentPathCalculator());
 		
 		dialog.setHelpAvailable(false);
-		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_title);
-		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_message);
+		dialog.setTitle(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_MAPPING_FILES_COMPOSITE_JAR_FILE_DIALOG_TITLE);
+		dialog.setMessage(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_MAPPING_FILES_COMPOSITE_JAR_FILE_DIALOG_MESSAGE);
 		dialog.setInput(project);
 
 

@@ -67,9 +67,9 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.AnnotatedEntityTemplate;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityTemplate;
-import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.IdClassTemplate;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.CreateEntityTemplateModel;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.jst.common.internal.annotations.controller.AnnotationsController;
 import org.eclipse.jst.common.internal.annotations.controller.AnnotationsControllerManager;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
@@ -547,7 +547,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	 * @return the created job
 	 */
 	private Job registerClassInPersistenceXml(final CreateEntityTemplateModel model, final IProject project) {
-		Job job = new Job(EntityWizardMsg.APPLY_CHANGES_TO_PERSISTENCE_XML) {
+		Job job = new Job(JptJpaUiWizardsEntityMessages.APPLY_CHANGES_TO_PERSISTENCE_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);

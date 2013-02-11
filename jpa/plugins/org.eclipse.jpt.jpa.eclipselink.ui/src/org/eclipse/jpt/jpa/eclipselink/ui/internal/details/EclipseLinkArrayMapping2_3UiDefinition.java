@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,11 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkArrayMapping2_3;
+import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkArrayMapping2_3UiDefinition
@@ -50,11 +50,11 @@ public class EclipseLinkArrayMapping2_3UiDefinition
 	}
 
 	public String getLabel() {
-		return JptUiDetailsMessages2_0.ArrayMapping2_3_label;
+		return JptJpaEclipseLinkUiDetailsMessages.ARRAY_MAPPING_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptUiDetailsMessages2_0.ArrayMapping2_3_linkLabel;
+		return JptJpaEclipseLinkUiDetailsMessages.ARRAY_MAPPING_LINK_LABEL;
 	}
 
 	@SuppressWarnings("unchecked")

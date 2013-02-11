@@ -47,6 +47,7 @@ import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PartInitException;
@@ -79,7 +80,7 @@ public class PersistenceUnitClassesComposite
 
 		this.addTriStateCheckBoxWithDefault(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses,
+			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_MAPPED_CLASSES,
 			buildExcludeUnlistedMappedClassesHolder(),
 			buildExcludeUnlistedMappedClassesStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
@@ -137,7 +138,7 @@ public class PersistenceUnitClassesComposite
 
 			@Override
 			public String optionalButtonText() {
-				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_open;
+				return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_OPEN;
 			}
 
 			@Override
@@ -174,9 +175,9 @@ public class PersistenceUnitClassesComposite
 			protected String transform(Boolean v) {
 				if (v != null) {
 					String defaultStringValue = v.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_MAPPED_CLASSES_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
+				return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_MAPPED_CLASSES;
 			}
 		};
 	}
@@ -241,7 +242,7 @@ public class PersistenceUnitClassesComposite
 		@Override
 		protected String transform_(ClassRef classRef) {
 			String name = classRef.getClassName();
-			return (name != null) ? name : JptUiPersistenceMessages.PersistenceUnitClassesComposite_mappedClassesNoName;
+			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_MAPPED_CLASSES_NO_NAME;
 		}
 	}
 

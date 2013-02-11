@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,9 +24,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -58,7 +58,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TypeSection_default, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -66,7 +66,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_lob, 
+			JptJpaUiDetailsMessages.TypeSection_lob, 
 			buildConverterBooleanHolder(LobConverter.class), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -75,7 +75,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, buildTemporalConverterHolder(converterHolder), container);
@@ -84,7 +84,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_enumerated, 
+			JptJpaUiDetailsMessages.TypeSection_enumerated, 
 			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
 		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);

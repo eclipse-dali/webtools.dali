@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Orderable;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -53,7 +54,7 @@ public class OrderingComposite
 		// No Ordering radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages.OrderingComposite_none,
+			JptJpaUiDetailsMessages.OrderingComposite_none,
 			buildNoOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
 		);
@@ -61,7 +62,7 @@ public class OrderingComposite
 		// Order by Primary Key radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages.OrderingComposite_primaryKey,
+			JptJpaUiDetailsMessages.OrderingComposite_primaryKey,
 			buildPrimaryKeyOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
 		);
@@ -69,7 +70,7 @@ public class OrderingComposite
 		// Custom Ordering radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages.OrderingComposite_custom,
+			JptJpaUiDetailsMessages.OrderingComposite_custom,
 			buildCustomOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
 		);

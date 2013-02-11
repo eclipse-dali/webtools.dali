@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
@@ -261,7 +262,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		// XML mapping metadata complete check box
 		Button metadataCompleteCheckBox = addCheckBox(
 			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox,
+			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_XML_MAPPING_METADATA_COMPLETE_CHECK_BOX,
 			buildXmlMappingMetadataCompleteHolder(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
@@ -272,7 +273,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		// Cascade Persist check-box
 		Button cascadePersistCheckBox = addCheckBox(
 			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
+			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_CASCADE_PERSIST_CHECK_BOX,
 			buildCascadePersistHolder(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
@@ -282,11 +283,11 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 
 
 		// Schema widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_SCHEMA);
 		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_CATALOG);
 		this.addCatalogCombo(container);
 
 		// Access type widgets
@@ -296,7 +297,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(
 			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_delimitedIdentifiersCheckBox,
+			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_DELIMITED_IDENTIFIERS_CHECK_BOX,
 			this.buildDelimitedIdentifiersHolder(),
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);

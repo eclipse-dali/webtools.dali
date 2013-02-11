@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContaine
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadePane;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -50,11 +50,11 @@ public abstract class AbstractEclipseLinkManyToManyMappingComposite<T extends Ec
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target entity widgets
-		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.TargetEntityChooser_label);
 		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
 
 		// Fetch type widgets
-		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
 		new FetchTypeComboViewer(this, container);
 		
 		// Join fetch widgets

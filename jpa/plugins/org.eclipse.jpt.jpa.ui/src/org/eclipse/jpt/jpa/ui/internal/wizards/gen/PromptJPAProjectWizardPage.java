@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -45,8 +46,8 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 	
 	public PromptJPAProjectWizardPage( final String helpContextId ) {
 		super(SELECT_PROJECT_PAGE_NAME);
-		setTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_selectJPAProject );
-		setMessage( JptUiEntityGenMessages.GenerateEntitiesWizard_selectJPAProject_msg );
+		setTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_selectJPAProject );
+		setMessage( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_selectJPAProject_msg );
 		this.helpContextId = helpContextId;
 	}
 
@@ -57,7 +58,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);			
 		Label label = new Label( composite, SWT.NONE );
-		label.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_selectJPAProject );
+		label.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_selectJPAProject );
 		
 		this.projTableViewer = new TableViewer(composite, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);		
 		this.projTable = this.projTableViewer.getTable();

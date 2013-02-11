@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -39,7 +40,7 @@ public class AddQueryDialog
 
 
 	public AddQueryDialog(Shell parentShell, ResourceManager resourceManager, PersistenceUnit pUnit) {
-		super(parentShell, resourceManager, JptUiDetailsMessages.AddQueryDialog_title);
+		super(parentShell, resourceManager, JptJpaUiDetailsMessages.AddQueryDialog_title);
 		this.pUnit = pUnit;
 	}
 
@@ -50,12 +51,12 @@ public class AddQueryDialog
 
 	@Override
 	protected String getDescriptionTitle() {
-		return JptUiDetailsMessages.AddQueryDialog_descriptionTitle;
+		return JptJpaUiDetailsMessages.AddQueryDialog_descriptionTitle;
 	}
 	
 	@Override
 	protected String getDescription() {
-		return JptUiDetailsMessages.AddQueryDialog_description;
+		return JptJpaUiDetailsMessages.AddQueryDialog_description;
 	}
 	
 	@Override
@@ -110,10 +111,10 @@ public class AddQueryDialog
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_name);
+			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_name);
 			this.nameText = addText(container, this.buildNameHolder());
 			
-			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_queryType);
+			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_queryType);
 			this.addCombo(
 				container, 
 				buildQueryTypeListHolder(), 
@@ -135,10 +136,10 @@ public class AddQueryDialog
 				@Override
 				public String transform(String value) {
 					if (value == NAMED_QUERY) {
-						return JptUiDetailsMessages.AddQueryDialog_namedQuery;
+						return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
 					}
 					if (value == NAMED_NATIVE_QUERY) {
-						return JptUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+						return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
 					}
 					return value;
 				}

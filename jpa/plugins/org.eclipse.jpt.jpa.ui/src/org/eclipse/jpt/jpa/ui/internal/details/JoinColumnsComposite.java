@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -94,7 +95,7 @@ public class JoinColumnsComposite<T extends JpaNode>
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
-				JptUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsDefault,
+				JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -103,14 +104,14 @@ public class JoinColumnsComposite<T extends JpaNode>
 
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 				return NLS.bind(
-					JptUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
+					JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
 					joinColumn.getName(),
 					joinColumn.getReferencedColumnName()
 				);
 			}
 
 			return NLS.bind(
-				JptUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
+				JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -118,14 +119,14 @@ public class JoinColumnsComposite<T extends JpaNode>
 
 		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 			return NLS.bind(
-				JptUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
+				JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
 		}
 
 		return NLS.bind(
-			JptUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParams,
+			JptJpaUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParams,
 			joinColumn.getName(),
 			joinColumn.getReferencedColumnName()
 		);
@@ -157,7 +158,7 @@ public class JoinColumnsComposite<T extends JpaNode>
 
 			@Override
 			public String optionalButtonText() {
-				return JptUiDetailsMessages.JoinColumnsComposite_edit;
+				return JptJpaUiDetailsMessages.JoinColumnsComposite_edit;
 			}
 
 			@Override

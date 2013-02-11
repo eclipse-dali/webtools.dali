@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.osgi.util.NLS;
@@ -92,14 +93,14 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Strategy widgets
-		this.addLabel(container, JptUiDetailsMessages.InheritanceComposite_strategy);
+		this.addLabel(container, JptJpaUiDetailsMessages.InheritanceComposite_strategy);
 		this.addStrategyCombo(container);
 
 		// Discriminator Value widgets
 		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
 		this.addLabel(
 			container, 
-			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
+			JptJpaUiDetailsMessages.InheritanceComposite_discriminatorValue,
 			dvEnabled
 		);
 		this.addEditableCombo(
@@ -161,7 +162,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 				defaultValue
 			);
 		}
-		return JptUiDetailsMessages.ProviderDefault;
+		return JptJpaUiDetailsMessages.ProviderDefault;
 	}
 
 
@@ -214,11 +215,11 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			protected String displayString(InheritanceType value) {
 				switch (value) {
 					case JOINED :
-						return JptUiDetailsMessages.AbstractInheritanceComposite_joined;
+						return JptJpaUiDetailsMessages.AbstractInheritanceComposite_joined;
 					case SINGLE_TABLE :
-						return JptUiDetailsMessages.AbstractInheritanceComposite_single_table;
+						return JptJpaUiDetailsMessages.AbstractInheritanceComposite_single_table;
 					case TABLE_PER_CLASS :
-						return JptUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
+						return JptJpaUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
 					default :
 						throw new IllegalStateException();
 				}

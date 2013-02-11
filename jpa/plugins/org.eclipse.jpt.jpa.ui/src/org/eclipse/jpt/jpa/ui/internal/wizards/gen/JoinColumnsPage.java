@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,6 +41,7 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -78,8 +79,8 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 
 	protected JoinColumnsPage(ORMGenCustomizer customizer ) {
 		super(customizer, "JoinColumnsPage");
-		setTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_title);
-		setDescription(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_desc);
+		setTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_title);
+		setDescription(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_desc);
 	}
 
 	public void createControl(Composite parent) {
@@ -152,7 +153,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		tableDataModel1.clear();
 		joinColumnsTable1.refresh();
 		
-		String msg = String.format(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label, table1Name, table2Name); 
+		String msg = String.format(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label, table1Name, table2Name); 
 		joinColumnsDescLabel1.setText(msg);
 		joinColumnsDescLabel1.setToolTipText( msg );
 		tablesGroup1.layout();
@@ -189,7 +190,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		tableDataModel1.clear();
 		joinColumnsTable1.refresh();
 		
-		String msg = String.format(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label, table1Name, joinTableName); 
+		String msg = String.format(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label, table1Name, joinTableName); 
 		joinColumnsDescLabel1.setText(msg);
 		joinColumnsDescLabel1.setToolTipText( msg );
 		String[] referrerColumnValues = getTableColumns(table1Name);
@@ -205,7 +206,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 
 		tableDataModel2.clear();
 		joinColumnsTable2.refresh();
-		msg = String.format(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label, joinTableName, table2Name); 
+		msg = String.format(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label, joinTableName, table2Name); 
 		joinColumnsDescLabel2.setText(msg);
 		joinColumnsDescLabel2.setToolTipText( msg );
 		referrerColumnValues = getTableColumns(joinTableName);
@@ -233,7 +234,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		buttonComposite.setLayoutData(data);
 		
 		Button addButton = new Button(buttonComposite, SWT.PUSH);
-		addButton.setText( JptUiEntityGenMessages.add );
+		addButton.setText( JptJpaUiWizardsEntityGenMessages.add );
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		addButton.setLayoutData(gridData);
@@ -261,7 +262,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		});
 		
 		Button removeButton = new Button(buttonComposite, SWT.PUSH);
-		removeButton.setText( JptUiEntityGenMessages.remove );
+		removeButton.setText( JptJpaUiWizardsEntityGenMessages.remove );
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		removeButton.setLayoutData(gridData);
@@ -355,13 +356,13 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 	}
 
 	private void createJoinColumnsTableControl1(Composite tablesGroup) {
-		joinColumnsDescLabel1 = createLabel(tablesGroup, 2, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label );
+		joinColumnsDescLabel1 = createLabel(tablesGroup, 2, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label );
 		joinColumnsTable1 = createJoinColumnsTableControl(tablesGroup, this.tableDataModel1);
 		createAddRemoveButtonComposite(tablesGroup, joinColumnsTable1, tableDataModel1);
 	}
 	
 	private void createJoinColumnsTableControl2(Composite tablesGroup) {
-		joinColumnsDescLabel2 = createLabel(tablesGroup, 2, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label );
+		joinColumnsDescLabel2 = createLabel(tablesGroup, 2, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_colsPage_label );
 		joinColumnsTable2 = createJoinColumnsTableControl(tablesGroup, this.tableDataModel2);
 		createAddRemoveButtonComposite(tablesGroup, joinColumnsTable2, tableDataModel2);
 	}

@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -139,7 +139,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		// Populate from Connection hyperlink
 		Hyperlink hyperLink = this.addHyperlink(
 			container,
-			JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_populateFromConnectionHyperLink,
+			JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_POPULATE_FROM_CONNECTION_HYPER_LINK,
 			buildPopulateFromConnectionAction()
 		);
 		GridData gridData = new GridData();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,14 +16,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollection
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassChooser;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -46,11 +46,11 @@ public class OrmEclipseLinkElementCollectionMapping2_0Composite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target class widgets
-		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages2_0.TargetClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages2_0.TARGET_CLASS_COMPOSITE_LABEL);
 		new TargetClassChooser(this, container, hyperlink);
 
 		// Name widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ORM_MAPPING_NAME_CHOOSER_NAME);
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Attribute type widgets
@@ -62,7 +62,7 @@ public class OrmEclipseLinkElementCollectionMapping2_0Composite
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
-		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
 		new FetchTypeComboViewer(this, container);
 
 		// Collection table widgets

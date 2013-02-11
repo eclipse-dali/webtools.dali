@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 
 public class DefaultBasicMappingUiDefinition
 	extends AbstractBasicMappingUiDefinition
@@ -47,10 +47,10 @@ public class DefaultBasicMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.DefaultBasicMappingUiProvider_label;
 	}
 
 	public String getLinkLabel() {
-		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsMessages.DefaultBasicMappingUiProvider_linkLabel;
 	}
 }

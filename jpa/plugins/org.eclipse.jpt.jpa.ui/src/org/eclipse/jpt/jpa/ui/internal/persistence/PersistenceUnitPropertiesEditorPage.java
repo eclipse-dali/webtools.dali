@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -68,7 +69,7 @@ public class PersistenceUnitPropertiesEditorPage
 	protected void initializeLayout(Composite container) {
 		this.addLabel(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties_description
+			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_PROPERTIES_COMPOSITE_PROPERTIES_DESCRIPTION
 		);
 
 		this.tablePane = new TablePane(container);
@@ -170,11 +171,11 @@ public class PersistenceUnitPropertiesEditorPage
 
 			switch (columnIndex) {
 				case PropertyColumnAdapter.NAME_COLUMN: {
-					return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_nameColumn;
+					return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_PROPERTIES_COMPOSITE_NAME_COLUMN;
 				}
 
 				case PropertyColumnAdapter.VALUE_COLUMN: {
-					return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_valueColumn;
+					return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_PROPERTIES_COMPOSITE_VALUE_COLUMN;
 				}
 
 				default: {

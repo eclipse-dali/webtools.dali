@@ -54,6 +54,7 @@ import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -88,7 +89,7 @@ public class GenerateEntitiesFromSchemaWizard
 	
 	public GenerateEntitiesFromSchemaWizard() {
 		this.resourceManager = this.buildResourceManager();
-		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 	}
 	
 	public GenerateEntitiesFromSchemaWizard( JpaProject jpaProject, IStructuredSelection selection) {
@@ -96,7 +97,7 @@ public class GenerateEntitiesFromSchemaWizard
 		this.jpaProject = jpaProject;
 		this.selection = selection;
 		this.resourceManager = this.buildResourceManager();
-		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 		this.setDefaultPageImageDescriptor(JptJpaUiImages.ENTITY_BANNER);
 	}
 
@@ -522,7 +523,7 @@ public class GenerateEntitiesFromSchemaWizard
 		}
 		
 		this.selection = selection;
-		this.setWindowTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 	}
 
 	protected JpaProject getJpaProjectFromSelection(IStructuredSelection selection) {

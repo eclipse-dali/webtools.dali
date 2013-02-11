@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Composite;
 
@@ -63,7 +64,7 @@ public class MappedByPane
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.addLabel(container, JptUiDetailsMessages.Joining_mappedByAttributeLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.Joining_mappedByAttributeLabel);
 		this.addEditableCombo(
 			container,
 			buildCandidateAttributesListValueModel(),

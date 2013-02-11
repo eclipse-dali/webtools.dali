@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -68,7 +69,7 @@ public class OrphanRemoval2_0TriStateCheckBox extends Pane<OrphanRemovable2_0>
 	protected void initializeLayout(Composite container) {
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabel,
+			JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL,
 			this.buildSpecifiedOrphanRemovalHolder(),
 			this.buildOrphanRemovalStringHolder(),
 			null		// TODO
@@ -99,9 +100,9 @@ public class OrphanRemoval2_0TriStateCheckBox extends Pane<OrphanRemovable2_0>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL_DEFAULT, defaultStringValue);
 				}
-				return JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabel;
+				return JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL;
 			}
 		};
 	}

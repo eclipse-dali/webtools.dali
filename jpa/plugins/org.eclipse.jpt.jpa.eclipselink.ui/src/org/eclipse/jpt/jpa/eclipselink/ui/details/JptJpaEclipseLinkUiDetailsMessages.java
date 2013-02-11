@@ -181,6 +181,12 @@ public class JptJpaEclipseLinkUiDetailsMessages {
 
 	public static String ORM_ATTRIBUTE_TYPE_COMPOSITE_ATTRIBUTE_TYPE;
 
+	public static String ARRAY_MAPPING_LABEL;
+	public static String ARRAY_MAPPING_LINK_LABEL;
+
+	public static String STRUCTURE_MAPPING_LABEL;
+	public static String STRUCTURE_MAPPING_LINK_LABEL;
+	
 	private JptJpaEclipseLinkUiDetailsMessages() {
 		throw new UnsupportedOperationException();
 	}

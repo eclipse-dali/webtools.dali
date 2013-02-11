@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2013 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityRow;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.dialogs.TypeSearchEngine;
 import org.eclipse.swt.SWT;
@@ -132,9 +133,9 @@ public class EntityRowTableWizardSection extends Composite {
 	private Button addButton;
 	private Button editButton;
 	private Button removeButton;
-	private String title = EntityWizardMsg.ENTITY_FIELDS_DIALOG_TITLE;
+	private String title = JptJpaUiWizardsEntityMessages.ENTITY_FIELDS_DIALOG_TITLE;
 	private String[] typeProposals = VALID_TYPES;
-	private String[] labelsForText = new String[]{EntityWizardMsg.TYPE_TEXT_FIELD, EntityWizardMsg.NAME_TEXT_FIELD};
+	private String[] labelsForText = new String[]{JptJpaUiWizardsEntityMessages.TYPE_TEXT_FIELD, JptJpaUiWizardsEntityMessages.NAME_TEXT_FIELD};
 	private IDataModel model;
 	private String propertyName;
 	private Image labelProviderImage = null;
@@ -183,7 +184,7 @@ public class EntityRowTableWizardSection extends Composite {
 		buttonComposition.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
 
 		addButton = new Button(buttonComposition, SWT.PUSH);
-		addButton.setText(EntityWizardMsg.ADD_BUTTON_LABEL); 
+		addButton.setText(JptJpaUiWizardsEntityMessages.ADD_BUTTON_LABEL); 
 		addButton.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL));
 		addButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -195,7 +196,7 @@ public class EntityRowTableWizardSection extends Composite {
 		});
 
 		editButton = new Button(buttonComposition, SWT.PUSH);
-		editButton.setText(EntityWizardMsg.EDIT_BUTTON_LABEL);
+		editButton.setText(JptJpaUiWizardsEntityMessages.EDIT_BUTTON_LABEL);
 		editButton.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL));
 		editButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -213,7 +214,7 @@ public class EntityRowTableWizardSection extends Composite {
 		});
 
 		removeButton = new Button(buttonComposition, SWT.PUSH);
-		removeButton.setText(EntityWizardMsg.REMOVE_BUTTON_LABEL);
+		removeButton.setText(JptJpaUiWizardsEntityMessages.REMOVE_BUTTON_LABEL);
 		removeButton.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL));
 		removeButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -238,15 +239,15 @@ public class EntityRowTableWizardSection extends Composite {
 		
 		
 		final TableColumn pkColumn = new TableColumn(mTableWidget, SWT.CHECK);
-        pkColumn.setText(EntityWizardMsg.KEY);
+        pkColumn.setText(JptJpaUiWizardsEntityMessages.KEY);
 		pkColumn.pack();
 		pkColumn.setResizable(false);
 
         TableColumn nameColumn = new TableColumn(mTableWidget, SWT.NONE);
-        nameColumn.setText(EntityWizardMsg.NAME_COLUMN);
+        nameColumn.setText(JptJpaUiWizardsEntityMessages.NAME_COLUMN);
 
         TableColumn typeColumn = new TableColumn(mTableWidget, SWT.NONE);
-        typeColumn.setText(EntityWizardMsg.TYPE_COLUMN);
+        typeColumn.setText(JptJpaUiWizardsEntityMessages.TYPE_COLUMN);
 
         this.addControlListener(new ControlAdapter() {
         	@Override
@@ -628,7 +629,7 @@ public class EntityRowTableWizardSection extends Composite {
 			attributeType.setLayoutData(data);
 			
 			Button browseButton = new Button(composite, SWT.PUSH);
-			browseButton.setText(EntityWizardMsg.BROWSE_BUTTON_LABEL);
+			browseButton.setText(JptJpaUiWizardsEntityMessages.BROWSE_BUTTON_LABEL);
 			GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 			browseButtonData.horizontalSpan = 1;
 			browseButton.setLayoutData(browseButtonData);
@@ -705,8 +706,8 @@ public class EntityRowTableWizardSection extends Composite {
 				return;
 			}
 			
-			dialog.setTitle(EntityWizardMsg.TYPE_DIALOG_TITLE);
-			dialog.setMessage(EntityWizardMsg.TYPE_DIALOG_DESCRIPTION);
+			dialog.setTitle(JptJpaUiWizardsEntityMessages.TYPE_DIALOG_TITLE);
+			dialog.setMessage(JptJpaUiWizardsEntityMessages.TYPE_DIALOG_DESCRIPTION);
 
 			if (dialog.open() == Window.OK) {
 				IType type;

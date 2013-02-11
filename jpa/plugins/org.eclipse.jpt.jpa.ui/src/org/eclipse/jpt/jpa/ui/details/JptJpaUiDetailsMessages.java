@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,17 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.details;
+package org.eclipse.jpt.jpa.ui.details;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Localized messages used by Dali mapping panes.
- *
- * @version 2.3
- * @since 1.0
+ * Localized messages used by Dali JPA UI details view.
  */
-public class JptUiDetailsMessages {
+public class JptJpaUiDetailsMessages {
+
+	private static final String BUNDLE_NAME = "jpt_jpa_ui_details"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaUiDetailsMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
 
 	public static String AccessTypeCombo_default;
 	public static String AddQueryDialog_name;
@@ -292,14 +295,7 @@ public class JptUiDetailsMessages {
 	public static String TemporalTypeComposite_time;
 	public static String TemporalTypeComposite_timestamp;
 
-	private static final String BUNDLE_NAME = "jpt_ui_details"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptUiDetailsMessages.class;
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
-	}
-
-	private JptUiDetailsMessages() {
+	private JptJpaUiDetailsMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

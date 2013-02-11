@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.jpa.gen.internal.Association;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -183,11 +184,11 @@ class AssociationFigure extends Button {
 		String referrerTableName = association.getReferrerTableName();
 		String referencedTable = association.getReferencedTableName();
 		if( cardinality.equals(Association.MANY_TO_ONE ) ){
-			text = String.format( JptUiEntityGenMessages.manyToOneDesc, referencedTable , referrerTableName ); 
+			text = String.format( JptJpaUiWizardsEntityGenMessages.manyToOneDesc, referencedTable , referrerTableName ); 
 		}else if( cardinality.equals(Association.ONE_TO_ONE ) ){
-			text = String.format( JptUiEntityGenMessages.oneToOneDesc, referrerTableName, referencedTable );
+			text = String.format( JptJpaUiWizardsEntityGenMessages.oneToOneDesc, referrerTableName, referencedTable );
 		}else if( cardinality.equals(Association.MANY_TO_MANY) ){
-			text = String.format( JptUiEntityGenMessages.manyToManyDesc, referrerTableName, referencedTable, referencedTable, referrerTableName );			
+			text = String.format( JptJpaUiWizardsEntityGenMessages.manyToManyDesc, referrerTableName, referencedTable, referencedTable, referrerTableName );			
 		}
 		
 		if( association.isCustom() ){

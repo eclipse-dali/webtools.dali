@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -105,9 +106,9 @@ public class SecondaryTableDialog extends Dialog {
 
 	protected String getTitle() {
 		return (this.secondaryTable == null) ?
-						JptUiDetailsMessages.SecondaryTableDialog_addSecondaryTable
+						JptJpaUiDetailsMessages.SecondaryTableDialog_addSecondaryTable
 					:
-						JptUiDetailsMessages.SecondaryTableDialog_editSecondaryTable;
+						JptJpaUiDetailsMessages.SecondaryTableDialog_editSecondaryTable;
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// table
 		Label tableLabel = new Label(composite, SWT.LEFT);
-		tableLabel.setText(JptUiDetailsMessages.SecondaryTableDialog_name);
+		tableLabel.setText(JptJpaUiDetailsMessages.SecondaryTableDialog_name);
 		GridData gridData = new GridData();
 		tableLabel.setLayoutData(gridData);
 
@@ -130,7 +131,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// catalog
 		Label catalogLabel = new Label(composite, SWT.LEFT);
-		catalogLabel.setText(JptUiDetailsMessages.SecondaryTableDialog_catalog);
+		catalogLabel.setText(JptJpaUiDetailsMessages.SecondaryTableDialog_catalog);
 		gridData = new GridData();
 		catalogLabel.setLayoutData(gridData);
 
@@ -142,7 +143,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// schema
 		Label schemaLabel = new Label(composite, SWT.LEFT);
-		schemaLabel.setText(JptUiDetailsMessages.SecondaryTableDialog_schema);
+		schemaLabel.setText(JptJpaUiDetailsMessages.SecondaryTableDialog_schema);
 		gridData = new GridData();
 		schemaLabel.setLayoutData(gridData);
 
@@ -194,7 +195,7 @@ public class SecondaryTableDialog extends Dialog {
 
 		// add the default catalog first
 		if (this.defaultCatalog != null) {
-			this.catalogCombo.add(NLS.bind(JptUiDetailsMessages.SecondaryTableDialog_defaultCatalog, this.defaultCatalog));
+			this.catalogCombo.add(NLS.bind(JptJpaUiDetailsMessages.SecondaryTableDialog_defaultCatalog, this.defaultCatalog));
 		}
 
 		if (database != null) {
@@ -223,7 +224,7 @@ public class SecondaryTableDialog extends Dialog {
 	protected void populateSchemaCombo() {
 		// add the default schema first
 		if (this.defaultSchema != null) {
-			this.schemaCombo.add(NLS.bind(JptUiDetailsMessages.SecondaryTableDialog_defaultSchema, this.defaultSchema));
+			this.schemaCombo.add(NLS.bind(JptJpaUiDetailsMessages.SecondaryTableDialog_defaultSchema, this.defaultSchema));
 		}
 
 		SchemaContainer sc = this.getCurrentDbSchemaContainer();

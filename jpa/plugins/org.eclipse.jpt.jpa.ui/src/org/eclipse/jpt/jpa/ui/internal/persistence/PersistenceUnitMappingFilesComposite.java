@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,6 +40,7 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
@@ -82,8 +83,8 @@ public abstract class PersistenceUnitMappingFilesComposite
 		
 		dialog.setHelpAvailable(false);
 		dialog.setValidator(buildValidator());
-		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
-		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
+		dialog.setTitle(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_MAPPING_FILES_COMPOSITE_MAPPING_FILE_DIALOG_TITLE);
+		dialog.setMessage(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_MAPPING_FILES_COMPOSITE_MAPPING_FILE_DIALOG_MESSAGE);
 		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject(), ResourceMappingFile.Root.CONTENT_TYPE));
 		dialog.setInput(getSubject().getJpaProject().getProject());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
@@ -148,7 +149,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 		@Override
 		protected String transform_(MappingFileRef mappingFileRef) {
 			String name = mappingFileRef.getFileName();
-			return (name != null) ? name : JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_ormNoName;
+			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_MAPPING_FILES_COMPOSITE_ORM_NO_NAME;
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,6 +41,7 @@ import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -74,8 +75,8 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	public DefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(true, "DefaultTableGenerationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
-		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_title);
-		setDescription( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_desc);
+		setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_title);
+		setDescription( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_desc);
 	}
 	
 	
@@ -199,7 +200,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
 	protected void createDomainJavaClassesPropertiesGroup(Composite composite, int columns) {
 		Group parent = new Group( composite, SWT.NONE);
-		parent.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_domainJavaClass);
+		parent.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_domainJavaClass);
 		parent.setLayout(new GridLayout( columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;

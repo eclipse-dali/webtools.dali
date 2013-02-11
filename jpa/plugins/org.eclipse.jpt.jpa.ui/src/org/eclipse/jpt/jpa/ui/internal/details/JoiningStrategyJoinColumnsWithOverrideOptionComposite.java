@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 public class JoiningStrategyJoinColumnsWithOverrideOptionComposite 
@@ -43,7 +44,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		// Override Default Join Columns check box
 		addCheckBox(
 			container,
-			JptUiDetailsMessages.JoiningStrategyJoinColumnsComposite_overrideDefaultJoinColumns,
+			JptJpaUiDetailsMessages.JoiningStrategyJoinColumnsComposite_overrideDefaultJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);

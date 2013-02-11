@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.UnsupportedOrmAttributeMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
@@ -54,13 +55,13 @@ public class PersistentAttributeMapAsComposite
 			String mappingKey = getMappingKey();
 
 			if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-				return JptUiDetailsMessages.MapAsComposite_mappedAttributeText;
+				return JptJpaUiDetailsMessages.MapAsComposite_mappedAttributeText;
 			}
 			if (getSubject().isVirtual()) {
-				return JptUiDetailsMessages.MapAsComposite_virtualAttributeText;
+				return JptJpaUiDetailsMessages.MapAsComposite_virtualAttributeText;
 			}
 
-			return JptUiDetailsMessages.MapAsComposite_unmappedAttributeText;
+			return JptJpaUiDetailsMessages.MapAsComposite_unmappedAttributeText;
 		}
 
 		public String getMappingText() {

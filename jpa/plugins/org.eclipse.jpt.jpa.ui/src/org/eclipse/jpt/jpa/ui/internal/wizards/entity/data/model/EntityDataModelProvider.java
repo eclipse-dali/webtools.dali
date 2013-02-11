@@ -34,8 +34,8 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
@@ -238,7 +238,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	
 	private IStatus validateJavaPackage(String packName) {		
 		if (packName == null || packName.equals(EMPTY_STRING)) {
-			return WTPCommonPlugin.createWarningStatus(EntityWizardMsg.DEFAULT_PACKAGE_WARNING);
+			return WTPCommonPlugin.createWarningStatus(JptJpaUiWizardsEntityMessages.DEFAULT_PACKAGE_WARNING);
 		}			
 		// Use standard java conventions to validate the package name
 		IStatus javaStatus = JavaConventions.validatePackageName(packName, JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
@@ -265,11 +265,11 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			if (project != null) {
 				JptXmlResource ormXmlResource = StringTools.isBlank(xmlName) ? null : getOrmXmlResource(xmlName);
 				if (ormXmlResource == null) {
-					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.INVALID_XML_NAME);
+					return JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.INVALID_XML_NAME);
 				}
 				JpaProject jpaProject = this.getTargetJpaProject();
 				if ((jpaProject == null) || jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
-					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.MAPPING_FILE_NOT_LISTED_ERROR);
+					return JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.MAPPING_FILE_NOT_LISTED_ERROR);
 				}
 			}
 		}
@@ -295,7 +295,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			// Ensure there are not duplicate entries in the list
 			boolean dup = hasDuplicatesInEntityFields(entities);
 			if (dup) {
-				String msg = EntityWizardMsg.DUPLICATED_ENTITY_NAMES_MESSAGE;				
+				String msg = JptJpaUiWizardsEntityMessages.DUPLICATED_ENTITY_NAMES_MESSAGE;				
 				return WTPCommonPlugin.createErrorStatus(msg);
 			}
 			// Ensure that the entries in the list are valid
@@ -315,14 +315,14 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		IStatus validateFieldTypeStatus = Status.OK_STATUS;
 		for (EntityRow entityRow: inputElements) {
 			if (entityRow.isKey() && !entityRow.couldBeKey()) {
-				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_invalidPKType, entityRow.getFqnTypeName());
+				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.ENTITY_DATA_MODEL_PROVIDER_INVALID_PK_TYPE, entityRow.getFqnTypeName());
 				break;				
 			}			
 			String sig = null;
 			try {
 				sig = Signature.createTypeSignature(entityRow.getFqnTypeName(), true);
 			} catch (IllegalArgumentException ex) {
-				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_invalidArgument, ex.getLocalizedMessage());
+				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.ENTITY_DATA_MODEL_PROVIDER_INVALID_ARGUMENT, ex.getLocalizedMessage());
 				break;
 			}
 			if (sig == null){
@@ -351,7 +351,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		for (EntityRow entityRow: inputElements) {
 			String sig = Signature.createTypeSignature(entityRow.getFqnTypeName() ,true);
 			if (sig == null) {
-				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, entityRow.getFqnTypeName());
+				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.ENTITY_DATA_MODEL_PROVIDER_TYPE_NOT_IN_PROJECT_CLASSPATH, entityRow.getFqnTypeName());
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -374,7 +374,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 					break;
 				}
 				if (type == null) {
-					validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, entityRow.getFqnTypeName());
+					validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.ENTITY_DATA_MODEL_PROVIDER_TYPE_NOT_IN_PROJECT_CLASSPATH, entityRow.getFqnTypeName());
 					break;
 				}
 			}
@@ -389,7 +389,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 					break;
 				}
 				if (type == null) {
-					validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, entityRow.getFqnTypeName());
+					validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(JptJpaUiWizardsEntityMessages.ENTITY_DATA_MODEL_PROVIDER_TYPE_NOT_IN_PROJECT_CLASSPATH, entityRow.getFqnTypeName());
 					break;
 				}
 			}

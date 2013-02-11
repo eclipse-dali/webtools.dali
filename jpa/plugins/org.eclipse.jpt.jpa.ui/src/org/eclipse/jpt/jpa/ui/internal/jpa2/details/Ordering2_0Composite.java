@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,12 @@ import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOrderingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingComposite;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -61,7 +62,7 @@ public class Ordering2_0Composite
 		// No Ordering radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages.OrderingComposite_none,
+			JptJpaUiDetailsMessages.OrderingComposite_none,
 			buildNoOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
 		);
@@ -69,7 +70,7 @@ public class Ordering2_0Composite
 		// Order by Primary Key radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages.OrderingComposite_primaryKey,
+			JptJpaUiDetailsMessages.OrderingComposite_primaryKey,
 			buildPrimaryKeyOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
 		);
@@ -77,7 +78,7 @@ public class Ordering2_0Composite
 		// Custom Ordering radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages.OrderingComposite_custom,
+			JptJpaUiDetailsMessages.OrderingComposite_custom,
 			buildCustomOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
 		);
@@ -97,7 +98,7 @@ public class Ordering2_0Composite
 		// Order Column Ordering radio button
 		addRadioButton(
 			container,
-			JptUiDetailsMessages2_0.OrderingComposite_orderColumn,
+			JptJpaUiDetailsMessages2_0.ORDERING_COMPOSITE_ORDER_COLUMN,
 			buildOrderColumnOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_COLUMN_ORDERING
 		);

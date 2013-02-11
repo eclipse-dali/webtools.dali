@@ -38,6 +38,7 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
@@ -196,10 +197,10 @@ public class EntityClassWizardPage
 	 * @param parent the main composite
 	 */
 	private void createInheritanceControl(Composite parent) {
-		Group group = createGroup(parent, EntityWizardMsg.INHERITANCE_GROUP);
-		this.entityButton = createRadioButton(group, EntityWizardMsg.ENTITY, IEntityDataModelProperties.ENTITY);
-		this.mapedAsSuperclassButton = createRadioButton(group, EntityWizardMsg.MAPPED_AS_SUPERCLASS, IEntityDataModelProperties.MAPPED_AS_SUPERCLASS);
-		this.inheritanceButton = createCheckButton(group, GridData.HORIZONTAL_ALIGN_FILL, 1/*horizontal span*/, EntityWizardMsg.INHERITANCE_CHECK_BOX, IEntityDataModelProperties.INHERITANCE);
+		Group group = createGroup(parent, JptJpaUiWizardsEntityMessages.INHERITANCE_GROUP);
+		this.entityButton = createRadioButton(group, JptJpaUiWizardsEntityMessages.ENTITY, IEntityDataModelProperties.ENTITY);
+		this.mapedAsSuperclassButton = createRadioButton(group, JptJpaUiWizardsEntityMessages.MAPPED_AS_SUPERCLASS, IEntityDataModelProperties.MAPPED_AS_SUPERCLASS);
+		this.inheritanceButton = createCheckButton(group, GridData.HORIZONTAL_ALIGN_FILL, 1/*horizontal span*/, JptJpaUiWizardsEntityMessages.INHERITANCE_CHECK_BOX, IEntityDataModelProperties.INHERITANCE);
 		createComboBox(group, IEntityDataModelProperties.INHERITANCE_STRATEGY);
 	}
 	
@@ -208,9 +209,9 @@ public class EntityClassWizardPage
 	 * @param parent the main composite
 	 */
 	private void createXMLstorageControl(Composite parent) {
-		Group group = createGroup(parent, EntityWizardMsg.XML_STORAGE_GROUP);
-		this.xmlSupportButton = createCheckButton(group, GridData.FILL_HORIZONTAL, 3/*horizontal span*/, EntityWizardMsg.XML_SUPPORT, IEntityDataModelProperties.XML_SUPPORT);				
-		createBrowseGroup(group, EntityWizardMsg.CHOOSE_XML, IEntityDataModelProperties.XML_NAME);
+		Group group = createGroup(parent, JptJpaUiWizardsEntityMessages.XML_STORAGE_GROUP);
+		this.xmlSupportButton = createCheckButton(group, GridData.FILL_HORIZONTAL, 3/*horizontal span*/, JptJpaUiWizardsEntityMessages.XML_SUPPORT, IEntityDataModelProperties.XML_SUPPORT);				
+		createBrowseGroup(group, JptJpaUiWizardsEntityMessages.CHOOSE_XML, IEntityDataModelProperties.XML_NAME);
 		this.ormXmlName.setEnabled(false);		
 		this.browseButton.setEnabled(false);		
 	}
@@ -301,7 +302,7 @@ public class EntityClassWizardPage
 		this.ormXmlName = new Text(composite, SWT.SINGLE | SWT.BORDER);
 		this.ormXmlName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		this.browseButton = new Button(composite, SWT.PUSH);
-		this.browseButton.setText(EntityWizardMsg.BROWSE_BUTTON_LABEL);
+		this.browseButton.setText(JptJpaUiWizardsEntityMessages.BROWSE_BUTTON_LABEL);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		browseButtonData.horizontalSpan = 1;
 		this.browseButton.setLayoutData(browseButtonData);		
@@ -342,8 +343,8 @@ public class EntityClassWizardPage
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		SelectMappingFileDialog dialog = new SelectMappingFileDialog(getShell(), project, labelProvider, contentProvider);
-		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
-		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
+		dialog.setTitle(JptJpaUiWizardsEntityMessages.MAPPING_XML_TITLE);
+		dialog.setMessage(JptJpaUiWizardsEntityMessages.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.ormXmlName.getText();

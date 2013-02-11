@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,6 +46,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -91,7 +92,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		// Override Default check box
 		Button overrideCheckBox = addCheckBox(
 			container,
-				JptUiDetailsMessages.OverridesComposite_overrideDefault,
+				JptJpaUiDetailsMessages.OverridesComposite_overrideDefault,
 				getOverrideVirtualOverrideHolder(),
 				null);
 		SWTTools.controlVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
@@ -242,17 +243,17 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		
 		// Retrieve the type
 		if (override instanceof ReadOnlyAssociationOverride) {
-			overrideType = JptUiDetailsMessages.OverridesComposite_association;
+			overrideType = JptJpaUiDetailsMessages.OverridesComposite_association;
 		}
 		else {
-			overrideType = JptUiDetailsMessages.OverridesComposite_attribute;
+			overrideType = JptJpaUiDetailsMessages.OverridesComposite_attribute;
 		}
 		
 		// Format the name
 		String name = override.getName();
 		
 		if (StringTools.isBlank(name)) {
-			name = JptUiDetailsMessages.OverridesComposite_noName;
+			name = JptJpaUiDetailsMessages.OverridesComposite_noName;
 		}
 		
 		// Format: <name> (Attribute/Association Override)

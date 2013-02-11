@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -95,7 +96,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
 		section.setClient(this.initializeBasicSection(section));
 	}
 	
@@ -107,7 +108,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);
 
-		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
 		new FetchTypeComboViewer(this, container);
 
 		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
@@ -121,7 +122,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	protected void initializeTypeCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.TypeSection_type);
+		section.setText(JptJpaUiDetailsMessages.TypeSection_type);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -138,7 +139,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TypeSection_default, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -146,7 +147,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_lob, 
+			JptJpaUiDetailsMessages.TypeSection_lob, 
 			buildConverterBooleanHolder(LobConverter.class), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -155,7 +156,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
@@ -164,7 +165,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_enumerated, 
+			JptJpaUiDetailsMessages.TypeSection_enumerated, 
 			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
 		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);

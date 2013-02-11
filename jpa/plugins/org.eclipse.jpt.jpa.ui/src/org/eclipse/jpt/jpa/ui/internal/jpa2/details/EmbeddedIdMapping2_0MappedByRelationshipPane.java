@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivableIdMapping2_0;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -47,7 +48,7 @@ public class EmbeddedIdMapping2_0MappedByRelationshipPane
 
 	protected Label getMappedByRelationshipLabel(Composite container) {
 		if (this.mappedByRelationshipLabel == null) {
-			this.mappedByRelationshipLabel = this.addLabel(container, JptUiDetailsMessages2_0.EmbeddedIdMapping2_0MappedByRelationshipPane_label);
+			this.mappedByRelationshipLabel = this.addLabel(container, JptJpaUiDetailsMessages2_0.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_PANE_LABEL);
 		}
 		return this.mappedByRelationshipLabel;
 	}

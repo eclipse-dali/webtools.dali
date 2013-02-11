@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JpaUiFactory2_0;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 
 public class ElementCollectionMapping2_0UiDefinition
@@ -52,11 +53,11 @@ public class ElementCollectionMapping2_0UiDefinition
 	}
 
 	public String getLabel() {
-		return JptUiDetailsMessages2_0.ElementCollectionMapping2_0_label;
+		return JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LABEL;
 	}
 
 	public String getLinkLabel() {
-		return JptUiDetailsMessages2_0.ElementCollectionMapping2_0_linkLabel;
+		return JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_MAPPING_LINK_LABEL;
 	}
 
 	@Override

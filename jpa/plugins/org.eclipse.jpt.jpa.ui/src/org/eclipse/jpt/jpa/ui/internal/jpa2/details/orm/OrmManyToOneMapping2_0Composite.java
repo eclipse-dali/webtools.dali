@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,12 +16,12 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
@@ -48,11 +48,11 @@ public class OrmManyToOneMapping2_0Composite
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target entity widgets
-		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.TargetEntityChooser_label);
 		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
 
 		// Name widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ORM_MAPPING_NAME_CHOOSER_NAME);
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		// Access type widgets
@@ -60,7 +60,7 @@ public class OrmManyToOneMapping2_0Composite
 		new AccessTypeComboViewer(this, this.buildAccessReferenceModel(), container);
 
 		// Fetch type widgets
-		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
 		new FetchTypeComboViewer(this, container);
 
 		// Optional widgets

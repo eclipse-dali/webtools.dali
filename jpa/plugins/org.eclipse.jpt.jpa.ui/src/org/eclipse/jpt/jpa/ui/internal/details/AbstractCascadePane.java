@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -50,7 +51,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	protected Composite addComposite(Composite container) {
 		return addTitledGroup(
 			container,
-			JptUiDetailsMessages.CascadeComposite_cascadeTitle,
+			JptJpaUiDetailsMessages.CascadeComposite_cascadeTitle,
 			5,
 			null);
 	}
@@ -67,7 +68,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	protected void addAllCheckBox(Composite container) {
 		addCheckBox(
 				container,
-				JptUiDetailsMessages.CascadeComposite_all,
+				JptJpaUiDetailsMessages.CascadeComposite_all,
 				buildCascadeTypeAllModel(),
 				null);
 	}
@@ -75,7 +76,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	protected void addPersistCheckBox(Composite container) {
 		addCheckBox(
 				container,
-				JptUiDetailsMessages.CascadeComposite_persist,
+				JptJpaUiDetailsMessages.CascadeComposite_persist,
 				buildCascadeTypePersistModel(),
 				null);
 	}
@@ -83,7 +84,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	protected void addMergeCheckBox(Composite container) {
 		addCheckBox(
 				container,
-				JptUiDetailsMessages.CascadeComposite_merge,
+				JptJpaUiDetailsMessages.CascadeComposite_merge,
 				buildCascadeTypeMergeModel(),
 				null);
 	}
@@ -91,7 +92,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	protected void addRemoveCheckBox(Composite container) {
 		addCheckBox(
 				container,
-				JptUiDetailsMessages.CascadeComposite_remove,
+				JptJpaUiDetailsMessages.CascadeComposite_remove,
 				buildCascadeTypeRemoveModel(),
 				null);
 	}
@@ -99,7 +100,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	protected void addRefreshCheckBox(Composite container) {
 		addCheckBox(
 				container,
-				JptUiDetailsMessages.CascadeComposite_refresh,
+				JptJpaUiDetailsMessages.CascadeComposite_refresh,
 				buildCascadeTypeRefreshModel(),
 				null);
 	}

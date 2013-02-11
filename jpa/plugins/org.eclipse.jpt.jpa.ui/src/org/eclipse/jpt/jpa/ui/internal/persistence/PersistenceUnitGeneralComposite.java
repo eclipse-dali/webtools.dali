@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
 
 public class PersistenceUnitGeneralComposite extends Pane<PersistenceUnit>
@@ -38,15 +39,15 @@ public class PersistenceUnitGeneralComposite extends Pane<PersistenceUnit>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiPersistenceMessages.PersistenceUnitGeneralComposite_name);
+		this.addLabel(container, JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_NAME);
 		this.addText(container, this.buildPersistenceUnitNameHolder(), this.getHelpID());
 
 		// Persistence Provider widgets
-		this.addLabel(container, JptUiPersistenceMessages.PersistenceUnitGeneralComposite_persistenceProvider);
+		this.addLabel(container, JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_PERSISTENCE_PROVIDER);
 		this.addText(container, this.buildPersistenceProviderHolder(), this.getHelpID());
 
 		// Description widgets
-		this.addLabel(container, JptUiPersistenceMessages.PersistenceUnitGeneralComposite_description);
+		this.addLabel(container, JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_DESCRIPTION);
 		this.addText(container, this.buildPersistenceUnitDescriptionHolder(), this.getHelpID());
 	}
 

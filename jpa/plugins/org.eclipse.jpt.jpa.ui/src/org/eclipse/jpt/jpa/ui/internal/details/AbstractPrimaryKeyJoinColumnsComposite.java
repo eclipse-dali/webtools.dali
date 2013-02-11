@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,7 @@ import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -71,7 +72,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 	String buildJoinColumnLabel(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
-				JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -80,14 +81,14 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		if (joinColumn.getSpecifiedName() == null) {
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 				return NLS.bind(
-					JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
+					JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
 					joinColumn.getName(),
 					joinColumn.getReferencedColumnName()
 				);
 			}
 
 			return NLS.bind(
-				JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -95,14 +96,14 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 
 		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 			return NLS.bind(
-				JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
 		}
 
 		return NLS.bind(
-			JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams,
+			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams,
 			joinColumn.getName(),
 			joinColumn.getReferencedColumnName()
 		);
@@ -121,7 +122,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 
 			@Override
 			public String optionalButtonText() {
-				return JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_edit;
+				return JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_edit;
 			}
 
 			@Override
@@ -212,7 +213,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 			parent,
-			JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
+			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
 		);
 	}
 
@@ -221,7 +222,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		// Override Default Join Columns check box
 		addCheckBox(
 			container,
-			JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
+			JptJpaUiDetailsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);

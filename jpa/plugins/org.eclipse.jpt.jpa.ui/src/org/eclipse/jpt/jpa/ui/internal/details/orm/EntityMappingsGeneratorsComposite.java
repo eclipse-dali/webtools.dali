@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,6 +38,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.jpt.jpa.ui.internal.details.SequenceGeneratorComposite;
@@ -197,7 +198,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 						index = IterableTools.indexOf(getSubject().getTableGenerators(), generator);
 					}
 
-					name = NLS.bind(JptUiDetailsOrmMessages.OrmGeneratorsComposite_displayString, Integer.valueOf(index));
+					name = NLS.bind(JptJpaUiDetailsOrmMessages.ORM_GENERATORS_COMPOSITE_DISPLAY_STRING, Integer.valueOf(index));
 				}
 
 				return name;

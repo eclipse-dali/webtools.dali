@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -44,7 +45,7 @@ public class AddGeneratorDialog
 	 * Use this constructor to edit an existing conversion value
 	 */
 	public AddGeneratorDialog(Shell parent, ResourceManager resourceManager, PersistenceUnit pUnit) {
-		super(parent, resourceManager, JptUiDetailsOrmMessages.AddGeneratorDialog_title);
+		super(parent, resourceManager, JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_TITLE);
 		this.pUnit = pUnit;
 	}
 
@@ -57,12 +58,12 @@ public class AddGeneratorDialog
 
 	@Override
 	protected String getDescriptionTitle() {
-		return JptUiDetailsOrmMessages.AddGeneratorDialog_descriptionTitle;
+		return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_DESCRIPTION_TITLE;
 	}
 	
 	@Override
 	protected String getDescription() {
-		return JptUiDetailsOrmMessages.AddGeneratorDialog_description;
+		return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_DESCRIPTION;
 	}
 	
 	@Override
@@ -114,13 +115,13 @@ public class AddGeneratorDialog
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.addLabel(container, JptUiDetailsOrmMessages.AddGeneratorDialog_name);
+			this.addLabel(container, JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_NAME);
 			this.nameText = this.addText(
 				container,
 				buildNameHolder()
 			);
 			
-			this.addLabel(container, JptUiDetailsOrmMessages.AddGeneratorDialog_generatorType);
+			this.addLabel(container, JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_GENERATOR_TYPE);
 			this.addCombo(
 				container,  
 				buildGeneratorTypeListHolder(), 
@@ -142,10 +143,10 @@ public class AddGeneratorDialog
 				@Override
 				public String transform(String value) {
 					if (value == TABLE_GENERATOR) {
-						return JptUiDetailsOrmMessages.AddGeneratorDialog_tableGenerator;
+						return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_TABLE_GENERATOR;
 					}
 					if (value == SEQUENCE_GENERATOR) {
-						return JptUiDetailsOrmMessages.AddGeneratorDialog_sequenceGenerator;
+						return JptJpaUiDetailsOrmMessages.ADD_GENERATOR_DIALOG_SEQUENCE_GENERATOR;
 					}
 					return value;
 				}

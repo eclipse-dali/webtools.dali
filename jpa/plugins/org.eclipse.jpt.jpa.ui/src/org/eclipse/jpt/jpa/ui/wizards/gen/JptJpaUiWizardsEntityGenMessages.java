@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,20 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
+package org.eclipse.jpt.jpa.ui.wizards.gen;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Localized messages used by Dali UI.
- *
- * @version 2.0
- * @since 2.0
+ * Localized messages used by Dali JPA UI Entity Generation Wizard.
  */
-public class JptUiEntityGenMessages {
-	private static final String BUNDLE_NAME = "jpt_ui_entity_gen"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptUiEntityGenMessages.class;
-	
+public class JptJpaUiWizardsEntityGenMessages {
+	private static final String BUNDLE_NAME = "jpt_jpa_ui_wizards_entity_gen"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaUiWizardsEntityGenMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
+
 	public static String GenerateEntitiesWizard_tableSelectPage_Restore_Defaults;
 	public static String GenerateEntitiesWizard_generateEntities;
 	public static String GenerateEntitiesWizard_selectJPAProject;
@@ -121,12 +121,8 @@ public class JptUiEntityGenMessages {
 	public static String GenerateEntitiesWizard_colPanel_beanProp;
 	public static String GenerateEntitiesWizard_colPanel_getterScope;
 	public static String GenerateEntitiesWizard_colPanel_setterScope;
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
-	}
 
-	private JptUiEntityGenMessages() {
+	private JptJpaUiWizardsEntityGenMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

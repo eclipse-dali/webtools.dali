@@ -1,15 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
- * which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
+ * terms of the Eclipse Public License v1.0 and Eclipse Distribution License
+ * v1.0, which accompany this distribution. The Eclipse Public License is
+ * available at http://www.eclipse.org/legal/epl-v10.html; and the Eclipse
+ * Distribution License is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
- *
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
@@ -27,7 +26,13 @@ import org.eclipse.persistence.jpa.jpql.parser.Expression;
  * @author Pascal Filion
  */
 @SuppressWarnings("nls")
-final class JpqlIdentifierMessages extends NLS {
+final class JpqlIdentifierMessages {
+
+	private static final String BUNDLE_NAME = "jpt_jpa_ui_jpql_identifiers"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JpqlIdentifierMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
 
 	// JPA 1.0 identifiers
 	public static String ABS;
@@ -101,15 +106,6 @@ final class JpqlIdentifierMessages extends NLS {
 	public static String POSITION;
 	public static String UNKNOWN;
 
-	static {
-		NLS.initializeMessages("jpt_ui_jpql_identifiers", JpqlIdentifierMessages.class);
-	}
-
-	JpqlIdentifierMessages() {
-		super();
-		throw new UnsupportedOperationException();
-	}
-
 	private static Map<String, String> registeredIdentifers;
 
 	private static Map<String, String> buildRegisteredIdentifers() {
@@ -182,5 +178,9 @@ final class JpqlIdentifierMessages extends NLS {
 			registeredIdentifers = buildRegisteredIdentifers();
 		}
 		return registeredIdentifers;
+	}
+
+	JpqlIdentifierMessages() {
+		throw new UnsupportedOperationException();
 	}
 }

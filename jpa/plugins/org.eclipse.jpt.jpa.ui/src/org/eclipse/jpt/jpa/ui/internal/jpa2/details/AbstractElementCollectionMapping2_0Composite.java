@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,11 +29,12 @@ import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeCombo;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -79,7 +80,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages2_0.ElementCollectionSection_title);
+		section.setText(JptJpaUiDetailsMessages2_0.ELEMENT_COLLECTION_SECTION_TITLE);
 		section.setClient(this.buildElementCollectionSectionClient(section));
 	}
 
@@ -87,11 +88,11 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target class widgets
-		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages2_0.TargetClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages2_0.TARGET_CLASS_COMPOSITE_LABEL);
 		new TargetClassChooser(this, container, hyperlink);
 
 		// Fetch type widgets
-		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
 		new FetchTypeComboViewer(this, container);
 
 		// Collection table widgets
@@ -106,7 +107,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	protected void initializeOrderingCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.OrderingComposite_orderingGroup);
+		section.setText(JptJpaUiDetailsMessages.OrderingComposite_orderingGroup);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -124,7 +125,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	protected void initializeValueCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages2_0.AbstractElementCollectionMapping2_0_Composite_valueSectionTitle);
+		section.setText(JptJpaUiDetailsMessages2_0.ABSTRACT_ELEMENT_COLLECTION_MAPPING_COMPOSITE_VALUE_SECTION_TITLE);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -164,7 +165,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		// type section
 		final Section section = this.getWidgetFactory().createSection(basicComposite, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.TypeSection_type);
+		section.setText(JptJpaUiDetailsMessages.TypeSection_type);
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -186,7 +187,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -194,7 +195,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_lob, 
+			JptJpaUiDetailsMessages.TypeSection_lob, 
 			buildLobConverterHolder(), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -204,7 +205,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
@@ -213,7 +214,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_enumerated, 
+			JptJpaUiDetailsMessages.TypeSection_enumerated, 
 			buildEnumeratedBooleanHolder(), 
 			null);
 		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);

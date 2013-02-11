@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -64,7 +65,7 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages.BasicGeneralSection_optionalLabel,
+			JptJpaUiDetailsMessages.BasicGeneralSection_optionalLabel,
 			buildSpecifiedOptionalHolder(),
 			buildOptionalStringHolder(),
 			JpaHelpContextIds.MAPPING_OPTIONAL
@@ -91,9 +92,9 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.BasicGeneralSection_optionalLabelDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.BasicGeneralSection_optionalLabelDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.BasicGeneralSection_optionalLabel;
+				return JptJpaUiDetailsMessages.BasicGeneralSection_optionalLabel;
 			}
 		};
 	}

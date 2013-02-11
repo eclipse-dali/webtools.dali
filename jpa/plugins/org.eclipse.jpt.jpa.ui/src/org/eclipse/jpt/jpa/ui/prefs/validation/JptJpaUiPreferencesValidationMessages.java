@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,15 +7,21 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal;
+package org.eclipse.jpt.jpa.ui.prefs.validation;
 
 import org.eclipse.osgi.util.NLS;
 
-//Content is organized based on the categories and entries in each categories are listed alphabetically.
-//If adding a new entry, please add it to the corresponding category at the right place.
-
-public class JptUiValidationPreferenceMessages {
+/**
+ * Localized messages used by Dali JPA UI validation preferences.
+ */
+public class JptJpaUiPreferencesValidationMessages {
 	
+	private static final String BUNDLE_NAME = "jpt_jpa_ui_preferences_validation"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaUiPreferencesValidationMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
+
 	// Project Category
 	public static String PROJECT_LEVEL_CATEGORY;
 	
@@ -316,16 +322,7 @@ public class JptUiValidationPreferenceMessages {
 	public static String QUERY_NAME_UNDEFINED; // 3.0 M7
 	public static String QUERY_STATEMENT_UNDEFINED; // 3.0 M7	
 	
-	private static final String BUNDLE_NAME = "jpt_ui_validation_preferences"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptUiValidationPreferenceMessages.class;
-
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
-	}
-
-	private JptUiValidationPreferenceMessages() {
+	private JptJpaUiPreferencesValidationMessages() {
 		throw new UnsupportedOperationException();
 	}
-
-
 }

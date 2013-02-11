@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorC
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
 import org.eclipse.osgi.util.NLS;
@@ -72,7 +72,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 		this.addDiscriminatorTypeCombo(container);
 
 		// Length widgets
-		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_length);
+		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_length);
 		this.addLengthCombo(container);
 
 		// Column Definition widgets
@@ -288,11 +288,11 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			protected String displayString(DiscriminatorType value) {
 				switch (value) {
 					case CHAR :
-						return JptUiDetailsMessages.DiscriminatorColumnComposite_char;
+						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_char;
 					case INTEGER :
-						return JptUiDetailsMessages.DiscriminatorColumnComposite_integer;
+						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_integer;
 					case STRING :
-						return JptUiDetailsMessages.DiscriminatorColumnComposite_string;
+						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_string;
 					default :
 						throw new IllegalStateException();
 				}

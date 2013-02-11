@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -127,7 +128,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 
 			@Override
 			public String optionalButtonText() {
-				return JptUiDetailsMessages.SecondaryTablesComposite_edit;
+				return JptJpaUiDetailsMessages.SecondaryTablesComposite_edit;
 			}
 
 			@Override

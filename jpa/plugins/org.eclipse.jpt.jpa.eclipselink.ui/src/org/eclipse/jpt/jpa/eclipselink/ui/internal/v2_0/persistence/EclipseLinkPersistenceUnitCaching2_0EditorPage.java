@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching.EclipseLinkPersistenceUnitCachingEditorPage;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -69,7 +69,7 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 		PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel = this.buildPersistenceUnit2_0Model();
 
 		// SharedCacheMode
-		this.addLabel(client, JptUiPersistence2_0Messages.SharedCacheModeComposite_sharedCacheModeLabel);		
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_SHARED_CACHE_MODE_LABEL);		
 		this.addSharedCacheModeCombo(client, persistenceUnitModel);
 
 		// Defaults
@@ -135,15 +135,15 @@ public class EclipseLinkPersistenceUnitCaching2_0EditorPage
 			protected String displayString(SharedCacheMode value) {
 				switch (value) {
 					case ALL :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_all;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_ALL;
 					case DISABLE_SELECTIVE :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_disable_selective;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_DISABLE_SELECTIVE;
 					case ENABLE_SELECTIVE :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_enable_selective;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_ENABLE_SELECTIVE;
 					case NONE :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_none;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_NONE;
 					case UNSPECIFIED :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_unspecified;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_UNSPECIFIED;
 					default :
 						throw new IllegalStateException();
 				}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,11 +46,11 @@ public class UnsupportedOrmAttributeMappingUiDefinition
 	}	
 	
 	public String getLabel() {
-		return JptUiDetailsOrmMessages.UnsupportedOrmMappingUiProvider_label;
+		return JptJpaUiDetailsOrmMessages.UNSUPPORTED_ORM_MAPPING_UI_PROVIDER_LABEL;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiDetailsOrmMessages.UnsupportedOrmMappingUiProvider_linkLabel;
+		return JptJpaUiDetailsOrmMessages.UNSUPPORTED_ORM_MAPPING_UI_PROVIDER_LINK_LABEL;
 	}
 
 	public JpaComposite buildMappingComposite(JpaUiFactory factory, PropertyValueModel<? extends JpaContextNode> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {

@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -60,7 +61,7 @@ public class Cacheable2_0TriStateCheckBox
 	protected void initializeLayout(Composite container) {
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages2_0.Entity_cacheableLabel,
+			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL,
 			buildCacheableBooleanHolder(),
 			buildCacheableStringHolder(),
 			JpaHelpContextIds.ENTITY_CACHEABLE
@@ -94,9 +95,9 @@ public class Cacheable2_0TriStateCheckBox
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages2_0.Entity_cacheableWithDefaultLabel, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL, defaultStringValue);
 				}
-				return JptUiDetailsMessages2_0.Entity_cacheableLabel;
+				return JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL;
 			}
 		};
 	}

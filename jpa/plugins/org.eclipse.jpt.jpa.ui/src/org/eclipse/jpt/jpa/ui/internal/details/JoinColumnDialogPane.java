@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -50,9 +51,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_insertableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_insertableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.JoinColumnDialogPane_insertable;
+				return JptJpaUiDetailsMessages.JoinColumnDialogPane_insertable;
 			}
 		};
 	}
@@ -97,9 +98,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_nullableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_nullableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.JoinColumnDialogPane_nullable;
+				return JptJpaUiDetailsMessages.JoinColumnDialogPane_nullable;
 			}
 		};
 	}
@@ -142,9 +143,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_uniqueWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_uniqueWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.JoinColumnDialogPane_unique;
+				return JptJpaUiDetailsMessages.JoinColumnDialogPane_unique;
 			}
 		};
 	}
@@ -184,9 +185,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_updatableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.JoinColumnDialogPane_updatableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.JoinColumnDialogPane_updatable;
+				return JptJpaUiDetailsMessages.JoinColumnDialogPane_updatable;
 			}
 		};
 	}
@@ -214,7 +215,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Insertable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages.JoinColumnDialogPane_insertable,
+			JptJpaUiDetailsMessages.JoinColumnDialogPane_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
@@ -223,7 +224,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Updatable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages.JoinColumnDialogPane_updatable,
+			JptJpaUiDetailsMessages.JoinColumnDialogPane_updatable,
 			buildUpdatableHolder(),
 			buildUpdatableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
@@ -232,7 +233,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Unique tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages.ColumnComposite_unique,
+			JptJpaUiDetailsMessages.ColumnComposite_unique,
 			buildUniqueHolder(),
 			buildUniqueStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
@@ -241,7 +242,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		// Nullable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages.ColumnComposite_nullable,
+			JptJpaUiDetailsMessages.ColumnComposite_nullable,
 			buildNullableHolder(),
 			buildNullableStringHolder(),
 			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE

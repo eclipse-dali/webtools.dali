@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -364,7 +365,7 @@ public abstract class MapAsComposite<T extends JpaNode>
 		String name = mappingChangeHandler.getName();
 
 		if (name == null) {
-			name = JptUiDetailsMessages.NoNameSet;
+			name = JptJpaUiDetailsMessages.NoNameSet;
 		}
 
 		String mappingType = mappingChangeHandler.getMappingText();
@@ -445,8 +446,8 @@ public abstract class MapAsComposite<T extends JpaNode>
 		 */
 		protected MappingSelectionDialog(Shell shell, ResourceManager resourceManager) {
 			super(shell, false);
-			this.setMessage(JptUiDetailsMessages.MapAsComposite_labelText);
-			this.setTitle(JptUiDetailsMessages.MapAsComposite_dialogTitle);
+			this.setMessage(JptJpaUiDetailsMessages.MapAsComposite_labelText);
+			this.setTitle(JptJpaUiDetailsMessages.MapAsComposite_dialogTitle);
 			ILabelProvider labelProvider = this.buildLabelProvider(resourceManager);
 			this.setListLabelProvider(labelProvider);
 			this.setDetailsLabelProvider(labelProvider);

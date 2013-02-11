@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 
 /**
  * This is the state object used by the <code>AddGeneratorDialog</code>, which stores
@@ -75,16 +76,16 @@ final class AddGeneratorStateObject extends AbstractNode
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.name)) {
-			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsOrmMessages.GENERATOR_STATE_OBJECT_NAME_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		} 
 		else if (names().contains(this.name)){
-			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_nameExists, IMessageProvider.WARNING));
+			currentProblems.add(buildProblem(JptJpaUiDetailsOrmMessages.GENERATOR_STATE_OBJECT_NAME_EXISTS, IMessageProvider.WARNING));
 		} 
 	}
 
 	private void addGeneratorTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.generatorType)) {
-			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsOrmMessages.GENERATOR_STATE_OBJECT_TYPE_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 	}
 

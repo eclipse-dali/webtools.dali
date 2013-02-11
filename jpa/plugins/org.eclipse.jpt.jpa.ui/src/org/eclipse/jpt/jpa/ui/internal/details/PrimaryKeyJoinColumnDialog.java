@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -42,8 +43,8 @@ public class PrimaryKeyJoinColumnDialog
 
 	private static String buildTitle(PrimaryKeyJoinColumn joinColumn) {
 		return (joinColumn == null) ?
-				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_addTitle :
-				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_editTitle;
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_addTitle :
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_editTitle;
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class PrimaryKeyJoinColumnDialog
 	@Override
 	protected String getDescriptionTitle() {
 		return (this.getJoinColumn() == null) ?
-				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_addDescriptionTitle :
-				JptUiDetailsMessages.PrimaryKeyJoinColumnDialog_editDescriptionTitle;
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_addDescriptionTitle :
+				JptJpaUiDetailsMessages.PrimaryKeyJoinColumnDialog_editDescriptionTitle;
 	}
 }

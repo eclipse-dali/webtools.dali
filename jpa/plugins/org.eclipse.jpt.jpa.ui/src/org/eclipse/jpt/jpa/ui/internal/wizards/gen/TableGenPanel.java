@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -75,7 +76,7 @@ public class TableGenPanel
 	
 	protected void createTableMappingPropertiesGroup(Composite composite, int columns) {
 		Group parent = new Group(composite, SWT.NONE );
-		parent.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_tableMapping);
+		parent.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_tableMapping);
 		parent.setLayout(new GridLayout(columns, false));
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = columns;
@@ -100,8 +101,8 @@ public class TableGenPanel
 	
 	private void createGenerateOptionalAnnotationControls(Group parent, int columns) {
 		generateOptionalAnnotations = new Button(parent, SWT.CHECK );
-		generateOptionalAnnotations.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_genOptionalAnnotations);
-		generateOptionalAnnotations.setToolTipText(JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_genOptionalAnnotations_desc);
+		generateOptionalAnnotations.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_genOptionalAnnotations);
+		generateOptionalAnnotations.setToolTipText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_genOptionalAnnotations_desc);
 
 		GridData gd = new GridData();
 		gd.horizontalSpan = columns;
@@ -118,7 +119,7 @@ public class TableGenPanel
 	protected void createClassNameControl(Composite parent, int columns) {
 		//Customize class name for specific table only
 		if ( !isDefaultTable ) {
-			SWTUtil.createLabel( parent, 1 , JptUiEntityGenMessages.GenerateEntitiesWizard_tablePanel_className );
+			SWTUtil.createLabel( parent, 1 , JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tablePanel_className );
 			
 			classNameField = new Text(parent, SWT.SINGLE | SWT.BORDER );
 			//mPackageNameField.setEditable(false);
@@ -152,13 +153,13 @@ public class TableGenPanel
 	}
 
 	protected void createAssociationFetchControls(Composite composite, int columns) {
-		SWTUtil.createLabel(composite, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_fetch );
+		SWTUtil.createLabel(composite, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_fetch );
 		
 		Composite parent = new Composite( composite, SWT.NONE);
 		parent.setLayout(new RowLayout());
 		SWTUtil.fillColumns( parent , 3);
 		associationFetchDefault	= new Button( parent, SWT.RADIO );
-		associationFetchDefault.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_fetchDefault);
+		associationFetchDefault.setText( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_fetchDefault);
 		associationFetchDefault.setData( ORMGenTable.DEFAULT_FETCH );	
 		
 		associationFetchEager = new Button( parent, SWT.RADIO );
@@ -186,7 +187,7 @@ public class TableGenPanel
 	}	
 	
 	protected void createCollectionTypeControls(Composite composite, int columns) {
-		SWTUtil.createLabel(composite, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_collType );
+		SWTUtil.createLabel(composite, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_collType );
 		
 		Composite parent = new Composite( composite, SWT.NONE);
 		parent.setLayout(new RowLayout());
@@ -308,7 +309,7 @@ public class TableGenPanel
 	}
 
 	protected void createIdGeneratorControls(Composite parent, int columns) {
-		SWTUtil.createLabel(parent, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_keyGen );
+		SWTUtil.createLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_keyGen );
 
 		idGeneratorCombo = new Combo(parent,SWT.SINGLE | SWT.READ_ONLY);
 		SWTUtil.fillColumns(idGeneratorCombo, 3);
@@ -324,7 +325,7 @@ public class TableGenPanel
 				idGenChanged();
 			}});
 
-		SWTUtil.createLabel(parent, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_sequence );
+		SWTUtil.createLabel(parent, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_sequence );
 		sequenceNameField = new Text( parent, SWT.SINGLE | SWT.BORDER );
 		
 		SWTUtil.fillColumns(sequenceNameField, 3);
@@ -361,7 +362,7 @@ public class TableGenPanel
 		
 		SWTUtil.newLabel(parent, "");//$NON-NLS-1$
 		sequenceNameNoteLabel = new Label(parent, SWT.NONE);
-		String text =String.format( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_sequenceNote, 
+		String text =String.format( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_sequenceNote, 
 				ORMGenTable.TABLE_SEQ_PATTERN, ORMGenTable.PK_SEQ_PATTERN);
 		sequenceNameNoteLabel.setText( text ) ;
 		sequenceNameNoteLabel.setEnabled(false);
@@ -406,7 +407,7 @@ public class TableGenPanel
 	}
 	
 	private void createEntityAccessControls(Composite composite, int columns) {
-		SWTUtil.createLabel(composite, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_access );
+		SWTUtil.createLabel(composite, 1, JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_access );
 		
 		Composite parent = new Composite( composite, SWT.NONE);
 		SWTUtil.fillColumns( parent , 3);

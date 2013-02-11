@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 
 public class PersistenceUnitOptions2_0EditorPageDefinition
@@ -49,7 +50,7 @@ public class PersistenceUnitOptions2_0EditorPageDefinition
 	}
 
 	public String getTitleText() {
-		return JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsTab_title;
+		return JptJpaUiPersistenceMessages2_0.PERSISTENCE_UNIT_OPTIONS_TAB_TITLE;
 	}
 
 	public String getHelpID() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.SequenceGeneratorComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -43,27 +43,27 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_name);
 		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 
 		// Sequence Generator widgets
-		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_sequence);
+		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_sequence);
 		this.buildSequenceNameCombo(container);
 
 		// Schema widgets
-		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_schema);
 		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_catalog);
 		this.addCatalogCombo(container);
 
 		// Allocation size widgets
-		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_allocationSize);
+		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_allocationSize);
 		this.addAllocationSizeCombo(container);
 
 		// Initial value widgets
-		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_initialValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_initialValue);
 		this.addInitialValueCombo(container);
 	}
 

@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
@@ -151,9 +152,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_insertableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_insertableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_insertable;
+				return JptJpaUiDetailsMessages.ColumnComposite_insertable;
 			}
 		};
 	}
@@ -197,9 +198,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_nullable;
+				return JptJpaUiDetailsMessages.ColumnComposite_nullable;
 			}
 		};
 	}
@@ -297,9 +298,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_unique;
+				return JptJpaUiDetailsMessages.ColumnComposite_unique;
 			}
 		};
 	}
@@ -346,9 +347,9 @@ public class ColumnComposite
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_updatable;
+				return JptJpaUiDetailsMessages.ColumnComposite_updatable;
 			}
 		};
 	}
@@ -373,7 +374,7 @@ public class ColumnComposite
 	protected Composite addComposite(Composite parent) {
 		return addTitledGroup(
 				parent,
-				JptUiDetailsMessages.ColumnComposite_columnSection,
+				JptJpaUiDetailsMessages.ColumnComposite_columnSection,
 				2,
 				null);
 	}
@@ -381,11 +382,11 @@ public class ColumnComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Column widgets
-		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_name);
 		this.addColumnCombo(container);
 
 		// Table widgets
-		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_table);
+		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_table);
 		this.addTableCombo(container);
 
 
@@ -394,7 +395,7 @@ public class ColumnComposite
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.CLIENT_INDENT);
 		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		detailsSection.setText(JptUiDetailsMessages.ColumnComposite_details);
+		detailsSection.setText(JptJpaUiDetailsMessages.ColumnComposite_details);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		detailsSection.setLayoutData(gridData);
@@ -415,7 +416,7 @@ public class ColumnComposite
 		// Insertable tri-state check box
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_insertable,
+				JptJpaUiDetailsMessages.ColumnComposite_insertable,
 				buildInsertableHolder(),
 				buildInsertableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
@@ -426,7 +427,7 @@ public class ColumnComposite
 		// Updatable tri-state check box
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_updatable,
+				JptJpaUiDetailsMessages.ColumnComposite_updatable,
 				buildUpdatableHolder(),
 				buildUpdatableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
@@ -437,7 +438,7 @@ public class ColumnComposite
 		// Unique tri-state check box
 		TriStateCheckBox uniqueCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_unique,
+				JptJpaUiDetailsMessages.ColumnComposite_unique,
 				buildUniqueHolder(),
 				buildUniqueStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
@@ -448,7 +449,7 @@ public class ColumnComposite
 		// Nullable tri-state check box
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_nullable,
+				JptJpaUiDetailsMessages.ColumnComposite_nullable,
 				buildNullableHolder(),
 				buildNullableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
@@ -456,17 +457,17 @@ public class ColumnComposite
 		gridData.horizontalSpan = 2;
 		nullableCheckBox.getCheckBox().setLayoutData(gridData);
 
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_length);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_length);		
 		this.addLengthCombo(detailsClient);
 
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_precision);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_precision);		
 		this.addPrecisionCombo(detailsClient);
 
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_scale);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_scale);		
 		this.addScaleCombo(detailsClient);
 
 		// Column Definition widgets
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition);
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition);
 		this.addText(detailsClient, buildColumnDefinitionHolder());
 
 		return detailsClient;

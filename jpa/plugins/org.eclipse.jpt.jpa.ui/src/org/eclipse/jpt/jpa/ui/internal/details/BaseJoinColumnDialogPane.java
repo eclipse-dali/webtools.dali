@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
@@ -332,7 +333,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.JoinColumnDialog_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialog_name);
 		Combo nameCombo = this.addEditableCombo(
 			container,
 			buildNamesListHolder(),
@@ -344,7 +345,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		SWTUtil.attachDefaultValueHandler(nameCombo);
 
 		// Referenced Column Name widgets
-		this.addLabel(container, JptUiDetailsMessages.JoinColumnDialog_referencedColumnName);
+		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialog_referencedColumnName);
 		Combo referencedColumnNameCombo = this.addEditableCombo(
 			container,
 			buildReferencedColumnNamesListHolder(),
@@ -357,7 +358,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 
 		// Table widgets
 		if (isTableEditable()) {
-			this.addLabel(container, JptUiDetailsMessages.JoinColumnDialogPane_table);
+			this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_table);
 
 			Combo tableCombo = this.addEditableCombo(
 				container,
@@ -370,7 +371,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 			SWTUtil.attachDefaultValueHandler(tableCombo);
 		}
 		else {
-			this.addLabel(container, JptUiDetailsMessages.JoinColumnDialogPane_table);
+			this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_table);
 			Combo tableCombo = addCombo(
 				container,
 				buildTablesListHolder(),
@@ -383,7 +384,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		}
 
 		// Column Definition widgets
-		this.addLabel(container, JptUiDetailsMessages.JoinColumnDialogPane_columnDefinition);
+		this.addLabel(container, JptJpaUiDetailsMessages.JoinColumnDialogPane_columnDefinition);
 		this.addText(
 			container,
 			buildColumnDefinitionHolder()

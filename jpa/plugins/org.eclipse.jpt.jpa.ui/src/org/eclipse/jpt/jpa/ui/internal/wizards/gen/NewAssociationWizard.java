@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 
 
 public class NewAssociationWizard extends Wizard {	
@@ -49,7 +50,7 @@ public class NewAssociationWizard extends Wizard {
 		this.jpaProject = jpaProject;
 		this.customizer = customizer;
 		this.resourceManager = resourceManager;
-		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_title);
+		this.setWindowTitle( JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_newAssoc_title);
 		
 		this.associationDataModel.put( NewAssociationWizard.ASSOCIATION_SCHEMA, this.customizer.getSchema());
 		this.associationDataModel.put( NewAssociationWizard.ASSOCIATION_JOIN_COLUMNS1, new TreeMap<String, String>());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.swt.layout.GridData;
@@ -100,7 +101,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	protected void initializeSequenceGeneratorCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.GeneratorsComposite_sequenceGeneratorSection);
+		section.setText(JptJpaUiDetailsMessages.GeneratorsComposite_sequenceGeneratorSection);
 		SWTTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeSequenceGeneratorPane(section));
@@ -114,7 +115,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
 				client,
-			JptUiDetailsMessages.GeneratorsComposite_sequenceGeneratorCheckBox,
+			JptJpaUiDetailsMessages.GeneratorsComposite_sequenceGeneratorCheckBox,
 			this.buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
@@ -180,7 +181,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	protected void initializeTableGeneratorCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.GeneratorsComposite_tableGeneratorSection);
+		section.setText(JptJpaUiDetailsMessages.GeneratorsComposite_tableGeneratorSection);
 		SWTTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
 		section.setClient(GenerationComposite.this.initializeTableGeneratorPane(section));
@@ -193,7 +194,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 
 		Button tableGeneratorCheckBox = addCheckBox(
 				client,
-			JptUiDetailsMessages.GeneratorsComposite_tableGeneratorCheckBox,
+			JptJpaUiDetailsMessages.GeneratorsComposite_tableGeneratorCheckBox,
 			this.buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,12 +26,12 @@ import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMess
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPageManager;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
 import org.eclipse.swt.layout.GridData;
@@ -88,7 +88,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		// XML mapping metadata complete check box
 		Button metadataCompleteCheckBox = addCheckBox(
 			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox,
+			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_XML_MAPPING_METADATA_COMPLETE_CHECK_BOX,
 			buildXmlMappingMetadataCompleteHolder(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
@@ -99,7 +99,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		// Cascade Persist check-box
 		Button cascadePersistCheckBox = addCheckBox(
 			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
+			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_CASCADE_PERSIST_CHECK_BOX,
 			buildCascadePersistHolder(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
@@ -108,11 +108,11 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		cascadePersistCheckBox.setLayoutData(gridData);
 
 		// Schema widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_SCHEMA);
 		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_CATALOG);
 		this.addCatalogCombo(container);
 
 		// Access type widgets
@@ -122,7 +122,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(
 			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_delimitedIdentifiersCheckBox,
+			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_DELIMITED_IDENTIFIERS_CHECK_BOX,
 			this.buildDelimitedIdentifiersHolder(),
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);

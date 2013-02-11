@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -126,7 +127,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		// Populate from Connection hyperlink
 		Hyperlink hyperLink = this.addHyperlink(
 			container,
-			JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_populateFromConnectionHyperLink,
+			JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_POPULATE_FROM_CONNECTION_HYPER_LINK,
 			this.buildPopulateFromConnectionAction()
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -135,19 +136,19 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		
 
 		// Driver
-		this.addLabel(container, JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_driverLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_DRIVER_LABEL);
 		this.initializeJdbcDriverClassChooser(container);
 
 		// Url
-		this.addLabel(container, JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_urlLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_URL_LABEL);
 		this.addText(container, this.buildUrlHolder());
 
 		// User
-		this.addLabel(container, JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_userLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_USER_LABEL);
 		this.addText(container, this.buildUserHolder());
 
 		// Password
-		this.addLabel(container, JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_passwordLabel);
+		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_PASSWORD_LABEL);
 		this.addPasswordText(container, this.buildPasswordHolder());
 	}
 
@@ -244,8 +245,8 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		 */
 		protected ConnectionSelectionDialog() {
 			super(JdbcConnectionPropertiesComposite.this.getShell_(), false);
-			this.setMessage(JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_ConnectionDialog_Message);
-			this.setTitle(JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_ConnectionDialog_Title);
+			this.setMessage(JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_MESSAGE);
+			this.setTitle(JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_CONNECTION_DIALOG_TITLE);
 			this.setListLabelProvider(this.buildLabelProvider());
 			this.setDetailsLabelProvider(this.buildLabelProvider());
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SequenceCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -71,17 +72,17 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_name);
 		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 
 		// Sequence Generator widgets
-		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_sequence);
+		this.addLabel(container, JptJpaUiDetailsMessages.SequenceGeneratorComposite_sequence);
 		this.buildSequenceNameCombo(container);
 
-		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_allocationSize);
+		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_allocationSize);
 		this.addAllocationSizeCombo(container);
 
-		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_initialValue);
+		this.addLabel(container, JptJpaUiDetailsMessages.GeneratorComposite_initialValue);
 		this.addInitialValueCombo(container);
 	}
 

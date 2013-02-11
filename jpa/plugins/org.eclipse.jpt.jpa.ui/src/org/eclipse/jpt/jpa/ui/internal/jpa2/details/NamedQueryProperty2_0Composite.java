@@ -20,9 +20,10 @@ import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueryHintsComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -113,11 +114,11 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
 		this.addText(container, buildNameTextHolder());
 
 		// Query text area
-		Label queryLabel = this.addLabel(container, JptUiDetailsMessages.NamedQueryPropertyComposite_query);
+		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryPropertyComposite_query);
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		queryLabel.setLayoutData(gridData);
@@ -140,7 +141,7 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 		);
 
 		// Lock Mode type
-		this.addLabel(container, JptUiDetailsMessages2_0.LockModeComposite_lockModeLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_LOCK_MODE_LABEL);
 		this.addLockModeTypeCombo(container);
 
 		QueryHintsComposite queryHintsComposite = new QueryHintsComposite(this, container);
@@ -174,21 +175,21 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 			protected String displayString(LockModeType2_0 value) {
 				switch (value) {
 					case NONE :
-						return JptUiDetailsMessages2_0.LockModeComposite_none;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_NONE;
 					case OPTIMISTIC :
-						return JptUiDetailsMessages2_0.LockModeComposite_optimistic;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_OPTIMISTIC;
 					case OPTIMISTIC_FORCE_INCREMENT :
-						return JptUiDetailsMessages2_0.LockModeComposite_optimistic_force_increment;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_OPTIMISTIC_FORCE_INCREMENT;
 					case PESSIMISTIC_FORCE_INCREMENT :
-						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_force_increment;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_PESSIMISTIC_FORCE_INCREMENT;
 					case PESSIMISTIC_READ :
-						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_read;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_PESSIMISTIC_READ;
 					case PESSIMISTIC_WRITE :
-						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_write;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_PESSIMISTIC_WRITE;
 					case READ :
-						return JptUiDetailsMessages2_0.LockModeComposite_read;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_READ;
 					case WRITE :
-						return JptUiDetailsMessages2_0.LockModeComposite_write;
+						return JptJpaUiDetailsMessages2_0.LOCK_MODE_COMPOSITE_WRITE;
 					default :
 						throw new IllegalStateException();
 				}

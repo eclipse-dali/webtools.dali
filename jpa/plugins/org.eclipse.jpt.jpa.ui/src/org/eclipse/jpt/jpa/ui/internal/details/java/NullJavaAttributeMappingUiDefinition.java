@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.MapAsComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -55,7 +55,7 @@ public class NullJavaAttributeMappingUiDefinition
 	}
 
 	public String getLabel() {
-		return JptUiDetailsMessages.NullAttributeMappingUiProvider_label;
+		return JptJpaUiDetailsMessages.NullAttributeMappingUiProvider_label;
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class NullJavaAttributeMappingUiDefinition
 	 * a link that they can click; i.e. 'click here'.
 	 */
 	public String getLinkLabel() {
-		return JptUiDetailsMessages.MapAsComposite_unmappedAttributeText_linkLabel;
+		return JptJpaUiDetailsMessages.MapAsComposite_unmappedAttributeText_linkLabel;
 	}
 
 	@Override

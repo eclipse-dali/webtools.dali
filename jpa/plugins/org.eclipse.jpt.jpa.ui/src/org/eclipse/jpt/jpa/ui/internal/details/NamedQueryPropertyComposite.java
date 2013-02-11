@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -104,10 +105,10 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
 		this.addText(container, buildNameTextHolder());
 
-		Label queryLabel = this.addLabel(container, JptUiDetailsMessages.NamedQueryPropertyComposite_query);
+		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryPropertyComposite_query);
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		queryLabel.setLayoutData(gridData);

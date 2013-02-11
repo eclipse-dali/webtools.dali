@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -49,7 +50,7 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 		// has an "override" (from the persistence unit), not a default...
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsOrmMessages.MetadataCompleteComposite_metadataComplete,
+			JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE,
 			buildSpecifiedMetadataCompleteHolder(),
 			buildMetadataCompleteStringHolder(),
 			null
@@ -79,9 +80,9 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsOrmMessages.MetadataCompleteComposite_metadataCompleteWithDefault, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptUiDetailsOrmMessages.MetadataCompleteComposite_metadataComplete;
+				return JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE;
 			}
 		};
 	}

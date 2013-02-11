@@ -50,6 +50,7 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="[3.4.0,4.0.0)",
 Import-Package: com.ibm.icu.text;version="4.0.1"
 Export-Package: org.eclipse.jpt.jpa.ui,
  org.eclipse.jpt.jpa.ui.details,
+ org.eclipse.jpt.jpa.ui.details.orm,
  org.eclipse.jpt.jpa.ui.editors,
  org.eclipse.jpt.jpa.ui.internal;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.actions;x-internal:=true,
@@ -92,4 +93,9 @@ Export-Package: org.eclipse.jpt.jpa.ui,
  org.eclipse.jpt.jpa.ui.internal.wizards.proj;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.wizards.proj.model;x-internal:=true,
  org.eclipse.jpt.jpa.ui.jpa2.details,
- org.eclipse.jpt.jpa.ui.selection
+ org.eclipse.jpt.jpa.ui.jpa2.persistence,
+ org.eclipse.jpt.jpa.ui.persistence,
+ org.eclipse.jpt.jpa.ui.prefs.validation,
+ org.eclipse.jpt.jpa.ui.selection,
+ org.eclipse.jpt.jpa.ui.wizards.entity,
+ org.eclipse.jpt.jpa.ui.wizards.gen

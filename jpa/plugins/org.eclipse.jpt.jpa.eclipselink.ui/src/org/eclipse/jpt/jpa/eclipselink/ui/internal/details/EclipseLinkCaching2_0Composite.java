@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
+import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -79,7 +79,7 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 		//Shared Check box, uncheck this and the rest of the panel is disabled
 		TriStateCheckBox sharedCheckBox = addTriStateCheckBoxWithDefault(
 			container,
-			JptUiDetailsMessages2_0.Entity_cacheableLabel,
+			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL,
 			buildSpecifiedCacheableHolder(cacheableHolder),
 			buildCacheableStringHolder(cacheableHolder),
 			JpaHelpContextIds.ENTITY_CACHEABLE
@@ -167,9 +167,9 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptUiDetailsMessages2_0.Entity_cacheableWithDefaultLabel, defaultStringValue);
+					return NLS.bind(JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL, defaultStringValue);
 				}
-				return JptUiDetailsMessages2_0.Entity_cacheableLabel;
+				return JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL;
 			}
 		};
 	}

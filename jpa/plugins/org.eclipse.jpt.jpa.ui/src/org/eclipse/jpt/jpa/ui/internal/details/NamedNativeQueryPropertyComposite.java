@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -142,15 +143,15 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
 		this.addText(container, buildNameTextHolder());
 
 		// Result class chooser
-		Hyperlink resultClassHyperlink = this.addHyperlink(container, JptUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass);
+		Hyperlink resultClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass);
 		this.resultClassChooserPane = this.addResultClassChooser(container, resultClassHyperlink);
 
 		// Query text area
-		Label queryLabel = this.addLabel(container, JptUiDetailsMessages.NamedNativeQueryPropertyComposite_query);
+		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NamedNativeQueryPropertyComposite_query);
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		queryLabel.setLayoutData(gridData);

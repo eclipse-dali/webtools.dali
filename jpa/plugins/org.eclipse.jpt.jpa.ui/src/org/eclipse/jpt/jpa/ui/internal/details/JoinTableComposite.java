@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.swt.layout.GridData;
@@ -63,21 +64,21 @@ public class JoinTableComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		this.addLabel(container, JptUiDetailsMessages.JoinTableComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.JoinTableComposite_name);
 		this.addTableCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME);
 		
 		// schema widgets
-		this.addLabel(container, JptUiDetailsMessages.JoinTableComposite_schema);
+		this.addLabel(container, JptJpaUiDetailsMessages.JoinTableComposite_schema);
 		this.addSchemaCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_SCHEMA);
 
 		// catalog widgets
-		this.addLabel(container, JptUiDetailsMessages.JoinTableComposite_catalog);
+		this.addLabel(container, JptJpaUiDetailsMessages.JoinTableComposite_catalog);
 		this.addCatalogCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_CATALOG);
 
 		// Join Columns group pane
 		Group joinColumnGroupPane = addTitledGroup(
 			container,
-			JptUiDetailsMessages.JoinTableComposite_joinColumn
+			JptJpaUiDetailsMessages.JoinTableComposite_joinColumn
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -86,7 +87,7 @@ public class JoinTableComposite
 		// Override Default Join Columns check box
 		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
 			joinColumnGroupPane,
-			JptUiDetailsMessages.JoinTableComposite_overrideDefaultJoinColumns,
+			JptJpaUiDetailsMessages.JoinTableComposite_overrideDefaultJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);
@@ -101,7 +102,7 @@ public class JoinTableComposite
 		// Inverse Join Columns group pane
 		Group inverseJoinColumnGroupPane = addTitledGroup(
 			container,
-			JptUiDetailsMessages.JoinTableComposite_inverseJoinColumn
+			JptJpaUiDetailsMessages.JoinTableComposite_inverseJoinColumn
 		);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -110,7 +111,7 @@ public class JoinTableComposite
 		// Override Default Inverse Join Columns check box
 		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
 			inverseJoinColumnGroupPane,
-			JptUiDetailsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
+			JptJpaUiDetailsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
 			buildOverrideDefaultInverseJoinColumnHolder(),
 			null
 		);

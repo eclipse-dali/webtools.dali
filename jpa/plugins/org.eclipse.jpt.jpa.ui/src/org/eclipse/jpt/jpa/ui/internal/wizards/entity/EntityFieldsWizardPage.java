@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2013 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
+import org.eclipse.jpt.jpa.ui.wizards.entity.JptJpaUiWizardsEntityMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -45,8 +46,8 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 
 	public EntityFieldsWizardPage(IDataModel model, String pageName) {
 		super(model, pageName);
-		this.setTitle(EntityWizardMsg.ENTITY_PROPERTIES_TITLE);
-		this.setDescription(EntityWizardMsg.ENTITY_PROPERTIES_DESCRIPTION);
+		this.setTitle(JptJpaUiWizardsEntityMessages.ENTITY_PROPERTIES_TITLE);
+		this.setDescription(JptJpaUiWizardsEntityMessages.ENTITY_PROPERTIES_DESCRIPTION);
 	}
 
 	/*
@@ -75,18 +76,18 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 		composite.setLayoutData(data);
 		composite.pack();
 				
-		entityNameText = createNameGroup(composite, EntityWizardMsg.ENTITY_NAME, IEntityDataModelProperties.ENTITY_NAME);		
-		Group group = createGroup(composite, EntityWizardMsg.TABLE_NAME_GROUP);
-		tableNameCheckButton= createCheckButton(group, EntityWizardMsg.USE_DEFAULT, IEntityDataModelProperties.TABLE_NAME_DEFAULT);		
-		tableNameText = createNameGroup(group, EntityWizardMsg.TABLE_NAME, IEntityDataModelProperties.TABLE_NAME);
+		entityNameText = createNameGroup(composite, JptJpaUiWizardsEntityMessages.ENTITY_NAME, IEntityDataModelProperties.ENTITY_NAME);		
+		Group group = createGroup(composite, JptJpaUiWizardsEntityMessages.TABLE_NAME_GROUP);
+		tableNameCheckButton= createCheckButton(group, JptJpaUiWizardsEntityMessages.USE_DEFAULT, IEntityDataModelProperties.TABLE_NAME_DEFAULT);		
+		tableNameText = createNameGroup(group, JptJpaUiWizardsEntityMessages.TABLE_NAME, IEntityDataModelProperties.TABLE_NAME);
 		tableNameText.setEnabled(!tableNameCheckButton.getSelection());
 		isButtonsCreated = true;
 		initNameGroup();
 		createEntityFieldsGroup(composite);
 
-		Group accessTypeGroup = createGroup(composite, EntityWizardMsg.ACCESS_TYPE);
-		fieldAccessButton = createRadioButton(accessTypeGroup, EntityWizardMsg.FIELD_BASED, IEntityDataModelProperties.FIELD_ACCESS_TYPE);
-		propertyAccessButton = createRadioButton(accessTypeGroup, EntityWizardMsg.PROPERTY_BASED, IEntityDataModelProperties.PROPERTY_ACCESS_TYPE);
+		Group accessTypeGroup = createGroup(composite, JptJpaUiWizardsEntityMessages.ACCESS_TYPE);
+		fieldAccessButton = createRadioButton(accessTypeGroup, JptJpaUiWizardsEntityMessages.FIELD_BASED, IEntityDataModelProperties.FIELD_ACCESS_TYPE);
+		propertyAccessButton = createRadioButton(accessTypeGroup, JptJpaUiWizardsEntityMessages.PROPERTY_BASED, IEntityDataModelProperties.PROPERTY_ACCESS_TYPE);
 		
 		
 		IStatus projectStatus = validateProjectName();
@@ -104,7 +105,7 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 	protected IStatus validateProjectName() {
 		// check for empty
 		if (model.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME) == null || model.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME).trim().length() == 0) {
-			return WTPCommonPlugin.createErrorStatus(EntityWizardMsg.NO_JPA_PROJECTS);
+			return WTPCommonPlugin.createErrorStatus(JptJpaUiWizardsEntityMessages.NO_JPA_PROJECTS);
 		}
 		return WTPCommonPlugin.OK_STATUS;
 	}
@@ -115,7 +116,7 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 		groupGridData.horizontalSpan = 3;
 		group.setLayoutData(groupGridData);
 		group.setLayout(new GridLayout(3, false));
-		group.setText(EntityWizardMsg.ENTITY_FIELDS_GROUP);
+		group.setText(JptJpaUiWizardsEntityMessages.ENTITY_FIELDS_GROUP);
 		new EntityRowTableWizardSection(group, model, IEntityDataModelProperties.ENTITY_FIELDS);
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.EnumType;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -81,9 +82,9 @@ public class EnumTypeComboViewer extends Pane<BaseEnumeratedConverter>
 			protected String displayString(EnumType value) {
 				switch (value) {
 					case ORDINAL :
-						return JptUiDetailsMessages.EnumTypeComposite_ordinal;
+						return JptJpaUiDetailsMessages.EnumTypeComposite_ordinal;
 					case STRING :
-						return JptUiDetailsMessages.EnumTypeComposite_string;
+						return JptJpaUiDetailsMessages.EnumTypeComposite_string;
 					default :
 						throw new IllegalStateException();
 				}

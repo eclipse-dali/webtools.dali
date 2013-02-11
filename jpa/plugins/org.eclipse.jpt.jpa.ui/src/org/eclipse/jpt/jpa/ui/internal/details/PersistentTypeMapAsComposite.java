@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
@@ -44,8 +45,8 @@ public class PersistentTypeMapAsComposite
 		public String getLabelText() {
 			String mappingKey = getMappingKey();
 			return (mappingKey != null) ?
-					JptUiDetailsMessages.MapAsComposite_mappedTypeText :
-					JptUiDetailsMessages.MapAsComposite_unmappedTypeText;
+					JptJpaUiDetailsMessages.MapAsComposite_mappedTypeText :
+					JptJpaUiDetailsMessages.MapAsComposite_unmappedTypeText;
 		}
 
 		public String getMappingText() {

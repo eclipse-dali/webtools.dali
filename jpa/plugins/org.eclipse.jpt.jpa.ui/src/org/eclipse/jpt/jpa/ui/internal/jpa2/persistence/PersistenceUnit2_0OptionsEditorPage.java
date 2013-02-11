@@ -43,6 +43,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -67,8 +68,8 @@ public class PersistenceUnit2_0OptionsEditorPage
 	protected void initializeLayout(Composite parent) {
 		Section section = this.getWidgetFactory().createSection(parent, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionTitle);
-		section.setDescription(JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionDescription);
+		section.setText(JptJpaUiPersistenceMessages2_0.PERSISTENCE_UNIT_OPTIONS_COMPOSITE_MISCELLANEOUS_SECTION_TITLE);
+		section.setDescription(JptJpaUiPersistenceMessages2_0.PERSISTENCE_UNIT_OPTIONS_COMPOSITE_MISCELLANEOUS_SECTION_DESCRIPTION);
 
 		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
@@ -82,30 +83,30 @@ public class PersistenceUnit2_0OptionsEditorPage
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 		section.setClient(client);
 
-		this.addLabel(client, JptUiPersistence2_0Messages.LockingConfigurationComposite_lockTimeoutLabel);
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.LOCKING_CONFIGURATION_COMPOSITE_LOCK_TIMEOUT_LABEL);
 		this.addLockTimeoutCombo(client);
 
-		this.addLabel(client, JptUiPersistence2_0Messages.QueryConfigurationComposite_queryTimeoutLabel);
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.QUERY_CONFIGURATION_COMPOSITE_QUERY_TIMEOUT_LABEL);
 		this.addQueryTimeoutCombo(client);
 
 		// SharedCacheMode
-		this.addLabel(client, JptUiPersistence2_0Messages.SharedCacheModeComposite_sharedCacheModeLabel);		
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_SHARED_CACHE_MODE_LABEL);		
 		this.addSharedCacheModeCombo(client, this.buildPersistenceUnit2_0Model());
 
 		// ValidationMode
-		this.addLabel(client, JptUiPersistence2_0Messages.ValidationModeComposite_validationModeLabel);		
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_VALIDATION_MODE_LABEL);		
 		this.addValidationModeCombo(client, this.buildPersistenceUnit2_0Model());
 
 		// ValidationGroupPrePersist
-		this.addLabel(client, JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPrePersistLabel);		
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.VALIDATION_CONFIGURATION_COMPOSITE_GROUP_PRE_PERSIST_LABEL);		
 		this.addPrePersistListPane(client);
 
 		// ValidationGroupPreUpdate
-		this.addLabel(client, JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreUpdateLabel);		
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.VALIDATION_CONFIGURATION_COMPOSITE_GROUP_PRE_UPDATE_LABEL);		
 		this.addPreUpdateListPane(client);
 
 		// ValidationGroupPreRemove
-		this.addLabel(client, JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreRemoveLabel);		
+		this.addLabel(client, JptJpaUiPersistenceMessages2_0.VALIDATION_CONFIGURATION_COMPOSITE_GROUP_PRE_REMOVE_LABEL);		
 		this.addPreRemoveListPane(client);
 	}
 
@@ -381,7 +382,7 @@ public class PersistenceUnit2_0OptionsEditorPage
 				String name = (String) element;
 
 				if (name == null) {
-					name = JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsTab_noName;
+					name = JptJpaUiPersistenceMessages2_0.PERSISTENCE_UNIT_OPTIONS_TAB_NO_NAME;
 				}
 				return name;
 			}
@@ -459,15 +460,15 @@ public class PersistenceUnit2_0OptionsEditorPage
 			protected String displayString(SharedCacheMode value) {
 				switch (value) {
 					case ALL :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_all;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_ALL;
 					case DISABLE_SELECTIVE :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_disable_selective;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_DISABLE_SELECTIVE;
 					case ENABLE_SELECTIVE :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_enable_selective;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_ENABLE_SELECTIVE;
 					case NONE :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_none;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_NONE;
 					case UNSPECIFIED :
-						return JptUiPersistence2_0Messages.SharedCacheModeComposite_unspecified;
+						return JptJpaUiPersistenceMessages2_0.SHARED_CACHE_MODE_COMPOSITE_UNSPECIFIED;
 					default :
 						throw new IllegalStateException();
 				}
@@ -514,11 +515,11 @@ public class PersistenceUnit2_0OptionsEditorPage
 			protected String displayString(ValidationMode value) {
 				switch (value) {
 					case AUTO :
-						return JptUiPersistence2_0Messages.ValidationModeComposite_auto;
+						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_AUTO;
 					case CALLBACK :
-						return JptUiPersistence2_0Messages.ValidationModeComposite_callback;
+						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_CALLBACK;
 					case NONE :
-						return JptUiPersistence2_0Messages.ValidationModeComposite_none;
+						return JptJpaUiPersistenceMessages2_0.VALIDATION_MODE_COMPOSITE_NONE;
 					default :
 						throw new IllegalStateException();
 				}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -73,7 +74,7 @@ public class ArchiveFileSelectionDialog
 		Composite composite = (Composite) super.createDialogArea(parent);
 		
 		Label helpLabel = new Label(composite, SWT.WRAP);
-		helpLabel.setText(JptUiPersistenceMessages.ArchiveFileSelectionDialog_jarPathHelpLabel);
+		helpLabel.setText(JptJpaUiPersistenceMessages.ARCHIVE_FILE_SELECTION_DIALOG_JAR_PATH_HELP_LABEL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.widthHint = 400;
 		helpLabel.setLayoutData(gd);
@@ -84,7 +85,7 @@ public class ArchiveFileSelectionDialog
 		
 		Label jarPathLabel = new Label(subComposite, SWT.NONE);
 		jarPathLabel.setFont(composite.getFont());
-		jarPathLabel.setText(JptUiPersistenceMessages.ArchiveFileSelectionDialog_jarPathLabel);
+		jarPathLabel.setText(JptJpaUiPersistenceMessages.ARCHIVE_FILE_SELECTION_DIALOG_JAR_PATH_LABEL);
 		
 		Text jarPathText = new Text(subComposite, SWT.BORDER);
 		jarPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

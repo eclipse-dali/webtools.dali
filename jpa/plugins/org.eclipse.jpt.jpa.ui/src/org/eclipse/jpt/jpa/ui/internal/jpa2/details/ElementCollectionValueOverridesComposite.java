@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,9 +16,9 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
@@ -36,7 +36,7 @@ public final class ElementCollectionValueOverridesComposite
 	protected Composite addComposite(Composite container) {
 		return addTitledGroup(
 			container,
-			JptUiDetailsMessages.OverridesComposite_attributeOverridesGroup);
+			JptJpaUiDetailsMessages.OverridesComposite_attributeOverridesGroup);
 	}
 	
 	@Override

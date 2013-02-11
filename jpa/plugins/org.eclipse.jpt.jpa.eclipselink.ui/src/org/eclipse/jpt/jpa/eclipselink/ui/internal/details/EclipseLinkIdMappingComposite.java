@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,9 +22,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContaine
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -65,7 +65,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_default, 
+			JptJpaUiDetailsMessages.TypeSection_default, 
 			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -74,7 +74,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiDetailsMessages.TypeSection_temporal, 
+			JptJpaUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);

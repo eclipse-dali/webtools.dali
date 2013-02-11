@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,6 +55,7 @@ import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -108,8 +109,8 @@ public class TablesSelectorWizardPage extends WizardPage {
 		this.resourceManager = resourceManager;
 		this.schema = jpaProject.getDefaultDbSchema();
 		this.isDynamic = isDynamic;
-		this.setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_selectTable );
-		this.setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_chooseEntityTable );
+		this.setTitle(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_selectTable );
+		this.setMessage(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_chooseEntityTable );
 	}
 
 	// ********** IDialogPage implementation  **********
@@ -200,7 +201,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		
 		Label tableLabel = new Label(parent, SWT.NONE);
 		tableLabel.setLayoutData(gridData);
-		tableLabel.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tables );
+		tableLabel.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tables );
 		
 		this.searchText = this.buildSearchText(parent);
 
@@ -346,7 +347,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		org.eclipse.swt.widgets.Table table = new org.eclipse.swt.widgets.Table(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER | SWT.CHECK);
 
 		TableColumn tableNameColumn = new TableColumn(table, SWT.NONE, TABLE_COLUMN_INDEX);
-		tableNameColumn.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableColumn);
+		tableNameColumn.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableColumn);
 		tableNameColumn.setResizable(true);
 
 		table.addKeyListener(this.buildTableKeyListener());
@@ -389,7 +390,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	
 	private Button buildUpdatePersistenceXmlCheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
-		checkBox.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml );
+		checkBox.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml );
 		checkBox.setSelection(this.updatePersistenceXml());
 		checkBox.addSelectionListener(this.buildUpdatePersistenceXmlSelectionListener());
 		
@@ -401,7 +402,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.END;
 		button.setLayoutData(gridData);
-		button.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_Restore_Defaults);
+		button.setText(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_Restore_Defaults);
 		button.addSelectionListener(this.buildRestoreDefaultsSelectionListener());
 		
 		return button;
@@ -475,7 +476,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private Text buildSearchText(Composite parent) {
 		GridData gridData = new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL);
 		Text text = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
-		text.setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableSearch);
+		text.setMessage(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableSearch);
 		text.setLayoutData(gridData);
 		text.addSelectionListener(this.buildClearSearchTextSelectionListener());
 		text.addKeyListener(this.buildSearchTextKeyListener());
@@ -625,7 +626,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private WorkspaceJob buildFetchTablesJob(final Schema schema) {
 		final Collection<Table> tables = new ArrayList<Table>();
 
-		WorkspaceJob workspaceJob = new WorkspaceJob(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_jobName) {
+		WorkspaceJob workspaceJob = new WorkspaceJob(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_jobName) {
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) {
@@ -633,12 +634,12 @@ public class TablesSelectorWizardPage extends WizardPage {
 					return Status.CANCEL_STATUS;
 				}
 				SubMonitor subMonitor = SubMonitor.convert(monitor, 
-					JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_taskName, 75);
+					JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_taskName, 75);
 				try {
 					subMonitor.beginTask(schema.getContainer().getName(), 100);
 					subMonitor.subTask(
 						NLS.bind(
-							JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_subTaskName, 
+							JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_subTaskName, 
 							schema.getName()));
 					subMonitor.worked(20);
 
@@ -688,7 +689,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 					public void run( final IProgressMonitor monitor ) 
 				    	throws InvocationTargetException, InterruptedException
 				    {
-						monitor.beginTask(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_statusUpdate_taskName, 10);
+						monitor.beginTask(JptJpaUiWizardsEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_statusUpdate_taskName, 10);
 				
 						Collection<Table> ret = TablesSelectorWizardPage.this.getSelectedTables();
 						ArrayList<String> tableNames = new ArrayList<String>();
