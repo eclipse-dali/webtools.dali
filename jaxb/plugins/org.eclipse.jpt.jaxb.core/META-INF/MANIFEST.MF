@@ -54,4 +54,5 @@ Export-Package: org.eclipse.jpt.jaxb.core,
  org.eclipse.jpt.jaxb.core.resource.jaxbindex,
  org.eclipse.jpt.jaxb.core.resource.jaxbprops,
  org.eclipse.jpt.jaxb.core.utility,
+ org.eclipse.jpt.jaxb.core.validation,
  org.eclipse.jpt.jaxb.core.xsd

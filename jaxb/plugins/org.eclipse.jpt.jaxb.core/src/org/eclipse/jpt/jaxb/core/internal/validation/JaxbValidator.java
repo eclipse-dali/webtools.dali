@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.AbstractValidator;
 import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.ValidationState;
@@ -115,7 +116,7 @@ public class JaxbValidator
 		return new SingleElementIterable<IMessage>(
 				DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.NO_JAXB_PROJECT,
+						JptJaxbCoreValidationMessages.NO_JAXB_PROJECT,
 						project));
 	}
 

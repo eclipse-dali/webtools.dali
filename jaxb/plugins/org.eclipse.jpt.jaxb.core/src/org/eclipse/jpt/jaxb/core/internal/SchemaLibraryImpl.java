@@ -25,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -131,7 +131,7 @@ public class SchemaLibraryImpl
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.PROJECT__UNRESOLVED_SCHEMA,
+								JptJaxbCoreValidationMessages.PROJECT__UNRESOLVED_SCHEMA,
 								new String[] { entry.getLocation() },
 								this.project));
 			}
@@ -143,7 +143,7 @@ public class SchemaLibraryImpl
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.PROJECT__DUPLICATE_NAMESPACE,
+								JptJaxbCoreValidationMessages.PROJECT__DUPLICATE_NAMESPACE,
 								new String[] { namespace },
 								this.project));
 			}

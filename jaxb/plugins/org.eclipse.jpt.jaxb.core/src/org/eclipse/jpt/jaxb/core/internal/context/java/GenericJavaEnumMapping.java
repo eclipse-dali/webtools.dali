@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
@@ -21,10 +21,10 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
@@ -243,7 +243,7 @@ public class GenericJavaEnumMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM,
+							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM,
 							this,
 							annotation.getFactoryClassTextRange()));
 		}
@@ -252,7 +252,7 @@ public class GenericJavaEnumMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM,
+							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM,
 							this,
 							annotation.getFactoryMethodTextRange()));
 		}
@@ -261,7 +261,7 @@ public class GenericJavaEnumMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM,
+							JptJaxbCoreValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM,
 							this,
 							annotation.getPropOrderTextRange()));
 		}
@@ -276,7 +276,7 @@ public class GenericJavaEnumMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
+							JptJaxbCoreValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
 							new String[] { getValue() },
 							this,
 							getXmlEnumValueTextRange()));

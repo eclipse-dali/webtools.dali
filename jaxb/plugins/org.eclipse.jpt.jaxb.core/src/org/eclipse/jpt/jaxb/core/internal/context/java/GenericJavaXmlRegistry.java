@@ -29,9 +29,9 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -175,7 +175,7 @@ public class GenericJavaXmlRegistry
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE,
+						JptJaxbCoreValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE,
 						this,
 						getValidationTextRange()));
 		}
@@ -214,7 +214,7 @@ public class GenericJavaXmlRegistry
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,
+								JptJaxbCoreValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,
 								new String[] { xmlElementName, scopeDesc },
 								xmlElementDecl,
 								xmlElementDecl.getQName().getNameTextRange()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
@@ -63,7 +63,7 @@ public class GenericJavaXmlID
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
+						JptJaxbCoreValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
 						new String [] { xsdFeature.getName() },
 						this,
 						getValidationTextRange()));
@@ -75,7 +75,7 @@ public class GenericJavaXmlID
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
+					JptJaxbCoreValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
 					this,
 					getValidationTextRange()));
 		}

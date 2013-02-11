@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
@@ -29,9 +29,9 @@ import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
@@ -364,7 +364,7 @@ public class GenericJavaXmlElement
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
+							JptJaxbCoreValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
 							this,
 							getTypeTextRange()));
 		}
@@ -383,7 +383,7 @@ public class GenericJavaXmlElement
 					messages.add(
 							DefaultValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
-									JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
+									JptJaxbCoreValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
 									new String[] { attributeBaseType },
 									this,
 									getTypeTextRange()));
@@ -428,7 +428,7 @@ public class GenericJavaXmlElement
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
+							JptJaxbCoreValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
 							new String[] { typeName, xsdElement.getName() },
 							this,
 							this.qName.getNameTextRange()));

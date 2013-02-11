@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -102,7 +103,7 @@ public class DefaultValidationMessages {
 //			if (prefSeverity != JpaValidationPreferences.NO_SEVERITY_PREFERENCE){
 //				severity = prefSeverity;
 //			}
-			IMessage message = new Message(JaxbValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
+			IMessage message = new Message(JptJaxbCoreValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
 			message.setMarkerId(JaxbValidator.MARKER_ID);
 			return message;
 		}

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
@@ -30,10 +30,10 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -244,7 +244,7 @@ public class GenericJavaXmlElementRef
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE,
+							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE,
 							this,
 							getTypeTextRange()));
 		}
@@ -256,7 +256,7 @@ public class GenericJavaXmlElementRef
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
 								new String[] { attributeValueType },
 								this,
 								getTypeTextRange()));
@@ -269,7 +269,7 @@ public class GenericJavaXmlElementRef
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
 								new String[] { attributeValueType },
 								this,
 								getTypeTextRange()));
@@ -358,7 +358,7 @@ public class GenericJavaXmlElementRef
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENT_REF__NO_REGISTRY,
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_REGISTRY,
 								this,
 								getValidationTextRange()));
 				return;
@@ -373,7 +373,7 @@ public class GenericJavaXmlElementRef
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
+							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
 							new String[] { getNamespace(), getName() },
 							this,
 							getValidationTextRange()));

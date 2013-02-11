@@ -48,10 +48,10 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRegistry.MethodIsElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.omg.CORBA.PUBLIC_MEMBER;
@@ -753,7 +753,7 @@ public class GenericJavaClassMapping
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_TYPE__UNSPECIFIED_FACTORY_METHOD,
+								JptJaxbCoreValidationMessages.XML_TYPE__UNSPECIFIED_FACTORY_METHOD,
 								this,
 								getFactoryClassTextRange()));
 			}
@@ -765,7 +765,7 @@ public class GenericJavaClassMapping
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_TYPE__NO_PUBLIC_OR_PROTECTED_CONSTRUCTOR,
+								JptJaxbCoreValidationMessages.XML_TYPE__NO_PUBLIC_OR_PROTECTED_CONSTRUCTOR,
 								this,
 								getValidationTextRange()));
 			}
@@ -836,7 +836,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__DUPLICATE_PROP,
+							JptJaxbCoreValidationMessages.XML_TYPE__DUPLICATE_PROP,
 							new String[] { getProp(i) },
 							this,
 							getPropTextRange(i)));
@@ -846,7 +846,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__MISSING_PROP,
+							JptJaxbCoreValidationMessages.XML_TYPE__MISSING_PROP,
 							new String[] { missingProp },
 							this,
 							getPropOrderTextRange()));
@@ -856,7 +856,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__NONEXISTENT_PROP,
+							JptJaxbCoreValidationMessages.XML_TYPE__NONEXISTENT_PROP,
 							new String[] { getProp(i) },
 							this,
 							getPropTextRange(i)));
@@ -866,7 +866,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_TYPE__TRANSIENT_PROP,
+							JptJaxbCoreValidationMessages.XML_TYPE__TRANSIENT_PROP,
 							new String [] { getProp(i) },
 							this,
 							getPropTextRange(i)));
@@ -894,7 +894,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
+							JptJaxbCoreValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
 							this,
 							getValidationTextRange()));
 				
@@ -902,7 +902,7 @@ public class GenericJavaClassMapping
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
+						JptJaxbCoreValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange()));
 			}
@@ -930,7 +930,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
+							JptJaxbCoreValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
 							this,
 							getValidationTextRange()));
 				
@@ -938,7 +938,7 @@ public class GenericJavaClassMapping
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
+						JptJaxbCoreValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange()));
 			}
@@ -966,7 +966,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
+							JptJaxbCoreValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
 							this,
 							getValidationTextRange()));
 				
@@ -974,7 +974,7 @@ public class GenericJavaClassMapping
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
+						JptJaxbCoreValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange()));
 			}
@@ -1007,7 +1007,7 @@ public class GenericJavaClassMapping
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
+							JptJaxbCoreValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
 							this,
 							getValidationTextRange()));
 				
@@ -1015,7 +1015,7 @@ public class GenericJavaClassMapping
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
+						JptJaxbCoreValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange()));
 			}

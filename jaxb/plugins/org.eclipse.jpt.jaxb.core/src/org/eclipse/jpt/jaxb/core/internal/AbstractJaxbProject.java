@@ -72,13 +72,13 @@ import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.utility.CallbackSynchronousSynchronizer;
 import org.eclipse.jpt.jaxb.core.internal.utility.SynchronousSynchronizer;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
 import org.eclipse.jpt.jaxb.core.utility.Synchronizer;
+import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
@@ -1129,7 +1129,7 @@ public abstract class AbstractJaxbProject
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
+						JptJaxbCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
 						this));
 		}
 		lid.dispose();
