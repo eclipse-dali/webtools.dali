@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidator;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 
 public class ELJaxbValidationMessageBuilder {
 
@@ -76,7 +77,7 @@ public class ELJaxbValidationMessageBuilder {
 //			if (prefSeverity != JpaValidationPreferences.NO_SEVERITY_PREFERENCE){
 //				severity = prefSeverity;
 //			}
-			IMessage message = new EclipseLinkMessage(ELJaxbValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
+			IMessage message = new EclipseLinkMessage(JptJaxbEclipseLinkCoreValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
 			// TODO "Oxm JAXB" validation marker?
 			message.setMarkerId(JaxbValidator.MARKER_ID);
 			return message;

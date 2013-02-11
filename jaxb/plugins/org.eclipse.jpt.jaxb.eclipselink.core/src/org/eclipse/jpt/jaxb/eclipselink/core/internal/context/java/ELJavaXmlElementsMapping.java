@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.Iterator;
@@ -31,9 +31,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementsMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -164,7 +164,7 @@ public class ELJavaXmlElementsMapping
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS,
+							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS,
 							this,
 							getXmlPathsTextRange()));
 		}
@@ -174,7 +174,7 @@ public class ELJavaXmlElementsMapping
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS,
+							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS,
 							this,
 							xmlPath.getValidationTextRange()));
 		}

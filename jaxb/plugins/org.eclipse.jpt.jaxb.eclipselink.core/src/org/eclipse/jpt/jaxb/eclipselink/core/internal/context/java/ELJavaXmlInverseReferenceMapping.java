@@ -22,9 +22,9 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMapp
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlInverseReferenceMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlInverseReferenceAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -167,7 +167,7 @@ public class ELJavaXmlInverseReferenceMapping
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED,
+							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED,
 							this,
 							getMappedByTextRange()));
 			return;
@@ -184,7 +184,7 @@ public class ELJavaXmlInverseReferenceMapping
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
+							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
 							new String[] { mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName() },
 							this,
 							getMappedByTextRange()));
@@ -196,7 +196,7 @@ public class ELJavaXmlInverseReferenceMapping
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
+							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
 							new String[] { mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName() },
 							this,
 							getMappedByTextRange()));

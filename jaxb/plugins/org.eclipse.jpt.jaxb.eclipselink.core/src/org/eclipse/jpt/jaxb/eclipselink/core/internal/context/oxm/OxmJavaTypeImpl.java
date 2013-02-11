@@ -38,11 +38,11 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlElement;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -625,7 +625,7 @@ public class OxmJavaTypeImpl
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED,
+							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED,
 							this,
 							getNameTextRange()));
 			return;
@@ -637,7 +637,7 @@ public class OxmJavaTypeImpl
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM,
+							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM,
 							this,
 							getNameTextRange()));
 		}

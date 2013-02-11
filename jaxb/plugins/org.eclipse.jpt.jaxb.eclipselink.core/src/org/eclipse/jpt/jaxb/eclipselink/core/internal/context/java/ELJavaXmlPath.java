@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
@@ -24,8 +24,8 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPathFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -128,7 +128,7 @@ public class ELJavaXmlPath
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__NOT_SPECIFIED,
+								JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__NOT_SPECIFIED,
 								ELJavaXmlPath.this,
 								getValueTextRange()));
 			return;
@@ -138,7 +138,7 @@ public class ELJavaXmlPath
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlPath.this,
 								getValueTextRange()));
 			return;

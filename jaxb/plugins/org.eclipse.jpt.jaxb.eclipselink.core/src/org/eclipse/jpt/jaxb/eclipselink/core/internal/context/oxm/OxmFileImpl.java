@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
 import java.util.List;
@@ -21,8 +21,8 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -165,7 +165,7 @@ public class OxmFileImpl
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED,
+								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED,
 								this,
 								getPackageNameTextRange()));
 			}
@@ -173,7 +173,7 @@ public class OxmFileImpl
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
+								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
 								new String[] { getPackageName() },
 								this,
 								getPackageNameTextRange()));

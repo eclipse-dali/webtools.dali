@@ -30,7 +30,7 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdAttributeUse;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
+import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
@@ -238,7 +238,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT,
 								context.getContextObject(),
 								getTextRange(context)));
 				return;
@@ -256,7 +256,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
 								new String[] { namespace, this.localName },
 								context.getContextObject(),
 								getTextRange(context)));
@@ -306,7 +306,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__UNRESOLVED_ELEMENT,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ELEMENT,
 								new String[] { namespace, this.localName },
 								context.getContextObject(),
 								getTextRange(context)));
@@ -353,7 +353,7 @@ public class XPath {
 			
 			messages. add(ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
+							JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
 							new String[] { getValue() },
 							context.getContextObject(),
 							getTextRange(context)));
@@ -416,7 +416,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__INVALID_NS_PREFIX,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_NS_PREFIX,
 								new String[] { this.nsPrefix },
 								context.getContextObject(),
 								getTextRange(context)));
@@ -465,7 +465,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT,
 								context.getContextObject(),
 								getTextRange(context)));
 				return;
@@ -581,7 +581,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT,
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT,
 								context.getContextObject(),
 								getTextRange(context)));
 			}
