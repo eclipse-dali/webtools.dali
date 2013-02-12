@@ -991,10 +991,6 @@ public abstract class AbstractJavaPersistentType
 		}
 	}
 
-	public void dispose() {
-		//nothing
-	}
-
 	protected void initializeChildren() {
 		this.children.addAll(this.attributes);
 	}

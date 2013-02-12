@@ -204,7 +204,6 @@ public abstract class SpecifiedOrmPersistentType
 		if (this.firePropertyChanged(NAME_PROPERTY, old, name)) {
 			// clear out the Java persistent type here, it will be rebuilt during "update"
 			if (this.javaPersistentType != null) {
-				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
 			}
 		}
@@ -269,7 +268,6 @@ public abstract class SpecifiedOrmPersistentType
 	protected void updateJavaPersistentType() {
 		if (this.getName() == null) {
 			if (this.javaPersistentType != null) {
-				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
 			}			
 		}
@@ -285,7 +283,6 @@ public abstract class SpecifiedOrmPersistentType
 				if (this.javaPersistentType.getJavaResourceType() == resourceType) {
 					this.javaPersistentType.update();
 				} else {
-					this.javaPersistentType.dispose();
 					this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
 				}
 			}
@@ -1164,9 +1161,6 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public void dispose() {
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.dispose();
-		}
 		for (OrmReadOnlyPersistentAttribute defaultAttribute : this.getDefaultAttributes()) {
 			defaultAttribute.dispose();
 		}

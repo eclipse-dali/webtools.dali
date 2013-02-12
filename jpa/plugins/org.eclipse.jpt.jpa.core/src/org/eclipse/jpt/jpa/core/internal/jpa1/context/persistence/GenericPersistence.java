@@ -293,8 +293,8 @@ public class GenericPersistence
 	}
 
 	public void dispose() {
-		for (JpaStructureNode child : this.getChildren()) {
-			child.dispose();
+		for (PersistenceUnit persistenceUnit : this.getPersistenceUnits()) {
+			persistenceUnit.dispose();
 		}
 	}
 

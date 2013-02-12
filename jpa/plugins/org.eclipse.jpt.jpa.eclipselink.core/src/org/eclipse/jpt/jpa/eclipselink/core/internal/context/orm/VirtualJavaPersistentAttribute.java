@@ -175,10 +175,6 @@ public class VirtualJavaPersistentAttribute
 		throw new UnsupportedOperationException();
 	}
 
-	public void dispose() {
-		throw new UnsupportedOperationException();
-	}
-
 	public AccessType getAccess() {
 		return null;
 	}

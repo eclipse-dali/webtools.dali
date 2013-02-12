@@ -103,4 +103,7 @@ public interface OrmReadOnlyPersistentAttribute
 	 * @throw IllegalStateException if the attribute is already specified
 	 */
 	OrmPersistentAttribute addToXml(String mappingKey);
+
+	//TODO would like to remove this eventually
+	void dispose();
 }

@@ -85,4 +85,7 @@ public interface Persistence
 	 */
 	void removePersistenceUnit(int index);
 
+	//TODO would like to remove this eventually
+	void dispose();
+
 }

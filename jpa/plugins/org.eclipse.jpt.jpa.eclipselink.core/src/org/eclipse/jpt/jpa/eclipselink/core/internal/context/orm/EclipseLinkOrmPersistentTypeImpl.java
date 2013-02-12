@@ -104,7 +104,6 @@ public class EclipseLinkOrmPersistentTypeImpl
 		if (this.firePropertyChanged(DYNAMIC_PROPERTY, old, this.dynamic)) {
 			// clear out the Java persistent type here, it will be rebuilt during "update"
 			if (this.javaPersistentType != null) {
-				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
 			}
 		}
@@ -341,6 +340,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 
 	// ********** metamodel **********
 
+	@Override
 	public PersistentType2_0 getMetamodelType() {
 		return (this.isDynamic()) ? null : this;
 	}

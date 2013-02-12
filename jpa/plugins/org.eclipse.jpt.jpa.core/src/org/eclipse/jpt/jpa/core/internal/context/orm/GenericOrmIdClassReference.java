@@ -94,7 +94,6 @@ public class GenericOrmIdClassReference
 		if (this.firePropertyChanged(FULLY_QUALIFIED_ID_CLASS_PROPERTY, old, name)) {
 			// clear out the Java id class here, it will be rebuilt during "update"
 			if (this.idClass != null) {
-				this.idClass.dispose();
 				this.setIdClass(null);
 			}
 		}
@@ -227,7 +226,6 @@ public class GenericOrmIdClassReference
 	protected void updateIdClass() {
 		if (this.fullyQualifiedIdClassName == null) {
 			if (this.idClass != null) {
-				this.idClass.dispose();
 				this.setIdClass(null);
 			}
 		} else {
@@ -237,7 +235,6 @@ public class GenericOrmIdClassReference
 				if (this.idClass.getName().equals(this.fullyQualifiedIdClassName)) {
 					this.idClass.update();
 				} else {
-					this.idClass.dispose();
 					this.setIdClass(this.buildIdClass());
 				}
 			}

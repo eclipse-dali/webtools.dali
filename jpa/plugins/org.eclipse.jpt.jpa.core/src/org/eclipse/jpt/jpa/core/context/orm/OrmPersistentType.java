@@ -147,4 +147,7 @@ public interface OrmPersistentType
 	 * mappings.
 	 */
 	String getDefaultPackage();
+
+	//TODO would like to remove this eventually
+	void dispose();
 }

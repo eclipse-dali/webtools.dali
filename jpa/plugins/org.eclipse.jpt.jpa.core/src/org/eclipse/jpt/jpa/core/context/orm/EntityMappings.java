@@ -203,4 +203,8 @@ public interface EntityMappings
 	 * @see #getPackage()
 	 */
 	String qualify(String className);
+
+	//TODO would like to remove this eventually
+	void dispose();
+
 }

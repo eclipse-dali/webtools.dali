@@ -371,10 +371,6 @@ public class VirtualJavaPersistentType
 		sb.append(this.getName());
 	}
 
-	public void dispose() {
-		//nothing to dispose
-	}
-
 	// ********** metamodel **********
 
 	public PersistentType2_0 getMetamodelType() {

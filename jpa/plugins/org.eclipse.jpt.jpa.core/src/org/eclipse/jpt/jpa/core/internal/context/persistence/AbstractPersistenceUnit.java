@@ -381,8 +381,8 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void dispose() {
-		for (JpaStructureNode child : this.getChildren()) {
-			child.dispose();
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			mappingFileRef.dispose();
 		}
 	}
 
@@ -801,10 +801,6 @@ public abstract class AbstractPersistenceUnit
 		protected XmlJarFileRef getResourceElement(JarFileRef contextElement) {
 			return contextElement.getXmlJarFileRef();
 		}
-		@Override
-		protected void disposeElement(JarFileRef element) {
-			element.dispose();
-		}
 	}
 
 	// ********** class refs **********
@@ -926,10 +922,6 @@ public abstract class AbstractPersistenceUnit
 		protected XmlJavaClassRef getResourceElement(ClassRef contextElement) {
 			return contextElement.getXmlClassRef();
 		}
-		@Override
-		protected void disposeElement(ClassRef contextElement) {
-			contextElement.dispose();
-		}
 	}
 
 
@@ -1020,10 +1012,6 @@ public abstract class AbstractPersistenceUnit
 		@Override
 		protected JavaResourceAbstractType getResourceElement(ClassRef contextElement) {
 			return contextElement.getJavaResourceType();
-		}
-		@Override
-		protected void disposeElement(ClassRef contextElement) {
-			contextElement.dispose();
 		}
 	}
 

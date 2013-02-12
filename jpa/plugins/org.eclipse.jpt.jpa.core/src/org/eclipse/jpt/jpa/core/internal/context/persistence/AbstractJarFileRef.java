@@ -123,10 +123,6 @@ public abstract class AbstractJarFileRef
 		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getFileNameTextRange();
 	}
 
-	public void dispose() {
-		// NOP
-	}
-
 
 	// ********** file name **********
 

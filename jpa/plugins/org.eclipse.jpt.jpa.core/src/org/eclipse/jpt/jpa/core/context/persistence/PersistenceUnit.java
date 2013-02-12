@@ -818,4 +818,8 @@ public interface PersistenceUnit
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
 	boolean validatesAgainstDatabase();
+
+	//TODO would like to remove this eventually
+	void dispose();
+
 }

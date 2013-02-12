@@ -105,13 +105,6 @@ public interface JpaStructureNode
 	 */
 	void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
 
-	/**
-	 * Dispose the structure node and its children.
-	 * Typically this would be used to update the structure node's
-	 * JPA file's root structure nodes.
-	 */
-	void dispose();
-
 
 	/**
 	 * Type used to identify a JPA structure node's type with respect to the

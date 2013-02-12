@@ -482,10 +482,6 @@ public abstract class AbstractJavaPersistentAttribute
 		return this.getResourceAttribute().getNameTextRange();
 	}
 
-	public void dispose() {
-		// nothing to dispose
-	}
-
 
 	// ********** type **********
 

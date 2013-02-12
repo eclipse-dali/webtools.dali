@@ -159,4 +159,7 @@ public interface MappingFileRef
 			return ref.getMappingFileGenerators();
 		}
 	}
+
+	//TODO would like to remove this eventually
+	void dispose();
 }

@@ -176,7 +176,6 @@ public class GenericClassRef
 		this.resourceType = this.resolveJavaResourceType();
 		if (this.resourceType == null || this.resourceType.getAstNodeType() != AstNodeType.TYPE) {
 			if (this.javaPersistentType != null) {
-				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
 			}
 		} else {
@@ -187,7 +186,6 @@ public class GenericClassRef
 				if (this.javaPersistentType.getJavaResourceType() == jrt) {
 					this.javaPersistentType.update();
 				} else {
-					this.javaPersistentType.dispose();
 					this.setJavaPersistentType(this.buildJavaPersistentType(jrt));
 				}
 			}
@@ -278,12 +276,6 @@ public class GenericClassRef
 
 	public TextRange getSelectionTextRange() {
 		return this.isVirtual() ? null : this.xmlJavaClassRef.getJavaClassTextRange();
-	}
-
-	public void dispose() {
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.dispose();
-		}
 	}
 
 

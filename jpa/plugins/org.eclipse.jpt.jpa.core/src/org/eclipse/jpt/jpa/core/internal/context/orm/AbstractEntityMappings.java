@@ -258,8 +258,8 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void dispose() {
-		for (JpaStructureNode child : this.getChildren()) {
-			child.dispose();
+		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
+			persistentType.dispose();
 		}
 	}
 
