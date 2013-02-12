@@ -60,7 +60,7 @@ public class JpaNavigatorItemContentProviderFactory
 	}
 
 	private synchronized ItemTreeContentProviderFactory getDelegate(JpaContextNode contextNode) {
-		JpaPlatform jpaPlatform = contextNode.getJpaProject().getJpaPlatform();
+		JpaPlatform jpaPlatform = contextNode.getJpaPlatform();
 		ItemTreeContentProviderFactory delegate = this.delegates.get(jpaPlatform);
 		if (delegate == null) {
 			if ( ! this.delegates.containsKey(jpaPlatform)) {  // null is an allowed value
