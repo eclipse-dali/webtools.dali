@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -29,6 +28,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
@@ -672,12 +672,12 @@ public class GenericJavaClassMapping
 		return allXmlIdMappings.hasNext() ? allXmlIdMappings.next() : null;
 	}
 	
-	protected static final Filter<XmlNamedNodeMapping> MAPPING_HAS_XML_ID = new MappingHasXmlID();
+	protected static final Predicate<XmlNamedNodeMapping> MAPPING_HAS_XML_ID = new MappingHasXmlID();
 	public static class MappingHasXmlID
 		extends FilterAdapter<XmlNamedNodeMapping>
 	{
 		@Override
-		public boolean accept(XmlNamedNodeMapping mapping) {
+		public boolean evaluate(XmlNamedNodeMapping mapping) {
 			return mapping.getXmlID() != null;
 		}
 	}

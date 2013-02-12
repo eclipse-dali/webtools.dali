@@ -20,13 +20,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -268,12 +268,12 @@ public abstract class AbstractJaxbContextRoot
 								new JavaResourceTypeTransformer())));
 	}
 	
-	public static final Filter<JavaResourceAbstractType> JAVA_RESOURCE_TYPE_IS_ANNOTATED = new JavaResourceTypeIsAnnotated();
+	public static final Predicate<JavaResourceAbstractType> JAVA_RESOURCE_TYPE_IS_ANNOTATED = new JavaResourceTypeIsAnnotated();
 	public static class JavaResourceTypeIsAnnotated
 		extends FilterAdapter<JavaResourceAbstractType>
 	{
 		@Override
-		public boolean accept(JavaResourceAbstractType type) {
+		public boolean evaluate(JavaResourceAbstractType type) {
 			if (type.getAstNodeType() == JavaResourceAbstractType.AstNodeType.TYPE) {
 				if (type.getAnnotation(JAXB.XML_REGISTRY) != null) {
 					return true;
@@ -458,7 +458,7 @@ public abstract class AbstractJaxbContextRoot
 			this.jaxbPackage = jaxbPackage;
 		}
 		@Override
-		public boolean accept(JavaType javaType) {
+		public boolean evaluate(JavaType javaType) {
 			return javaType.getTypeName().getPackageName().equals(this.jaxbPackage.getName());
 		}
 	}

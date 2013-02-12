@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -63,7 +63,7 @@ public class RadioButtonModelAdapter
 	 * value to the button value.
 	 */
 	public static ModifiablePropertyValueModel<Boolean> buildBooleanHolder(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue) {
-		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<Object>(valueHolder, Filter.Transparent.instance(), new SetRadioButtonFilter(buttonValue));
+		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<Object>(valueHolder, Predicate.True.instance(), new SetRadioButtonFilter(buttonValue));
 		return new TransformationModifiablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
 	}
 
@@ -95,7 +95,7 @@ public class RadioButtonModelAdapter
 	 * value model when it matches the configured button value.
 	 */
 	public static class SetRadioButtonFilter
-		implements Filter<Object>
+		implements Predicate<Object>
 	{
 		private Object buttonValue;
 
@@ -108,7 +108,7 @@ public class RadioButtonModelAdapter
 		 * pass through the value to the wrapped property value model
 		 * *only* when it matches our button value
 		 */
-		public boolean accept(Object value) {
+		public boolean evaluate(Object value) {
 			return (value != null) && value.equals(this.buttonValue);
 		}
 	}

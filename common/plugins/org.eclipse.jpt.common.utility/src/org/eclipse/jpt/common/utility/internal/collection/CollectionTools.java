@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
-import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -142,10 +142,10 @@ public final class CollectionTools {
 	 * Return a new collection with the filtered
 	 * elements of the specified collection.
 	 */
-	public static <E> HashBag<E> filter(Collection<? extends E> collection, Filter<E> filter) {
+	public static <E> HashBag<E> filter(Collection<? extends E> collection, Predicate<E> filter) {
 		HashBag<E> result = new HashBag<E>(collection.size());
 		for (E e : collection) {
-			if (filter.accept(e)) {
+			if (filter.evaluate(e)) {
 				result.add(e);
 			}
 		}

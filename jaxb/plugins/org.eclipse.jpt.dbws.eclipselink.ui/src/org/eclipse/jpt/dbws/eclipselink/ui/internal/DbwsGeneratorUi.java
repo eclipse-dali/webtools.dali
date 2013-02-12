@@ -26,8 +26,8 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.dbws.eclipselink.core.internal.gen.DbwsGenerator;
 import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsEclipseLinkUiMessages;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
@@ -53,7 +53,7 @@ public class DbwsGeneratorUi
 	private static final String DRIVER_PROPERTY = "driver";		//$NON-NLS-1$
 	private static final String DBWS_BUILDER_CLASS_NAME = "org.eclipse.persistence.tools.dbws.DBWSBuilder";		//$NON-NLS-1$
 
-	public static final Filter<IProject> PROJECT_HAS_WEB_FACET = new ProjectTools.HasNature(WEB_FACET_ID);
+	public static final Predicate<IProject> PROJECT_HAS_WEB_FACET = new ProjectTools.HasNature(WEB_FACET_ID);
     
 	// ********** static methods **********
 

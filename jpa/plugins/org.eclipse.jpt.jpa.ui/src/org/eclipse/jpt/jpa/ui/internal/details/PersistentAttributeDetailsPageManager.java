@@ -13,11 +13,11 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -110,7 +110,7 @@ public abstract class PersistentAttributeDetailsPageManager<A extends ReadOnlyPe
 		);
 	}
 
-	private Filter<AttributeMapping> buildMappingFilter(String mappingKey) {
+	private Predicate<AttributeMapping> buildMappingFilter(String mappingKey) {
 		return new MappingFilter(mappingKey);
 	}
 
@@ -137,7 +137,7 @@ public abstract class PersistentAttributeDetailsPageManager<A extends ReadOnlyPe
 
 	private static final String TRACE_OPTION = PersistentAttributeDetailsPageManager.class.getSimpleName();
 
-	private class MappingFilter implements Filter<AttributeMapping> {
+	private class MappingFilter implements Predicate<AttributeMapping> {
 		private String mappingKey;
 
 		MappingFilter(String mappingKey) {
@@ -145,7 +145,7 @@ public abstract class PersistentAttributeDetailsPageManager<A extends ReadOnlyPe
 			this.mappingKey = mappingKey;
 		}
 
-		public boolean accept(AttributeMapping mapping) {
+		public boolean evaluate(AttributeMapping mapping) {
 			return (mapping == null || this.mappingKey == null) || this.mappingKey.equals(mapping.getKey());
 		}
 	}

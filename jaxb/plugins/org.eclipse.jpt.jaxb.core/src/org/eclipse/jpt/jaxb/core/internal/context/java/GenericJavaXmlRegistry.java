@@ -17,13 +17,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
@@ -113,12 +113,12 @@ public class GenericJavaXmlRegistry
 		return IterableTools.filter(getJavaResourceType().getMethods(), METHOD_IS_ELEMENT_FACTORY_METHOD);
 	}
 	
-	protected static final Filter<JavaResourceMethod> METHOD_IS_ELEMENT_FACTORY_METHOD = new MethodIsElementFactoryMethod();
+	protected static final Predicate<JavaResourceMethod> METHOD_IS_ELEMENT_FACTORY_METHOD = new MethodIsElementFactoryMethod();
 	public static class MethodIsElementFactoryMethod
 		extends FilterAdapter<JavaResourceMethod>
 	{
 		@Override
-		public boolean accept(JavaResourceMethod method) {
+		public boolean evaluate(JavaResourceMethod method) {
 			return methodIsElementFactoryMethod(method);
 		}
 	}

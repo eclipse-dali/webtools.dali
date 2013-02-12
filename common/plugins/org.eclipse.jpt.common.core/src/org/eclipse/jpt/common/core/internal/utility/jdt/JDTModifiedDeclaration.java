@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,10 +28,10 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Wrap any of the AST nodes that have modifiers (specifically, annotations);
@@ -137,12 +137,12 @@ public class JDTModifiedDeclaration
 		return IterableTools.filter(this.getModifiers(), EXTENDED_MODIFIER_IS_ANNOTATION);
 	}
 
-	protected static final Filter<IExtendedModifier> EXTENDED_MODIFIER_IS_ANNOTATION = new ExtendedModifierIsAnnotation();
+	protected static final Predicate<IExtendedModifier> EXTENDED_MODIFIER_IS_ANNOTATION = new ExtendedModifierIsAnnotation();
 	protected static class ExtendedModifierIsAnnotation
 		extends FilterAdapter<IExtendedModifier>
 	{
 		@Override
-		public boolean accept(IExtendedModifier modifier) {
+		public boolean evaluate(IExtendedModifier modifier) {
 			return modifier.isAnnotation();
 		}
 	}

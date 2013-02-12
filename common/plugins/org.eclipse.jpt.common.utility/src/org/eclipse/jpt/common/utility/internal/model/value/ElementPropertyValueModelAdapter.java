@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Adapt an element in a collection value model to a property value model.
@@ -36,7 +36,7 @@ public class ElementPropertyValueModelAdapter<V>
 	 * A predicate used to determine whether an element in the wrapped
 	 * collection model is the model's value.
 	 */
-	protected final Filter<V> predicate;
+	protected final Predicate<V> predicate;
 
 
 	/**
@@ -45,7 +45,7 @@ public class ElementPropertyValueModelAdapter<V>
 	 * filter is used to determine whether an element in the specified
 	 * collection model is the property value.
 	 */
-	public ElementPropertyValueModelAdapter(CollectionValueModel<? extends V> collectionModel, Filter<V> predicate) {
+	public ElementPropertyValueModelAdapter(CollectionValueModel<? extends V> collectionModel, Predicate<V> predicate) {
 		super(collectionModel);
 		if (predicate == null) {
 			throw new NullPointerException();
@@ -60,7 +60,7 @@ public class ElementPropertyValueModelAdapter<V>
 	@Override
 	protected V buildValue() {
 		for (V each : this.collectionModel) {
-			if (this.predicate.accept(each)) {
+			if (this.predicate.evaluate(each)) {
 				return each;
 			}
 		}
@@ -80,7 +80,7 @@ public class ElementPropertyValueModelAdapter<V>
 
 	protected void itemsAdded_(Iterable<V> items) {
 		for (V each : items) {
-			if (this.predicate.accept(each)) {
+			if (this.predicate.evaluate(each)) {
 				this.firePropertyChanged(VALUE, null, this.value = each);
 				return;
 			}

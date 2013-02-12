@@ -17,12 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeSet;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import com.ibm.icu.text.Collator;
 
@@ -245,14 +245,14 @@ public class BodySourceWriter
 		return IterableTools.filter(this.imports.entrySet(), this.buildRequiredImportEntriesFilter());
 	}
 
-	protected Filter<Map.Entry<String, ImportPackage>> buildRequiredImportEntriesFilter() {
+	protected Predicate<Map.Entry<String, ImportPackage>> buildRequiredImportEntriesFilter() {
 		return new RequiredImportEntriesFilter();
 	}
 
 	protected class RequiredImportEntriesFilter
-		implements Filter<Map.Entry<String, ImportPackage>>
+		implements Predicate<Map.Entry<String, ImportPackage>>
 	{
-		public boolean accept(Map.Entry<String, ImportPackage> importEntry) {
+		public boolean evaluate(Map.Entry<String, ImportPackage> importEntry) {
 			return this.packageMustBeImported(importEntry.getValue());
 		}
 

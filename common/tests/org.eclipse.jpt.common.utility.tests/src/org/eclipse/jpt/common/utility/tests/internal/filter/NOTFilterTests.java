@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,9 @@ package org.eclipse.jpt.common.utility.tests.internal.filter;
 
 import java.io.Serializable;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.filter.NOTFilter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 public class NOTFilterTests
@@ -32,7 +32,7 @@ public class NOTFilterTests
 		this.notFilter = new NOTFilter<Number>(this.buildPositiveFilter());
 	}
 
-	private Filter<Number> buildPositiveFilter() {
+	private Predicate<Number> buildPositiveFilter() {
 		return new PositiveFilter();
 	}
 
@@ -42,7 +42,7 @@ public class NOTFilterTests
 	{
 		private static final long serialVersionUID = 1L;
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return number.doubleValue() > 0;
 		}
 		@Override
@@ -62,12 +62,12 @@ public class NOTFilterTests
 	}
 
 	public void testFiltering() {
-		assertTrue(this.notFilter.accept(new Integer(0)));
-		assertTrue(this.notFilter.accept(new Integer(-1)));
-		assertTrue(this.notFilter.accept(new Double(-0.001)));
-		assertFalse(this.notFilter.accept(new Double(1)));
-		assertFalse(this.notFilter.accept(new Double(11)));
-		assertFalse(this.notFilter.accept(new Double(111)));
+		assertTrue(this.notFilter.evaluate(new Integer(0)));
+		assertTrue(this.notFilter.evaluate(new Integer(-1)));
+		assertTrue(this.notFilter.evaluate(new Double(-0.001)));
+		assertFalse(this.notFilter.evaluate(new Double(1)));
+		assertFalse(this.notFilter.evaluate(new Double(11)));
+		assertFalse(this.notFilter.evaluate(new Double(111)));
 	}
 
 	public void testClone() {

@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 
@@ -74,17 +74,17 @@ public interface AttributeMapping
 			this.mappingKey = mappingKey;
 		}
 		@Override
-		public boolean accept(AttributeMapping mapping) {
+		public boolean evaluate(AttributeMapping mapping) {
 			return ObjectTools.equals(mapping.getKey(), this.mappingKey);
 		}
 	}
 
-	Filter<AttributeMapping> IS_NOT_TRANSIENT = new IsNotTransient();
+	Predicate<AttributeMapping> IS_NOT_TRANSIENT = new IsNotTransient();
 	public static class IsNotTransient
 		extends FilterAdapter<AttributeMapping>
 	{
 		@Override
-		public boolean accept(AttributeMapping mapping) {
+		public boolean evaluate(AttributeMapping mapping) {
 			return mapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 		}
 	}
@@ -101,12 +101,12 @@ public interface AttributeMapping
 	 */
 	boolean isOverridableAssociationMapping();
 
-	Filter<AttributeMapping> IS_OVERRIDABLE_ASSOCIATION_MAPPING = new IsOverridableAssociationMapping();
+	Predicate<AttributeMapping> IS_OVERRIDABLE_ASSOCIATION_MAPPING = new IsOverridableAssociationMapping();
 	public static class IsOverridableAssociationMapping
 		extends FilterAdapter<AttributeMapping>
 	{
 		@Override
-		public boolean accept(AttributeMapping mapping) {
+		public boolean evaluate(AttributeMapping mapping) {
 			return mapping.isOverridableAssociationMapping();
 		}
 	}

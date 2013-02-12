@@ -309,7 +309,7 @@ public abstract class AbstractJavaOverrideContainer<
 		extends FilterAdapter<A>
 	{
 		@Override
-		public boolean accept(A annotation) {
+		public boolean evaluate(A annotation) {
 			String overrideName = annotation.getName();
 			return (overrideName != null) && this.getOwner().isRelevant(overrideName);
 		}
@@ -408,7 +408,7 @@ public abstract class AbstractJavaOverrideContainer<
 		extends FilterAdapter<String>
 	{
 		@Override
-		public boolean accept(String overrideName) {
+		public boolean evaluate(String overrideName) {
 			return AbstractJavaOverrideContainer.this.overrideIsVirtual(overrideName);
 		}
 	}

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -40,12 +40,12 @@ public interface EclipseLinkOrmPersistentType
 	 */
 	boolean isDynamic();
 		String DYNAMIC_PROPERTY = "dynamic"; //$NON-NLS-1$
-	Filter<EclipseLinkOrmPersistentType> IS_DYNAMIC = new IsDynamic();
+	Predicate<EclipseLinkOrmPersistentType> IS_DYNAMIC = new IsDynamic();
 	class IsDynamic
 		extends FilterAdapter<EclipseLinkOrmPersistentType>
 	{
 		@Override
-		public boolean accept(EclipseLinkOrmPersistentType pType) {
+		public boolean evaluate(EclipseLinkOrmPersistentType pType) {
 			return pType.isDynamic();
 		}
 	}

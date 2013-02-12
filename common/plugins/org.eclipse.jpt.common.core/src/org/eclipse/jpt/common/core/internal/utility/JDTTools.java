@@ -21,10 +21,10 @@ import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Convenience methods for dealing with JDT core
@@ -191,9 +191,9 @@ public final class JDTTools {
 			);
 	}
 
-	private static final Filter<IPackageFragmentRoot> SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER =
-		new Filter<IPackageFragmentRoot>() {
-			public boolean accept(IPackageFragmentRoot pfr) {
+	private static final Predicate<IPackageFragmentRoot> SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER =
+		new Predicate<IPackageFragmentRoot>() {
+			public boolean evaluate(IPackageFragmentRoot pfr) {
 				return packageFragmentRootIsSourceFolder(pfr);
 			}
 		};
@@ -269,7 +269,7 @@ public final class JDTTools {
 			this.javaProject = javaProject;
 		}
 		@Override
-		public boolean accept(IResource resource) {
+		public boolean evaluate(IResource resource) {
 			return this.javaProject.isOnClasspath(resource);
 		}
 	}
@@ -283,7 +283,7 @@ public final class JDTTools {
 			this.javaProject = javaProject;
 		}
 		@Override
-		public boolean accept(IJavaElement javaElement) {
+		public boolean evaluate(IJavaElement javaElement) {
 			return this.javaProject.isOnClasspath(javaElement);
 		}
 	}

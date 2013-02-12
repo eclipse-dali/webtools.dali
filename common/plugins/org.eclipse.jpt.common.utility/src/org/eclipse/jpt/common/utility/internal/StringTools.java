@@ -12,10 +12,10 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -866,14 +866,14 @@ public final class StringTools {
 	/**
 	 * @see #isNotBlank(String)
 	 */
-	public static final Filter<String> NON_BLANK_FILTER = new NonBlankFilter();
+	public static final Predicate<String> NON_BLANK_FILTER = new NonBlankFilter();
 
 	/* CU private */ static class NonBlankFilter
-		extends Filter.Adapter<String>
+		extends Predicate.Adapter<String>
 		implements Serializable
 	{
 		@Override
-		public boolean accept(String string) {
+		public boolean evaluate(String string) {
 			return isNotBlank(string);
 		}
 		private static final long serialVersionUID = 1L;
@@ -909,7 +909,7 @@ public final class StringTools {
 			this.prefix = prefix;
 		}
 		@Override
-		public boolean accept(String string) {
+		public boolean evaluate(String string) {
 			return startsWithIgnoreCase(string, this.prefix);
 		}
 	}

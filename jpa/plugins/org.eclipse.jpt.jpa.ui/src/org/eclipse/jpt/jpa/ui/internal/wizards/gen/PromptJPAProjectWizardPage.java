@@ -122,7 +122,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		extends FilterAdapter<IProject>
 	{
 		@Override
-		public boolean accept(IProject project) {
+		public boolean evaluate(IProject project) {
 			return projectIsValidSelection(project);
 		}
 	}

@@ -1525,7 +1525,7 @@ public abstract class AbstractJavaEntity
 			extends FilterAdapter<String>
 		{
 			@Override
-			public boolean accept(String attributeName) {
+			public boolean evaluate(String attributeName) {
 				return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
 			}
 		}

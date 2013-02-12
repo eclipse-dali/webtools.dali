@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -40,17 +40,17 @@ public class FilteringPropertyValueModelTests extends TestCase {
 		this.filteredObjectHolder = new FilteringModifiablePropertyValueModel<String>(this.objectHolder, this.buildFilter(), this.buildSetFilter());
 	}
 
-	private Filter<String> buildFilter() {
-		return new Filter<String>() {
-			public boolean accept(String s) {
+	private Predicate<String> buildFilter() {
+		return new Predicate<String>() {
+			public boolean evaluate(String s) {
 				return (s != null) && s.startsWith("b");
 			}
 		};
 	}
 
-	private Filter<String> buildSetFilter() {
-		return new Filter<String>() {
-			public boolean accept(String s) {
+	private Predicate<String> buildSetFilter() {
+		return new Predicate<String>() {
+			public boolean evaluate(String s) {
 				return (s != null) && s.startsWith("b");
 			}
 		};

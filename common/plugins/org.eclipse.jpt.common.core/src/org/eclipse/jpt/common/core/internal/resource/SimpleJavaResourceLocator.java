@@ -23,9 +23,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 
@@ -185,12 +185,12 @@ public class SimpleJavaResourceLocator
 		return IterableTools.filter(this.getPackageFragmentRoots(project), SOURCE_ROOT_FILTER);
 	}
 
-	protected static final Filter<IPackageFragmentRoot> SOURCE_ROOT_FILTER = new SourceRootFilter();
+	protected static final Predicate<IPackageFragmentRoot> SOURCE_ROOT_FILTER = new SourceRootFilter();
 
 	protected static class SourceRootFilter
-		implements Filter<IPackageFragmentRoot>
+		implements Predicate<IPackageFragmentRoot>
 	{
-		public boolean accept(IPackageFragmentRoot pfr) {
+		public boolean evaluate(IPackageFragmentRoot pfr) {
 			try {
 				return this.accept_(pfr);
 			} catch (JavaModelException ex) {

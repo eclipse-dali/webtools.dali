@@ -12,8 +12,8 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -725,14 +725,14 @@ public final class CharArrayTools {
 	/**
 	 * @see #isNotBlank(char[])
 	 */
-	public static final Filter<char[]> NON_BLANK_FILTER = new NonBlankFilter();
+	public static final Predicate<char[]> NON_BLANK_FILTER = new NonBlankFilter();
 
 	/* CU private */ static class NonBlankFilter
-		extends Filter.Adapter<char[]>
+		extends Predicate.Adapter<char[]>
 		implements Serializable
 	{
 		@Override
-		public boolean accept(char[] string) {
+		public boolean evaluate(char[] string) {
 			return isNotBlank(string);
 		}
 		private static final long serialVersionUID = 1L;

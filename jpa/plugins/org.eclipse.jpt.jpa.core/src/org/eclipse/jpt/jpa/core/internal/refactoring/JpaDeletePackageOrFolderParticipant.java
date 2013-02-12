@@ -194,7 +194,7 @@ public class JpaDeletePackageOrFolderParticipant
 			this.jpaPlatform = jpaPlatform;
 		}
 		@Override
-		public boolean accept(IFile file) {
+		public boolean evaluate(IFile file) {
 			if (this.javaProject.isOnClasspath(file)) {
 				IContentType contentType = this.jpaPlatform.getContentType(file);
 				return (contentType != null) && contentType.isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);

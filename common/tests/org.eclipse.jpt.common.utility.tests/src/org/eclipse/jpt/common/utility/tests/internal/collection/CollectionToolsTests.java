@@ -22,13 +22,13 @@ import java.util.TreeSet;
 import java.util.Vector;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.collection.Bag;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
 @SuppressWarnings("nls")
@@ -355,7 +355,7 @@ public class CollectionToolsTests
 
 	public void testFilterCollectionFilterTransparent() {
 		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
-		Collection<String> actual = CollectionTools.filter(c, Filter.Transparent.<String>instance());
+		Collection<String> actual = CollectionTools.filter(c, Predicate.True.<String>instance());
 		Collection<String> expected = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
 		assertEquals(expected, actual);
 		assertNotSame(expected, actual);

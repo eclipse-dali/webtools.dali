@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -18,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -504,12 +504,12 @@ public class GenericJavaTableGenerator
 		return this.generatorAnnotation.catalogTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
+	protected Iterable<String> getJavaCandidateCatalogs(Predicate<String> filter) {
 		return new TransformationIterable<String, String>(this.getCandidateCatalogs(filter),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
-	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
+	protected Iterable<String> getCandidateCatalogs(Predicate<String> filter) {
 		return IterableTools.filter(this.getCandidateCatalogs(), filter);
 	}
 

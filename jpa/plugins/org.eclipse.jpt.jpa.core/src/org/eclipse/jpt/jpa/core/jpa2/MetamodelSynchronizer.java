@@ -147,7 +147,7 @@ public interface MetamodelSynchronizer {
 				this.sourceFolder = sourceFolder;
 			}
 			@Override
-			public boolean accept(JavaResourceAbstractType jrat) {
+			public boolean evaluate(JavaResourceAbstractType jrat) {
 				return isGeneratedMetamodelTopLevelType(jrat, this.sourceFolder);
 			}
 		}

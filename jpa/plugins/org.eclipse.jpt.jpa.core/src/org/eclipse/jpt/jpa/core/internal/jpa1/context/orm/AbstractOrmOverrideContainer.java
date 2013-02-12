@@ -327,7 +327,7 @@ public abstract class AbstractOrmOverrideContainer<
 		extends FilterAdapter<String>
 	{
 		@Override
-		public boolean accept(String name) {
+		public boolean evaluate(String name) {
 			return AbstractOrmOverrideContainer.this.overrideIsVirtual(name);
 		}
 	}

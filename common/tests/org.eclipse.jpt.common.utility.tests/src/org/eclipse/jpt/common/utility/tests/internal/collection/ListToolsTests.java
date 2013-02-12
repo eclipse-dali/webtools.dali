@@ -23,7 +23,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
@@ -31,6 +30,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
 @SuppressWarnings("nls")
@@ -219,7 +219,7 @@ public class ListToolsTests
 
 	public void testFilterListFilterTransparent() {
 		List<String> list = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
-		List<String> actual = ListTools.filter(list, Filter.Transparent.<String>instance());
+		List<String> actual = ListTools.filter(list, Predicate.True.<String>instance());
 		List<String> expected = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
 		assertEquals(expected, actual);
 		assertNotSame(expected, actual);

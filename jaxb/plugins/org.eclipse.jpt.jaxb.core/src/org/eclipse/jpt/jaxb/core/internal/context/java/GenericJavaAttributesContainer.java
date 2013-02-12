@@ -20,10 +20,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -192,7 +192,7 @@ public class GenericJavaAttributesContainer
 		this.initializeAnnotatedPropertyAttributes();
 	}
 
-	private void initializeFieldAttributes(Filter<JavaResourceField> filter) {
+	private void initializeFieldAttributes(Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			this.attributes.add(this.buildField(resourceField));
 		}
@@ -268,31 +268,31 @@ public class GenericJavaAttributesContainer
 		return this.javaResourceType.getMethods();
 	}
 
-	protected Iterable<JavaResourceField> getResourceFields(Filter<JavaResourceField> filter) {
+	protected Iterable<JavaResourceField> getResourceFields(Predicate<JavaResourceField> filter) {
 		return IterableTools.filter(getResourceFields(), filter);
 	}
 
-	protected Iterable<JavaResourceMethod> getResourceMethods(Filter<JavaResourceMethod> filter) {
+	protected Iterable<JavaResourceMethod> getResourceMethods(Predicate<JavaResourceMethod> filter) {
 		return IterableTools.filter(getResourceMethods(), filter);
 	}
 
-	protected Filter<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
-		return new Filter<JavaResourceField>() {
-			public boolean accept(JavaResourceField resourceField) {
+	protected Predicate<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
+		return new Predicate<JavaResourceField>() {
+			public boolean evaluate(JavaResourceField resourceField) {
 				return memberIsNonTransientNonStatic(resourceField) || resourceField.isAnnotated();
 			}
 		};
 	}
 
-	protected static Filter<JavaResourceField> PUBLIC_MEMBER_ACCESS_TYPE_RESOURCE_FIELDS_FILTER = new Filter<JavaResourceField>() {
-		public boolean accept(JavaResourceField resourceField) {
+	protected static Predicate<JavaResourceField> PUBLIC_MEMBER_ACCESS_TYPE_RESOURCE_FIELDS_FILTER = new Predicate<JavaResourceField>() {
+		public boolean evaluate(JavaResourceField resourceField) {
 			return memberIsPublicNonTransientNonStatic(resourceField) || resourceField.isAnnotated();
 		}
 	};
 
-	protected Filter<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
-		return new Filter<JavaResourceMethod>() {
-			public boolean accept(JavaResourceMethod resourceMethod) {
+	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
+		return new Predicate<JavaResourceMethod>() {
+			public boolean evaluate(JavaResourceMethod resourceMethod) {
 				return methodIsPersistablePropertyGetter(resourceMethod, getResourceMethods());
 			}
 		};
@@ -306,9 +306,9 @@ public class GenericJavaAttributesContainer
 		return !resourceMember.isTransient() && !resourceMember.isStatic();
 	}
 
-	protected static Filter<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER = 
-		new Filter<JavaResourceField>() {
-			public boolean accept(JavaResourceField resourceField) {
+	protected static Predicate<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER = 
+		new Predicate<JavaResourceField>() {
+			public boolean evaluate(JavaResourceField resourceField) {
 				return resourceField.isAnnotated();
 			}
 		};
@@ -462,7 +462,7 @@ public class GenericJavaAttributesContainer
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldAttributes(HashSet<JaxbPersistentAttribute> contextAttributes, Filter<JavaResourceField> filter) {
+	private void syncFieldAttributes(HashSet<JaxbPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<JaxbPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {

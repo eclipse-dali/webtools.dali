@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -67,7 +67,7 @@ public class ProjectTools {
 			this.facetID = facetID;
 		}
 		@Override
-		public boolean accept(IProject project) {
+		public boolean evaluate(IProject project) {
 			return hasFacet(project, this.facetID);
 		}
 	}
@@ -85,7 +85,7 @@ public class ProjectTools {
 		}
 	}
 
-	public static final Filter<IProject> IS_JAVA_PROJECT = new HasNature(JavaCore.NATURE_ID);
+	public static final Predicate<IProject> IS_JAVA_PROJECT = new HasNature(JavaCore.NATURE_ID);
 	public static class HasNature
 		extends FilterAdapter<IProject>
 	{
@@ -95,7 +95,7 @@ public class ProjectTools {
 			this.natureID = natureID;
 		}
 		@Override
-		public boolean accept(IProject project) {
+		public boolean evaluate(IProject project) {
 			return hasNature(project, this.natureID);
 		}
 	}

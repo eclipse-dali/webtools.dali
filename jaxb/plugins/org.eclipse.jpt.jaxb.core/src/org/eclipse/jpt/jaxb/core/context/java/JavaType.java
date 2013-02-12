@@ -53,7 +53,7 @@ public interface JavaType
 			this.typeKind = typeKind;
 		}
 		@Override
-		public boolean accept(JavaType type) {
+		public boolean evaluate(JavaType type) {
 			return type.getKind() == this.typeKind;
 		}
 	}

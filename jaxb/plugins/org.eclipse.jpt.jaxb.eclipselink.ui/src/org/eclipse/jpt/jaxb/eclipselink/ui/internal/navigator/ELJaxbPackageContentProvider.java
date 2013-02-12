@@ -1,16 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 20012, 2013 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
@@ -21,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCurator;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.TypeKind;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
@@ -80,7 +80,7 @@ public class ELJaxbPackageContentProvider
 	}
 	
 	protected class JavaTypeFilter
-			implements Filter<JavaType> {
+			implements Predicate<JavaType> {
 		
 		private final ELJaxbContextRoot contextRoot;
 		
@@ -88,7 +88,7 @@ public class ELJaxbPackageContentProvider
 			this.contextRoot = contextRoot;
 		}
 		
-		public boolean accept(JavaType o) {
+		public boolean evaluate(JavaType o) {
 			String typeName = o.getTypeName().getFullyQualifiedName();
 			// TODO xml-registry, xml-java-type-adapter
 			JavaTypeMapping typeMapping = o.getMapping();

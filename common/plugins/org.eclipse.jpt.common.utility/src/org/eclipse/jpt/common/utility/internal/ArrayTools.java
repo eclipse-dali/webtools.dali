@@ -19,13 +19,13 @@ import java.util.LinkedHashSet;
 import java.util.Random;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
 import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -2913,13 +2913,13 @@ public final class ArrayTools {
 	 * Return a new array with the filtered
 	 * elements of the specified array.
 	 */
-	public static <E> E[] filter(E[] array, Filter<E> filter) {
+	public static <E> E[] filter(E[] array, Predicate<E> filter) {
 		int length = array.length;
 		E[] result = newInstance(array, length);
 		int resultLength = 0;
 		for (int i = 0; i < length; i++) {
 			E e = array[i];
-			if (filter.accept(e)) {
+			if (filter.evaluate(e)) {
 				result[resultLength++] = e;
 			}
 		}

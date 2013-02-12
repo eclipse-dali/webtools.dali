@@ -116,7 +116,7 @@ public class ProjectAdapterFactory
 				super(project);
 			}
 			@Override
-			public boolean accept(JpaProject jpaProject) {
+			public boolean evaluate(JpaProject jpaProject) {
 				return jpaProject.getProject().equals(this.criterion);
 			}
 		}

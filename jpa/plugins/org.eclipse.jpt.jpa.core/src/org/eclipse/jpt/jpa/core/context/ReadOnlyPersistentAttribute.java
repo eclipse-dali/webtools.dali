@@ -55,7 +55,7 @@ public interface ReadOnlyPersistentAttribute
 			this.attributeName = attributeName;
 		}
 		@Override
-		public boolean accept(ReadOnlyPersistentAttribute attribute) {
+		public boolean evaluate(ReadOnlyPersistentAttribute attribute) {
 			return ObjectTools.equals(this.attributeName, attribute.getName());
 		}
 	}

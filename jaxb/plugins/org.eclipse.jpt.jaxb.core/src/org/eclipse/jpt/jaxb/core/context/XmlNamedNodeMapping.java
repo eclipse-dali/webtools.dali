@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 
@@ -66,12 +66,12 @@ public interface XmlNamedNodeMapping
 	
 	XsdFeature getXsdFeature();
 
-	Filter<JaxbAttributeMapping> MAPPING_IS_NAMED_NODE_MAPPING = new MappingIsNamedNodeMapping();
+	Predicate<JaxbAttributeMapping> MAPPING_IS_NAMED_NODE_MAPPING = new MappingIsNamedNodeMapping();
 	class MappingIsNamedNodeMapping
 		extends FilterAdapter<JaxbAttributeMapping>
 	{
 		@Override
-		public boolean accept(JaxbAttributeMapping mapping) {
+		public boolean evaluate(JaxbAttributeMapping mapping) {
 			return (mapping.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
 					|| mapping.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
 		}

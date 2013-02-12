@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.common.utility.tests.internal.filter;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.filter.ORFilter;
 import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 public class ORFilterTests
@@ -34,7 +34,7 @@ public class ORFilterTests
 		this.orFilter = new ORFilter<Number>(this.buildMinFilter(1), this.buildMaxFilter(10));
 	}
 
-	private Filter<Number> buildMinFilter(double min) {
+	private Predicate<Number> buildMinFilter(double min) {
 		return new MinFilter(min);
 	}
 
@@ -46,12 +46,12 @@ public class ORFilterTests
 			super(new Double(min));
 		}
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return number.doubleValue() <= this.criterion.doubleValue();
 		}
 	}
 
-	private Filter<Number> buildMaxFilter(double max) {
+	private Predicate<Number> buildMaxFilter(double max) {
 		return new MaxFilter(max);
 	}
 
@@ -63,12 +63,12 @@ public class ORFilterTests
 			super(new Double(min));
 		}
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return number.doubleValue() >= this.criterion.doubleValue();
 		}
 	}
 
-	private Filter<Number> buildEvenFilter() {
+	private Predicate<Number> buildEvenFilter() {
 		return new EvenFilter();
 	}
 
@@ -79,7 +79,7 @@ public class ORFilterTests
 			super();
 		}
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return BitTools.isEven(number.intValue());
 		}
 	}
@@ -91,51 +91,51 @@ public class ORFilterTests
 	}
 
 	public void testFiltering2() {
-		assertFalse(this.orFilter.accept(new Integer(7)));
-		assertFalse(this.orFilter.accept(new Integer(2)));
-		assertFalse(this.orFilter.accept(new Double(6.666)));
-		assertTrue(this.orFilter.accept(new Double(-99)));
-		assertTrue(this.orFilter.accept(new Double(-1)));
-		assertTrue(this.orFilter.accept(new Double(11)));
-		assertTrue(this.orFilter.accept(new Double(111)));
+		assertFalse(this.orFilter.evaluate(new Integer(7)));
+		assertFalse(this.orFilter.evaluate(new Integer(2)));
+		assertFalse(this.orFilter.evaluate(new Double(6.666)));
+		assertTrue(this.orFilter.evaluate(new Double(-99)));
+		assertTrue(this.orFilter.evaluate(new Double(-1)));
+		assertTrue(this.orFilter.evaluate(new Double(11)));
+		assertTrue(this.orFilter.evaluate(new Double(111)));
 	}
 
 	public void testFiltering3() {
 		@SuppressWarnings("unchecked")
 		ORFilter<Number> orFilter2 = new ORFilter<Number>(this.orFilter, this.buildEvenFilter());
-		assertFalse(orFilter2.accept(new Integer(7)));
-		assertFalse(orFilter2.accept(new Integer(3)));
-		assertFalse(orFilter2.accept(new Integer(9)));
-		assertTrue(orFilter2.accept(new Integer(2)));
-		assertTrue(orFilter2.accept(new Double(6.1)));
-		assertTrue(orFilter2.accept(new Double(-99)));
-		assertTrue(orFilter2.accept(new Double(-1)));
-		assertTrue(orFilter2.accept(new Double(11)));
-		assertTrue(orFilter2.accept(new Double(111)));
-		assertTrue(orFilter2.accept(new Double(-98)));
-		assertTrue(orFilter2.accept(new Double(0)));
-		assertTrue(orFilter2.accept(new Double(-2)));
-		assertTrue(orFilter2.accept(new Double(12)));
-		assertTrue(orFilter2.accept(new Double(222)));
+		assertFalse(orFilter2.evaluate(new Integer(7)));
+		assertFalse(orFilter2.evaluate(new Integer(3)));
+		assertFalse(orFilter2.evaluate(new Integer(9)));
+		assertTrue(orFilter2.evaluate(new Integer(2)));
+		assertTrue(orFilter2.evaluate(new Double(6.1)));
+		assertTrue(orFilter2.evaluate(new Double(-99)));
+		assertTrue(orFilter2.evaluate(new Double(-1)));
+		assertTrue(orFilter2.evaluate(new Double(11)));
+		assertTrue(orFilter2.evaluate(new Double(111)));
+		assertTrue(orFilter2.evaluate(new Double(-98)));
+		assertTrue(orFilter2.evaluate(new Double(0)));
+		assertTrue(orFilter2.evaluate(new Double(-2)));
+		assertTrue(orFilter2.evaluate(new Double(12)));
+		assertTrue(orFilter2.evaluate(new Double(222)));
 	}
 
 	public void testFilteringComposite() {
 		@SuppressWarnings("unchecked")
-		Filter<Number> orFilter2 = new ORFilter<Number>(this.buildMinFilter(1), this.buildMaxFilter(10), this.buildEvenFilter());
-		assertFalse(orFilter2.accept(new Integer(7)));
-		assertFalse(orFilter2.accept(new Integer(3)));
-		assertFalse(orFilter2.accept(new Integer(9)));
-		assertTrue(orFilter2.accept(new Integer(2)));
-		assertTrue(orFilter2.accept(new Double(6.1)));
-		assertTrue(orFilter2.accept(new Double(-99)));
-		assertTrue(orFilter2.accept(new Double(-1)));
-		assertTrue(orFilter2.accept(new Double(11)));
-		assertTrue(orFilter2.accept(new Double(111)));
-		assertTrue(orFilter2.accept(new Double(-98)));
-		assertTrue(orFilter2.accept(new Double(0)));
-		assertTrue(orFilter2.accept(new Double(-2)));
-		assertTrue(orFilter2.accept(new Double(12)));
-		assertTrue(orFilter2.accept(new Double(222)));
+		Predicate<Number> orFilter2 = new ORFilter<Number>(this.buildMinFilter(1), this.buildMaxFilter(10), this.buildEvenFilter());
+		assertFalse(orFilter2.evaluate(new Integer(7)));
+		assertFalse(orFilter2.evaluate(new Integer(3)));
+		assertFalse(orFilter2.evaluate(new Integer(9)));
+		assertTrue(orFilter2.evaluate(new Integer(2)));
+		assertTrue(orFilter2.evaluate(new Double(6.1)));
+		assertTrue(orFilter2.evaluate(new Double(-99)));
+		assertTrue(orFilter2.evaluate(new Double(-1)));
+		assertTrue(orFilter2.evaluate(new Double(11)));
+		assertTrue(orFilter2.evaluate(new Double(111)));
+		assertTrue(orFilter2.evaluate(new Double(-98)));
+		assertTrue(orFilter2.evaluate(new Double(0)));
+		assertTrue(orFilter2.evaluate(new Double(-2)));
+		assertTrue(orFilter2.evaluate(new Double(12)));
+		assertTrue(orFilter2.evaluate(new Double(222)));
 	}
 
 	public void testClone() {

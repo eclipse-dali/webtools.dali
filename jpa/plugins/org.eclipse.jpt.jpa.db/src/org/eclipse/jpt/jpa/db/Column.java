@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.db;
 
 import org.eclipse.jpt.common.utility.JavaType;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Database column
@@ -37,12 +37,12 @@ public interface Column
 	 * Return whether the column is part of its table's primary key.
 	 */
 	boolean isPartOfPrimaryKey();
-	Filter<Column> IS_PART_OF_PRIMARY_KEY = new IsPartOfPrimaryKey();
+	Predicate<Column> IS_PART_OF_PRIMARY_KEY = new IsPartOfPrimaryKey();
 	public static class IsPartOfPrimaryKey
 		extends FilterAdapter<Column>
 	{
 		@Override
-		public boolean accept(Column column) {
+		public boolean evaluate(Column column) {
 			return column.isPartOfPrimaryKey();
 		}
 	}

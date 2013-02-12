@@ -189,7 +189,7 @@ public interface OverrideContainer
 				this.owner = owner;
 			}
 			@Override
-			public boolean accept(String attributeName) {
+			public boolean evaluate(String attributeName) {
 				return ! this.owner.getTypeMapping().attributeIsDerivedId(attributeName);
 			}
 		}

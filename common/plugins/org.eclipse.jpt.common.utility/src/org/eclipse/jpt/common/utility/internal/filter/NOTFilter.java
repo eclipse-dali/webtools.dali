@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.filter;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * This filter will "accept" any object that is NOT accepted by
@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * @param <T> the type of objects to be filtered
  */
 public class NOTFilter<T>
-	implements Filter<T>, Cloneable, Serializable
+	implements Predicate<T>, Cloneable, Serializable
 {
-	protected final Filter<? super T> filter;
+	protected final Predicate<? super T> filter;
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class NOTFilter<T>
 	 * Construct a filter that will "accept" any object that is NOT accepted
 	 * by the specified wrapped filter.
 	 */
-	public NOTFilter(Filter<? super T> filter) {
+	public NOTFilter(Predicate<? super T> filter) {
 		super();
 		if (filter == null) {
 			throw new NullPointerException();
@@ -39,11 +39,11 @@ public class NOTFilter<T>
 		this.filter = filter;
 	}
 
-	public boolean accept(T o) {
-		return ! this.filter.accept(o);
+	public boolean evaluate(T o) {
+		return ! this.filter.evaluate(o);
 	}
 
-	public Filter<? super T> getFilter() {
+	public Predicate<? super T> getFilter() {
 		return this.filter;
 	}
 

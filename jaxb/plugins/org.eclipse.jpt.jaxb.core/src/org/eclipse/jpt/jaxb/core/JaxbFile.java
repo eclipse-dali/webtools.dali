@@ -51,7 +51,7 @@ public interface JaxbFile
 			this.contentType = contentType;
 		}
 		@Override
-		public boolean accept(JaxbFile jaxbFile) {
+		public boolean evaluate(JaxbFile jaxbFile) {
 			return jaxbFile.getContentType().isKindOf(this.contentType);
 		}
 	}

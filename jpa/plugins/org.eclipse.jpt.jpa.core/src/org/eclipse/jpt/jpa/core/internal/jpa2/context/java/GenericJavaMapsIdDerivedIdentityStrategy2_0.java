@@ -282,7 +282,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		extends FilterAdapter<AttributeMapping>
 	{
 		@Override
-		public boolean accept(AttributeMapping mapping) {
+		public boolean evaluate(AttributeMapping mapping) {
 			return GenericJavaMapsIdDerivedIdentityStrategy2_0.this.mappingIsIdMapping(mapping);
 		}
 	}

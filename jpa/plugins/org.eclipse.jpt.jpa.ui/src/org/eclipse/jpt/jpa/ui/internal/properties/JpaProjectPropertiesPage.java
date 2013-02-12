@@ -30,7 +30,6 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -63,6 +62,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -609,10 +609,10 @@ public class JpaProjectPropertiesPage
 	}
 
 	/* CU private */ class JpaPlatformConfigFilter
-		extends Filter.Adapter<JpaPlatform.Config>
+		extends Predicate.Adapter<JpaPlatform.Config>
 	{
 		@Override
-		public boolean accept(JpaPlatform.Config config) {
+		public boolean evaluate(JpaPlatform.Config config) {
 			return config.supportsJpaFacetVersion(JpaProjectPropertiesPage.this.getProjectFacetVersion());
 		}
 	}

@@ -13,7 +13,6 @@ Dali-Comment-2: the UI-related packages are friends with only UI plug-ins
 Export-Package: org.eclipse.jpt.common.utility,
  org.eclipse.jpt.common.utility.collection,
  org.eclipse.jpt.common.utility.command,
- org.eclipse.jpt.common.utility.filter,
  org.eclipse.jpt.common.utility.internal;
   x-friends:="org.eclipse.jpt.common.core,
    org.eclipse.jpt.common.ui,
@@ -197,5 +196,6 @@ Export-Package: org.eclipse.jpt.common.utility,
  org.eclipse.jpt.common.utility.model.listener,
  org.eclipse.jpt.common.utility.model.value,
  org.eclipse.jpt.common.utility.node,
+ org.eclipse.jpt.common.utility.predicate,
  org.eclipse.jpt.common.utility.reference,
  org.eclipse.jpt.common.utility.transformer

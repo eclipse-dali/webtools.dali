@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.io.NullOutputStream;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -116,12 +116,12 @@ public class JDKTools {
 		return IterableTools.filter(files, JAVA_FILE_FILTER);
 	}
 
-	private static final Filter<File> JAVA_FILE_FILTER = new JavaFileFilter();
+	private static final Predicate<File> JAVA_FILE_FILTER = new JavaFileFilter();
 	/* CU private */ static class JavaFileFilter
 		extends FilterAdapter<File>
 	{
 		@Override
-		public boolean accept(File file) {
+		public boolean evaluate(File file) {
 			return file.isFile() && file.getPath().endsWith(".java");
 		}
 	}

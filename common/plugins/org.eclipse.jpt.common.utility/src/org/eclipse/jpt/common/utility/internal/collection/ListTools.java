@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -168,10 +168,10 @@ public final class ListTools {
 	 * Return a new list with the filtered
 	 * elements of the specified list.
 	 */
-	public static <E> ArrayList<E> filter(Collection<? extends E> list, Filter<E> filter) {
+	public static <E> ArrayList<E> filter(Collection<? extends E> list, Predicate<E> filter) {
 		ArrayList<E> result = new ArrayList<E>(list.size());
 		for (E e : list) {
-			if (filter.accept(e)) {
+			if (filter.evaluate(e)) {
 				result.add(e);
 			}
 		}

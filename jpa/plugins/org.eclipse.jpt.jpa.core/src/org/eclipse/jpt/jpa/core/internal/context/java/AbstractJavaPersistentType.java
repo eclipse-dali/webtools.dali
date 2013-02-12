@@ -25,7 +25,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -33,6 +32,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -451,7 +451,7 @@ public abstract class AbstractJavaPersistentType
 		this.initializeAnnotatedPropertyAttributes();
 	}
 
-	private void initializeFieldAttributes(Filter<JavaResourceField> filter) {
+	private void initializeFieldAttributes(Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			this.attributes.add(this.buildField(resourceField));
 		}
@@ -592,7 +592,7 @@ public abstract class AbstractJavaPersistentType
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldAttributes(HashSet<JavaPersistentAttribute> contextAttributes, Filter<JavaResourceField> filter) {
+	private void syncFieldAttributes(HashSet<JavaPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
@@ -650,17 +650,17 @@ public abstract class AbstractJavaPersistentType
 		return this.resourceType.getMethods();
 	}
 
-	protected Iterable<JavaResourceField> getResourceFields(Filter<JavaResourceField> filter) {
+	protected Iterable<JavaResourceField> getResourceFields(Predicate<JavaResourceField> filter) {
 		return IterableTools.filter(this.getResourceFields(), filter);
 	}
 
-	protected Iterable<JavaResourceMethod> getResourceMethods(Filter<JavaResourceMethod> filter) {
+	protected Iterable<JavaResourceMethod> getResourceMethods(Predicate<JavaResourceMethod> filter) {
 		return IterableTools.filter(this.getResourceMethods(), filter);
 	}
 
-	public static Filter<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
-		return new Filter<JavaResourceField>() {
-			public boolean accept(JavaResourceField resourceField) {
+	public static Predicate<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
+		return new Predicate<JavaResourceField>() {
+			public boolean evaluate(JavaResourceField resourceField) {
 				return memberIsNonTransientNonStatic(resourceField) || resourceField.isAnnotated();
 			}
 		};
@@ -670,16 +670,16 @@ public abstract class AbstractJavaPersistentType
 		return !resourceMember.isTransient() && !resourceMember.isStatic();
 	}
 
-	public static Filter<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER =
-		new Filter<JavaResourceField>() {
-			public boolean accept(JavaResourceField resourceField) {
+	public static Predicate<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER =
+		new Predicate<JavaResourceField>() {
+			public boolean evaluate(JavaResourceField resourceField) {
 				return resourceField.isAnnotated();
 			}
 		};
 
-	protected Filter<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
-		return new Filter<JavaResourceMethod>() {
-			public boolean accept(JavaResourceMethod resourceMethod) {
+	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
+		return new Predicate<JavaResourceMethod>() {
+			public boolean evaluate(JavaResourceMethod resourceMethod) {
 				return methodIsPersistablePropertyGetter(resourceMethod, AbstractJavaPersistentType.this.getResourceMethods());
 			}
 		};

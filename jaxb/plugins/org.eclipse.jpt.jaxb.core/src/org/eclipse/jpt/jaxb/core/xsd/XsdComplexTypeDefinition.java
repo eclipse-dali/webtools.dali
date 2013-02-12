@@ -81,7 +81,7 @@ public class XsdComplexTypeDefinition
 			this.namespace = namespace;
 		}
 		@Override
-		public boolean accept(XSDAttributeUse attrUse) {
+		public boolean evaluate(XSDAttributeUse attrUse) {
 			return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), this.namespace);
 		}
 	}

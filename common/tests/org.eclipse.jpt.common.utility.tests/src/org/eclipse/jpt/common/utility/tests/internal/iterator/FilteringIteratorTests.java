@@ -14,9 +14,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 @SuppressWarnings("nls")
 public class FilteringIteratorTests
@@ -119,11 +119,11 @@ public class FilteringIteratorTests
 		}
 	}
 
-	private Iterator<String> buildFilteredIterator(Iterator<String> nestedIterator, Filter<String> filter) {
+	private Iterator<String> buildFilteredIterator(Iterator<String> nestedIterator, Predicate<String> filter) {
 		return IteratorTools.filter(nestedIterator, filter);
 	}
 
-	private Iterator<String> buildSuperFilteredIterator(Iterator<String> nestedIterator, Filter<Object> filter) {
+	private Iterator<String> buildSuperFilteredIterator(Iterator<String> nestedIterator, Predicate<Object> filter) {
 		return IteratorTools.<String>filter(nestedIterator, filter);
 	}
 
@@ -156,23 +156,23 @@ public class FilteringIteratorTests
 		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildFilterFilter(PREFIX));
 	}
 
-	private Filter<String> buildAcceptFilter(String prefix) {
+	private Predicate<String> buildAcceptFilter(String prefix) {
 		return new SimpleFilter<String, String>(prefix) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean accept(String s) {
+			public boolean evaluate(String s) {
 				return s.startsWith(this.criterion);
 			}
 		};
 	}
 
-	private Filter<Object> buildSuperAcceptFilter(String prefix) {
+	private Predicate<Object> buildSuperAcceptFilter(String prefix) {
 		return new SimpleFilter<Object, String>(prefix) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean accept(Object o) {
+			public boolean evaluate(Object o) {
 				return o.toString().startsWith(this.criterion);
 			}
 		};
@@ -182,7 +182,7 @@ public class FilteringIteratorTests
 		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildRejectFilter(PREFIX));
 	}
 
-	private Filter<String> buildRejectFilter(String prefix) {
+	private Predicate<String> buildRejectFilter(String prefix) {
 		return new SimpleFilter<String, String>(prefix) {
 			private static final long serialVersionUID = 1L;
 
@@ -194,9 +194,9 @@ public class FilteringIteratorTests
 	}
 
 	// use anonymous inner Filter
-	private Filter<String> buildFilterFilter(final String prefix) {
-		return new Filter<String>() {
-			public boolean accept(String s) {
+	private Predicate<String> buildFilterFilter(final String prefix) {
+		return new Predicate<String>() {
+			public boolean evaluate(String s) {
 				return s.startsWith(prefix);
 			}
 		};
@@ -206,7 +206,7 @@ public class FilteringIteratorTests
 		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildBothFilter(PREFIX));
 	}
 
-	private Filter<String> buildBothFilter(String prefix) {
+	private Predicate<String> buildBothFilter(String prefix) {
 		return new SimpleFilter<String, String>(prefix) {
 			private static final long serialVersionUID = 1L;
 
@@ -216,7 +216,7 @@ public class FilteringIteratorTests
 			}
 
 			@Override
-			public boolean accept(String s) {
+			public boolean evaluate(String s) {
 				return s.startsWith(this.criterion);
 			}
 		};
@@ -226,7 +226,7 @@ public class FilteringIteratorTests
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<String> iterator = IteratorTools.filter(this.buildNestedIterator(), Filter.Disabled.<String>instance());
+			Iterator<String> iterator = IteratorTools.filter(this.buildNestedIterator(), Predicate.Disabled.<String>instance());
 			String s = iterator.next();
 			fail("invalid string: " + s);
 		} catch (UnsupportedOperationException ex) {

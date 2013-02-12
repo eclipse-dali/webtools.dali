@@ -23,10 +23,10 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -119,7 +119,7 @@ public class JpaJavaCompletionProposalComputer
 		// the context's "token" is really a sort of "prefix" - it does NOT
 		// correspond to the "start" and "end" we get below... 
 		char[] prefix = cc.getToken();
-		Filter<String> filter = this.buildPrefixFilter(prefix);
+		Predicate<String> filter = this.buildPrefixFilter(prefix);
 		// the token "kind" tells us if we are in a String literal already - CompletionContext.TOKEN_KIND_STRING_LITERAL
 		int tokenKind = cc.getTokenKind();
 		// the token "start" is the offset of the token's first character
@@ -153,7 +153,7 @@ public class JpaJavaCompletionProposalComputer
 		return proposals;
 	}
 
-	private Iterable<String> buildCompletionProposals(JavaPersistentType structureNode, int pos, Filter<String> filter) {
+	private Iterable<String> buildCompletionProposals(JavaPersistentType structureNode, int pos, Predicate<String> filter) {
 		return IterableTools.filter(structureNode.getCompletionProposals(pos), filter);
 	}
 
@@ -183,21 +183,21 @@ public class JpaJavaCompletionProposalComputer
 		// do nothing
 	}
 
-	private Filter<String> buildPrefixFilter(char[] prefix) {
+	private Predicate<String> buildPrefixFilter(char[] prefix) {
 		return (prefix == null) ?
-				Filter.Transparent.<String>instance() :
+				Predicate.True.<String>instance() :
 				new IgnoreCasePrefixFilter(prefix);
 	}
 
 	private static class IgnoreCasePrefixFilter
-		implements Filter<String>
+		implements Predicate<String>
 	{
 		private final String prefix;
 		IgnoreCasePrefixFilter(char[] prefix) {
 			super();
 			this.prefix = new String(prefix);
 		}
-		public boolean accept(String s) {
+		public boolean evaluate(String s) {
 			return StringTools.startsWithIgnoreCase(s, this.prefix);
 		}
 	}

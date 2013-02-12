@@ -24,7 +24,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -917,7 +917,7 @@ public class EclipseLinkPersistenceUnit
 			);
 	}
 
-	private static final Filter<Property> PROPERTY_NAME_DOES_NOT_END_WITH_DEFAULT = new PropertyNameDoesNotEndWith("default"); //$NON-NLS-1$
+	private static final Predicate<Property> PROPERTY_NAME_DOES_NOT_END_WITH_DEFAULT = new PropertyNameDoesNotEndWith("default"); //$NON-NLS-1$
 	public static class PropertyNameDoesNotEndWith
 		extends FilterAdapter<Property>
 	{
@@ -927,7 +927,7 @@ public class EclipseLinkPersistenceUnit
 			this.suffix = suffix;
 		}
 		@Override
-		public boolean accept(Property property) {
+		public boolean evaluate(Property property) {
 			String propertyName = property.getName();
 			return (propertyName == null) || ! propertyName.endsWith(this.suffix);
 		}

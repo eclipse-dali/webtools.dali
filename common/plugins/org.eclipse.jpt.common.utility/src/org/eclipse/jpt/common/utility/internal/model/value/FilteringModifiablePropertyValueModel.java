@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * A <code>FilteringModifiablePropertyValueModel</code> wraps another
- * {@link ModifiablePropertyValueModel} and uses a pair of {@link Filter}s
+ * {@link ModifiablePropertyValueModel} and uses a pair of {@link Predicate}s
  * to determine when the wrapped value is to be returned by calls
  * to {@link #getValue()} and modified by calls to
  * {@link #setValue(Object) setValue(V)}.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
  * will passed through to the wrapped value model, not even <code>null</code>.
  * 
  * @param <V> the type of the model's <em>filtered</em> value
- * @see Filter
+ * @see Predicate
  */
 public class FilteringModifiablePropertyValueModel<V>
 	extends FilteringPropertyValueModel<V>
@@ -43,7 +43,7 @@ public class FilteringModifiablePropertyValueModel<V>
 	 * The model sets the wrapped value to any value accepted by this filter
 	 * and does nothing with any value rejected by this filter.
 	 */
-	protected final Filter<V> setFilter;
+	protected final Predicate<V> setFilter;
 
 
 	// ********** constructors **********
@@ -53,7 +53,7 @@ public class FilteringModifiablePropertyValueModel<V>
 	 * property value model, <em>get</em> filter, and <em>set</em> filter.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringModifiablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, Filter<V> getFilter, Filter<V> setFilter) {
+	public FilteringModifiablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, Predicate<V> getFilter, Predicate<V> setFilter) {
 		this(valueModel, getFilter, setFilter, null);
 	}
 
@@ -62,7 +62,7 @@ public class FilteringModifiablePropertyValueModel<V>
 	 * property value model, <em>get</em> filter, <em>set</em> filter,
 	 * and default value.
 	 */
-	public FilteringModifiablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, Filter<V> getFilter, Filter<V> setFilter, V defaultValue) {
+	public FilteringModifiablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, Predicate<V> getFilter, Predicate<V> setFilter, V defaultValue) {
 		super(valueModel, getFilter, defaultValue);
 		if (setFilter == null) {
 			throw new NullPointerException();
@@ -74,7 +74,7 @@ public class FilteringModifiablePropertyValueModel<V>
 	// ********** ModifiablePropertyValueModel implementation **********
 
 	public void setValue(V value) {
-		if (this.setFilter.accept(value)) {
+		if (this.setFilter.evaluate(value)) {
 			this.getValueModel().setValue(value);
 		}
 	}

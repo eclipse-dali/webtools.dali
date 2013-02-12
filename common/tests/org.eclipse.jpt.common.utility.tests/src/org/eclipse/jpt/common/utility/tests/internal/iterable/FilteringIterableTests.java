@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 @SuppressWarnings("nls")
 public class FilteringIterableTests
@@ -37,7 +37,7 @@ public class FilteringIterableTests
 	}
 
 	public void testFilter() {
-		Filter<String> filter = this.buildFilter();
+		Predicate<String> filter = this.buildFilter();
 		int i = 0;
 		for (String s : IterableTools.filter(this.buildNestedIterable(), filter)) {
 			assertTrue(s.contains(PREFIX));
@@ -47,7 +47,7 @@ public class FilteringIterableTests
 	}
 
 	public void testSuperFilter() {
-		Filter<Object> filter = this.buildSuperFilter();
+		Predicate<Object> filter = this.buildSuperFilter();
 		int i = 0;
 		for (String s : IterableTools.filter(this.buildNestedIterable(), filter)) {
 			assertTrue(s.contains(PREFIX));
@@ -62,7 +62,7 @@ public class FilteringIterableTests
 
 	public void testMissingFilter() {
 		boolean exCaught = false;
-		Iterable<String> iterable = IterableTools.filter(this.buildNestedIterable(), Filter.Disabled.<String>instance());
+		Iterable<String> iterable = IterableTools.filter(this.buildNestedIterable(), Predicate.Disabled.<String>instance());
 		try {
 			Iterator<String> iterator = iterable.iterator();
 			fail("bogus iterator: " + iterator);
@@ -76,7 +76,7 @@ public class FilteringIterableTests
 		return IterableTools.filter(this.buildNestedIterable(), this.buildFilter());
 	}
 
-	private Filter<String> buildFilter() {
+	private Predicate<String> buildFilter() {
 		return new StringStartsWithPrefix();
 	}
 
@@ -84,12 +84,12 @@ public class FilteringIterableTests
 		extends FilterAdapter<String>
 	{
 		@Override
-		public boolean accept(String s) {
+		public boolean evaluate(String s) {
 			return s.startsWith(PREFIX);
 		}
 	}
 
-	private Filter<Object> buildSuperFilter() {
+	private Predicate<Object> buildSuperFilter() {
 		return new ObjectToStringStartsWithPrefix();
 	}
 
@@ -97,7 +97,7 @@ public class FilteringIterableTests
 		extends FilterAdapter<Object>
 	{
 		@Override
-		public boolean accept(Object o) {
+		public boolean evaluate(Object o) {
 			return o.toString().startsWith(PREFIX);
 		}
 	}

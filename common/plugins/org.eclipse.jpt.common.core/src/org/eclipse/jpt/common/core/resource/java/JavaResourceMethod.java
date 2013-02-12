@@ -11,9 +11,9 @@ package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Java source code or binary method
@@ -54,12 +54,12 @@ public interface JavaResourceMethod
 	String CONSTRUCTOR_PROPERTY = "constructor"; //$NON-NLS-1$
 	
 	boolean isConstructor();
-	Filter<JavaResourceMethod> IS_CONSTRUCTOR = new IsConstructor();
+	Predicate<JavaResourceMethod> IS_CONSTRUCTOR = new IsConstructor();
 	class IsConstructor
 		extends FilterAdapter<JavaResourceMethod>
 	{
 		@Override
-		public boolean accept(JavaResourceMethod method) {
+		public boolean evaluate(JavaResourceMethod method) {
 			return method.isConstructor();
 		}
 	}

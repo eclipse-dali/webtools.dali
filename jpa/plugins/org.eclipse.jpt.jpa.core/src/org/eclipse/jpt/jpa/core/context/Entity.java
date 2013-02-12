@@ -291,7 +291,7 @@ public interface Entity
 			this.rootTypeName = entity.getPersistentType().getName();
 		}
 		@Override
-		public boolean accept(Entity entity) {
+		public boolean evaluate(Entity entity) {
 			return ObjectTools.notEquals(this.rootTypeName, entity.getPersistentType().getName()) &&
 					ObjectTools.equals(this.rootTypeName, entity.getRootEntity().getPersistentType().getName());
 		}

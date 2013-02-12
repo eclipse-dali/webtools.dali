@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.filter;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Simple, abstract implementation of <code>Filter</code>
@@ -40,7 +40,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * @param <C> the type of the filter's criterion
  */
 public abstract class SimpleFilter<T, C>
-	implements Filter<T>, Cloneable, Serializable
+	implements Predicate<T>, Cloneable, Serializable
 {
 	protected final C criterion;
 
@@ -68,14 +68,14 @@ public abstract class SimpleFilter<T, C>
 	 * The semantics of "rejected" is determined by the subclass.
 	 */
 	protected boolean reject(T o) {
-		return ! this.accept(o);
+		return ! this.evaluate(o);
 	}
 
 	/**
 	 * Return whether the the specified object should be "accepted".
 	 * The semantics of "accepted" is determined by the subclass.
 	 */
-	public boolean accept(T o) {
+	public boolean evaluate(T o) {
 		return ! this.reject(o);
 	}
 

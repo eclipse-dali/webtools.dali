@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.common.utility.tests.internal.filter;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.filter.XORFilter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 public class XORFilterTests
@@ -33,7 +33,7 @@ public class XORFilterTests
 		this.xorFilter = new XORFilter<Number>(this.buildMinFilter(1), this.buildMaxFilter(10));
 	}
 
-	private Filter<Number> buildMinFilter(double min) {
+	private Predicate<Number> buildMinFilter(double min) {
 		return new MinFilter(min);
 	}
 
@@ -45,12 +45,12 @@ public class XORFilterTests
 			super(new Double(min));
 		}
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return number.doubleValue() <= this.criterion.doubleValue();
 		}
 	}
 
-	private Filter<Number> buildMaxFilter(double max) {
+	private Predicate<Number> buildMaxFilter(double max) {
 		return new MaxFilter(max);
 	}
 
@@ -62,12 +62,12 @@ public class XORFilterTests
 			super(new Double(min));
 		}
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return number.doubleValue() >= this.criterion.doubleValue();
 		}
 	}
 
-	private Filter<Number> buildEvenFilter() {
+	private Predicate<Number> buildEvenFilter() {
 		return new EvenFilter();
 	}
 
@@ -78,7 +78,7 @@ public class XORFilterTests
 			super();
 		}
 		@Override
-		public boolean accept(Number number) {
+		public boolean evaluate(Number number) {
 			return BitTools.isEven(number.intValue());
 		}
 	}
@@ -90,31 +90,31 @@ public class XORFilterTests
 	}
 
 	public void testFiltering2() {
-		assertFalse(this.xorFilter.accept(new Integer(7)));
-		assertFalse(this.xorFilter.accept(new Integer(2)));
-		assertFalse(this.xorFilter.accept(new Double(6.666)));
-		assertTrue(this.xorFilter.accept(new Double(-99)));
-		assertTrue(this.xorFilter.accept(new Double(-1)));
-		assertTrue(this.xorFilter.accept(new Double(11)));
-		assertTrue(this.xorFilter.accept(new Double(111)));
+		assertFalse(this.xorFilter.evaluate(new Integer(7)));
+		assertFalse(this.xorFilter.evaluate(new Integer(2)));
+		assertFalse(this.xorFilter.evaluate(new Double(6.666)));
+		assertTrue(this.xorFilter.evaluate(new Double(-99)));
+		assertTrue(this.xorFilter.evaluate(new Double(-1)));
+		assertTrue(this.xorFilter.evaluate(new Double(11)));
+		assertTrue(this.xorFilter.evaluate(new Double(111)));
 	}
 
 	public void testFiltering3() {
 		XORFilter<Number> xorFilter2 = new XORFilter<Number>(this.xorFilter, this.buildEvenFilter());
-		assertFalse(xorFilter2.accept(new Integer(7)));
-		assertFalse(xorFilter2.accept(new Integer(3)));
-		assertFalse(xorFilter2.accept(new Integer(9)));
-		assertTrue(xorFilter2.accept(new Integer(2)));
-		assertTrue(xorFilter2.accept(new Double(6.1)));
-		assertTrue(xorFilter2.accept(new Double(-99)));
-		assertTrue(xorFilter2.accept(new Double(-1)));
-		assertTrue(xorFilter2.accept(new Double(11)));
-		assertTrue(xorFilter2.accept(new Double(111)));
-		assertFalse(xorFilter2.accept(new Double(-98)));
-		assertFalse(xorFilter2.accept(new Double(0)));
-		assertFalse(xorFilter2.accept(new Double(-2)));
-		assertFalse(xorFilter2.accept(new Double(12)));
-		assertFalse(xorFilter2.accept(new Double(222)));
+		assertFalse(xorFilter2.evaluate(new Integer(7)));
+		assertFalse(xorFilter2.evaluate(new Integer(3)));
+		assertFalse(xorFilter2.evaluate(new Integer(9)));
+		assertTrue(xorFilter2.evaluate(new Integer(2)));
+		assertTrue(xorFilter2.evaluate(new Double(6.1)));
+		assertTrue(xorFilter2.evaluate(new Double(-99)));
+		assertTrue(xorFilter2.evaluate(new Double(-1)));
+		assertTrue(xorFilter2.evaluate(new Double(11)));
+		assertTrue(xorFilter2.evaluate(new Double(111)));
+		assertFalse(xorFilter2.evaluate(new Double(-98)));
+		assertFalse(xorFilter2.evaluate(new Double(0)));
+		assertFalse(xorFilter2.evaluate(new Double(-2)));
+		assertFalse(xorFilter2.evaluate(new Double(12)));
+		assertFalse(xorFilter2.evaluate(new Double(222)));
 	}
 
 	public void testClone() {

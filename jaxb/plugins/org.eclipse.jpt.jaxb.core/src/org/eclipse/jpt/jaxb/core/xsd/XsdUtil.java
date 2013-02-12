@@ -70,7 +70,7 @@ public class XsdUtil {
 			this.namespace = namespace;
 		}
 		@Override
-		public boolean accept(XSDNamedComponent component) {
+		public boolean evaluate(XSDNamedComponent component) {
 			return namespaceEquals(component, this.namespace);
 		}
 	}

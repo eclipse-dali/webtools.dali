@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.filter;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * This compound filter will "accept" any object that is accepted by either of
@@ -28,15 +28,15 @@ public class XORFilter<T>
 	 * of the specified wrapped filters, but not by both.
 	 */
 	@SuppressWarnings("unchecked")
-	public XORFilter(Filter<? super T> filter1, Filter<? super T> filter2) {
+	public XORFilter(Predicate<? super T> filter1, Predicate<? super T> filter2) {
 		super(filter1, filter2);
 		if ((filter1 == null) || (filter2 == null)) {
 			throw new NullPointerException();
 		}
 	}
 
-	public boolean accept(T o) {
-		return this.filters[0].accept(o) ^ this.filters[1].accept(o);
+	public boolean evaluate(T o) {
+		return this.filters[0].evaluate(o) ^ this.filters[1].evaluate(o);
 	}
 
 	@Override

@@ -23,13 +23,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * <code>Classpath</code> models a Java classpath, which consists of a list of
@@ -542,15 +542,15 @@ public class Classpath
 	 * @see #classNames()
 	 */
 	public Iterable<String> getClassNames() {
-		return this.getClassNames(Filter.Transparent.<String>instance());
+		return this.getClassNames(Predicate.True.<String>instance());
 	}
 
 	/**
 	 * Return the names of all the classes discovered on the classpath
 	 * and accepted by the specified filter, with duplicates removed.
-	 * @see #classNames(Filter)
+	 * @see #classNames(Predicate)
 	 */
-	public Iterable<String> getClassNames(Filter<String> filter) {
+	public Iterable<String> getClassNames(Predicate<String> filter) {
 		Collection<String> classNames = new HashSet<String>(10000);
 		this.addClassNamesTo(classNames, filter);
 		return classNames;
@@ -561,14 +561,14 @@ public class Classpath
 	 * to the specified collection.
 	 */
 	public void addClassNamesTo(Collection<String> classNames) {
-		this.addClassNamesTo(classNames, Filter.Transparent.<String>instance());
+		this.addClassNamesTo(classNames, Predicate.True.<String>instance());
 	}
 
 	/**
 	 * Add the names of all the classes discovered on the classpath
 	 * and accepted by the specified filter to the specified collection.
 	 */
-	public void addClassNamesTo(Collection<String> classNames, Filter<String> filter) {
+	public void addClassNamesTo(Collection<String> classNames, Predicate<String> filter) {
 		for (Entry entry : this.entries) {
 			entry.addClassNamesTo(classNames, filter);
 		}
@@ -579,23 +579,23 @@ public class Classpath
 	 * Just a bit more performant than {@link #getClassNames()}.
 	 */
 	public Iterator<String> classNames() {
-		return this.classNames(Filter.Transparent.<String>instance());
+		return this.classNames(Predicate.True.<String>instance());
 	}
 
 	/**
 	 * Return the names of all the classes discovered on the classpath
 	 * that are accepted by the specified filter.
-	 * Just a bit more performant than {@link #getClassNames(Filter)}.
+	 * Just a bit more performant than {@link #getClassNames(Predicate)}.
 	 */
-	public Iterator<String> classNames(Filter<String> filter) {
+	public Iterator<String> classNames(Predicate<String> filter) {
 		return IteratorTools.children(IteratorTools.iterator(this.entries), new EntryClassNamesTransformer(filter));
 	}
 
 	/* CU private */ static class EntryClassNamesTransformer
 		extends TransformerAdapter<Entry, Iterator<String>>
 	{
-		private final Filter<String> filter;
-		EntryClassNamesTransformer(Filter<String> filter) {
+		private final Predicate<String> filter;
+		EntryClassNamesTransformer(Predicate<String> filter) {
 			super();
 			this.filter = filter;
 		}
@@ -756,15 +756,15 @@ public class Classpath
 		 * @see #classNames()
 		 */
 		public Iterable<String> getClassNames() {
-			return this.getClassNames(Filter.Transparent.<String>instance());
+			return this.getClassNames(Predicate.True.<String>instance());
 		}
 
 		/**
 		 * Return the names of all the classes discovered in the entry
 		 * and accepted by the specified filter.
-		 * @see #classNames(Filter)
+		 * @see #classNames(Predicate)
 		 */
-		public Iterable<String> getClassNames(Filter<String> filter) {
+		public Iterable<String> getClassNames(Predicate<String> filter) {
 			Collection<String> classNames = new ArrayList<String>(2000);
 			this.addClassNamesTo(classNames, filter);
 			return classNames;
@@ -775,14 +775,14 @@ public class Classpath
 		 * to the specified collection.
 		 */
 		public void addClassNamesTo(Collection<String> classNames) {
-			this.addClassNamesTo(classNames, Filter.Transparent.<String>instance());
+			this.addClassNamesTo(classNames, Predicate.True.<String>instance());
 		}
 
 		/**
 		 * Add the names of all the classes discovered in the entry
 		 * and accepted by the specified filter to the specified collection.
 		 */
-		public void addClassNamesTo(Collection<String> classNames, Filter<String> filter) {
+		public void addClassNamesTo(Collection<String> classNames, Predicate<String> filter) {
 			if (this.canonicalFile.exists()) {
 				if (this.canonicalFile.isDirectory()) {
 					this.addClassNamesForDirectoryTo(classNames, filter);
@@ -797,11 +797,11 @@ public class Classpath
 		 * under the entry's directory and accepted by
 		 * the specified filter to the specified collection.
 		 */
-		private void addClassNamesForDirectoryTo(Collection<String> classNames, Filter<String> filter) {
+		private void addClassNamesForDirectoryTo(Collection<String> classNames, Predicate<String> filter) {
 			int start = this.canonicalFile.getAbsolutePath().length() + 1;
 			for (Iterator<File> stream = this.classFilesForDirectory(); stream.hasNext(); ) {
 				String className = convertToClassName(stream.next().getAbsolutePath().substring(start));
-				if (filter.accept(className)) {
+				if (filter.evaluate(className)) {
 					classNames.add(className);
 				}
 			}
@@ -819,7 +819,7 @@ public class Classpath
 			extends FilterAdapter<File>
 		{
 			@Override
-			public boolean accept(File f) {
+			public boolean evaluate(File f) {
 				return Entry.this.fileNameMightBeForClassFile(f.getName());
 			}
 		}
@@ -829,7 +829,7 @@ public class Classpath
 		 * in the entry's archive file and accepted by the
 		 * specified filter to the specified collection.
 		 */
-		private void addClassNamesForArchiveTo(Collection<String> classNames, Filter<String> filter) {
+		private void addClassNamesForArchiveTo(Collection<String> classNames, Predicate<String> filter) {
 			ZipFile zipFile = null;
 			try {
 				zipFile = new ZipFile(this.canonicalFile);
@@ -841,7 +841,7 @@ public class Classpath
 				String zipEntryName = zipEntry.getName();
 				if (this.fileNameMightBeForClassFile(zipEntryName)) {
 					String className = convertToClassName(zipEntryName);
-					if (filter.accept(className)) {
+					if (filter.evaluate(className)) {
 						classNames.add(className);
 					}
 				}
@@ -870,15 +870,15 @@ public class Classpath
 		 * Just a bit more performant than {@link #getClassNames()}.
 		 */
 		public Iterator<String> classNames() {
-			return this.classNames(Filter.Transparent.<String>instance());
+			return this.classNames(Predicate.True.<String>instance());
 		}
 
 		/**
 		 * Return the names of all the classes discovered on the classpath
 		 * that are accepted by the specified filter.
-		 * Just a bit more performant than {@link #getClassNames(Filter)}.
+		 * Just a bit more performant than {@link #getClassNames(Predicate)}.
 		 */
-		public Iterator<String> classNames(Filter<String> filter) {
+		public Iterator<String> classNames(Predicate<String> filter) {
 			if (this.canonicalFile.exists()) {
 				if (this.canonicalFile.isDirectory()) {
 					return this.classNamesForDirectory(filter);
@@ -895,7 +895,7 @@ public class Classpath
 		 * under the entry's directory and accepted by
 		 * the specified filter.
 		 */
-		private Iterator<String> classNamesForDirectory(Filter<String> filter) {
+		private Iterator<String> classNamesForDirectory(Predicate<String> filter) {
 			return IteratorTools.filter(this.classNamesForDirectory(), filter);
 		}
 
@@ -925,7 +925,7 @@ public class Classpath
 		 * in the entry's archive file and accepted by the
 		 * specified filter.
 		 */
-		private Iterator<String> classNamesForArchive(Filter<String> filter) {
+		private Iterator<String> classNamesForArchive(Predicate<String> filter) {
 			// we can't simply wrap iterators here because we need to close the archive file...
 			ZipFile zipFile = null;
 			try {
@@ -939,7 +939,7 @@ public class Classpath
 				String zipEntryName = zipEntry.getName();
 				if (this.fileNameMightBeForClassFile(zipEntryName)) {
 					String className = convertToClassName(zipEntryName);
-					if (filter.accept(className)) {
+					if (filter.evaluate(className)) {
 						classNames.add(className);
 					}
 				}

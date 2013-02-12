@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -75,7 +75,7 @@ public interface JaxbPlatformConfig {
 			this.jaxbFacetVersion = jaxbFacetVersion;
 		}
 		@Override
-		public boolean accept(JaxbPlatformConfig config) {
+		public boolean evaluate(JaxbPlatformConfig config) {
 			return config.supportsJaxbFacetVersion(this.jaxbFacetVersion);
 		}
 	}
@@ -87,12 +87,12 @@ public interface JaxbPlatformConfig {
 	 */
 	boolean isDefault();
 
-	Filter<JaxbPlatformConfig> IS_DEFAULT = new IsDefault();
+	Predicate<JaxbPlatformConfig> IS_DEFAULT = new IsDefault();
 	class IsDefault
-		extends Filter.Adapter<JaxbPlatformConfig>
+		extends Predicate.Adapter<JaxbPlatformConfig>
 	{
 		@Override
-		public boolean accept(JaxbPlatformConfig config) {
+		public boolean evaluate(JaxbPlatformConfig config) {
 			return config.isDefault();
 		}
 	}

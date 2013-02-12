@@ -202,7 +202,7 @@ public class DefaultContentAssistExtension implements ContentAssistExtension {
 			this.prefix = prefix;
 		}
 		@Override
-		public boolean accept(String string) {
+		public boolean evaluate(String string) {
 			return ExpressionTools.startWithIgnoreCase(string, this.prefix);
 		}
 	}

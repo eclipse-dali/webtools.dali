@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -294,12 +294,12 @@ public interface JpaPlatform
 		 */
 		JpaPlatform getJpaPlatform();
 
-		Filter<Config> DEFAULT_FILTER = new DefaultFilter();
+		Predicate<Config> DEFAULT_FILTER = new DefaultFilter();
 		/* CU private */ static class DefaultFilter
-			extends Filter.Adapter<Config>
+			extends Predicate.Adapter<Config>
 		{
 			@Override
-			public boolean accept(Config config) {
+			public boolean evaluate(Config config) {
 				return config.isDefault();
 			}
 		}

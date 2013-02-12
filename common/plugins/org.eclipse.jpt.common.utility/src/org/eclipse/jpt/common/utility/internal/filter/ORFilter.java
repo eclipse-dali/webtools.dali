@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.filter;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * This compound filter will "accept" any object that is accepted by
@@ -31,13 +31,13 @@ public class ORFilter<T>
 	 * Construct a filter that will "accept" any object that is accept by
 	 * <em>any</em> one of the specified wrapped filters.
 	 */
-	public ORFilter(Filter<? super T>... filters) {
+	public ORFilter(Predicate<? super T>... filters) {
 		super(filters);
 	}
 
-	public boolean accept(T o) {
-		for (Filter<? super T> filter : this.filters) {
-			if (filter.accept(o)) {
+	public boolean evaluate(T o) {
+		for (Predicate<? super T> filter : this.filters) {
+			if (filter.evaluate(o)) {
 				return true;
 			}
 		}

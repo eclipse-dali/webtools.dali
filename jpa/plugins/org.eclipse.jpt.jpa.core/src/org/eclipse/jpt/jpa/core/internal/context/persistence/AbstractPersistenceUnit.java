@@ -565,7 +565,7 @@ public abstract class AbstractPersistenceUnit
 			this.typeName = typeName;
 		}
 		@Override
-		public boolean accept(MappingFileRef mappingFileRef) {
+		public boolean evaluate(MappingFileRef mappingFileRef) {
 			return mappingFileRef.getManagedType(this.typeName) != null;
 		}
 	}
@@ -966,7 +966,7 @@ public abstract class AbstractPersistenceUnit
 		extends FilterAdapter<JavaResourceAbstractType>
 	{
 		@Override
-		public boolean accept(JavaResourceAbstractType jrat) {
+		public boolean evaluate(JavaResourceAbstractType jrat) {
 			return ! AbstractPersistenceUnit.this.specifiesManagedType(jrat.getTypeBinding().getQualifiedName());
 		}
 	}

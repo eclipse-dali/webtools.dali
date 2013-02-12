@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -37,6 +36,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -698,7 +698,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldDefaultAttributes(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes, Filter<JavaResourceField> filter) {
+	private void syncFieldDefaultAttributes(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getDefaultJavaResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<OrmReadOnlyPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
@@ -755,7 +755,7 @@ public abstract class SpecifiedOrmPersistentType
 		extends FilterAdapter<JavaResourceField>
 	{
 		@Override
-		public boolean accept(JavaResourceField javaResourceField) {
+		public boolean evaluate(JavaResourceField javaResourceField) {
 			return SpecifiedOrmPersistentType.this.javaResourceFieldIsDefault(javaResourceField);
 		}
 	}
@@ -768,11 +768,11 @@ public abstract class SpecifiedOrmPersistentType
 		return javaResourceType.getFields();
 	}
 
-	protected Iterable<JavaResourceField> getDefaultJavaResourceFields(Filter<JavaResourceField> filter) {
+	protected Iterable<JavaResourceField> getDefaultJavaResourceFields(Predicate<JavaResourceField> filter) {
 		return IterableTools.filter(getDefaultJavaResourceFields(), filter);
 	}
 
-	protected Iterable<JavaResourceMethod> getJavaResourceMethods(Filter<JavaResourceMethod> filter) {
+	protected Iterable<JavaResourceMethod> getJavaResourceMethods(Predicate<JavaResourceMethod> filter) {
 		return IterableTools.filter(getJavaResourceMethods(), filter);
 	}
 
@@ -784,13 +784,13 @@ public abstract class SpecifiedOrmPersistentType
 		return javaResourceType.getMethods();
 	}
 
-	public static Filter<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
+	public static Predicate<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
 		return AbstractJavaPersistentType.buildNonTransientNonStaticResourceFieldsFilter();
 	}
 
-	protected Filter<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
-		return new Filter<JavaResourceMethod>() {
-			public boolean accept(JavaResourceMethod resourceMethod) {
+	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
+		return new Predicate<JavaResourceMethod>() {
+			public boolean evaluate(JavaResourceMethod resourceMethod) {
 				return AbstractJavaPersistentType.methodIsPersistablePropertyGetter(resourceMethod, getJavaResourceMethods());
 			}
 		};

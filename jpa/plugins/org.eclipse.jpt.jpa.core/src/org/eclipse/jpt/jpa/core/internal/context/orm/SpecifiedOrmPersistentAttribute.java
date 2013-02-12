@@ -20,10 +20,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -325,13 +325,13 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this.getJavaResourceGetter(superclass);
 	}
 
-	protected Iterable<JavaResourceMethod> getResourceMethods(final JavaResourceType javaResourceType, Filter<JavaResourceMethod> filter) {
+	protected Iterable<JavaResourceMethod> getResourceMethods(final JavaResourceType javaResourceType, Predicate<JavaResourceMethod> filter) {
 		return IterableTools.filter(javaResourceType.getMethods(), filter);
 	}
 
-	protected Filter<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter(final JavaResourceType javaResourceType) {
-		return new Filter<JavaResourceMethod>() {
-			public boolean accept(JavaResourceMethod resourceMethod) {
+	protected Predicate<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter(final JavaResourceType javaResourceType) {
+		return new Predicate<JavaResourceMethod>() {
+			public boolean evaluate(JavaResourceMethod resourceMethod) {
 				return AbstractJavaPersistentType.methodIsPersistablePropertyGetter(resourceMethod, javaResourceType.getMethods());
 			}
 		};

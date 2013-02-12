@@ -51,7 +51,7 @@ public interface ContentTypeReference {
 			this.contentType = contentType;
 		}
 		@Override
-		public boolean accept(ContentTypeReference ref) {
+		public boolean evaluate(ContentTypeReference ref) {
 			return ref.getContentType().isKindOf(this.contentType);
 		}
 	}

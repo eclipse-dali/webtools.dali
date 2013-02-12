@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.filter;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Filter wrapper that can have its wrapped filter changed,
@@ -18,14 +18,14 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * behavior mid-stream.
  * 
  * @param <T> the type of objects to be filtered
- * @see #setFilter(Filter)
+ * @see #setFilter(Predicate)
  */
 public class FilterWrapper<T>
-	implements Filter<T>
+	implements Predicate<T>
 {
-	protected volatile Filter<? super T> filter;
+	protected volatile Predicate<? super T> filter;
 
-	public FilterWrapper(Filter<? super T> filter) {
+	public FilterWrapper(Predicate<? super T> filter) {
 		super();
 		if (filter == null) {
 			throw new NullPointerException();
@@ -33,11 +33,11 @@ public class FilterWrapper<T>
 		this.filter = filter;
 	}
 
-	public boolean accept(T o) {
-		return this.filter.accept(o);
+	public boolean evaluate(T o) {
+		return this.filter.evaluate(o);
 	}
 
-	public void setFilter(Filter<? super T> filter) {
+	public void setFilter(Predicate<? super T> filter) {
 		if (filter == null) {
 			throw new NullPointerException();
 		}

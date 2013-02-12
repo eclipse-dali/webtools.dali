@@ -179,7 +179,7 @@ public class JpaMakePersistentWizardPage
 		extends FilterAdapter<IType>
 	{
 		@Override
-		public boolean accept(IType jdtType) {
+		public boolean evaluate(IType jdtType) {
 			return this.getJpaFile(jdtType).getRootStructureNodesSize() == 0;
 		}
 		private JpaFile getJpaFile(IType jdtType) {

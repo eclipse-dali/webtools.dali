@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -560,12 +560,12 @@ public final class MappingTools {
 		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_INTERFACE);
 	}
 
-	public static final Filter<IType> TYPE_IS_INTERFACE = new TypeIsInterface();
+	public static final Predicate<IType> TYPE_IS_INTERFACE = new TypeIsInterface();
 	public static class TypeIsInterface
 		extends FilterAdapter<IType>
 	{
 		@Override
-		public boolean accept(IType type) {
+		public boolean evaluate(IType type) {
 			try {
 				return type.isInterface();
 			} catch (JavaModelException e) {
@@ -596,12 +596,12 @@ public final class MappingTools {
 		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_CLASS);
 	}
 	
-	public static final Filter<IType> TYPE_IS_CLASS = new TypeIsClass();
+	public static final Predicate<IType> TYPE_IS_CLASS = new TypeIsClass();
 	public static class TypeIsClass
 		extends FilterAdapter<IType>
 	{
 		@Override
-		public boolean accept(IType type) {
+		public boolean evaluate(IType type) {
 			try {
 				return type.isClass();
 			} catch (JavaModelException e) {
@@ -618,12 +618,12 @@ public final class MappingTools {
 		return IterableTools.filter(getJavaTypes(javaProject), TYPE_IS_ENUM);
 	}
 	
-	public static final Filter<IType> TYPE_IS_ENUM = new TypeIsEnum();
+	public static final Predicate<IType> TYPE_IS_ENUM = new TypeIsEnum();
 	public static class TypeIsEnum
 		extends FilterAdapter<IType>
 	{
 		@Override
-		public boolean accept(IType type) {
+		public boolean evaluate(IType type) {
 			try {
 				return type.isEnum();
 			} catch (JavaModelException e) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -61,9 +61,9 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		return collection;
 	}
 
-	private Filter<String> buildFilter() {
-		return new Filter<String>() {
-			public boolean accept(String s) {
+	private Predicate<String> buildFilter() {
+		return new Predicate<String>() {
+			public boolean evaluate(String s) {
 				return s.startsWith("b");
 			}
 		};
@@ -326,9 +326,9 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		return collection;
 	}
 
-	private Filter<TestItem> buildFilter2() {
-		return new Filter<TestItem>() {
-			public boolean accept(TestItem ti) {
+	private Predicate<TestItem> buildFilter2() {
+		return new Predicate<TestItem>() {
+			public boolean evaluate(TestItem ti) {
 				return ti.name.startsWith("b");
 			}
 		};

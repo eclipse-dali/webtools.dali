@@ -13,11 +13,11 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -97,9 +97,9 @@ public class PersistentTypeDetailsPageManager
 		};
 	}
 
-	private Filter<TypeMapping> buildMappingFilter(final String key) {
-		return new Filter<TypeMapping>() {
-			public boolean accept(TypeMapping mapping) {
+	private Predicate<TypeMapping> buildMappingFilter(final String key) {
+		return new Predicate<TypeMapping>() {
+			public boolean evaluate(TypeMapping mapping) {
 				return (mapping == null || key == null) || key.equals(mapping.getKey());
 			}
 		};

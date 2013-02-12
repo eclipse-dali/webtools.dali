@@ -18,11 +18,11 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * binary enum
@@ -108,12 +108,12 @@ final class BinaryEnum
 	
 	private static final IField[] EMPTY_FIELD_ARRAY = new IField[0];
 
-	private static final Filter<IField> FIELD_IS_ENUM_CONSTANT = new FieldIsEnumConstant();
+	private static final Predicate<IField> FIELD_IS_ENUM_CONSTANT = new FieldIsEnumConstant();
 	/* CU private */ static class FieldIsEnumConstant
 		extends FilterAdapter<IField>
 	{
 		@Override
-		public boolean accept(IField field) {
+		public boolean evaluate(IField field) {
 			try {
 				return field.isEnumConstant();
 			}

@@ -11,12 +11,12 @@ package org.eclipse.jpt.common.utility.internal.iterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * A <code>FilteringIterator</code> wraps another {@link Iterator}
- * and uses a {@link Filter} to determine which elements in the
+ * and uses a {@link Predicate} to determine which elements in the
  * nested iterator are to be returned by calls to {@link #next()}.
  * <p>
  * One, possibly undesirable, side-effect of using this iterator is that
@@ -31,13 +31,13 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * 
  * @param <E> the type of elements to be filtered
  * 
- * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#filter(Iterable, Filter)
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools#filter(Iterable, Predicate)
  */
 public class FilteringIterator<E>
 	implements Iterator<E>
 {
 	private final Iterator<? extends E> iterator;
-	private final Filter<? super E> predicate;
+	private final Predicate<? super E> predicate;
 	private E next;
 	private boolean done;
 
@@ -46,7 +46,7 @@ public class FilteringIterator<E>
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<? extends E> iterator, Filter<? super E> predicate) {
+	public FilteringIterator(Iterator<? extends E> iterator, Predicate<? super E> predicate) {
 		super();
 		if ((iterator == null) || (predicate == null)) {
 			throw new NullPointerException();
@@ -77,7 +77,7 @@ public class FilteringIterator<E>
 		this.done = true;
 		while (this.iterator.hasNext() && (this.done)) {
 			E temp = this.iterator.next();
-			if (this.predicate.accept(temp)) {
+			if (this.predicate.evaluate(temp)) {
 				// assume that if the object was accepted it is of type E
 				this.next = temp;
 				this.done = false;

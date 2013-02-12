@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,10 +18,10 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -152,7 +152,7 @@ public abstract class AbstractJpaPlatformUi
 
 
 	/* CU private */ class UiDefinitionFilter
-		extends Filter.Adapter<MappingUiDefinition>
+		extends Predicate.Adapter<MappingUiDefinition>
 	{
 		private final JpaContextNode node;
 		
@@ -161,7 +161,7 @@ public abstract class AbstractJpaPlatformUi
 			this.node =  node;
 		}
 		@Override
-		public boolean accept(MappingUiDefinition mappingUiDefinition) {
+		public boolean evaluate(MappingUiDefinition mappingUiDefinition) {
 			return mappingUiDefinition.isEnabledFor(this.node);
 		}
 	}

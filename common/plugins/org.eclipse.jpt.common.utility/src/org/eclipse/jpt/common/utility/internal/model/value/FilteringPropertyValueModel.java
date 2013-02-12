@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * A <code>FilteringPropertyValueModel</code> wraps another
- * {@link PropertyValueModel} and uses a {@link Filter}
+ * {@link PropertyValueModel} and uses a {@link Predicate}
  * to determine when the wrapped value is to be returned by calls
  * to {@link #getValue()}.
  * <p>
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * which can be configured and/or overridden ({@link #getDefaultValue()}).
  * 
  * @param <V> the type of the model's <em>filtered</em> value
- * @see Filter
+ * @see Predicate
  */
 public class FilteringPropertyValueModel<V>
 	extends PropertyValueModelWrapper<V>
@@ -35,7 +35,7 @@ public class FilteringPropertyValueModel<V>
 	 * the {@link #defaultValue} in place of any wrapped value rejected by this
 	 * filter.
 	 */
-	protected final Filter<V> filter;
+	protected final Predicate<V> filter;
 
 	/**
 	 * The value returned by the model if the wrapped value is reject by the
@@ -51,7 +51,7 @@ public class FilteringPropertyValueModel<V>
 	 * property value model and filter.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel<? extends V> valueModel, Filter<V> filter) {
+	public FilteringPropertyValueModel(PropertyValueModel<? extends V> valueModel, Predicate<V> filter) {
 		this(valueModel, filter, null);
 	}
 
@@ -59,7 +59,7 @@ public class FilteringPropertyValueModel<V>
 	 * Construct a filtering property value model with the specified nested
 	 * property value model, filter, and default value.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel<? extends V> valueModel, Filter<V> filter, V defaultValue) {
+	public FilteringPropertyValueModel(PropertyValueModel<? extends V> valueModel, Predicate<V> filter, V defaultValue) {
 		super(valueModel);
 		if (filter == null) {
 			throw new NullPointerException();
@@ -92,7 +92,7 @@ public class FilteringPropertyValueModel<V>
 	 * otherwise return the default value.
 	 */
 	protected V filterValue(V value) {
-		return this.filter.accept(value) ? value : this.getDefaultValue();
+		return this.filter.evaluate(value) ? value : this.getDefaultValue();
 	}
 
 	/**

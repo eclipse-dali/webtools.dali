@@ -543,7 +543,7 @@ public interface PersistenceUnit
 				this.propertyName = propertyName;
 			}
 			@Override
-			public boolean accept(Property property) {
+			public boolean evaluate(Property property) {
 				return ObjectTools.equals(this.propertyName, property.getName());
 			}
 		}
@@ -556,7 +556,7 @@ public interface PersistenceUnit
 				this.prefix = prefix;
 			}
 			@Override
-			public boolean accept(Property property) {
+			public boolean evaluate(Property property) {
 				String propertyName = property.getName();
 				return (propertyName != null) && propertyName.startsWith(this.prefix);
 			}

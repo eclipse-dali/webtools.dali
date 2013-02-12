@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
@@ -29,6 +28,7 @@ import org.eclipse.jpt.common.utility.internal.command.ParameterizedCommandAdapt
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
@@ -3020,7 +3020,7 @@ public class ArrayToolsTests
 
 	public void testFilterObjectArrayFilterTransparent() {
 		String[] a = new String[] { "zero", "one", "two", "three", "four" };
-		String[] actual = ArrayTools.filter(a, Filter.Transparent.<String>instance());
+		String[] actual = ArrayTools.filter(a, Predicate.True.<String>instance());
 		String[] expected = new String[] { "zero", "one", "two", "three", "four" };
 		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
 		assertNotSame(expected, actual);
@@ -3038,7 +3038,7 @@ public class ArrayToolsTests
 			this.length = length;
 		}
 		@Override
-		public boolean accept(String s) {
+		public boolean evaluate(String s) {
 			return s.length() == this.length;
 		}
 	}

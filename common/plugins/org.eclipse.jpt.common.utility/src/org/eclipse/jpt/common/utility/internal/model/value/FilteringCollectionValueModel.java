@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -21,10 +20,11 @@ import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * A <code>FilteringCollectionValueModel</code> wraps another
- * {@link CollectionValueModel} and uses a {@link Filter}
+ * {@link CollectionValueModel} and uses a {@link Predicate}
  * to determine which items in the collection are returned by calls
  * to {@link #iterator()}.
  * <p>
@@ -48,7 +48,7 @@ public class FilteringCollectionValueModel<E>
 	implements CollectionValueModel<E>
 {
 	/** This filters the items in the nested collection. */
-	private Filter<E> filter;
+	private Predicate<E> filter;
 
 	/** Cache the items that were accepted by the filter */
 	private final ArrayList<E> filteredItems = new ArrayList<E>();
@@ -61,14 +61,14 @@ public class FilteringCollectionValueModel<E>
 	 * collection value model and a filter that simply accepts every object.
 	 */
 	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel) {
-		this(collectionModel, Filter.Transparent.<E>instance());
+		this(collectionModel, Predicate.True.<E>instance());
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and filter.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel, Filter<E> filter) {
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel, Predicate<E> filter) {
 		super(collectionModel);
 		if (filter == null) {
 			throw new NullPointerException();
@@ -88,7 +88,7 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and filter.
 	 */
-	public FilteringCollectionValueModel(ListValueModel<? extends E> listModel, Filter<E> filter) {
+	public FilteringCollectionValueModel(ListValueModel<? extends E> listModel, Predicate<E> filter) {
 		this(new ListCollectionValueModelAdapter<E>(listModel), filter);
 	}
 
@@ -151,7 +151,7 @@ public class FilteringCollectionValueModel<E>
 	/**
 	 * Change the filter and rebuild the collection.
 	 */
-	public void setFilter(Filter<E> filter) {
+	public void setFilter(Predicate<E> filter) {
 		this.filter = filter;
 		this.rebuildFilteredItems();
 	}

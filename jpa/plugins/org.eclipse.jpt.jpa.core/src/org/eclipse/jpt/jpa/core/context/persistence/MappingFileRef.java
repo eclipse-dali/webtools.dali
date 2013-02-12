@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
@@ -105,12 +105,12 @@ public interface MappingFileRef
 	 */
 	boolean persistenceUnitMetadataExists();
 
-	Filter<MappingFileRef> PERSISTENCE_UNIT_METADATA_EXISTS = new PersistenceUnitMetadataExists();
+	Predicate<MappingFileRef> PERSISTENCE_UNIT_METADATA_EXISTS = new PersistenceUnitMetadataExists();
 	class PersistenceUnitMetadataExists
 		extends FilterAdapter<MappingFileRef>
 	{
 		@Override
-		public boolean accept(MappingFileRef mappingFileRef) {
+		public boolean evaluate(MappingFileRef mappingFileRef) {
 			return mappingFileRef.persistenceUnitMetadataExists();
 		}
 	}

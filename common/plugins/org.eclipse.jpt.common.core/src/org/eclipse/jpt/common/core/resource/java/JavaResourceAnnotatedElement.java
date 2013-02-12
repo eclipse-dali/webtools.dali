@@ -12,9 +12,9 @@ package org.eclipse.jpt.common.core.resource.java;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Java source code or binary annotated element.
@@ -179,12 +179,12 @@ public interface JavaResourceAnnotatedElement
 	 * annotations.
 	 */
 	boolean isAnnotated();
-	Filter<JavaResourceAnnotatedElement> IS_ANNOTATED = new IsAnnotated();
+	Predicate<JavaResourceAnnotatedElement> IS_ANNOTATED = new IsAnnotated();
 	class IsAnnotated
 		extends FilterAdapter<JavaResourceAnnotatedElement>
 	{
 		@Override
-		public boolean accept(JavaResourceAnnotatedElement element) {
+		public boolean evaluate(JavaResourceAnnotatedElement element) {
 			return element.isAnnotated();
 		}
 	}
@@ -203,7 +203,7 @@ public interface JavaResourceAnnotatedElement
 			this.annotationNames = annotationNames;
 		}
 		@Override
-		public boolean accept(JavaResourceAnnotatedElement element) {
+		public boolean evaluate(JavaResourceAnnotatedElement element) {
 			return element.isAnnotatedWithAnyOf(this.annotationNames);
 		}
 	}
@@ -221,7 +221,7 @@ public interface JavaResourceAnnotatedElement
 			this.astNodeType = astNodeType;
 		}
 		@Override
-		public boolean accept(JavaResourceAnnotatedElement element) {
+		public boolean evaluate(JavaResourceAnnotatedElement element) {
 			return element.getAstNodeType() == this.astNodeType;
 		}
 	}

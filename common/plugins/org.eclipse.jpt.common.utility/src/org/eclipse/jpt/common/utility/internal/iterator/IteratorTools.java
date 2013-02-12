@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
 import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -709,7 +709,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see FilteringIterator
 	 */
-	public static <E> FilteringIterator<E> filter(Iterator<? extends E> iterator, Filter<? super E> predicate) {
+	public static <E> FilteringIterator<E> filter(Iterator<? extends E> iterator, Predicate<? super E> predicate) {
 		return new FilteringIterator<E>(iterator, predicate);
 	}
 

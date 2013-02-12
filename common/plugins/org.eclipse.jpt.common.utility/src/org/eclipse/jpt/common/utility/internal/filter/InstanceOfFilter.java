@@ -25,7 +25,7 @@ public class InstanceOfFilter<T>
 	}
 
 	@Override
-	public boolean accept(T o) {
+	public boolean evaluate(T o) {
 		return this.clazz.isInstance(o);
 	}
 }

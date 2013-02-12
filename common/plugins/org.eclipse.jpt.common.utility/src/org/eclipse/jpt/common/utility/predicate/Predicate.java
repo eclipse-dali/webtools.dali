@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,14 +7,16 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.filter;
+package org.eclipse.jpt.common.utility.predicate;
 
 import java.io.Serializable;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * Used by various "pluggable" classes to filter objects.
+ * Used by various "pluggable" classes to determine whether an object belongs
+ * to a particular set or has a particular property (e.g. when filtering a
+ * collection of objects).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,29 +24,28 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @param <T> the type of objects to be filtered
+ * @param <V> the type of objects to be evaluated
  */
-public interface Filter<T> {
+public interface Predicate<V> {
 
 	/**
 	 * Return whether the specified object is "accepted" by the
 	 * filter. The semantics of "accept" is determined by the
 	 * contract between the client and the server.
 	 */
-	boolean accept(T o);
+	boolean evaluate(V variable);
 
 
 	/**
-	 * Convenience filter implementation that accepts everything
-	 * and produces a helpful {@link #toString()}.
+	 * Convenience predicate implementation that evaluates any object to
+	 * <code>true</code> and provides a helpful {@link #toString()}.
 	 */
-	class Adapter<S>
-		implements Filter<S>
+	class Adapter<V>
+		implements Predicate<V>
 	{
-		public boolean accept(S o) {
+		public boolean evaluate(V variable) {
 			return true;
 		}
-
 		@Override
 		public String toString() {
 			return ObjectTools.toString(this);
@@ -53,24 +54,24 @@ public interface Filter<T> {
 
 
 	/**
-	 * Singleton implementation of the filter interface that accepts all the
-	 * objects (i.e. it does no filtering).
+	 * Singleton predicate implementation that always evaluates to
+	 * <code>true</code>.
 	 */
-	final class Transparent<S>
-		implements Filter<S>, Serializable
+	final class True<V>
+		implements Predicate<V>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
-		public static final Filter INSTANCE = new Transparent();
+		public static final Predicate INSTANCE = new True();
 		@SuppressWarnings("unchecked")
-		public static <R> Filter<R> instance() {
+		public static <V> Predicate<V> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
-		private Transparent() {
+		private True() {
 			super();
 		}
 		// nothing is filtered - everything is accepted
-		public boolean accept(S o) {
+		public boolean evaluate(V variable) {
 			return true;
 		}
 		@Override
@@ -85,24 +86,24 @@ public interface Filter<T> {
 	}
 
 	/**
-	 * Singleton implementation of the filter interface that accepts none of the
-	 * objects (i.e. it filters out all the objects).
+	 * Singleton predicate implementation that always evaluates to
+	 * <code>false</code>.
 	 */
-	final class Opaque<S>
-		implements Filter<S>, Serializable
+	final class False<V>
+		implements Predicate<V>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
-		public static final Filter INSTANCE = new Opaque();
+		public static final Predicate INSTANCE = new False();
 		@SuppressWarnings("unchecked")
-		public static <R> Filter<R> instance() {
+		public static <V> Predicate<V> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
-		private Opaque() {
+		private False() {
 			super();
 		}
 		// everything is filtered - nothing is accepted
-		public boolean accept(S o) {
+		public boolean evaluate(V variable) {
 			return false;
 		}
 		@Override
@@ -117,16 +118,15 @@ public interface Filter<T> {
 	}
 
 	/**
-	 * Singleton implementation of the filter interface that throws an exception
-	 * if called.
+	 * Singleton predicate implementation that throws an exception if invoked.
 	 */
-	final class Disabled<S>
-		implements Filter<S>, Serializable
+	final class Disabled<V>
+		implements Predicate<V>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
-		public static final Filter INSTANCE = new Disabled();
+		public static final Predicate INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
-		public static <R> Filter<R> instance() {
+		public static <V> Predicate<V> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -134,7 +134,7 @@ public interface Filter<T> {
 			super();
 		}
 		// throw an exception
-		public boolean accept(S o) {
+		public boolean evaluate(V variable) {
 			throw new UnsupportedOperationException();
 		}
 		@Override

@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jpt.common.core.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
@@ -347,12 +347,12 @@ public class InternalJaxbPlatformManager
 		return IterableTools.filter(this.getJaxbPlatformConfigs(), this.buildInternalJaxbPlatformConfigFilter());
 	}
 
-	private Filter<JaxbPlatformConfig> buildInternalJaxbPlatformConfigFilter() {
+	private Predicate<JaxbPlatformConfig> buildInternalJaxbPlatformConfigFilter() {
 		return new InternalJaxbPlatformConfigFilter(this.getPluginID());
 	}
 
 	/* CU private */ static class InternalJaxbPlatformConfigFilter
-		extends Filter.Adapter<JaxbPlatformConfig>
+		extends Predicate.Adapter<JaxbPlatformConfig>
 	{
 		private final String prefix;
 		InternalJaxbPlatformConfigFilter(String prefix) {
@@ -360,7 +360,7 @@ public class InternalJaxbPlatformManager
 			this.prefix = prefix;
 		}
 		@Override
-		public boolean accept(JaxbPlatformConfig config) {
+		public boolean evaluate(JaxbPlatformConfig config) {
 			return config.getFactoryClassName().startsWith(this.prefix);
 		}
 	}

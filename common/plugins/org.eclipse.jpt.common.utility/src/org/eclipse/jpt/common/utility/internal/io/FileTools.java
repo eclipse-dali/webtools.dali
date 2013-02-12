@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
@@ -30,6 +29,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.XMLStringEncoder;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -221,12 +221,12 @@ public final class FileTools {
 	/**
 	 * @see File#isFile()
 	 */
-	public static final Filter<File> NORMAL_FILE_FILTER = new NormalFileFilter();
+	public static final Predicate<File> NORMAL_FILE_FILTER = new NormalFileFilter();
 	/* CU private */ static class NormalFileFilter
-		extends Filter.Adapter<File>
+		extends Predicate.Adapter<File>
 	{
 		@Override
-		public boolean accept(File file) {
+		public boolean evaluate(File file) {
 			return file.isFile();
 		}
 	}
@@ -266,12 +266,12 @@ public final class FileTools {
 	/**
 	 * @see File#isDirectory()
 	 */
-	public static final Filter<File> DIRECTORY_FILTER = new DirectoryFilter();
+	public static final Predicate<File> DIRECTORY_FILTER = new DirectoryFilter();
 	/* CU private */ static class DirectoryFilter
-		extends Filter.Adapter<File>
+		extends Predicate.Adapter<File>
 	{
 		@Override
-		public boolean accept(File file) {
+		public boolean evaluate(File file) {
 			return file.isDirectory();
 		}
 	}
@@ -893,10 +893,10 @@ public final class FileTools {
 	}
 
 	/**
-	 * Adapt a {@link FileFilter} to the {@link Filter} interface.
+	 * Adapt a {@link FileFilter} to the {@link Predicate} interface.
 	 */
 	public static class FileFilterFilterAdapter
-		extends Filter.Adapter<File>
+		extends Predicate.Adapter<File>
 	{
 		private final FileFilter fileFilter;
 		public FileFilterFilterAdapter(FileFilter fileFilter) {
@@ -904,7 +904,7 @@ public final class FileTools {
 			this.fileFilter = fileFilter;
 		}
 		@Override
-		public boolean accept(File file) {
+		public boolean evaluate(File file) {
 			return this.fileFilter.accept(file);
 		}
 	}

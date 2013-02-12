@@ -14,13 +14,13 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -677,12 +677,12 @@ public abstract class AbstractPrimaryKeyValidator
 				);
 	}
 
-	public static final Filter<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
+	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
 	public static class TypeMappingUsesIdDerivedIdentityStrategy
 		extends FilterAdapter<SingleRelationshipMapping2_0>
 	{
 		@Override
-		public boolean accept(SingleRelationshipMapping2_0 mapping) {
+		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
 			return mapping.getDerivedIdentity().usesIdDerivedIdentityStrategy();
 		}
 	}
@@ -698,12 +698,12 @@ public abstract class AbstractPrimaryKeyValidator
 		return IterableTools.filter(this.getSingleRelationshipMappings(typeMapping), TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY);
 	}
 	
-	public static final Filter<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
+	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
 	public static class TypeMappingUsesMapsIdDerivedIdentityStrategy
 		extends FilterAdapter<SingleRelationshipMapping2_0>
 	{
 		@Override
-		public boolean accept(SingleRelationshipMapping2_0 mapping) {
+		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
 			return mapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
 		}
 	}
