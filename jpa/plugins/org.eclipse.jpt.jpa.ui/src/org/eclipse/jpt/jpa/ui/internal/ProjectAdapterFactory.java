@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.ui.internal;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -109,13 +109,12 @@ public class ProjectAdapterFactory
 		}
 
 		/* class private */ static class Predicate
-			extends SimpleFilter<JpaProject, IProject>
+			extends CriterionPredicate<JpaProject, IProject>
 		{
 			private static final long serialVersionUID = 1L;
 			Predicate(IProject project) {
 				super(project);
 			}
-			@Override
 			public boolean evaluate(JpaProject jpaProject) {
 				return jpaProject.getProject().equals(this.criterion);
 			}

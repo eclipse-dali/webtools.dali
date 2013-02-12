@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -67,7 +66,7 @@ public interface JaxbPlatformConfig {
 	boolean supportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion);
 
 	class SupportsJaxbFacetVersion
-		extends FilterAdapter<JaxbPlatformConfig>
+		extends Predicate.Adapter<JaxbPlatformConfig>
 	{
 		private final IProjectFacetVersion jaxbFacetVersion;
 		public SupportsJaxbFacetVersion(IProjectFacetVersion jaxbFacetVersion) {

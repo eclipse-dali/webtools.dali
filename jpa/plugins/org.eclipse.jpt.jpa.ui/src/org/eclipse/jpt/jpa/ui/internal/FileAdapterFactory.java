@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.ui.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -123,12 +123,12 @@ public class FileAdapterFactory
 		}
 
 		/* class private */ static class Predicate
-			extends SimpleFilter<JpaFile, IFile>
+			extends CriterionPredicate<JpaFile, IFile>
 		{
+			private static final long serialVersionUID = 1L;
 			Predicate(IFile file) {
 				super(file);
 			}
-			@Override
 			public boolean evaluate(JpaFile jpaFile) {
 				return jpaFile.getFile().equals(this.criterion);
 			}

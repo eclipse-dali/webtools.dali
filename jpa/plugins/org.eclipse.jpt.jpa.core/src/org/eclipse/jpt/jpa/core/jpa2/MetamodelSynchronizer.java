@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
 
@@ -139,7 +139,7 @@ public interface MetamodelSynchronizer {
 		}
 
 		public static class IsGeneratedMetamodelTopLevelType
-			extends FilterAdapter<JavaResourceAbstractType>
+			extends Predicate.Adapter<JavaResourceAbstractType>
 		{
 			private final IPackageFragmentRoot sourceFolder;
 			public IsGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder) {

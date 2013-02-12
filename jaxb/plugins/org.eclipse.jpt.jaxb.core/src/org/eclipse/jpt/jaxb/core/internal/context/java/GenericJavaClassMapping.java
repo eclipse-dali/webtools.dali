@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -674,7 +673,7 @@ public class GenericJavaClassMapping
 	
 	protected static final Predicate<XmlNamedNodeMapping> MAPPING_HAS_XML_ID = new MappingHasXmlID();
 	public static class MappingHasXmlID
-		extends FilterAdapter<XmlNamedNodeMapping>
+		extends Predicate.Adapter<XmlNamedNodeMapping>
 	{
 		@Override
 		public boolean evaluate(XmlNamedNodeMapping mapping) {

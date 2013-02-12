@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.filter.InstanceOfFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
@@ -96,7 +96,7 @@ public class XsdSchema
 	
 	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions(String namespace) {
 		return IterableTools.downCast(
-			IterableTools.filter(getXSDTypeDefinitions(namespace), new InstanceOfFilter<XSDTypeDefinition>(XSDSimpleTypeDefinition.class)));
+			IterableTools.filter(getXSDTypeDefinitions(namespace), PredicateTools.<XSDTypeDefinition>instanceOfPredicate(XSDSimpleTypeDefinition.class)));
 	}
 	
 	public Iterable<XsdElementDeclaration> getElementDeclarations() {

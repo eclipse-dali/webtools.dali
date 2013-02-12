@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.NOTFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -153,7 +153,7 @@ final class DTPForeignKeyWrapper
 	public Iterable<Column> getNonPrimaryKeyBaseColumns() {
 		return IterableTools.filter(this.getBaseColumns(), IS_NOT_PART_OF_PRIMARY_KEY);
 	}
-	private static final Predicate<Column> IS_NOT_PART_OF_PRIMARY_KEY = new NOTFilter<Column>(Column.IS_PART_OF_PRIMARY_KEY);
+	private static final Predicate<Column> IS_NOT_PART_OF_PRIMARY_KEY = PredicateTools.not(Column.IS_PART_OF_PRIMARY_KEY);
 
 	public Iterable<Column> getReferencedColumns() {
 		return IterableTools.transform(this.getLocalColumnPairs(), LocalColumnPair.REFERENCED_COLUMN_TRANSFORMER);

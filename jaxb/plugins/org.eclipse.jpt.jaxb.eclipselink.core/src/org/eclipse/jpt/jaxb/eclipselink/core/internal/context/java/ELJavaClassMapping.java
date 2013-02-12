@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -214,7 +213,7 @@ public class ELJavaClassMapping
 	
 	protected static final Predicate<ELXmlNamedNodeMapping> MAPPING_HAS_KEY = new MappingHasKey();
 	public static class MappingHasKey
-		extends FilterAdapter<ELXmlNamedNodeMapping>
+		extends Predicate.Adapter<ELXmlNamedNodeMapping>
 	{
 		@Override
 		public boolean evaluate(ELXmlNamedNodeMapping mapping) {

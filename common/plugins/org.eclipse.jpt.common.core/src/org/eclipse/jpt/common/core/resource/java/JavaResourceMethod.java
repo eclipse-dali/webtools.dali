@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -56,7 +55,7 @@ public interface JavaResourceMethod
 	boolean isConstructor();
 	Predicate<JavaResourceMethod> IS_CONSTRUCTOR = new IsConstructor();
 	class IsConstructor
-		extends FilterAdapter<JavaResourceMethod>
+		extends Predicate.Adapter<JavaResourceMethod>
 	{
 		@Override
 		public boolean evaluate(JavaResourceMethod method) {

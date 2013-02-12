@@ -7,49 +7,53 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.filter;
+package org.eclipse.jpt.common.utility.internal.predicate;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.predicate.CompoundPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * This filter provides a simple framework for combining the behavior
- * of multiple filters.
+ * This class provides a simple framework for combining the behavior
+ * of multiple predicates.
  * 
- * @param <T> the type of objects to be filtered
+ * @param <V> the type of objects to be evaluated by the predicate
  */
-public abstract class CompoundFilter<T>
-	implements Predicate<T>, Cloneable, Serializable
+public abstract class AbstractCompoundPredicate<V>
+	implements CompoundPredicate<V>, Cloneable, Serializable
 {
-	protected Predicate<? super T>[] filters;
+	protected Predicate<? super V>[] predicates;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct a compound filter for the specified list of filters.
+	 * Construct a compound predicate for the specified list of predicates.
 	 */
-	protected CompoundFilter(Predicate<? super T>... filters) {
+	protected AbstractCompoundPredicate(Predicate<? super V>... predicates) {
 		super();
-		if (filters == null) {
+		if ((predicates == null) || ArrayTools.contains(predicates, null)) {
 			throw new NullPointerException();
 		}
-		this.filters = filters;
+		this.predicates = predicates;
 	}
 
 	/**
-	 * Return the filters.
+	 * Return the predicates.
 	 */
-	public Predicate<? super T>[] getFilters() {
-		return this.filters;
+	public Predicate<? super V>[] getPredicates() {
+		return this.predicates;
 	}
 
 	@Override
-	public Object clone() {
+	public AbstractCompoundPredicate<V> clone() {
 		try {
-			return super.clone();
+			@SuppressWarnings("unchecked")
+			AbstractCompoundPredicate<V> clone = (AbstractCompoundPredicate<V>) super.clone();
+			return clone;
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
@@ -57,17 +61,17 @@ public abstract class CompoundFilter<T>
 
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof CompoundFilter)) {
+		if (o.getClass() != this.getClass()) {
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-		CompoundFilter<T> other = (CompoundFilter<T>) o;
-		return Arrays.equals(this.filters, other.filters);
+		AbstractCompoundPredicate<V> other = (AbstractCompoundPredicate<V>) o;
+		return Arrays.equals(this.predicates, other.predicates);
 	}
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(this.filters);
+		return Arrays.hashCode(this.predicates);
 	}
 
 	@Override
@@ -75,13 +79,13 @@ public abstract class CompoundFilter<T>
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.appendHashCodeToString(sb, this);
 		sb.append('(');
-		for (Predicate<? super T> filter : this.filters) {
-			sb.append(filter);
+		for (Predicate<? super V> predicate : this.predicates) {
+			sb.append(predicate);
 			sb.append(' ');
 			sb.append(this.operatorString());
 			sb.append(' ');
 		}
-		if (this.filters.length > 0) {
+		if (this.predicates.length > 0) {
 			sb.setLength(sb.length() - this.operatorString().length() - 2);
 		}
 		sb.append(')');
@@ -89,7 +93,7 @@ public abstract class CompoundFilter<T>
 	}
 
 	/**
-	 * Return a string representation of the compound filter's operator.
+	 * Return a string representation of the compound predicate's operator.
 	 * Used by {@link #toString()}.
 	 */
 	protected abstract String operatorString();

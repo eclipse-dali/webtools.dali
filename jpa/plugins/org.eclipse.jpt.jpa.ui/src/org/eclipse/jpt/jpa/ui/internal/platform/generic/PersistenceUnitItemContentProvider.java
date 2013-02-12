@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
@@ -21,10 +20,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
@@ -70,7 +71,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<MappingFile> buildNotNullSpecifiedMappingFilesModel() {
 		return new FilteringCollectionValueModel<MappingFile>(
 				this.buildSpecifiedMappingFilesModel(),
-				NotNullFilter.<MappingFile>instance()
+				PredicateTools.<MappingFile>notNullPredicate()
 			);
 	}
 
@@ -117,7 +118,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<JavaManagedType> buildNotNullJavaManagedTypesModel() {
 		return new FilteringCollectionValueModel<JavaManagedType>(
 				this.buildJavaManagedTypesModel(),
-				NotNullFilter.<JavaManagedType>instance()
+				Predicate.NotNull.<JavaManagedType>instance()
 			);
 	}
 
@@ -160,7 +161,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<JarFile> buildNotNullJarFilesModel() {
 		return new FilteringCollectionValueModel<JarFile>(
 				this.buildJarFilesModel(),
-				NotNullFilter.<JarFile>instance()
+				PredicateTools.<JarFile>notNullPredicate()
 			);
 	}
 

@@ -29,9 +29,9 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -184,7 +184,7 @@ public class JpaDeletePackageOrFolderParticipant
 	}
 
 	public static class MappingFileIsOnClasspath
-		extends FilterAdapter<IFile>
+		extends Predicate.Adapter<IFile>
 	{
 		private final IJavaProject javaProject;
 		private final JpaPlatform jpaPlatform;

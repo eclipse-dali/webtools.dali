@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -816,7 +815,7 @@ public class Classpath
 		}
 
 		/* class private */ class FileMightBeClassFile
-			extends FilterAdapter<File>
+			extends Predicate.Adapter<File>
 		{
 			@Override
 			public boolean evaluate(File f) {

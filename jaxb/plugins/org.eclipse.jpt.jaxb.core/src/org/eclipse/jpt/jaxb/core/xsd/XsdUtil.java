@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
@@ -62,7 +62,7 @@ public class XsdUtil {
 	}
 	
 	public static class NamespaceEquals
-		extends FilterAdapter<XSDNamedComponent>
+		extends Predicate.Adapter<XSDNamedComponent>
 	{
 		private final String namespace;
 		public NamespaceEquals(String namespace) {

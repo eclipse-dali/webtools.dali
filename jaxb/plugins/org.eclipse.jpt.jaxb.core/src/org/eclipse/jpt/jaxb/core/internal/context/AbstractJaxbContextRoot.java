@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -270,7 +269,7 @@ public abstract class AbstractJaxbContextRoot
 	
 	public static final Predicate<JavaResourceAbstractType> JAVA_RESOURCE_TYPE_IS_ANNOTATED = new JavaResourceTypeIsAnnotated();
 	public static class JavaResourceTypeIsAnnotated
-		extends FilterAdapter<JavaResourceAbstractType>
+		extends Predicate.Adapter<JavaResourceAbstractType>
 	{
 		@Override
 		public boolean evaluate(JavaResourceAbstractType type) {
@@ -450,7 +449,7 @@ public abstract class AbstractJaxbContextRoot
 	}
 
 	public static class JavaTypeIsInPackage
-		extends FilterAdapter<JavaType>
+		extends Predicate.Adapter<JavaType>
 	{
 		private final JaxbPackage jaxbPackage;
 		public JavaTypeIsInPackage(JaxbPackage jaxbPackage) {

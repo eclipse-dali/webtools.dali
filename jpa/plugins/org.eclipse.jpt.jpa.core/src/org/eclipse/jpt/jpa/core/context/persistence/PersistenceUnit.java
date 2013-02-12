@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -535,7 +535,7 @@ public interface PersistenceUnit
 		String getName();
 		void setName(String name);
 		class NameEquals
-			extends FilterAdapter<Property>
+			extends Predicate.Adapter<Property>
 		{
 			private final String propertyName;
 			public NameEquals(String propertyName) {
@@ -548,7 +548,7 @@ public interface PersistenceUnit
 			}
 		}
 		class NameStartsWith
-			extends FilterAdapter<Property>
+			extends Predicate.Adapter<Property>
 		{
 			private final String prefix;
 			public NameStartsWith(String prefix) {

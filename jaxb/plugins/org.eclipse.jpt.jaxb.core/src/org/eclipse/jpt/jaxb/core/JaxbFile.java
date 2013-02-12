@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.core;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -43,7 +43,7 @@ public interface JaxbFile
 	IContentType getContentType();
 
 	class ContentIsKindOf
-		extends FilterAdapter<JaxbFile>
+		extends Predicate.Adapter<JaxbFile>
 	{
 		private final IContentType contentType;
 		public ContentIsKindOf(IContentType contentType) {

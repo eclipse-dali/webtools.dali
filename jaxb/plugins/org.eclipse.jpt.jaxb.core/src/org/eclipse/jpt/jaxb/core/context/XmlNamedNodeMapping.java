@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
@@ -68,7 +67,7 @@ public interface XmlNamedNodeMapping
 
 	Predicate<JaxbAttributeMapping> MAPPING_IS_NAMED_NODE_MAPPING = new MappingIsNamedNodeMapping();
 	class MappingIsNamedNodeMapping
-		extends FilterAdapter<JaxbAttributeMapping>
+		extends Predicate.Adapter<JaxbAttributeMapping>
 	{
 		@Override
 		public boolean evaluate(JaxbAttributeMapping mapping) {

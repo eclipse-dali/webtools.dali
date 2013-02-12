@@ -15,11 +15,11 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -306,7 +306,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	public class AnnotationIsRelevant
-		extends FilterAdapter<A>
+		extends Predicate.Adapter<A>
 	{
 		@Override
 		public boolean evaluate(A annotation) {
@@ -405,7 +405,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	public class OverrideIsVirtual
-		extends FilterAdapter<String>
+		extends Predicate.Adapter<String>
 	{
 		@Override
 		public boolean evaluate(String overrideName) {

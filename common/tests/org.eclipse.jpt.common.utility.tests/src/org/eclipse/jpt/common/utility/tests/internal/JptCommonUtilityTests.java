@@ -14,13 +14,13 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.common.utility.tests.internal.collection.JptCommonUtilityCollectionTests;
 import org.eclipse.jpt.common.utility.tests.internal.command.JptCommonUtilityCommandTests;
 import org.eclipse.jpt.common.utility.tests.internal.enumeration.JptCommonUtilityEnumerationTests;
-import org.eclipse.jpt.common.utility.tests.internal.filter.JptCommonUtilityFilterTests;
 import org.eclipse.jpt.common.utility.tests.internal.io.JptCommonUtilityIOTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterable.JptCommonUtilityIterableTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterator.JptCommonUtilityIteratorTests;
 import org.eclipse.jpt.common.utility.tests.internal.jdbc.JptCommonUtilityJDBCTests;
 import org.eclipse.jpt.common.utility.tests.internal.model.JptCommonUtilityModelTests;
 import org.eclipse.jpt.common.utility.tests.internal.node.JptCommonUtilityNodeTests;
+import org.eclipse.jpt.common.utility.tests.internal.predicate.JptCommonUtilityPredicateTests;
 import org.eclipse.jpt.common.utility.tests.internal.reference.JptCommonUtilityReferenceTests;
 import org.eclipse.jpt.common.utility.tests.internal.transformer.JptCommonUtilityTransformerTests;
 
@@ -35,13 +35,13 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptCommonUtilityCollectionTests.suite());
 		suite.addTest(JptCommonUtilityCommandTests.suite());
 		suite.addTest(JptCommonUtilityEnumerationTests.suite());
-		suite.addTest(JptCommonUtilityFilterTests.suite());
 		suite.addTest(JptCommonUtilityIOTests.suite());
 		suite.addTest(JptCommonUtilityIterableTests.suite());
 		suite.addTest(JptCommonUtilityIteratorTests.suite());
 		suite.addTest(JptCommonUtilityJDBCTests.suite());
 		suite.addTest(JptCommonUtilityModelTests.suite());
 		suite.addTest(JptCommonUtilityNodeTests.suite());
+		suite.addTest(JptCommonUtilityPredicateTests.suite());
 		suite.addTest(JptCommonUtilityReferenceTests.suite());
 		suite.addTest(JptCommonUtilityTransformerTests.suite());
 

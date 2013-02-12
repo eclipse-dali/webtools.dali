@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCoreMessages;
@@ -115,7 +114,7 @@ public class GenericJavaXmlRegistry
 	
 	protected static final Predicate<JavaResourceMethod> METHOD_IS_ELEMENT_FACTORY_METHOD = new MethodIsElementFactoryMethod();
 	public static class MethodIsElementFactoryMethod
-		extends FilterAdapter<JavaResourceMethod>
+		extends Predicate.Adapter<JavaResourceMethod>
 	{
 		@Override
 		public boolean evaluate(JavaResourceMethod method) {

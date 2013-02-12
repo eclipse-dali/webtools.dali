@@ -14,8 +14,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 @SuppressWarnings("nls")
@@ -94,16 +95,6 @@ public class FilteringIteratorTests
 		}
 	}
 
-	public void testBothHasNext() {
-		// if both accept() and reject() are overridden, accept() is used
-		int i = 0;
-		for (Iterator<String> stream = this.buildBothIterator(); stream.hasNext();) {
-			stream.next();
-			i++;
-		}
-		assertEquals(6, i);
-	}
-
 	public void testFilterHasNext() {
 		int i = 0;
 		for (Iterator<String> stream = this.buildFilterIterator(); stream.hasNext();) {
@@ -157,10 +148,9 @@ public class FilteringIteratorTests
 	}
 
 	private Predicate<String> buildAcceptFilter(String prefix) {
-		return new SimpleFilter<String, String>(prefix) {
+		return new CriterionPredicate<String, String>(prefix) {
 			private static final long serialVersionUID = 1L;
 
-			@Override
 			public boolean evaluate(String s) {
 				return s.startsWith(this.criterion);
 			}
@@ -168,10 +158,9 @@ public class FilteringIteratorTests
 	}
 
 	private Predicate<Object> buildSuperAcceptFilter(String prefix) {
-		return new SimpleFilter<Object, String>(prefix) {
+		return new CriterionPredicate<Object, String>(prefix) {
 			private static final long serialVersionUID = 1L;
 
-			@Override
 			public boolean evaluate(Object o) {
 				return o.toString().startsWith(this.criterion);
 			}
@@ -183,14 +172,7 @@ public class FilteringIteratorTests
 	}
 
 	private Predicate<String> buildRejectFilter(String prefix) {
-		return new SimpleFilter<String, String>(prefix) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean reject(String s) {
-				return s.startsWith(this.criterion);
-			}
-		};
+		return PredicateTools.not(this.buildAcceptFilter(prefix));
 	}
 
 	// use anonymous inner Filter
@@ -198,26 +180,6 @@ public class FilteringIteratorTests
 		return new Predicate<String>() {
 			public boolean evaluate(String s) {
 				return s.startsWith(prefix);
-			}
-		};
-	}
-
-	private Iterator<String> buildBothIterator() {
-		return this.buildFilteredIterator(this.buildNestedIterator(), this.buildBothFilter(PREFIX));
-	}
-
-	private Predicate<String> buildBothFilter(String prefix) {
-		return new SimpleFilter<String, String>(prefix) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean reject(String s) {
-				return s.startsWith(this.criterion);
-			}
-
-			@Override
-			public boolean evaluate(String s) {
-				return s.startsWith(this.criterion);
 			}
 		};
 	}

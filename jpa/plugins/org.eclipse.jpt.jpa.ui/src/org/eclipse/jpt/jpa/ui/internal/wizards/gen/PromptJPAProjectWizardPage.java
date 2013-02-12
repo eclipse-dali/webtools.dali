@@ -20,8 +20,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.wizards.gen.JptJpaUiWizardsEntityGenMessages;
 import org.eclipse.swt.SWT;
@@ -119,7 +119,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 	}
 
 	protected class ProjectIsValidSelection
-		extends FilterAdapter<IProject>
+		extends Predicate.Adapter<IProject>
 	{
 		@Override
 		public boolean evaluate(IProject project) {

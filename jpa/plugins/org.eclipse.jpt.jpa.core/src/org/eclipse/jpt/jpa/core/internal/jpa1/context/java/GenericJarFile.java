@@ -20,8 +20,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
@@ -203,9 +203,9 @@ public class GenericJarFile
 										JAVA_PERSISTENT_TYPE_FILTER));
 	}
 
-	protected static final Filter<JavaManagedType> JAVA_PERSISTENT_TYPE_FILTER =
-		new Filter<JavaManagedType>() {
-			public boolean accept(JavaManagedType mt) {
+	protected static final Predicate<JavaManagedType> JAVA_PERSISTENT_TYPE_FILTER =
+		new Predicate<JavaManagedType>() {
+			public boolean evaluate(JavaManagedType mt) {
 				return mt.getType() == JavaPersistentType.class;
 			}
 		};

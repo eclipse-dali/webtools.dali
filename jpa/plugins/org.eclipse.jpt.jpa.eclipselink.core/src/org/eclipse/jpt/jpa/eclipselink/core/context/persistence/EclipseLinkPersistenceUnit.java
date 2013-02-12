@@ -28,14 +28,13 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.filter.InstanceOfFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -595,7 +594,7 @@ public class EclipseLinkPersistenceUnit
 		return IterableTools.downCast(
 				IterableTools.filter(
 					this.getMappingFilePersistentTypes(),
-					new InstanceOfFilter<PersistentType>(EclipseLinkOrmPersistentType.class)
+					PredicateTools.<PersistentType>instanceOfPredicate(EclipseLinkOrmPersistentType.class)
 				)
 			);
 	}
@@ -919,7 +918,7 @@ public class EclipseLinkPersistenceUnit
 
 	private static final Predicate<Property> PROPERTY_NAME_DOES_NOT_END_WITH_DEFAULT = new PropertyNameDoesNotEndWith("default"); //$NON-NLS-1$
 	public static class PropertyNameDoesNotEndWith
-		extends FilterAdapter<Property>
+		extends Predicate.Adapter<Property>
 	{
 		private final String suffix;
 		public PropertyNameDoesNotEndWith(String suffix) {

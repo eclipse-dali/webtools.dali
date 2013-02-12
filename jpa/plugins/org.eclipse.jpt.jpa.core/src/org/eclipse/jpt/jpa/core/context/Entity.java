@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * entity
@@ -280,7 +280,7 @@ public interface Entity
 		String DESCENDANTS_COLLECTION = "descendants"; //$NON-NLS-1$
 
 	class EntityIsDescendant
-		extends FilterAdapter<Entity>
+		extends Predicate.Adapter<Entity>
 	{
 		private final String rootTypeName;
 		public EntityIsDescendant(Entity entity) {

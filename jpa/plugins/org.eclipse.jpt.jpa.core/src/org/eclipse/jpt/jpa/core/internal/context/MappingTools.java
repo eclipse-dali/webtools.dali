@@ -30,7 +30,6 @@ import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -562,7 +561,7 @@ public final class MappingTools {
 
 	public static final Predicate<IType> TYPE_IS_INTERFACE = new TypeIsInterface();
 	public static class TypeIsInterface
-		extends FilterAdapter<IType>
+		extends Predicate.Adapter<IType>
 	{
 		@Override
 		public boolean evaluate(IType type) {
@@ -598,7 +597,7 @@ public final class MappingTools {
 	
 	public static final Predicate<IType> TYPE_IS_CLASS = new TypeIsClass();
 	public static class TypeIsClass
-		extends FilterAdapter<IType>
+		extends Predicate.Adapter<IType>
 	{
 		@Override
 		public boolean evaluate(IType type) {
@@ -620,7 +619,7 @@ public final class MappingTools {
 	
 	public static final Predicate<IType> TYPE_IS_ENUM = new TypeIsEnum();
 	public static class TypeIsEnum
-		extends FilterAdapter<IType>
+		extends Predicate.Adapter<IType>
 	{
 		@Override
 		public boolean evaluate(IType type) {

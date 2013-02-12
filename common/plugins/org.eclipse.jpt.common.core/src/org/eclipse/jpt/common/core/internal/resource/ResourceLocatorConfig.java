@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 class ResourceLocatorConfig
@@ -191,7 +191,7 @@ class ResourceLocatorConfig
 	// ********** enabled filter **********
 
 	static class EnabledFilter
-		extends FilterAdapter<ResourceLocatorConfig>
+		extends Predicate.Adapter<ResourceLocatorConfig>
 	{
 		private final IProject project;
 		EnabledFilter(IProject project) {

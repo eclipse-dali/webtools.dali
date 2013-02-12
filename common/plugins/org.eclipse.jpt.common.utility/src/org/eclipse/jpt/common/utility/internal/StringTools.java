@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -901,7 +900,7 @@ public final class StringTools {
 	}
 
 	public static class StartsWithIgnoreCase
-		extends FilterAdapter<String>
+		extends Predicate.Adapter<String>
 	{
 		private final String prefix;
 		public StartsWithIgnoreCase(String prefix) {

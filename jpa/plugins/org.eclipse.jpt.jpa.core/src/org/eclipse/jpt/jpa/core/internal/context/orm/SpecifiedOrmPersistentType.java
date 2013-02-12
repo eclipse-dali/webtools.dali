@@ -30,7 +30,6 @@ import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -752,7 +751,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public class JavaResourceFieldIsDefault
-		extends FilterAdapter<JavaResourceField>
+		extends Predicate.Adapter<JavaResourceField>
 	{
 		@Override
 		public boolean evaluate(JavaResourceField javaResourceField) {

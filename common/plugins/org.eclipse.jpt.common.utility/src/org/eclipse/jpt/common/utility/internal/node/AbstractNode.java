@@ -19,7 +19,6 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
@@ -648,7 +647,7 @@ public abstract class AbstractNode
 
 	public static final Predicate<Node> NODE_IS_DIRTY = new NodeIsDirty();
 	public static class NodeIsDirty
-		extends FilterAdapter<Node>
+		extends Predicate.Adapter<Node>
 	{
 		@Override
 		public boolean evaluate(Node node) {

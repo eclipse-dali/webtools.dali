@@ -7,25 +7,33 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.filter;
+package org.eclipse.jpt.common.utility.internal.predicate;
 
 /**
  * This predicate will return <code>true</code> for any object that is
  * non-<code>null</code> and an instance of the specified class.
+ * 
+ * @param <V> the type of objects to be evaluated by the predicate
  */
-public class InstanceOfFilter<T>
-	extends SimpleFilter<T, Class<? extends T>>
+public class InstanceOfPredicate<V>
+	extends CriterionPredicate<V, Class<? extends V>>
 {
-	private final Class<?> clazz;
 	private static final long serialVersionUID = 1L;
 
-	public InstanceOfFilter(Class<?> clazz){
-		super();
-		this.clazz = clazz;
+
+	public InstanceOfPredicate(Class<? extends V> clazz) {
+		super(clazz);
+		if (clazz == null) {
+			throw new NullPointerException();
+		}
+	}
+
+	public boolean evaluate(V variable) {
+		return this.criterion.isInstance(variable);
 	}
 
 	@Override
-	public boolean evaluate(T o) {
-		return this.clazz.isInstance(o);
+	public InstanceOfPredicate<V> clone() {
+		return (InstanceOfPredicate<V>) super.clone();
 	}
 }

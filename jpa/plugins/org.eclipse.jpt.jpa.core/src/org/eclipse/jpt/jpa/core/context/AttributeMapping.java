@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -66,7 +65,7 @@ public interface AttributeMapping
 	String getKey();
 
 	class KeyEquals
-		extends FilterAdapter<AttributeMapping>
+		extends Predicate.Adapter<AttributeMapping>
 	{
 		private final String mappingKey;
 		public KeyEquals(String mappingKey) {
@@ -81,7 +80,7 @@ public interface AttributeMapping
 
 	Predicate<AttributeMapping> IS_NOT_TRANSIENT = new IsNotTransient();
 	public static class IsNotTransient
-		extends FilterAdapter<AttributeMapping>
+		extends Predicate.Adapter<AttributeMapping>
 	{
 		@Override
 		public boolean evaluate(AttributeMapping mapping) {
@@ -103,7 +102,7 @@ public interface AttributeMapping
 
 	Predicate<AttributeMapping> IS_OVERRIDABLE_ASSOCIATION_MAPPING = new IsOverridableAssociationMapping();
 	public static class IsOverridableAssociationMapping
-		extends FilterAdapter<AttributeMapping>
+		extends Predicate.Adapter<AttributeMapping>
 	{
 		@Override
 		public boolean evaluate(AttributeMapping mapping) {

@@ -24,9 +24,9 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -717,10 +717,9 @@ public final class IteratorTools {
 	 * Return an iterator that will return only the non-<code>null</code>
 	 * elements in the specified iterator.
 	 * @see FilteringIterator
-	 * @see NotNullFilter
 	 */
 	public static <E> FilteringIterator<E> removeNulls(Iterator<? extends E> iterator) {
-		return filter(iterator, NotNullFilter.<E>instance());
+		return filter(iterator, PredicateTools.notNullPredicate());
 	}
 
 	/**

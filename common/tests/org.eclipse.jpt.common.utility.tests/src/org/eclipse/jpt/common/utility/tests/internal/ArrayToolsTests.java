@@ -25,7 +25,6 @@ import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.command.InterruptibleParameterizedCommandAdapter;
 import org.eclipse.jpt.common.utility.internal.command.ParameterizedCommandAdapter;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -3030,7 +3029,7 @@ public class ArrayToolsTests
 	 * Accept any string with the specified length.
 	 */
 	public static class StringLengthFilter
-		extends FilterAdapter<String>
+		extends Predicate.Adapter<String>
 	{
 		private final int length;
 		public StringLengthFilter(int length) {

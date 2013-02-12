@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -107,7 +106,7 @@ public interface MappingFileRef
 
 	Predicate<MappingFileRef> PERSISTENCE_UNIT_METADATA_EXISTS = new PersistenceUnitMetadataExists();
 	class PersistenceUnitMetadataExists
-		extends FilterAdapter<MappingFileRef>
+		extends Predicate.Adapter<MappingFileRef>
 	{
 		@Override
 		public boolean evaluate(MappingFileRef mappingFileRef) {

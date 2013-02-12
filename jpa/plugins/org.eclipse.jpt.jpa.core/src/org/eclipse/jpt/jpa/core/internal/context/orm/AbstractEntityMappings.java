@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -37,6 +36,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
@@ -553,9 +553,9 @@ public abstract class AbstractEntityMappings
 										ORM_PERSISTENT_TYPE_FILTER));
 	}
 		
-	protected static final Filter<OrmManagedType> ORM_PERSISTENT_TYPE_FILTER =
-		new Filter<OrmManagedType>() {
-			public boolean accept(OrmManagedType mt) {
+	protected static final Predicate<OrmManagedType> ORM_PERSISTENT_TYPE_FILTER =
+		new Predicate<OrmManagedType>() {
+			public boolean evaluate(OrmManagedType mt) {
 				return  mt.getType() == OrmPersistentType.class;
 			}
 		};
@@ -890,14 +890,14 @@ public abstract class AbstractEntityMappings
 
 	protected List<XmlManagedType> getXmlManagedTypes_() {
 		// convert lists to arrays to *reduce* risk of ConcurrentModificationException
-		ArrayList<XmlManagedType> managedTypes = new ArrayList<XmlManagedType>();
-		CollectionTools.addAll(managedTypes, this.xmlEntityMappings.getMappedSuperclasses().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
-		CollectionTools.addAll(managedTypes, this.xmlEntityMappings.getEntities().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
-		CollectionTools.addAll(managedTypes, this.xmlEntityMappings.getEmbeddables().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		ArrayList<XmlManagedType> types = new ArrayList<XmlManagedType>();
+		CollectionTools.addAll(types, this.xmlEntityMappings.getMappedSuperclasses().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		CollectionTools.addAll(types, this.xmlEntityMappings.getEntities().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		CollectionTools.addAll(types, this.xmlEntityMappings.getEmbeddables().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
 		if (this.isJpa2_1Compatible()) {
-			CollectionTools.addAll(managedTypes, this.getXml2_1Converters().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+			CollectionTools.addAll(types, this.getXml2_1Converters().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
 		}
-		return managedTypes;
+		return types;
 	}
 
 	protected List<XmlConverter> getXml2_1Converters() {
@@ -1119,9 +1119,9 @@ public abstract class AbstractEntityMappings
 										ORM_CONVERTER_TYPE_FILTER));
 	}
 
-	protected static final Filter<OrmManagedType> ORM_CONVERTER_TYPE_FILTER =
-		new Filter<OrmManagedType>() {
-			public boolean accept(OrmManagedType mt) {
+	protected static final Predicate<OrmManagedType> ORM_CONVERTER_TYPE_FILTER =
+		new Predicate<OrmManagedType>() {
+			public boolean evaluate(OrmManagedType mt) {
 				return  mt.getType() == OrmConverterType2_1.class;
 			}
 		};

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -181,7 +181,7 @@ public interface OverrideContainer
 		TypeMapping getTypeMapping();
 
 		class AttributeIsOverridable
-			extends FilterAdapter<String>
+			extends Predicate.Adapter<String>
 		{
 			private final Owner owner;
 			public AttributeIsOverridable(Owner owner) {

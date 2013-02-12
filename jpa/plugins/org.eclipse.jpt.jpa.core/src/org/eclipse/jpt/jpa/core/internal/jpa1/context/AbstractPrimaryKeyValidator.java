@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -679,7 +678,7 @@ public abstract class AbstractPrimaryKeyValidator
 
 	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesIdDerivedIdentityStrategy();
 	public static class TypeMappingUsesIdDerivedIdentityStrategy
-		extends FilterAdapter<SingleRelationshipMapping2_0>
+		extends Predicate.Adapter<SingleRelationshipMapping2_0>
 	{
 		@Override
 		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {
@@ -700,7 +699,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	public static final Predicate<SingleRelationshipMapping2_0> TYPE_MAPPING_USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new TypeMappingUsesMapsIdDerivedIdentityStrategy();
 	public static class TypeMappingUsesMapsIdDerivedIdentityStrategy
-		extends FilterAdapter<SingleRelationshipMapping2_0>
+		extends Predicate.Adapter<SingleRelationshipMapping2_0>
 	{
 		@Override
 		public boolean evaluate(SingleRelationshipMapping2_0 mapping) {

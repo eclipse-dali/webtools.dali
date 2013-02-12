@@ -37,20 +37,19 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.filter.InstanceOfFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -557,7 +556,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public static class MappingFileRefContains
-		extends FilterAdapter<MappingFileRef>
+		extends Predicate.Adapter<MappingFileRef>
 	{
 		private final String typeName;
 		public MappingFileRefContains(String typeName) {
@@ -963,7 +962,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public class SpecifiesManagedType
-		extends FilterAdapter<JavaResourceAbstractType>
+		extends Predicate.Adapter<JavaResourceAbstractType>
 	{
 		@Override
 		public boolean evaluate(JavaResourceAbstractType jrat) {
@@ -1853,9 +1852,9 @@ public abstract class AbstractPersistenceUnit
 										PERSISTENT_TYPE_FILTER));
 	}
 
-	protected static final Filter<ManagedType> PERSISTENT_TYPE_FILTER =
-		new Filter<ManagedType>() {
-			public boolean accept(ManagedType mt) {
+	protected static final Predicate<ManagedType> PERSISTENT_TYPE_FILTER =
+		new Predicate<ManagedType>() {
+			public boolean evaluate(ManagedType mt) {
 				return mt.getType() == JavaPersistentType.class ||  mt.getType() == OrmPersistentType.class; //is this right? what about just getType() == PersistentType.class??
 			}
 		};
@@ -1918,7 +1917,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<TypeMapping> filterToEntities_(Iterable<TypeMapping> typeMappings) {
-		return IterableTools.filter(typeMappings, new InstanceOfFilter<TypeMapping>(Entity.class));
+		return IterableTools.filter(typeMappings, PredicateTools.<TypeMapping>instanceOfPredicate(Entity.class));
 	}
 
 	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...

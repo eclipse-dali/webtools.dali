@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -81,7 +80,7 @@ public class FilteringIterableTests
 	}
 
 	/* CU private */ static class StringStartsWithPrefix
-		extends FilterAdapter<String>
+		extends Predicate.Adapter<String>
 	{
 		@Override
 		public boolean evaluate(String s) {
@@ -94,7 +93,7 @@ public class FilteringIterableTests
 	}
 
 	/* CU private */ static class ObjectToStringStartsWithPrefix
-		extends FilterAdapter<Object>
+		extends Predicate.Adapter<Object>
 	{
 		@Override
 		public boolean evaluate(Object o) {

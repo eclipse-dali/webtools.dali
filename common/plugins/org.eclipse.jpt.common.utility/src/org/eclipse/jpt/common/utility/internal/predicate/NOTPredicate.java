@@ -7,50 +7,52 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.filter;
+package org.eclipse.jpt.common.utility.internal.predicate;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
- * This filter will "accept" any object that is NOT accepted by
- * the wrapped filter.
+ * This predicate will return the NOT of the value returned by its
+ * wrapped predicate.
  * 
- * @param <T> the type of objects to be filtered
+ * @param <V> the type of objects to be evaluated by the predicate
  */
-public class NOTFilter<T>
-	implements Predicate<T>, Cloneable, Serializable
+public class NOTPredicate<V>
+	implements Predicate<V>, Cloneable, Serializable
 {
-	protected final Predicate<? super T> filter;
+	protected final Predicate<? super V> predicate;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct a filter that will "accept" any object that is NOT accepted
-	 * by the specified wrapped filter.
+	 * Construct a predicate that will return the NOT of the value returned
+	 * by the specified predicate.
 	 */
-	public NOTFilter(Predicate<? super T> filter) {
+	public NOTPredicate(Predicate<? super V> predicate) {
 		super();
-		if (filter == null) {
+		if (predicate == null) {
 			throw new NullPointerException();
 		}
-		this.filter = filter;
+		this.predicate = predicate;
 	}
 
-	public boolean evaluate(T o) {
-		return ! this.filter.evaluate(o);
+	public boolean evaluate(V variable) {
+		return ! this.predicate.evaluate(variable);
 	}
 
-	public Predicate<? super T> getFilter() {
-		return this.filter;
+	public Predicate<? super V> getPredicate() {
+		return this.predicate;
 	}
 
 	@Override
-	public Object clone() {
+	public NOTPredicate<V> clone() {
 		try {
-			return super.clone();
+			@SuppressWarnings("unchecked")
+			NOTPredicate<V> clone = (NOTPredicate<V>) super.clone();
+			return clone;
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
@@ -58,21 +60,21 @@ public class NOTFilter<T>
 
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof NOTFilter)) {
+		if ( ! (o instanceof NOTPredicate)) {
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-		NOTFilter<T> other = (NOTFilter<T>) o;
-		return this.filter.equals(other.filter);
+		NOTPredicate<V> other = (NOTPredicate<V>) o;
+		return this.predicate.equals(other.predicate);
 	}
 
 	@Override
 	public int hashCode() {
-		return this.filter.hashCode();
+		return this.predicate.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.filter);
+		return ObjectTools.toString(this, this.predicate);
 	}
 }

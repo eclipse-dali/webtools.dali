@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.ListCurator;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -62,7 +62,7 @@ public class ELJaxbPackageContentProvider
 								return this.subject.getOxmFile();
 							}
 						}),
-				NotNullFilter.instance());
+				PredicateTools.notNullPredicate());
 	}
 	
 	protected CollectionValueModel<JaxbContextNode> buildJavaTypeChildrenModel() {

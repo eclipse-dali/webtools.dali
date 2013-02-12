@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
@@ -139,7 +138,7 @@ public class JDTModifiedDeclaration
 
 	protected static final Predicate<IExtendedModifier> EXTENDED_MODIFIER_IS_ANNOTATION = new ExtendedModifierIsAnnotation();
 	protected static class ExtendedModifierIsAnnotation
-		extends FilterAdapter<IExtendedModifier>
+		extends Predicate.Adapter<IExtendedModifier>
 	{
 		@Override
 		public boolean evaluate(IExtendedModifier modifier) {

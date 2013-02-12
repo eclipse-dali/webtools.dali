@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -45,7 +45,7 @@ public interface JavaType
 	 */
 	TypeKind getKind();
 	class IsKind
-		extends FilterAdapter<JavaType>
+		extends Predicate.Adapter<JavaType>
 	{
 		private final TypeKind typeKind;
 		public IsKind(TypeKind typeKind) {
