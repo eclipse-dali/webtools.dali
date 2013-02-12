@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -26,12 +26,12 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
-import org.eclipse.persistence.jpa.jpql.JPQLQueryContext;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractExpressionVisitor;
 import org.eclipse.persistence.jpa.jpql.parser.Expression;
 import org.eclipse.persistence.jpa.jpql.parser.QueryPosition;
-import org.eclipse.persistence.jpa.jpql.spi.IMapping;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.JPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
 
 /**
  * The abstract definition of a builder that visit an {@link Expression} and creates the supported

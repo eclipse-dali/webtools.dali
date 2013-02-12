@@ -26,14 +26,15 @@ import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
-import org.eclipse.persistence.jpa.jpql.spi.IEmbeddable;
-import org.eclipse.persistence.jpa.jpql.spi.IEntity;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
-import org.eclipse.persistence.jpa.jpql.spi.IMappedSuperclass;
-import org.eclipse.persistence.jpa.jpql.spi.IMapping;
-import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEmbeddable;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedTypeProvider;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMappedSuperclass;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
+
 
 /**
  * An implementation of {@link IManagedTypeProvider} that is wrapping the design-time representation

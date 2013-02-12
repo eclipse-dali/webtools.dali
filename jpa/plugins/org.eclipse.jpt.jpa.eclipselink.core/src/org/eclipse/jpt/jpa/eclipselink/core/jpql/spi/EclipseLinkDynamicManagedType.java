@@ -19,10 +19,10 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedType;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
-import org.eclipse.persistence.jpa.jpql.spi.IMapping;
-import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
 
 /**
  * The abstract implementation of a {@link IManagedType} that supports a dynamic managed type.

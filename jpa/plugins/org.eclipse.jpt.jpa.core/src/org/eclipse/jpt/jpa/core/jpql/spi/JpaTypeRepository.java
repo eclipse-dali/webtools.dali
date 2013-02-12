@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -21,9 +21,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.persistence.jpa.jpql.TypeHelper;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
+import org.eclipse.persistence.jpa.jpql.tools.TypeHelper;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeRepository;
 
 /**
  * The concrete implementation of {@link ITypeRepository} that is wrapping the design-time

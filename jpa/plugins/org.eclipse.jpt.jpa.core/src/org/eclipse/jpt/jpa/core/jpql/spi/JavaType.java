@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
-import org.eclipse.persistence.jpa.jpql.TypeHelper;
-import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.tools.TypeHelper;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IConstructor;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeDeclaration;
 
 /**
  * The concrete implementation of {@link IType} that is wrapping a Java type.

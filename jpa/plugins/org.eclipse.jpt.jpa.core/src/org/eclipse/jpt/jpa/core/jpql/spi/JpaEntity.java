@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -19,10 +19,11 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.persistence.jpa.jpql.spi.IEntity;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeVisitor;
-import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
-import org.eclipse.persistence.jpa.jpql.spi.IQuery;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedTypeVisitor;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IQuery;
 
 /**
  * The concrete implementation of {@link IEntity} that is wrapping the design-time representation

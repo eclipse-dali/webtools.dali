@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -16,10 +16,10 @@ package org.eclipse.jpt.jpa.core.jpql.spi;
 import org.eclipse.jdt.core.BindingKey;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IConstructor;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeRepository;
 
 /**
  * The concrete implementation of {@link IConstructor} that is wrapping the {@link IMethod}

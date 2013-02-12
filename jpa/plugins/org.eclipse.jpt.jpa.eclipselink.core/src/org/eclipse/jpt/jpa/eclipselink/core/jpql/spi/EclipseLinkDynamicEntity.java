@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -14,9 +14,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaEntity;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
-import org.eclipse.persistence.jpa.jpql.spi.IEntity;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeVisitor;
-import org.eclipse.persistence.jpa.jpql.spi.IQuery;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedTypeVisitor;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IQuery;
 
 /**
  * This implementation of an {@link IEntity} that represents a dynamic entity.

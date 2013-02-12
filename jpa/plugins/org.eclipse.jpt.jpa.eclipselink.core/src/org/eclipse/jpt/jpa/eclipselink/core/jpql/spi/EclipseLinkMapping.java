@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -13,13 +13,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ELEMENT_COLLECTION;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.EMBEDDED_ID;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.MANY_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.MANY_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ONE_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ONE_TO_ONE;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
-
-import static org.eclipse.persistence.jpa.jpql.spi.IEclipseLinkMappingType.*;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEclipseLinkMappingType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
 
 /**
  * The EclipseLink implementation of Hermes' {@link IMapping}, which adds EclipseLink specific
@@ -57,22 +62,22 @@ public class EclipseLinkMapping extends JpaMapping {
 
 		// Basic Collection
 		if (type == EclipseLinkMappingKeys.BASIC_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
-			return BASIC_COLLECTION;
+			return IEclipseLinkMappingType.BASIC_COLLECTION;
 		}
 
 		// Basic Map
 		if (type == EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY) {
-			return BASIC_MAP;
+			return IEclipseLinkMappingType.BASIC_MAP;
 		}
 
 		// Transformation
 		if (type == EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY) {
-			return TRANSFORMATION;
+			return IEclipseLinkMappingType.TRANSFORMATION;
 		}
 
 		// Variable 1:1
 		if (type == EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			return VARIABLE_ONE_TO_ONE;
+			return IEclipseLinkMappingType.VARIABLE_ONE_TO_ONE;
 		}
 
 		return super.calculateMappingType();
@@ -92,8 +97,8 @@ public class EclipseLinkMapping extends JpaMapping {
 	@Override
 	public boolean isCollection() {
 		switch (getMappingType()) {
-			case BASIC_COLLECTION:
-			case BASIC_MAP:
+			case IEclipseLinkMappingType.BASIC_COLLECTION:
+			case IEclipseLinkMappingType.BASIC_MAP:
 			case ELEMENT_COLLECTION:
 			case MANY_TO_MANY:
 			case ONE_TO_MANY: return true;
@@ -113,7 +118,7 @@ public class EclipseLinkMapping extends JpaMapping {
 			case MANY_TO_ONE:
 			case ONE_TO_MANY:
 			case ONE_TO_ONE:
-			case VARIABLE_ONE_TO_ONE: return true;
+			case IEclipseLinkMappingType.VARIABLE_ONE_TO_ONE: return true;
 			default:                  return false;
 		}
 	}

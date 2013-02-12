@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -15,13 +15,12 @@ package org.eclipse.jpt.jpa.ui.internal.jpql;
 
 import java.util.StringTokenizer;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.persistence.jpa.jpql.BaseDeclarationIdentificationVariableFinder;
-import org.eclipse.persistence.jpa.jpql.Resolver;
-import org.eclipse.persistence.jpa.jpql.StateFieldResolver;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractPathExpression;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractSchemaName;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractTraverseParentVisitor;
@@ -33,8 +32,10 @@ import org.eclipse.persistence.jpa.jpql.parser.IdentificationVariable;
 import org.eclipse.persistence.jpa.jpql.parser.QueryPosition;
 import org.eclipse.persistence.jpa.jpql.parser.RangeVariableDeclaration;
 import org.eclipse.persistence.jpa.jpql.parser.StateFieldPathExpression;
-import org.eclipse.persistence.jpa.jpql.spi.IMapping;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.resolver.Resolver;
+import org.eclipse.persistence.jpa.jpql.tools.resolver.StateFieldResolver;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
 
 /**
  * The default implementation of the builder that visit an {@link Expression} and creates {@link

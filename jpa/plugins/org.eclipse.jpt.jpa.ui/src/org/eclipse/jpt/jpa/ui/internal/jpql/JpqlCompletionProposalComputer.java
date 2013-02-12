@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -13,6 +13,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.BASIC;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ELEMENT_COLLECTION;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.EMBEDDED;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.EMBEDDED_ID;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ID;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.MANY_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.MANY_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ONE_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ONE_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.VERSION;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,19 +38,18 @@ import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
-import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
-import org.eclipse.persistence.jpa.jpql.ContentAssistProposals.ClassType;
-import org.eclipse.persistence.jpa.jpql.ContentAssistProposals.EnumProposals;
 import org.eclipse.persistence.jpa.jpql.WordParser;
 import org.eclipse.persistence.jpa.jpql.parser.Expression;
 import org.eclipse.persistence.jpa.jpql.parser.IdentifierRole;
-import org.eclipse.persistence.jpa.jpql.spi.IEntity;
-import org.eclipse.persistence.jpa.jpql.spi.IMapping;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistProposals;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistProposals.ClassType;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistProposals.EnumProposals;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 
 /**
  * The abstract definition of JPQL content assist support.

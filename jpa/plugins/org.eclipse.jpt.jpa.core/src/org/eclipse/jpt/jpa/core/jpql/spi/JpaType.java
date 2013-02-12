@@ -41,8 +41,8 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
-import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IConstructor;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeDeclaration;
 
 /**
  * The concrete implementation of {@link org.eclipse.persistence.jpa.query.spi.IType IType} that is
@@ -264,13 +264,13 @@ public class JpaType implements IJpaType {
 	 */
 	@Override
 	public boolean equals(Object object) {
-		return equals((org.eclipse.persistence.jpa.jpql.spi.IType) object);
+		return equals((org.eclipse.persistence.jpa.jpql.tools.spi.IType) object);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean equals(org.eclipse.persistence.jpa.jpql.spi.IType type) {
+	public boolean equals(org.eclipse.persistence.jpa.jpql.tools.spi.IType type) {
 		return (this == type) || this.typeName.equals(type.getName());
 	}
 
@@ -355,7 +355,7 @@ public class JpaType implements IJpaType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isAssignableTo(org.eclipse.persistence.jpa.jpql.spi.IType otherType) {
+	public boolean isAssignableTo(org.eclipse.persistence.jpa.jpql.tools.spi.IType otherType) {
 
 		if (equals(otherType)) {
 			return true;

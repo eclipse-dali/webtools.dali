@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -18,23 +18,23 @@ import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.eclipselink.core.jpql.spi.EclipseLinkManagedTypeBuilder;
 import org.eclipse.jpt.jpa.eclipselink.core.jpql.spi.EclipseLinkMappingBuilder;
-import org.eclipse.persistence.jpa.jpql.AbstractContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.AbstractGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.AbstractSemanticValidator;
-import org.eclipse.persistence.jpa.jpql.BasicRefactoringTool;
-import org.eclipse.persistence.jpa.jpql.DefaultRefactoringTool;
-import org.eclipse.persistence.jpa.jpql.EclipseLinkBasicRefactoringTool;
-import org.eclipse.persistence.jpa.jpql.EclipseLinkContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.EclipseLinkGrammarValidator;
-import org.eclipse.persistence.jpa.jpql.EclipseLinkJPQLQueryContext;
-import org.eclipse.persistence.jpa.jpql.EclipseLinkSemanticValidator;
-import org.eclipse.persistence.jpa.jpql.JPQLQueryContext;
-import org.eclipse.persistence.jpa.jpql.RefactoringTool;
-import org.eclipse.persistence.jpa.jpql.model.EclipseLinkJPQLQueryBuilder;
-import org.eclipse.persistence.jpa.jpql.model.IJPQLQueryBuilder;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
-import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
-import org.eclipse.persistence.jpa.jpql.spi.IQuery;
+import org.eclipse.persistence.jpa.jpql.tools.AbstractContentAssistVisitor;
+import org.eclipse.persistence.jpa.jpql.tools.BasicRefactoringTool;
+import org.eclipse.persistence.jpa.jpql.tools.DefaultRefactoringTool;
+import org.eclipse.persistence.jpa.jpql.tools.EclipseLinkBasicRefactoringTool;
+import org.eclipse.persistence.jpa.jpql.tools.EclipseLinkContentAssistVisitor;
+import org.eclipse.persistence.jpa.jpql.tools.EclipseLinkJPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.tools.EclipseLinkSemanticValidator;
+import org.eclipse.persistence.jpa.jpql.tools.JPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.tools.RefactoringTool;
+import org.eclipse.persistence.jpa.jpql.tools.model.EclipseLinkJPQLQueryBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.model.IJPQLQueryBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IQuery;
 
 /**
  * The abstract implementation of {@link JpaJpqlQueryHelper} that supports EclipseLink.

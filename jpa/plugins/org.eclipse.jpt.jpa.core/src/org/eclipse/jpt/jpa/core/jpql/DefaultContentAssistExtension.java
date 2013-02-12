@@ -30,9 +30,9 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.persistence.jpa.jpql.ContentAssistExtension;
-import org.eclipse.persistence.jpa.jpql.ContentAssistProposals.ClassType;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistExtension;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistProposals.ClassType;
 
 /**
  * This extension can be used to provide additional support to JPQL content assist that is outside

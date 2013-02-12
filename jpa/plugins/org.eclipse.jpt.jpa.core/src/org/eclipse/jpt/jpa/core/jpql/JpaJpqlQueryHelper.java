@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -28,16 +28,16 @@ import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
-import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
-import org.eclipse.persistence.jpa.jpql.ContentAssistExtension;
-import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
-import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
-import org.eclipse.persistence.jpa.jpql.spi.IQuery;
-import org.eclipse.persistence.jpa.jpql.util.XmlEscapeCharacterConverter;
+import org.eclipse.persistence.jpa.jpql.tools.AbstractJPQLQueryHelper;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistExtension;
+import org.eclipse.persistence.jpa.jpql.tools.ContentAssistProposals;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedTypeProvider;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IQuery;
+import org.eclipse.persistence.jpa.jpql.tools.utility.XmlEscapeCharacterConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**

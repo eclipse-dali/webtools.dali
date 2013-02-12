@@ -13,17 +13,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql.spi;
 
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.BASIC;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ELEMENT_COLLECTION;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED_ID;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ID;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_MANY;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_ONE;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_MANY;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_ONE;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.TRANSIENT;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.VERSION;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.BASIC;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ELEMENT_COLLECTION;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.EMBEDDED;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.EMBEDDED_ID;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ID;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.MANY_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.MANY_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ONE_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.ONE_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.TRANSIENT;
+import static org.eclipse.persistence.jpa.jpql.tools.spi.IMappingType.VERSION;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -39,12 +39,12 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.persistence.jpa.jpql.spi.IEntity;
-import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
-import org.eclipse.persistence.jpa.jpql.spi.IMapping;
-import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
-import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.tools.spi.ITypeRepository;
 
 /**
  * The concrete implementation of {@link IMapping} that is wrapping the design-time representation
