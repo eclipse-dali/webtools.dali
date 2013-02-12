@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,7 +64,7 @@ public class AssociationOverrideJoinColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.column.getNameTextRange()
+				this.column.getNameValidationTextRange()
 			);
 	}
 
@@ -144,7 +144,7 @@ public class AssociationOverrideJoinColumnValidator
 				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
 				new String[] {this.override.getName()},
 				this.column,
-				this.column.getNameTextRange()
+				this.column.getNameValidationTextRange()
 			);
 	}
 
@@ -231,7 +231,7 @@ public class AssociationOverrideJoinColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getColumn().getTableNameTextRange()
+					this.getColumn().getTableNameValidationTextRange()
 				);
 		}
 

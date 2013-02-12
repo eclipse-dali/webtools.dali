@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -486,16 +486,16 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getNameTextRange() {
-		return this.getValidationTextRange(this.getTableAnnotation().getNameTextRange());
+	public TextRange getNameValidationTextRange() {
+		return this.getValidationTextRange(this.getTableAnnotation().getNameValidationTextRange());
 	}
 
-	public TextRange getSchemaTextRange() {
-		return this.getValidationTextRange(this.getTableAnnotation().getSchemaTextRange());
+	public TextRange getSchemaValidationTextRange() {
+		return this.getValidationTextRange(this.getTableAnnotation().getSchemaValidationTextRange());
 	}
 
-	public TextRange getCatalogTextRange() {
-		return this.getValidationTextRange(this.getTableAnnotation().getCatalogTextRange());
+	public TextRange getCatalogValidationTextRange() {
+		return this.getValidationTextRange(this.getTableAnnotation().getCatalogValidationTextRange());
 	}
 
 

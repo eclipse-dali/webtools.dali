@@ -438,7 +438,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		return (xmlTable == null) ? null : xmlTable.getValidationTextRange();
 	}
 
-	public TextRange getNameTextRange() {
+	public TextRange getNameValidationTextRange() {
 		return this.getValidationTextRange(this.getXmlTableNameTextRange());
 	}
 
@@ -447,7 +447,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		return (xmlTable == null) ? null : xmlTable.getNameTextRange();
 	}
 
-	public TextRange getSchemaTextRange() {
+	public TextRange getSchemaValidationTextRange() {
 		return this.getValidationTextRange(this.getXmlTableSchemaTextRange());
 	}
 
@@ -456,7 +456,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		return (xmlTable == null) ? null : xmlTable.getSchemaTextRange();
 	}
 
-	public TextRange getCatalogTextRange() {
+	public TextRange getCatalogValidationTextRange() {
 		return this.getValidationTextRange(this.getXmlTableCatalogTextRange());
 	}
 

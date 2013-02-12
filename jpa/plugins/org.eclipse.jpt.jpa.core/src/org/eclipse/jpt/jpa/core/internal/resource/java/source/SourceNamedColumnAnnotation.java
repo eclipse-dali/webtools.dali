@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,6 +40,7 @@ public abstract class SourceNamedColumnAnnotation
 	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 	private TextRange nameTextRange;
+	private TextRange nameValidationTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> columnDefinitionDeclarationAdapter;
 	private AnnotationElementAdapter<String> columnDefinitionAdapter;
@@ -64,6 +65,7 @@ public abstract class SourceNamedColumnAnnotation
 		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = this.buildNameValidationTextRange(astAnnotation);
 
 		this.columnDefinition = this.buildColumnDefinition(astAnnotation);
 		this.columnDefinitionTextRange = this.buildColumnDefinitionTextRange(astAnnotation);
@@ -74,6 +76,7 @@ public abstract class SourceNamedColumnAnnotation
 		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = this.buildNameValidationTextRange(astAnnotation);
 
 		this.syncColumnDefinition(this.buildColumnDefinition(astAnnotation));
 		this.columnDefinitionTextRange = this.buildColumnDefinitionTextRange(astAnnotation);
@@ -112,12 +115,24 @@ public abstract class SourceNamedColumnAnnotation
 		return this.nameTextRange;
 	}
 
+	public TextRange getNameValidationTextRange() {
+		return this.nameValidationTextRange;
+	}
+
 	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getAnnotationElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+	}
+
+	private TextRange buildNameValidationTextRange(Annotation astAnnotation) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean nameTouches(int pos) {
 		return this.textRangeTouches(this.nameTextRange, pos);
+	}
+
+	public boolean nameValidationTouches(int pos) {
+		return this.textRangeTouches(this.nameValidationTextRange, pos);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {

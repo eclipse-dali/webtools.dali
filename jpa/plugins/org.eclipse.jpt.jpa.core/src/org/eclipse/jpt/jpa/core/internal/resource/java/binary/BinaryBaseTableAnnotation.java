@@ -86,12 +86,20 @@ public abstract class BinaryBaseTableAnnotation
 	}
 
 	protected abstract String getNameElementName();
-
+	
 	public TextRange getNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
+	public TextRange getNameValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+
 	public boolean nameTouches(int pos) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean nameValidationTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -115,12 +123,20 @@ public abstract class BinaryBaseTableAnnotation
 	}
 
 	protected abstract String getSchemaElementName();
-
+	
 	public TextRange getSchemaTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
+	public TextRange getSchemaValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+
 	public boolean schemaTouches(int pos) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean schemaValidationTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -144,12 +160,20 @@ public abstract class BinaryBaseTableAnnotation
 	}
 
 	protected abstract String getCatalogElementName();
-
+	
 	public TextRange getCatalogTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
+	public TextRange getCatalogValidationTextRange() {
+		throw new UnsupportedOperationException();
+	}
+
 	public boolean catalogTouches(int pos) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean catalogValidationTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 

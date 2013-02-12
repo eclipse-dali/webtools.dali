@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,16 +43,19 @@ public abstract class SourceBaseTableAnnotation
 	AnnotationElementAdapter<String> nameAdapter;
 	String name;
 	TextRange nameTextRange;
+	TextRange nameValidationTextRange;
 
 	DeclarationAnnotationElementAdapter<String> schemaDeclarationAdapter;
 	AnnotationElementAdapter<String> schemaAdapter;
 	String schema;
 	TextRange schemaTextRange;
+	TextRange schemaValidationTextRange;
 
 	DeclarationAnnotationElementAdapter<String> catalogDeclarationAdapter;
 	AnnotationElementAdapter<String> catalogAdapter;
 	String catalog;
 	TextRange catalogTextRange;
+	TextRange catalogValidationTextRange;
 
 	
 	final UniqueConstraintsAnnotationContainer uniqueConstraintsContainer = new UniqueConstraintsAnnotationContainer();
@@ -78,12 +81,15 @@ public abstract class SourceBaseTableAnnotation
 
 		this.name = this.buildName(astAnnotation);
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = this.buildNameValidationTextRange(astAnnotation);
 
 		this.schema = this.buildSchema(astAnnotation);
 		this.schemaTextRange = this.buildSchemaTextRange(astAnnotation);
+		this.schemaValidationTextRange = this.buildSchemaValidationTextRange(astAnnotation);
 
 		this.catalog = this.buildCatalog(astAnnotation);
 		this.catalogTextRange = this.buildCatalogTextRange(astAnnotation);
+		this.catalogValidationTextRange = this.buildCatalogValidationTextRange(astAnnotation);
 
 		this.uniqueConstraintsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
@@ -94,12 +100,15 @@ public abstract class SourceBaseTableAnnotation
 
 		this.syncName(this.buildName(astAnnotation));
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.nameValidationTextRange = this.buildNameValidationTextRange(astAnnotation);
 
 		this.syncSchema(this.buildSchema(astAnnotation));
 		this.schemaTextRange = this.buildSchemaTextRange(astAnnotation);
+		this.schemaValidationTextRange = this.buildSchemaValidationTextRange(astAnnotation);
 
 		this.syncCatalog(this.buildCatalog(astAnnotation));
 		this.catalogTextRange = this.buildCatalogTextRange(astAnnotation);
+		this.catalogValidationTextRange = this.buildCatalogValidationTextRange(astAnnotation);
 
 		this.uniqueConstraintsContainer.synchronize(astAnnotation);
 	}
@@ -142,12 +151,24 @@ public abstract class SourceBaseTableAnnotation
 		return this.nameTextRange;
 	}
 
+	public TextRange getNameValidationTextRange() {
+		return this.nameValidationTextRange;
+	}
+
 	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getAnnotationElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+	}
+
+	private TextRange buildNameValidationTextRange(Annotation astAnnotation) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean nameTouches(int pos) {
 		return this.textRangeTouches(this.nameTextRange, pos);
+	}
+
+	public boolean nameValidationTouches(int pos) {
+		return this.textRangeTouches(this.nameValidationTextRange, pos);
 	}
 
 	/**
@@ -185,12 +206,24 @@ public abstract class SourceBaseTableAnnotation
 		return this.schemaTextRange;
 	}
 
+	public TextRange getSchemaValidationTextRange() {
+		return this.schemaValidationTextRange;
+	}
+
 	private TextRange buildSchemaTextRange(Annotation astAnnotation) {
+		return this.getAnnotationElementTextRange(this.schemaDeclarationAdapter, astAnnotation);
+	}
+
+	private TextRange buildSchemaValidationTextRange(Annotation astAnnotation) {
 		return this.getElementTextRange(this.schemaDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean schemaTouches(int pos) {
 		return this.textRangeTouches(this.schemaTextRange, pos);
+	}
+
+	public boolean schemaValidationTouches(int pos) {
+		return this.textRangeTouches(this.schemaValidationTextRange, pos);
 	}
 
 	/**
@@ -228,12 +261,24 @@ public abstract class SourceBaseTableAnnotation
 		return this.catalogTextRange;
 	}
 
+	public TextRange getCatalogValidationTextRange() {
+		return this.catalogValidationTextRange;
+	}
+
 	private TextRange buildCatalogTextRange(Annotation astAnnotation) {
+		return this.getAnnotationElementTextRange(this.catalogDeclarationAdapter, astAnnotation);
+	}
+
+	private TextRange buildCatalogValidationTextRange(Annotation astAnnotation) {
 		return this.getElementTextRange(this.catalogDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean catalogTouches(int pos) {
 		return this.textRangeTouches(this.catalogTextRange, pos);
+	}
+
+	public boolean catalogValidationTouches(int pos) {
+		return this.textRangeTouches(this.catalogValidationTextRange, pos);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,12 +58,16 @@ public interface BaseTableAnnotation
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
 	TextRange getNameTextRange();
-
+	
 	/**
 	 * Return whether the specified position touches the 'name' element.
 	 * Return false if the element does not exist.
 	 */
 	boolean nameTouches(int pos);
+
+	TextRange getNameValidationTextRange();
+
+	boolean nameValidationTouches(int pos);
 
 
 	// ********** schema **********
@@ -86,12 +90,16 @@ public interface BaseTableAnnotation
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
 	TextRange getSchemaTextRange();
-
+	
 	/**
 	 * Return whether the specified position touches the 'schema' element.
 	 * Return false if the element does not exist.
 	 */
 	boolean schemaTouches(int pos);
+	
+	TextRange getSchemaValidationTextRange();
+
+	boolean schemaValidationTouches(int pos);
 
 
 	// ********** catalog **********
@@ -114,12 +122,16 @@ public interface BaseTableAnnotation
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
 	TextRange getCatalogTextRange();
-
+	
 	/**
 	 * Return whether the specified position touches the 'catalog' element.
 	 * Return false if the element does not exist.
 	 */
 	boolean catalogTouches(int pos);
+	
+	TextRange getCatalogValidationTextRange();
+
+	boolean catalogValidationTouches(int pos);
 
 
 	// ********** unique constraints **********

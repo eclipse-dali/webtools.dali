@@ -139,11 +139,11 @@ public interface ReadOnlyTable
 	 */
 	boolean validatesAgainstDatabase();
 
-	TextRange getNameTextRange();
+	TextRange getNameValidationTextRange();
+	
+	TextRange getSchemaValidationTextRange();
 
-	TextRange getSchemaTextRange();
-
-	TextRange getCatalogTextRange();
+	TextRange getCatalogValidationTextRange();
 
 
 	// ********** owner **********
