@@ -31,7 +31,7 @@
          id="javax.persistence"
          download-size="0"
          install-size="0"
-         version="2.0.4.qualifier"
+         version="2.0.107.qualifier"
          unpack="false"/>
 
    <plugin
@@ -80,14 +80,14 @@
          id="org.eclipse.persistence.jpa.jpql"
          download-size="0"
          install-size="0"
-         version="2.1.0.qualifier"
+         version="2.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.persistence.jpa.jpql.source"
          download-size="0"
          install-size="0"
-         version="2.1.0.qualifier"
+         version="2.5.0.qualifier"
          unpack="false"/>
 
    <plugin
