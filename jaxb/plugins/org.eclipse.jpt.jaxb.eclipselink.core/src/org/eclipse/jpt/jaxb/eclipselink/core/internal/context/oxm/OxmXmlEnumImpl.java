@@ -14,7 +14,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaJaxbEnum;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm.OxmJavaTypeImpl.OxmTypeName;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlEnum;
 
 public class OxmXmlEnumImpl

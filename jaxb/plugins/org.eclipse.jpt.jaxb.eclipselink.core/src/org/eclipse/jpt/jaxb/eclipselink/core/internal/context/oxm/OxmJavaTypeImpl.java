@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
@@ -640,55 +639,6 @@ public class OxmJavaTypeImpl
 							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM,
 							this,
 							getNameTextRange()));
-		}
-	}
-	
-	
-	protected static class OxmTypeName
-			implements TypeName {
-		
-		// never null
-		protected String fullyQualifiedName;
-		
-		protected OxmTypeName(String fullyQualifiedName) {
-			assert (fullyQualifiedName != null);
-			this.fullyQualifiedName = fullyQualifiedName;
-		}
-		
-		public String getPackageName() {
-			return ClassNameTools.packageName(this.fullyQualifiedName);
-		}
-		
-		public String getSimpleName() {
-			return ClassNameTools.simpleName(this.fullyQualifiedName);
-		}
-		
-		public String getTypeQualifiedName() {
-			String packageName = this.getPackageName();
-			return (StringTools.isBlank(packageName)) ? this.fullyQualifiedName : this.fullyQualifiedName.substring(packageName.length() + 1);
-		}
-		
-		public String getFullyQualifiedName() {
-			return this.fullyQualifiedName;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			return ObjectTools.equals(this.fullyQualifiedName, ((OxmTypeName) obj).fullyQualifiedName);
-		}
-		
-		@Override
-		public int hashCode() {
-			return ObjectTools.hashCode(this.fullyQualifiedName);
 		}
 	}
 	
