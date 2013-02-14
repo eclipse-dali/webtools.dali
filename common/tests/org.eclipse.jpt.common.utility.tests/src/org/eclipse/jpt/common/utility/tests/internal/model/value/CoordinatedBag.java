@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
@@ -32,6 +31,9 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	CoordinatedBag(CollectionValueModel<E> cvm) {
 		cvm.addCollectionChangeListener(CollectionValueModel.VALUES, this);
+		for (Iterator<E> stream = cvm.iterator(); stream.hasNext(); ) {
+			this.add(stream.next());
+		}
 	}
 
 
