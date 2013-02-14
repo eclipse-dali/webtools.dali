@@ -11,8 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
@@ -54,7 +56,7 @@ public abstract class AbstractOrmEntityComposite<T extends OrmEntity>
 
 		// Java class widgets
 		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+		new OrmJavaClassChooser(this, this.buildPersistentTypeReferenceModel(), container, javaClassHyperlink);
 
 		// Table widgets
 		TableComposite tableComposite = new TableComposite(this, container);
@@ -81,6 +83,15 @@ public abstract class AbstractOrmEntityComposite<T extends OrmEntity>
 		metadataCompleteCheckBox.getControl().setLayoutData(gridData);
 
 		return container;
+	}
+
+	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
+		return new PropertyAspectAdapter<T, OrmPersistentType>(getSubjectHolder()) {
+			@Override
+			protected OrmPersistentType buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 
 	@Override

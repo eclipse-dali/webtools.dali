@@ -12,11 +12,13 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_1Definition;
-import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitConnection2_0EditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitOptions2_0EditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2_1.JavaConverterTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 
@@ -24,12 +26,12 @@ public class PersistenceXml2_1UiDefinition
 	extends AbstractPersistenceResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new PersistenceXml2_1UiDefinition();
+	private static final PersistenceResourceUiDefinition INSTANCE = new PersistenceXml2_1UiDefinition();
 
 	/**
 	 * Return the singleton
 	 */
-	public static ResourceUiDefinition instance() {
+	public static PersistenceResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -51,5 +53,11 @@ public class PersistenceXml2_1UiDefinition
 
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(GenericPersistenceXml2_1Definition.instance().getResourceType());
+	}
+
+	@Override
+	protected void addJavaManagedTypeUiDefinitionsTo(List<JavaManagedTypeUiDefinition> definitions) {
+		super.addJavaManagedTypeUiDefinitionsTo(definitions);
+		definitions.add(JavaConverterTypeUiDefinition.instance());
 	}
 }

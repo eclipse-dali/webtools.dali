@@ -621,7 +621,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("EM_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
-		entityMappings.removePersistentType(0);
+		entityMappings.removeManagedType(0);
 		multitenancy = getJavaMultitenancy();
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("PU_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());

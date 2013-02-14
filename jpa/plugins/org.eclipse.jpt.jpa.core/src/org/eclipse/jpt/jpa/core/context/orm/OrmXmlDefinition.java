@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 
 /**
  * <code>orm.xml</code> definition
@@ -35,6 +36,16 @@ public interface OrmXmlDefinition
 	 * Return the factory for building XML context nodes.
 	 */
 	OrmXmlContextNodeFactory getContextNodeFactory();
+
+
+	// ********** managed types **********
+
+	/**
+	 * Return the OrmManagedTypeDefinition corresponding to the given resource type
+	 * @throws IllegalArgumentException if the resource type is not supported
+	 * @see OrmManagedTypeDefinition#getResourceType()
+	 */
+	OrmManagedTypeDefinition getManagedTypeDefinition(Class<? extends XmlManagedType> resourceType);
 
 
 	// ********** type/attribute mappings **********

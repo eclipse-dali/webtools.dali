@@ -388,37 +388,35 @@ public class OrmEntityTests extends ContextModelTestCase
 
 	public void testUpdateClass() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		assertEquals("model.Foo", ormEntity.getClass_());
+		assertEquals("model.Foo", ormPersistentType.getClass_());
 		assertEquals("model.Foo", entityResource.getClassName());
 		
 		//set class in the resource model, verify context model updated
 		entityResource.setClassName("com.Bar");
-		assertEquals("com.Bar", ormEntity.getClass_());
+		assertEquals("com.Bar", ormPersistentType.getClass_());
 		assertEquals("com.Bar", entityResource.getClassName());
 	
 		//set class to null in the resource model
 		entityResource.setClassName(null);
-		assertNull(ormEntity.getClass_());
+		assertNull(ormPersistentType.getClass_());
 		assertNull(entityResource.getClassName());
 	}
 	
 	public void testModifyClass() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		assertEquals("model.Foo", ormEntity.getClass_());
+		assertEquals("model.Foo", ormPersistentType.getClass_());
 		assertEquals("model.Foo", entityResource.getClassName());
 		
 		//set class in the context model, verify resource model modified
-		ormEntity.setClass("com.Bar");
-		assertEquals("com.Bar", ormEntity.getClass_());
+		ormPersistentType.setClass("com.Bar");
+		assertEquals("com.Bar", ormPersistentType.getClass_());
 		assertEquals("com.Bar", entityResource.getClassName());
 		
 		//set class to null in the context model
-		ormEntity.setClass(null);
-		assertNull(ormEntity.getClass_());
+		ormPersistentType.setClass(null);
+		assertNull(ormPersistentType.getClass_());
 		assertNull(entityResource.getClassName());
 	}
 	//TODO add tests for setting the className when the package is set on entity-mappings
@@ -1029,7 +1027,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
 		
 		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) entityPersistentType.getMapping();
-		assertEquals("model.Foo", ormEmbeddable.getClass_());
+		assertEquals("model.Foo", entityPersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormEmbeddable.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, entityPersistentType.getSpecifiedAccess());
 	}
@@ -1055,7 +1053,7 @@ public class OrmEntityTests extends ContextModelTestCase
 //		assertEquals("basicMapping", embeddable.getAttributes().getBasics().get(0).getName());
 		
 		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) entityPersistentType.getMapping();
-		assertEquals("model.Foo", ormEmbeddable.getClass_());
+		assertEquals("model.Foo", entityPersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormEmbeddable.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, entityPersistentType.getSpecifiedAccess());
 //		assertEquals("basicMapping", ormEmbeddable.persistentType().attributes().next().getName());
@@ -1078,7 +1076,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
 		
 		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) entityPersistentType.getMapping();
-		assertEquals("model.Foo", ormMappedSuperclass.getClass_());
+		assertEquals("model.Foo", entityPersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, entityPersistentType.getSpecifiedAccess());
 	}
@@ -1101,7 +1099,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
 		
 		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) entityPersistentType.getMapping();
-		assertEquals("model.Foo", ormMappedSuperclass.getClass_());
+		assertEquals("model.Foo", entityPersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, entityPersistentType.getSpecifiedAccess());
 	}

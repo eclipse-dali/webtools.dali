@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -60,7 +60,7 @@ public class PersistenceUnitItemContentProvider
 	protected void addChildrenModelsTo(ArrayList<CollectionValueModel<? extends JpaContextNode>> list) {
 		list.add(this.buildNotNullSpecifiedMappingFilesModel());
 		list.add(this.buildImpliedMappingFilesModel());
-		list.add(this.buildNotNullPersistentTypesModel());
+		list.add(this.buildNotNullJavaManagedTypesModel());
 		list.add(this.buildNotNullJarFilesModel());
 	}
 
@@ -112,26 +112,26 @@ public class PersistenceUnitItemContentProvider
 	}
 
 
-	// ********** persistent types **********
+	// ********** managed types **********
 
-	protected CollectionValueModel<JavaPersistentType> buildNotNullPersistentTypesModel() {
-		return new FilteringCollectionValueModel<JavaPersistentType>(
-				this.buildPersistentTypesModel(),
-				NotNullFilter.<JavaPersistentType>instance()
+	protected CollectionValueModel<JavaManagedType> buildNotNullJavaManagedTypesModel() {
+		return new FilteringCollectionValueModel<JavaManagedType>(
+				this.buildJavaManagedTypesModel(),
+				NotNullFilter.<JavaManagedType>instance()
 			);
 	}
 
-	protected ListValueModel<JavaPersistentType> buildPersistentTypesModel() {
-		return new TransformationListValueModel<ClassRef, JavaPersistentType>(
+	protected ListValueModel<JavaManagedType> buildJavaManagedTypesModel() {
+		return new TransformationListValueModel<ClassRef, JavaManagedType>(
 				this.buildClassRefsModel(),
-				ClassRef.JAVA_PERSISTENT_TYPE_TRANSFORMER
+				ClassRef.JAVA_MANAGED_TYPE_TRANSFORMER
 			);
 	}
 
 	protected ListValueModel<ClassRef> buildClassRefsModel() {
 		return new ItemPropertyListValueModelAdapter<ClassRef>(
 				this.buildClassRefsModel_(),
-				ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY
+				ClassRef.JAVA_MANAGED_TYPE_PROPERTY
 			);
 	}
 

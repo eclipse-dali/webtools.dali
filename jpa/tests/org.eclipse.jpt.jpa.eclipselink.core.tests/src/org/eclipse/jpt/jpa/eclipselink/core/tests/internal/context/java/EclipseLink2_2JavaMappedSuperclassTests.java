@@ -63,14 +63,14 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 	
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		mappedSuperclass.getIdClassReference().setSpecifiedIdClassName("myIdClass");
-		mappedSuperclass.getConverterContainer().addCustomConverter(0);
-		mappedSuperclass.getConverterContainer().addCustomConverter(1);
-		mappedSuperclass.getConverterContainer().addObjectTypeConverter(0);
-		mappedSuperclass.getConverterContainer().addObjectTypeConverter(1);
-		mappedSuperclass.getConverterContainer().addTypeConverter(0);
-		mappedSuperclass.getConverterContainer().addTypeConverter(1);
-		mappedSuperclass.getConverterContainer().addStructConverter(0);
-		mappedSuperclass.getConverterContainer().addStructConverter(1);
+		mappedSuperclass.getConverterContainer().addCustomConverter("customConverter", 0);
+		mappedSuperclass.getConverterContainer().addCustomConverter("customConverter2", 1);
+		mappedSuperclass.getConverterContainer().addObjectTypeConverter("objectTypeConverter", 0);
+		mappedSuperclass.getConverterContainer().addObjectTypeConverter("objectTypeConverter2", 1);
+		mappedSuperclass.getConverterContainer().addTypeConverter("typeConverter", 0);
+		mappedSuperclass.getConverterContainer().addTypeConverter("typeConverter2", 1);
+		mappedSuperclass.getConverterContainer().addStructConverter("structConverter", 0);
+		mappedSuperclass.getConverterContainer().addStructConverter("structConverter2", 1);
 		mappedSuperclass.getGeneratorContainer().addTableGenerator();
 		mappedSuperclass.getGeneratorContainer().addSequenceGenerator();
 		mappedSuperclass.getReadOnly().setSpecifiedReadOnly(Boolean.TRUE);
@@ -99,14 +99,14 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		mappedSuperclass.getIdClassReference().setSpecifiedIdClassName("myIdClass");
-		mappedSuperclass.getConverterContainer().addCustomConverter(0);
-		mappedSuperclass.getConverterContainer().addCustomConverter(1);
-		mappedSuperclass.getConverterContainer().addObjectTypeConverter(0);
-		mappedSuperclass.getConverterContainer().addObjectTypeConverter(1);
-		mappedSuperclass.getConverterContainer().addTypeConverter(0);
-		mappedSuperclass.getConverterContainer().addTypeConverter(1);
-		mappedSuperclass.getConverterContainer().addStructConverter(0);
-		mappedSuperclass.getConverterContainer().addStructConverter(1);
+		mappedSuperclass.getConverterContainer().addCustomConverter("customConverter", 0);
+		mappedSuperclass.getConverterContainer().addCustomConverter("customConverter2", 1);
+		mappedSuperclass.getConverterContainer().addObjectTypeConverter("objectTypeConverter", 0);
+		mappedSuperclass.getConverterContainer().addObjectTypeConverter("objectTypeConverter2", 1);
+		mappedSuperclass.getConverterContainer().addTypeConverter("typeConverter", 0);
+		mappedSuperclass.getConverterContainer().addTypeConverter("typeConverter2", 1);
+		mappedSuperclass.getConverterContainer().addStructConverter("structConverter", 0);
+		mappedSuperclass.getConverterContainer().addStructConverter("structConverter2", 1);
 		mappedSuperclass.getGeneratorContainer().addTableGenerator();
 		mappedSuperclass.getGeneratorContainer().addSequenceGenerator();
 		mappedSuperclass.getReadOnly().setSpecifiedReadOnly(Boolean.TRUE);
@@ -136,14 +136,14 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		mappedSuperclass.getIdClassReference().setSpecifiedIdClassName("myIdClass");
-		mappedSuperclass.getConverterContainer().addCustomConverter(0);
-		mappedSuperclass.getConverterContainer().addCustomConverter(1);
-		mappedSuperclass.getConverterContainer().addObjectTypeConverter(0);
-		mappedSuperclass.getConverterContainer().addObjectTypeConverter(1);
-		mappedSuperclass.getConverterContainer().addTypeConverter(0);
-		mappedSuperclass.getConverterContainer().addTypeConverter(1);
-		mappedSuperclass.getConverterContainer().addStructConverter(0);
-		mappedSuperclass.getConverterContainer().addStructConverter(1);
+		mappedSuperclass.getConverterContainer().addCustomConverter("customConverter", 0);
+		mappedSuperclass.getConverterContainer().addCustomConverter("customConverter2", 1);
+		mappedSuperclass.getConverterContainer().addObjectTypeConverter("objectTypeConverter", 0);
+		mappedSuperclass.getConverterContainer().addObjectTypeConverter("objectTypeConverter2", 1);
+		mappedSuperclass.getConverterContainer().addTypeConverter("typeConverter", 0);
+		mappedSuperclass.getConverterContainer().addTypeConverter("typeConverter2", 1);
+		mappedSuperclass.getConverterContainer().addStructConverter("structConverter", 0);
+		mappedSuperclass.getConverterContainer().addStructConverter("structConverter2", 1);
 
 		getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof JavaNullTypeMapping);

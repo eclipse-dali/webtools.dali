@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
@@ -96,6 +97,15 @@ public interface JpaPlatform
 	 * extensions.
 	 */
 	IContentType getContentType(IFile file);
+
+
+	// ********** Managed Types **********
+
+	/**
+	 * Return the Java managed type definitions that will be used to build Java
+	 * managed types and their corresponding annotations.
+	 */
+	Iterable<JavaManagedTypeDefinition> getJavaManagedTypeDefinitions();
 
 
 	// ********** Java annotations **********

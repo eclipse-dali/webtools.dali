@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -213,23 +213,23 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 			return null;
 		}
 		Class<? extends EclipseLinkConverter> converterType = dialog.getConverterType();
+		String converterName = dialog.getName();
 		EclipseLinkConverter converter;
 		if (converterType == EclipseLinkCustomConverter.class) {
-			converter = this.getSubject().addCustomConverter(getSubject().getCustomConvertersSize());
+			converter = this.getSubject().addCustomConverter(converterName, getSubject().getCustomConvertersSize());
 		}
 		else if (converterType == EclipseLinkObjectTypeConverter.class) {
-			converter = this.getSubject().addObjectTypeConverter(getSubject().getObjectTypeConvertersSize());
+			converter = this.getSubject().addObjectTypeConverter(converterName, getSubject().getObjectTypeConvertersSize());
 		}
 		else if (converterType == EclipseLinkStructConverter.class) {
-			converter = this.getSubject().addStructConverter(getSubject().getStructConvertersSize());
+			converter = this.getSubject().addStructConverter(converterName, getSubject().getStructConvertersSize());
 		}
 		else if (converterType == EclipseLinkTypeConverter.class) {
-			converter = this.getSubject().addTypeConverter(getSubject().getTypeConvertersSize());
+			converter = this.getSubject().addTypeConverter(converterName, getSubject().getTypeConvertersSize());
 		}
 		else {
 			throw new IllegalArgumentException();
 		}
-		converter.setName(dialog.getName());
 
 		return converter;
 	}

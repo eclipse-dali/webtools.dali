@@ -238,6 +238,10 @@ public class XmlConverter extends AbstractXmlManagedType implements XmlConverter
 		return result.toString();
 	}
 
+
+	public Class<? extends XmlConverter_2_1> getType() {
+		return XmlConverter_2_1.class;
+	}
 	
 	// ********** translators **********
 

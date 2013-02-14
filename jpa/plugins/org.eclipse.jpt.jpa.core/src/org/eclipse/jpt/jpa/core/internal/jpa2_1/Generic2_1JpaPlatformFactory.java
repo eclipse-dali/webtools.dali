@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_1;
 
@@ -41,7 +40,7 @@ public class Generic2_1JpaPlatformFactory
 		return new GenericJpaPlatform(
 			config,
 			this.buildJpaVersion(),
-			new GenericJpaFactory2_0(),
+			new GenericJpaFactory2_1(),
 			new JpaAnnotationProvider(Generic2_1JpaAnnotationDefinitionProvider.instance()),
 			Generic2_1JpaPlatformProvider.instance(),
 			this.buildJpaPlatformVariation(),

@@ -11,8 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
@@ -41,7 +43,7 @@ public class OrmMappedSuperclassComposite
 
 		// Java class widgets
 		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+		new OrmJavaClassChooser(this, this.buildPersistentTypeReferenceModel(), container, javaClassHyperlink);
 
 		// Access type widgets
 		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
@@ -59,4 +61,14 @@ public class OrmMappedSuperclassComposite
 
 		return container;
 	}
+
+	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmPersistentType>(getSubjectHolder()) {
+			@Override
+			protected OrmPersistentType buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
+	}
+
 }

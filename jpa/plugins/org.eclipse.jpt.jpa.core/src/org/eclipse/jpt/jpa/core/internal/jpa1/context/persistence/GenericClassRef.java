@@ -24,10 +24,14 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -55,11 +59,11 @@ public class GenericClassRef
 	protected String className;
 
 	/**
-	 * The Java persistent type corresponding to the ref's class name;
+	 * The Java managed type corresponding to the ref's class name;
 	 * this can be <code>null</code> if the className is invalid or
 	 * refers to an enum instead of a class or interface.
 	 */
-	protected JavaPersistentType javaPersistentType;
+	protected JavaManagedType javaManagedType;
 
 	/**
 	 * Hold on to this for validation if the resourceType is not of type {@link AstNodeType#TYPE}
@@ -76,7 +80,7 @@ public class GenericClassRef
 		super(parent);
 		this.xmlJavaClassRef = xmlJavaClassRef;
 		this.className = xmlJavaClassRef.getJavaClass();
-		this.initializeJavaPersistentType(this.resolveJavaResourceType());
+		this.initializeJavaManagedType(this.resolveJavaResourceType());
 	}
 
 	/**
@@ -87,13 +91,13 @@ public class GenericClassRef
 		super(parent);
 		this.xmlJavaClassRef = null;
 		this.className = resourceType.getTypeBinding().getQualifiedName();
-		this.initializeJavaPersistentType(resourceType);
+		this.initializeJavaManagedType(resourceType);
 	}
 
-	protected void initializeJavaPersistentType(JavaResourceAbstractType jrat) {
+	protected void initializeJavaManagedType(JavaResourceAbstractType jrat) {
 		this.resourceType = jrat;
 		if (this.resourceType != null && this.resourceType.getAstNodeType() == AstNodeType.TYPE) {
-			this.javaPersistentType = this.buildJavaPersistentType((JavaResourceType) this.resourceType);
+			this.javaManagedType = this.buildJavaManagedType((JavaResourceType) this.resourceType);
 		}
 	}
 
@@ -109,20 +113,21 @@ public class GenericClassRef
 			// the name probably never changes...
 			this.setClassName_(this.xmlJavaClassRef.getJavaClass());
 		}
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.synchronizeWithResourceModel();
+		if (this.javaManagedType != null) {
+			this.javaManagedType.synchronizeWithResourceModel();
 		}
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.updateJavaPersistentType();
+		this.updateJavaManagedType();
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		JavaPersistentType javaPersistentType = this.getJavaPersistentType();
+		if (javaPersistentType != null) {
+			javaPersistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
 		}
 	}
 
@@ -160,36 +165,42 @@ public class GenericClassRef
 	}
 
 
-	// ********** java persistent type **********
+	// ********** Java managed type **********
 
-	public JavaPersistentType getJavaPersistentType() {
-		return this.javaPersistentType;
+	public JavaManagedType getJavaManagedType() {
+		return this.javaManagedType;
 	}
 
-	protected void setJavaPersistentType(JavaPersistentType javaPersistentType) {
-		JavaPersistentType old = this.javaPersistentType;
-		this.javaPersistentType = javaPersistentType;
-		this.firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, old, javaPersistentType);
+	protected void setJavaManagedType(JavaManagedType managedType) {
+		ManagedType old = this.javaManagedType;
+		this.javaManagedType = managedType;
+		this.firePropertyChanged(JAVA_MANAGED_TYPE_PROPERTY, old, managedType);
 	}
 
-	protected void updateJavaPersistentType() {
+	protected void updateJavaManagedType() {
 		this.resourceType = this.resolveJavaResourceType();
 		if (this.resourceType == null || this.resourceType.getAstNodeType() != AstNodeType.TYPE) {
-			if (this.javaPersistentType != null) {
-				this.setJavaPersistentType(null);
+			if (this.javaManagedType != null) {
+				this.setJavaManagedType(null);
 			}
 		} else {
 			JavaResourceType jrt = (JavaResourceType) this.resourceType;
-			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType(jrt));
+			JavaManagedTypeDefinition managedTypeDefinition = this.getJavaManagedTypeDefinition(jrt);
+			if (this.javaManagedType == null) {
+				this.setJavaManagedType(this.buildJavaManagedType(jrt, managedTypeDefinition));
 			} else {
-				if (this.javaPersistentType.getJavaResourceType() == jrt) {
-					this.javaPersistentType.update();
+				if (this.javaManagedType.getType() == managedTypeDefinition.getType()) {
+					this.javaManagedType.update();
 				} else {
-					this.setJavaPersistentType(this.buildJavaPersistentType(jrt));
+					this.setJavaManagedType(this.buildJavaManagedType(jrt, managedTypeDefinition));
 				}
 			}
 		}
+	}
+
+	public JavaPersistentType getJavaPersistentType() {
+		return this.javaManagedType == null ? null : 
+			this.javaManagedType.getType() == JavaPersistentType.class ? (JavaPersistentType) this.javaManagedType : null;
 	}
 
 	protected JavaResourceAbstractType resolveJavaResourceType() {
@@ -197,8 +208,25 @@ public class GenericClassRef
 		return (javaClassName == null) ? null : this.getJpaProject().getJavaResourceType(javaClassName);
 	}
 
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrt);
+	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt) {
+		return this.buildJavaManagedType(jrt, this.getJavaManagedTypeDefinition(jrt));
+	}
+
+	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt, JavaManagedTypeDefinition managedTypeDefinition) {
+		return managedTypeDefinition.buildContextManagedType(this, jrt, this.getJpaFactory());
+	}
+
+	protected Iterable<JavaManagedTypeDefinition> getJavaManagedTypeDefinitions() {
+		return this.getJpaPlatform().getJavaManagedTypeDefinitions();
+	}
+
+	protected JavaManagedTypeDefinition getJavaManagedTypeDefinition(JavaResourceType jrt) {
+		for (JavaManagedTypeDefinition managedTypeDefinition : this.getJavaManagedTypeDefinitions()) {
+			if (jrt.isAnnotatedWithAnyOf(managedTypeDefinition.getAnnotationNames(this.getJpaProject()))) {
+				return managedTypeDefinition;
+			}
+		}
+		return JavaPersistentTypeDefinition.instance();
 	}
 
 
@@ -401,15 +429,15 @@ public class GenericClassRef
 			}
 		}
 
-		if (this.javaPersistentType == null) {
+		if (this.javaManagedType == null) {
 			return;
 		}
 		// 190062 validate Java class only if this is the only reference to it
 		// i.e. the persistence.xml ref is the only ref - none of the mapping
 		// files reference the same class
-		boolean validateJavaPersistentType = true;
+		boolean validateJavaManagedType = true;
 		for (MappingFileRef mappingFileRef : this.getPersistenceUnit().getMappingFileRefsContaining(this.getJavaClassName())) {
-			validateJavaPersistentType = false;
+			validateJavaManagedType = false;
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,
@@ -421,14 +449,14 @@ public class GenericClassRef
 			);
 		}
 
-		if (validateJavaPersistentType) {
-			this.validateJavaPersistentType(messages, reporter);
+		if (validateJavaManagedType) {
+			this.validateJavaManagedType(messages, reporter);
 		}
 	}
 
-	protected void validateJavaPersistentType(List<IMessage> messages, IReporter reporter) {
+	protected void validateJavaManagedType(List<IMessage> messages, IReporter reporter) {
 		try {
-			this.javaPersistentType.validate(messages, reporter);
+			this.javaManagedType.validate(messages, reporter);
 		} catch (Throwable t) {
 			JptJpaCorePlugin.instance().logError(t);
 		}

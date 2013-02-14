@@ -68,7 +68,7 @@ public final class JptJpaUiImages {
 	public static final ImageDescriptor PERSISTENCE = buildImageDescriptor(OBJECTS_ + "persistence.gif");
 	public static final ImageDescriptor PERSISTENCE_UNIT = buildImageDescriptor(OBJECTS_ + "persistence-unit.gif");
 	public static final ImageDescriptor MAPPING_FILE_REF = buildImageDescriptor(OBJECTS_ + "jpa-file.gif");
-	public static final ImageDescriptor CLASS_REF = buildImageDescriptor(OBJECTS_ + "null-type-mapping.gif");
+	public static final ImageDescriptor CLASS_REF = buildImageDescriptor(OBJECTS_ + "java-class.gif");
 	public static final ImageDescriptor JAR_FILE_REF = buildImageDescriptor(OBJECTS_ + "jpa-jar-file.gif");
 
 

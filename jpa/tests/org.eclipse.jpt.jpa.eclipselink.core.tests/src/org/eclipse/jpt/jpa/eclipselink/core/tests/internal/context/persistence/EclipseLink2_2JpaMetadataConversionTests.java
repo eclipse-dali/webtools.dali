@@ -492,9 +492,8 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		addXmlMappingFileRef(org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EclipseLinkEntityMappings entityMappings = getEntityMappings();		
 		OrmEclipseLinkConverterContainer ormConvertercontainer = entityMappings.getConverterContainer();
-		EclipseLinkCustomConverter converter = ormConvertercontainer.addCustomConverter(ormConvertercontainer.getCustomConvertersSize());
-		converter.setName("type");
-		
+		ormConvertercontainer.addCustomConverter("type", ormConvertercontainer.getCustomConvertersSize());
+	
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		JavaEclipseLinkEntity entity = getJavaEntity();

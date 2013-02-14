@@ -9,8 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
+import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.JpaFileStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceStructureItemLabelProviderFactory;
 
@@ -19,7 +25,9 @@ import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceStructureItemLabelPr
  */
 public abstract class AbstractPersistenceResourceUiDefinition
 	extends AbstractResourceUiDefinition
+	implements PersistenceResourceUiDefinition
 {
+	private ArrayList<JavaManagedTypeUiDefinition> javaManagedTypeUiDefinitions;
 
 
 	/**
@@ -29,6 +37,34 @@ public abstract class AbstractPersistenceResourceUiDefinition
 		super();
 	}
 
+
+	// ********** java managed types ui definitions **********
+
+	public JavaManagedTypeUiDefinition getJavaManagedTypeUiDefinition(Class<? extends JavaManagedType> type) {
+		for (JavaManagedTypeUiDefinition definition : this.getJavaManagedTypeUiDefinitions()) {
+			if (ObjectTools.equals(definition.getType(), type)) {
+				return definition;
+			}
+		}
+		throw new IllegalArgumentException("Illegal type : " + type); //$NON-NLS-1$
+	}
+
+	protected synchronized Iterable<JavaManagedTypeUiDefinition> getJavaManagedTypeUiDefinitions() {
+		if (this.javaManagedTypeUiDefinitions == null) {
+			this.javaManagedTypeUiDefinitions = this.buildJavaManagedTypeUiDefinitions();
+		}
+		return this.javaManagedTypeUiDefinitions;
+	}
+
+	protected ArrayList<JavaManagedTypeUiDefinition> buildJavaManagedTypeUiDefinitions() {
+		ArrayList<JavaManagedTypeUiDefinition> definitions = new ArrayList<JavaManagedTypeUiDefinition>();
+		this.addJavaManagedTypeUiDefinitionsTo(definitions);
+		return definitions;
+	}
+
+	protected void addJavaManagedTypeUiDefinitionsTo(List<JavaManagedTypeUiDefinition> definitions) {
+		definitions.add(JavaPersistentTypeUiDefinition.instance());
+	}
 	
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return STRUCTURE_VIEW_FACTORY_PROVIDER;

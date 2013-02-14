@@ -149,7 +149,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
 		assertEquals("BAR", sequenceGenerator.getDefaultSchema());
 
-		this.getEntityMappings().removePersistentType(0);
+		this.getEntityMappings().removeManagedType(0);
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
 		idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();

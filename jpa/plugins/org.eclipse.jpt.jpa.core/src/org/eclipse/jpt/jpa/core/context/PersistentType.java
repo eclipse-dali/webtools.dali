@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -30,44 +29,9 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  * @since 2.0
  */
 public interface PersistentType
-	extends JpaStructureNode, AccessHolder
+	extends ManagedType, JpaStructureNode, AccessHolder
 {
-	// ********** name **********
-
-	/**
-	 * Return the persistent type's [fully-qualified] name.
-	 * The enclosing type separator is <code>'.'</code>,
-	 * as opposed to <code>'$'</code>.
-	 * @see #getSimpleName()
-	 * @see #getTypeQualifiedName()
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-	Transformer<PersistentType, String> NAME_TRANSFORMER = new NameTransformer();
-	class NameTransformer
-		extends TransformerAdapter<PersistentType, String>
-	{
-		@Override
-		public String transform(PersistentType pt) {
-			return pt.getName();
-		}
-	}
-
-	/**
-	 * Return the persistent type's simple name.
-	 * @see #getName()
-	 * @see #getTypeQualifiedName()
-	 */
-	String getSimpleName();
-
-	/**
-	 * Return the persistent type's type-qualified name; i.e. the type's
-	 * name without its package qualification.
-	 * @see #getName()
-	 * @see #getSimpleName()
-	 */
-	String getTypeQualifiedName();
-
+	Class<? extends PersistentType> getType();
 
 	// ********** mapping **********
 
@@ -204,18 +168,6 @@ public interface PersistentType
 
 
 	// ********** misc **********
-
-	/**
-	 * Return whether the persistent type applies to the
-	 * specified type name qualified with <code>'.'</code>.
-	 */
-	boolean isFor(String typeName);
-
-	/**
-	 * Return whether the persistent type resolves to a Java class in the
-	 * specified package fragment.
-	 */
-	boolean isIn(IPackageFragment packageFragment);
 
 	/**
 	 * Return the persistent type the persistent type overrides.

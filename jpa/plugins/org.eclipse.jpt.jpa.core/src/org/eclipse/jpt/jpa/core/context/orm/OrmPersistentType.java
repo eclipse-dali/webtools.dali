@@ -10,11 +10,10 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 
 /**
  * <code>orm.xml</code> persistent type
@@ -29,11 +28,14 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
  * @since 2.0
  */
 public interface OrmPersistentType
-	extends PersistentType, PersistentType.Owner, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends OrmManagedType, PersistentType, PersistentType.Owner
 {
+	
 	// ********** covariant overrides **********
 
-	EntityMappings getParent();
+	Class<? extends OrmPersistentType> getType();
+
+	XmlTypeMapping getXmlManagedType();
 
 	OrmTypeMapping getMapping();
 
@@ -138,16 +140,7 @@ public interface OrmPersistentType
 	 * Return the Java persistent type that is referred to by the
 	 * <code>orm.xml</code> persistent type.
 	 * Return <code>null</code> if it is missing.
+	 * @see #getJavaManagedType()
 	 */
 	JavaPersistentType getJavaPersistentType();
-		String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
-
-	/**
-	 * Return the persistent type's default package, as set in its entity
-	 * mappings.
-	 */
-	String getDefaultPackage();
-
-	//TODO would like to remove this eventually
-	void dispose();
 }

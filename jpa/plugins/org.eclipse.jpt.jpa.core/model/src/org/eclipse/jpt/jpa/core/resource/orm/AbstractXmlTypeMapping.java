@@ -415,6 +415,10 @@ public abstract class AbstractXmlTypeMapping extends AbstractXmlManagedType impl
 	}
 	
 
+	public Class<? extends XmlTypeMapping> getType() {
+		return XmlTypeMapping.class;
+	}
+
 	public TextRange getAttributesTextRange() {
 		return getAttributeTextRange(JPA.ATTRIBUTES);
 	}

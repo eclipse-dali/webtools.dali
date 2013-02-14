@@ -15,7 +15,6 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
-import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * <code>orm.xml</code> type mapping
@@ -32,24 +31,6 @@ import org.eclipse.text.edits.DeleteEdit;
 public interface OrmTypeMapping
 	extends TypeMapping, TypeRefactoringParticipant
 {
-	// ********** class **********
-
-	/**
-	 * Member class names will be qualified with a <code>'$'</code>
-	 * between each declaring class name and member class name.
-	 * <strong>NB:</strong> This may be an unqualified name to be prefixed by the
-	 * entity mappings's 'package' value.
-	 * 
-	 * @see EntityMappings#getPackage()
-	 */
-	String getClass_();
-
-	/**
-	 * @see #getClass_()
-	 */
-	void setClass(String class_);
-		String CLASS_PROPERTY = "class"; //$NON-NLS-1$
-
 
 	// ********** metadata complete **********
 
@@ -101,6 +82,7 @@ public interface OrmTypeMapping
 	 * <p>
 	 * Each concrete implementation must implement this
 	 * method and return an int that matches its order in the schema.
+	 * @see OrmManagedType#getXmlSequence()
 	 */
 	int getXmlSequence();
 	
@@ -119,8 +101,6 @@ public interface OrmTypeMapping
 	XmlTypeMapping getXmlTypeMapping();
 
 	TextRange getSelectionTextRange();
-
-	TextRange getClassTextRange();
 
 	TextRange getAttributesTextRange();
 
@@ -146,14 +126,6 @@ public interface OrmTypeMapping
 	 */
 	JavaTypeMapping getJavaTypeMappingForDefaults();
 	
-
-	// ********** refactoring **********
-
-	/**
-	 * Create a text DeleteEdit for deleting the type mapping element and any text that precedes it
-	 */
-	DeleteEdit createDeleteEdit();
-
 
 	// ********** misc **********
 

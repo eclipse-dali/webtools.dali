@@ -51,6 +51,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	public static final String OTHER_TYPE_NAME = "OtherTestType";
 	public static final String FULLY_QUALIFIED_OTHER_TYPE_NAME = PACKAGE_NAME + "." + OTHER_TYPE_NAME;
 
+	public static final String ORM2_XML_FILE_NAME = "orm2.xml";
+	public static final String ORM3_XML_FILE_NAME = "orm3.xml";
 
 	public PersistenceUnitTests(String name) {
 		super(name);
@@ -1081,7 +1083,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	
 	public void testGetDefaultAccess() throws Exception {
 		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
-		createOrm2XmlFile();
+		createOrmXmlFile(ORM2_XML_FILE_NAME);
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().getMappingFileRefs().iterator();
 		OrmXml ormMappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
@@ -1105,7 +1107,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	
 	public void testGetDefaultSchema() throws Exception {
 		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
-		createOrm2XmlFile();
+		createOrmXmlFile(ORM2_XML_FILE_NAME);
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().getMappingFileRefs().iterator();
 		OrmXml ormMappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
@@ -1126,7 +1128,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	
 	public void testGetDefaultCatalog() throws Exception {
 		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
-		createOrm2XmlFile();
+		createOrmXmlFile(ORM2_XML_FILE_NAME);
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().getMappingFileRefs().iterator();
 		OrmXml ormMappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
@@ -1145,15 +1147,15 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals("BAR", persistenceUnit.getDefaultCatalog());
 	}
 	
-	protected void createOrm2XmlFile() throws Exception {
+	protected void createOrmXmlFile(String fileName) throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
 		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, "orm2.xml");
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, fileName);
 		config.getDefaultOperation().execute(null, null);
 		
-		addXmlMappingFileRef("META-INF/orm2.xml");
+		addXmlMappingFileRef("META-INF/" + fileName);
 		getPersistenceXmlResource().save(null);
 	}
 
@@ -1235,6 +1237,41 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		getXmlPersistenceUnit().getMappingFiles().remove(0);
 		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 	}
+
+	public void testGetMappingFileRefsContaining() throws Exception {
+		createOrmXmlFile(ORM2_XML_FILE_NAME);
+		createOrmXmlFile(ORM3_XML_FILE_NAME);
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
+
+		Iterable<MappingFileRef> mappingFileRefs = persistenceUnit.getMappingFileRefsContaining(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(true, IterableTools.isEmpty(mappingFileRefs));
+
+		OrmXml ormXml = (OrmXml) IterableTools.get(persistenceUnit.getMappingFileRefs(), 0).getMappingFile();
+		OrmXml orm2Xml = (OrmXml) IterableTools.get(persistenceUnit.getMappingFileRefs(), 1).getMappingFile();
+		OrmXml orm3Xml = (OrmXml) IterableTools.get(persistenceUnit.getMappingFileRefs(), 2).getMappingFile();
+
+		ormXml.getRoot().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		mappingFileRefs = persistenceUnit.getMappingFileRefsContaining(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(1, IterableTools.size(mappingFileRefs));
+		assertEquals(ormXml, IterableTools.get(mappingFileRefs, 0).getMappingFile());
+
+		orm2Xml.getRoot().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		mappingFileRefs = persistenceUnit.getMappingFileRefsContaining(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(2, IterableTools.size(mappingFileRefs));
+		assertEquals(ormXml, IterableTools.get(mappingFileRefs, 0).getMappingFile());
+		assertEquals(orm2Xml, IterableTools.get(mappingFileRefs, 1).getMappingFile());
+
+		orm3Xml.getRoot().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		mappingFileRefs = persistenceUnit.getMappingFileRefsContaining(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(3, IterableTools.size(mappingFileRefs));
+		assertEquals(ormXml, IterableTools.get(mappingFileRefs, 0).getMappingFile());
+		assertEquals(orm2Xml, IterableTools.get(mappingFileRefs, 1).getMappingFile());
+		assertEquals(orm3Xml, IterableTools.get(mappingFileRefs, 2).getMappingFile());
+		
+	}	
 	
 //TODO
 //	String getDefaultSchema();

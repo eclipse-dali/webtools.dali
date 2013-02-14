@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
@@ -40,6 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
@@ -129,6 +132,21 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 
+	// ********** managed types **********
+
+	@Override
+	protected List<XmlConverter_2_1> getXml2_1Converters() {
+		ArrayList<XmlConverter_2_1> xmlConverters = new ArrayList<XmlConverter_2_1>();
+		for (XmlConverter_2_1 xmlConverter : this.xmlEntityMappings.getConverters()) {
+			if (((XmlNamedConverter) xmlConverter).getName() == null){
+				xmlConverters.add(xmlConverter);
+			}
+		}
+
+		return xmlConverters;
+	}
+
+
 	// ********** converter container **********
 
 	public OrmEclipseLinkConverterContainer getConverterContainer() {
@@ -136,7 +154,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this, (XmlEntityMappings) this.xmlEntityMappings);
+		return new OrmEclipseLinkEntityMappingsConverterContainer(this, this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 
 	public int getNumberSupportedConverters() {

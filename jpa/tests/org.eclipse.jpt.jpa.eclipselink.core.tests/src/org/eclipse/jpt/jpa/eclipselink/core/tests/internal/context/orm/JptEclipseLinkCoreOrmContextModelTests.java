@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2012 Oracle. 
+ *  Copyright (c) 2007, 2013 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -56,6 +56,8 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLink2_1OrmEntityTests.class);
 		suite.addTestSuite(EclipseLink2_1OrmMappedSuperclassTests.class);
 		suite.addTestSuite(EclipseLink2_3OrmMultitenancyTests.class);
+		suite.addTestSuite(EclipseLink2_5EntityMappingsTests.class);
+		suite.addTestSuite(EclipseLink2_5OrmEntityTests.class);
 		return suite;
 	}
 	

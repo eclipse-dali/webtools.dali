@@ -11,8 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddableComposite;
@@ -40,7 +42,7 @@ public abstract class AbstractOrmEmbeddableComposite<T extends OrmEmbeddable>
 
 		// Java class widgets
 		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+		new OrmJavaClassChooser(this, this.buildPersistentTypeReferenceModel(), container, javaClassHyperlink);
 
 		// Access type widgets
 		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
@@ -53,5 +55,14 @@ public abstract class AbstractOrmEmbeddableComposite<T extends OrmEmbeddable>
 		metadataCompleteCheckBox.getControl().setLayoutData(gridData);
 
 		return container;
+	}
+
+	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
+		return new PropertyAspectAdapter<T, OrmPersistentType>(getSubjectHolder()) {
+			@Override
+			protected OrmPersistentType buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 }

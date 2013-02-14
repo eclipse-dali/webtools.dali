@@ -284,7 +284,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			return;
 		}
 		
-		if (this.entityMappings.containsPersistentType(className)) {
+		if (this.entityMappings.containsManagedType(className)) {
 			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptJpaUiMessages.AddPersistentClassDialog_duplicateClassWarning));
 			return;
 		}

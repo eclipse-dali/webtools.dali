@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,8 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.persistence.JptCorePersis
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.java.Generic2_0JavaContextModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.orm.Generic2_0OrmContextModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.persistence.Generic2_0PersistenceContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.JpaProject2_1Tests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.persistence.JptJpa2_1ContextPersistenceModelTests;
 
 /**
  * Required Java system property:
@@ -33,12 +35,14 @@ public class JptJpaCoreContextModelTests
 		if (JptJpaCoreTests.requiredJarsExists()) {
 			suite.addTestSuite(JpaProjectTests.class);
 			suite.addTestSuite(JpaFileTests.class);
+			suite.addTestSuite(JpaProject2_1Tests.class);
 			suite.addTest(JptCorePersistenceContextModelTests.suite());
 			suite.addTest(JptCoreOrmContextModelTests.suite());
 			suite.addTest(JptCoreContextJavaModelTests.suite());
 			suite.addTest(Generic2_0JavaContextModelTests.suite());
 			suite.addTest(Generic2_0OrmContextModelTests.suite());
 			suite.addTest(Generic2_0PersistenceContextModelTests.suite());
+			suite.addTest(JptJpa2_1ContextPersistenceModelTests.suite());
 		} else {
 			suite.addTest(TestSuite.warning(JptJpaCoreTests.buildMissingJarErrorMessage()));
 		}

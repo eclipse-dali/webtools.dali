@@ -27,6 +27,8 @@ import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
+import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -239,15 +241,32 @@ public interface JpaProject
 	 * (ignoring classes in JARs referenced in the <code>persistence.xml</code>).
 	 */
 	Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceTypes();
-	
+
 	/**
-	 * Return only the types of those valid <em>mapped</em> (i.e. annotated with
-	 * <code>@Entity</code>, <code>@Embeddable</code>, etc.) Java resource
+	 * Return only the valid <em>potential</em> types (i.e. those annotated with
+	 * <code>@Entity</code>, <code>@Embeddable</code>, <code>@MappedSuperclass</code>, 
+	 * <code>@Converter</code> in JPA 2.1). Java resource
 	 * types that are directly part of the JPA project, ignoring
 	 * those in JARs referenced in <code>persistence.xml</code>.
+	 * @see #getManagedTypeAnnotationNames()
 	 */
-	Iterable<JavaResourceAbstractType> getMappedJavaSourceTypes();
+	Iterable<JavaResourceAbstractType> getPotentialJavaSourceTypes();
 
+	/**
+	 * Return only the valid <em>managed</em> type annotation names 
+	 * (i.e. <code>@Entity</code>, <code>@Embeddable</code>, 
+	 * <code>@MappedSuperclass</code>, <code>@Converter</code> in JPA 2.1). 
+	 * @see JavaManagedTypeDefinition#getAnnotationNames(JpaProject)
+	 * @see JpaPlatform#getJavaManagedTypeDefinitions()
+	 */
+	Iterable<String> getManagedTypeAnnotationNames();
+
+	/**
+	 * Return the valid type mapping annotation names
+	 * (i.e. <code>@Entity</code>, <code>@Embeddable</code>, <code>@MappedSuperclass</code>). 
+	 * @see JavaTypeMappingDefinition#getAnnotationName()
+	 * @see JpaPlatform#getJavaTypeMappingDefinitions()
+	 */
 	Iterable<String> getTypeMappingAnnotationNames();
 
 	/**

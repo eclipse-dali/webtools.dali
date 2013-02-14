@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,16 +34,16 @@ public interface JavaEclipseLinkConverterContainer
 	extends EclipseLinkConverterContainer
 {
 	ListIterable<JavaEclipseLinkCustomConverter> getCustomConverters();
-	JavaEclipseLinkCustomConverter addCustomConverter(int index);
+	JavaEclipseLinkCustomConverter addCustomConverter(String name, int index);
 
 	ListIterable<JavaEclipseLinkObjectTypeConverter> getObjectTypeConverters();
-	JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(int index);
+	JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index);
 
 	ListIterable<JavaEclipseLinkStructConverter> getStructConverters();
-	JavaEclipseLinkStructConverter addStructConverter(int index);
+	JavaEclipseLinkStructConverter addStructConverter(String name, int index);
 
 	ListIterable<JavaEclipseLinkTypeConverter> getTypeConverters();
-	JavaEclipseLinkTypeConverter addTypeConverter(int index);
+	JavaEclipseLinkTypeConverter addTypeConverter(String name, int index);
 
 	/**
 	 * Parent adapter

@@ -39,6 +39,8 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
 
@@ -146,11 +148,21 @@ public abstract class AbstractJpaNode
 		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING);
 	}
 
+	protected boolean isJpa2_1Compatible() {
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject2_1.FACET_VERSION_STRING);
+	}
+
 	/**
 	 * Call {@link #isJpa2_0Compatible()} before calling this method.
 	 */
 	protected JpaFactory2_0 getJpaFactory2_0() {
 		return (JpaFactory2_0) this.getJpaFactory();
+	}
+	/**
+	 * Call {@link #isJpa2_1Compatible()} before calling this method.
+	 */
+	protected JpaFactory2_1 getJpaFactory2_1() {
+		return (JpaFactory2_1) this.getJpaFactory();
 	}
 
 	protected JpaFactory getJpaFactory() {

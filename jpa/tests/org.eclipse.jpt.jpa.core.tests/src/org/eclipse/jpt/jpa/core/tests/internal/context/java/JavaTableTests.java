@@ -178,7 +178,7 @@ public class JavaTableTests extends ContextModelTestCase
 		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
 		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
 
-		getEntityMappings().removePersistentType(0);
+		getEntityMappings().removeManagedType(0);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", getJavaEntity().getTable().getDefaultSchema());
@@ -298,7 +298,7 @@ public class JavaTableTests extends ContextModelTestCase
 		ormEntity.getTable().setSpecifiedCatalog("XML_CATALOG");
 		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
 
-		getEntityMappings().removePersistentType(0);
+		getEntityMappings().removeManagedType(0);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default catalog taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", getJavaEntity().getTable().getDefaultCatalog());

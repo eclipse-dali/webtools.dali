@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,12 +17,12 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 
 public class OrmXmlItemContentProvider
-	extends AbstractItemTreeContentProvider<OrmXml, OrmPersistentType>
+	extends AbstractItemTreeContentProvider<OrmXml, OrmManagedType>
 {
 	public OrmXmlItemContentProvider(OrmXml ormXml, Manager manager) {
 		super(ormXml, manager);
@@ -33,25 +33,25 @@ public class OrmXmlItemContentProvider
 	}
 	
 	@Override
-	protected CollectionValueModel<OrmPersistentType> buildChildrenModel() {
-		return new ListCollectionValueModelAdapter<OrmPersistentType>(new ChildrenModel(this.item));
+	protected CollectionValueModel<OrmManagedType> buildChildrenModel() {
+		return new ListCollectionValueModelAdapter<OrmManagedType>(new ChildrenModel(this.item));
 	}
 
 	protected static class ChildrenModel
-		extends ListAspectAdapter<EntityMappings, OrmPersistentType>
+		extends ListAspectAdapter<EntityMappings, OrmManagedType>
 	{
 		ChildrenModel(OrmXml ormXml) {
-			super(new EntityMappingsModel(ormXml), EntityMappings.PERSISTENT_TYPES_LIST);
+			super(new EntityMappingsModel(ormXml), EntityMappings.MANAGED_TYPES_LIST);
 		}
 
 		@Override
-		protected ListIterable<OrmPersistentType> getListIterable() {
-			return subject.getPersistentTypes();
+		protected ListIterable<OrmManagedType> getListIterable() {
+			return this.subject.getManagedTypes();
 		}
 
 		@Override
 		protected int size_() {
-			return subject.getPersistentTypesSize();
+			return this.subject.getManagedTypesSize();
 		}
 	}
 

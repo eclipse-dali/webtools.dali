@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
@@ -33,14 +33,14 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * choose a class from the package.
  * Not sure if this should be driven by the UI or by ui api in the model
  *
- * @see OrmTypeMapping
+ * @see OrmManagedType
  * @see OrmPersistentTypeDetailsPage - The parent container
  * @see ClassChooserPane
  *
  * @version 2.0
  * @since 1.0
  */
-public class OrmJavaClassChooser extends ClassChooserPane<OrmTypeMapping> {
+public class OrmJavaClassChooser extends ClassChooserPane<OrmManagedType> {
 
 	/**
 	 * Creates a new <code>XmlJavaClassChooser</code>.
@@ -50,7 +50,7 @@ public class OrmJavaClassChooser extends ClassChooserPane<OrmTypeMapping> {
 	 * @param parent The parent container
 	 */
 	public OrmJavaClassChooser(Pane<?> parentPane,
-	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
+	                           PropertyValueModel<? extends OrmManagedType> subjectHolder,
 	                           Composite parent,
 	                           Hyperlink hyperlink) {
 
@@ -59,7 +59,7 @@ public class OrmJavaClassChooser extends ClassChooserPane<OrmTypeMapping> {
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextHolder() {
-		return new PropertyAspectAdapter<OrmTypeMapping, String>(getSubjectHolder(), OrmTypeMapping.CLASS_PROPERTY) {
+		return new PropertyAspectAdapter<OrmManagedType, String>(getSubjectHolder(), OrmManagedType.CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getClass_();
@@ -89,6 +89,6 @@ public class OrmJavaClassChooser extends ClassChooserPane<OrmTypeMapping> {
 
 	@Override
 	protected String getFullyQualifiedClassName() {
-		return getSubject().getPersistentType().getName();
+		return getSubject().getName();
 	}
 }

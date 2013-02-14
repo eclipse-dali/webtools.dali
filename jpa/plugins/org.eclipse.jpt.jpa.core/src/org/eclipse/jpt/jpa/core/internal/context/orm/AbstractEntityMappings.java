@@ -25,9 +25,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -40,12 +43,15 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
@@ -58,14 +64,19 @@ import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
@@ -84,7 +95,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractEntityMappings
 	extends AbstractOrmXmlContextNode
-	implements EntityMappings
+	implements EntityMappings2_1
 {
 	protected final XmlEntityMappings xmlEntityMappings;
 
@@ -103,8 +114,8 @@ public abstract class AbstractEntityMappings
 
 	protected final OrmPersistenceUnitMetadata persistenceUnitMetadata;
 
-	protected final Vector<OrmPersistentType> persistentTypes = new Vector<OrmPersistentType>();
-	protected final PersistentTypeContainerAdapter persistentTypeContainerAdapter = new PersistentTypeContainerAdapter();
+	protected final Vector<OrmManagedType> managedTypes = new Vector<OrmManagedType>();
+	protected final ManagedTypeContainerAdapter managedTypeContainerAdapter = new ManagedTypeContainerAdapter();
 
 	protected final ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> sequenceGeneratorContainer;
 
@@ -131,7 +142,8 @@ public abstract class AbstractEntityMappings
 
 		this.persistenceUnitMetadata = this.buildPersistenceUnitMetadata();
 
-		this.initializePersistentTypes();
+		this.initializeManagedTypes();
+
 		this.sequenceGeneratorContainer = this.buildSequenceGeneratorContainer();
 		this.tableGeneratorContainer = this.buildTableGeneratorContainer();
 		this.queryContainer = this.buildQueryContainer();
@@ -155,7 +167,8 @@ public abstract class AbstractEntityMappings
 
 		this.persistenceUnitMetadata.synchronizeWithResourceModel();
 
-		this.syncPersistentTypes();
+		this.syncManagedTypes();
+
 		this.syncSequenceGenerators();
 		this.syncTableGenerators();
 
@@ -172,7 +185,8 @@ public abstract class AbstractEntityMappings
 
 		this.persistenceUnitMetadata.update();
 
-		this.updateNodes(this.getPersistentTypes());
+		this.updateNodes(this.getManagedTypes());
+
 		this.updateNodes(this.getSequenceGenerators());
 		this.updateNodes(this.getTableGenerators());
 
@@ -222,14 +236,14 @@ public abstract class AbstractEntityMappings
 		return this.xmlEntityMappings.getSelectionTextRange();
 	}
 
-	//TODO I think children needs to include all managed types, 
-	//thus JPA 2.1 converters are going to appear in the structure and project explorer views??
+	//for now I am making the children only PersistentTypes. If we decide
+	//we want Converters listed in the structure view for an orm.xml, we can change this.
 	protected void initializeChildren() {
-		this.children.addAll(this.persistentTypes);
+		CollectionTools.addAll(this.children, this.getPersistentTypes());
 	}
 
 	protected void updateChildren() {
-		this.synchronizeCollection(this.persistentTypes, this.children, CHILDREN_COLLECTION);
+		this.synchronizeCollection(this.getPersistentTypes(), this.children, CHILDREN_COLLECTION);
 	}
 
 	public Iterable<OrmPersistentType> getChildren() {
@@ -306,17 +320,17 @@ public abstract class AbstractEntityMappings
 
 	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
 		AccessType savedAccess = ormPersistentType.getSpecifiedAccess();
-		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
-		this.persistentTypes.remove(sourceIndex);
+		int sourceIndex = this.managedTypes.indexOf(ormPersistentType);
+		this.managedTypes.remove(sourceIndex);
 		oldMapping.removeXmlTypeMappingFrom(this.xmlEntityMappings);
 		int targetIndex = this.calculateInsertionIndex(ormPersistentType);
-		this.persistentTypes.add(targetIndex, ormPersistentType);
+		this.managedTypes.add(targetIndex, ormPersistentType);
 		newMapping.addXmlTypeMappingTo(this.xmlEntityMappings);
 
 		newMapping.initializeFrom(oldMapping);
 		//not sure where else to put this, need to set the access on the resource model
 		ormPersistentType.setSpecifiedAccess(savedAccess);
-		this.fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
+		this.fireItemMoved(MANAGED_TYPES_LIST, targetIndex, sourceIndex);
 	}
 
 	public TextRange getValidationTextRange() {
@@ -507,21 +521,49 @@ public abstract class AbstractEntityMappings
 	}
 
 
+	// ********** managed types **********
+
+	public ListIterable<OrmManagedType> getManagedTypes() {
+		return IterableTools.cloneLive(this.managedTypes);
+	}
+
+	public int getManagedTypesSize() {
+		return this.managedTypes.size();
+	}
+
+	public OrmManagedType getManagedType(String typeName) {
+		for (OrmManagedType ormManagedType : this.getManagedTypes()) {
+			if (ormManagedType.isFor(typeName)) {
+				return ormManagedType;
+			}
+		}
+		return null;
+	}
+
+	public boolean containsManagedType(String typeName) {
+		return this.getManagedType(typeName) != null;
+	}
+
+
 	// ********** persistent types **********
 
-	public ListIterable<OrmPersistentType> getPersistentTypes() {
-		return IterableTools.cloneLive(this.persistentTypes);
+	public Iterable<OrmPersistentType> getPersistentTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+										this.getManagedTypes(), 
+										ORM_PERSISTENT_TYPE_FILTER));
 	}
-
-	public int getPersistentTypesSize() {
-		return this.persistentTypes.size();
-	}
-
-	public OrmPersistentType getPersistentType(String className) {
-		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
-			if (ormPersistentType.isFor(className)) {
-				return ormPersistentType;
+		
+	protected static final Filter<OrmManagedType> ORM_PERSISTENT_TYPE_FILTER =
+		new Filter<OrmManagedType>() {
+			public boolean accept(OrmManagedType mt) {
+				return  mt.getType() == OrmPersistentType.class;
 			}
+		};
+
+	public OrmPersistentType getPersistentType(String typeName) {
+		ManagedType mt = this.getManagedType(typeName);
+		if (mt != null && (mt.getType() == OrmPersistentType.class)) {
+			return (OrmPersistentType) mt;
 		}
 		return null;
 	}
@@ -656,26 +698,26 @@ public abstract class AbstractEntityMappings
         return (className == null) ? null : PRIMITIVE_CLASSES.get(className); 
     }
 
+	public OrmPersistentType addPersistentType(String mappingKey, String className) {
+		OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
+		XmlTypeMapping xmlManagedType = md.buildResourceMapping(this.getResourceNodeFactory());
+		return (OrmPersistentType) this.addManagedType(xmlManagedType, className);
+	}
+
 	/**
-	 * We have to calculate the new persistent type's index.
+	 * We have to calculate the new managed type's index.
 	 * We will use the type's short name if the entity mappings's
 	 * package is the same as the type's package.
 	 */
-	public OrmPersistentType addPersistentType(String mappingKey, String className) {
-		OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
-		XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceNodeFactory());
-
+	protected OrmManagedType addManagedType(XmlManagedType xmlManagedType, String className) {
 		// adds short name if package name is relevant
-		className = this.normalizeClassName(className);
-		xmlTypeMapping.setClassName(className);
+		xmlManagedType.setClassName(this.normalizeClassName(className));
 
-		OrmPersistentType persistentType = this.buildPersistentType(xmlTypeMapping);
-		int index = this.calculateInsertionIndex(persistentType);
-		this.addItemToList(index, persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
-
-		persistentType.getMapping().addXmlTypeMappingTo(this.xmlEntityMappings);
-
-		return persistentType;
+		OrmManagedType managedType = this.buildManagedType(xmlManagedType);
+		int index = this.calculateInsertionIndex(managedType);
+		this.addItemToList(index, managedType, this.managedTypes, MANAGED_TYPES_LIST);
+		managedType.addXmlManagedTypeTo(this.xmlEntityMappings);
+		return managedType;
 	}
 
 	//TODO add API - added this post-M6
@@ -704,7 +746,7 @@ public abstract class AbstractEntityMappings
 		}
 		List<XmlMappedSuperclass> mappedSuperclasses = new ArrayList<XmlMappedSuperclass>(addedItems.size());
 		for (OrmPersistentType persistentType : addedItems) {
-			mappedSuperclasses.add((XmlMappedSuperclass) persistentType.getMapping().getXmlTypeMapping());	
+			mappedSuperclasses.add((XmlMappedSuperclass) persistentType.getXmlManagedType());	
 		}
 		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
 		//use addAll to minimize change notifications to our model
@@ -721,7 +763,7 @@ public abstract class AbstractEntityMappings
 		}
 		List<XmlEntity> entities = new ArrayList<XmlEntity>(addedItems.size());
 		for (OrmPersistentType persistentType : addedItems) {
-			entities.add((XmlEntity) persistentType.getMapping().getXmlTypeMapping());	
+			entities.add((XmlEntity) persistentType.getXmlManagedType());	
 		}
 		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
 		//use addAll to minimize change notifications to our model
@@ -738,7 +780,7 @@ public abstract class AbstractEntityMappings
 		}
 		List<XmlEmbeddable> embeddables = new ArrayList<XmlEmbeddable>(addedItems.size());
 		for (OrmPersistentType persistentType : addedItems) {
-			embeddables.add((XmlEmbeddable) persistentType.getMapping().getXmlTypeMapping());	
+			embeddables.add((XmlEmbeddable) persistentType.getXmlManagedType());	
 		}
 		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL);
 		//use addAll to minimize change notifications to our model
@@ -760,7 +802,7 @@ public abstract class AbstractEntityMappings
 				className = this.normalizeClassName(className);
 				xmlTypeMapping.setClassName(className);
 
-				addedItems.add(this.buildPersistentType(xmlTypeMapping));
+				addedItems.add((OrmPersistentType) this.buildManagedType(xmlTypeMapping));
 			}
 		}
 		if (addedItems.size() == 0 || sm.isCanceled()) {
@@ -770,7 +812,7 @@ public abstract class AbstractEntityMappings
 
 		int index = this.calculateInsertionIndex(addedItems.get(0));
 		sm.subTask(JptJpaCoreMessages.MAKE_PERSISTENT_UPDATING_JPA_MODEL);
-		this.addItemsToList(index, addedItems, this.persistentTypes, PERSISTENT_TYPES_LIST);
+		this.addItemsToList(index, addedItems, this.managedTypes, MANAGED_TYPES_LIST);
 		sm.worked(9);
 		return addedItems;
 	}
@@ -787,19 +829,20 @@ public abstract class AbstractEntityMappings
 						className;
 	}
 
-	protected OrmPersistentType buildPersistentType(XmlTypeMapping xmlTypeMapping) {
-		return this.getContextNodeFactory().buildOrmPersistentType(this, xmlTypeMapping);
+	protected OrmManagedType buildManagedType(XmlManagedType xmlManagedType) {
+		OrmManagedTypeDefinition md = this.getMappingFileDefinition().getManagedTypeDefinition(xmlManagedType.getType());
+		return md.buildContextManagedType(this, xmlManagedType, this.getContextNodeFactory());
 	}
 
-	protected int calculateInsertionIndex(OrmPersistentType ormPersistentType) {
-		return ListTools.insertionIndexOf(this.persistentTypes, ormPersistentType, MAPPING_COMPARATOR);
+	protected int calculateInsertionIndex(OrmManagedType ormManagedType) {
+		return ListTools.insertionIndexOf(this.managedTypes, ormManagedType, MAPPING_COMPARATOR);
 	}
 
-	protected static final Comparator<OrmPersistentType> MAPPING_COMPARATOR =
-		new Comparator<OrmPersistentType>() {
-			public int compare(OrmPersistentType o1, OrmPersistentType o2) {
-				int o1Sequence = o1.getMapping().getXmlSequence();
-				int o2Sequence = o2.getMapping().getXmlSequence();
+	protected static final Comparator<OrmManagedType> MAPPING_COMPARATOR =
+		new Comparator<OrmManagedType>() {
+			public int compare(OrmManagedType o1, OrmManagedType o2) {
+				int o1Sequence = o1.getXmlSequence();
+				int o2Sequence = o2.getXmlSequence();
 				if (o1Sequence < o2Sequence) {
 					return -1;
 				}
@@ -810,74 +853,94 @@ public abstract class AbstractEntityMappings
 			}
 		};
 
-	public void removePersistentType(int index) {
-		OrmPersistentType persistentType = this.removePersistentType_(index);
-		persistentType.getMapping().removeXmlTypeMappingFrom(this.xmlEntityMappings);
+	public void removeManagedType(int index) {
+		OrmManagedType managedType = this.removeManagedType_(index);
+		managedType.removeXmlManagedTypeFrom(this.xmlEntityMappings);
 	}
 
 	/**
-	 * dispose and return the persistent type
+	 * dispose and return the managed type
 	 */
-	protected OrmPersistentType removePersistentType_(int index) {
-		OrmPersistentType persistentType = this.removeItemFromList(index, this.persistentTypes, PERSISTENT_TYPES_LIST);
-		persistentType.dispose();
-		return persistentType;
+	protected OrmManagedType removeManagedType_(int index) {
+		OrmManagedType managedType = this.removeItemFromList(index, this.managedTypes, MANAGED_TYPES_LIST);
+		managedType.dispose();
+		return managedType;
 	}
 
-	public void removePersistentType(OrmPersistentType persistentType) {
-		this.removePersistentType(this.persistentTypes.indexOf(persistentType));
+	public void removeManagedType(OrmManagedType managedType) {
+		this.removeManagedType(this.managedTypes.indexOf(managedType));
 	}
 
-	protected void initializePersistentTypes() {
-		for (XmlTypeMapping xmlTypeMapping : this.getXmlTypeMappings()) {
-			this.persistentTypes.add(this.buildPersistentType(xmlTypeMapping));
+	protected void initializeManagedTypes() {
+		for (XmlManagedType xmlManagedType : this.getXmlManagedTypes()) {
+			this.managedTypes.add(this.buildManagedType(xmlManagedType));
 		}
 	}
 
-	protected void syncPersistentTypes() {
-		ContextContainerTools.synchronizeWithResourceModel(this.persistentTypeContainerAdapter);
+	protected void syncManagedTypes() {
+		ContextContainerTools.synchronizeWithResourceModel(this.managedTypeContainerAdapter);
 	}
 
-	protected Iterable<XmlTypeMapping> getXmlTypeMappings() {
+	protected Iterable<XmlManagedType> getXmlManagedTypes() {
 		// clone to reduce chance of concurrency problems
-		return IterableTools.cloneLive(this.xmlEntityMappings.getTypeMappings());
+		return IterableTools.cloneLive(this.getXmlManagedTypes_());
 	}
 
-	protected void movePersistentType_(int index, OrmPersistentType persistentType) {
-		this.moveItemInList(index, persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+	// ********** managed types **********
+
+	protected List<XmlManagedType> getXmlManagedTypes_() {
+		// convert lists to arrays to *reduce* risk of ConcurrentModificationException
+		ArrayList<XmlManagedType> managedTypes = new ArrayList<XmlManagedType>();
+		CollectionTools.addAll(managedTypes, this.xmlEntityMappings.getMappedSuperclasses().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		CollectionTools.addAll(managedTypes, this.xmlEntityMappings.getEntities().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		CollectionTools.addAll(managedTypes, this.xmlEntityMappings.getEmbeddables().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		if (this.isJpa2_1Compatible()) {
+			CollectionTools.addAll(managedTypes, this.getXml2_1Converters().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
+		}
+		return managedTypes;
 	}
 
-	protected void addPersistentType_(int index, XmlTypeMapping xmlTypeMapping) {
-		this.addItemToList(index, this.buildPersistentType(xmlTypeMapping), this.persistentTypes, PERSISTENT_TYPES_LIST);
+	protected List<XmlConverter_2_1> getXml2_1Converters() {
+		return this.xmlEntityMappings.getConverters();
 	}
 
-	protected void removePersistentType_(OrmPersistentType persistentType) {
-		this.removePersistentType_(this.persistentTypes.indexOf(persistentType));
+	protected static final XmlManagedType[] EMPTY_XML_MANAGED_TYPE_ARRAY = new XmlManagedType[0];
+
+	protected void moveManagedType_(int index, OrmManagedType managedType) {
+		this.moveItemInList(index, managedType, this.managedTypes, MANAGED_TYPES_LIST);
+	}
+
+	protected void addManagedType_(int index, XmlManagedType xmlManagedType) {
+		this.addItemToList(index, this.buildManagedType(xmlManagedType), this.managedTypes, MANAGED_TYPES_LIST);
+	}
+
+	protected void removeManagedType_(OrmManagedType managedType) {
+		this.removeManagedType_(this.managedTypes.indexOf(managedType));
 	}
 
 	/**
-	 * persistent type container adapter
+	 * managed type container adapter
 	 */
-	protected class PersistentTypeContainerAdapter
-		implements ContextContainerTools.Adapter<OrmPersistentType, XmlTypeMapping>
+	protected class ManagedTypeContainerAdapter
+		implements ContextContainerTools.Adapter<OrmManagedType, XmlManagedType>
 	{
-		public Iterable<OrmPersistentType> getContextElements() {
-			return AbstractEntityMappings.this.getPersistentTypes();
+		public Iterable<OrmManagedType> getContextElements() {
+			return AbstractEntityMappings.this.getManagedTypes();
 		}
-		public Iterable<XmlTypeMapping> getResourceElements() {
-			return AbstractEntityMappings.this.getXmlTypeMappings();
+		public Iterable<XmlManagedType> getResourceElements() {
+			return AbstractEntityMappings.this.getXmlManagedTypes();
 		}
-		public XmlTypeMapping getResourceElement(OrmPersistentType contextElement) {
-			return contextElement.getMapping().getXmlTypeMapping();
+		public XmlManagedType getResourceElement(OrmManagedType contextElement) {
+			return contextElement.getXmlManagedType();
 		}
-		public void moveContextElement(int index, OrmPersistentType element) {
-			AbstractEntityMappings.this.movePersistentType_(index, element);
+		public void moveContextElement(int index, OrmManagedType element) {
+			AbstractEntityMappings.this.moveManagedType_(index, element);
 		}
-		public void addContextElement(int index, XmlTypeMapping resourceElement) {
-			AbstractEntityMappings.this.addPersistentType_(index, resourceElement);
+		public void addContextElement(int index, XmlManagedType resourceElement) {
+			AbstractEntityMappings.this.addManagedType_(index, resourceElement);
 		}
-		public void removeContextElement(OrmPersistentType element) {
-			AbstractEntityMappings.this.removePersistentType_(element);
+		public void removeContextElement(OrmManagedType element) {
+			AbstractEntityMappings.this.removeManagedType_(element);
 		}
 	}
 
@@ -1048,6 +1111,45 @@ public abstract class AbstractEntityMappings
 	}
 
 
+	// ********** converter types **********
+
+	public Iterable<OrmConverterType2_1> getConverterTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+										this.getManagedTypes(), 
+										ORM_CONVERTER_TYPE_FILTER));
+	}
+
+	protected static final Filter<OrmManagedType> ORM_CONVERTER_TYPE_FILTER =
+		new Filter<OrmManagedType>() {
+			public boolean accept(OrmManagedType mt) {
+				return  mt.getType() == OrmConverterType2_1.class;
+			}
+		};
+
+	public OrmConverterType2_1 getConverterType(String typeName) {
+		ManagedType mt = this.getManagedType(typeName);
+		if (mt != null && (mt.getType() == OrmPersistentType.class)) {
+			return (OrmConverterType2_1) mt;
+		}
+		return null;
+	}
+
+	public boolean containsConverterType(String typeName) {
+		return this.getConverterType(typeName) != null;
+	}
+
+	public OrmConverterType2_1 addConverterType(String className) {
+		return (OrmConverterType2_1) this.addManagedType(this.buildXmlConverter(), className);
+	}
+
+	protected XmlConverter_2_1 buildXmlConverter() {
+		return EmfTools.create(
+			this.getResourceNodeFactory(), 
+			OrmPackage.eINSTANCE.getXmlConverter(), 
+			XmlConverter_2_1.class);
+	}
+
+
 	// ********** query container **********
 
 	public OrmQueryContainer getQueryContainer() {
@@ -1103,8 +1205,8 @@ public abstract class AbstractEntityMappings
 		this.validateVersion(messages);
 		// generators are validated in the persistence unit
 		this.queryContainer.validate(messages, reporter);
-		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
-			this.validatePersistentType(ormPersistentType, messages, reporter);
+		for (OrmManagedType managedType : this.getManagedTypes()) {
+			this.validateManagedType(managedType, messages, reporter);
 		}
 	}
 
@@ -1132,9 +1234,9 @@ public abstract class AbstractEntityMappings
 		return XmlEntityMappings.CONTENT_TYPE;
 	}
 
-	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages, IReporter reporter) {
+	protected void validateManagedType(OrmManagedType managedType, List<IMessage> messages, IReporter reporter) {
 		try {
-			persistentType.validate(messages, reporter);
+			managedType.validate(messages, reporter);
 		} catch (Throwable exception) {
 			JptJpaCorePlugin.instance().logError(exception);
 		}
@@ -1144,26 +1246,26 @@ public abstract class AbstractEntityMappings
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
-		return IterableTools.children(this.getPersistentTypes(), new DeleteTypeRefactoringParticipant.DeleteTypeEditsTransformer(type));
+		return IterableTools.children(this.getManagedTypes(), new DeleteTypeRefactoringParticipant.DeleteTypeEditsTransformer(type));
 	}
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return IterableTools.children(this.getPersistentTypes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
+		return IterableTools.children(this.getManagedTypes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return IterableTools.children(this.getPersistentTypes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
+		return IterableTools.children(this.getManagedTypes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return IterableTools.concatenate(
-				this.createPersistentTypeRenamePackageEdits(originalPackage, newName),
+				this.createManagedTypeRenamePackageEdits(originalPackage, newName),
 				this.createRenamePackageEdit(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createPersistentTypeRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return IterableTools.children(this.getPersistentTypes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
+	protected Iterable<ReplaceEdit> createManagedTypeRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return IterableTools.children(this.getManagedTypes(), new TypeRefactoringParticipant.RenamePackageEditsTransformer(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createRenamePackageEdit(IPackageFragment originalPackage, String newName) {
@@ -1203,8 +1305,8 @@ public abstract class AbstractEntityMappings
 		if (this.packageTouches(pos)) {
 			return this.getCandidatePackages();
 		}
-		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
-			result = persistentType.getCompletionProposals(pos);
+		for (OrmManagedType managedType : this.getManagedTypes()) {
+			result = managedType.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

@@ -31,6 +31,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -270,7 +271,7 @@ public class VirtualJavaPersistentType
 		throw new UnsupportedOperationException();
 	}
 
-	public Class<? extends JpaStructureNode> getType() {
+	public Class<? extends JavaPersistentType> getType() {
 		throw new UnsupportedOperationException();
 	}
 

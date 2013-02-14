@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -370,7 +370,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getEmbeddables().add(embeddable);
 		embeddable.setClassName("model.Foo");
 		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
-		assertEquals("model.Foo", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals("model.Foo", getEntityMappings().getPersistentTypes().iterator().next().getClass_());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -381,7 +381,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getEntities().add(entity);
 		entity.setClassName("model.Foo2");
 		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
-		assertEquals("model.Foo2", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals("model.Foo2", getEntityMappings().getPersistentTypes().iterator().next().getClass_());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -392,7 +392,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
 		mappedSuperclass.setClassName("model.Foo3");
 		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
-		assertEquals("model.Foo3", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals("model.Foo3", getEntityMappings().getPersistentTypes().iterator().next().getClass_());
 		assertFalse(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -409,7 +409,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		//add embeddable in the context model, verify resource model modified
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
-		assertEquals("model.Foo", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals("model.Foo", getEntityMappings().getPersistentTypes().iterator().next().getClass_());
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getEntityMappings().getPersistentTypes().iterator().next().getMapping().getKey());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
@@ -419,7 +419,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		//add entity in the context model, verify resource model modified
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
-		assertEquals("model.Foo2", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals("model.Foo2", getEntityMappings().getPersistentTypes().iterator().next().getClass_());
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getEntityMappings().getPersistentTypes().iterator().next().getMapping().getKey());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
@@ -429,7 +429,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		//add mapped-superclass in the context model, verify resource model modified
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
-		assertEquals("model.Foo3", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals("model.Foo3", getEntityMappings().getPersistentTypes().iterator().next().getClass_());
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, getEntityMappings().getPersistentTypes().iterator().next().getMapping().getKey());
 		assertFalse(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
@@ -448,17 +448,17 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		
 		//remove ormPersistentType from the context model, verify resource model modified
-		getEntityMappings().removePersistentType(1);
+		getEntityMappings().removeManagedType(1);
 		assertFalse(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
 		
-		getEntityMappings().removePersistentType(1);
+		getEntityMappings().removeManagedType(1);
 		assertFalse(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertTrue(getXmlEntityMappings().getEmbeddables().isEmpty());
 		
-		getEntityMappings().removePersistentType(0);
+		getEntityMappings().removeManagedType(0);
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertTrue(getXmlEntityMappings().getEmbeddables().isEmpty());

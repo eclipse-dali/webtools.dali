@@ -80,6 +80,7 @@ import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -828,31 +829,38 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * Return only the types of those valid <em>mapped</em> (i.e. annotated with
-	 * <code>@Entity</code>, <code>@Embeddable</code>, etc.) Java resource
-	 * types that are directly part of the JPA project, ignoring
+	 * Return only the types of those valid <em>managed</em> (i.e. annotated with
+	 * <code>@Entity</code>, <code>@Embeddable</code>, <code>@Converter</code>etc.) 
+	 * Java resource types that are directly part of the JPA project, ignoring
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
-	public Iterable<JavaResourceAbstractType> getMappedJavaSourceTypes() {
-		return getInternalMappedSourceJavaResourceTypes();
+	public Iterable<JavaResourceAbstractType> getPotentialJavaSourceTypes() {
+		return getInternalPotentialSourceJavaResourceTypes();
 	}
 
 	/**
-	 * Return only those valid <em>mapped</em> (i.e. annotated with
-	 * <code>@Entity</code>, <code>@Embeddable</code>, etc.) Java resource
-	 * persistent types that are directly part of the JPA project, ignoring
+	 * Return only those valid <em>managed</em> (i.e. annotated with
+	 * <code>@Entity</code>, <code>@Embeddable</code>, <code>@Converter</code>etc.) Java resource
+	 * types that are directly part of the JPA project, ignoring
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
-	protected Iterable<JavaResourceAbstractType> getInternalMappedSourceJavaResourceTypes() {
-		Iterable<String> typeMappingAnnotationNames = this.getTypeMappingAnnotationNames();
+	protected Iterable<JavaResourceAbstractType> getInternalPotentialSourceJavaResourceTypes() {
+		Iterable<String> annotationNames = this.getManagedTypeAnnotationNames();
 		return IterableTools.filter(
 				this.getAnnotatedJavaSourceTypes(),
-				new JavaResourceAnnotatedElement.IsAnnotatedWithAnyOf(typeMappingAnnotationNames)
+				new JavaResourceAnnotatedElement.IsAnnotatedWithAnyOf(annotationNames)
 			);
 	}
 
 	public Iterable<String> getTypeMappingAnnotationNames() {
 		return IterableTools.transform(this.getJpaPlatform().getJavaTypeMappingDefinitions(), JavaTypeMappingDefinition.ANNOTATION_NAME_TRANSFORMER);
+	}
+
+	public Iterable<String> getManagedTypeAnnotationNames() {
+		return IterableTools.concatenate(
+				IterableTools.transform(
+					this.getJpaPlatform().getJavaManagedTypeDefinitions(), 
+					new JavaManagedTypeDefinition.AnnotationNameTransformer(this.getJpaProject())));		
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2009 Oracle. 
+ *  Copyright (c) 2007, 2013 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -29,7 +29,7 @@ public class RemovePersistentClassHandler extends AbstractHandler
 		// only applies for multiply selected OrmPersistentType objects in a tree
 		for (Iterator<OrmPersistentType> stream = selection.iterator(); stream.hasNext(); ) {
 			OrmPersistentType persistentType = stream.next();
-			((EntityMappings) persistentType.getMappingFileRoot()).removePersistentType(persistentType);
+			((EntityMappings) persistentType.getMappingFileRoot()).removeManagedType(persistentType);
 		}
 		
 		return null;

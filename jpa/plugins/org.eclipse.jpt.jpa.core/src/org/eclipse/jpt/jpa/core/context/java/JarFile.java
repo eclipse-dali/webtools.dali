@@ -34,19 +34,19 @@ public interface JarFile
 	JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot();
 
 
-	// ********** Java persistent types **********
+	// ********** Java managed types **********
 
 	/**
-	 * Return the JAR file's Java persistent types.
+	 * Return the JAR file's Java managed types.
 	 * Return only the types that are annotated with JPA annotations.
 	 */
-	Iterable<JavaPersistentType> getJavaPersistentTypes();
-		String JAVA_PERSISTENT_TYPES_COLLECTION = "javaPersistentTypes"; //$NON-NLS-1$
+	Iterable<JavaManagedType> getJavaManagedTypes();
+		String JAVA_MANAGED_TYPES_COLLECTION = "javaManagedTypes"; //$NON-NLS-1$
 
 	/**
-	 * Return the size of the JAR file's Java persistent types.
+	 * Return the size of the JAR file's Java managed types.
 	 */
-	int getJavaPersistentTypesSize();
+	int getJavaManagedTypesSize();
 
 
 	// ********** misc **********

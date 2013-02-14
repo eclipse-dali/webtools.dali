@@ -28,9 +28,7 @@ import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
@@ -45,6 +43,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -58,15 +57,13 @@ import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
-import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -81,14 +78,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class SpecifiedOrmPersistentType
-		extends AbstractOrmXmlContextNode
+		extends AbstractOrmManagedType
 		implements OrmPersistentType, PersistentType2_0 {
 	
 	protected OrmTypeMapping mapping;  // never null
-
-	protected String name;
-
-	protected JavaPersistentType javaPersistentType;
 
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
@@ -108,10 +101,8 @@ public abstract class SpecifiedOrmPersistentType
 
 
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
-		super(parent);
+		super(parent, xmlTypeMapping);
 		this.mapping = this.buildMapping(xmlTypeMapping);
-		this.name = this.buildName(); 
-		// 'javaPersistentType' is resolved in the update
 		this.specifiedAccess = this.buildSpecifiedAccess();
 		this.defaultAccess = AccessType.FIELD;  // keep this non-null
 		this.initializeSpecifiedAttributes();
@@ -126,8 +117,6 @@ public abstract class SpecifiedOrmPersistentType
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.mapping.synchronizeWithResourceModel();
-		this.setName(this.buildName());
-		this.syncJavaPersistentType();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncSpecifiedAttributes();
 		this.synchronizeNodesWithResourceModel(this.getDefaultAttributes());
@@ -137,7 +126,6 @@ public abstract class SpecifiedOrmPersistentType
 	public void update() {
 		super.update();
 		this.mapping.update();
-		this.updateJavaPersistentType();
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.updateNodes(this.getSpecifiedAttributes());
 		this.updateDefaultAttributes();
@@ -146,10 +134,9 @@ public abstract class SpecifiedOrmPersistentType
 		this.updateChildren();
 	}
 
-	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
-		}
+	@Override
+	public XmlTypeMapping getXmlManagedType() {
+		return (XmlTypeMapping) super.getXmlManagedType();
 	}
 
 
@@ -172,8 +159,10 @@ public abstract class SpecifiedOrmPersistentType
 	protected void setMappingKey_(String mappingKey) {
 		OrmTypeMapping old = this.mapping;
 		OrmTypeMappingDefinition mappingDefinition = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
-		XmlTypeMapping xmlTypeMapping = mappingDefinition.buildResourceMapping(this.getResourceNodeFactory());
-		this.mapping = this.buildMapping(xmlTypeMapping);
+		String className = this.getClass_();
+		this.xmlManagedType = mappingDefinition.buildResourceMapping(this.getResourceNodeFactory());
+		this.xmlManagedType.setClassName(className);
+		this.mapping = this.buildMapping(this.getXmlTypeMapping());
 		this.getEntityMappings().changeMapping(this, old, this.mapping);
 		this.firePropertyChanged(MAPPING_PROPERTY, old, this.mapping);
 	}
@@ -184,7 +173,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected XmlTypeMapping getXmlTypeMapping() {
-		return this.mapping.getXmlTypeMapping();
+		return this.getXmlManagedType();
 	}
 
 	public boolean isMapped() {
@@ -192,115 +181,14 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 
-	// ********** name **********
-
-	public String getName() {
-		return this.name;
-	}
-
-	protected void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		if (this.firePropertyChanged(NAME_PROPERTY, old, name)) {
-			// clear out the Java persistent type here, it will be rebuilt during "update"
-			if (this.javaPersistentType != null) {
-				this.setJavaPersistentType(null);
-			}
-		}
-	}
-
-	protected String buildName() {
-		return this.getEntityMappings().qualify(this.getMappingClassName());		
-	}
-
-	public String getSimpleName(){
-		String className = this.getName();
-		return StringTools.isBlank(className) ? null : ClassNameTools.simpleName(className);
-	}
-
-	public String getTypeQualifiedName() {
-		String className = this.getMappingClassName();
-		if (className == null) {
-			return null;
-		}
-		int lastPeriod = className.lastIndexOf('.');
-		className = (lastPeriod == -1) ? className : className.substring(lastPeriod + 1);
-		className = className.replace('$', '.');
-		return className;
-	}
-
-	protected String getMappingClassName() {
-		return this.mapping.getClass_();
-	}
-
 	// ********** Java persistent type **********
 
 	public JavaPersistentType getJavaPersistentType() {
-		return this.javaPersistentType;
+		return (JavaPersistentType) super.getJavaManagedType();
 	}
 
-	protected void setJavaPersistentType(JavaPersistentType javaPersistentType) {
-		JavaPersistentType old = this.javaPersistentType;
-		this.javaPersistentType = javaPersistentType;
-		this.firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, old, javaPersistentType);
-	}
-
-	/**
-	 * If the persistent type's name changes during <em>update</em>, 
-	 * the Java persistent type will be cleared out in
-	 * {@link #setName(String)}. If we get here and
-	 * the Java persistent type is present, we can
-	 * <em>sync</em> it. In some circumstances it will be obsolete
-	 * since the name is changed during update (the mapping class name or
-	 * the entity mapping's package affect the name)
-	 *
-	 * @see #updateJavaPersistentType()
-	 */
-	protected void syncJavaPersistentType() {
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.synchronizeWithResourceModel();
-		}
-	}
-
-	/**
-	 * @see #syncJavaPersistentType()
-	 */
-	protected void updateJavaPersistentType() {
-		if (this.getName() == null) {
-			if (this.javaPersistentType != null) {
-				this.setJavaPersistentType(null);
-			}			
-		}
-		else {
-			JavaResourceType resourceType = this.resolveJavaResourceType();
-			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
-			}
-			else {
-				// bug 379051 using == here because it is possible that the names are the same, 
-				// but the location has changed: the java resource type has moved from "external" 
-				// to part of the jpa project's jpa files. 
-				if (this.javaPersistentType.getJavaResourceType() == resourceType) {
-					this.javaPersistentType.update();
-				} else {
-					this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
-				}
-			}
-		}
-	}
-
-	/**
-	 * Return null it's an enum; don't build a JavaPersistentType
-	 * @see #updateJavaPersistentType()
-	 */
-	protected JavaResourceType resolveJavaResourceType() {
-		if (this.name == null) {
-			return null;
-		}
-		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.name, AstNodeType.TYPE);
-	}
-
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
+	@Override
+	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt) {
 		return jrt != null ? this.getJpaFactory().buildJavaPersistentType(this, jrt) : null;
 	}
 
@@ -342,9 +230,9 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected AccessType buildDefaultAccess() {
 		if ( ! this.mapping.isMetadataComplete()) {
-			if (this.javaPersistentType != null) {
+			if (this.getJavaPersistentType() != null) {
 				if (this.javaPersistentTypeHasSpecifiedAccess()) {
-					return this.javaPersistentType.getAccess();
+					return this.getJavaPersistentType().getAccess();
 				}
 			}
 			if (this.superPersistentType != null) {
@@ -359,8 +247,8 @@ public abstract class SpecifiedOrmPersistentType
 	 * pre-condition: {@link #javaPersistentType} is not <code>null</code>
 	 */
 	protected boolean javaPersistentTypeHasSpecifiedAccess() {
-		return (this.javaPersistentType.getSpecifiedAccess() != null) ||
-				this.javaPersistentType.hasAnyAnnotatedAttributes();
+		return (this.getJavaPersistentType().getSpecifiedAccess() != null) ||
+				this.getJavaPersistentType().hasAnyAnnotatedAttributes();
 	}
 
 	public AccessType getOwnerOverrideAccess() {
@@ -419,7 +307,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 	
 	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
-		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getAttributeTypeBinding(attribute);
+		return (this.getJavaPersistentType() == null) ? null : this.getJavaPersistentType().getAttributeTypeBinding(attribute);
 	}
 	
 	
@@ -908,10 +796,6 @@ public abstract class SpecifiedOrmPersistentType
 		};
 	}
 
-	protected JavaResourceType getJavaResourceType() {
-		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getJavaResourceType();
-	}
-
 	/**
 	 * Return the access type that determines which Java attributes are to be
 	 * used for the <code>orm.xml</code> type's <em>default</em> attributes.
@@ -923,7 +807,7 @@ public abstract class SpecifiedOrmPersistentType
 		if (this.mapping.isMetadataComplete()) {
 			return this.defaultAccess;
 		}
-		AccessType javaAccess = this.javaPersistentType == null ? null : this.javaPersistentType.getSpecifiedAccess();
+		AccessType javaAccess = this.getJavaPersistentType() == null ? null : this.getJavaPersistentType().getSpecifiedAccess();
 		return (javaAccess != null) ? javaAccess : this.defaultAccess;
 	}
 
@@ -1023,7 +907,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected PersistentType buildSuperPersistentType_() {
-		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getSuperPersistentType();
+		return (this.getJavaPersistentType() == null) ? null : this.getJavaPersistentType().getSuperPersistentType();
 	}
 
 
@@ -1060,8 +944,8 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected String buildDeclaringTypeName_() {
-		return (this.javaPersistentType == null) ?
-				null : ((PersistentType2_0) this.javaPersistentType).getDeclaringTypeName();
+		return (this.getJavaPersistentType() == null) ?
+				null : ((PersistentType2_0) this.getJavaPersistentType()).getDeclaringTypeName();
 	}
 
 
@@ -1074,7 +958,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public IFile getMetamodelFile() {
-		return (this.javaPersistentType == null) ? null : this.metamodelSynchronizer.getFile();
+		return (this.getJavaPersistentType() == null) ? null : this.metamodelSynchronizer.getFile();
 	}
 
 	public void initializeMetamodel() {
@@ -1090,13 +974,13 @@ public abstract class SpecifiedOrmPersistentType
 	 * because 1.0 <code>orm.xml</code> files can be referenced from 2.0 persistence.xml files.
 	 */
 	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
-		if (this.javaPersistentType != null) {
+		if (this.getJavaPersistentType() != null) {
 			this.metamodelSynchronizer.synchronize(memberTypeTree);
 		}
 	}
 
 	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
-		if (this.javaPersistentType != null) {
+		if (this.getJavaPersistentType() != null) {
 			this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 		}
 	}
@@ -1110,6 +994,21 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 
+	// ********** OrmManagedType implementation **********
+
+	public int getXmlSequence() {
+		return this.getMapping().getXmlSequence();
+	}
+
+	public void addXmlManagedTypeTo(XmlEntityMappings entityMappings) {
+		this.getMapping().addXmlTypeMappingTo(entityMappings);
+	}
+
+	public void removeXmlManagedTypeFrom(XmlEntityMappings entityMappings) {
+		this.getMapping().removeXmlTypeMappingFrom(entityMappings);
+	}
+
+
 	// ********** JpaStructureNode implementation **********
 
 	public ContextType getContextType() {
@@ -1118,6 +1017,12 @@ public abstract class SpecifiedOrmPersistentType
 
 	public Class<OrmPersistentType> getType() {
 		return OrmPersistentType.class;
+	}
+
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.getJavaPersistentType() != null) {
+			this.getJavaPersistentType().gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		}
 	}
 
 	protected void initializeChildren() {
@@ -1139,12 +1044,9 @@ public abstract class SpecifiedOrmPersistentType
 		return this.children.size();
 	}
 
-	public TextRange getFullTextRange() {
-		return this.getXmlTypeMapping().getFullTextRange();
-	}
 
-	public boolean containsOffset(int textOffset) {
-		return this.getXmlTypeMapping().containsOffset(textOffset);
+	public TextRange getSelectionTextRange() {
+		return this.mapping.getSelectionTextRange();
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
@@ -1154,10 +1056,6 @@ public abstract class SpecifiedOrmPersistentType
 			}
 		}
 		return this;
-	}
-
-	public TextRange getSelectionTextRange() {
-		return this.mapping.getSelectionTextRange();
 	}
 
 	public void dispose() {
@@ -1206,15 +1104,11 @@ public abstract class SpecifiedOrmPersistentType
 
 	//*********** refactoring ***********
 
-	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
-		return this.isFor(type.getFullyQualifiedName('.')) ?
-				IterableTools.singletonIterable(this.mapping.createDeleteEdit()) :
-				IterableTools.<DeleteEdit>emptyIterable();
-	}
-
+	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return IterableTools.concatenate(
+				super.createRenameTypeEdits(originalType, newName),
 				this.mapping.createRenameTypeEdits(originalType, newName),
 				this.createSpecifiedAttributesRenameTypeEdits(originalType, newName)
 			);
@@ -1224,9 +1118,11 @@ public abstract class SpecifiedOrmPersistentType
 		return IterableTools.children(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.RenameTypeEditsTransformer(originalType, newName));
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return IterableTools.concatenate(
+				super.createMoveTypeEdits(originalType, newPackage),
 				this.mapping.createMoveTypeEdits(originalType, newPackage),
 				this.createSpecifiedAttributesMoveTypeEdits(originalType, newPackage)
 			);
@@ -1236,9 +1132,11 @@ public abstract class SpecifiedOrmPersistentType
 		return IterableTools.children(this.getSpecifiedAttributes(), new TypeRefactoringParticipant.MoveTypeEditsTransformer(originalType, newPackage));
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return IterableTools.concatenate(
+				super.createRenamePackageEdits(originalPackage, newName),
 				this.mapping.createRenamePackageEdits(originalPackage, newName),
 				this.createSpecifiedAttributesRenamePackageEdits(originalPackage, newName)
 			);
@@ -1254,23 +1152,8 @@ public abstract class SpecifiedOrmPersistentType
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateClass(messages);
 		this.validateMapping(messages, reporter);
 		this.validateAttributes(messages, reporter);
-	}
-
-	protected void validateClass(List<IMessage> messages) {
-		if (this.javaPersistentType == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
-					new String[] {this.getName()},
-					this,
-					this.mapping.getClassTextRange()
-				)
-			);
-		}
 	}
 
 	protected void validateMapping(List<IMessage> messages, IReporter reporter) {
@@ -1295,10 +1178,6 @@ public abstract class SpecifiedOrmPersistentType
 		}
 	}
 
-	public TextRange getValidationTextRange() {
-		return this.mapping.getValidationTextRange();
-	}
-
 	// ********** completion proposals **********
 	
 	@Override
@@ -1320,48 +1199,10 @@ public abstract class SpecifiedOrmPersistentType
 		return null;
 	}
 
+
 	// ********** misc **********
 
-	@Override
-	public EntityMappings getParent() {
-		return (EntityMappings) super.getParent();
-	}
-
-	protected EntityMappings getEntityMappings() {
-		return this.getParent();
-	}
-
-	public String getDefaultPackage() {
-		return this.getEntityMappings().getDefaultPersistentTypePackage();
-	}
-
-	public boolean isFor(String typeName) {
-		return ObjectTools.equals(typeName, this.getName());
-	}
-
-	public boolean isIn(IPackageFragment packageFragment) {
-		String packageName = this.getPackageName();
-		if (ObjectTools.equals(packageName, packageFragment.getElementName())) {
-			return true;
-		}
-		return false;
-	}
-
-	protected String getPackageName() {
-		String className = this.getMappingClassName();
-		if (className == null) {
-			return null;
-		}
-		int lastPeriod = className.lastIndexOf('.');
-		return (lastPeriod == -1) ? this.getDefaultPackage() : className.substring(0, lastPeriod);
-	}
-
 	public PersistentType getOverriddenPersistentType() {
-		return this.mapping.isMetadataComplete() ? null : this.javaPersistentType;
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
+		return this.mapping.isMetadataComplete() ? null : this.getJavaPersistentType();
 	}
 }

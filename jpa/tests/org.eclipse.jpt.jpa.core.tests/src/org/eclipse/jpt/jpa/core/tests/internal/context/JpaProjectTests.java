@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,76 +9,69 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.context;
 
-import junit.framework.TestCase;
-import org.eclipse.core.resources.ResourcesPlugin;
+import java.util.Iterator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
 public class JpaProjectTests
-	extends TestCase
+	extends ContextModelTestCase
 {
-	static final String BASE_PROJECT_NAME = JpaProjectTests.class.getSimpleName();
-	
-	TestJpaProject jpaProject;
-
 	
 	public JpaProjectTests(String name) {
 		super(name);
 	}
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		this.jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false, buildJpaConfigDataModel()); // false = no auto-build
+	
+	private ICompilationUnit createTestEntity() throws Exception {
+		return this.createTestType("MyEntity", new DefaultAnnotationWriter() {
+			
+			@Override
+			public Iterator<String> imports() {
+				return IteratorTools.iterator(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+		});
 	}
 	
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaProject.FACET_VERSION_STRING);
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformConfig());
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-		return dataModel;
-	}
-
-	protected JpaPlatform.Config getJpaPlatformConfig() {
-		return this.getJpaPlatformManager().getJpaPlatformConfig(GenericJpaPlatformFactory.ID);
-	}
-
-	protected JpaPlatformManager getJpaPlatformManager() {
-		return this.getJpaWorkspace().getJpaPlatformManager();
-	}
-
-	protected JpaWorkspace getJpaWorkspace() {
-		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		this.jpaProject.getProject().delete(true, true, null);
-		this.jpaProject = null;
-		super.tearDown();
+	private ICompilationUnit createTestMappedSuperclass() throws Exception {
+		return this.createTestType("MyMappedSuperclass", new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return IteratorTools.iterator(JPA.MAPPED_SUPERCLASS);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@MappedSuperclass");
+			}
+		});
 	}
 	
-	protected JpaProject getJpaProject() {
-		return this.jpaProject.getJpaProject();
+	private ICompilationUnit createTestEmbeddable() throws Exception {
+		return this.createTestType("MyEmbeddable", new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return IteratorTools.iterator(JPA.EMBEDDABLE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Embeddable");
+			}
+		});
 	}
 	
 	public void testGetPersistenceXmlResource() throws Exception {
@@ -185,5 +178,18 @@ public class JpaProjectTests
 		assertNotNull(resource);
 		assertEquals(XmlEntityMappings.CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());
+	}
+
+	public void testGetPotentialJavaSourceTypes() throws Exception {
+		createTestEntity();
+		createTestEmbeddable();
+		createTestMappedSuperclass();
+		createTestType();
+
+		Iterable<JavaResourceAbstractType> potentialJavaSourceTypes = this.getJpaProject().getPotentialJavaSourceTypes();
+		assertEquals(3, IterableTools.size(potentialJavaSourceTypes));
+		assertTrue(IterableTools.contains(potentialJavaSourceTypes, getJpaProject().getJavaResourceType("test.MyEntity")));
+		assertTrue(IterableTools.contains(potentialJavaSourceTypes, getJpaProject().getJavaResourceType("test.MyEmbeddable")));
+		assertTrue(IterableTools.contains(potentialJavaSourceTypes, getJpaProject().getJavaResourceType("test.MyMappedSuperclass")));
 	}
 }

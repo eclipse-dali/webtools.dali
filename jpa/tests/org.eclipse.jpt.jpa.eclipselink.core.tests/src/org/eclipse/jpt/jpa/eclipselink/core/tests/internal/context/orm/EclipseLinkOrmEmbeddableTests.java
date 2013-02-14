@@ -473,9 +473,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(0, resourceEmbeddable.getConverters().size());
 		
 		//add a converter to the context model, check resource model
-		EclipseLinkCustomConverter contextConverter = ormContextConverterHolder.addCustomConverter(0);
+		EclipseLinkCustomConverter contextConverter = ormContextConverterHolder.addCustomConverter("myConverter", 0);
 		contextConverter.setConverterClass("Foo");
-		contextConverter.setName("myConverter");
 		
 		assertEquals(1, resourceEmbeddable.getConverters().size());
 		assertEquals("Foo", resourceEmbeddable.getConverters().get(0).getClassName());
@@ -487,9 +486,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals("myConverter", ormContextConverter.getName());
 	
 		//add another converter to the context model, check resource model
-		EclipseLinkCustomConverter contextConverter2 = ormContextConverterHolder.addCustomConverter(0);
+		EclipseLinkCustomConverter contextConverter2 = ormContextConverterHolder.addCustomConverter("myConverter2", 0);
 		contextConverter2.setConverterClass("Foo2");
-		contextConverter2.setName("myConverter2");
 		
 		assertEquals(2, resourceEmbeddable.getConverters().size());
 		assertEquals("Foo2", resourceEmbeddable.getConverters().get(0).getClassName());
@@ -633,9 +631,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(0, IterableTools.size(persistenceUnit.getAllConverters()));
 		
 		//add a converter to the context model, check resource model
-		EclipseLinkTypeConverter contextTypeConverter = ormContextConverterHolder.addTypeConverter(0);
+		EclipseLinkTypeConverter contextTypeConverter = ormContextConverterHolder.addTypeConverter("myTypeConverter", 0);
 		contextTypeConverter.setDataType("Foo");
-		contextTypeConverter.setName("myTypeConverter");
 		
 		assertEquals(1, resourceEmbeddable.getTypeConverters().size());
 		assertEquals("Foo", resourceEmbeddable.getTypeConverters().get(0).getDataType());
@@ -648,9 +645,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(1, IterableTools.size(persistenceUnit.getAllConverters()));
 		
 		//add another converter to the context model, check resource model
-		EclipseLinkTypeConverter contextTypeConverter2 = ormContextConverterHolder.addTypeConverter(0);
+		EclipseLinkTypeConverter contextTypeConverter2 = ormContextConverterHolder.addTypeConverter("myTypeConverter2", 0);
 		contextTypeConverter2.setDataType("Foo2");
-		contextTypeConverter2.setName("myTypeConverter2");
 		
 		assertEquals(2, resourceEmbeddable.getTypeConverters().size());
 		assertEquals("Foo2", resourceEmbeddable.getTypeConverters().get(0).getDataType());
@@ -797,9 +793,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(0, IterableTools.size(persistenceUnit.getAllConverters()));
 		
 		//add a converter to the context model, check resource model
-		EclipseLinkObjectTypeConverter contextObjectTypeConverter = ormContextConverterHolder.addObjectTypeConverter(0);
+		EclipseLinkObjectTypeConverter contextObjectTypeConverter = ormContextConverterHolder.addObjectTypeConverter("myObjectTypeConverter", 0);
 		contextObjectTypeConverter.setDataType("Foo");
-		contextObjectTypeConverter.setName("myObjectTypeConverter");
 		
 		assertEquals(1, resourceEmbeddable.getObjectTypeConverters().size());
 		assertEquals("Foo", resourceEmbeddable.getObjectTypeConverters().get(0).getDataType());
@@ -812,9 +807,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(1, IterableTools.size(persistenceUnit.getAllConverters()));
 		
 		//add another converter to the context model, check resource model
-		EclipseLinkObjectTypeConverter contextObjectTypeConverter2 = ormContextConverterHolder.addObjectTypeConverter(0);
+		EclipseLinkObjectTypeConverter contextObjectTypeConverter2 = ormContextConverterHolder.addObjectTypeConverter("myObjectTypeConverter2", 0);
 		contextObjectTypeConverter2.setDataType("Foo2");
-		contextObjectTypeConverter2.setName("myObjectTypeConverter2");
 		
 		assertEquals(2, resourceEmbeddable.getObjectTypeConverters().size());
 		assertEquals("Foo2", resourceEmbeddable.getObjectTypeConverters().get(0).getDataType());
@@ -961,9 +955,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(0, IterableTools.size(persistenceUnit.getAllConverters()));
 		
 		//add a converter to the context model, check resource model
-		EclipseLinkStructConverter contextStructConverter = ormContextConverterHolder.addStructConverter(0);
+		EclipseLinkStructConverter contextStructConverter = ormContextConverterHolder.addStructConverter("myStructConverter", 0);
 		contextStructConverter.setConverterClass("Foo");
-		contextStructConverter.setName("myStructConverter");
 		
 		assertEquals(1, resourceEmbeddable.getStructConverters().size());
 		assertEquals("Foo", resourceEmbeddable.getStructConverters().get(0).getConverter());
@@ -976,9 +969,8 @@ public class EclipseLinkOrmEmbeddableTests
 		assertEquals(1, IterableTools.size(persistenceUnit.getAllConverters()));
 		
 		//add another converter to the context model, check resource model
-		EclipseLinkStructConverter contextStructConverter2 = ormContextConverterHolder.addStructConverter(0);
+		EclipseLinkStructConverter contextStructConverter2 = ormContextConverterHolder.addStructConverter("myStructConverter2", 0);
 		contextStructConverter2.setConverterClass("Foo2");
-		contextStructConverter2.setName("myStructConverter2");
 		
 		assertEquals(2, resourceEmbeddable.getStructConverters().size());
 		assertEquals("Foo2", resourceEmbeddable.getStructConverters().get(0).getConverter());

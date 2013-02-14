@@ -25,10 +25,12 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
@@ -295,6 +297,17 @@ public class GenericOrmXml
 	 */
 	public Iterable<OrmPersistentType> getPersistentTypes() {
 		return (this.root != null) ? this.root.getPersistentTypes() : EmptyIterable.<OrmPersistentType>instance();
+	}
+
+
+	// ********** ManagedTypeContainer implementation **********
+
+	public Iterable<OrmManagedType> getManagedTypes() {
+		return (this.root != null) ? this.root.getManagedTypes() : EmptyIterable.<OrmManagedType>instance();
+	}
+
+	public ManagedType getManagedType(String typeName) {
+		return (this.root == null) ? null : this.root.getManagedType(typeName);
 	}
 
 

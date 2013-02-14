@@ -197,7 +197,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
 		assertEquals("BAR", idMapping.getGeneratorContainer().getTableGenerator().getDefaultSchema());
 
-		getEntityMappings().removePersistentType(0);
+		getEntityMappings().removeManagedType(0);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", ((IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping()).getGeneratorContainer().getTableGenerator().getDefaultSchema());

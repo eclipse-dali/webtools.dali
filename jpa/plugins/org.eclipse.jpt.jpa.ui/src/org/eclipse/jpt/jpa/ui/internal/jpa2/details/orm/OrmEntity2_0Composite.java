@@ -51,7 +51,7 @@ public class OrmEntity2_0Composite
 
 		// Java class widgets
 		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+		new OrmJavaClassChooser(this, this.buildPersistentTypeReferenceModel(), container, javaClassHyperlink);
 
 		// Table widgets
 		TableComposite tableComposite = new TableComposite(this, container);

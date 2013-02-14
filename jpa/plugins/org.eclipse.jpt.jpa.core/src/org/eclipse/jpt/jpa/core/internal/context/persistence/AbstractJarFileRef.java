@@ -24,9 +24,9 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -299,15 +299,26 @@ public abstract class AbstractJarFileRef
 		return this.xmlJarFileRef;
 	}
 
+
+	// ********** PersistentTypeContainer implementation **********
+
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.jarFile != null) ? this.jarFile.getPersistentTypes() : EmptyIterable.<PersistentType>instance();
+	}
+
 	public PersistentType getPersistentType(String typeName) {
 		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
 	}
 
 
-	// ********** PersistentTypeContainer implementation **********
+	// ********** ManagedTypeContainer implementation **********
 
-	public Iterable<? extends PersistentType> getPersistentTypes() {
-		return (this.jarFile != null) ? this.jarFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
+	public Iterable<? extends ManagedType> getManagedTypes() {
+		return (this.jarFile != null) ? this.jarFile.getManagedTypes() : EmptyIterable.<ManagedType>instance();
+	}
+
+	public ManagedType getManagedType(String typeName) {
+		return (this.jarFile == null) ? null : this.jarFile.getManagedType(typeName);
 	}
 
 

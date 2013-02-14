@@ -300,7 +300,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (javaEntity != null) {
 			return javaEntity.getName();
 		}
-		String className = this.getClass_();
+		String className = this.getPersistentType().getClass_();
 		return StringTools.isBlank(className) ? null : ClassNameTools.simpleName(className);
 	}
 
@@ -1744,7 +1744,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JptJpaCoreValidationMessages.ENTITY_NAME_MISSING,
-							new String[] {this.getClass_()}, 
+							new String[] {this.getPersistentType().getClass_()}, 
 							this,
 							this.getNameTextRange()
 					)
@@ -1756,7 +1756,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return true;
 	}
 
-	@Override
 	public TextRange getNameTextRange() {
 		return this.getXmlTypeMapping().getNameTextRange();
 	}

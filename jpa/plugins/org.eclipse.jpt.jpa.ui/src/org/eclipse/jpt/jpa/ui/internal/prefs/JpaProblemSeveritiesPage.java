@@ -185,7 +185,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		 result.put(JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS, JpaPreferences.PROBLEM_WARNING); //3.0 M7
 		 result.put(JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, JpaPreferences.PROBLEM_WARNING);
 		 result.put(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML, JpaPreferences.PROBLEM_WARNING);
 		 result.put(JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED, JpaPreferences.PROBLEM_WARNING);
 		 result.put(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, JpaPreferences.PROBLEM_WARNING); //3.0 M7
 		 result.put(JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, JpaPreferences.PROBLEM_WARNING);
@@ -315,10 +315,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.ENTITY_NO_PK,																								JptJpaCoreValidationMessages.ENTITY_NO_PK);
 		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,												JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED); //3.0 M7
 		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,														JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED); //3.0 M7
-		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,	JptJpaCoreValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT);
-		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,		JptJpaCoreValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT);
-		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,														JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS);
-		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,														JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS);
+		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,											JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
+		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,											JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
+		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS,													JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS);
+		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS,														JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS);
 		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR,								JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR);
 		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR,								JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR);		
 		addLabeledCombo(parent, JptJpaUiPreferencesValidationMessages.TYPE_MAPPING_FINAL_CLASS,																		JptJpaCoreValidationMessages.TYPE_MAPPING_FINAL_CLASS);

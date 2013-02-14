@@ -37,6 +37,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -61,6 +62,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
@@ -70,13 +72,16 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
+import org.eclipse.jpt.jpa.core.context.persistence.ManagedTypeContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -140,9 +145,9 @@ public abstract class AbstractPersistenceUnit
 	 * Use with caution since this contains no duplicates (e.g. class is listed in 2 different mappings files)
 	 * Rebuilt at the *beginning* of {@link #update()}
 	 * 
-	 * @see #rebuildPersistentTypeMap()
+	 * @see #rebuildManagedTypeMap()
 	 */
-	protected final Hashtable<String, PersistentType> persistentTypeMap = new Hashtable<String, PersistentType>();
+	protected final Hashtable<String, ManagedType> managedTypeMap = new Hashtable<String, ManagedType>();
 
 	protected final ContextListContainer<MappingFileRef, XmlMappingFileRef> specifiedMappingFileRefContainer;
 
@@ -267,9 +272,9 @@ public abstract class AbstractPersistenceUnit
 	public void update() {
 		super.update();
 
-		//Rebuild the persistent type map first. I *think* if anything changes to cause 
+		//Rebuild the managed type map first. I *think* if anything changes to cause 
 		//this to be out of sync another update would be triggered by that change.
-		this.rebuildPersistentTypeMap();
+		this.rebuildManagedTypeMap();
 
 		this.setDefaultTransactionType(this.buildDefaultTransactionType());
 
@@ -562,7 +567,7 @@ public abstract class AbstractPersistenceUnit
 		}
 		@Override
 		public boolean accept(MappingFileRef mappingFileRef) {
-			return mappingFileRef.getPersistentType(this.typeName) != null;
+			return mappingFileRef.getManagedType(this.typeName) != null;
 		}
 	}
 
@@ -951,19 +956,19 @@ public abstract class AbstractPersistenceUnit
 
 	/**
 	 * Return the names of all the Java classes in the JPA project that are
-	 * mapped (i.e. have the appropriate annotation etc.) but not specified
+	 * managed (i.e. have the appropriate annotation etc.) but not specified
 	 * in the persistence unit or any of its mapping files.
 	 */
 	protected Iterable<JavaResourceAbstractType> getImpliedClassResourceTypes_() {
-		return IterableTools.filter(this.getJpaProject().getMappedJavaSourceTypes(), new SpecifiesPersistentType());
+		return IterableTools.filter(this.getJpaProject().getPotentialJavaSourceTypes(), new SpecifiesManagedType());
 	}
 
-	public class SpecifiesPersistentType
+	public class SpecifiesManagedType
 		extends FilterAdapter<JavaResourceAbstractType>
 	{
 		@Override
 		public boolean accept(JavaResourceAbstractType jrat) {
-			return ! AbstractPersistenceUnit.this.specifiesPersistentType(jrat.getTypeBinding().getQualifiedName());
+			return ! AbstractPersistenceUnit.this.specifiesManagedType(jrat.getTypeBinding().getQualifiedName());
 		}
 	}
 
@@ -1680,83 +1685,83 @@ public abstract class AbstractPersistenceUnit
 	}
 
 
-	// ********** persistent types **********
+	// ********** managed types **********
 
 	@SuppressWarnings("unchecked")
-	public Iterable<PersistentType> getPersistentTypes() {
+	public Iterable<ManagedType> getManagedTypes() {
 		return IterableTools.concatenate(
-				this.getMappingFilePersistentTypes(),
-				this.getClassRefPersistentTypes(),
-				this.getJarFilePersistentTypes()
+				this.getMappingFileManagedTypes(),
+				this.getClassRefManagedTypes(),
+				this.getJarFileManagedTypes()
 			);
 	}
 
-	protected Iterable<PersistentType> getMappingFilePersistentTypes() {
-		return IterableTools.children(this.getMappingFileRefs(), PersistentTypeContainer.TRANSFORMER);
+	protected Iterable<ManagedType> getMappingFileManagedTypes() {
+		return IterableTools.children(this.getMappingFileRefs(), ManagedTypeContainer.TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<PersistentType> getJavaPersistentTypes() {
+	public Iterable<ManagedType> getJavaManagedTypes() {
 		return IterableTools.concatenate(
-				this.getClassRefPersistentTypes(),
-				this.getJarFilePersistentTypes()
+				this.getClassRefManagedTypes(),
+				this.getJarFileManagedTypes()
 			);
 	}
 
 	/**
-	 * Return the non-<code>null</code> class ref persistent types,
+	 * Return the non-<code>null</code> class ref managed types,
 	 * both specified and implied.
 	 */
-	protected Iterable<PersistentType> getClassRefPersistentTypes() {
-		return IterableTools.removeNulls(this.getClassRefPersistentTypes_());
+	protected Iterable<ManagedType> getClassRefManagedTypes() {
+		return IterableTools.removeNulls(this.getClassRefManagedTypes_());
 	}
 
 	/**
 	 * Both specified and implied. May contain <code>null</code>s.
-	 * @see #getClassRefPersistentTypes()
+	 * @see #getClassRefManagedTypes()
 	 */
-	protected Iterable<PersistentType> getClassRefPersistentTypes_() {
-		return IterableTools.transform(this.getClassRefs(), CLASS_REF_PERSISTENT_TYPE_TRANSFORMER);
+	protected Iterable<ManagedType> getClassRefManagedTypes_() {
+		return IterableTools.transform(this.getClassRefs(), CLASS_REF_MANAGED_TYPE_TRANSFORMER);
 	}
 
-	protected static final Transformer<ClassRef, PersistentType> CLASS_REF_PERSISTENT_TYPE_TRANSFORMER = TransformerTools.superTransformer(ClassRef.JAVA_PERSISTENT_TYPE_TRANSFORMER);
+	protected static final Transformer<ClassRef, ManagedType> CLASS_REF_MANAGED_TYPE_TRANSFORMER = TransformerTools.superTransformer(ClassRef.JAVA_MANAGED_TYPE_TRANSFORMER);
 
 	/**
 	 * We only get <em>annotated</em> types from jar files.
 	 */
-	protected Iterable<PersistentType> getJarFilePersistentTypes() {
-		return IterableTools.children(this.getJarFileRefs(), PersistentTypeContainer.TRANSFORMER);
+	protected Iterable<ManagedType> getJarFileManagedTypes() {
+		return IterableTools.children(this.getJarFileRefs(), ManagedTypeContainer.TRANSFORMER);
 	}
 
-	public PersistentType getPersistentType(String typeName) {
-		return typeName == null ? null : this.persistentTypeMap.get(typeName);
+	public ManagedType getManagedType(String typeName) {
+		return typeName == null ? null : this.managedTypeMap.get(typeName);
 	}
 
-	protected void rebuildPersistentTypeMap() {
-		synchronized (this.persistentTypeMap) {
-			this.persistentTypeMap.clear();
+	protected void rebuildManagedTypeMap() {
+		synchronized (this.managedTypeMap) {
+			this.managedTypeMap.clear();
 			for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-				for (PersistentType persistentType : mappingFileRef.getPersistentTypes()) {
-					if (persistentType.getName() != null) {
-						if (! this.persistentTypeMap.containsKey(persistentType.getName())) {
-							this.persistentTypeMap.put(persistentType.getName(), persistentType);
+				for (ManagedType mt : mappingFileRef.getManagedTypes()) {
+					if (mt.getName() != null) {
+						if (! this.managedTypeMap.containsKey(mt.getName())) {
+							this.managedTypeMap.put(mt.getName(), mt);
 						}
 					}
 				}
 			}
 			for (ClassRef classRef : this.getClassRefs()) {
-				PersistentType persistentType = classRef.getJavaPersistentType();
-				if (persistentType != null && persistentType.getName() != null) {
-					if (! this.persistentTypeMap.containsKey(persistentType.getName())) {
-						this.persistentTypeMap.put(persistentType.getName(), persistentType);
+				ManagedType mt = classRef.getJavaManagedType();
+				if (mt != null && mt.getName() != null) {
+					if (! this.managedTypeMap.containsKey(mt.getName())) {
+						this.managedTypeMap.put(mt.getName(), mt);
 					}
 				}
 			}
 			for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-				for (PersistentType persistentType : jarFileRef.getPersistentTypes()) {
-					if (persistentType.getName() != null) {
-						if (! this.persistentTypeMap.containsKey(persistentType.getName())) {
-							this.persistentTypeMap.put(persistentType.getName(), persistentType);
+				for (ManagedType mt : jarFileRef.getManagedTypes()) {
+					if (mt.getName() != null) {
+						if (! this.managedTypeMap.containsKey(mt.getName())) {
+							this.managedTypeMap.put(mt.getName(), mt);
 						}
 					}
 				}
@@ -1767,14 +1772,14 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Ignore implied class refs and jar files.
 	 */
-	public boolean specifiesPersistentType(String typeName) {
+	public boolean specifiesManagedType(String typeName) {
 		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
 			if (classRef.isFor(typeName)) {
 				return true;
 			}
 		}
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.getPersistentType(typeName) != null) {
+			if (mappingFileRef.getManagedType(typeName) != null) {
 				return true;
 			}
 		}
@@ -1841,6 +1846,49 @@ public abstract class AbstractPersistenceUnit
 	 */
 	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes_() {
 		return IterableTools.transform(this.getMappingFilePersistentTypes(), PersistentType.OVERRIDDEN_PERSISTENT_TYPE_TRANSFORMER);
+	}
+
+	public Iterable<PersistentType> getPersistentTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+										this.getManagedTypes(), 
+										PERSISTENT_TYPE_FILTER));
+	}
+
+	protected static final Filter<ManagedType> PERSISTENT_TYPE_FILTER =
+		new Filter<ManagedType>() {
+			public boolean accept(ManagedType mt) {
+				return mt.getType() == JavaPersistentType.class ||  mt.getType() == OrmPersistentType.class; //is this right? what about just getType() == PersistentType.class??
+			}
+		};
+
+	public PersistentType getPersistentType(String typeName) {
+		ManagedType mt = this.getManagedType(typeName);
+		if (mt != null && (mt.getType() == JavaPersistentType.class ||  mt.getType() == OrmPersistentType.class)) {
+			return (PersistentType) mt;
+		}
+		return null;
+	}
+
+	protected Iterable<PersistentType> getMappingFilePersistentTypes() {
+		return IterableTools.children(this.getMappingFileRefs(), PersistentTypeContainer.TRANSFORMER);
+	}
+
+	protected Iterable<PersistentType> getClassRefPersistentTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+			this.getClassRefManagedTypes(), 
+			PERSISTENT_TYPE_FILTER));
+	}
+
+	protected Iterable<PersistentType> getJarFilePersistentTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+			this.getJarFileManagedTypes(), 
+			PERSISTENT_TYPE_FILTER));
+	}
+
+	public Iterable<PersistentType> getJavaPersistentTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+			this.getJavaManagedTypes(), 
+			PERSISTENT_TYPE_FILTER));
 	}
 
 
@@ -1956,17 +2004,17 @@ public abstract class AbstractPersistenceUnit
 		SubMonitor sm = SubMonitor.convert(monitor, 3);
 
 		// calculate the refs to remove and add
-		HashSet<JavaResourceAbstractType> newTypes = CollectionTools.set(this.getJpaProject().getMappedJavaSourceTypes());
+		HashSet<JavaResourceAbstractType> newTypes = CollectionTools.set(this.getJpaProject().getPotentialJavaSourceTypes());
 		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
 		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
 
 		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
-			JavaPersistentType specifiedJPT = classRef.getJavaPersistentType();
-			if (specifiedJPT == null) {
+			JavaManagedType specifiedJMT = classRef.getJavaManagedType();
+			if (specifiedJMT == null) {
 				// Java type cannot be resolved
 				deadClassRefs.add(classRef);
 			} else {
-				JavaResourceType specifiedType = specifiedJPT.getJavaResourceType();
+				JavaResourceType specifiedType = specifiedJMT.getJavaResourceType();
 				if ( ! newTypes.remove(specifiedType)) {
 					// Java type is not annotated
 					deadClassRefs.add(classRef);
@@ -1998,8 +2046,8 @@ public abstract class AbstractPersistenceUnit
 	protected HashSet<String> getMappingFileTypeNames() {
 		HashSet<String> result = new HashSet<String>();
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			for (PersistentType persistentType : mappingFileRef.getPersistentTypes()) {
-				result.add(persistentType.getName());
+			for (ManagedType managedType : mappingFileRef.getManagedTypes()) {
+				result.add(managedType.getName());
 			}
 		}
 		return result;
@@ -2136,8 +2184,8 @@ public abstract class AbstractPersistenceUnit
 
 	public Iterable<String> getPackageNames() {
 		Set<String> packageNames = new HashSet<String>();
-		for (PersistentType pType : this.getJavaPersistentTypes()) {
-			JavaResourceType jrt = ((JavaPersistentType)pType).getJavaResourceType();
+		for (ManagedType mType : this.getJavaManagedTypes()) {
+			JavaResourceType jrt = mType.getJavaResourceType();
 			packageNames.add(jrt.getTypeBinding().getPackageName());
 		}
 		return packageNames;
@@ -2229,13 +2277,13 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateMappingFileClasses(List<IMessage> messages) {
-		for (Map.Entry<String, ArrayList<PersistentType>> entry : this.mapMappingFilePersistentTypesByName().entrySet()) {
-			String ptName = entry.getKey();
-			if (StringTools.isNotBlank(ptName)) {
-				ArrayList<PersistentType> dups = entry.getValue();
+		for (Map.Entry<String, ArrayList<ManagedType>> entry : this.mapMappingFileManagedTypesByName().entrySet()) {
+			String mtName = entry.getKey();
+			if (StringTools.isNotBlank(mtName)) {
+				ArrayList<ManagedType> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {ptName};
-					for (PersistentType dup : dups) {
+					String[] parms = new String[] {mtName};
+					for (ManagedType dup : dups) {
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.NORMAL_SEVERITY,
@@ -2252,19 +2300,19 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	/**
-	 * Return the persistence unit's mapping file persistent types
+	 * Return the persistence unit's mapping file managed types
 	 * keyed by their class names.
 	 */
-	protected HashMap<String, ArrayList<PersistentType>> mapMappingFilePersistentTypesByName() {
-		HashMap<String, ArrayList<PersistentType>> map = new HashMap<String, ArrayList<PersistentType>>();
-		for (PersistentType persistentType : this.getMappingFilePersistentTypes()) {
-			String ptName = persistentType.getName();
-			ArrayList<PersistentType> list = map.get(ptName);
+	protected HashMap<String, ArrayList<ManagedType>> mapMappingFileManagedTypesByName() {
+		HashMap<String, ArrayList<ManagedType>> map = new HashMap<String, ArrayList<ManagedType>>();
+		for (ManagedType managedType : this.getMappingFileManagedTypes()) {
+			String mtName = managedType.getName();
+			ArrayList<ManagedType> list = map.get(mtName);
 			if (list == null) {
-				list = new ArrayList<PersistentType>();
-				map.put(ptName, list);
+				list = new ArrayList<ManagedType>();
+				map.put(mtName, list);
 			}
-			list.add(persistentType);
+			list.add(managedType);
 		}
 		return map;
 	}

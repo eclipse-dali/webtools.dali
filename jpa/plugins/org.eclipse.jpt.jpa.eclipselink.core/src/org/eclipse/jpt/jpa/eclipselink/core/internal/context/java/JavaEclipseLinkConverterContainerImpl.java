@@ -84,17 +84,19 @@ public class JavaEclipseLinkConverterContainerImpl
 		return this.customConverterContainer.getContextElementsSize();
 	}
 
-	public JavaEclipseLinkCustomConverter addCustomConverter() {
-		return this.addCustomConverter(this.getCustomConvertersSize());
+	public JavaEclipseLinkCustomConverter addCustomConverter(String name) {
+		return this.addCustomConverter(name, this.getCustomConvertersSize());
 	}
 
-	public JavaEclipseLinkCustomConverter addCustomConverter(int index) {
-		EclipseLinkConverterAnnotation annotation = this.addCustomConverterAnnotation(index);
+	public JavaEclipseLinkCustomConverter addCustomConverter(String name, int index) {
+		EclipseLinkConverterAnnotation annotation = this.addCustomConverterAnnotation(name, index);
 		return this.customConverterContainer.addContextElement(index, annotation);
 	}
 
-	protected EclipseLinkConverterAnnotation addCustomConverterAnnotation(int index) {
-		return (EclipseLinkConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkConverterAnnotation.ANNOTATION_NAME);
+	protected EclipseLinkConverterAnnotation addCustomConverterAnnotation(String name, int index) {
+		EclipseLinkConverterAnnotation annotation = (EclipseLinkConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkConverterAnnotation.ANNOTATION_NAME);
+		annotation.setName(name);
+		return annotation;
 	}
 
 	public void removeCustomConverter(EclipseLinkCustomConverter customConverter) {
@@ -169,17 +171,19 @@ public class JavaEclipseLinkConverterContainerImpl
 		return this.objectTypeConverterContainer.getContextElementsSize();
 	}
 
-	public JavaEclipseLinkObjectTypeConverter addObjectTypeConverter() {
-		return this.addObjectTypeConverter(this.getObjectTypeConvertersSize());
+	public JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(String name) {
+		return this.addObjectTypeConverter(name, this.getObjectTypeConvertersSize());
 	}
 
-	public JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(int index) {
-		EclipseLinkObjectTypeConverterAnnotation annotation = this.addObjectTypeConverterAnnotation(index);
+	public JavaEclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index) {
+		EclipseLinkObjectTypeConverterAnnotation annotation = this.addObjectTypeConverterAnnotation(name, index);
 		return this.objectTypeConverterContainer.addContextElement(index, annotation);
 	}
 
-	protected EclipseLinkObjectTypeConverterAnnotation addObjectTypeConverterAnnotation(int index) {
-		return (EclipseLinkObjectTypeConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+	protected EclipseLinkObjectTypeConverterAnnotation addObjectTypeConverterAnnotation(String name, int index) {
+		EclipseLinkObjectTypeConverterAnnotation annotation =  (EclipseLinkObjectTypeConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		annotation.setName(name);
+		return annotation;
 	}
 
 	public void removeObjectTypeConverter(EclipseLinkObjectTypeConverter objectTypeConverter) {
@@ -254,17 +258,19 @@ public class JavaEclipseLinkConverterContainerImpl
 		return this.structConverterContainer.getContextElementsSize();
 	}
 
-	public JavaEclipseLinkStructConverter addStructConverter() {
-		return this.addStructConverter(this.getStructConvertersSize());
+	public JavaEclipseLinkStructConverter addStructConverter(String name) {
+		return this.addStructConverter(name, this.getStructConvertersSize());
 	}
 
-	public JavaEclipseLinkStructConverter addStructConverter(int index) {
-		EclipseLinkStructConverterAnnotation annotation = this.addStructConverterAnnotation(index);
+	public JavaEclipseLinkStructConverter addStructConverter(String name, int index) {
+		EclipseLinkStructConverterAnnotation annotation = this.addStructConverterAnnotation(name, index);
 		return this.structConverterContainer.addContextElement(index, annotation);
 	}
 
-	protected EclipseLinkStructConverterAnnotation addStructConverterAnnotation(int index) {
-		return (EclipseLinkStructConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+	protected EclipseLinkStructConverterAnnotation addStructConverterAnnotation(String name, int index) {
+		EclipseLinkStructConverterAnnotation annotation = (EclipseLinkStructConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		annotation.setName(name);
+		return annotation;
 	}
 
 	public void removeStructConverter(EclipseLinkStructConverter structConverter) {
@@ -340,17 +346,19 @@ public class JavaEclipseLinkConverterContainerImpl
 		return this.typeConverterContainer.getContextElementsSize();
 	}
 
-	public JavaEclipseLinkTypeConverter addTypeConverter() {
-		return this.addTypeConverter(this.getTypeConvertersSize());
+	public JavaEclipseLinkTypeConverter addTypeConverter(String name) {
+		return this.addTypeConverter(name, this.getTypeConvertersSize());
 	}
 
-	public JavaEclipseLinkTypeConverter addTypeConverter(int index) {
-		EclipseLinkTypeConverterAnnotation annotation = this.addTypeConverterAnnotation(index);
+	public JavaEclipseLinkTypeConverter addTypeConverter(String name, int index) {
+		EclipseLinkTypeConverterAnnotation annotation = this.addTypeConverterAnnotation(name, index);
 		return this.typeConverterContainer.addContextElement(index, annotation);
 	}
 
-	protected EclipseLinkTypeConverterAnnotation addTypeConverterAnnotation(int index) {
-		return (EclipseLinkTypeConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+	protected EclipseLinkTypeConverterAnnotation addTypeConverterAnnotation(String name, int index) {
+		EclipseLinkTypeConverterAnnotation annotation =  (EclipseLinkTypeConverterAnnotation) this.getJavaResourceAnnotatedElement().addAnnotation(index, EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		annotation.setName(name);
+		return annotation;
 	}
 
 	public void removeTypeConverter(EclipseLinkTypeConverter typeConverter) {

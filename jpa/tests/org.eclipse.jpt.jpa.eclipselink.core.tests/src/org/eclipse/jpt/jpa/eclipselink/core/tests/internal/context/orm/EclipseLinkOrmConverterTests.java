@@ -60,7 +60,7 @@ public class EclipseLinkOrmConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
-		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter(0);
+		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 		
 		assertEquals(null, ormConverter.getConverterClass());
@@ -83,7 +83,7 @@ public class EclipseLinkOrmConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
-		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter(0);
+		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 		
 	
@@ -106,11 +106,11 @@ public class EclipseLinkOrmConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
-		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter(0);
+		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 		
-		assertEquals(null, ormConverter.getName());
-		assertEquals(null, converterResource.getName());
+		assertEquals("customConverter", ormConverter.getName());
+		assertEquals("customConverter", converterResource.getName());
 				
 		//set converter class name in the resource model, verify context model updated
 		converterResource.setName("myConvert");
@@ -129,11 +129,11 @@ public class EclipseLinkOrmConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmEclipseLinkBasicMapping ormBasicMapping = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping(); 
-		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter(0);
+		OrmEclipseLinkCustomConverter ormConverter = ormBasicMapping.getConverterContainer().addCustomConverter("customConverter", 0);
 		XmlConverter converterResource = (XmlConverter) ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getConverters().get(0);
 	
-		assertEquals(null, ormConverter.getName());
-		assertEquals(null, converterResource.getName());
+		assertEquals("customConverter", ormConverter.getName());
+		assertEquals("customConverter", converterResource.getName());
 				
 		//set converter class in the context model, verify resource model updated
 		ormConverter.setName("foo");

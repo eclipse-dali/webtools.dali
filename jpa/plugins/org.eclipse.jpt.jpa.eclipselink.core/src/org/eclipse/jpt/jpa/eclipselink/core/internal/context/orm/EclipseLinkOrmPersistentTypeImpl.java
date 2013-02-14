@@ -14,15 +14,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -102,9 +101,9 @@ public class EclipseLinkOrmPersistentTypeImpl
 		boolean old = this.dynamic;
 		this.dynamic = dynamic;
 		if (this.firePropertyChanged(DYNAMIC_PROPERTY, old, this.dynamic)) {
-			// clear out the Java persistent type here, it will be rebuilt during "update"
-			if (this.javaPersistentType != null) {
-				this.setJavaPersistentType(null);
+			// clear out the Java managed type here, it will be rebuilt during "update"
+			if (this.javaManagedType != null) {
+				this.setJavaManagedType(null);
 			}
 		}
 	}
@@ -128,10 +127,10 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	@Override
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceType javaResourceType) {
+	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt) {
 		return this.isDynamic() ?
 				this.buildVirtualJavaPersistentType() :
-				super.buildJavaPersistentType(javaResourceType);
+				super.buildJavaManagedType(jrt);
 	}
 
 	protected JavaPersistentType buildVirtualJavaPersistentType() {
@@ -324,17 +323,9 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	@Override
-	protected void validateClass(List<IMessage> messages) {
+	protected void validateClassResolves(List<IMessage> messages) {
 		if (this.isDynamic() && !this.isVirtualAccess()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
-					new String[] {this.getName()},
-					this,
-					this.mapping.getClassTextRange()
-				)
-			);
+			super.validateClassResolves(messages);
 		}
 	}
 

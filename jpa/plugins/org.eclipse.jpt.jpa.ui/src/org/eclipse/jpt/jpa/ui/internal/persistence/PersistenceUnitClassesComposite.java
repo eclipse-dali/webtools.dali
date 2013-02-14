@@ -40,11 +40,11 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
+import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
@@ -72,7 +72,7 @@ public class PersistenceUnitClassesComposite
 			this,
 			container,
 			this.buildAddRemovePaneAdapter(),
-			this.buildItemListHolder(),
+			this.buildItemListModel(),
 			this.buildSelectedItemsModel(),
 			this.buildClassRefLabelProvider(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
@@ -80,15 +80,15 @@ public class PersistenceUnitClassesComposite
 
 		this.addTriStateCheckBoxWithDefault(
 			container,
-			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_MAPPED_CLASSES,
-			buildExcludeUnlistedMappedClassesHolder(),
-			buildExcludeUnlistedMappedClassesStringHolder(),
+			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES, 
+			buildExcludeUnlistedClassesModel(),
+			buildExcludeUnlistedClassesStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
 	}
 
 
-	protected ClassRef addMappedClass() {
+	protected ClassRef addClassRef() {
 
 		IType type = chooseType();
 
@@ -114,7 +114,7 @@ public class PersistenceUnitClassesComposite
 	private AddRemovePane.Adapter<ClassRef> buildAddRemovePaneAdapter() {
 		return new AddRemovePane.AbstractAdapter<ClassRef>() {
 			public ClassRef addNewItem() {
-				return addMappedClass();
+				return addClassRef();
 			}
 
 			@Override
@@ -152,7 +152,7 @@ public class PersistenceUnitClassesComposite
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildExcludeUnlistedMappedClassesHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExcludeUnlistedClassesModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
@@ -169,20 +169,20 @@ public class PersistenceUnitClassesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildExcludeUnlistedMappedClassesStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeUnlistedMappedClassesHolder()) {
+	private PropertyValueModel<String> buildExcludeUnlistedClassesStringModel() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeUnlistedClassesModel()) {
 			@Override
 			protected String transform(Boolean v) {
 				if (v != null) {
 					String defaultStringValue = v.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_MAPPED_CLASSES_WITH_DEFAULT, defaultStringValue);
+					return NLS.bind(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES_WITH_DEFAULT, defaultStringValue);
 				}
-				return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_MAPPED_CLASSES;
+				return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES;
 			}
 		};
 	}
 	
-	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedMappedClassesHolder() {
+	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedClassesModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
@@ -206,32 +206,39 @@ public class PersistenceUnitClassesComposite
 			);
 	}
 
+	//TODO this image does not update if the java persistent type mapping is changed.
+	//also need to make the image and label the same in the structure view
 	private static final Transformer<ClassRef, ImageDescriptor> CLASS_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER = new ClassRefLabelImageDescriptorTransformer();
 	/* CU private */ static class ClassRefLabelImageDescriptorTransformer
 		extends AbstractTransformer<ClassRef, ImageDescriptor>
 	{
 		@Override
 		protected ImageDescriptor transform_(ClassRef classRef) {
-			return this.getImageDescriptor(classRef.getJavaPersistentType());
+			return this.getImageDescriptor(classRef);
 		}
 
-		private ImageDescriptor getImageDescriptor(JavaPersistentType persistentType) {
-			if (persistentType == null) {
+		private ImageDescriptor getImageDescriptor(ClassRef classRef) {
+			if (classRef.getJavaManagedType() == null) {
 				return JptCommonUiImages.WARNING;
 			}
-			MappingUiDefinition def = this.getTypeMappingUiDefinition(persistentType);
+			JavaManagedTypeUiDefinition def = this.getManagedTypeUiDefinition(classRef);
 			return (def != null) ?
-					def.getImageDescriptor() :
-					JptCommonUiImages.WARNING;
+					def.getImageDescriptor(classRef.getJavaManagedType()) :
+						JptCommonUiImages.WARNING;
 		}
 
-		private MappingUiDefinition getTypeMappingUiDefinition(JavaPersistentType persistentType) {
-			JpaPlatformUi ui = this.getJpaPlatformUi(persistentType);
-			return (ui == null) ? null : ui.getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
+		private JavaManagedTypeUiDefinition getManagedTypeUiDefinition(ClassRef classRef) {
+			PersistenceResourceUiDefinition def = this.getPersistenceResourceUiDefinition(classRef);
+			return def == null ? null : def.getJavaManagedTypeUiDefinition(classRef.getJavaManagedType().getType());
 		}
 
-		private JpaPlatformUi getJpaPlatformUi(JavaPersistentType persistentType) {
-			return (JpaPlatformUi) persistentType.getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		private PersistenceResourceUiDefinition getPersistenceResourceUiDefinition(ClassRef classRef) {
+			JpaPlatformUi ui = this.getJpaPlatformUi(classRef);
+			return ui == null ? null : (PersistenceResourceUiDefinition) this.getJpaPlatformUi(classRef).getResourceUiDefinition(classRef.getResourceType());
+		}
+
+		private JpaPlatformUi getJpaPlatformUi(ClassRef classRef) {
+			return (JpaPlatformUi) classRef.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		}
 	}
 
@@ -242,19 +249,19 @@ public class PersistenceUnitClassesComposite
 		@Override
 		protected String transform_(ClassRef classRef) {
 			String name = classRef.getClassName();
-			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_MAPPED_CLASSES_NO_NAME;
+			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_CLASS_REF_NO_NAME;
 		}
 	}
 
-	private ListValueModel<ClassRef> buildItemListHolder() {
+	private ListValueModel<ClassRef> buildItemListModel() {
 		return new ItemPropertyListValueModelAdapter<ClassRef>(
-			buildListHolder(),
-			ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY,
+			buildListModel(),
+			ClassRef.JAVA_MANAGED_TYPE_PROPERTY,
 			ClassRef.CLASS_NAME_PROPERTY
 		);
 	}
 
-	private ListValueModel<ClassRef> buildListHolder() {
+	private ListValueModel<ClassRef> buildListModel() {
 		return new ListAspectAdapter<PersistenceUnit, ClassRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_CLASS_REFS_LIST) {
 			@Override
 			protected ListIterable<ClassRef> getListIterable() {

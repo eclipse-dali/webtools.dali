@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.persistence;
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
-import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 
@@ -20,13 +20,13 @@ public class PersistenceXmlUiDefinition
 	extends AbstractPersistenceResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new PersistenceXmlUiDefinition();
+	private static final PersistenceResourceUiDefinition INSTANCE = new PersistenceXmlUiDefinition();
 	
 	
 	/**
 	 * Return the singleton
 	 */
-	public static ResourceUiDefinition instance() {
+	public static PersistenceResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 	

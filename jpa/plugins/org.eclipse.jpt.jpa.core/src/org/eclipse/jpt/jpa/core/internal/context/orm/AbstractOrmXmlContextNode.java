@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,9 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
 
 /**
  * Use this abstract class for context nodes that are part of an
@@ -56,11 +58,22 @@ public abstract class AbstractOrmXmlContextNode
 		return this.getResourceType().isKindOf(GenericOrmXml2_0Definition.instance().getResourceType());
 	}
 
+	protected boolean isOrmXml2_1Compatible() {
+		return this.getResourceType().isKindOf(GenericOrmXml2_1Definition.instance().getResourceType());
+	}
+
 	/**
 	 * Call {@link #isOrmXml2_0Compatible()} before calling this method.
 	 */
 	protected OrmXml2_0ContextNodeFactory getContextNodeFactory2_0() {
 		return (OrmXml2_0ContextNodeFactory) this.getContextNodeFactory();
+	}
+
+	/**
+	 * Call {@link #isOrmXml2_1Compatible()} before calling this method.
+	 */
+	protected OrmXml2_1ContextNodeFactory getContextNodeFactory2_1() {
+		return (OrmXml2_1ContextNodeFactory) this.getContextNodeFactory();
 	}
 
 	protected OrmXmlContextNodeFactory getContextNodeFactory() {

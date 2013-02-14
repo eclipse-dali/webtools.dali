@@ -93,6 +93,12 @@ public interface XmlManagedType extends EBaseObject
 	void setDescription(String value);
 
 
+	/**
+	 * Return the xml managed type's type.
+	 * @see org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition#getResourceType()
+	 */
+	Class<? extends XmlManagedType> getType();
+	
 	TextRange getClassTextRange();
 
 	// ********** refactoring **********

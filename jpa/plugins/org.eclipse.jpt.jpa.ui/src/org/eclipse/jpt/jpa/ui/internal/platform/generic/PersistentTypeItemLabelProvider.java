@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -89,7 +90,7 @@ public class PersistentTypeItemLabelProvider
 		extends PropertyAspectAdapter<PersistentType, String>
 	{
 		public TextModel(PersistentType subject) {
-			super(PersistentType.NAME_PROPERTY, subject);
+			super(ManagedType.NAME_PROPERTY, subject);
 		}
 		@Override
 		protected String buildValue_() {

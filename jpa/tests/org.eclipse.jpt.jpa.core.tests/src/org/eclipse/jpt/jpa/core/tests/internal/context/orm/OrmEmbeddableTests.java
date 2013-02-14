@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.context.orm;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
@@ -44,37 +44,35 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 
 	public void testUpdateClass() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) ormPersistentType.getMapping();
 		XmlEmbeddable embeddableResource = getXmlEntityMappings().getEmbeddables().get(0);
-		assertEquals("model.Foo", ormEmbeddable.getClass_());
+		assertEquals("model.Foo", ormPersistentType.getClass_());
 		assertEquals("model.Foo", embeddableResource.getClassName());
 		
 		//set class in the resource model, verify context model updated
 		embeddableResource.setClassName("com.Bar");
-		assertEquals("com.Bar", ormEmbeddable.getClass_());
+		assertEquals("com.Bar", ormPersistentType.getClass_());
 		assertEquals("com.Bar", embeddableResource.getClassName());
 	
 		//set class to null in the resource model
 		embeddableResource.setClassName(null);
-		assertNull(ormEmbeddable.getClass_());
+		assertNull(ormPersistentType.getClass_());
 		assertNull(embeddableResource.getClassName());
 	}
 	
 	public void testModifyClass() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
-		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) ormPersistentType.getMapping();
 		XmlEmbeddable embeddableResource = getXmlEntityMappings().getEmbeddables().get(0);
-		assertEquals("model.Foo", ormEmbeddable.getClass_());
+		assertEquals("model.Foo", ormPersistentType.getClass_());
 		assertEquals("model.Foo", embeddableResource.getClassName());
 		
 		//set class in the context model, verify resource model modified
-		ormEmbeddable.setClass("com.Bar");
-		assertEquals("com.Bar", ormEmbeddable.getClass_());
+		ormPersistentType.setClass("com.Bar");
+		assertEquals("com.Bar", ormPersistentType.getClass_());
 		assertEquals("com.Bar", embeddableResource.getClassName());
 		
 		//set class to null in the context model
-		ormEmbeddable.setClass(null);
-		assertNull(ormEmbeddable.getClass_());
+		ormPersistentType.setClass(null);
+		assertNull(ormPersistentType.getClass_());
 		assertNull(embeddableResource.getClassName());
 	}
 	//TODO add tests for setting the className when the package is set on entity-mappings
@@ -216,7 +214,7 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertNull(entity.getName());
 		
 		OrmEntity ormEntity = (OrmEntity) embeddablePersistentType.getMapping();
-		assertEquals("model.Foo", ormEntity.getClass_());
+		assertEquals("model.Foo", embeddablePersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormEntity.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, embeddablePersistentType.getSpecifiedAccess());
 	}
@@ -239,11 +237,11 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertNull(entity.getName());
 		
 		OrmEntity ormEntity = (OrmEntity) embeddablePersistentType.getMapping();
-		assertEquals("model.Foo", ormEntity.getClass_());
+		assertEquals("model.Foo", embeddablePersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormEntity.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, embeddablePersistentType.getSpecifiedAccess());
 		
-		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().getPersistentTypes().iterator();
+		Iterator<OrmPersistentType> persistentTypes = getEntityMappings().getPersistentTypes().iterator();
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 	}
@@ -262,7 +260,7 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
 	
 		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) embeddablePersistentType.getMapping();
-		assertEquals("model.Foo", ormMappedSuperclass.getClass_());
+		assertEquals("model.Foo", embeddablePersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, embeddablePersistentType.getSpecifiedAccess());
 	}
@@ -283,11 +281,11 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
 	
 		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) embeddablePersistentType.getMapping();
-		assertEquals("model.Foo", ormMappedSuperclass.getClass_());
+		assertEquals("model.Foo", embeddablePersistentType.getClass_());
 		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, embeddablePersistentType.getSpecifiedAccess());
 		
-		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().getPersistentTypes().iterator();
+		Iterator<OrmPersistentType> persistentTypes = getEntityMappings().getPersistentTypes().iterator();
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 	}

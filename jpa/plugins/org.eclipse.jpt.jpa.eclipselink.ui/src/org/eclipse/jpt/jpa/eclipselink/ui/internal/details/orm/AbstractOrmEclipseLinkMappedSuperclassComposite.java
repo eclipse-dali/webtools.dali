@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
@@ -63,7 +64,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 
 		// Java class widgets
 		Hyperlink javaClassHyperlink = addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+		new OrmJavaClassChooser(this, this.buildPersistentTypeReferenceModel(), container, javaClassHyperlink);
 
 		// Access type widgets
 		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
@@ -80,6 +81,15 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		metadataCompleteComposite.getControl().setLayoutData(gridData);
 
 		return container;
+	}
+
+	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
+		return new PropertyAspectAdapter<T, OrmPersistentType>(getSubjectHolder()) {
+			@Override
+			protected OrmPersistentType buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 
 	protected void initializeCachingCollapsibleSection(Composite container) {

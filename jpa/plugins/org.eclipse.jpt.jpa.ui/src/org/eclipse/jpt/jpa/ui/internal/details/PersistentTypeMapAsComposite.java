@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -100,7 +101,7 @@ public class PersistentTypeMapAsComposite
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
 		propertyNames.add(PersistentType.MAPPING_PROPERTY);
-		propertyNames.add(PersistentType.NAME_PROPERTY);
+		propertyNames.add(ManagedType.NAME_PROPERTY);
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class PersistentTypeMapAsComposite
 		super.propertyChanged(propertyName);
 
 		if (propertyName == PersistentType.MAPPING_PROPERTY ||
-		    propertyName == PersistentType.NAME_PROPERTY) {
+		    propertyName == ManagedType.NAME_PROPERTY) {
 
 			updateDescription();
 		}

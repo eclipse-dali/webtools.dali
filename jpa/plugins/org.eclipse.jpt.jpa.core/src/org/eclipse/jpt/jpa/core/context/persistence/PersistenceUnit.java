@@ -753,11 +753,11 @@ public interface PersistenceUnit
 	XmlPersistenceUnit getXmlPersistenceUnit();
 
 	/**
-	 * Return whether the persistence unit specifies a persistent type with the
+	 * Return whether the persistence unit specifies a managed type with the
 	 * specified name (i.e. the type is listed either in the persistence unit's
 	 * list of specified classes or in one of the persistent unit's mapping files).
 	 */
-	boolean specifiesPersistentType(String typeName);
+	boolean specifiesManagedType(String typeName);
 
 	/**
 	 * Return the persistence unit's Java persistent types, as specified by

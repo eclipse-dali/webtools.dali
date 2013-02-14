@@ -20,12 +20,16 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -39,7 +43,7 @@ public class GenericJarFile
 {
 	protected final JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;
 
-	protected final ContextCollectionContainer<JavaPersistentType, JavaResourceType> javaPersistentTypeContainer;
+	protected final ContextCollectionContainer<JavaManagedType, JavaResourceType> javaManagedTypeContainer;
 
 
 	// ********** constructor/initialization **********
@@ -47,7 +51,7 @@ public class GenericJarFile
 	public GenericJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {
 		super(parent);
 		this.jarResourcePackageFragmentRoot = jarResourcePackageFragmentRoot;
-		this.javaPersistentTypeContainer = this.buildJavaPersistentTypeContainer();
+		this.javaManagedTypeContainer = this.buildJavaManagedTypeContainer();
 	}
 
 
@@ -56,13 +60,13 @@ public class GenericJarFile
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.syncJavaPersistentTypes();
+		this.syncJavaManagedTypes();
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getJavaPersistentTypes());
+		this.updateNodes(this.getJavaManagedTypes());
 	}
 
 	public JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot() {
@@ -78,35 +82,35 @@ public class GenericJarFile
 	}
 
 
-	// ********** Java persistent types **********
+	// ********** Java managed types **********
 
-	public JavaPersistentType getPersistentType(String typeName) {
-		for (JavaPersistentType pt : this.getJavaPersistentTypes()) {
-			if (pt.getName().equals(typeName)) {
-				return pt;
+	public JavaManagedType getManagedType(String typeName) {
+		for (JavaManagedType mt : this.getJavaManagedTypes()) {
+			if (mt.getName().equals(typeName)) {
+				return mt;
 			}
 		}
 		return null;
 	}
 
-	public Iterable<JavaPersistentType> getJavaPersistentTypes() {
-		return this.javaPersistentTypeContainer.getContextElements();
+	public Iterable<JavaManagedType> getJavaManagedTypes() {
+		return this.javaManagedTypeContainer.getContextElements();
 	}
 
-	public int getJavaPersistentTypesSize() {
-		return this.javaPersistentTypeContainer.getContextElementsSize();
+	public int getJavaManagedTypesSize() {
+		return this.javaManagedTypeContainer.getContextElementsSize();
 	}
 
-	protected void syncJavaPersistentTypes() {
-		this.javaPersistentTypeContainer.synchronizeWithResourceModel();
+	protected void syncJavaManagedTypes() {
+		this.javaManagedTypeContainer.synchronizeWithResourceModel();
 	}
 
-	protected void addJavaPersistentType(JavaResourceType jrt) {
-		this.javaPersistentTypeContainer.addContextElement(getJavaPersistentTypesSize(), jrt);
+	protected void addJavaManagedType(JavaResourceType jrt) {
+		this.javaManagedTypeContainer.addContextElement(getJavaManagedTypesSize(), jrt);
 	}
 
-	protected void removeJavaPersistentType(JavaPersistentType javaPersistentType ) {
-		this.javaPersistentTypeContainer.removeContextElement(javaPersistentType);
+	protected void removeJavaManagedType(JavaManagedType javaManagedType) {
+		this.javaManagedTypeContainer.removeContextElement(javaManagedType);
 	}
 
 	//only accept types, enums aren't valid for JPA
@@ -127,46 +131,84 @@ public class GenericJarFile
 		return this.jarResourcePackageFragmentRoot.getTypes();
 	}
 
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrt);
+	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt, JavaManagedTypeDefinition managedTypeDefinition) {
+		return managedTypeDefinition.buildContextManagedType(this, jrt, this.getJpaFactory());
 	}
 
-	protected ContextCollectionContainer<JavaPersistentType, JavaResourceType> buildJavaPersistentTypeContainer() {
-		JavaPersistentTypeContainer container = new JavaPersistentTypeContainer();
+	protected Iterable<JavaManagedTypeDefinition> getJavaManagedTypeDefinitions() {
+		return this.getJpaPlatform().getJavaManagedTypeDefinitions();
+	}
+
+	protected JavaManagedTypeDefinition getJavaManagedTypeDefinition(JavaResourceType jrt) {
+		for (JavaManagedTypeDefinition managedTypeDefinition : this.getJavaManagedTypeDefinitions()) {
+			if (jrt.isAnnotatedWithAnyOf(managedTypeDefinition.getAnnotationNames(this.getJpaProject()))) {
+				return managedTypeDefinition;
+			}
+		}
+		return JavaPersistentTypeDefinition.instance();
+	}
+
+	protected JavaManagedType buildJavaManagedType(JavaResourceType jrt) {
+		return getJavaManagedTypeDefinition(jrt).buildContextManagedType(this, jrt, getJpaFactory());
+	}
+
+	protected ContextCollectionContainer<JavaManagedType, JavaResourceType> buildJavaManagedTypeContainer() {
+		JavaManagedTypeContainer container = new JavaManagedTypeContainer();
 		container.initialize();
 		return container;
 	}
 
 	/**
-	 * Java persistent type container
+	 * Java managed type container
 	 */
-	protected class JavaPersistentTypeContainer
-		extends ContextCollectionContainer<JavaPersistentType, JavaResourceType>
+	protected class JavaManagedTypeContainer
+		extends ContextCollectionContainer<JavaManagedType, JavaResourceType>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
-			return JAVA_PERSISTENT_TYPES_COLLECTION;
+			return JAVA_MANAGED_TYPES_COLLECTION;
 		}
 		@Override
-		protected JavaPersistentType buildContextElement(JavaResourceType resourceElement) {
-			return GenericJarFile.this.buildJavaPersistentType(resourceElement);
+		protected JavaManagedType buildContextElement(JavaResourceType resourceElement) {
+			return GenericJarFile.this.buildJavaManagedType(resourceElement);
 		}
 		@Override
 		protected Iterable<JavaResourceType> getResourceElements() {
 			return GenericJarFile.this.getJavaResourceTypes();
 		}
 		@Override
-		protected JavaResourceType getResourceElement(JavaPersistentType contextElement) {
+		protected JavaResourceType getResourceElement(JavaManagedType contextElement) {
 			return contextElement.getJavaResourceType();
 		}
 	}
 
 
+	// ********** ManagedTypeContainer implementation **********
+
+	public Iterable<JavaManagedType> getManagedTypes() {
+		return this.getJavaManagedTypes();
+	}
+
+
 	// ********** PersistentTypeContainer implementation **********
 
-	public Iterable<JavaPersistentType> getPersistentTypes() {
-		return this.getJavaPersistentTypes();
+	public JavaPersistentType getPersistentType(String typeName) {
+		JavaManagedType managedType = this.getManagedType(typeName);
+		return managedType.getType() == JavaPersistentType.class ? (JavaPersistentType) managedType : null;
 	}
+
+	public Iterable<JavaPersistentType> getPersistentTypes() {
+		return IterableTools.downCast(IterableTools.filter(
+										this.getManagedTypes(), 
+										JAVA_PERSISTENT_TYPE_FILTER));
+	}
+
+	protected static final Filter<JavaManagedType> JAVA_PERSISTENT_TYPE_FILTER =
+		new Filter<JavaManagedType>() {
+			public boolean accept(JavaManagedType mt) {
+				return mt.getType() == JavaPersistentType.class;
+			}
+		};
 
 
 	// ********** PersistentType.Owner implementation **********
@@ -203,7 +245,7 @@ public class GenericJarFile
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		// TODO validate 'javaPersistentTypes'
+		// TODO validate 'javaManagedTypes'
 	}
 
 	public boolean isIn(org.eclipse.core.resources.IFolder folder) {

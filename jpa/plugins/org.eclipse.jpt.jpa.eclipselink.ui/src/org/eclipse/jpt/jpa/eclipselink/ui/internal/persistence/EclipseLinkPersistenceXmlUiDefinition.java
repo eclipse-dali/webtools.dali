@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection.Eclips
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.EclipseLinkPersistenceUnitCustomizationEditorPageDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general.EclipseLinkPersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkPersistenceUnitOptionsEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractPersistenceResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
@@ -26,13 +26,13 @@ public class EclipseLinkPersistenceXmlUiDefinition
 	extends AbstractPersistenceResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXmlUiDefinition();
+	private static final PersistenceResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXmlUiDefinition();
 	
 	
 	/**
 	 * Return the singleton
 	 */
-	public static ResourceUiDefinition instance() {
+	public static PersistenceResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 	

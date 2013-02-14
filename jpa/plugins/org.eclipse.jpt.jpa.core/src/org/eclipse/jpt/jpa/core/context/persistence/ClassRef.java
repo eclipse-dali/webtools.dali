@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 
@@ -80,28 +81,36 @@ public interface ClassRef
 	JavaResourceAbstractType getJavaResourceType();
 
 
-	// ********** java persistent type **********
+	// ********** java managed type **********
 
 	/**
-	 * String constant associated with changes to the java persistent type
+	 * String constant associated with changes to the java managed type
 	 */
-	final static String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
+	final static String JAVA_MANAGED_TYPE_PROPERTY = "javaManagedType"; //$NON-NLS-1$
 
 	/**
-	 * Return the JavaPersistentType that corresponds to this IClassRef.
+	 * Return the JavaManagedType that corresponds to this ClassRef.
 	 * This can be null.
 	 * This is not settable by users of this API.
 	 */
+	JavaManagedType getJavaManagedType();
+
+	/**
+	 * Convenience method for returning the JavaManagedType if it is a JavaPersistentType.
+	 * It will return null if the JavaManagedType is null or is not a JavaPersistentType.
+	 * @see ClassRef#getJavaManagedType()
+	 * @see ManagedType#getContextType()
+	 */
 	JavaPersistentType getJavaPersistentType();
 
-	Transformer<ClassRef, JavaPersistentType> JAVA_PERSISTENT_TYPE_TRANSFORMER = new JavaPersistentTypeTransformer();
+	Transformer<ClassRef, JavaManagedType> JAVA_MANAGED_TYPE_TRANSFORMER = new JavaManagedTypeTransformer();
 
-	class JavaPersistentTypeTransformer
-		extends AbstractTransformer<ClassRef, JavaPersistentType>
+	class JavaManagedTypeTransformer
+		extends AbstractTransformer<ClassRef, JavaManagedType>
 	{
 		@Override
-		protected JavaPersistentType transform_(ClassRef ref) {
-			return ref.getJavaPersistentType();
+		protected JavaManagedType transform_(ClassRef ref) {
+			return ref.getJavaManagedType();
 		}
 	}
 }

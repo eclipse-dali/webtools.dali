@@ -14,10 +14,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -37,12 +35,9 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -57,8 +52,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	// never null
 	protected final X xmlTypeMapping;
 
-	protected String class_;
-
 	protected Boolean specifiedMetadataComplete;
 	protected boolean overrideMetadataComplete;
 
@@ -69,7 +62,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	protected AbstractOrmTypeMapping(OrmPersistentType parent, X xmlTypeMapping) {
 		super(parent);
 		this.xmlTypeMapping = xmlTypeMapping;
-		this.class_ = xmlTypeMapping.getClassName();
 		this.specifiedMetadataComplete = xmlTypeMapping.getMetadataComplete();
 		this.specifiedParentClass = this.buildSpecifiedParentClass();
 	}
@@ -80,7 +72,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setClass_(this.xmlTypeMapping.getClassName());
 		this.setSpecifiedMetadataComplete_(this.xmlTypeMapping.getMetadataComplete());
 		this.setSpecifiedParentClass_(this.buildSpecifiedParentClass());
 	}
@@ -91,24 +82,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		this.setOverrideMetadataComplete(this.buildOverrideMetadataComplete());
 		this.setDefaultParentClass(this.buildDefaultParentClass());
 		this.setFullyQualifiedParentClass(this.buildFullyQualifiedParentClass());
-	}
-
-
-	// ********** class **********
-
-	public String getClass_() {
-		return this.class_;
-	}
-
-	public void setClass(String class_) {
-		this.setClass_(class_);
-		this.xmlTypeMapping.setClassName(class_);
-	}
-
-	protected void setClass_(String class_) {
-		String old = this.class_;
-		this.class_ = class_;
-		this.firePropertyChanged(CLASS_PROPERTY, old, class_);
 	}
 
 
@@ -283,7 +256,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	 * mapping to the new (this).
 	 */
 	public void initializeFrom(OrmTypeMapping oldMapping) {
-		this.setClass(oldMapping.getClass_());
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());
 		this.setOverrideMetadataComplete(oldMapping.isOverrideMetadataComplete());
 	}
@@ -435,57 +407,27 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 
 	// ********** text ranges **********
 
-	public JpaStructureNode getStructureNode(int offset) {
-		return this.xmlTypeMapping.containsOffset(offset) ? this.getPersistentType() : null;
-	}
-
 	public TextRange getSelectionTextRange() {
 		return this.xmlTypeMapping.getSelectionTextRange();
-	}
-
-	public TextRange getClassTextRange() {
-		return this.getValidationTextRange(this.xmlTypeMapping.getClassTextRange());
 	}
 
 	public TextRange getAttributesTextRange() {
 		return this.getValidationTextRange(this.xmlTypeMapping.getAttributesTextRange());
 	}
 
-	public TextRange getNameTextRange() {
-		return this.getValidationTextRange(this.xmlTypeMapping.getNameTextRange());
-	}
-
 
 	// ********** refactoring **********
 
-	public DeleteEdit createDeleteEdit() {
-		return this.xmlTypeMapping.createDeleteEdit();
-	}
-
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return this.getPersistentType().isFor(originalType.getFullyQualifiedName('.')) ?
-				IterableTools.singletonIterable(this.createRenameTypeEdit(originalType, newName)) :
-				IterableTools.<ReplaceEdit>emptyIterable();
-	}
-
-	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
-		return this.xmlTypeMapping.createRenameTypeEdit(originalType, newName);
+		return IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return this.getPersistentType().isFor(originalType.getFullyQualifiedName('.')) ?
-				IterableTools.singletonIterable(this.createRenamePackageEdit(newPackage.getElementName())) :
-				IterableTools.<ReplaceEdit>emptyIterable();
+		return IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.getPersistentType().isIn(originalPackage) ?
-				IterableTools.singletonIterable(this.createRenamePackageEdit(newName)) :
-				IterableTools.<ReplaceEdit>emptyIterable();
-	}
-
-	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return this.xmlTypeMapping.createRenamePackageEdit(newName);
+		return IterableTools.<ReplaceEdit>emptyIterable();
 	}
 
 
@@ -505,17 +447,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	protected void validateClass(List<IMessage> messages, IReporter reporter) {
-		if (StringTools.isBlank(this.class_)) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JptJpaCoreValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
-					this,
-					this.getClassTextRange()
-				)
-			);
-			return;
-		}
 		if (this.getJavaResourceType() != null) {
 			this.buildTypeMappingValidator().validate(messages, reporter);
 		}
@@ -534,35 +465,11 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public TextRange getValidationTextRange() {
-		// this should never be null; also, the persistent type delegates
-		// to here, so don't delegate back to it (or we will get a stack overflow)  bug 355415
-		TextRange textRange = this.xmlTypeMapping.getValidationTextRange();
-		//*return an Empty text range because validation sometimes run concurrently
-		//with the code adding the type mapping to xml; the IDOMNode might not
-		//be set when this is called. Brian's batch update changes in 3.2 should
-		//fix this problem.  bug 358745
-		return (textRange != null) ? textRange : TextRange.Empty.instance();
-	}
-
-	// ********** completion proposals **********
-
-	@Override
-	public Iterable<String> getCompletionProposals(int pos) {
-		Iterable<String> result = super.getCompletionProposals(pos);
-		if (result != null) {
-			return result;
-		}
-		if (this.classNameTouches(pos)) {
-			return this.getCandidateClassNames();
-		}
-		return null;
+		return this.getPersistentType().getValidationTextRange();
 	}
 
 	protected Iterable<String> getCandidateClassNames() {
 		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
 	}
 
-	protected boolean classNameTouches(int pos) {
-		return this.getXmlTypeMapping().classNameTouches(pos);
-	}
 }

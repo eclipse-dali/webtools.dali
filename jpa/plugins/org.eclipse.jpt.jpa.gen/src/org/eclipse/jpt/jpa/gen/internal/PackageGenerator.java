@@ -165,7 +165,7 @@ public class PackageGenerator {
 			persistenceUnit = persistence.getPersistenceUnit(0);
 		}
 		for (String className : genClasses) {
-			if (IterableTools.isEmpty(persistenceUnit.getMappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
+			if (IterableTools.isEmpty(persistenceUnit.getMappingFileRefsContaining(className)) && !persistenceUnit.specifiesManagedType(className)) {
 				persistenceUnit.addSpecifiedClassRef(className);
 			}
 		}

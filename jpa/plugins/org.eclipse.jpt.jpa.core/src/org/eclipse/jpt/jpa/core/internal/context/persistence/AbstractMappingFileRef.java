@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -247,14 +248,22 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		return (PersistenceUnit) super.getParent();
 	}
 
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<PersistentType>instance();
+	}
+
+	public Iterable<? extends ManagedType> getManagedTypes() {
+		return (this.mappingFile != null) ? this.mappingFile.getManagedTypes() : EmptyIterable.<ManagedType>instance();
+	}
+
+	public ManagedType getManagedType(String typeName) {
+		return (this.mappingFile == null) ? null : this.mappingFile.getManagedType(typeName);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(this.fileName);
-	}
-
-	public Iterable<? extends PersistentType> getPersistentTypes() {
-		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<PersistentType>instance();
 	}
 
 

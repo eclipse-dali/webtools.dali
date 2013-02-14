@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
@@ -33,7 +31,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
@@ -1160,20 +1157,6 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		result.append(')');
 		return result.toString();
 	}
-
-
-	// ********** type mappings **********
-
-	public List<XmlTypeMapping> getTypeMappings() {
-		// convert lists to arrays to *reduce* risk of ConcurrentModificationException
-		ArrayList<XmlTypeMapping> typeMappings = new ArrayList<XmlTypeMapping>();
-		CollectionTools.addAll(typeMappings, this.getMappedSuperclasses().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
-		CollectionTools.addAll(typeMappings, this.getEntities().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
-		CollectionTools.addAll(typeMappings, this.getEmbeddables().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
-		return typeMappings;
-	}
-
-	private static final XmlTypeMapping[] EMPTY_XML_TYPE_MAPPING_ARRAY = new XmlTypeMapping[0];
 
 
 	// ********** version -> schema location mapping **********

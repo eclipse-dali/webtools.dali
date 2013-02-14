@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
@@ -45,6 +47,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Defini
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_1Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -97,6 +100,25 @@ public class Generic2_1JpaPlatformProvider
 		JarResourceModelProvider.instance(),
 		PersistenceResourceModelProvider.instance(),
 		OrmResourceModelProvider.instance()
+	};
+
+
+	// ********* Java managed types *********
+
+	/**
+	 * To the specified list, add java managed type definitions to use for 
+	 * analyzing the type given all annotations on it. The order is 
+	 * important, as once a managed type definition tests positive for a
+	 * type, all following managed type definitions are ignored.
+	 */
+	@Override
+	protected void addJavaManagedTypeDefinitionsTo(ArrayList<JavaManagedTypeDefinition> definitions) {
+		CollectionTools.addAll(definitions, JAVA_MANAGED_TYPE_DEFINITIONS_2_1);
+	}
+
+	protected static final JavaManagedTypeDefinition[] JAVA_MANAGED_TYPE_DEFINITIONS_2_1 = new JavaManagedTypeDefinition[] {
+		JavaPersistentTypeDefinition.instance(),
+		JavaConverterTypeDefinition.instance()
 	};
 
 

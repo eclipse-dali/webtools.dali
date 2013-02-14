@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,7 +50,7 @@ public interface EclipseLinkConverterContainer
 	/**
 	 * Add a custom converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkCustomConverter addCustomConverter(int index);
+	EclipseLinkCustomConverter addCustomConverter(String name, int index);
 
 	/**
 	 * Remove the custom converter at the index from the converter holder.
@@ -86,7 +86,7 @@ public interface EclipseLinkConverterContainer
 	/**
 	 * Add a object type converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkObjectTypeConverter addObjectTypeConverter(int index);
+	EclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index);
 
 	/**
 	 * Remove the object type converter at the index from the converter holder.
@@ -122,7 +122,7 @@ public interface EclipseLinkConverterContainer
 	/**
 	 * Add a struct converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkStructConverter addStructConverter(int index);
+	EclipseLinkStructConverter addStructConverter(String name, int index);
 
 	/**
 	 * Remove the struct converter at the index from the converter holder.
@@ -158,7 +158,7 @@ public interface EclipseLinkConverterContainer
 	/**
 	 * Add a type converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkTypeConverter addTypeConverter(int index);
+	EclipseLinkTypeConverter addTypeConverter(String name, int index);
 
 	/**
 	 * Remove the type converter at the index from the converter holder.

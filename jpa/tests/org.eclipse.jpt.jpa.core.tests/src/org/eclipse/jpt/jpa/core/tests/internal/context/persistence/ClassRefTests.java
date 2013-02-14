@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2011 Oracle. 
+ *  Copyright (c) 2007, 2013 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -91,7 +91,7 @@ public class ClassRefTests extends ContextModelTestCase
 	}
 	
 	
-	public void testGetPersistentType() throws Exception {
+	public void testGetJavaManagedType() throws Exception {
 		createTestType();
 		
 		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
@@ -102,12 +102,12 @@ public class ClassRefTests extends ContextModelTestCase
 		
 		ClassRef classRef = getSpecifiedClassRef();
 		
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRef.getJavaPersistentType().getName());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRef.getJavaManagedType().getName());
 		
 		//test setting to a class that does not exist in the project
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		
 		classRef = getSpecifiedClassRef();		
-		assertNull(classRef.getJavaPersistentType());		
+		assertNull(classRef.getJavaManagedType());		
 	}
 }

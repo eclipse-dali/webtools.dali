@@ -104,15 +104,20 @@ public interface EntityMappings
 	/**
 	 * Covariant override.
 	 */
-	ListIterable<OrmPersistentType> getPersistentTypes();
+	ListIterable<OrmManagedType> getManagedTypes();
+	int getManagedTypesSize();
+	OrmManagedType getManagedType(String typeName);
+	void removeManagedType(int index);
+	void removeManagedType(OrmManagedType managedType);
+	boolean containsManagedType(String typeName);
+		String MANAGED_TYPES_LIST = "managedTypes"; //$NON-NLS-1$
+
+	/**
+	 * Covariant override.
+	 */
+	Iterable<OrmPersistentType> getPersistentTypes();
 	OrmPersistentType getPersistentType(String className);
-	int getPersistentTypesSize();
 	OrmPersistentType addPersistentType(String mappingKey, String className);
-	void removePersistentType(int index);
-	void removePersistentType(OrmPersistentType persistentType);
-	//void movePersistentType(int targetIndex, int sourceIndex);
-	boolean containsPersistentType(String className);
-		String PERSISTENT_TYPES_LIST = "persistentTypes"; //$NON-NLS-1$
 
 	ListIterable<OrmSequenceGenerator> getSequenceGenerators();
 	int getSequenceGeneratorsSize();

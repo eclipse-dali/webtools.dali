@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 
@@ -27,9 +26,11 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
  * @since 2.0
  */
 public interface JavaPersistentType
-	extends PersistentType, JavaElementReference
+	extends PersistentType, JavaManagedType
 {
 	// ********** covariant overrides **********
+
+	Class<? extends JavaPersistentType> getType();
 
 	JavaTypeMapping getMapping();
 	
@@ -45,11 +46,6 @@ public interface JavaPersistentType
 	 * Return whether any attribute in this persistent type is annotated
 	 */
 	boolean hasAnyAnnotatedAttributes();
-	
-	/**
-	 * Return the Java resource persistent type.
-	 */
-	JavaResourceType getJavaResourceType();
 	
 	JavaPersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute);
 }

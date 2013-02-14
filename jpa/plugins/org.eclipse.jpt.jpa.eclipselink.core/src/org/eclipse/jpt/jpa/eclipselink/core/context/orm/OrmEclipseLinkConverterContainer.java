@@ -34,20 +34,20 @@ public interface OrmEclipseLinkConverterContainer
 {
 
 	ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters();
-	OrmEclipseLinkCustomConverter addCustomConverter(int index);
-	OrmEclipseLinkCustomConverter addCustomConverter();
+	OrmEclipseLinkCustomConverter addCustomConverter(String name, int index);
+	OrmEclipseLinkCustomConverter addCustomConverter(String name);
 
 	ListIterable<OrmEclipseLinkObjectTypeConverter> getObjectTypeConverters();
-	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(int index);
-	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter();
+	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(String name, int index);
+	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(String name);
 	
 	ListIterable<OrmEclipseLinkStructConverter> getStructConverters();
-	OrmEclipseLinkStructConverter addStructConverter(int index);
-	OrmEclipseLinkStructConverter addStructConverter();
+	OrmEclipseLinkStructConverter addStructConverter(String name, int index);
+	OrmEclipseLinkStructConverter addStructConverter(String name);
 
 	ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters();
-	OrmEclipseLinkTypeConverter addTypeConverter(int index);
-	OrmEclipseLinkTypeConverter addTypeConverter();
+	OrmEclipseLinkTypeConverter addTypeConverter(String name, int index);
+	OrmEclipseLinkTypeConverter addTypeConverter(String name);
 
 
 	interface Owner {

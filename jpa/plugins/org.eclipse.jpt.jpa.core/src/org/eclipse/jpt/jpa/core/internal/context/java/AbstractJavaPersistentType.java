@@ -15,10 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -30,7 +26,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -43,6 +38,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
@@ -63,12 +59,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaManagedType
 	implements JavaPersistentType
 {
-	protected final JavaResourceType resourceType;
-
-	protected String name;
 
 	protected PersistentType superPersistentType;
 
@@ -83,9 +76,7 @@ public abstract class AbstractJavaPersistentType
 
 
 	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourceType resourceType) {
-		super(parent);
-		this.resourceType = resourceType;
-		this.name = this.resourceType.getTypeBinding().getQualifiedName();
+		super(parent, resourceType);
 		this.specifiedAccess = this.buildSpecifiedAccess();
 
 		// keep this non-null
@@ -102,7 +93,6 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setName(this.resourceType.getTypeBinding().getQualifiedName());
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncMapping();
 		this.synchronizeNodesWithResourceModel(this.getAttributes());
@@ -116,28 +106,6 @@ public abstract class AbstractJavaPersistentType
 		this.mapping.update();
 		this.updateAttributes();
 		this.updateChildren();
-	}
-
-
-	// ********** name **********
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getSimpleName(){
-		return ClassNameTools.simpleName(this.name);
-	}
-
-	public String getTypeQualifiedName() {
-		String packageName = this.getPackageName();
-		return StringTools.isBlank(packageName) ? this.name : this.name.substring(packageName.length() + 1);
-	}
-
-	protected void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 
 
@@ -969,18 +937,14 @@ public abstract class AbstractJavaPersistentType
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 
-	public TextRange getSelectionTextRange() {
-		return this.resourceType.getNameTextRange();
-	}
-
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		// the type's resource can be null if the resource type is "external"
 		if (ObjectTools.equals(this.getResource(), jpaFile.getFile())) {
 			for (JpaStructureNode root : rootStructureNodes) {
 				// the JPA file is a java file, so the already-added root nodes must be
-				// Java persistent types
-				JavaPersistentType jpt = (JavaPersistentType) root;
-				if (jpt.getName().equals(this.name)) {
+				// Java managed types
+				JavaManagedType jmt = (JavaManagedType) root;
+				if (jmt.getName().equals(this.name)) {
 					// no duplicates -
 					// the first one found is used as a root in the structure view,
 					// the others are ignored...
@@ -1063,25 +1027,12 @@ public abstract class AbstractJavaPersistentType
 		}
 	}
 
-	public TextRange getValidationTextRange() {
-		return this.getSelectionTextRange();
-	}
-
 
 	// ********** misc **********
 
 	@Override
 	public PersistentType.Owner getParent() {
 		return (PersistentType.Owner) super.getParent();
-	}
-
-	@Override
-	public IResource getResource() {
-		return this.resourceType.getFile();
-	}
-
-	public JavaResourceType getJavaResourceType() {
-		return this.resourceType;
 	}
 
 	public AccessType getOwnerOverrideAccess() {
@@ -1092,38 +1043,8 @@ public abstract class AbstractJavaPersistentType
 		return this.getParent().getDefaultPersistentTypeAccess();
 	}
 
-	protected JpaFile getJpaFile() {
-		return this.getJpaFile(this.resourceType.getFile());
-	}
-
-	public boolean isFor(String typeName) {
-		return ObjectTools.equals(typeName, this.name);
-	}
-
-	public boolean isIn(IPackageFragment packageFragment) {
-		return ObjectTools.equals(packageFragment.getElementName(), this.getPackageName());
-	}
-
-	protected String getPackageName() {
-		return this.getJavaResourceType().getTypeBinding().getPackageName();
-	}
-
 	public PersistentType getOverriddenPersistentType() {
 		return null;  // Java persistent types do not override anything
-	}
-
-	public IJavaElement getJavaElement() {
-		try {
-			return this.getJavaProject().findType(this.name);
-		} catch (JavaModelException ex) {
-			JptJpaCorePlugin.instance().logError(ex);
-			return null;
-		}
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
 	}
 
 

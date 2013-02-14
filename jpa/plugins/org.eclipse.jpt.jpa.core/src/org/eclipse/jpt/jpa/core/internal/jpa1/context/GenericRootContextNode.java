@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -286,7 +286,7 @@ public class GenericRootContextNode
 		HashBag<JavaResourceAbstractType> annotatedTypes = CollectionTools.bag(this.jpaProject.getAnnotatedJavaSourceTypes());
 		HashBag<JavaResourceAbstractType> orphans = annotatedTypes.clone();
 		for (JavaResourceAbstractType jrat : annotatedTypes) {
-			if (persistenceUnit.specifiesPersistentType(jrat.getTypeBinding().getQualifiedName())) {
+			if (persistenceUnit.specifiesManagedType(jrat.getTypeBinding().getQualifiedName())) {
 				orphans.remove(jrat);
 			}
 			else if (MetamodelSynchronizer.MetamodelTools.isMetamodel(jrat)) {
@@ -294,13 +294,13 @@ public class GenericRootContextNode
 			}
 		}
 
-		Iterable<String> typeMappingAnnotationNames = this.jpaProject.getTypeMappingAnnotationNames();
+		Iterable<String> managedTypeAnnotationNames = this.jpaProject.getManagedTypeAnnotationNames();
 		for (JavaResourceAbstractType jrat : orphans) {
-			if (jrat.isAnnotatedWithAnyOf(typeMappingAnnotationNames)) {
+			if (jrat.isAnnotatedWithAnyOf(managedTypeAnnotationNames)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JptJpaCoreValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
+						JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,
 						new String[] {jrat.getTypeBinding().getQualifiedName()},
 						jrat.getFile(),
 						jrat.getNameTextRange()
@@ -311,8 +311,8 @@ public class GenericRootContextNode
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						JptJpaCoreValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
-						new String[] {jrat.getName()},
+						JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,
+						new String[] {jrat.getTypeBinding().getQualifiedName()},
 						jrat.getFile(),
 						jrat.getNameTextRange()
 					)
