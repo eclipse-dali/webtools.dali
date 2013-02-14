@@ -35,6 +35,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm.OxmFileImpl;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -113,7 +114,14 @@ public class ELJaxbContextRootImpl
 			Hashtable<String, OxmTypeMapping> oldMap = new Hashtable<String, OxmTypeMapping>(this.oxmTypeMappingMap);
 			this.oxmTypeMappingMap.clear();
 			for (OxmFile oxmFile : getOxmFiles()) {
-				// TODO - xml enums
+				for (OxmXmlEnum oxmXmlEnum: oxmFile.getXmlBindings().getXmlEnums()) {
+					String typeName = oxmXmlEnum.getTypeName().getFullyQualifiedName();
+					if (! StringTools.isBlank(typeName)) {
+						if (! this.oxmTypeMappingMap.containsKey(typeName)) {
+							this.oxmTypeMappingMap.put(typeName, oxmXmlEnum);
+						}
+					}
+				}
 				for (OxmJavaType oxmJavaType : oxmFile.getXmlBindings().getJavaTypes()) {
 					String typeName = oxmJavaType.getTypeName().getFullyQualifiedName();
 					if (! StringTools.isBlank(typeName)) {
