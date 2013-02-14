@@ -16,10 +16,10 @@ import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingImageHelper;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.JaxbPersistentAttributeItemLabelProvider;
 
 
-public class ELJaxbPersistentAttributeItemLabelProvider
+public class ELJaxbPersistentAttributeLabelProvider
 	extends JaxbPersistentAttributeItemLabelProvider
 {
-	public ELJaxbPersistentAttributeItemLabelProvider(JaxbPersistentAttribute attribute, ItemExtendedLabelProvider.Manager manager) {
+	public ELJaxbPersistentAttributeLabelProvider(JaxbPersistentAttribute attribute, ItemExtendedLabelProvider.Manager manager) {
 		super(attribute, manager);
 	}
 	

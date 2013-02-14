@@ -16,6 +16,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.ui.JptJaxbEclipseLinkUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorItemLabelProviderFactory;
 
@@ -40,10 +41,13 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
 		
 		if (item instanceof JaxbPersistentAttribute) {
-			return new ELJaxbPersistentAttributeItemLabelProvider((JaxbPersistentAttribute) item, manager);
+			return new ELJaxbPersistentAttributeLabelProvider((JaxbPersistentAttribute) item, manager);
 		}
 		else if (item instanceof OxmFile) {
 			return buildOxmFileLabelProvider((OxmFile) item, manager);
+		}
+		else if (item instanceof OxmXmlEnum) {
+			return buildOxmXmlEnumLabelProvider((OxmXmlEnum) item, manager);
 		}
 		else if (item instanceof OxmJavaType) {
 			return buildOxmJavaTypeLabelProvider((OxmJavaType) item, manager);
@@ -80,7 +84,12 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	
 	protected ItemExtendedLabelProvider buildOxmJavaTypeLabelProvider(
 			OxmJavaType item, ItemExtendedLabelProvider.Manager manager) {
-		return new OxmJavaTypeItemLabelProvider(item, manager);
+		return new OxmJavaTypeLabelProvider(item, manager);
+	}
+	
+	protected ItemExtendedLabelProvider buildOxmXmlEnumLabelProvider(
+			OxmXmlEnum item, ItemExtendedLabelProvider.Manager manager) {
+		return new OxmXmlEnumLabelProvider(item, manager);
 	}
 	
 	protected ItemExtendedLabelProvider buildOxmJavaAttributeLabelProvider(

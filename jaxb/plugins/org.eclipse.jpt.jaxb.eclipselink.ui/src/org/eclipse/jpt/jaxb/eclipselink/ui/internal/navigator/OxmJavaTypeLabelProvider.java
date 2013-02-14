@@ -17,10 +17,10 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 
-public class OxmJavaTypeItemLabelProvider
+public class OxmJavaTypeLabelProvider
 		extends AbstractItemExtendedLabelProvider<OxmJavaType> {
 	
-	public OxmJavaTypeItemLabelProvider(OxmJavaType oxmJavaType, ItemExtendedLabelProvider.Manager manager) {
+	public OxmJavaTypeLabelProvider(OxmJavaType oxmJavaType, ItemExtendedLabelProvider.Manager manager) {
 		super(oxmJavaType, manager);
 	}
 
