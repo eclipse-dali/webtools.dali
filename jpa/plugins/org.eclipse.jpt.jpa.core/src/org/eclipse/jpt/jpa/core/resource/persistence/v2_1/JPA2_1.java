@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,8 +28,9 @@ import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
 public interface JPA2_1
 	extends JPA
 {
-	String SCHEMA_NAMESPACE = JPA.SCHEMA_NAMESPACE;
-	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd";
+
+	String SCHEMA_NAMESPACE = "http://xmlns.jcp.org/xml/ns/persistence";
+	String SCHEMA_LOCATION = "http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd";
 	String SCHEMA_VERSION = "2.1";
 	
 	// JPA 2.1 specific nodes

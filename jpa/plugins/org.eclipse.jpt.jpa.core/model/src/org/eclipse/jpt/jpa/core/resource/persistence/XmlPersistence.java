@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -215,13 +215,26 @@ public class XmlPersistence extends ERootObjectImpl
 	}
 	
 	@Override
-	protected String getNamespace() {
-		return JPA.SCHEMA_NAMESPACE;
-	}
-	
-	@Override
 	protected HashMap<String, String> schemaLocations() {
 		return SCHEMA_LOCATIONS;
+	}
+
+
+	// ***** version -> namespace mapping *****
+	
+	private static final HashMap<String, String> NAMESPACES = buildNamespaces();
+	
+	private static HashMap<String, String> buildNamespaces() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_NAMESPACE);
+		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_NAMESPACE);
+		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_NAMESPACE);
+		return map;
+	}
+
+	@Override
+	protected HashMap<String, String> namespaces() {
+		return NAMESPACES;
 	}
 	
 	
@@ -255,9 +268,9 @@ public class XmlPersistence extends ERootObjectImpl
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 				buildVersionTranslator(SCHEMA_LOCATIONS),
-				buildNamespaceTranslator(JPA.SCHEMA_NAMESPACE),
+				buildNamespaceTranslator(),
 				buildSchemaNamespaceTranslator(),
-				buildSchemaLocationTranslator(JPA.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+				buildSchemaLocationTranslator(SCHEMA_LOCATIONS),
 				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
 			};
 	}

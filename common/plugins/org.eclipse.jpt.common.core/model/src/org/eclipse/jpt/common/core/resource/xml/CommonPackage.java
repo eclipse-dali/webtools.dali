@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2012  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -90,13 +90,22 @@ public class CommonPackage extends EPackageImpl
 	public static final int EROOT_OBJECT__VERSION = 0;
 
 	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EROOT_OBJECT__NAMESPACE = 1;
+
+	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EROOT_OBJECT__SCHEMA_LOCATION = 1;
+	public static final int EROOT_OBJECT__SCHEMA_LOCATION = 2;
 
 	/**
 	 * The feature id for the '<em><b>Implied Version</b></em>' attribute.
@@ -105,7 +114,7 @@ public class CommonPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EROOT_OBJECT__IMPLIED_VERSION = 2;
+	public static final int EROOT_OBJECT__IMPLIED_VERSION = 3;
 
 	/**
 	 * The number of structural features of the '<em>ERoot Object</em>' class.
@@ -114,7 +123,7 @@ public class CommonPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EROOT_OBJECT_FEATURE_COUNT = 3;
+	public static final int EROOT_OBJECT_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl <em>ERoot Object Impl</em>}' class.
@@ -134,6 +143,15 @@ public class CommonPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int EROOT_OBJECT_IMPL__VERSION = EROOT_OBJECT__VERSION;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EROOT_OBJECT_IMPL__NAMESPACE = EROOT_OBJECT__NAMESPACE;
 
 	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
@@ -294,6 +312,21 @@ public class CommonPackage extends EPackageImpl
 	 */
 	public EAttribute getERootObject_SchemaLocation()
 	{
+		return (EAttribute)eRootObjectEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getNamespace <em>Namespace</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Namespace</em>'.
+	 * @see org.eclipse.jpt.common.core.resource.xml.ERootObject#getNamespace()
+	 * @see #getERootObject()
+	 * @generated
+	 */
+	public EAttribute getERootObject_Namespace()
+	{
 		return (EAttribute)eRootObjectEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -309,7 +342,7 @@ public class CommonPackage extends EPackageImpl
 	 */
 	public EAttribute getERootObject_ImpliedVersion()
 	{
-		return (EAttribute)eRootObjectEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)eRootObjectEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -349,6 +382,7 @@ public class CommonPackage extends EPackageImpl
 
 		eRootObjectEClass = createEClass(EROOT_OBJECT);
 		createEAttribute(eRootObjectEClass, EROOT_OBJECT__VERSION);
+		createEAttribute(eRootObjectEClass, EROOT_OBJECT__NAMESPACE);
 		createEAttribute(eRootObjectEClass, EROOT_OBJECT__SCHEMA_LOCATION);
 		createEAttribute(eRootObjectEClass, EROOT_OBJECT__IMPLIED_VERSION);
 	}
@@ -389,6 +423,7 @@ public class CommonPackage extends EPackageImpl
 
 		initEClass(eRootObjectEClass, ERootObject.class, "ERootObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getERootObject_Version(), ecorePackage.getEString(), "version", null, 0, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getERootObject_Namespace(), ecorePackage.getEString(), "namespace", null, 1, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getERootObject_SchemaLocation(), ecorePackage.getEString(), "schemaLocation", null, 1, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getERootObject_ImpliedVersion(), ecorePackage.getEString(), "impliedVersion", null, 0, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -445,6 +480,14 @@ public class CommonPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute EROOT_OBJECT__SCHEMA_LOCATION = eINSTANCE.getERootObject_SchemaLocation();
+
+		/**
+		 * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute EROOT_OBJECT__NAMESPACE = eINSTANCE.getERootObject_Namespace();
 
 		/**
 		 * The meta object literal for the '<em><b>Implied Version</b></em>' attribute feature.

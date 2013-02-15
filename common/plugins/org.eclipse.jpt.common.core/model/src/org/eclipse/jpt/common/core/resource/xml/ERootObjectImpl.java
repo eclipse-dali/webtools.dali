@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2012  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -61,6 +61,26 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	 * @ordered
 	 */
 	protected String version = VERSION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamespace()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAMESPACE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamespace()
+	 * @generated
+	 * @ordered
+	 */
+	protected String namespace = NAMESPACE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getSchemaLocation() <em>Schema Location</em>}' attribute.
@@ -164,8 +184,9 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	}
 	
 	public void setDocumentVersion(String newVersion) {
-		setVersion(newVersion);
-		setSchemaLocation(getSchemaLocationForVersion(newVersion));
+		this.setVersion(newVersion);
+		this.setNamespace(this.getNamespaceForVersion(newVersion));
+		this.setSchemaLocation(this.getSchemaLocationForVersion(newVersion));
 	}
 	
 	/**
@@ -215,6 +236,41 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	}
 	
 	/**
+	 * Returns the value of the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Namespace</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Namespace</em>' attribute.
+	 * @see #setNamespace(String)
+	 * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage#getERootObject_Namespace()
+	 * @model required="true"
+	 * @generated
+	 */
+	public String getNamespace()
+	{
+		return namespace;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl#getNamespace <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Namespace</em>' attribute.
+	 * @see #getNamespace()
+	 * @generated
+	 */
+	public void setNamespace(String newNamespace)
+	{
+		String oldNamespace = namespace;
+		namespace = newNamespace;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE, oldNamespace, namespace));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Implied Version</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -261,6 +317,8 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		{
 			case CommonPackage.EROOT_OBJECT_IMPL__VERSION:
 				return getVersion();
+			case CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE:
+				return getNamespace();
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				return getSchemaLocation();
 			case CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION:
@@ -281,6 +339,9 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		{
 			case CommonPackage.EROOT_OBJECT_IMPL__VERSION:
 				setVersion((String)newValue);
+				return;
+			case CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE:
+				setNamespace((String)newValue);
 				return;
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				setSchemaLocation((String)newValue);
@@ -305,6 +366,9 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 			case CommonPackage.EROOT_OBJECT_IMPL__VERSION:
 				setVersion(VERSION_EDEFAULT);
 				return;
+			case CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE:
+				setNamespace(NAMESPACE_EDEFAULT);
+				return;
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				setSchemaLocation(SCHEMA_LOCATION_EDEFAULT);
 				return;
@@ -327,6 +391,8 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		{
 			case CommonPackage.EROOT_OBJECT_IMPL__VERSION:
 				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
+			case CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE:
+				return NAMESPACE_EDEFAULT == null ? namespace != null : !NAMESPACE_EDEFAULT.equals(namespace);
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				return SCHEMA_LOCATION_EDEFAULT == null ? schemaLocation != null : !SCHEMA_LOCATION_EDEFAULT.equals(schemaLocation);
 			case CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION:
@@ -348,6 +414,8 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (version: ");
 		result.append(version);
+		result.append(", namespace: ");
+		result.append(namespace);
 		result.append(", schemaLocation: ");
 		result.append(schemaLocation);
 		result.append(", impliedVersion: ");
@@ -366,8 +434,6 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	
 	// **************** version -> schema location mapping ********************
 	
-	protected abstract String getNamespace();
-	
 	protected abstract HashMap<String, String> schemaLocations();
 	
 	protected String getSchemaLocationForVersion(String version) {
@@ -377,9 +443,18 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		}
 		return schemaLocation;
 	}
-	
-	private static String buildSchemaLocationString(String namespace, String schemaLocation) {
-		return namespace + ' ' + schemaLocation;
+
+
+	// **************** version -> namespace mapping ********************
+
+	protected abstract HashMap<String, String> namespaces();
+
+	protected String getNamespaceForVersion(String version) {
+		String namespace = this.namespaces().get(version);
+		if (namespace == null) {
+			JptCommonCorePlugin.instance().logError(new Throwable("No namespace defined for version: " + version));
+		}
+		return namespace;
 	}
 	
 	
@@ -398,8 +473,11 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		};
 	}
 	
-	protected static Translator buildNamespaceTranslator(String namespace) {
-		return new ConstantAttributeTranslator(XML.NAMESPACE, namespace);
+	protected static Translator buildNamespaceTranslator() {
+		return new Translator(
+				XML.NAMESPACE, 
+				CommonPackage.eINSTANCE.getERootObject_Namespace(),
+				Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildSchemaNamespaceTranslator() {
@@ -407,7 +485,6 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	}
 	
 	protected static Translator buildSchemaLocationTranslator(
-			final String namespace,
 			final Map<String, String> versionsToSchemaLocations) {
 		
 		return new EnumeratedValueTranslator(
@@ -429,7 +506,9 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 			
 			@Override
 			public String convertValueToString(Object value, EObject owner) {
-				return buildSchemaLocationString(namespace, (String) value);
+				String namespace = ((ERootObject) owner).getNamespace();
+				String schemaLocation = (String) value;
+				return namespace + ' ' + schemaLocation;
 			}
 		};	
 	}

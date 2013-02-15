@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getVersion <em>Version</em>}</li>
+ *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getNamespace <em>Namespace</em>}</li>
  *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getSchemaLocation <em>Schema Location</em>}</li>
  *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getImpliedVersion <em>Implied Version</em>}</li>
  * </ul>
@@ -93,6 +94,32 @@ public interface ERootObject extends EBaseObject
 	 */
 	void setSchemaLocation(String value);
 	
+	/**
+	 * Returns the value of the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Namespace</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Namespace</em>' attribute.
+	 * @see #setNamespace(String)
+	 * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage#getERootObject_Namespace()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getNamespace();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getNamespace <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Namespace</em>' attribute.
+	 * @see #getNamespace()
+	 * @generated
+	 */
+	void setNamespace(String value);
+
 	/**
 	 * Returns the value of the '<em><b>Implied Version</b></em>' attribute.
 	 * <!-- begin-user-doc -->

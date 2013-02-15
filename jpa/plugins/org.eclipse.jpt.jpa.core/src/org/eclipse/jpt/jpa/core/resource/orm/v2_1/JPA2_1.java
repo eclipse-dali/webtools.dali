@@ -10,7 +10,6 @@
 
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
-import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 
 /**
@@ -29,8 +28,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 public interface JPA2_1
 	extends JPA2_0
 {
-	String SCHEMA_NAMESPACE = JPA.SCHEMA_NAMESPACE;
-	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/orm_2_1.xsd";
+	String SCHEMA_NAMESPACE = "http://xmlns.jcp.org/xml/ns/persistence/orm";
+	String SCHEMA_LOCATION = "http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd";
 	String SCHEMA_VERSION = "2.1";
 	
 	// JPA 2.1 specific nodes

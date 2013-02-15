@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -1172,15 +1171,28 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	}
 	
 	@Override
-	protected String getNamespace() {
-		return JPA.SCHEMA_NAMESPACE;
-	}
-	
-	@Override
 	protected HashMap<String, String> schemaLocations() {
 		return SCHEMA_LOCATIONS;
 	}
-	
+
+
+	// ***** version -> namespace mapping *****
+
+	private static final HashMap<String, String> NAMESPACES = buildNamespaces();
+
+	private static HashMap<String, String> buildNamespaces() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_NAMESPACE);
+		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_NAMESPACE);
+		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_NAMESPACE);
+		return map;
+	}
+
+	@Override
+	protected HashMap<String, String> namespaces() {
+		return NAMESPACES;
+	}
+
 	
 	// ********** content type **********
 
@@ -1213,9 +1225,9 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildVersionTranslator(SCHEMA_LOCATIONS),
-			buildNamespaceTranslator(JPA.SCHEMA_NAMESPACE),
+			buildNamespaceTranslator(),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(JPA.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+			buildSchemaLocationTranslator(SCHEMA_LOCATIONS),
 			buildDescriptionTranslator(),
 			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),

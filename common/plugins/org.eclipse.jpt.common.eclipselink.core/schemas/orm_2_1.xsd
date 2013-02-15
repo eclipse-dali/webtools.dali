@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Java Persistence API object/relational mapping file schema -->
-<xsd:schema targetNamespace="http://java.sun.com/xml/ns/persistence/orm" 
-  xmlns:orm="http://java.sun.com/xml/ns/persistence/orm" 
+<xsd:schema targetNamespace="http://xmlns.jcp.org/xml/ns/persistence/orm" 
+  xmlns:orm="http://xmlns.jcp.org/xml/ns/persistence/orm" 
   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified" 
@@ -9,14 +9,14 @@
 
   <xsd:annotation>
     <xsd:documentation>
-      @(#)orm_2_1.xsd 2.1  December 11 2012
+      @(#)orm_2_1.xsd 2.1  February 4 2013
     </xsd:documentation>
   </xsd:annotation>
 
   <xsd:annotation>
     <xsd:documentation>
 
-  Copyright (c) 2008 - 2012 Oracle Corporation.  All rights reserved. 
+  Copyright (c) 2008 - 2013 Oracle Corporation.  All rights reserved. 
   
   This program and the accompanying materials are made available under the 
   terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0 
@@ -26,7 +26,7 @@
   http://www.eclipse.org/org/documents/edl-v10.php.
   
   Contributors:
-      Linda DeMichiel - Java Persistence 2.1, Version 2.1 (November 9, 2012)
+      Linda DeMichiel - Java Persistence 2.1, Version 2.1 (February 4, 2013)
       Specification available from http://jcp.org/en/jsr/detail?id=338
   
     </xsd:documentation>
@@ -44,15 +44,15 @@
        Object/relational mapping files must indicate the object/relational
        mapping file schema by using the persistence namespace:
 
-       http://java.sun.com/xml/ns/persistence
+       http://xmlns.jcp.org/xml/ns/persistence/orm
 
        and indicate the version of the schema by
        using the version element as shown below:
 
-      <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+      <entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
-          http://java.sun.com/xml/ns/persistence/orm_2_1.xsd"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+          http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
         version="2.1">
           ...
       </entity-mappings>
@@ -2145,11 +2145,10 @@
     <xsd:sequence>
       <xsd:element name="description" type="xsd:string" 
                    minOccurs="0"/>
-      <xsd:element name="parameter-mode" type="orm:parameter-mode" 
-                   minOccurs="0"/>
     </xsd:sequence>
     <xsd:attribute name="name" type="xsd:string"/>
     <xsd:attribute name="class" type="xsd:string" use="required"/>
+    <xsd:attribute name="mode" type="orm:parameter-mode"/>
   </xsd:complexType>
 
 <!-- **************************************************** -->

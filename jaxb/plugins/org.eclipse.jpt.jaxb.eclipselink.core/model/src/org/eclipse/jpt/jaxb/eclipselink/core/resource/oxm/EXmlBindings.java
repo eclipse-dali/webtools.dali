@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2012, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -905,13 +905,26 @@ public class EXmlBindings extends ERootObjectImpl
 	}
 	
 	@Override
-	protected String getNamespace() {
-		return Oxm.SCHEMA_NAMESPACE;
-	}
-	
-	@Override
 	protected HashMap<String, String> schemaLocations() {
 		return SCHEMA_LOCATIONS;
+	}
+
+	// ***** version -> namespace mapping *****
+	
+	private static final HashMap<String, String> NAMESPACES = buildNamespaces();
+	
+	private static HashMap<String, String> buildNamespaces() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(Oxm.SCHEMA_VERSION_2_1, Oxm.SCHEMA_NAMESPACE);
+		map.put(Oxm.SCHEMA_VERSION_2_2, Oxm.SCHEMA_NAMESPACE);
+		map.put(Oxm.SCHEMA_VERSION_2_3, Oxm.SCHEMA_NAMESPACE);
+		map.put(Oxm.SCHEMA_VERSION_2_4, Oxm.SCHEMA_NAMESPACE);
+		return map;
+	}
+
+	@Override
+	protected HashMap<String, String> namespaces() {
+		return NAMESPACES;
 	}
 	
 	
@@ -945,9 +958,9 @@ public class EXmlBindings extends ERootObjectImpl
 	protected static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildVersionTranslator(SCHEMA_LOCATIONS),
-			buildNamespaceTranslator(Oxm.SCHEMA_NAMESPACE),
+			buildNamespaceTranslator(),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(Oxm.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+			buildSchemaLocationTranslator(SCHEMA_LOCATIONS),
 			buildXmlAccessorTypeTranslator(),
 			buildXmlAccessorOrderTranslator(),
 			buildXmlMappingMetadataCompleteTranslator(),

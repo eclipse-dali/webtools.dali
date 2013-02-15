@@ -1252,13 +1252,31 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	}
 	
 	@Override
-	protected String getNamespace() {
-		return EclipseLink.SCHEMA_NAMESPACE;
-	}
-	
-	@Override
 	protected HashMap<String, String> schemaLocations() {
 		return SCHEMA_LOCATIONS;
+	}
+
+	// ***** version -> namespace mapping *****
+	
+	private static final HashMap<String, String> NAMESPACES = buildNamespaces();
+	
+	private static HashMap<String, String> buildNamespaces() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(EclipseLink.SCHEMA_VERSION, EclipseLink.SCHEMA_NAMESPACE);
+		map.put(EclipseLink1_1.SCHEMA_VERSION, EclipseLink1_1.SCHEMA_NAMESPACE);
+		map.put(EclipseLink1_2.SCHEMA_VERSION, EclipseLink1_2.SCHEMA_NAMESPACE);
+		map.put(EclipseLink2_0.SCHEMA_VERSION, EclipseLink2_0.SCHEMA_NAMESPACE);
+		map.put(EclipseLink2_1.SCHEMA_VERSION, EclipseLink2_1.SCHEMA_NAMESPACE);
+		map.put(EclipseLink2_2.SCHEMA_VERSION, EclipseLink2_2.SCHEMA_NAMESPACE);
+		map.put(EclipseLink2_3.SCHEMA_VERSION, EclipseLink2_3.SCHEMA_NAMESPACE);
+		map.put(EclipseLink2_4.SCHEMA_VERSION, EclipseLink2_4.SCHEMA_NAMESPACE);
+		map.put(EclipseLink2_5.SCHEMA_VERSION, EclipseLink2_5.SCHEMA_NAMESPACE);
+		return map;
+	}
+
+	@Override
+	protected HashMap<String, String> namespaces() {
+		return NAMESPACES;
 	}
 	
 	
@@ -1293,9 +1311,9 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildVersionTranslator(SCHEMA_LOCATIONS),
-			buildNamespaceTranslator(EclipseLink.SCHEMA_NAMESPACE),
+			buildNamespaceTranslator(),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(EclipseLink.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+			buildSchemaLocationTranslator(SCHEMA_LOCATIONS),
 			buildDescriptionTranslator(),
 			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
