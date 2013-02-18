@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
@@ -135,9 +135,9 @@ public class EclipseLinkEntityMappingsImpl
 	// ********** managed types **********
 
 	@Override
-	protected List<XmlConverter_2_1> getXml2_1Converters() {
-		ArrayList<XmlConverter_2_1> xmlConverters = new ArrayList<XmlConverter_2_1>();
-		for (XmlConverter_2_1 xmlConverter : this.xmlEntityMappings.getConverters()) {
+	protected List<XmlConverter> getXml2_1Converters() {
+		ArrayList<XmlConverter> xmlConverters = new ArrayList<XmlConverter>();
+		for (XmlConverter xmlConverter : this.xmlEntityMappings.getConverters()) {
 			if (((XmlNamedConverter) xmlConverter).getName() == null){
 				xmlConverters.add(xmlConverter);
 			}

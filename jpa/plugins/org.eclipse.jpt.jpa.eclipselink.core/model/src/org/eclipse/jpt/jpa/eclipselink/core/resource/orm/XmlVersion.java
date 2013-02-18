@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
@@ -134,7 +135,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConverter_2_1> converters;
+	protected EList<XmlConverter> converters;
 
 	/**
 	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
@@ -319,7 +320,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 
 	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConverter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
@@ -331,11 +332,11 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConverter_2_1> getConverters()
+	public EList<XmlConverter> getConverters()
 	{
 		if (converters == null)
 		{
-			converters = new EObjectContainmentEList<XmlConverter_2_1>(XmlConverter_2_1.class, this, EclipseLinkOrmPackage.XML_VERSION__CONVERTERS);
+			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_VERSION__CONVERTERS);
 		}
 		return converters;
 	}
@@ -581,7 +582,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERTERS:
 				getConverters().clear();
-				getConverters().addAll((Collection<? extends XmlConverter_2_1>)newValue);
+				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__TYPE_CONVERTERS:
 				getTypeConverters().clear();

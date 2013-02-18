@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedAttributeNode;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedSubgraph;
 
 /**
  * <!-- begin-user-doc -->
@@ -44,7 +46,7 @@ public interface XmlNamedEntityGraph_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Named Attribute Nodes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedAttributeNode_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedAttributeNode}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Attribute Nodes</em>' containment reference list isn't clear,
@@ -56,11 +58,11 @@ public interface XmlNamedEntityGraph_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedAttributeNode_2_1> getNamedAttributeNodes();
+	EList<XmlNamedAttributeNode> getNamedAttributeNodes();
 
 	/**
 	 * Returns the value of the '<em><b>Subgraphs</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedSubgraph_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedSubgraph}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Subgraphs</em>' containment reference list isn't clear,
@@ -72,11 +74,11 @@ public interface XmlNamedEntityGraph_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedSubgraph_2_1> getSubgraphs();
+	EList<XmlNamedSubgraph> getSubgraphs();
 
 	/**
 	 * Returns the value of the '<em><b>Subclass Subgraphs</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedSubgraph_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedSubgraph}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Subclass Subgraphs</em>' containment reference list isn't clear,
@@ -88,7 +90,7 @@ public interface XmlNamedEntityGraph_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedSubgraph_2_1> getSubclassSubgraphs();
+	EList<XmlNamedSubgraph> getSubclassSubgraphs();
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

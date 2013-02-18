@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
@@ -550,7 +551,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConverter_2_1> converters;
+	protected EList<XmlConverter> converters;
 
 	/**
 	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
@@ -929,7 +930,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 
 	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConverter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
@@ -941,11 +942,11 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConverter_2_1> getConverters()
+	public EList<XmlConverter> getConverters()
 	{
 		if (converters == null)
 		{
-			converters = new EObjectContainmentEList<XmlConverter_2_1>(XmlConverter_2_1.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CONVERTERS);
+			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CONVERTERS);
 		}
 		return converters;
 	}
@@ -3125,7 +3126,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CONVERTERS:
 				getConverters().clear();
-				getConverters().addAll((Collection<? extends XmlConverter_2_1>)newValue);
+				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TYPE_CONVERTERS:
 				getTypeConverters().clear();

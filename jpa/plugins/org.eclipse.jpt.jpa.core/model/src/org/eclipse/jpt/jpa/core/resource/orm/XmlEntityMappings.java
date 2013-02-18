@@ -28,6 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -128,7 +129,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConverter_2_1> converters;
+	protected EList<XmlConverter> converters;
 
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -607,7 +608,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 
 	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConverter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converters</em>' reference list isn't clear,
@@ -619,11 +620,11 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConverter_2_1> getConverters()
+	public EList<XmlConverter> getConverters()
 	{
 		if (converters == null)
 		{
-			converters = new EObjectContainmentEList<XmlConverter_2_1>(XmlConverter_2_1.class, this, OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS);
+			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS);
 		}
 		return converters;
 	}
@@ -876,7 +877,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				getConverters().clear();
-				getConverters().addAll((Collection<? extends XmlConverter_2_1>)newValue);
+				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription((String)newValue);

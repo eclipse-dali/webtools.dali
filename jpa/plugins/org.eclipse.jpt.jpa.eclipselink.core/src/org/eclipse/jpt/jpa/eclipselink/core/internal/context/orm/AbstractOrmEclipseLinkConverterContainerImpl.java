@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -43,7 +42,7 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 	private final Owner owner;
 	protected final XmlConverterContainer xmlConverterContainer;
 
-	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter_2_1> customConverterContainer;
+	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> customConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> objectTypeConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> structConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
@@ -131,16 +130,16 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 		this.customConverterContainer.synchronizeWithResourceModel();
 	}
 
-	protected ListIterable<XmlConverter_2_1> getXmlCustomConverters() {
+	protected ListIterable<XmlConverter> getXmlCustomConverters() {
 		// clone to reduce chance of concurrency problems
-		return IterableTools.cloneLive(this.getNamedXmlConverters());
+		return IterableTools.downCast(IterableTools.cloneLive(this.getXmlConverters()));
 	}
 
-	protected List<XmlConverter_2_1> getNamedXmlConverters() {
+	protected List<org.eclipse.jpt.jpa.core.resource.orm.XmlConverter> getXmlConverters() {
 		return this.xmlConverterContainer.getConverters();
 	}
 
-	protected ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter_2_1> buildCustomConverterContainer() {
+	protected ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> buildCustomConverterContainer() {
 		CustomConverterContainer container = new CustomConverterContainer();
 		container.initialize();
 		return container;
@@ -150,22 +149,22 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 	 * custom converter container
 	 */
 	protected class CustomConverterContainer
-		extends ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter_2_1>
+		extends ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return CUSTOM_CONVERTERS_LIST;
 		}
 		@Override
-		protected OrmEclipseLinkCustomConverter buildContextElement(XmlConverter_2_1 resourceElement) {
-			return AbstractOrmEclipseLinkConverterContainerImpl.this.buildCustomConverter((XmlConverter) resourceElement);
+		protected OrmEclipseLinkCustomConverter buildContextElement(XmlConverter resourceElement) {
+			return AbstractOrmEclipseLinkConverterContainerImpl.this.buildCustomConverter(resourceElement);
 		}
 		@Override
-		protected ListIterable<XmlConverter_2_1> getResourceElements() {
+		protected ListIterable<XmlConverter> getResourceElements() {
 			return AbstractOrmEclipseLinkConverterContainerImpl.this.getXmlCustomConverters();
 		}
 		@Override
-		protected XmlConverter_2_1 getResourceElement(OrmEclipseLinkCustomConverter contextElement) {
+		protected XmlConverter getResourceElement(OrmEclipseLinkCustomConverter contextElement) {
 			return contextElement.getXmlConverter();
 		}
 	}

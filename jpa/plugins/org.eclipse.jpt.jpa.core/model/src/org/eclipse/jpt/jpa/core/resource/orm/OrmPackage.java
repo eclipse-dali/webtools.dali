@@ -3556,6 +3556,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_MAPPINGS__VERSION = CommonPackage.EROOT_OBJECT_IMPL__VERSION;
 
 	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS__NAMESPACE = CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE;
+
+	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5147,7 +5156,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__DESCRIPTION = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__DESCRIPTION;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__DESCRIPTION = XML_QUERY__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5156,7 +5165,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__NAME = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__NAME;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__NAME = XML_QUERY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Hints</b></em>' containment reference list.
@@ -5165,7 +5174,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__HINTS = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__HINTS;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__HINTS = XML_QUERY__HINTS;
 
 	/**
 	 * The feature id for the '<em><b>Result Classes</b></em>' attribute list.
@@ -5174,7 +5183,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_CLASSES = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_CLASSES = XML_QUERY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Result Set Mappings</b></em>' attribute list.
@@ -5183,7 +5192,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_SET_MAPPINGS = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_SET_MAPPINGS = XML_QUERY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Procedure Name</b></em>' attribute.
@@ -5192,7 +5201,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME = XML_QUERY_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -5201,7 +5210,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS = XML_QUERY_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Named Stored Procedure Query</em>' class.
@@ -5210,7 +5219,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT = OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21_FEATURE_COUNT + 0;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_FEATURE_COUNT = XML_QUERY_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter <em>Xml Stored Procedure Parameter</em>}' class.
@@ -11715,6 +11724,7 @@ public class OrmPackage extends EPackageImpl
 		xmlNamedNativeQueryEClass.getESuperTypes().add(this.getXmlQuery());
 		xmlNamedQueryEClass.getESuperTypes().add(this.getXmlQuery());
 		xmlNamedQueryEClass.getESuperTypes().add(theOrmV2_0Package.getXmlNamedQuery_2_0());
+		xmlNamedStoredProcedureQueryEClass.getESuperTypes().add(this.getXmlQuery());
 		xmlNamedStoredProcedureQueryEClass.getESuperTypes().add(theOrmV2_1Package.getXmlNamedStoredProcedureQuery_2_1());
 		xmlNullAttributeMappingEClass.getESuperTypes().add(this.getAbstractXmlAttributeMapping());
 		xmlOneToManyEClass.getESuperTypes().add(this.getAbstractXmlMultiRelationshipMapping());

@@ -53,7 +53,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements XmlNamedStoredProcedureQuery_2_1
+public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements XmlQuery, XmlNamedStoredProcedureQuery_2_1
 {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -153,7 +153,7 @@ public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlStoredProcedureParameter_2_1> parameters;
+	protected EList<XmlStoredProcedureParameter> parameters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -352,7 +352,7 @@ public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements Xml
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
@@ -364,11 +364,11 @@ public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlStoredProcedureParameter_2_1> getParameters()
+	public EList<XmlStoredProcedureParameter> getParameters()
 	{
 		if (parameters == null)
 		{
-			parameters = new EObjectContainmentEList<XmlStoredProcedureParameter_2_1>(XmlStoredProcedureParameter_2_1.class, this, OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS);
+			parameters = new EObjectContainmentEList<XmlStoredProcedureParameter>(XmlStoredProcedureParameter.class, this, OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -453,7 +453,7 @@ public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements Xml
 				return;
 			case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS:
 				getParameters().clear();
-				getParameters().addAll((Collection<? extends XmlStoredProcedureParameter_2_1>)newValue);
+				getParameters().addAll((Collection<? extends XmlStoredProcedureParameter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -520,6 +520,50 @@ public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements Xml
 				return parameters != null && !parameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlNamedStoredProcedureQuery_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_CLASSES: return OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES;
+				case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_SET_MAPPINGS: return OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS;
+				case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME: return OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME;
+				case OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS: return OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlNamedStoredProcedureQuery_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES: return OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_CLASSES;
+				case OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS: return OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__RESULT_SET_MAPPINGS;
+				case OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME: return OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME;
+				case OrmV2_1Package.XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS: return OrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

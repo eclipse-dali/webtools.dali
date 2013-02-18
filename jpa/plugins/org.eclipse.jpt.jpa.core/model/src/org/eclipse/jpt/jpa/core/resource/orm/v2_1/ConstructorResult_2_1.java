@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.ColumnResult;
 
 /**
  * <!-- begin-user-doc -->
@@ -67,7 +68,7 @@ public interface ConstructorResult_2_1 extends EBaseObject
 
 	/**
 	 * Returns the value of the '<em><b>Column Results</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ColumnResult_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.ColumnResult}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Column Results</em>' reference list isn't clear,
@@ -79,6 +80,6 @@ public interface ConstructorResult_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<ColumnResult_2_1> getColumnResults();
+	EList<ColumnResult> getColumnResults();
 
 } // ConstructorResult_2_1

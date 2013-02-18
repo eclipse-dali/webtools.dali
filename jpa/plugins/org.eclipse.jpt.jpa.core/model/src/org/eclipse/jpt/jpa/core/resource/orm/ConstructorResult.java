@@ -79,7 +79,7 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ColumnResult_2_1> columnResults;
+	protected EList<ColumnResult> columnResults;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -139,7 +139,7 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 
 	/**
 	 * Returns the value of the '<em><b>Column Results</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ColumnResult_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.ColumnResult}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Column Results</em>' reference list isn't clear,
@@ -151,11 +151,11 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<ColumnResult_2_1> getColumnResults()
+	public EList<ColumnResult> getColumnResults()
 	{
 		if (columnResults == null)
 		{
-			columnResults = new EObjectContainmentEList<ColumnResult_2_1>(ColumnResult_2_1.class, this, OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS);
+			columnResults = new EObjectContainmentEList<ColumnResult>(ColumnResult.class, this, OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS);
 		}
 		return columnResults;
 	}
@@ -210,7 +210,7 @@ public class ConstructorResult extends EBaseObjectImpl implements ConstructorRes
 				return;
 			case OrmPackage.CONSTRUCTOR_RESULT__COLUMN_RESULTS:
 				getColumnResults().clear();
-				getColumnResults().addAll((Collection<? extends ColumnResult_2_1>)newValue);
+				getColumnResults().addAll((Collection<? extends ColumnResult>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

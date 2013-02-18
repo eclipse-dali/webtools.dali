@@ -59,7 +59,7 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 foreignKey;
+	protected XmlForeignKey foreignKey;
 	/**
 	 * The cached value of the '{@link #getInverseForeignKey() <em>Inverse Foreign Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -68,7 +68,7 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 inverseForeignKey;
+	protected XmlForeignKey inverseForeignKey;
 	/**
 	 * The cached value of the '{@link #getIndexes() <em>Indexes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -118,12 +118,12 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlJoinTable_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getForeignKey()
+	public XmlForeignKey getForeignKey()
 	{
 		return foreignKey;
 	}
@@ -133,9 +133,9 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetForeignKey(XmlForeignKey newForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		XmlForeignKey oldForeignKey = foreignKey;
 		foreignKey = newForeignKey;
 		if (eNotificationRequired())
 		{
@@ -153,7 +153,7 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	public void setForeignKey(XmlForeignKey newForeignKey)
 	{
 		if (newForeignKey != foreignKey)
 		{
@@ -178,12 +178,12 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inverse Foreign Key</em>' containment reference.
-	 * @see #setInverseForeignKey(XmlForeignKey_2_1)
+	 * @see #setInverseForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlJoinTable_2_1_InverseForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getInverseForeignKey()
+	public XmlForeignKey getInverseForeignKey()
 	{
 		return inverseForeignKey;
 	}
@@ -193,9 +193,9 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInverseForeignKey(XmlForeignKey_2_1 newInverseForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetInverseForeignKey(XmlForeignKey newInverseForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldInverseForeignKey = inverseForeignKey;
+		XmlForeignKey oldInverseForeignKey = inverseForeignKey;
 		inverseForeignKey = newInverseForeignKey;
 		if (eNotificationRequired())
 		{
@@ -213,7 +213,7 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 	 * @see #getInverseForeignKey()
 	 * @generated
 	 */
-	public void setInverseForeignKey(XmlForeignKey_2_1 newInverseForeignKey)
+	public void setInverseForeignKey(XmlForeignKey newInverseForeignKey)
 	{
 		if (newInverseForeignKey != inverseForeignKey)
 		{
@@ -331,10 +331,10 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 		switch (featureID)
 		{
 			case OrmPackage.XML_JOIN_TABLE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)newValue);
+				setForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_JOIN_TABLE__INVERSE_FOREIGN_KEY:
-				setInverseForeignKey((XmlForeignKey_2_1)newValue);
+				setInverseForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_JOIN_TABLE__INDEXES:
 				getIndexes().clear();
@@ -359,10 +359,10 @@ public class XmlJoinTable extends AbstractXmlReferenceTable implements XmlJoinTa
 		switch (featureID)
 		{
 			case OrmPackage.XML_JOIN_TABLE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)null);
+				setForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_JOIN_TABLE__INVERSE_FOREIGN_KEY:
-				setInverseForeignKey((XmlForeignKey_2_1)null);
+				setInverseForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_JOIN_TABLE__INDEXES:
 				getIndexes().clear();

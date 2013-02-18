@@ -58,7 +58,7 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlConvert_2_1 convert;
+	protected XmlConvert convert;
 	/**
 	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -201,12 +201,12 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Convert</em>' containment reference.
-	 * @see #setConvert(XmlConvert_2_1)
+	 * @see #setConvert(XmlConvert)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConvertibleMapping_2_1_Convert()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlConvert_2_1 getConvert()
+	public XmlConvert getConvert()
 	{
 		return convert;
 	}
@@ -216,9 +216,9 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetConvert(XmlConvert_2_1 newConvert, NotificationChain msgs)
+	public NotificationChain basicSetConvert(XmlConvert newConvert, NotificationChain msgs)
 	{
-		XmlConvert_2_1 oldConvert = convert;
+		XmlConvert oldConvert = convert;
 		convert = newConvert;
 		if (eNotificationRequired())
 		{
@@ -236,7 +236,7 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	 * @see #getConvert()
 	 * @generated
 	 */
-	public void setConvert(XmlConvert_2_1 newConvert)
+	public void setConvert(XmlConvert newConvert)
 	{
 		if (newConvert != convert)
 		{
@@ -419,7 +419,7 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 				setColumn((XmlColumn)newValue);
 				return;
 			case OrmPackage.XML_VERSION__CONVERT:
-				setConvert((XmlConvert_2_1)newValue);
+				setConvert((XmlConvert)newValue);
 				return;
 			case OrmPackage.XML_VERSION__LOB:
 				setLob((Boolean)newValue);
@@ -448,7 +448,7 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 				setColumn((XmlColumn)null);
 				return;
 			case OrmPackage.XML_VERSION__CONVERT:
-				setConvert((XmlConvert_2_1)null);
+				setConvert((XmlConvert)null);
 				return;
 			case OrmPackage.XML_VERSION__LOB:
 				setLob(LOB_EDEFAULT);

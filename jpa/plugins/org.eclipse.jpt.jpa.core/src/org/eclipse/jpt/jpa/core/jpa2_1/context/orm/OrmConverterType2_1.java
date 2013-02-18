@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2_1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.ConverterType2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 
 /**
  * Context converter type.
@@ -31,7 +31,7 @@ public interface OrmConverterType2_1
 
 	Class<? extends OrmConverterType2_1> getType();
 
-	XmlConverter_2_1 getXmlConverter();
+	XmlConverter getXmlConverter();
 
-	XmlConverter_2_1 getXmlManagedType();
+	XmlConverter getXmlManagedType();
 }

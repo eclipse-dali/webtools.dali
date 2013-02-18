@@ -50,7 +50,7 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 foreignKey;
+	protected XmlForeignKey foreignKey;
 	/**
 	 * The cached value of the '{@link #getIndexes() <em>Indexes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -59,7 +59,7 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlIndex_2_1> indexes;
+	protected EList<XmlIndex> indexes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -91,12 +91,12 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlCollectionTable_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getForeignKey()
+	public XmlForeignKey getForeignKey()
 	{
 		return foreignKey;
 	}
@@ -106,9 +106,9 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetForeignKey(XmlForeignKey newForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		XmlForeignKey oldForeignKey = foreignKey;
 		foreignKey = newForeignKey;
 		if (eNotificationRequired())
 		{
@@ -126,7 +126,7 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	public void setForeignKey(XmlForeignKey newForeignKey)
 	{
 		if (newForeignKey != foreignKey)
 		{
@@ -144,7 +144,7 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 
 	/**
 	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlIndex}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
@@ -156,11 +156,11 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlIndex_2_1> getIndexes()
+	public EList<XmlIndex> getIndexes()
 	{
 		if (indexes == null)
 		{
-			indexes = new EObjectContainmentEList<XmlIndex_2_1>(XmlIndex_2_1.class, this, OrmPackage.XML_COLLECTION_TABLE__INDEXES);
+			indexes = new EObjectContainmentEList<XmlIndex>(XmlIndex.class, this, OrmPackage.XML_COLLECTION_TABLE__INDEXES);
 		}
 		return indexes;
 	}
@@ -213,11 +213,11 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 		switch (featureID)
 		{
 			case OrmPackage.XML_COLLECTION_TABLE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)newValue);
+				setForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_COLLECTION_TABLE__INDEXES:
 				getIndexes().clear();
-				getIndexes().addAll((Collection<? extends XmlIndex_2_1>)newValue);
+				getIndexes().addAll((Collection<? extends XmlIndex>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -234,7 +234,7 @@ public class XmlCollectionTable extends AbstractXmlReferenceTable implements Xml
 		switch (featureID)
 		{
 			case OrmPackage.XML_COLLECTION_TABLE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)null);
+				setForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_COLLECTION_TABLE__INDEXES:
 				getIndexes().clear();

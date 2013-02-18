@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 
@@ -29,10 +29,10 @@ public final class OrmEclipseLinkEntityMappingsConverterContainer
 	 * JPA 2.1 converters
 	 */
 	@Override
-	protected List<XmlConverter_2_1> getNamedXmlConverters() {
+	protected List<XmlConverter> getXmlConverters() {
 		if (this.isJpa2_1Compatible()) {
-			ArrayList<XmlConverter_2_1> xmlConverters = new ArrayList<XmlConverter_2_1>();
-			for (XmlConverter_2_1 xmlConverter : this.xmlConverterContainer.getConverters()) {
+			ArrayList<XmlConverter> xmlConverters = new ArrayList<XmlConverter>();
+			for (XmlConverter xmlConverter : this.xmlConverterContainer.getConverters()) {
 				if (((XmlNamedConverter) xmlConverter).getName() != null){
 					xmlConverters.add(xmlConverter);
 				}
@@ -40,6 +40,6 @@ public final class OrmEclipseLinkEntityMappingsConverterContainer
 		
 			return xmlConverters;
 		}
-		return super.getNamedXmlConverters();
+		return super.getXmlConverters();
 	}
 }

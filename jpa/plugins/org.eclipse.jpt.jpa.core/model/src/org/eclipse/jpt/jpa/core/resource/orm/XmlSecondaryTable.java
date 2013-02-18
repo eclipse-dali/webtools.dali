@@ -59,7 +59,7 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 primaryKeyForeignKey;
+	protected XmlForeignKey primaryKeyForeignKey;
 	/**
 	 * The cached value of the '{@link #getIndexes() <em>Indexes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -68,7 +68,7 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlIndex_2_1> indexes;
+	protected EList<XmlIndex> indexes;
 	/**
 	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -109,12 +109,12 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
-	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlSecondaryTable_2_1_PrimaryKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getPrimaryKeyForeignKey()
+	public XmlForeignKey getPrimaryKeyForeignKey()
 	{
 		return primaryKeyForeignKey;
 	}
@@ -124,9 +124,9 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey newPrimaryKeyForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldPrimaryKeyForeignKey = primaryKeyForeignKey;
+		XmlForeignKey oldPrimaryKeyForeignKey = primaryKeyForeignKey;
 		primaryKeyForeignKey = newPrimaryKeyForeignKey;
 		if (eNotificationRequired())
 		{
@@ -144,7 +144,7 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 	 * @see #getPrimaryKeyForeignKey()
 	 * @generated
 	 */
-	public void setPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey)
+	public void setPrimaryKeyForeignKey(XmlForeignKey newPrimaryKeyForeignKey)
 	{
 		if (newPrimaryKeyForeignKey != primaryKeyForeignKey)
 		{
@@ -162,7 +162,7 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 
 	/**
 	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlIndex}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
@@ -174,11 +174,11 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlIndex_2_1> getIndexes()
+	public EList<XmlIndex> getIndexes()
 	{
 		if (indexes == null)
 		{
-			indexes = new EObjectContainmentEList<XmlIndex_2_1>(XmlIndex_2_1.class, this, OrmPackage.XML_SECONDARY_TABLE__INDEXES);
+			indexes = new EObjectContainmentEList<XmlIndex>(XmlIndex.class, this, OrmPackage.XML_SECONDARY_TABLE__INDEXES);
 		}
 		return indexes;
 	}
@@ -258,11 +258,11 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 		switch (featureID)
 		{
 			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_FOREIGN_KEY:
-				setPrimaryKeyForeignKey((XmlForeignKey_2_1)newValue);
+				setPrimaryKeyForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_SECONDARY_TABLE__INDEXES:
 				getIndexes().clear();
-				getIndexes().addAll((Collection<? extends XmlIndex_2_1>)newValue);
+				getIndexes().addAll((Collection<? extends XmlIndex>)newValue);
 				return;
 			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
@@ -283,7 +283,7 @@ public class XmlSecondaryTable extends AbstractXmlTable implements XmlSecondaryT
 		switch (featureID)
 		{
 			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_FOREIGN_KEY:
-				setPrimaryKeyForeignKey((XmlForeignKey_2_1)null);
+				setPrimaryKeyForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_SECONDARY_TABLE__INDEXES:
 				getIndexes().clear();

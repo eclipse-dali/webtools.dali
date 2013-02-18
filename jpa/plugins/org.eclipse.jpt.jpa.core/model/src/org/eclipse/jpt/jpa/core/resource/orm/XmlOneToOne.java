@@ -106,7 +106,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConvert_2_1> mapKeyConverts;
+	protected EList<XmlConvert> mapKeyConverts;
 	/**
 	 * The cached value of the '{@link #getPrimaryKeyForeignKey() <em>Primary Key Foreign Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -115,7 +115,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 primaryKeyForeignKey;
+	protected XmlForeignKey primaryKeyForeignKey;
 	/**
 	 * The cached value of the '{@link #getForeignKey() <em>Foreign Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -124,7 +124,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 foreignKey;
+	protected XmlForeignKey foreignKey;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -219,7 +219,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Converts</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConvert}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Map Key Converts</em>' containment reference list isn't clear,
@@ -231,11 +231,11 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConvert_2_1> getMapKeyConverts()
+	public EList<XmlConvert> getMapKeyConverts()
 	{
 		if (mapKeyConverts == null)
 		{
-			mapKeyConverts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS);
+			mapKeyConverts = new EObjectContainmentEList<XmlConvert>(XmlConvert.class, this, OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS);
 		}
 		return mapKeyConverts;
 	}
@@ -249,12 +249,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
-	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToOne_2_1_PrimaryKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getPrimaryKeyForeignKey()
+	public XmlForeignKey getPrimaryKeyForeignKey()
 	{
 		return primaryKeyForeignKey;
 	}
@@ -264,9 +264,9 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey newPrimaryKeyForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldPrimaryKeyForeignKey = primaryKeyForeignKey;
+		XmlForeignKey oldPrimaryKeyForeignKey = primaryKeyForeignKey;
 		primaryKeyForeignKey = newPrimaryKeyForeignKey;
 		if (eNotificationRequired())
 		{
@@ -284,7 +284,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @see #getPrimaryKeyForeignKey()
 	 * @generated
 	 */
-	public void setPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey)
+	public void setPrimaryKeyForeignKey(XmlForeignKey newPrimaryKeyForeignKey)
 	{
 		if (newPrimaryKeyForeignKey != primaryKeyForeignKey)
 		{
@@ -309,12 +309,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToOne_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getForeignKey()
+	public XmlForeignKey getForeignKey()
 	{
 		return foreignKey;
 	}
@@ -324,9 +324,9 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetForeignKey(XmlForeignKey newForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		XmlForeignKey oldForeignKey = foreignKey;
 		foreignKey = newForeignKey;
 		if (eNotificationRequired())
 		{
@@ -344,7 +344,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	public void setForeignKey(XmlForeignKey newForeignKey)
 	{
 		if (newForeignKey != foreignKey)
 		{
@@ -454,13 +454,13 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				return;
 			case OrmPackage.XML_ONE_TO_ONE__MAP_KEY_CONVERTS:
 				getMapKeyConverts().clear();
-				getMapKeyConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				getMapKeyConverts().addAll((Collection<? extends XmlConvert>)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
-				setPrimaryKeyForeignKey((XmlForeignKey_2_1)newValue);
+				setPrimaryKeyForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)newValue);
+				setForeignKey((XmlForeignKey)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -489,10 +489,10 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				getMapKeyConverts().clear();
 				return;
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_FOREIGN_KEY:
-				setPrimaryKeyForeignKey((XmlForeignKey_2_1)null);
+				setPrimaryKeyForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)null);
+				setForeignKey((XmlForeignKey)null);
 				return;
 		}
 		super.eUnset(featureID);

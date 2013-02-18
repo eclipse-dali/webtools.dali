@@ -13,14 +13,14 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Contex
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 
 public class GenericOrmXml2_1ContextNodeFactory
 	extends GenericOrmXml2_0ContextNodeFactory
 	implements OrmXml2_1ContextNodeFactory
 {
 
-	public OrmConverterType2_1 buildOrmConverter(EntityMappings2_1 parent, XmlConverter_2_1 xmlConverter) {
+	public OrmConverterType2_1 buildOrmConverter(EntityMappings2_1 parent, XmlConverter xmlConverter) {
 		return new GenericOrmConverterType(parent, xmlConverter);
 	}
 }

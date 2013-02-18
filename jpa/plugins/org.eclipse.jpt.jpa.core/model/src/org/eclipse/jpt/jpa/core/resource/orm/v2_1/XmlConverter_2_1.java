@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 
 /**
@@ -31,9 +32,10 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlConverter_2_1()
  * @model kind="class" interface="true" abstract="true"
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlConverter_2_1 extends XmlManagedType
+public interface XmlConverter_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Auto Apply</b></em>' attribute.

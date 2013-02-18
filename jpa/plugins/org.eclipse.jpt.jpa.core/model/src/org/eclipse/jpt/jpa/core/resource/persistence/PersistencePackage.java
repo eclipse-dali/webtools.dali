@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2012  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -176,6 +176,15 @@ public class PersistencePackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_PERSISTENCE__VERSION = CommonPackage.EROOT_OBJECT_IMPL__VERSION;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PERSISTENCE__NAMESPACE = CommonPackage.EROOT_OBJECT_IMPL__NAMESPACE;
 
 	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.

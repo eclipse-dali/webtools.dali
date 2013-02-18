@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedAttributeNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -42,7 +43,7 @@ public interface XmlNamedSubgraph_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Named Attribute Nodes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedAttributeNode_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedAttributeNode}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Attribute Nodes</em>' containment reference list isn't clear,
@@ -54,7 +55,7 @@ public interface XmlNamedSubgraph_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedAttributeNode_2_1> getNamedAttributeNodes();
+	EList<XmlNamedAttributeNode> getNamedAttributeNodes();
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

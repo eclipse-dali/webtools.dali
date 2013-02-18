@@ -61,7 +61,7 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedAttributeNode_2_1> namedAttributeNodes;
+	protected EList<XmlNamedAttributeNode> namedAttributeNodes;
 
 	/**
 	 * The cached value of the '{@link #getSubgraphs() <em>Subgraphs</em>}' containment reference list.
@@ -71,7 +71,7 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedSubgraph_2_1> subgraphs;
+	protected EList<XmlNamedSubgraph> subgraphs;
 
 	/**
 	 * The cached value of the '{@link #getSubclassSubgraphs() <em>Subclass Subgraphs</em>}' containment reference list.
@@ -81,7 +81,7 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedSubgraph_2_1> subclassSubgraphs;
+	protected EList<XmlNamedSubgraph> subclassSubgraphs;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -146,7 +146,7 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 
 	/**
 	 * Returns the value of the '<em><b>Named Attribute Nodes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedAttributeNode_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedAttributeNode}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Attribute Nodes</em>' containment reference list isn't clear,
@@ -158,18 +158,18 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedAttributeNode_2_1> getNamedAttributeNodes()
+	public EList<XmlNamedAttributeNode> getNamedAttributeNodes()
 	{
 		if (namedAttributeNodes == null)
 		{
-			namedAttributeNodes = new EObjectContainmentEList<XmlNamedAttributeNode_2_1>(XmlNamedAttributeNode_2_1.class, this, OrmPackage.XML_NAMED_ENTITY_GRAPH__NAMED_ATTRIBUTE_NODES);
+			namedAttributeNodes = new EObjectContainmentEList<XmlNamedAttributeNode>(XmlNamedAttributeNode.class, this, OrmPackage.XML_NAMED_ENTITY_GRAPH__NAMED_ATTRIBUTE_NODES);
 		}
 		return namedAttributeNodes;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Subgraphs</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedSubgraph_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedSubgraph}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Subgraphs</em>' containment reference list isn't clear,
@@ -181,18 +181,18 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedSubgraph_2_1> getSubgraphs()
+	public EList<XmlNamedSubgraph> getSubgraphs()
 	{
 		if (subgraphs == null)
 		{
-			subgraphs = new EObjectContainmentEList<XmlNamedSubgraph_2_1>(XmlNamedSubgraph_2_1.class, this, OrmPackage.XML_NAMED_ENTITY_GRAPH__SUBGRAPHS);
+			subgraphs = new EObjectContainmentEList<XmlNamedSubgraph>(XmlNamedSubgraph.class, this, OrmPackage.XML_NAMED_ENTITY_GRAPH__SUBGRAPHS);
 		}
 		return subgraphs;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Subclass Subgraphs</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedSubgraph_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedSubgraph}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Subclass Subgraphs</em>' containment reference list isn't clear,
@@ -204,11 +204,11 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedSubgraph_2_1> getSubclassSubgraphs()
+	public EList<XmlNamedSubgraph> getSubclassSubgraphs()
 	{
 		if (subclassSubgraphs == null)
 		{
-			subclassSubgraphs = new EObjectContainmentEList<XmlNamedSubgraph_2_1>(XmlNamedSubgraph_2_1.class, this, OrmPackage.XML_NAMED_ENTITY_GRAPH__SUBCLASS_SUBGRAPHS);
+			subclassSubgraphs = new EObjectContainmentEList<XmlNamedSubgraph>(XmlNamedSubgraph.class, this, OrmPackage.XML_NAMED_ENTITY_GRAPH__SUBCLASS_SUBGRAPHS);
 		}
 		return subclassSubgraphs;
 	}
@@ -340,15 +340,15 @@ public class XmlNamedEntityGraph extends EBaseObjectImpl implements XmlNamedEnti
 		{
 			case OrmPackage.XML_NAMED_ENTITY_GRAPH__NAMED_ATTRIBUTE_NODES:
 				getNamedAttributeNodes().clear();
-				getNamedAttributeNodes().addAll((Collection<? extends XmlNamedAttributeNode_2_1>)newValue);
+				getNamedAttributeNodes().addAll((Collection<? extends XmlNamedAttributeNode>)newValue);
 				return;
 			case OrmPackage.XML_NAMED_ENTITY_GRAPH__SUBGRAPHS:
 				getSubgraphs().clear();
-				getSubgraphs().addAll((Collection<? extends XmlNamedSubgraph_2_1>)newValue);
+				getSubgraphs().addAll((Collection<? extends XmlNamedSubgraph>)newValue);
 				return;
 			case OrmPackage.XML_NAMED_ENTITY_GRAPH__SUBCLASS_SUBGRAPHS:
 				getSubclassSubgraphs().clear();
-				getSubclassSubgraphs().addAll((Collection<? extends XmlNamedSubgraph_2_1>)newValue);
+				getSubclassSubgraphs().addAll((Collection<? extends XmlNamedSubgraph>)newValue);
 				return;
 			case OrmPackage.XML_NAMED_ENTITY_GRAPH__NAME:
 				setName((String)newValue);

@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvert;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey;
 
 /**
  * <!-- begin-user-doc -->
@@ -42,7 +44,7 @@ public interface XmlOneToOne_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Converts</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConvert}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Map Key Converts</em>' containment reference list isn't clear,
@@ -54,7 +56,7 @@ public interface XmlOneToOne_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlConvert_2_1> getMapKeyConverts();
+	EList<XmlConvert> getMapKeyConverts();
 
 	/**
 	 * Returns the value of the '<em><b>Primary Key Foreign Key</b></em>' containment reference.
@@ -65,12 +67,12 @@ public interface XmlOneToOne_2_1 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
-	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlOneToOne_2_1_PrimaryKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlForeignKey_2_1 getPrimaryKeyForeignKey();
+	XmlForeignKey getPrimaryKeyForeignKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlOneToOne_2_1#getPrimaryKeyForeignKey <em>Primary Key Foreign Key</em>}' containment reference.
@@ -80,7 +82,7 @@ public interface XmlOneToOne_2_1 extends EBaseObject
 	 * @see #getPrimaryKeyForeignKey()
 	 * @generated
 	 */
-	void setPrimaryKeyForeignKey(XmlForeignKey_2_1 value);
+	void setPrimaryKeyForeignKey(XmlForeignKey value);
 
 	/**
 	 * Returns the value of the '<em><b>Foreign Key</b></em>' containment reference.
@@ -91,12 +93,12 @@ public interface XmlOneToOne_2_1 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlOneToOne_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlForeignKey_2_1 getForeignKey();
+	XmlForeignKey getForeignKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlOneToOne_2_1#getForeignKey <em>Foreign Key</em>}' containment reference.
@@ -106,6 +108,6 @@ public interface XmlOneToOne_2_1 extends EBaseObject
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	void setForeignKey(XmlForeignKey_2_1 value);
+	void setForeignKey(XmlForeignKey value);
 
 } // XmlOneToOne_2_1

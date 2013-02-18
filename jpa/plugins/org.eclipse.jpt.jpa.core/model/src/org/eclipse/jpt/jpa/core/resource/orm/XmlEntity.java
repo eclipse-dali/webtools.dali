@@ -250,7 +250,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 primaryKeyForeignKey;
+	protected XmlForeignKey primaryKeyForeignKey;
 
 	/**
 	 * The cached value of the '{@link #getConverts() <em>Converts</em>}' containment reference list.
@@ -260,7 +260,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConvert_2_1> converts;
+	protected EList<XmlConvert> converts;
 
 	/**
 	 * The cached value of the '{@link #getNamedEntityGraphs() <em>Named Entity Graphs</em>}' containment reference list.
@@ -270,7 +270,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedEntityGraph_2_1> namedEntityGraphs;
+	protected EList<XmlNamedEntityGraph> namedEntityGraphs;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -684,12 +684,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
-	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlEntity_2_1_PrimaryKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getPrimaryKeyForeignKey()
+	public XmlForeignKey getPrimaryKeyForeignKey()
 	{
 		return primaryKeyForeignKey;
 	}
@@ -699,9 +699,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetPrimaryKeyForeignKey(XmlForeignKey newPrimaryKeyForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldPrimaryKeyForeignKey = primaryKeyForeignKey;
+		XmlForeignKey oldPrimaryKeyForeignKey = primaryKeyForeignKey;
 		primaryKeyForeignKey = newPrimaryKeyForeignKey;
 		if (eNotificationRequired())
 		{
@@ -719,7 +719,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @see #getPrimaryKeyForeignKey()
 	 * @generated
 	 */
-	public void setPrimaryKeyForeignKey(XmlForeignKey_2_1 newPrimaryKeyForeignKey)
+	public void setPrimaryKeyForeignKey(XmlForeignKey newPrimaryKeyForeignKey)
 	{
 		if (newPrimaryKeyForeignKey != primaryKeyForeignKey)
 		{
@@ -737,7 +737,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 
 	/**
 	 * Returns the value of the '<em><b>Converts</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConvert}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converts</em>' containment reference list isn't clear,
@@ -749,18 +749,18 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConvert_2_1> getConverts()
+	public EList<XmlConvert> getConverts()
 	{
 		if (converts == null)
 		{
-			converts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ENTITY__CONVERTS);
+			converts = new EObjectContainmentEList<XmlConvert>(XmlConvert.class, this, OrmPackage.XML_ENTITY__CONVERTS);
 		}
 		return converts;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Named Entity Graphs</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedEntityGraph_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedEntityGraph}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Entity Graphs</em>' containment reference list isn't clear,
@@ -772,11 +772,11 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedEntityGraph_2_1> getNamedEntityGraphs()
+	public EList<XmlNamedEntityGraph> getNamedEntityGraphs()
 	{
 		if (namedEntityGraphs == null)
 		{
-			namedEntityGraphs = new EObjectContainmentEList<XmlNamedEntityGraph_2_1>(XmlNamedEntityGraph_2_1.class, this, OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS);
+			namedEntityGraphs = new EObjectContainmentEList<XmlNamedEntityGraph>(XmlNamedEntityGraph.class, this, OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS);
 		}
 		return namedEntityGraphs;
 	}
@@ -1959,15 +1959,15 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				setIdClass((XmlClassReference)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
-				setPrimaryKeyForeignKey((XmlForeignKey_2_1)newValue);
+				setPrimaryKeyForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__CONVERTS:
 				getConverts().clear();
-				getConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				getConverts().addAll((Collection<? extends XmlConvert>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__NAMED_ENTITY_GRAPHS:
 				getNamedEntityGraphs().clear();
-				getNamedEntityGraphs().addAll((Collection<? extends XmlNamedEntityGraph_2_1>)newValue);
+				getNamedEntityGraphs().addAll((Collection<? extends XmlNamedEntityGraph>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
@@ -2068,7 +2068,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				setIdClass((XmlClassReference)null);
 				return;
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_FOREIGN_KEY:
-				setPrimaryKeyForeignKey((XmlForeignKey_2_1)null);
+				setPrimaryKeyForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_ENTITY__CONVERTS:
 				getConverts().clear();

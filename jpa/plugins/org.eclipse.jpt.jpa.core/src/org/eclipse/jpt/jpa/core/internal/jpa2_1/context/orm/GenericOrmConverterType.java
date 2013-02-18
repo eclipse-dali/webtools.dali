@@ -14,8 +14,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManagedType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 
 public class GenericOrmConverterType extends AbstractOrmManagedType
 	implements OrmConverterType2_1
@@ -24,7 +24,7 @@ public class GenericOrmConverterType extends AbstractOrmManagedType
 
 	protected Boolean specifiedAutoApply;
 
-	public GenericOrmConverterType(EntityMappings2_1 parent, XmlConverter_2_1 xmlConverter) {
+	public GenericOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter) {
 		super(parent, xmlConverter);
 		this.specifiedAutoApply = this.buildSpecifiedAutoApply();
 		this.autoApply = this.buildAutoApply();
@@ -43,11 +43,11 @@ public class GenericOrmConverterType extends AbstractOrmManagedType
 	}
 
 	@Override
-	public XmlConverter_2_1 getXmlManagedType() {
-		return (XmlConverter_2_1) super.getXmlManagedType();
+	public XmlConverter getXmlManagedType() {
+		return (XmlConverter) super.getXmlManagedType();
 	}
 
-	public XmlConverter_2_1 getXmlConverter() {
+	public XmlConverter getXmlConverter() {
 		return this.getXmlManagedType();
 	}
 

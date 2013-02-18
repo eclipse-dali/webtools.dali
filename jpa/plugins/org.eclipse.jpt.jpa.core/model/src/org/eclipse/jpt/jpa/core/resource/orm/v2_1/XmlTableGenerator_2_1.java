@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlIndex;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,7 +41,7 @@ public interface XmlTableGenerator_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlIndex}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
@@ -52,6 +53,6 @@ public interface XmlTableGenerator_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlIndex_2_1> getIndexes();
+	EList<XmlIndex> getIndexes();
 
 } // XmlTableGenerator_2_1

@@ -147,7 +147,7 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator, 
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlIndex_2_1> indexes;
+	protected EList<XmlIndex> indexes;
 
 	/**
 	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
@@ -652,7 +652,7 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator, 
 
 	/**
 	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlIndex}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
@@ -664,11 +664,11 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator, 
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlIndex_2_1> getIndexes()
+	public EList<XmlIndex> getIndexes()
 	{
 		if (indexes == null)
 		{
-			indexes = new EObjectContainmentEList<XmlIndex_2_1>(XmlIndex_2_1.class, this, OrmPackage.XML_TABLE_GENERATOR__INDEXES);
+			indexes = new EObjectContainmentEList<XmlIndex>(XmlIndex.class, this, OrmPackage.XML_TABLE_GENERATOR__INDEXES);
 		}
 		return indexes;
 	}
@@ -777,7 +777,7 @@ public class XmlTableGenerator extends EBaseObjectImpl implements XmlGenerator, 
 				return;
 			case OrmPackage.XML_TABLE_GENERATOR__INDEXES:
 				getIndexes().clear();
-				getIndexes().addAll((Collection<? extends XmlIndex_2_1>)newValue);
+				getIndexes().addAll((Collection<? extends XmlIndex>)newValue);
 				return;
 			case OrmPackage.XML_TABLE_GENERATOR__TABLE:
 				setTable((String)newValue);

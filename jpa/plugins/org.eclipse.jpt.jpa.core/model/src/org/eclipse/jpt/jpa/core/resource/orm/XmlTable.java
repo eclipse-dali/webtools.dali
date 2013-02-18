@@ -50,7 +50,7 @@ public class XmlTable extends AbstractXmlTable implements XmlTable_2_1
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlIndex_2_1> indexes;
+	protected EList<XmlIndex> indexes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -75,7 +75,7 @@ public class XmlTable extends AbstractXmlTable implements XmlTable_2_1
 	
 	/**
 	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlIndex}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
@@ -87,11 +87,11 @@ public class XmlTable extends AbstractXmlTable implements XmlTable_2_1
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlIndex_2_1> getIndexes()
+	public EList<XmlIndex> getIndexes()
 	{
 		if (indexes == null)
 		{
-			indexes = new EObjectContainmentEList<XmlIndex_2_1>(XmlIndex_2_1.class, this, OrmPackage.XML_TABLE__INDEXES);
+			indexes = new EObjectContainmentEList<XmlIndex>(XmlIndex.class, this, OrmPackage.XML_TABLE__INDEXES);
 		}
 		return indexes;
 	}
@@ -141,7 +141,7 @@ public class XmlTable extends AbstractXmlTable implements XmlTable_2_1
 		{
 			case OrmPackage.XML_TABLE__INDEXES:
 				getIndexes().clear();
-				getIndexes().addAll((Collection<? extends XmlIndex_2_1>)newValue);
+				getIndexes().addAll((Collection<? extends XmlIndex>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

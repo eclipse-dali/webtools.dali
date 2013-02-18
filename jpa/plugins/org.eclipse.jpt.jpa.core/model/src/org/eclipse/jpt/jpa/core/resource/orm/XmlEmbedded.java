@@ -62,7 +62,7 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0,
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConvert_2_1> converts;
+	protected EList<XmlConvert> converts;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -110,7 +110,7 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0,
 
 	/**
 	 * Returns the value of the '<em><b>Converts</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConvert}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converts</em>' containment reference list isn't clear,
@@ -122,11 +122,11 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0,
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConvert_2_1> getConverts()
+	public EList<XmlConvert> getConverts()
 	{
 		if (converts == null)
 		{
-			converts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_EMBEDDED__CONVERTS);
+			converts = new EObjectContainmentEList<XmlConvert>(XmlConvert.class, this, OrmPackage.XML_EMBEDDED__CONVERTS);
 		}
 		return converts;
 	}
@@ -184,7 +184,7 @@ public class XmlEmbedded extends AbstractXmlEmbedded implements XmlEmbedded_2_0,
 				return;
 			case OrmPackage.XML_EMBEDDED__CONVERTS:
 				getConverts().clear();
-				getConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				getConverts().addAll((Collection<? extends XmlConvert>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

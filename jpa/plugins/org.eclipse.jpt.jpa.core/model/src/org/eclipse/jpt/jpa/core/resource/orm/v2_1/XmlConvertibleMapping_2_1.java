@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvert;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,12 +46,12 @@ public interface XmlConvertibleMapping_2_1 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Convert</em>' containment reference.
-	 * @see #setConvert(XmlConvert_2_1)
+	 * @see #setConvert(XmlConvert)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlConvertibleMapping_2_1_Convert()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlConvert_2_1 getConvert();
+	XmlConvert getConvert();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvertibleMapping_2_1#getConvert <em>Convert</em>}' containment reference.
@@ -60,6 +61,6 @@ public interface XmlConvertibleMapping_2_1 extends EBaseObject
 	 * @see #getConvert()
 	 * @generated
 	 */
-	void setConvert(XmlConvert_2_1 value);
+	void setConvert(XmlConvert value);
 
 } // XmlConvertibleMapping_2_1

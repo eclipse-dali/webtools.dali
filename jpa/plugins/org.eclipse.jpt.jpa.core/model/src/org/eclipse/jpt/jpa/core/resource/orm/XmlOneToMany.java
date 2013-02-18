@@ -88,7 +88,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConvert_2_1> mapKeyConverts;
+	protected EList<XmlConvert> mapKeyConverts;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyForeignKey() <em>Map Key Foreign Key</em>}' containment reference.
@@ -98,7 +98,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 mapKeyForeignKey;
+	protected XmlForeignKey mapKeyForeignKey;
 
 	/**
 	 * The cached value of the '{@link #getForeignKey() <em>Foreign Key</em>}' containment reference.
@@ -108,7 +108,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 foreignKey;
+	protected XmlForeignKey foreignKey;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -191,7 +191,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Converts</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConvert}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Map Key Converts</em>' containment reference list isn't clear,
@@ -203,11 +203,11 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConvert_2_1> getMapKeyConverts()
+	public EList<XmlConvert> getMapKeyConverts()
 	{
 		if (mapKeyConverts == null)
 		{
-			mapKeyConverts = new EObjectContainmentEList<XmlConvert_2_1>(XmlConvert_2_1.class, this, OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CONVERTS);
+			mapKeyConverts = new EObjectContainmentEList<XmlConvert>(XmlConvert.class, this, OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CONVERTS);
 		}
 		return mapKeyConverts;
 	}
@@ -221,12 +221,12 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Foreign Key</em>' containment reference.
-	 * @see #setMapKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setMapKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToMany_2_1_MapKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getMapKeyForeignKey()
+	public XmlForeignKey getMapKeyForeignKey()
 	{
 		return mapKeyForeignKey;
 	}
@@ -236,9 +236,9 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMapKeyForeignKey(XmlForeignKey_2_1 newMapKeyForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetMapKeyForeignKey(XmlForeignKey newMapKeyForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldMapKeyForeignKey = mapKeyForeignKey;
+		XmlForeignKey oldMapKeyForeignKey = mapKeyForeignKey;
 		mapKeyForeignKey = newMapKeyForeignKey;
 		if (eNotificationRequired())
 		{
@@ -256,7 +256,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @see #getMapKeyForeignKey()
 	 * @generated
 	 */
-	public void setMapKeyForeignKey(XmlForeignKey_2_1 newMapKeyForeignKey)
+	public void setMapKeyForeignKey(XmlForeignKey newMapKeyForeignKey)
 	{
 		if (newMapKeyForeignKey != mapKeyForeignKey)
 		{
@@ -281,12 +281,12 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOneToMany_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getForeignKey()
+	public XmlForeignKey getForeignKey()
 	{
 		return foreignKey;
 	}
@@ -296,9 +296,9 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetForeignKey(XmlForeignKey newForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		XmlForeignKey oldForeignKey = foreignKey;
 		foreignKey = newForeignKey;
 		if (eNotificationRequired())
 		{
@@ -316,7 +316,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	public void setForeignKey(XmlForeignKey newForeignKey)
 	{
 		if (newForeignKey != foreignKey)
 		{
@@ -398,13 +398,13 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CONVERTS:
 				getMapKeyConverts().clear();
-				getMapKeyConverts().addAll((Collection<? extends XmlConvert_2_1>)newValue);
+				getMapKeyConverts().addAll((Collection<? extends XmlConvert>)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_FOREIGN_KEY:
-				setMapKeyForeignKey((XmlForeignKey_2_1)newValue);
+				setMapKeyForeignKey((XmlForeignKey)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)newValue);
+				setForeignKey((XmlForeignKey)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -430,10 +430,10 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				getMapKeyConverts().clear();
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_FOREIGN_KEY:
-				setMapKeyForeignKey((XmlForeignKey_2_1)null);
+				setMapKeyForeignKey((XmlForeignKey)null);
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)null);
+				setForeignKey((XmlForeignKey)null);
 				return;
 		}
 		super.eUnset(featureID);

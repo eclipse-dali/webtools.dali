@@ -68,6 +68,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -76,7 +77,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
@@ -900,7 +900,7 @@ public abstract class AbstractEntityMappings
 		return managedTypes;
 	}
 
-	protected List<XmlConverter_2_1> getXml2_1Converters() {
+	protected List<XmlConverter> getXml2_1Converters() {
 		return this.xmlEntityMappings.getConverters();
 	}
 
@@ -1142,11 +1142,11 @@ public abstract class AbstractEntityMappings
 		return (OrmConverterType2_1) this.addManagedType(this.buildXmlConverter(), className);
 	}
 
-	protected XmlConverter_2_1 buildXmlConverter() {
+	protected XmlConverter buildXmlConverter() {
 		return EmfTools.create(
 			this.getResourceNodeFactory(), 
 			OrmPackage.eINSTANCE.getXmlConverter(), 
-			XmlConverter_2_1.class);
+			XmlConverter.class);
 	}
 
 

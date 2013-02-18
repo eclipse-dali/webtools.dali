@@ -84,7 +84,7 @@ public class XmlSqlResultSetMapping extends EBaseObjectImpl implements XmlSqlRes
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ConstructorResult_2_1> constructorResults;
+	protected EList<ConstructorResult> constructorResults;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -184,7 +184,7 @@ public class XmlSqlResultSetMapping extends EBaseObjectImpl implements XmlSqlRes
 
 	/**
 	 * Returns the value of the '<em><b>Constructor Results</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstructorResult_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.ConstructorResult}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Constructor Results</em>' containment reference list isn't clear,
@@ -196,11 +196,11 @@ public class XmlSqlResultSetMapping extends EBaseObjectImpl implements XmlSqlRes
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<ConstructorResult_2_1> getConstructorResults()
+	public EList<ConstructorResult> getConstructorResults()
 	{
 		if (constructorResults == null)
 		{
-			constructorResults = new EObjectContainmentEList<ConstructorResult_2_1>(ConstructorResult_2_1.class, this, OrmPackage.XML_SQL_RESULT_SET_MAPPING__CONSTRUCTOR_RESULTS);
+			constructorResults = new EObjectContainmentEList<ConstructorResult>(ConstructorResult.class, this, OrmPackage.XML_SQL_RESULT_SET_MAPPING__CONSTRUCTOR_RESULTS);
 		}
 		return constructorResults;
 	}
@@ -346,7 +346,7 @@ public class XmlSqlResultSetMapping extends EBaseObjectImpl implements XmlSqlRes
 				return;
 			case OrmPackage.XML_SQL_RESULT_SET_MAPPING__CONSTRUCTOR_RESULTS:
 				getConstructorResults().clear();
-				getConstructorResults().addAll((Collection<? extends ConstructorResult_2_1>)newValue);
+				getConstructorResults().addAll((Collection<? extends ConstructorResult>)newValue);
 				return;
 			case OrmPackage.XML_SQL_RESULT_SET_MAPPING__NAME:
 				setName((String)newValue);

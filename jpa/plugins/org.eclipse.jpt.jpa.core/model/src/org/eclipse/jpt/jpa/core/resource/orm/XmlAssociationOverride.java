@@ -116,7 +116,7 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlForeignKey_2_1 foreignKey;
+	protected XmlForeignKey foreignKey;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -206,12 +206,12 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlAssociationOverride_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlForeignKey_2_1 getForeignKey()
+	public XmlForeignKey getForeignKey()
 	{
 		return foreignKey;
 	}
@@ -221,9 +221,9 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetForeignKey(XmlForeignKey_2_1 newForeignKey, NotificationChain msgs)
+	public NotificationChain basicSetForeignKey(XmlForeignKey newForeignKey, NotificationChain msgs)
 	{
-		XmlForeignKey_2_1 oldForeignKey = foreignKey;
+		XmlForeignKey oldForeignKey = foreignKey;
 		foreignKey = newForeignKey;
 		if (eNotificationRequired())
 		{
@@ -241,7 +241,7 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	public void setForeignKey(XmlForeignKey_2_1 newForeignKey)
+	public void setForeignKey(XmlForeignKey newForeignKey)
 	{
 		if (newForeignKey != foreignKey)
 		{
@@ -421,7 +421,7 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 				setDescription((String)newValue);
 				return;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)newValue);
+				setForeignKey((XmlForeignKey)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -450,7 +450,7 @@ public class XmlAssociationOverride extends EBaseObjectImpl implements XmlOverri
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__FOREIGN_KEY:
-				setForeignKey((XmlForeignKey_2_1)null);
+				setForeignKey((XmlForeignKey)null);
 				return;
 		}
 		super.eUnset(featureID);

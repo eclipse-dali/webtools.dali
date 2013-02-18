@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2_1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 
 /**
  * JPA 2.1 <code>orm.xml</code> context node factory
@@ -27,5 +27,5 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
 public interface OrmXml2_1ContextNodeFactory
 	extends OrmXmlContextNodeFactory
 {
-	OrmConverterType2_1 buildOrmConverter(EntityMappings2_1 parent, XmlConverter_2_1 xmlConverter);
+	OrmConverterType2_1 buildOrmConverter(EntityMappings2_1 parent, XmlConverter xmlConverter);
 }

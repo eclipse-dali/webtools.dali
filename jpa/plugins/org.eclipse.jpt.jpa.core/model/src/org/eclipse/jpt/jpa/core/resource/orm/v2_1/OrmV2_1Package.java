@@ -281,31 +281,13 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int XML_CONVERTER_21 = 5;
 
 	/**
-	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_21__CLASS_NAME = OrmPackage.XML_MANAGED_TYPE__CLASS_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_21__DESCRIPTION = OrmPackage.XML_MANAGED_TYPE__DESCRIPTION;
-
-	/**
 	 * The feature id for the '<em><b>Auto Apply</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTER_21__AUTO_APPLY = OrmPackage.XML_MANAGED_TYPE_FEATURE_COUNT + 0;
+	public static final int XML_CONVERTER_21__AUTO_APPLY = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Converter 21</em>' class.
@@ -314,7 +296,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTER_21_FEATURE_COUNT = OrmPackage.XML_MANAGED_TYPE_FEATURE_COUNT + 1;
+	public static final int XML_CONVERTER_21_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1 <em>Xml Converter Container 21</em>}' class.
@@ -988,40 +970,13 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int XML_NAMED_ENTITY_GRAPH_21_FEATURE_COUNT = 5;
 
 	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__DESCRIPTION = OrmPackage.XML_QUERY__DESCRIPTION;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__NAME = OrmPackage.XML_QUERY__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Hints</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__HINTS = OrmPackage.XML_QUERY__HINTS;
-
-	/**
 	 * The feature id for the '<em><b>Result Classes</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES = OrmPackage.XML_QUERY_FEATURE_COUNT + 0;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_CLASSES = 0;
 
 	/**
 	 * The feature id for the '<em><b>Result Set Mappings</b></em>' attribute list.
@@ -1030,7 +985,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS = OrmPackage.XML_QUERY_FEATURE_COUNT + 1;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__RESULT_SET_MAPPINGS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Procedure Name</b></em>' attribute.
@@ -1039,7 +994,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME = OrmPackage.XML_QUERY_FEATURE_COUNT + 2;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PROCEDURE_NAME = 2;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -1048,7 +1003,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS = OrmPackage.XML_QUERY_FEATURE_COUNT + 3;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21__PARAMETERS = 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Named Stored Procedure Query 21</em>' class.
@@ -1057,7 +1012,7 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21_FEATURE_COUNT = OrmPackage.XML_QUERY_FEATURE_COUNT + 4;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY_21_FEATURE_COUNT = 4;
 
 	/**
 	 * The feature id for the '<em><b>Named Attribute Nodes</b></em>' containment reference list.
@@ -3181,11 +3136,9 @@ public class OrmV2_1Package extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		xmlConverter_2_1EClass.getESuperTypes().add(theOrmPackage.getXmlManagedType());
 		xmlEntity_2_1EClass.getESuperTypes().add(this.getXmlQueryContainer_2_1());
 		xmlEntityMappings_2_1EClass.getESuperTypes().add(this.getXmlConverterContainer_2_1());
 		xmlEntityMappings_2_1EClass.getESuperTypes().add(this.getXmlQueryContainer_2_1());
-		xmlNamedStoredProcedureQuery_2_1EClass.getESuperTypes().add(theOrmPackage.getXmlQuery());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(columnResult_2_1EClass, ColumnResult_2_1.class, "ColumnResult_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3193,14 +3146,14 @@ public class OrmV2_1Package extends EPackageImpl
 
 		initEClass(constructorResult_2_1EClass, ConstructorResult_2_1.class, "ConstructorResult_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getConstructorResult_2_1_TargetClass(), theXMLTypePackage.getString(), "targetClass", null, 1, 1, ConstructorResult_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstructorResult_2_1_ColumnResults(), this.getColumnResult_2_1(), null, "columnResults", null, 0, -1, ConstructorResult_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstructorResult_2_1_ColumnResults(), theOrmPackage.getColumnResult(), null, "columnResults", null, 0, -1, ConstructorResult_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlAssociationOverride_2_1EClass, XmlAssociationOverride_2_1.class, "XmlAssociationOverride_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlAssociationOverride_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlAssociationOverride_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlAssociationOverride_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlAssociationOverride_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCollectionTable_2_1EClass, XmlCollectionTable_2_1.class, "XmlCollectionTable_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlCollectionTable_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlCollectionTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlCollectionTable_2_1_Indexes(), this.getXmlIndex_2_1(), null, "indexes", null, 0, -1, XmlCollectionTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlCollectionTable_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlCollectionTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlCollectionTable_2_1_Indexes(), theOrmPackage.getXmlIndex(), null, "indexes", null, 0, -1, XmlCollectionTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlConvert_2_1EClass, XmlConvert_2_1.class, "XmlConvert_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlConvert_2_1_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlConvert_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3212,23 +3165,23 @@ public class OrmV2_1Package extends EPackageImpl
 		initEAttribute(getXmlConverter_2_1_AutoApply(), theXMLTypePackage.getBooleanObject(), "autoApply", null, 0, 1, XmlConverter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlConverterContainer_2_1EClass, XmlConverterContainer_2_1.class, "XmlConverterContainer_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlConverterContainer_2_1_Converters(), this.getXmlConverter_2_1(), null, "converters", null, 0, -1, XmlConverterContainer_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlConverterContainer_2_1_Converters(), theOrmPackage.getXmlConverter(), null, "converters", null, 0, -1, XmlConverterContainer_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlConvertibleMapping_2_1EClass, XmlConvertibleMapping_2_1.class, "XmlConvertibleMapping_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlConvertibleMapping_2_1_Convert(), this.getXmlConvert_2_1(), null, "convert", null, 0, 1, XmlConvertibleMapping_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlConvertibleMapping_2_1_Convert(), theOrmPackage.getXmlConvert(), null, "convert", null, 0, 1, XmlConvertibleMapping_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_1EClass, XmlElementCollection_2_1.class, "XmlElementCollection_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlElementCollection_2_1_MapKeyConverts(), this.getXmlConvert_2_1(), null, "mapKeyConverts", null, 0, -1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlElementCollection_2_1_MapKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "mapKeyForeignKey", null, 0, 1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlElementCollection_2_1_Converts(), this.getXmlConvert_2_1(), null, "converts", null, 0, -1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlElementCollection_2_1_MapKeyConverts(), theOrmPackage.getXmlConvert(), null, "mapKeyConverts", null, 0, -1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlElementCollection_2_1_MapKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "mapKeyForeignKey", null, 0, 1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlElementCollection_2_1_Converts(), theOrmPackage.getXmlConvert(), null, "converts", null, 0, -1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbedded_2_1EClass, XmlEmbedded_2_1.class, "XmlEmbedded_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEmbedded_2_1_Converts(), this.getXmlConvert_2_1(), null, "converts", null, 0, -1, XmlEmbedded_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEmbedded_2_1_Converts(), theOrmPackage.getXmlConvert(), null, "converts", null, 0, -1, XmlEmbedded_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntity_2_1EClass, XmlEntity_2_1.class, "XmlEntity_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntity_2_1_PrimaryKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "primaryKeyForeignKey", null, 0, 1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_2_1_Converts(), this.getXmlConvert_2_1(), null, "converts", null, 0, -1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_2_1_NamedEntityGraphs(), this.getXmlNamedEntityGraph_2_1(), null, "namedEntityGraphs", null, 0, -1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_1_PrimaryKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "primaryKeyForeignKey", null, 0, 1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_1_Converts(), theOrmPackage.getXmlConvert(), null, "converts", null, 0, -1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_1_NamedEntityGraphs(), theOrmPackage.getXmlNamedEntityGraph(), null, "namedEntityGraphs", null, 0, -1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityMappings_2_1EClass, XmlEntityMappings_2_1.class, "XmlEntityMappings_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3245,16 +3198,16 @@ public class OrmV2_1Package extends EPackageImpl
 		initEAttribute(getXmlIndex_2_1_Unique(), theXMLTypePackage.getBooleanObject(), "unique", null, 0, 1, XmlIndex_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlJoinTable_2_1EClass, XmlJoinTable_2_1.class, "XmlJoinTable_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlJoinTable_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlJoinTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlJoinTable_2_1_InverseForeignKey(), this.getXmlForeignKey_2_1(), null, "inverseForeignKey", null, 0, 1, XmlJoinTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlJoinTable_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlJoinTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlJoinTable_2_1_InverseForeignKey(), theOrmPackage.getXmlForeignKey(), null, "inverseForeignKey", null, 0, 1, XmlJoinTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlJoinTable_2_1_Indexes(), this.getXmlIndex_2_1(), null, "indexes", null, 0, -1, XmlJoinTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToMany_2_1EClass, XmlManyToMany_2_1.class, "XmlManyToMany_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToMany_2_1_MapKeyConverts(), this.getXmlConvert_2_1(), null, "mapKeyConverts", null, 0, -1, XmlManyToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlManyToMany_2_1_MapKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "mapKeyForeignKey", null, 0, 1, XmlManyToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlManyToMany_2_1_MapKeyConverts(), theOrmPackage.getXmlConvert(), null, "mapKeyConverts", null, 0, -1, XmlManyToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlManyToMany_2_1_MapKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "mapKeyForeignKey", null, 0, 1, XmlManyToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToOne_2_1EClass, XmlManyToOne_2_1.class, "XmlManyToOne_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToOne_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlManyToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlManyToOne_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlManyToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedAttributeNode_2_1EClass, XmlNamedAttributeNode_2_1.class, "XmlNamedAttributeNode_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlNamedAttributeNode_2_1_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlNamedAttributeNode_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3262,9 +3215,9 @@ public class OrmV2_1Package extends EPackageImpl
 		initEAttribute(getXmlNamedAttributeNode_2_1_KeySubgraph(), theXMLTypePackage.getString(), "keySubgraph", null, 0, 1, XmlNamedAttributeNode_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedEntityGraph_2_1EClass, XmlNamedEntityGraph_2_1.class, "XmlNamedEntityGraph_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlNamedEntityGraph_2_1_NamedAttributeNodes(), this.getXmlNamedAttributeNode_2_1(), null, "namedAttributeNodes", null, 0, -1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlNamedEntityGraph_2_1_Subgraphs(), this.getXmlNamedSubgraph_2_1(), null, "subgraphs", null, 0, -1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlNamedEntityGraph_2_1_SubclassSubgraphs(), this.getXmlNamedSubgraph_2_1(), null, "subclassSubgraphs", null, 0, -1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlNamedEntityGraph_2_1_NamedAttributeNodes(), theOrmPackage.getXmlNamedAttributeNode(), null, "namedAttributeNodes", null, 0, -1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlNamedEntityGraph_2_1_Subgraphs(), theOrmPackage.getXmlNamedSubgraph(), null, "subgraphs", null, 0, -1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlNamedEntityGraph_2_1_SubclassSubgraphs(), theOrmPackage.getXmlNamedSubgraph(), null, "subclassSubgraphs", null, 0, -1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNamedEntityGraph_2_1_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNamedEntityGraph_2_1_IncludeAllAttributes(), theXMLTypePackage.getBooleanObject(), "includeAllAttributes", null, 0, 1, XmlNamedEntityGraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3272,29 +3225,29 @@ public class OrmV2_1Package extends EPackageImpl
 		initEAttribute(getXmlNamedStoredProcedureQuery_2_1_ResultClasses(), theXMLTypePackage.getString(), "resultClasses", null, 0, -1, XmlNamedStoredProcedureQuery_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNamedStoredProcedureQuery_2_1_ResultSetMappings(), theXMLTypePackage.getString(), "resultSetMappings", null, 0, -1, XmlNamedStoredProcedureQuery_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNamedStoredProcedureQuery_2_1_ProcedureName(), theXMLTypePackage.getString(), "procedureName", null, 1, 1, XmlNamedStoredProcedureQuery_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlNamedStoredProcedureQuery_2_1_Parameters(), this.getXmlStoredProcedureParameter_2_1(), null, "parameters", null, 0, -1, XmlNamedStoredProcedureQuery_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlNamedStoredProcedureQuery_2_1_Parameters(), theOrmPackage.getXmlStoredProcedureParameter(), null, "parameters", null, 0, -1, XmlNamedStoredProcedureQuery_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedSubgraph_2_1EClass, XmlNamedSubgraph_2_1.class, "XmlNamedSubgraph_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlNamedSubgraph_2_1_NamedAttributeNodes(), this.getXmlNamedAttributeNode_2_1(), null, "namedAttributeNodes", null, 0, -1, XmlNamedSubgraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlNamedSubgraph_2_1_NamedAttributeNodes(), theOrmPackage.getXmlNamedAttributeNode(), null, "namedAttributeNodes", null, 0, -1, XmlNamedSubgraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNamedSubgraph_2_1_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlNamedSubgraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNamedSubgraph_2_1_ClassName(), theXMLTypePackage.getString(), "className", null, 0, 1, XmlNamedSubgraph_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_1EClass, XmlOneToMany_2_1.class, "XmlOneToMany_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlOneToMany_2_1_MapKeyConverts(), this.getXmlConvert_2_1(), null, "mapKeyConverts", null, 0, -1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToMany_2_1_MapKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "mapKeyForeignKey", null, 0, 1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToMany_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToMany_2_1_MapKeyConverts(), theOrmPackage.getXmlConvert(), null, "mapKeyConverts", null, 0, -1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToMany_2_1_MapKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "mapKeyForeignKey", null, 0, 1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToMany_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToOne_2_1EClass, XmlOneToOne_2_1.class, "XmlOneToOne_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlOneToOne_2_1_MapKeyConverts(), this.getXmlConvert_2_1(), null, "mapKeyConverts", null, 0, -1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToOne_2_1_PrimaryKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "primaryKeyForeignKey", null, 0, 1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToOne_2_1_ForeignKey(), this.getXmlForeignKey_2_1(), null, "foreignKey", null, 0, 1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToOne_2_1_MapKeyConverts(), theOrmPackage.getXmlConvert(), null, "mapKeyConverts", null, 0, -1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToOne_2_1_PrimaryKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "primaryKeyForeignKey", null, 0, 1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToOne_2_1_ForeignKey(), theOrmPackage.getXmlForeignKey(), null, "foreignKey", null, 0, 1, XmlOneToOne_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlQueryContainer_2_1EClass, XmlQueryContainer_2_1.class, "XmlQueryContainer_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlQueryContainer_2_1_NamedStoredProcedureQueries(), theOrmPackage.getXmlNamedStoredProcedureQuery(), null, "namedStoredProcedureQueries", null, 0, -1, XmlQueryContainer_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlSecondaryTable_2_1EClass, XmlSecondaryTable_2_1.class, "XmlSecondaryTable_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlSecondaryTable_2_1_PrimaryKeyForeignKey(), this.getXmlForeignKey_2_1(), null, "primaryKeyForeignKey", null, 0, 1, XmlSecondaryTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlSecondaryTable_2_1_Indexes(), this.getXmlIndex_2_1(), null, "indexes", null, 0, -1, XmlSecondaryTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlSecondaryTable_2_1_PrimaryKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "primaryKeyForeignKey", null, 0, 1, XmlSecondaryTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlSecondaryTable_2_1_Indexes(), theOrmPackage.getXmlIndex(), null, "indexes", null, 0, -1, XmlSecondaryTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlStoredProcedureParameter_2_1EClass, XmlStoredProcedureParameter_2_1.class, "XmlStoredProcedureParameter_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlStoredProcedureParameter_2_1_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3303,13 +3256,13 @@ public class OrmV2_1Package extends EPackageImpl
 		initEAttribute(getXmlStoredProcedureParameter_2_1_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlStoredProcedureParameter_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlSqlResultSetMapping_2_1EClass, XmlSqlResultSetMapping_2_1.class, "XmlSqlResultSetMapping_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlSqlResultSetMapping_2_1_ConstructorResults(), this.getConstructorResult_2_1(), null, "constructorResults", null, 0, -1, XmlSqlResultSetMapping_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlSqlResultSetMapping_2_1_ConstructorResults(), theOrmPackage.getConstructorResult(), null, "constructorResults", null, 0, -1, XmlSqlResultSetMapping_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTable_2_1EClass, XmlTable_2_1.class, "XmlTable_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlTable_2_1_Indexes(), this.getXmlIndex_2_1(), null, "indexes", null, 0, -1, XmlTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlTable_2_1_Indexes(), theOrmPackage.getXmlIndex(), null, "indexes", null, 0, -1, XmlTable_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTableGenerator_2_1EClass, XmlTableGenerator_2_1.class, "XmlTableGenerator_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlTableGenerator_2_1_Indexes(), this.getXmlIndex_2_1(), null, "indexes", null, 0, -1, XmlTableGenerator_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlTableGenerator_2_1_Indexes(), theOrmPackage.getXmlIndex(), null, "indexes", null, 0, -1, XmlTableGenerator_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(parameterMode_2_1EEnum, ParameterMode_2_1.class, "ParameterMode_2_1");

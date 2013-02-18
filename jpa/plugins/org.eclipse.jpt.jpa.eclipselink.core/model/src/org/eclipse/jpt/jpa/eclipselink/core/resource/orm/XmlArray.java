@@ -29,6 +29,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvert;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
@@ -103,7 +105,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlConverter_2_1> converters;
+	protected EList<XmlConverter> converters;
 
 	/**
 	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
@@ -143,7 +145,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlConvert_2_1 convert;
+	protected XmlConvert convert;
 
 	/**
 	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
@@ -353,7 +355,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 
 	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConverter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
@@ -365,11 +367,11 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlConverter_2_1> getConverters()
+	public EList<XmlConverter> getConverters()
 	{
 		if (converters == null)
 		{
-			converters = new EObjectContainmentEList<XmlConverter_2_1>(XmlConverter_2_1.class, this, EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS);
+			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS);
 		}
 		return converters;
 	}
@@ -452,12 +454,12 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Convert</em>' containment reference.
-	 * @see #setConvert(XmlConvert_2_1)
+	 * @see #setConvert(XmlConvert)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_2_1_Convert()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlConvert_2_1 getConvert()
+	public XmlConvert getConvert()
 	{
 		return convert;
 	}
@@ -467,9 +469,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetConvert(XmlConvert_2_1 newConvert, NotificationChain msgs)
+	public NotificationChain basicSetConvert(XmlConvert newConvert, NotificationChain msgs)
 	{
-		XmlConvert_2_1 oldConvert = convert;
+		XmlConvert oldConvert = convert;
 		convert = newConvert;
 		if (eNotificationRequired())
 		{
@@ -487,7 +489,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @see #getConvert()
 	 * @generated
 	 */
-	public void setConvert(XmlConvert_2_1 newConvert)
+	public void setConvert(XmlConvert newConvert)
 	{
 		if (newConvert != convert)
 		{
@@ -874,7 +876,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS:
 				getConverters().clear();
-				getConverters().addAll((Collection<? extends XmlConverter_2_1>)newValue);
+				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__TYPE_CONVERTERS:
 				getTypeConverters().clear();
@@ -889,7 +891,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
-				setConvert((XmlConvert_2_1)newValue);
+				setConvert((XmlConvert)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__LOB:
 				setLob((Boolean)newValue);
@@ -945,7 +947,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				getStructConverters().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
-				setConvert((XmlConvert_2_1)null);
+				setConvert((XmlConvert)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__LOB:
 				setLob(LOB_EDEFAULT);

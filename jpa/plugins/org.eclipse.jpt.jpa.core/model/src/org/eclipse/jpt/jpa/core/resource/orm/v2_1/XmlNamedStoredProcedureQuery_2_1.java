@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
@@ -36,9 +37,10 @@ import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlNamedStoredProcedureQuery_2_1()
  * @model kind="class" interface="true" abstract="true"
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlNamedStoredProcedureQuery_2_1 extends XmlQuery
+public interface XmlNamedStoredProcedureQuery_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Result Classes</b></em>' attribute list.
@@ -100,7 +102,7 @@ public interface XmlNamedStoredProcedureQuery_2_1 extends XmlQuery
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlStoredProcedureParameter_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
@@ -112,6 +114,6 @@ public interface XmlNamedStoredProcedureQuery_2_1 extends XmlQuery
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlStoredProcedureParameter_2_1> getParameters();
+	EList<XmlStoredProcedureParameter> getParameters();
 
 } // XmlNamedStoredProcedureQuery_2_1

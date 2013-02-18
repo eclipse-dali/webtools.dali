@@ -60,7 +60,7 @@ public class XmlNamedSubgraph extends EBaseObjectImpl implements XmlNamedSubgrap
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedAttributeNode_2_1> namedAttributeNodes;
+	protected EList<XmlNamedAttributeNode> namedAttributeNodes;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -125,7 +125,7 @@ public class XmlNamedSubgraph extends EBaseObjectImpl implements XmlNamedSubgrap
 
 	/**
 	 * Returns the value of the '<em><b>Named Attribute Nodes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedAttributeNode_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlNamedAttributeNode}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Attribute Nodes</em>' containment reference list isn't clear,
@@ -137,11 +137,11 @@ public class XmlNamedSubgraph extends EBaseObjectImpl implements XmlNamedSubgrap
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedAttributeNode_2_1> getNamedAttributeNodes()
+	public EList<XmlNamedAttributeNode> getNamedAttributeNodes()
 	{
 		if (namedAttributeNodes == null)
 		{
-			namedAttributeNodes = new EObjectContainmentEList<XmlNamedAttributeNode_2_1>(XmlNamedAttributeNode_2_1.class, this, OrmPackage.XML_NAMED_SUBGRAPH__NAMED_ATTRIBUTE_NODES);
+			namedAttributeNodes = new EObjectContainmentEList<XmlNamedAttributeNode>(XmlNamedAttributeNode.class, this, OrmPackage.XML_NAMED_SUBGRAPH__NAMED_ATTRIBUTE_NODES);
 		}
 		return namedAttributeNodes;
 	}
@@ -265,7 +265,7 @@ public class XmlNamedSubgraph extends EBaseObjectImpl implements XmlNamedSubgrap
 		{
 			case OrmPackage.XML_NAMED_SUBGRAPH__NAMED_ATTRIBUTE_NODES:
 				getNamedAttributeNodes().clear();
-				getNamedAttributeNodes().addAll((Collection<? extends XmlNamedAttributeNode_2_1>)newValue);
+				getNamedAttributeNodes().addAll((Collection<? extends XmlNamedAttributeNode>)newValue);
 				return;
 			case OrmPackage.XML_NAMED_SUBGRAPH__NAME:
 				setName((String)newValue);

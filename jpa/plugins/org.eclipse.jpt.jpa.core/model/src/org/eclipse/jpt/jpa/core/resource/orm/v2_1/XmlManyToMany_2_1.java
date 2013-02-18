@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvert;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,7 +43,7 @@ public interface XmlManyToMany_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Converts</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConvert_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlConvert}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Map Key Converts</em>' containment reference list isn't clear,
@@ -53,7 +55,7 @@ public interface XmlManyToMany_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlConvert_2_1> getMapKeyConverts();
+	EList<XmlConvert> getMapKeyConverts();
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Foreign Key</b></em>' containment reference.
@@ -64,12 +66,12 @@ public interface XmlManyToMany_2_1 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Foreign Key</em>' containment reference.
-	 * @see #setMapKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setMapKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlManyToMany_2_1_MapKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlForeignKey_2_1 getMapKeyForeignKey();
+	XmlForeignKey getMapKeyForeignKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlManyToMany_2_1#getMapKeyForeignKey <em>Map Key Foreign Key</em>}' containment reference.
@@ -79,6 +81,6 @@ public interface XmlManyToMany_2_1 extends EBaseObject
 	 * @see #getMapKeyForeignKey()
 	 * @generated
 	 */
-	void setMapKeyForeignKey(XmlForeignKey_2_1 value);
+	void setMapKeyForeignKey(XmlForeignKey value);
 
 } // XmlManyToMany_2_1

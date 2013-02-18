@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,12 +46,12 @@ public interface XmlManyToOne_2_1 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Foreign Key</em>' containment reference.
-	 * @see #setForeignKey(XmlForeignKey_2_1)
+	 * @see #setForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlManyToOne_2_1_ForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlForeignKey_2_1 getForeignKey();
+	XmlForeignKey getForeignKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlManyToOne_2_1#getForeignKey <em>Foreign Key</em>}' containment reference.
@@ -60,6 +61,6 @@ public interface XmlManyToOne_2_1 extends EBaseObject
 	 * @see #getForeignKey()
 	 * @generated
 	 */
-	void setForeignKey(XmlForeignKey_2_1 value);
+	void setForeignKey(XmlForeignKey value);
 
 } // XmlManyToOne_2_1

@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.resource.orm.v2_1;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlIndex;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,12 +50,12 @@ public interface XmlSecondaryTable_2_1 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
-	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlSecondaryTable_2_1_PrimaryKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlForeignKey_2_1 getPrimaryKeyForeignKey();
+	XmlForeignKey getPrimaryKeyForeignKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlSecondaryTable_2_1#getPrimaryKeyForeignKey <em>Primary Key Foreign Key</em>}' containment reference.
@@ -63,11 +65,11 @@ public interface XmlSecondaryTable_2_1 extends EBaseObject
 	 * @see #getPrimaryKeyForeignKey()
 	 * @generated
 	 */
-	void setPrimaryKeyForeignKey(XmlForeignKey_2_1 value);
+	void setPrimaryKeyForeignKey(XmlForeignKey value);
 
 	/**
 	 * Returns the value of the '<em><b>Indexes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.core.resource.orm.XmlIndex}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Indexes</em>' containment reference list isn't clear,
@@ -79,6 +81,6 @@ public interface XmlSecondaryTable_2_1 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlIndex_2_1> getIndexes();
+	EList<XmlIndex> getIndexes();
 
 } // XmlSecondaryTable_2_1
