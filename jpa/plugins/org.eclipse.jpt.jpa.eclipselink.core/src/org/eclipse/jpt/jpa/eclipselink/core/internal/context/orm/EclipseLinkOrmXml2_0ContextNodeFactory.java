@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
@@ -39,7 +38,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 
 public class EclipseLinkOrmXml2_0ContextNodeFactory

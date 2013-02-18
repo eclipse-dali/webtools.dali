@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -69,7 +69,7 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumns;
+	protected EList<XmlTenantDiscriminatorColumn> tenantDiscriminatorColumns;
 
 	/**
 	 * The default value of the '{@link #getIncludeCriteria() <em>Include Criteria</em>}' attribute.
@@ -98,7 +98,7 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlTenantTableDiscriminator_2_4 tenantTableDiscriminator;
+	protected XmlTenantTableDiscriminator tenantTableDiscriminator;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -161,7 +161,7 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 
 	/**
 	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Tenant Discriminator Columns</em>' containment reference list isn't clear,
@@ -173,11 +173,11 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlTenantDiscriminatorColumn_2_3> getTenantDiscriminatorColumns()
+	public EList<XmlTenantDiscriminatorColumn> getTenantDiscriminatorColumns()
 	{
 		if (tenantDiscriminatorColumns == null)
 		{
-			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn_2_3>(XmlTenantDiscriminatorColumn_2_3.class, this, EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS);
+			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn>(XmlTenantDiscriminatorColumn.class, this, EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS);
 		}
 		return tenantDiscriminatorColumns;
 	}
@@ -226,12 +226,12 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Tenant Table Discriminator</em>' containment reference.
-	 * @see #setTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4)
+	 * @see #setTenantTableDiscriminator(XmlTenantTableDiscriminator)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenant_2_4_TenantTableDiscriminator()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlTenantTableDiscriminator_2_4 getTenantTableDiscriminator()
+	public XmlTenantTableDiscriminator getTenantTableDiscriminator()
 	{
 		return tenantTableDiscriminator;
 	}
@@ -241,9 +241,9 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4 newTenantTableDiscriminator, NotificationChain msgs)
+	public NotificationChain basicSetTenantTableDiscriminator(XmlTenantTableDiscriminator newTenantTableDiscriminator, NotificationChain msgs)
 	{
-		XmlTenantTableDiscriminator_2_4 oldTenantTableDiscriminator = tenantTableDiscriminator;
+		XmlTenantTableDiscriminator oldTenantTableDiscriminator = tenantTableDiscriminator;
 		tenantTableDiscriminator = newTenantTableDiscriminator;
 		if (eNotificationRequired())
 		{
@@ -261,7 +261,7 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 	 * @see #getTenantTableDiscriminator()
 	 * @generated
 	 */
-	public void setTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4 newTenantTableDiscriminator)
+	public void setTenantTableDiscriminator(XmlTenantTableDiscriminator newTenantTableDiscriminator)
 	{
 		if (newTenantTableDiscriminator != tenantTableDiscriminator)
 		{
@@ -333,13 +333,13 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 				return;
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS:
 				getTenantDiscriminatorColumns().clear();
-				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn_2_3>)newValue);
+				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
 				setIncludeCriteria((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
-				setTenantTableDiscriminator((XmlTenantTableDiscriminator_2_4)newValue);
+				setTenantTableDiscriminator((XmlTenantTableDiscriminator)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -365,7 +365,7 @@ public class XmlMultitenant extends EBaseObjectImpl implements XmlMultitenant_2_
 				setIncludeCriteria(INCLUDE_CRITERIA_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
-				setTenantTableDiscriminator((XmlTenantTableDiscriminator_2_4)null);
+				setTenantTableDiscriminator((XmlTenantTableDiscriminator)null);
 				return;
 		}
 		super.eUnset(featureID);

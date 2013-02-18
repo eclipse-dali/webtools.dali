@@ -139,7 +139,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlPlsqlRecord_2_3> plsqlRecords;
+	protected EList<XmlPlsqlRecord> plsqlRecords;
 
 	/**
 	 * The cached value of the '{@link #getPlsqlTables() <em>Plsql Tables</em>}' containment reference list.
@@ -159,7 +159,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlStruct_2_3 struct;
+	protected XmlStruct struct;
 
 	/**
 	 * The cached value of the '{@link #getNoSql() <em>No Sql</em>}' containment reference.
@@ -169,7 +169,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlNoSql_2_4 noSql;
+	protected XmlNoSql noSql;
 
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
@@ -455,7 +455,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 
 	/**
 	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
@@ -467,11 +467,11 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
+	public EList<XmlPlsqlRecord> getPlsqlRecords()
 	{
 		if (plsqlRecords == null)
 		{
-			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS);
+			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord>(XmlPlsqlRecord.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS);
 		}
 		return plsqlRecords;
 	}
@@ -508,12 +508,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Struct</em>' containment reference.
-	 * @see #setStruct(XmlStruct_2_3)
+	 * @see #setStruct(XmlStruct)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_3_Struct()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlStruct_2_3 getStruct()
+	public XmlStruct getStruct()
 	{
 		return struct;
 	}
@@ -523,9 +523,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetStruct(XmlStruct_2_3 newStruct, NotificationChain msgs)
+	public NotificationChain basicSetStruct(XmlStruct newStruct, NotificationChain msgs)
 	{
-		XmlStruct_2_3 oldStruct = struct;
+		XmlStruct oldStruct = struct;
 		struct = newStruct;
 		if (eNotificationRequired())
 		{
@@ -543,7 +543,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @see #getStruct()
 	 * @generated
 	 */
-	public void setStruct(XmlStruct_2_3 newStruct)
+	public void setStruct(XmlStruct newStruct)
 	{
 		if (newStruct != struct)
 		{
@@ -568,12 +568,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>No Sql</em>' containment reference.
-	 * @see #setNoSql(XmlNoSql_2_4)
+	 * @see #setNoSql(XmlNoSql)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_4_NoSql()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlNoSql_2_4 getNoSql()
+	public XmlNoSql getNoSql()
 	{
 		return noSql;
 	}
@@ -583,9 +583,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetNoSql(XmlNoSql_2_4 newNoSql, NotificationChain msgs)
+	public NotificationChain basicSetNoSql(XmlNoSql newNoSql, NotificationChain msgs)
 	{
-		XmlNoSql_2_4 oldNoSql = noSql;
+		XmlNoSql oldNoSql = noSql;
 		noSql = newNoSql;
 		if (eNotificationRequired())
 		{
@@ -603,7 +603,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @see #getNoSql()
 	 * @generated
 	 */
-	public void setNoSql(XmlNoSql_2_4 newNoSql)
+	public void setNoSql(XmlNoSql newNoSql)
 	{
 		if (newNoSql != noSql)
 		{
@@ -1196,17 +1196,17 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
 				getPlsqlRecords().clear();
-				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord_2_3>)newValue);
+				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
-				setStruct((XmlStruct_2_3)newValue);
+				setStruct((XmlStruct)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
-				setNoSql((XmlNoSql_2_4)newValue);
+				setNoSql((XmlNoSql)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)newValue);
@@ -1279,10 +1279,10 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				getPlsqlTables().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
-				setStruct((XmlStruct_2_3)null);
+				setStruct((XmlStruct)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
-				setNoSql((XmlNoSql_2_4)null);
+				setNoSql((XmlNoSql)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)null);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNoSql;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,12 +46,12 @@ public interface XmlEmbeddable_2_4 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>No Sql</em>' containment reference.
-	 * @see #setNoSql(XmlNoSql_2_4)
+	 * @see #setNoSql(XmlNoSql)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEmbeddable_2_4_NoSql()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlNoSql_2_4 getNoSql();
+	XmlNoSql getNoSql();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4#getNoSql <em>No Sql</em>}' containment reference.
@@ -60,6 +61,6 @@ public interface XmlEmbeddable_2_4 extends EBaseObject
 	 * @see #getNoSql()
 	 * @generated
 	 */
-	void setNoSql(XmlNoSql_2_4 value);
+	void setNoSql(XmlNoSql value);
 
 } // XmlEmbeddable_2_4

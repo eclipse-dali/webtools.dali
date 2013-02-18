@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
+
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAdditionalCriteria;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlIndex;
 
 
 /**
@@ -71,12 +74,12 @@ public interface XmlEntity_2_2 extends XmlPartitioningGroup_2_2
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Index</em>' containment reference.
-	 * @see #setIndex(XmlIndex_2_2)
+	 * @see #setIndex(XmlIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlEntity_2_2_Index()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlIndex_2_2 getIndex();
+	XmlIndex getIndex();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEntity_2_2#getIndex <em>Index</em>}' containment reference.
@@ -86,7 +89,7 @@ public interface XmlEntity_2_2 extends XmlPartitioningGroup_2_2
 	 * @see #getIndex()
 	 * @generated
 	 */
-	void setIndex(XmlIndex_2_2 value);
+	void setIndex(XmlIndex value);
 
 	/**
 	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
@@ -97,12 +100,12 @@ public interface XmlEntity_2_2 extends XmlPartitioningGroup_2_2
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Additional Criteria</em>' containment reference.
-	 * @see #setAdditionalCriteria(XmlAdditionalCriteria_2_2)
+	 * @see #setAdditionalCriteria(XmlAdditionalCriteria)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlEntity_2_2_AdditionalCriteria()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlAdditionalCriteria_2_2 getAdditionalCriteria();
+	XmlAdditionalCriteria getAdditionalCriteria();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEntity_2_2#getAdditionalCriteria <em>Additional Criteria</em>}' containment reference.
@@ -112,6 +115,6 @@ public interface XmlEntity_2_2 extends XmlPartitioningGroup_2_2
 	 * @see #getAdditionalCriteria()
 	 * @generated
 	 */
-	void setAdditionalCriteria(XmlAdditionalCriteria_2_2 value);
+	void setAdditionalCriteria(XmlAdditionalCriteria value);
 
 } // XmlEntity_2_2

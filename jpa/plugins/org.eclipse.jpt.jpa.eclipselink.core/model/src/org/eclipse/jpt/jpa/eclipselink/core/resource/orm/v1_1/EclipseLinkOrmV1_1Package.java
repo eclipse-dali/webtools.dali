@@ -586,6 +586,7 @@ public class EclipseLinkOrmV1_1Package extends EPackageImpl
 		initEEnum(idValidationType_1_1EEnum, IdValidationType_1_1.class, "IdValidationType_1_1");
 		addEEnumLiteral(idValidationType_1_1EEnum, IdValidationType_1_1.NULL);
 		addEEnumLiteral(idValidationType_1_1EEnum, IdValidationType_1_1.ZERO);
+		addEEnumLiteral(idValidationType_1_1EEnum, IdValidationType_1_1.NEGATIVE);
 		addEEnumLiteral(idValidationType_1_1EEnum, IdValidationType_1_1.NONE);
 	}
 

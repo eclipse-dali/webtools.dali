@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlIndex;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,12 +46,12 @@ public interface XmlBasic_2_2 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Index</em>' containment reference.
-	 * @see #setIndex(XmlIndex_2_2)
+	 * @see #setIndex(XmlIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlBasic_2_2_Index()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlIndex_2_2 getIndex();
+	XmlIndex getIndex();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlBasic_2_2#getIndex <em>Index</em>}' containment reference.
@@ -60,6 +61,6 @@ public interface XmlBasic_2_2 extends EBaseObject
 	 * @see #getIndex()
 	 * @generated
 	 */
-	void setIndex(XmlIndex_2_2 value);
+	void setIndex(XmlIndex value);
 
 } // XmlBasic_2_2

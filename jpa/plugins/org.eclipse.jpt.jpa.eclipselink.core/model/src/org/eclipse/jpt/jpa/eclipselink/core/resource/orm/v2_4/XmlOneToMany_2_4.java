@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinField;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +35,7 @@ public interface XmlOneToMany_2_4 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Join Fields</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinField}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Join Fields</em>' containment reference list isn't clear,
@@ -46,7 +47,7 @@ public interface XmlOneToMany_2_4 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlJoinField_2_4> getJoinFields();
+	EList<XmlJoinField> getJoinFields();
 
 	/**
 	 * Returns the value of the '<em><b>Delete All</b></em>' attribute.

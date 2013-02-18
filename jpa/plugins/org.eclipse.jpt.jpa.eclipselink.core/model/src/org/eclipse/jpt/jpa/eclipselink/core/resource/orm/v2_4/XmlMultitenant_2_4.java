@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantTableDiscriminator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -67,12 +68,12 @@ public interface XmlMultitenant_2_4 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Tenant Table Discriminator</em>' containment reference.
-	 * @see #setTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4)
+	 * @see #setTenantTableDiscriminator(XmlTenantTableDiscriminator)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlMultitenant_2_4_TenantTableDiscriminator()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlTenantTableDiscriminator_2_4 getTenantTableDiscriminator();
+	XmlTenantTableDiscriminator getTenantTableDiscriminator();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4#getTenantTableDiscriminator <em>Tenant Table Discriminator</em>}' containment reference.
@@ -82,7 +83,7 @@ public interface XmlMultitenant_2_4 extends EBaseObject
 	 * @see #getTenantTableDiscriminator()
 	 * @generated
 	 */
-	void setTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4 value);
+	void setTenantTableDiscriminator(XmlTenantTableDiscriminator value);
 
 	TextRange getIncludeCriteriaTextRange();
 

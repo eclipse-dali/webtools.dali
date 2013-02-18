@@ -49,7 +49,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -68,7 +67,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	protected Boolean specifiedIncludeCriteria;
 	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
-	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> specifiedTenantDiscriminatorColumnContainer;
+	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> specifiedTenantDiscriminatorColumnContainer;
 	protected final ReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 
 	protected final ContextListContainer<VirtualTenantDiscriminatorColumn2_3, ReadOnlyTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
@@ -338,7 +337,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ListIterable<XmlTenantDiscriminatorColumn_2_3> getXmlTenantDiscriminatorColumns() {
+	protected ListIterable<XmlTenantDiscriminatorColumn> getXmlTenantDiscriminatorColumns() {
 		if (getXmlMultitenant() == null) {
 			return EmptyListIterable.instance();
 		}
@@ -350,22 +349,22 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	 *  specified tenant discriminator column container
 	 */
 	protected class SpecifiedTenantDiscriminatorColumnContainer
-		extends ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3>
+		extends ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn_2_3 resourceElement) {
+		protected OrmTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn resourceElement) {
 			return OrmEclipseLinkMultitenancyImpl2_3.this.buildTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
-		protected ListIterable<XmlTenantDiscriminatorColumn_2_3> getResourceElements() {
+		protected ListIterable<XmlTenantDiscriminatorColumn> getResourceElements() {
 			return OrmEclipseLinkMultitenancyImpl2_3.this.getXmlTenantDiscriminatorColumns();
 		}
 		@Override
-		protected XmlTenantDiscriminatorColumn_2_3 getResourceElement(OrmTenantDiscriminatorColumn2_3 contextElement) {
+		protected XmlTenantDiscriminatorColumn getResourceElement(OrmTenantDiscriminatorColumn2_3 contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -374,13 +373,13 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		return new TenantDiscriminatorColumnOwner();
 	}
 
-	protected ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> buildSpecifiedTenantDiscriminatorColumnContainer() {
+	protected ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> buildSpecifiedTenantDiscriminatorColumnContainer() {
 		SpecifiedTenantDiscriminatorColumnContainer container = new SpecifiedTenantDiscriminatorColumnContainer();
 		container.initialize();
 		return container;
 	}
 
-	protected OrmTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn_2_3 xmlTenantDiscriminatorColumn) {
+	protected OrmTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn) {
 		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
 	}
 

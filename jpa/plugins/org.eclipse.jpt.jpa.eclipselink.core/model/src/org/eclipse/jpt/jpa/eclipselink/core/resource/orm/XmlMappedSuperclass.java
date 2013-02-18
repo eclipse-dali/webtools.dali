@@ -295,7 +295,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlPartitioning_2_2 partitioning;
+	protected XmlPartitioning partitioning;
 
 	/**
 	 * The cached value of the '{@link #getReplicationPartitioning() <em>Replication Partitioning</em>}' containment reference.
@@ -305,7 +305,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlReplicationPartitioning_2_2 replicationPartitioning;
+	protected XmlReplicationPartitioning replicationPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getRoundRobinPartitioning() <em>Round Robin Partitioning</em>}' containment reference.
@@ -315,7 +315,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlRoundRobinPartitioning_2_2 roundRobinPartitioning;
+	protected XmlRoundRobinPartitioning roundRobinPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getPinnedPartitioning() <em>Pinned Partitioning</em>}' containment reference.
@@ -325,7 +325,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlPinnedPartitioning_2_2 pinnedPartitioning;
+	protected XmlPinnedPartitioning pinnedPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getRangePartitioning() <em>Range Partitioning</em>}' containment reference.
@@ -335,7 +335,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlRangePartitioning_2_2 rangePartitioning;
+	protected XmlRangePartitioning rangePartitioning;
 
 	/**
 	 * The cached value of the '{@link #getValuePartitioning() <em>Value Partitioning</em>}' containment reference.
@@ -345,7 +345,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlValuePartitioning_2_2 valuePartitioning;
+	protected XmlValuePartitioning valuePartitioning;
 
 	/**
 	 * The cached value of the '{@link #getHashPartitioning() <em>Hash Partitioning</em>}' containment reference.
@@ -355,7 +355,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlHashPartitioning_2_2 hashPartitioning;
+	protected XmlHashPartitioning hashPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getUnionPartitioning() <em>Union Partitioning</em>}' containment reference.
@@ -365,7 +365,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlUnionPartitioning_2_2 unionPartitioning;
+	protected XmlUnionPartitioning unionPartitioning;
 
 	/**
 	 * The default value of the '{@link #getPartitioned() <em>Partitioned</em>}' attribute.
@@ -395,7 +395,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlAdditionalCriteria_2_2 additionalCriteria;
+	protected XmlAdditionalCriteria additionalCriteria;
 
 	/**
 	 * The cached value of the '{@link #getMultitenant() <em>Multitenant</em>}' containment reference.
@@ -415,7 +415,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedStoredFunctionQuery_2_3> namedStoredFunctionQueries;
+	protected EList<XmlNamedStoredFunctionQuery> namedStoredFunctionQueries;
 
 	/**
 	 * The cached value of the '{@link #getNamedPlsqlStoredFunctionQueries() <em>Named Plsql Stored Function Queries</em>}' containment reference list.
@@ -425,7 +425,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedPlsqlStoredFunctionQuery_2_3> namedPlsqlStoredFunctionQueries;
+	protected EList<XmlNamedPlsqlStoredFunctionQuery> namedPlsqlStoredFunctionQueries;
 
 	/**
 	 * The cached value of the '{@link #getNamedPlsqlStoredProcedureQueries() <em>Named Plsql Stored Procedure Queries</em>}' containment reference list.
@@ -435,7 +435,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedPlsqlStoredProcedureQuery_2_3> namedPlsqlStoredProcedureQueries;
+	protected EList<XmlNamedPlsqlStoredProcedureQuery> namedPlsqlStoredProcedureQueries;
 
 	/**
 	 * The cached value of the '{@link #getPlsqlRecords() <em>Plsql Records</em>}' containment reference list.
@@ -445,7 +445,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlPlsqlRecord_2_3> plsqlRecords;
+	protected EList<XmlPlsqlRecord> plsqlRecords;
 
 	/**
 	 * The cached value of the '{@link #getPlsqlTables() <em>Plsql Tables</em>}' containment reference list.
@@ -465,7 +465,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlUuidGenerator_2_4 uuidGenerator;
+	protected XmlUuidGenerator uuidGenerator;
 
 	/**
 	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
@@ -475,7 +475,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCacheIndex_2_4 cacheIndex;
+	protected XmlCacheIndex cacheIndex;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -1883,12 +1883,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Partitioning</em>' containment reference.
-	 * @see #setPartitioning(XmlPartitioning_2_2)
+	 * @see #setPartitioning(XmlPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_Partitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlPartitioning_2_2 getPartitioning()
+	public XmlPartitioning getPartitioning()
 	{
 		return partitioning;
 	}
@@ -1898,9 +1898,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPartitioning(XmlPartitioning_2_2 newPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetPartitioning(XmlPartitioning newPartitioning, NotificationChain msgs)
 	{
-		XmlPartitioning_2_2 oldPartitioning = partitioning;
+		XmlPartitioning oldPartitioning = partitioning;
 		partitioning = newPartitioning;
 		if (eNotificationRequired())
 		{
@@ -1918,7 +1918,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getPartitioning()
 	 * @generated
 	 */
-	public void setPartitioning(XmlPartitioning_2_2 newPartitioning)
+	public void setPartitioning(XmlPartitioning newPartitioning)
 	{
 		if (newPartitioning != partitioning)
 		{
@@ -1943,12 +1943,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Replication Partitioning</em>' containment reference.
-	 * @see #setReplicationPartitioning(XmlReplicationPartitioning_2_2)
+	 * @see #setReplicationPartitioning(XmlReplicationPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_ReplicationPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlReplicationPartitioning_2_2 getReplicationPartitioning()
+	public XmlReplicationPartitioning getReplicationPartitioning()
 	{
 		return replicationPartitioning;
 	}
@@ -1958,9 +1958,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetReplicationPartitioning(XmlReplicationPartitioning_2_2 newReplicationPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetReplicationPartitioning(XmlReplicationPartitioning newReplicationPartitioning, NotificationChain msgs)
 	{
-		XmlReplicationPartitioning_2_2 oldReplicationPartitioning = replicationPartitioning;
+		XmlReplicationPartitioning oldReplicationPartitioning = replicationPartitioning;
 		replicationPartitioning = newReplicationPartitioning;
 		if (eNotificationRequired())
 		{
@@ -1978,7 +1978,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getReplicationPartitioning()
 	 * @generated
 	 */
-	public void setReplicationPartitioning(XmlReplicationPartitioning_2_2 newReplicationPartitioning)
+	public void setReplicationPartitioning(XmlReplicationPartitioning newReplicationPartitioning)
 	{
 		if (newReplicationPartitioning != replicationPartitioning)
 		{
@@ -2003,12 +2003,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Round Robin Partitioning</em>' containment reference.
-	 * @see #setRoundRobinPartitioning(XmlRoundRobinPartitioning_2_2)
+	 * @see #setRoundRobinPartitioning(XmlRoundRobinPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_RoundRobinPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlRoundRobinPartitioning_2_2 getRoundRobinPartitioning()
+	public XmlRoundRobinPartitioning getRoundRobinPartitioning()
 	{
 		return roundRobinPartitioning;
 	}
@@ -2018,9 +2018,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetRoundRobinPartitioning(XmlRoundRobinPartitioning_2_2 newRoundRobinPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetRoundRobinPartitioning(XmlRoundRobinPartitioning newRoundRobinPartitioning, NotificationChain msgs)
 	{
-		XmlRoundRobinPartitioning_2_2 oldRoundRobinPartitioning = roundRobinPartitioning;
+		XmlRoundRobinPartitioning oldRoundRobinPartitioning = roundRobinPartitioning;
 		roundRobinPartitioning = newRoundRobinPartitioning;
 		if (eNotificationRequired())
 		{
@@ -2038,7 +2038,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getRoundRobinPartitioning()
 	 * @generated
 	 */
-	public void setRoundRobinPartitioning(XmlRoundRobinPartitioning_2_2 newRoundRobinPartitioning)
+	public void setRoundRobinPartitioning(XmlRoundRobinPartitioning newRoundRobinPartitioning)
 	{
 		if (newRoundRobinPartitioning != roundRobinPartitioning)
 		{
@@ -2063,12 +2063,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pinned Partitioning</em>' containment reference.
-	 * @see #setPinnedPartitioning(XmlPinnedPartitioning_2_2)
+	 * @see #setPinnedPartitioning(XmlPinnedPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_PinnedPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlPinnedPartitioning_2_2 getPinnedPartitioning()
+	public XmlPinnedPartitioning getPinnedPartitioning()
 	{
 		return pinnedPartitioning;
 	}
@@ -2078,9 +2078,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPinnedPartitioning(XmlPinnedPartitioning_2_2 newPinnedPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetPinnedPartitioning(XmlPinnedPartitioning newPinnedPartitioning, NotificationChain msgs)
 	{
-		XmlPinnedPartitioning_2_2 oldPinnedPartitioning = pinnedPartitioning;
+		XmlPinnedPartitioning oldPinnedPartitioning = pinnedPartitioning;
 		pinnedPartitioning = newPinnedPartitioning;
 		if (eNotificationRequired())
 		{
@@ -2098,7 +2098,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getPinnedPartitioning()
 	 * @generated
 	 */
-	public void setPinnedPartitioning(XmlPinnedPartitioning_2_2 newPinnedPartitioning)
+	public void setPinnedPartitioning(XmlPinnedPartitioning newPinnedPartitioning)
 	{
 		if (newPinnedPartitioning != pinnedPartitioning)
 		{
@@ -2123,12 +2123,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Range Partitioning</em>' containment reference.
-	 * @see #setRangePartitioning(XmlRangePartitioning_2_2)
+	 * @see #setRangePartitioning(XmlRangePartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_RangePartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlRangePartitioning_2_2 getRangePartitioning()
+	public XmlRangePartitioning getRangePartitioning()
 	{
 		return rangePartitioning;
 	}
@@ -2138,9 +2138,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetRangePartitioning(XmlRangePartitioning_2_2 newRangePartitioning, NotificationChain msgs)
+	public NotificationChain basicSetRangePartitioning(XmlRangePartitioning newRangePartitioning, NotificationChain msgs)
 	{
-		XmlRangePartitioning_2_2 oldRangePartitioning = rangePartitioning;
+		XmlRangePartitioning oldRangePartitioning = rangePartitioning;
 		rangePartitioning = newRangePartitioning;
 		if (eNotificationRequired())
 		{
@@ -2158,7 +2158,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getRangePartitioning()
 	 * @generated
 	 */
-	public void setRangePartitioning(XmlRangePartitioning_2_2 newRangePartitioning)
+	public void setRangePartitioning(XmlRangePartitioning newRangePartitioning)
 	{
 		if (newRangePartitioning != rangePartitioning)
 		{
@@ -2183,12 +2183,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value Partitioning</em>' containment reference.
-	 * @see #setValuePartitioning(XmlValuePartitioning_2_2)
+	 * @see #setValuePartitioning(XmlValuePartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_ValuePartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlValuePartitioning_2_2 getValuePartitioning()
+	public XmlValuePartitioning getValuePartitioning()
 	{
 		return valuePartitioning;
 	}
@@ -2198,9 +2198,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetValuePartitioning(XmlValuePartitioning_2_2 newValuePartitioning, NotificationChain msgs)
+	public NotificationChain basicSetValuePartitioning(XmlValuePartitioning newValuePartitioning, NotificationChain msgs)
 	{
-		XmlValuePartitioning_2_2 oldValuePartitioning = valuePartitioning;
+		XmlValuePartitioning oldValuePartitioning = valuePartitioning;
 		valuePartitioning = newValuePartitioning;
 		if (eNotificationRequired())
 		{
@@ -2218,7 +2218,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getValuePartitioning()
 	 * @generated
 	 */
-	public void setValuePartitioning(XmlValuePartitioning_2_2 newValuePartitioning)
+	public void setValuePartitioning(XmlValuePartitioning newValuePartitioning)
 	{
 		if (newValuePartitioning != valuePartitioning)
 		{
@@ -2243,12 +2243,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hash Partitioning</em>' containment reference.
-	 * @see #setHashPartitioning(XmlHashPartitioning_2_2)
+	 * @see #setHashPartitioning(XmlHashPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_HashPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlHashPartitioning_2_2 getHashPartitioning()
+	public XmlHashPartitioning getHashPartitioning()
 	{
 		return hashPartitioning;
 	}
@@ -2258,9 +2258,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetHashPartitioning(XmlHashPartitioning_2_2 newHashPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetHashPartitioning(XmlHashPartitioning newHashPartitioning, NotificationChain msgs)
 	{
-		XmlHashPartitioning_2_2 oldHashPartitioning = hashPartitioning;
+		XmlHashPartitioning oldHashPartitioning = hashPartitioning;
 		hashPartitioning = newHashPartitioning;
 		if (eNotificationRequired())
 		{
@@ -2278,7 +2278,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getHashPartitioning()
 	 * @generated
 	 */
-	public void setHashPartitioning(XmlHashPartitioning_2_2 newHashPartitioning)
+	public void setHashPartitioning(XmlHashPartitioning newHashPartitioning)
 	{
 		if (newHashPartitioning != hashPartitioning)
 		{
@@ -2303,12 +2303,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Union Partitioning</em>' containment reference.
-	 * @see #setUnionPartitioning(XmlUnionPartitioning_2_2)
+	 * @see #setUnionPartitioning(XmlUnionPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_UnionPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlUnionPartitioning_2_2 getUnionPartitioning()
+	public XmlUnionPartitioning getUnionPartitioning()
 	{
 		return unionPartitioning;
 	}
@@ -2318,9 +2318,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetUnionPartitioning(XmlUnionPartitioning_2_2 newUnionPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetUnionPartitioning(XmlUnionPartitioning newUnionPartitioning, NotificationChain msgs)
 	{
-		XmlUnionPartitioning_2_2 oldUnionPartitioning = unionPartitioning;
+		XmlUnionPartitioning oldUnionPartitioning = unionPartitioning;
 		unionPartitioning = newUnionPartitioning;
 		if (eNotificationRequired())
 		{
@@ -2338,7 +2338,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getUnionPartitioning()
 	 * @generated
 	 */
-	public void setUnionPartitioning(XmlUnionPartitioning_2_2 newUnionPartitioning)
+	public void setUnionPartitioning(XmlUnionPartitioning newUnionPartitioning)
 	{
 		if (newUnionPartitioning != unionPartitioning)
 		{
@@ -2398,12 +2398,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Additional Criteria</em>' containment reference.
-	 * @see #setAdditionalCriteria(XmlAdditionalCriteria_2_2)
+	 * @see #setAdditionalCriteria(XmlAdditionalCriteria)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_2_AdditionalCriteria()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlAdditionalCriteria_2_2 getAdditionalCriteria()
+	public XmlAdditionalCriteria getAdditionalCriteria()
 	{
 		return additionalCriteria;
 	}
@@ -2413,9 +2413,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetAdditionalCriteria(XmlAdditionalCriteria_2_2 newAdditionalCriteria, NotificationChain msgs)
+	public NotificationChain basicSetAdditionalCriteria(XmlAdditionalCriteria newAdditionalCriteria, NotificationChain msgs)
 	{
-		XmlAdditionalCriteria_2_2 oldAdditionalCriteria = additionalCriteria;
+		XmlAdditionalCriteria oldAdditionalCriteria = additionalCriteria;
 		additionalCriteria = newAdditionalCriteria;
 		if (eNotificationRequired())
 		{
@@ -2433,7 +2433,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getAdditionalCriteria()
 	 * @generated
 	 */
-	public void setAdditionalCriteria(XmlAdditionalCriteria_2_2 newAdditionalCriteria)
+	public void setAdditionalCriteria(XmlAdditionalCriteria newAdditionalCriteria)
 	{
 		if (newAdditionalCriteria != additionalCriteria)
 		{
@@ -2511,7 +2511,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 
 	/**
 	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredFunctionQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Stored Function Queries</em>' containment reference list isn't clear,
@@ -2523,18 +2523,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedStoredFunctionQuery_2_3> getNamedStoredFunctionQueries()
+	public EList<XmlNamedStoredFunctionQuery> getNamedStoredFunctionQueries()
 	{
 		if (namedStoredFunctionQueries == null)
 		{
-			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery_2_3>(XmlNamedStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES);
+			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery>(XmlNamedStoredFunctionQuery.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES);
 		}
 		return namedStoredFunctionQueries;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredFunctionQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Plsql Stored Function Queries</em>' containment reference list isn't clear,
@@ -2546,18 +2546,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedPlsqlStoredFunctionQuery_2_3> getNamedPlsqlStoredFunctionQueries()
+	public EList<XmlNamedPlsqlStoredFunctionQuery> getNamedPlsqlStoredFunctionQueries()
 	{
 		if (namedPlsqlStoredFunctionQueries == null)
 		{
-			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery_2_3>(XmlNamedPlsqlStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
+			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery>(XmlNamedPlsqlStoredFunctionQuery.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
 		}
 		return namedPlsqlStoredFunctionQueries;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredProcedureQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list isn't clear,
@@ -2569,18 +2569,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedPlsqlStoredProcedureQuery_2_3> getNamedPlsqlStoredProcedureQueries()
+	public EList<XmlNamedPlsqlStoredProcedureQuery> getNamedPlsqlStoredProcedureQueries()
 	{
 		if (namedPlsqlStoredProcedureQueries == null)
 		{
-			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery_2_3>(XmlNamedPlsqlStoredProcedureQuery_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
+			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery>(XmlNamedPlsqlStoredProcedureQuery.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
 		}
 		return namedPlsqlStoredProcedureQueries;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
@@ -2592,11 +2592,11 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
+	public EList<XmlPlsqlRecord> getPlsqlRecords()
 	{
 		if (plsqlRecords == null)
 		{
-			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS);
+			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord>(XmlPlsqlRecord.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS);
 		}
 		return plsqlRecords;
 	}
@@ -2633,12 +2633,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Index</em>' containment reference.
-	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see #setCacheIndex(XmlCacheIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_4_CacheIndex()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCacheIndex_2_4 getCacheIndex()
+	public XmlCacheIndex getCacheIndex()
 	{
 		return cacheIndex;
 	}
@@ -2648,9 +2648,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCacheIndex(XmlCacheIndex_2_4 newCacheIndex, NotificationChain msgs)
+	public NotificationChain basicSetCacheIndex(XmlCacheIndex newCacheIndex, NotificationChain msgs)
 	{
-		XmlCacheIndex_2_4 oldCacheIndex = cacheIndex;
+		XmlCacheIndex oldCacheIndex = cacheIndex;
 		cacheIndex = newCacheIndex;
 		if (eNotificationRequired())
 		{
@@ -2668,7 +2668,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getCacheIndex()
 	 * @generated
 	 */
-	public void setCacheIndex(XmlCacheIndex_2_4 newCacheIndex)
+	public void setCacheIndex(XmlCacheIndex newCacheIndex)
 	{
 		if (newCacheIndex != cacheIndex)
 		{
@@ -2693,12 +2693,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Uuid Generator</em>' containment reference.
-	 * @see #setUuidGenerator(XmlUuidGenerator_2_4)
+	 * @see #setUuidGenerator(XmlUuidGenerator)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer2_4_UuidGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlUuidGenerator_2_4 getUuidGenerator()
+	public XmlUuidGenerator getUuidGenerator()
 	{
 		return uuidGenerator;
 	}
@@ -2708,9 +2708,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator, NotificationChain msgs)
+	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator newUuidGenerator, NotificationChain msgs)
 	{
-		XmlUuidGenerator_2_4 oldUuidGenerator = uuidGenerator;
+		XmlUuidGenerator oldUuidGenerator = uuidGenerator;
 		uuidGenerator = newUuidGenerator;
 		if (eNotificationRequired())
 		{
@@ -2728,7 +2728,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @see #getUuidGenerator()
 	 * @generated
 	 */
-	public void setUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator)
+	public void setUuidGenerator(XmlUuidGenerator newUuidGenerator)
 	{
 		if (newUuidGenerator != uuidGenerator)
 		{
@@ -3051,63 +3051,63 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				setQueryRedirectors((XmlQueryRedirectors)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONING:
-				setPartitioning((XmlPartitioning_2_2)newValue);
+				setPartitioning((XmlPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__REPLICATION_PARTITIONING:
-				setReplicationPartitioning((XmlReplicationPartitioning_2_2)newValue);
+				setReplicationPartitioning((XmlReplicationPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ROUND_ROBIN_PARTITIONING:
-				setRoundRobinPartitioning((XmlRoundRobinPartitioning_2_2)newValue);
+				setRoundRobinPartitioning((XmlRoundRobinPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PINNED_PARTITIONING:
-				setPinnedPartitioning((XmlPinnedPartitioning_2_2)newValue);
+				setPinnedPartitioning((XmlPinnedPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__RANGE_PARTITIONING:
-				setRangePartitioning((XmlRangePartitioning_2_2)newValue);
+				setRangePartitioning((XmlRangePartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__VALUE_PARTITIONING:
-				setValuePartitioning((XmlValuePartitioning_2_2)newValue);
+				setValuePartitioning((XmlValuePartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__HASH_PARTITIONING:
-				setHashPartitioning((XmlHashPartitioning_2_2)newValue);
+				setHashPartitioning((XmlHashPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UNION_PARTITIONING:
-				setUnionPartitioning((XmlUnionPartitioning_2_2)newValue);
+				setUnionPartitioning((XmlUnionPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONED:
 				setPartitioned((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
-				setAdditionalCriteria((XmlAdditionalCriteria_2_2)newValue);
+				setAdditionalCriteria((XmlAdditionalCriteria)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
 				setMultitenant((XmlMultitenant)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES:
 				getNamedStoredFunctionQueries().clear();
-				getNamedStoredFunctionQueries().addAll((Collection<? extends XmlNamedStoredFunctionQuery_2_3>)newValue);
+				getNamedStoredFunctionQueries().addAll((Collection<? extends XmlNamedStoredFunctionQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
 				getNamedPlsqlStoredFunctionQueries().clear();
-				getNamedPlsqlStoredFunctionQueries().addAll((Collection<? extends XmlNamedPlsqlStoredFunctionQuery_2_3>)newValue);
+				getNamedPlsqlStoredFunctionQueries().addAll((Collection<? extends XmlNamedPlsqlStoredFunctionQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
 				getNamedPlsqlStoredProcedureQueries().clear();
-				getNamedPlsqlStoredProcedureQueries().addAll((Collection<? extends XmlNamedPlsqlStoredProcedureQuery_2_3>)newValue);
+				getNamedPlsqlStoredProcedureQueries().addAll((Collection<? extends XmlNamedPlsqlStoredProcedureQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS:
 				getPlsqlRecords().clear();
-				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord_2_3>)newValue);
+				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
-				setUuidGenerator((XmlUuidGenerator_2_4)newValue);
+				setUuidGenerator((XmlUuidGenerator)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
-				setCacheIndex((XmlCacheIndex_2_4)newValue);
+				setCacheIndex((XmlCacheIndex)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -3219,34 +3219,34 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				setQueryRedirectors((XmlQueryRedirectors)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONING:
-				setPartitioning((XmlPartitioning_2_2)null);
+				setPartitioning((XmlPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__REPLICATION_PARTITIONING:
-				setReplicationPartitioning((XmlReplicationPartitioning_2_2)null);
+				setReplicationPartitioning((XmlReplicationPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ROUND_ROBIN_PARTITIONING:
-				setRoundRobinPartitioning((XmlRoundRobinPartitioning_2_2)null);
+				setRoundRobinPartitioning((XmlRoundRobinPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PINNED_PARTITIONING:
-				setPinnedPartitioning((XmlPinnedPartitioning_2_2)null);
+				setPinnedPartitioning((XmlPinnedPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__RANGE_PARTITIONING:
-				setRangePartitioning((XmlRangePartitioning_2_2)null);
+				setRangePartitioning((XmlRangePartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__VALUE_PARTITIONING:
-				setValuePartitioning((XmlValuePartitioning_2_2)null);
+				setValuePartitioning((XmlValuePartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__HASH_PARTITIONING:
-				setHashPartitioning((XmlHashPartitioning_2_2)null);
+				setHashPartitioning((XmlHashPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UNION_PARTITIONING:
-				setUnionPartitioning((XmlUnionPartitioning_2_2)null);
+				setUnionPartitioning((XmlUnionPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONED:
 				setPartitioned(PARTITIONED_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
-				setAdditionalCriteria((XmlAdditionalCriteria_2_2)null);
+				setAdditionalCriteria((XmlAdditionalCriteria)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
 				setMultitenant((XmlMultitenant)null);
@@ -3267,10 +3267,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				getPlsqlTables().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
-				setUuidGenerator((XmlUuidGenerator_2_4)null);
+				setUuidGenerator((XmlUuidGenerator)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
-				setCacheIndex((XmlCacheIndex_2_4)null);
+				setCacheIndex((XmlCacheIndex)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);

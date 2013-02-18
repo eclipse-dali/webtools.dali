@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumns;
+	protected EList<XmlTenantDiscriminatorColumn> tenantDiscriminatorColumns;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,7 +151,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 
 	/**
 	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Tenant Discriminator Columns</em>' containment reference list isn't clear,
@@ -163,11 +163,11 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlTenantDiscriminatorColumn_2_3> getTenantDiscriminatorColumns()
+	public EList<XmlTenantDiscriminatorColumn> getTenantDiscriminatorColumns()
 	{
 		if (tenantDiscriminatorColumns == null)
 		{
-			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn_2_3>(XmlTenantDiscriminatorColumn_2_3.class, this, EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATOR_COLUMNS);
+			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn>(XmlTenantDiscriminatorColumn.class, this, EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATOR_COLUMNS);
 		}
 		return tenantDiscriminatorColumns;
 	}
@@ -224,7 +224,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 				return;
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATOR_COLUMNS:
 				getTenantDiscriminatorColumns().clear();
-				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn_2_3>)newValue);
+				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

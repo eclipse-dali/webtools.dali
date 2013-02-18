@@ -266,6 +266,7 @@
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v1_1/IdValidationType_1_1">
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v1_1/IdValidationType_1_1/NULL"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v1_1/IdValidationType_1_1/ZERO"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v1_1/IdValidationType_1_1/NEGATIVE"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v1_1/IdValidationType_1_1/NONE"/>
       </genEnums>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v1_1/XmlBasic_1_1">

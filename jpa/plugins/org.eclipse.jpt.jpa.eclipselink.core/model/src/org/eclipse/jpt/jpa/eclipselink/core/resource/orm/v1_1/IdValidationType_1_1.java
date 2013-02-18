@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2013  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -45,9 +45,17 @@ public enum IdValidationType_1_1 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	ZERO(2, "ZERO", "ZERO"),
+	ZERO(1, "ZERO", "ZERO"),
 
 	/**
+	 * The '<em><b>NEGATIVE</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #NEGATIVE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	NEGATIVE(2, "NEGATIVE", "NEGATIVE"), /**
 	 * The '<em><b>NONE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -55,7 +63,7 @@ public enum IdValidationType_1_1 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	NONE(2, "NONE", "NONE");
+	NONE(3, "NONE", "NONE");
 
 	/**
 	 * The '<em><b>NULL</b></em>' literal value.
@@ -85,7 +93,22 @@ public enum IdValidationType_1_1 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ZERO_VALUE = 2;
+	public static final int ZERO_VALUE = 1;
+
+	/**
+	 * The '<em><b>NEGATIVE</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>NEGATIVE</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #NEGATIVE
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NEGATIVE_VALUE = 2;
 
 	/**
 	 * The '<em><b>NONE</b></em>' literal value.
@@ -100,7 +123,7 @@ public enum IdValidationType_1_1 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NONE_VALUE = 2;
+	public static final int NONE_VALUE = 3;
 
 	/**
 	 * An array of all the '<em><b>Id Validation Type 11</b></em>' enumerators.
@@ -113,6 +136,7 @@ public enum IdValidationType_1_1 implements Enumerator
 		{
 			NULL,
 			ZERO,
+			NEGATIVE,
 			NONE,
 		};
 
@@ -174,6 +198,8 @@ public enum IdValidationType_1_1 implements Enumerator
 		{
 			case NULL_VALUE: return NULL;
 			case ZERO_VALUE: return ZERO;
+			case NEGATIVE_VALUE: return NEGATIVE;
+			case NONE_VALUE: return NONE;
 		}
 		return null;
 	}

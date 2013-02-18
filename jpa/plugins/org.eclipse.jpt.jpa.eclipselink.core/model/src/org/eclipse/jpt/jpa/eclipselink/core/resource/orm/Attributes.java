@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,7 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlStructure_2_3> structures;
+	protected EList<XmlStructure> structures;
 
 	/**
 	 * The cached value of the '{@link #getArrays() <em>Arrays</em>}' containment reference list.
@@ -79,7 +79,7 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlArray_2_3> arrays;
+	protected EList<XmlArray> arrays;
 
 	/**
 	 * The cached value of the '{@link #getBasicCollections() <em>Basic Collections</em>}' containment reference list.
@@ -144,7 +144,7 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 
 	/**
 	 * Returns the value of the '<em><b>Structures</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructure}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Structures</em>' containment reference list isn't clear,
@@ -156,18 +156,18 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlStructure_2_3> getStructures()
+	public EList<XmlStructure> getStructures()
 	{
 		if (structures == null)
 		{
-			structures = new EObjectContainmentEList<XmlStructure_2_3>(XmlStructure_2_3.class, this, EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES);
+			structures = new EObjectContainmentEList<XmlStructure>(XmlStructure.class, this, EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES);
 		}
 		return structures;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Arrays</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Arrays</em>' containment reference list isn't clear,
@@ -179,11 +179,11 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlArray_2_3> getArrays()
+	public EList<XmlArray> getArrays()
 	{
 		if (arrays == null)
 		{
-			arrays = new EObjectContainmentEList<XmlArray_2_3>(XmlArray_2_3.class, this, EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS);
+			arrays = new EObjectContainmentEList<XmlArray>(XmlArray.class, this, EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS);
 		}
 		return arrays;
 	}
@@ -345,11 +345,11 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 		{
 			case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES:
 				getStructures().clear();
-				getStructures().addAll((Collection<? extends XmlStructure_2_3>)newValue);
+				getStructures().addAll((Collection<? extends XmlStructure>)newValue);
 				return;
 			case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS:
 				getArrays().clear();
-				getArrays().addAll((Collection<? extends XmlArray_2_3>)newValue);
+				getArrays().addAll((Collection<? extends XmlArray>)newValue);
 				return;
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_COLLECTIONS:
 				getBasicCollections().clear();

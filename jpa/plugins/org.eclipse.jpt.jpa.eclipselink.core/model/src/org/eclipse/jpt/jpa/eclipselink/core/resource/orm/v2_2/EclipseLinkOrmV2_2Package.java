@@ -3666,6 +3666,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		// Obtain other dependent packages
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
+		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 
 		// Create type parameters
@@ -3689,7 +3690,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		initEAttribute(getXmlAdditionalCriteria_2_2_Criteria(), theXMLTypePackage.getString(), "criteria", null, 0, 1, XmlAdditionalCriteria_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlBasic_2_2EClass, XmlBasic_2_2.class, "XmlBasic_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlBasic_2_2_Index(), this.getXmlIndex_2_2(), null, "index", null, 0, 1, XmlBasic_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlBasic_2_2_Index(), theEclipseLinkOrmPackage.getXmlIndex(), null, "index", null, 0, 1, XmlBasic_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlBasicCollection_2_2EClass, XmlBasicCollection_2_2.class, "XmlBasicCollection_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlBasicCollection_2_2_CascadeOnDelete(), theXMLTypePackage.getBooleanObject(), "cascadeOnDelete", null, 0, 1, XmlBasicCollection_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3710,25 +3711,25 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		initEClass(xmlEmbeddable_2_2EClass, XmlEmbeddable_2_2.class, "XmlEmbeddable_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlEntity_2_2EClass, XmlEntity_2_2.class, "XmlEntity_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntity_2_2_AdditionalCriteria(), this.getXmlAdditionalCriteria_2_2(), null, "additionalCriteria", null, 0, 1, XmlEntity_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_2_AdditionalCriteria(), theEclipseLinkOrmPackage.getXmlAdditionalCriteria(), null, "additionalCriteria", null, 0, 1, XmlEntity_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlEntity_2_2_CascadeOnDelete(), theXMLTypePackage.getBooleanObject(), "cascadeOnDelete", null, 0, 1, XmlEntity_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_2_2_Index(), this.getXmlIndex_2_2(), null, "index", null, 0, 1, XmlEntity_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_2_Index(), theEclipseLinkOrmPackage.getXmlIndex(), null, "index", null, 0, 1, XmlEntity_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityMappings_2_2EClass, XmlEntityMappings_2_2.class, "XmlEntityMappings_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntityMappings_2_2_Partitioning(), this.getXmlPartitioning_2_2(), null, "partitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_ReplicationPartitioning(), this.getXmlReplicationPartitioning_2_2(), null, "replicationPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_RoundRobinPartitioning(), this.getXmlRoundRobinPartitioning_2_2(), null, "roundRobinPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_PinnedPartitioning(), this.getXmlPinnedPartitioning_2_2(), null, "pinnedPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_RangePartitioning(), this.getXmlRangePartitioning_2_2(), null, "rangePartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_ValuePartitioning(), this.getXmlValuePartitioning_2_2(), null, "valuePartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_HashPartitioning(), this.getXmlHashPartitioning_2_2(), null, "hashPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntityMappings_2_2_UnionPartitioning(), this.getXmlUnionPartitioning_2_2(), null, "unionPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_Partitioning(), theEclipseLinkOrmPackage.getXmlPartitioning(), null, "partitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_ReplicationPartitioning(), theEclipseLinkOrmPackage.getXmlReplicationPartitioning(), null, "replicationPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_RoundRobinPartitioning(), theEclipseLinkOrmPackage.getXmlRoundRobinPartitioning(), null, "roundRobinPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_PinnedPartitioning(), theEclipseLinkOrmPackage.getXmlPinnedPartitioning(), null, "pinnedPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_RangePartitioning(), theEclipseLinkOrmPackage.getXmlRangePartitioning(), null, "rangePartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_ValuePartitioning(), theEclipseLinkOrmPackage.getXmlValuePartitioning(), null, "valuePartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_HashPartitioning(), theEclipseLinkOrmPackage.getXmlHashPartitioning(), null, "hashPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_2_UnionPartitioning(), theEclipseLinkOrmPackage.getXmlUnionPartitioning(), null, "unionPartitioning", null, 0, -1, XmlEntityMappings_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlHashPartitioning_2_2EClass, XmlHashPartitioning_2_2.class, "XmlHashPartitioning_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlHashPartitioning_2_2_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlHashPartitioning_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlId_2_2EClass, XmlId_2_2.class, "XmlId_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlId_2_2_Index(), this.getXmlIndex_2_2(), null, "index", null, 0, 1, XmlId_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlId_2_2_Index(), theOrmPackage.getXmlIndex(), null, "index", null, 0, 1, XmlId_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlIndex_2_2EClass, XmlIndex_2_2.class, "XmlIndex_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlIndex_2_2_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlIndex_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3749,7 +3750,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		initEAttribute(getXmlManyToOne_2_2_NonCacheable(), theXMLTypePackage.getBoolean(), "nonCacheable", null, 0, 1, XmlManyToOne_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_2EClass, XmlMappedSuperclass_2_2.class, "XmlMappedSuperclass_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMappedSuperclass_2_2_AdditionalCriteria(), this.getXmlAdditionalCriteria_2_2(), null, "additionalCriteria", null, 0, 1, XmlMappedSuperclass_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_2_2_AdditionalCriteria(), theEclipseLinkOrmPackage.getXmlAdditionalCriteria(), null, "additionalCriteria", null, 0, 1, XmlMappedSuperclass_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToOne_2_2EClass, XmlOneToOne_2_2.class, "XmlOneToOne_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOneToOne_2_2_CascadeOnDelete(), theXMLTypePackage.getBooleanObject(), "cascadeOnDelete", null, 0, 1, XmlOneToOne_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3763,14 +3764,14 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		initEAttribute(getXmlPartitioning_2_2_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlPartitioning_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPartitioningGroup_2_2EClass, XmlPartitioningGroup_2_2.class, "XmlPartitioningGroup_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlPartitioningGroup_2_2_Partitioning(), this.getXmlPartitioning_2_2(), null, "partitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_ReplicationPartitioning(), this.getXmlReplicationPartitioning_2_2(), null, "replicationPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_RoundRobinPartitioning(), this.getXmlRoundRobinPartitioning_2_2(), null, "roundRobinPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_PinnedPartitioning(), this.getXmlPinnedPartitioning_2_2(), null, "pinnedPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_RangePartitioning(), this.getXmlRangePartitioning_2_2(), null, "rangePartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_ValuePartitioning(), this.getXmlValuePartitioning_2_2(), null, "valuePartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_HashPartitioning(), this.getXmlHashPartitioning_2_2(), null, "hashPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlPartitioningGroup_2_2_UnionPartitioning(), this.getXmlUnionPartitioning_2_2(), null, "unionPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_Partitioning(), theEclipseLinkOrmPackage.getXmlPartitioning(), null, "partitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_ReplicationPartitioning(), theEclipseLinkOrmPackage.getXmlReplicationPartitioning(), null, "replicationPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_RoundRobinPartitioning(), theEclipseLinkOrmPackage.getXmlRoundRobinPartitioning(), null, "roundRobinPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_PinnedPartitioning(), theEclipseLinkOrmPackage.getXmlPinnedPartitioning(), null, "pinnedPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_RangePartitioning(), theEclipseLinkOrmPackage.getXmlRangePartitioning(), null, "rangePartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_ValuePartitioning(), theEclipseLinkOrmPackage.getXmlValuePartitioning(), null, "valuePartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_HashPartitioning(), theEclipseLinkOrmPackage.getXmlHashPartitioning(), null, "hashPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPartitioningGroup_2_2_UnionPartitioning(), theEclipseLinkOrmPackage.getXmlUnionPartitioning(), null, "unionPartitioning", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPartitioningGroup_2_2_Partitioned(), theXMLTypePackage.getString(), "partitioned", null, 0, 1, XmlPartitioningGroup_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPinnedPartitioning_2_2EClass, XmlPinnedPartitioning_2_2.class, "XmlPinnedPartitioning_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3804,7 +3805,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		initEAttribute(getXmlVariableOneToOne_2_2_NonCacheable(), theXMLTypePackage.getBoolean(), "nonCacheable", null, 0, 1, XmlVariableOneToOne_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlVersion_2_2EClass, XmlVersion_2_2.class, "XmlVersion_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlVersion_2_2_Index(), this.getXmlIndex_2_2(), null, "index", null, 0, 1, XmlVersion_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlVersion_2_2_Index(), theEclipseLinkOrmPackage.getXmlIndex(), null, "index", null, 0, 1, XmlVersion_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(cacheIsolationTypeEEnum, CacheIsolationType.class, "CacheIsolationType");

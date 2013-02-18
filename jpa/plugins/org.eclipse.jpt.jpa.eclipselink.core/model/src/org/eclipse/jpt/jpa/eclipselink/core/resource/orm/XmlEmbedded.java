@@ -60,7 +60,7 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlField_2_4 field;
+	protected XmlField field;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -132,12 +132,12 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Field</em>' containment reference.
-	 * @see #setField(XmlField_2_4)
+	 * @see #setField(XmlField)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbedded_2_4_Field()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlField_2_4 getField()
+	public XmlField getField()
 	{
 		return field;
 	}
@@ -147,9 +147,9 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetField(XmlField_2_4 newField, NotificationChain msgs)
+	public NotificationChain basicSetField(XmlField newField, NotificationChain msgs)
 	{
-		XmlField_2_4 oldField = field;
+		XmlField oldField = field;
 		field = newField;
 		if (eNotificationRequired())
 		{
@@ -167,7 +167,7 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	 * @see #getField()
 	 * @generated
 	 */
-	public void setField(XmlField_2_4 newField)
+	public void setField(XmlField newField)
 	{
 		if (newField != field)
 		{
@@ -355,7 +355,7 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
-				setField((XmlField_2_4)newValue);
+				setField((XmlField)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -382,7 +382,7 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
-				setField((XmlField_2_4)null);
+				setField((XmlField)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);

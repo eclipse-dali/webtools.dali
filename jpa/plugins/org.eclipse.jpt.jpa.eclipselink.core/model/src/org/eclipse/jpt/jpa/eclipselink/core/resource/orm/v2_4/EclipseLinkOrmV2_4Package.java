@@ -2088,6 +2088,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
+		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 
@@ -2105,8 +2106,8 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlBasic_2_4EClass, XmlBasic_2_4.class, "XmlBasic_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlBasic_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlBasic_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlBasic_2_4_Field(), theEclipseLinkOrmPackage.getXmlField(), null, "field", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlBasic_2_4_CacheIndex(), theEclipseLinkOrmPackage.getXmlCacheIndex(), null, "cacheIndex", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCache_2_4EClass, XmlCache_2_4.class, "XmlCache_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCache_2_4_DatabaseChangeNotificationType(), this.getDatabaseChangeNotificationType(), "databaseChangeNotificationType", "", 0, 1, XmlCache_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2115,21 +2116,21 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		initEAttribute(getXmlCacheIndex_2_4_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 0, -1, XmlCacheIndex_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlGeneratorContainer2_4EClass, XmlGeneratorContainer2_4.class, "XmlGeneratorContainer2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlGeneratorContainer2_4_UuidGenerator(), this.getXmlUuidGenerator_2_4(), null, "uuidGenerator", null, 0, 1, XmlGeneratorContainer2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlGeneratorContainer2_4_UuidGenerator(), theEclipseLinkOrmPackage.getXmlUuidGenerator(), null, "uuidGenerator", null, 0, 1, XmlGeneratorContainer2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_4EClass, XmlElementCollection_2_4.class, "XmlElementCollection_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlElementCollection_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlElementCollection_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlElementCollection_2_4_Field(), theEclipseLinkOrmPackage.getXmlField(), null, "field", null, 0, 1, XmlElementCollection_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlElementCollection_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddable_2_4EClass, XmlEmbeddable_2_4.class, "XmlEmbeddable_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEmbeddable_2_4_NoSql(), this.getXmlNoSql_2_4(), null, "noSql", null, 0, 1, XmlEmbeddable_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEmbeddable_2_4_NoSql(), theEclipseLinkOrmPackage.getXmlNoSql(), null, "noSql", null, 0, 1, XmlEmbeddable_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbedded_2_4EClass, XmlEmbedded_2_4.class, "XmlEmbedded_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEmbedded_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlEmbedded_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEmbedded_2_4_Field(), theEclipseLinkOrmPackage.getXmlField(), null, "field", null, 0, 1, XmlEmbedded_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntity_2_4EClass, XmlEntity_2_4.class, "XmlEntity_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntity_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_2_4_NoSql(), this.getXmlNoSql_2_4(), null, "noSql", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_4_CacheIndex(), theEclipseLinkOrmPackage.getXmlCacheIndex(), null, "cacheIndex", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_4_NoSql(), theEclipseLinkOrmPackage.getXmlNoSql(), null, "noSql", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityMappings_2_4EClass, XmlEntityMappings_2_4.class, "XmlEntityMappings_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntityMappings_2_4_UuidGenerators(), this.getXmlUuidGenerator_2_4(), null, "uuidGenerators", null, 0, -1, XmlEntityMappings_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2138,36 +2139,36 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		initEAttribute(getXmlField_2_4_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlField_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlId_2_4EClass, XmlId_2_4.class, "XmlId_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlId_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlId_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlId_2_4_Field(), theEclipseLinkOrmPackage.getXmlField(), null, "field", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlId_2_4_CacheIndex(), theEclipseLinkOrmPackage.getXmlCacheIndex(), null, "cacheIndex", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlJoinField_2_4EClass, XmlJoinField_2_4.class, "XmlJoinField_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlJoinField_2_4_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlJoinField_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlJoinField_2_4_ReferencedFieldName(), theXMLTypePackage.getString(), "referencedFieldName", null, 0, 1, XmlJoinField_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToMany_2_4EClass, XmlManyToMany_2_4.class, "XmlManyToMany_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToMany_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlManyToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlManyToMany_2_4_JoinFields(), theEclipseLinkOrmPackage.getXmlJoinField(), null, "joinFields", null, 0, -1, XmlManyToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToOne_2_4EClass, XmlManyToOne_2_4.class, "XmlManyToOne_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToOne_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlManyToOne_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlManyToOne_2_4_JoinFields(), theEclipseLinkOrmPackage.getXmlJoinField(), null, "joinFields", null, 0, -1, XmlManyToOne_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_4EClass, XmlMappedSuperclass_2_4.class, "XmlMappedSuperclass_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMappedSuperclass_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlMappedSuperclass_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_2_4_CacheIndex(), theEclipseLinkOrmPackage.getXmlCacheIndex(), null, "cacheIndex", null, 0, 1, XmlMappedSuperclass_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMultitenant_2_4EClass, XmlMultitenant_2_4.class, "XmlMultitenant_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMultitenant_2_4_IncludeCriteria(), theXMLTypePackage.getBooleanObject(), "includeCriteria", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMultitenant_2_4_TenantTableDiscriminator(), this.getXmlTenantTableDiscriminator_2_4(), null, "tenantTableDiscriminator", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMultitenant_2_4_TenantTableDiscriminator(), theEclipseLinkOrmPackage.getXmlTenantTableDiscriminator(), null, "tenantTableDiscriminator", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNoSql_2_4EClass, XmlNoSql_2_4.class, "XmlNoSql_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlNoSql_2_4_DataType(), theXMLTypePackage.getString(), "dataType", null, 0, 1, XmlNoSql_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlNoSql_2_4_DataFormat(), this.getDataFormatType(), "dataFormat", "", 0, 1, XmlNoSql_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_4EClass, XmlOneToMany_2_4.class, "XmlOneToMany_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlOneToMany_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToMany_2_4_JoinFields(), theEclipseLinkOrmPackage.getXmlJoinField(), null, "joinFields", null, 0, -1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOneToMany_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToOne_2_4EClass, XmlOneToOne_2_4.class, "XmlOneToOne_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlOneToOne_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlOneToOne_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlOneToOne_2_4_JoinFields(), theEclipseLinkOrmPackage.getXmlJoinField(), null, "joinFields", null, 0, -1, XmlOneToOne_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTenantTableDiscriminator_2_4EClass, XmlTenantTableDiscriminator_2_4.class, "XmlTenantTableDiscriminator_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlTenantTableDiscriminator_2_4_ContextProperty(), theXMLTypePackage.getString(), "contextProperty", null, 0, 1, XmlTenantTableDiscriminator_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

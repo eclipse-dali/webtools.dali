@@ -104,7 +104,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlPartitioning_2_2> partitioning;
+	protected EList<XmlPartitioning> partitioning;
 
 	/**
 	 * The cached value of the '{@link #getReplicationPartitioning() <em>Replication Partitioning</em>}' containment reference list.
@@ -114,7 +114,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlReplicationPartitioning_2_2> replicationPartitioning;
+	protected EList<XmlReplicationPartitioning> replicationPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getRoundRobinPartitioning() <em>Round Robin Partitioning</em>}' containment reference list.
@@ -124,7 +124,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlRoundRobinPartitioning_2_2> roundRobinPartitioning;
+	protected EList<XmlRoundRobinPartitioning> roundRobinPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getPinnedPartitioning() <em>Pinned Partitioning</em>}' containment reference list.
@@ -134,7 +134,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlPinnedPartitioning_2_2> pinnedPartitioning;
+	protected EList<XmlPinnedPartitioning> pinnedPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getRangePartitioning() <em>Range Partitioning</em>}' containment reference list.
@@ -144,7 +144,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlRangePartitioning_2_2> rangePartitioning;
+	protected EList<XmlRangePartitioning> rangePartitioning;
 
 	/**
 	 * The cached value of the '{@link #getValuePartitioning() <em>Value Partitioning</em>}' containment reference list.
@@ -154,7 +154,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlValuePartitioning_2_2> valuePartitioning;
+	protected EList<XmlValuePartitioning> valuePartitioning;
 
 	/**
 	 * The cached value of the '{@link #getHashPartitioning() <em>Hash Partitioning</em>}' containment reference list.
@@ -164,7 +164,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlHashPartitioning_2_2> hashPartitioning;
+	protected EList<XmlHashPartitioning> hashPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getUnionPartitioning() <em>Union Partitioning</em>}' containment reference list.
@@ -174,7 +174,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlUnionPartitioning_2_2> unionPartitioning;
+	protected EList<XmlUnionPartitioning> unionPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getTenantDiscriminatorColumns() <em>Tenant Discriminator Columns</em>}' containment reference list.
@@ -184,7 +184,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumns;
+	protected EList<XmlTenantDiscriminatorColumn> tenantDiscriminatorColumns;
 
 	/**
 	 * The cached value of the '{@link #getNamedStoredFunctionQueries() <em>Named Stored Function Queries</em>}' containment reference list.
@@ -194,7 +194,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedStoredFunctionQuery_2_3> namedStoredFunctionQueries;
+	protected EList<XmlNamedStoredFunctionQuery> namedStoredFunctionQueries;
 
 	/**
 	 * The cached value of the '{@link #getNamedPlsqlStoredFunctionQueries() <em>Named Plsql Stored Function Queries</em>}' containment reference list.
@@ -204,7 +204,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedPlsqlStoredFunctionQuery_2_3> namedPlsqlStoredFunctionQueries;
+	protected EList<XmlNamedPlsqlStoredFunctionQuery> namedPlsqlStoredFunctionQueries;
 
 	/**
 	 * The cached value of the '{@link #getNamedPlsqlStoredProcedureQueries() <em>Named Plsql Stored Procedure Queries</em>}' containment reference list.
@@ -214,7 +214,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlNamedPlsqlStoredProcedureQuery_2_3> namedPlsqlStoredProcedureQueries;
+	protected EList<XmlNamedPlsqlStoredProcedureQuery> namedPlsqlStoredProcedureQueries;
 
 	/**
 	 * The cached value of the '{@link #getPlsqlRecords() <em>Plsql Records</em>}' containment reference list.
@@ -224,7 +224,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlPlsqlRecord_2_3> plsqlRecords;
+	protected EList<XmlPlsqlRecord> plsqlRecords;
 
 	/**
 	 * The cached value of the '{@link #getPlsqlTables() <em>Plsql Tables</em>}' containment reference list.
@@ -359,7 +359,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 
 	/**
 	 * Returns the value of the '<em><b>Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Partitioning</em>' containment reference list isn't clear,
@@ -371,18 +371,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlPartitioning_2_2> getPartitioning()
+	public EList<XmlPartitioning> getPartitioning()
 	{
 		if (partitioning == null)
 		{
-			partitioning = new EObjectContainmentEList<XmlPartitioning_2_2>(XmlPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING);
+			partitioning = new EObjectContainmentEList<XmlPartitioning>(XmlPartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING);
 		}
 		return partitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Replication Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReplicationPartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Replication Partitioning</em>' containment reference list isn't clear,
@@ -394,18 +394,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlReplicationPartitioning_2_2> getReplicationPartitioning()
+	public EList<XmlReplicationPartitioning> getReplicationPartitioning()
 	{
 		if (replicationPartitioning == null)
 		{
-			replicationPartitioning = new EObjectContainmentEList<XmlReplicationPartitioning_2_2>(XmlReplicationPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING);
+			replicationPartitioning = new EObjectContainmentEList<XmlReplicationPartitioning>(XmlReplicationPartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING);
 		}
 		return replicationPartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Round Robin Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlRoundRobinPartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Round Robin Partitioning</em>' containment reference list isn't clear,
@@ -417,18 +417,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlRoundRobinPartitioning_2_2> getRoundRobinPartitioning()
+	public EList<XmlRoundRobinPartitioning> getRoundRobinPartitioning()
 	{
 		if (roundRobinPartitioning == null)
 		{
-			roundRobinPartitioning = new EObjectContainmentEList<XmlRoundRobinPartitioning_2_2>(XmlRoundRobinPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING);
+			roundRobinPartitioning = new EObjectContainmentEList<XmlRoundRobinPartitioning>(XmlRoundRobinPartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING);
 		}
 		return roundRobinPartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Pinned Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlPinnedPartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPinnedPartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Pinned Partitioning</em>' containment reference list isn't clear,
@@ -440,18 +440,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlPinnedPartitioning_2_2> getPinnedPartitioning()
+	public EList<XmlPinnedPartitioning> getPinnedPartitioning()
 	{
 		if (pinnedPartitioning == null)
 		{
-			pinnedPartitioning = new EObjectContainmentEList<XmlPinnedPartitioning_2_2>(XmlPinnedPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING);
+			pinnedPartitioning = new EObjectContainmentEList<XmlPinnedPartitioning>(XmlPinnedPartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING);
 		}
 		return pinnedPartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Range Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRangePartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlRangePartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Range Partitioning</em>' containment reference list isn't clear,
@@ -463,18 +463,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlRangePartitioning_2_2> getRangePartitioning()
+	public EList<XmlRangePartitioning> getRangePartitioning()
 	{
 		if (rangePartitioning == null)
 		{
-			rangePartitioning = new EObjectContainmentEList<XmlRangePartitioning_2_2>(XmlRangePartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING);
+			rangePartitioning = new EObjectContainmentEList<XmlRangePartitioning>(XmlRangePartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING);
 		}
 		return rangePartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Value Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlValuePartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Value Partitioning</em>' containment reference list isn't clear,
@@ -486,18 +486,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlValuePartitioning_2_2> getValuePartitioning()
+	public EList<XmlValuePartitioning> getValuePartitioning()
 	{
 		if (valuePartitioning == null)
 		{
-			valuePartitioning = new EObjectContainmentEList<XmlValuePartitioning_2_2>(XmlValuePartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING);
+			valuePartitioning = new EObjectContainmentEList<XmlValuePartitioning>(XmlValuePartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING);
 		}
 		return valuePartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Hash Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlHashPartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Hash Partitioning</em>' containment reference list isn't clear,
@@ -509,18 +509,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlHashPartitioning_2_2> getHashPartitioning()
+	public EList<XmlHashPartitioning> getHashPartitioning()
 	{
 		if (hashPartitioning == null)
 		{
-			hashPartitioning = new EObjectContainmentEList<XmlHashPartitioning_2_2>(XmlHashPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING);
+			hashPartitioning = new EObjectContainmentEList<XmlHashPartitioning>(XmlHashPartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING);
 		}
 		return hashPartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Union Partitioning</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlUnionPartitioning}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Union Partitioning</em>' containment reference list isn't clear,
@@ -532,18 +532,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlUnionPartitioning_2_2> getUnionPartitioning()
+	public EList<XmlUnionPartitioning> getUnionPartitioning()
 	{
 		if (unionPartitioning == null)
 		{
-			unionPartitioning = new EObjectContainmentEList<XmlUnionPartitioning_2_2>(XmlUnionPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING);
+			unionPartitioning = new EObjectContainmentEList<XmlUnionPartitioning>(XmlUnionPartitioning.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING);
 		}
 		return unionPartitioning;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Tenant Discriminator Columns</em>' containment reference list isn't clear,
@@ -555,18 +555,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlTenantDiscriminatorColumn_2_3> getTenantDiscriminatorColumns()
+	public EList<XmlTenantDiscriminatorColumn> getTenantDiscriminatorColumns()
 	{
 		if (tenantDiscriminatorColumns == null)
 		{
-			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn_2_3>(XmlTenantDiscriminatorColumn_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS);
+			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn>(XmlTenantDiscriminatorColumn.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS);
 		}
 		return tenantDiscriminatorColumns;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredFunctionQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Stored Function Queries</em>' containment reference list isn't clear,
@@ -578,18 +578,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedStoredFunctionQuery_2_3> getNamedStoredFunctionQueries()
+	public EList<XmlNamedStoredFunctionQuery> getNamedStoredFunctionQueries()
 	{
 		if (namedStoredFunctionQueries == null)
 		{
-			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery_2_3>(XmlNamedStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES);
+			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery>(XmlNamedStoredFunctionQuery.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES);
 		}
 		return namedStoredFunctionQueries;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredFunctionQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Plsql Stored Function Queries</em>' containment reference list isn't clear,
@@ -601,18 +601,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedPlsqlStoredFunctionQuery_2_3> getNamedPlsqlStoredFunctionQueries()
+	public EList<XmlNamedPlsqlStoredFunctionQuery> getNamedPlsqlStoredFunctionQueries()
 	{
 		if (namedPlsqlStoredFunctionQueries == null)
 		{
-			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery_2_3>(XmlNamedPlsqlStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
+			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery>(XmlNamedPlsqlStoredFunctionQuery.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
 		}
 		return namedPlsqlStoredFunctionQueries;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredProcedureQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list isn't clear,
@@ -624,18 +624,18 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlNamedPlsqlStoredProcedureQuery_2_3> getNamedPlsqlStoredProcedureQueries()
+	public EList<XmlNamedPlsqlStoredProcedureQuery> getNamedPlsqlStoredProcedureQueries()
 	{
 		if (namedPlsqlStoredProcedureQueries == null)
 		{
-			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery_2_3>(XmlNamedPlsqlStoredProcedureQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
+			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery>(XmlNamedPlsqlStoredProcedureQuery.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
 		}
 		return namedPlsqlStoredProcedureQueries;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
@@ -647,11 +647,11 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
+	public EList<XmlPlsqlRecord> getPlsqlRecords()
 	{
 		if (plsqlRecords == null)
 		{
-			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_RECORDS);
+			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord>(XmlPlsqlRecord.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_RECORDS);
 		}
 		return plsqlRecords;
 	}
@@ -891,55 +891,55 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
 				getPartitioning().clear();
-				getPartitioning().addAll((Collection<? extends XmlPartitioning_2_2>)newValue);
+				getPartitioning().addAll((Collection<? extends XmlPartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING:
 				getReplicationPartitioning().clear();
-				getReplicationPartitioning().addAll((Collection<? extends XmlReplicationPartitioning_2_2>)newValue);
+				getReplicationPartitioning().addAll((Collection<? extends XmlReplicationPartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING:
 				getRoundRobinPartitioning().clear();
-				getRoundRobinPartitioning().addAll((Collection<? extends XmlRoundRobinPartitioning_2_2>)newValue);
+				getRoundRobinPartitioning().addAll((Collection<? extends XmlRoundRobinPartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING:
 				getPinnedPartitioning().clear();
-				getPinnedPartitioning().addAll((Collection<? extends XmlPinnedPartitioning_2_2>)newValue);
+				getPinnedPartitioning().addAll((Collection<? extends XmlPinnedPartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING:
 				getRangePartitioning().clear();
-				getRangePartitioning().addAll((Collection<? extends XmlRangePartitioning_2_2>)newValue);
+				getRangePartitioning().addAll((Collection<? extends XmlRangePartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING:
 				getValuePartitioning().clear();
-				getValuePartitioning().addAll((Collection<? extends XmlValuePartitioning_2_2>)newValue);
+				getValuePartitioning().addAll((Collection<? extends XmlValuePartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING:
 				getHashPartitioning().clear();
-				getHashPartitioning().addAll((Collection<? extends XmlHashPartitioning_2_2>)newValue);
+				getHashPartitioning().addAll((Collection<? extends XmlHashPartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
 				getUnionPartitioning().clear();
-				getUnionPartitioning().addAll((Collection<? extends XmlUnionPartitioning_2_2>)newValue);
+				getUnionPartitioning().addAll((Collection<? extends XmlUnionPartitioning>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS:
 				getTenantDiscriminatorColumns().clear();
-				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn_2_3>)newValue);
+				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES:
 				getNamedStoredFunctionQueries().clear();
-				getNamedStoredFunctionQueries().addAll((Collection<? extends XmlNamedStoredFunctionQuery_2_3>)newValue);
+				getNamedStoredFunctionQueries().addAll((Collection<? extends XmlNamedStoredFunctionQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
 				getNamedPlsqlStoredFunctionQueries().clear();
-				getNamedPlsqlStoredFunctionQueries().addAll((Collection<? extends XmlNamedPlsqlStoredFunctionQuery_2_3>)newValue);
+				getNamedPlsqlStoredFunctionQueries().addAll((Collection<? extends XmlNamedPlsqlStoredFunctionQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
 				getNamedPlsqlStoredProcedureQueries().clear();
-				getNamedPlsqlStoredProcedureQueries().addAll((Collection<? extends XmlNamedPlsqlStoredProcedureQuery_2_3>)newValue);
+				getNamedPlsqlStoredProcedureQueries().addAll((Collection<? extends XmlNamedPlsqlStoredProcedureQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_RECORDS:
 				getPlsqlRecords().clear();
-				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord_2_3>)newValue);
+				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES:
 				getPlsqlTables().clear();

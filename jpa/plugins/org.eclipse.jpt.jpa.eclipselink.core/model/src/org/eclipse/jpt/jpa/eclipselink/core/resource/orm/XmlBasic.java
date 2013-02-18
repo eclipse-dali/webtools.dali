@@ -138,7 +138,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlIndex_2_2 index;
+	protected XmlIndex index;
 	/**
 	 * The cached value of the '{@link #getUuidGenerator() <em>Uuid Generator</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -147,7 +147,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlUuidGenerator_2_4 uuidGenerator;
+	protected XmlUuidGenerator uuidGenerator;
 	/**
 	 * The cached value of the '{@link #getField() <em>Field</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -156,7 +156,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlField_2_4 field;
+	protected XmlField field;
 	/**
 	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -165,7 +165,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCacheIndex_2_4 cacheIndex;
+	protected XmlCacheIndex cacheIndex;
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -724,12 +724,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Index</em>' containment reference.
-	 * @see #setIndex(XmlIndex_2_2)
+	 * @see #setIndex(XmlIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_2_Index()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlIndex_2_2 getIndex()
+	public XmlIndex getIndex()
 	{
 		return index;
 	}
@@ -739,9 +739,9 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIndex(XmlIndex_2_2 newIndex, NotificationChain msgs)
+	public NotificationChain basicSetIndex(XmlIndex newIndex, NotificationChain msgs)
 	{
-		XmlIndex_2_2 oldIndex = index;
+		XmlIndex oldIndex = index;
 		index = newIndex;
 		if (eNotificationRequired())
 		{
@@ -759,7 +759,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @see #getIndex()
 	 * @generated
 	 */
-	public void setIndex(XmlIndex_2_2 newIndex)
+	public void setIndex(XmlIndex newIndex)
 	{
 		if (newIndex != index)
 		{
@@ -784,12 +784,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Field</em>' containment reference.
-	 * @see #setField(XmlField_2_4)
+	 * @see #setField(XmlField)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_4_Field()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlField_2_4 getField()
+	public XmlField getField()
 	{
 		return field;
 	}
@@ -799,9 +799,9 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetField(XmlField_2_4 newField, NotificationChain msgs)
+	public NotificationChain basicSetField(XmlField newField, NotificationChain msgs)
 	{
-		XmlField_2_4 oldField = field;
+		XmlField oldField = field;
 		field = newField;
 		if (eNotificationRequired())
 		{
@@ -819,7 +819,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @see #getField()
 	 * @generated
 	 */
-	public void setField(XmlField_2_4 newField)
+	public void setField(XmlField newField)
 	{
 		if (newField != field)
 		{
@@ -844,12 +844,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Index</em>' containment reference.
-	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see #setCacheIndex(XmlCacheIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_4_CacheIndex()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCacheIndex_2_4 getCacheIndex()
+	public XmlCacheIndex getCacheIndex()
 	{
 		return cacheIndex;
 	}
@@ -859,9 +859,9 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCacheIndex(XmlCacheIndex_2_4 newCacheIndex, NotificationChain msgs)
+	public NotificationChain basicSetCacheIndex(XmlCacheIndex newCacheIndex, NotificationChain msgs)
 	{
-		XmlCacheIndex_2_4 oldCacheIndex = cacheIndex;
+		XmlCacheIndex oldCacheIndex = cacheIndex;
 		cacheIndex = newCacheIndex;
 		if (eNotificationRequired())
 		{
@@ -879,7 +879,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @see #getCacheIndex()
 	 * @generated
 	 */
-	public void setCacheIndex(XmlCacheIndex_2_4 newCacheIndex)
+	public void setCacheIndex(XmlCacheIndex newCacheIndex)
 	{
 		if (newCacheIndex != cacheIndex)
 		{
@@ -904,12 +904,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Uuid Generator</em>' containment reference.
-	 * @see #setUuidGenerator(XmlUuidGenerator_2_4)
+	 * @see #setUuidGenerator(XmlUuidGenerator)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer2_4_UuidGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlUuidGenerator_2_4 getUuidGenerator()
+	public XmlUuidGenerator getUuidGenerator()
 	{
 		return uuidGenerator;
 	}
@@ -919,9 +919,9 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator, NotificationChain msgs)
+	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator newUuidGenerator, NotificationChain msgs)
 	{
-		XmlUuidGenerator_2_4 oldUuidGenerator = uuidGenerator;
+		XmlUuidGenerator oldUuidGenerator = uuidGenerator;
 		uuidGenerator = newUuidGenerator;
 		if (eNotificationRequired())
 		{
@@ -939,7 +939,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @see #getUuidGenerator()
 	 * @generated
 	 */
-	public void setUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator)
+	public void setUuidGenerator(XmlUuidGenerator newUuidGenerator)
 	{
 		if (newUuidGenerator != uuidGenerator)
 		{
@@ -1155,16 +1155,16 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				setReturnUpdate((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
-				setIndex((XmlIndex_2_2)newValue);
+				setIndex((XmlIndex)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
-				setUuidGenerator((XmlUuidGenerator_2_4)newValue);
+				setUuidGenerator((XmlUuidGenerator)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
-				setField((XmlField_2_4)newValue);
+				setField((XmlField)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
-				setCacheIndex((XmlCacheIndex_2_4)newValue);
+				setCacheIndex((XmlCacheIndex)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -1225,16 +1225,16 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				setReturnUpdate(RETURN_UPDATE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
-				setIndex((XmlIndex_2_2)null);
+				setIndex((XmlIndex)null);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
-				setUuidGenerator((XmlUuidGenerator_2_4)null);
+				setUuidGenerator((XmlUuidGenerator)null);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
-				setField((XmlField_2_4)null);
+				setField((XmlField)null);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
-				setCacheIndex((XmlCacheIndex_2_4)null);
+				setCacheIndex((XmlCacheIndex)null);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);

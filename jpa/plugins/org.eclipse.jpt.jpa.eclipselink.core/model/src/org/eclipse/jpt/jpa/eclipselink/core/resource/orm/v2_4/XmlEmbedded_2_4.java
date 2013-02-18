@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlField;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,12 +46,12 @@ public interface XmlEmbedded_2_4 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Field</em>' containment reference.
-	 * @see #setField(XmlField_2_4)
+	 * @see #setField(XmlField)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEmbedded_2_4_Field()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlField_2_4 getField();
+	XmlField getField();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4#getField <em>Field</em>}' containment reference.
@@ -60,6 +61,6 @@ public interface XmlEmbedded_2_4 extends EBaseObject
 	 * @see #getField()
 	 * @generated
 	 */
-	void setField(XmlField_2_4 value);
+	void setField(XmlField value);
 
 } // XmlEmbedded_2_4

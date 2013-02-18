@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,6 +8,9 @@
  *  	Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
+
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCacheIndex;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNoSql;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,12 +40,12 @@ public interface XmlEntity_2_4 extends XmlGeneratorContainer2_4
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Index</em>' containment reference.
-	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see #setCacheIndex(XmlCacheIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEntity_2_4_CacheIndex()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlCacheIndex_2_4 getCacheIndex();
+	XmlCacheIndex getCacheIndex();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4#getCacheIndex <em>Cache Index</em>}' containment reference.
@@ -52,7 +55,7 @@ public interface XmlEntity_2_4 extends XmlGeneratorContainer2_4
 	 * @see #getCacheIndex()
 	 * @generated
 	 */
-	void setCacheIndex(XmlCacheIndex_2_4 value);
+	void setCacheIndex(XmlCacheIndex value);
 
 	/**
 	 * Returns the value of the '<em><b>No Sql</b></em>' containment reference.
@@ -63,12 +66,12 @@ public interface XmlEntity_2_4 extends XmlGeneratorContainer2_4
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>No Sql</em>' containment reference.
-	 * @see #setNoSql(XmlNoSql_2_4)
+	 * @see #setNoSql(XmlNoSql)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEntity_2_4_NoSql()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlNoSql_2_4 getNoSql();
+	XmlNoSql getNoSql();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4#getNoSql <em>No Sql</em>}' containment reference.
@@ -78,6 +81,6 @@ public interface XmlEntity_2_4 extends XmlGeneratorContainer2_4
 	 * @see #getNoSql()
 	 * @generated
 	 */
-	void setNoSql(XmlNoSql_2_4 value);
+	void setNoSql(XmlNoSql value);
 
 } // XmlEntity_2_4

@@ -65,7 +65,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlIndex_2_2 index;
+	protected XmlIndex index;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -232,12 +232,12 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Index</em>' containment reference.
-	 * @see #setIndex(XmlIndex_2_2)
+	 * @see #setIndex(XmlIndex)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion_2_2_Index()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlIndex_2_2 getIndex()
+	public XmlIndex getIndex()
 	{
 		return index;
 	}
@@ -247,9 +247,9 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIndex(XmlIndex_2_2 newIndex, NotificationChain msgs)
+	public NotificationChain basicSetIndex(XmlIndex newIndex, NotificationChain msgs)
 	{
-		XmlIndex_2_2 oldIndex = index;
+		XmlIndex oldIndex = index;
 		index = newIndex;
 		if (eNotificationRequired())
 		{
@@ -267,7 +267,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * @see #getIndex()
 	 * @generated
 	 */
-	public void setIndex(XmlIndex_2_2 newIndex)
+	public void setIndex(XmlIndex newIndex)
 	{
 		if (newIndex != index)
 		{
@@ -565,7 +565,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_VERSION__INDEX:
-				setIndex((XmlIndex_2_2)newValue);
+				setIndex((XmlIndex)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -611,7 +611,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_VERSION__INDEX:
-				setIndex((XmlIndex_2_2)null);
+				setIndex((XmlIndex)null);
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);

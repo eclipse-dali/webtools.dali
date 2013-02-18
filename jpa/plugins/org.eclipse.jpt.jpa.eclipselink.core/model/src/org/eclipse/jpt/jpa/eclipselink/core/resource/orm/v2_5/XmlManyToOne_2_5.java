@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5;
 
+import org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
 
@@ -45,12 +46,12 @@ public interface XmlManyToOne_2_5 extends XmlPrimaryKeyJoinColumnContainer
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Foreign Key</em>' containment reference.
-	 * @see #setPrimaryKeyForeignKey(XmlForeignKey_2_1)
+	 * @see #setPrimaryKeyForeignKey(XmlForeignKey)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLinkOrmV2_5Package#getXmlManyToOne_2_5_PrimaryKeyForeignKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlForeignKey_2_1 getPrimaryKeyForeignKey();
+	XmlForeignKey getPrimaryKeyForeignKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.XmlManyToOne_2_5#getPrimaryKeyForeignKey <em>Primary Key Foreign Key</em>}' containment reference.
@@ -60,6 +61,6 @@ public interface XmlManyToOne_2_5 extends XmlPrimaryKeyJoinColumnContainer
 	 * @see #getPrimaryKeyForeignKey()
 	 * @generated
 	 */
-	void setPrimaryKeyForeignKey(XmlForeignKey_2_1 value);
+	void setPrimaryKeyForeignKey(XmlForeignKey value);
 
 } // XmlManyToOne_2_5

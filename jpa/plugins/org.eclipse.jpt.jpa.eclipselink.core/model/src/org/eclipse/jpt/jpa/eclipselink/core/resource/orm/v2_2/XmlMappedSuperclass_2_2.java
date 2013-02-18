@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
+
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAdditionalCriteria;
 
 
 /**
@@ -43,12 +45,12 @@ public interface XmlMappedSuperclass_2_2 extends XmlPartitioningGroup_2_2
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Additional Criteria</em>' containment reference.
-	 * @see #setAdditionalCriteria(XmlAdditionalCriteria_2_2)
+	 * @see #setAdditionalCriteria(XmlAdditionalCriteria)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlMappedSuperclass_2_2_AdditionalCriteria()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlAdditionalCriteria_2_2 getAdditionalCriteria();
+	XmlAdditionalCriteria getAdditionalCriteria();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlMappedSuperclass_2_2#getAdditionalCriteria <em>Additional Criteria</em>}' containment reference.
@@ -58,6 +60,6 @@ public interface XmlMappedSuperclass_2_2 extends XmlPartitioningGroup_2_2
 	 * @see #getAdditionalCriteria()
 	 * @generated
 	 */
-	void setAdditionalCriteria(XmlAdditionalCriteria_2_2 value);
+	void setAdditionalCriteria(XmlAdditionalCriteria value);
 
 } // XmlMappedSuperclass_2_2

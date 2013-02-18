@@ -311,7 +311,6 @@ public class EclipseLinkOrmV2_5Package extends EPackageImpl
 
 		// Obtain other dependent packages
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
-		OrmV2_1Package theOrmV2_1Package = (OrmV2_1Package)EPackage.Registry.INSTANCE.getEPackage(OrmV2_1Package.eNS_URI);
 
 		// Create type parameters
 
@@ -322,7 +321,7 @@ public class EclipseLinkOrmV2_5Package extends EPackageImpl
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlManyToOne_2_5EClass, XmlManyToOne_2_5.class, "XmlManyToOne_2_5", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToOne_2_5_PrimaryKeyForeignKey(), theOrmV2_1Package.getXmlForeignKey_2_1(), null, "primaryKeyForeignKey", null, 0, 1, XmlManyToOne_2_5.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlManyToOne_2_5_PrimaryKeyForeignKey(), theOrmPackage.getXmlForeignKey(), null, "primaryKeyForeignKey", null, 0, 1, XmlManyToOne_2_5.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 	}
 
 	/**

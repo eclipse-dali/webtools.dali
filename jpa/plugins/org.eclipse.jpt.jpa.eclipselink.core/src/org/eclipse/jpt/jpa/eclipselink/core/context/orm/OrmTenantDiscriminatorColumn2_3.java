@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 
 /**
  * orm tenant discriminator column
@@ -27,5 +27,5 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
 public interface OrmTenantDiscriminatorColumn2_3
 	extends TenantDiscriminatorColumn2_3
 {
-	XmlTenantDiscriminatorColumn_2_3 getXmlColumn();
+	XmlTenantDiscriminatorColumn getXmlColumn();
 }

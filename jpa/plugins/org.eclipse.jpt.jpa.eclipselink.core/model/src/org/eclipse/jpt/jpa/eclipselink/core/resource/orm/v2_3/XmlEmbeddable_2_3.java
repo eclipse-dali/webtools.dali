@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -11,7 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStruct;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +38,7 @@ public interface XmlEmbeddable_2_3 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
@@ -48,7 +50,7 @@ public interface XmlEmbeddable_2_3 extends EBaseObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlPlsqlRecord_2_3> getPlsqlRecords();
+	EList<XmlPlsqlRecord> getPlsqlRecords();
 
 	/**
 	 * Returns the value of the '<em><b>Plsql Tables</b></em>' containment reference list.
@@ -75,12 +77,12 @@ public interface XmlEmbeddable_2_3 extends EBaseObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Struct</em>' containment reference.
-	 * @see #setStruct(XmlStruct_2_3)
+	 * @see #setStruct(XmlStruct)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEmbeddable_2_3_Struct()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlStruct_2_3 getStruct();
+	XmlStruct getStruct();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEmbeddable_2_3#getStruct <em>Struct</em>}' containment reference.
@@ -90,6 +92,6 @@ public interface XmlEmbeddable_2_3 extends EBaseObject
 	 * @see #getStruct()
 	 * @generated
 	 */
-	void setStruct(XmlStruct_2_3 value);
+	void setStruct(XmlStruct value);
 
 } // XmlEmbeddable_2_3

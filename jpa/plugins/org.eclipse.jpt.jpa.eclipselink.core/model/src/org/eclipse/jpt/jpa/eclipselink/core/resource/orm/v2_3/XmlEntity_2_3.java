@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2013  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -11,6 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredFunctionQuery;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredProcedureQuery;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredFunctionQuery;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
 
 /**
@@ -38,7 +42,7 @@ public interface XmlEntity_2_3 extends XmlMultitenantHolder
 {
 	/**
 	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredFunctionQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Stored Function Queries</em>' containment reference list isn't clear,
@@ -50,11 +54,11 @@ public interface XmlEntity_2_3 extends XmlMultitenantHolder
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedStoredFunctionQuery_2_3> getNamedStoredFunctionQueries();
+	EList<XmlNamedStoredFunctionQuery> getNamedStoredFunctionQueries();
 
 	/**
 	 * Returns the value of the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredFunctionQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Plsql Stored Function Queries</em>' containment reference list isn't clear,
@@ -66,11 +70,11 @@ public interface XmlEntity_2_3 extends XmlMultitenantHolder
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedPlsqlStoredFunctionQuery_2_3> getNamedPlsqlStoredFunctionQueries();
+	EList<XmlNamedPlsqlStoredFunctionQuery> getNamedPlsqlStoredFunctionQueries();
 
 	/**
 	 * Returns the value of the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedPlsqlStoredProcedureQuery}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list isn't clear,
@@ -82,11 +86,11 @@ public interface XmlEntity_2_3 extends XmlMultitenantHolder
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlNamedPlsqlStoredProcedureQuery_2_3> getNamedPlsqlStoredProcedureQueries();
+	EList<XmlNamedPlsqlStoredProcedureQuery> getNamedPlsqlStoredProcedureQueries();
 
 	/**
 	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlRecord}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
@@ -98,7 +102,7 @@ public interface XmlEntity_2_3 extends XmlMultitenantHolder
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlPlsqlRecord_2_3> getPlsqlRecords();
+	EList<XmlPlsqlRecord> getPlsqlRecords();
 
 	/**
 	 * Returns the value of the '<em><b>Plsql Tables</b></em>' containment reference list.

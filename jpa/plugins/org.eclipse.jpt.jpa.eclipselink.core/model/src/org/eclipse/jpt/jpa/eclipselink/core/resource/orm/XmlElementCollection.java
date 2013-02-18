@@ -209,7 +209,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlPartitioning_2_2 partitioning;
+	protected XmlPartitioning partitioning;
 
 	/**
 	 * The cached value of the '{@link #getReplicationPartitioning() <em>Replication Partitioning</em>}' containment reference.
@@ -219,7 +219,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlReplicationPartitioning_2_2 replicationPartitioning;
+	protected XmlReplicationPartitioning replicationPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getRoundRobinPartitioning() <em>Round Robin Partitioning</em>}' containment reference.
@@ -229,7 +229,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlRoundRobinPartitioning_2_2 roundRobinPartitioning;
+	protected XmlRoundRobinPartitioning roundRobinPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getPinnedPartitioning() <em>Pinned Partitioning</em>}' containment reference.
@@ -239,7 +239,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlPinnedPartitioning_2_2 pinnedPartitioning;
+	protected XmlPinnedPartitioning pinnedPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getRangePartitioning() <em>Range Partitioning</em>}' containment reference.
@@ -249,7 +249,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlRangePartitioning_2_2 rangePartitioning;
+	protected XmlRangePartitioning rangePartitioning;
 
 	/**
 	 * The cached value of the '{@link #getValuePartitioning() <em>Value Partitioning</em>}' containment reference.
@@ -259,7 +259,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlValuePartitioning_2_2 valuePartitioning;
+	protected XmlValuePartitioning valuePartitioning;
 
 	/**
 	 * The cached value of the '{@link #getHashPartitioning() <em>Hash Partitioning</em>}' containment reference.
@@ -269,7 +269,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlHashPartitioning_2_2 hashPartitioning;
+	protected XmlHashPartitioning hashPartitioning;
 
 	/**
 	 * The cached value of the '{@link #getUnionPartitioning() <em>Union Partitioning</em>}' containment reference.
@@ -279,7 +279,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlUnionPartitioning_2_2 unionPartitioning;
+	protected XmlUnionPartitioning unionPartitioning;
 
 	/**
 	 * The default value of the '{@link #getPartitioned() <em>Partitioned</em>}' attribute.
@@ -369,7 +369,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlField_2_4 field;
+	protected XmlField field;
 
 	/**
 	 * The default value of the '{@link #isDeleteAll() <em>Delete All</em>}' attribute.
@@ -660,12 +660,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Partitioning</em>' containment reference.
-	 * @see #setPartitioning(XmlPartitioning_2_2)
+	 * @see #setPartitioning(XmlPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_Partitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlPartitioning_2_2 getPartitioning()
+	public XmlPartitioning getPartitioning()
 	{
 		return partitioning;
 	}
@@ -675,9 +675,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPartitioning(XmlPartitioning_2_2 newPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetPartitioning(XmlPartitioning newPartitioning, NotificationChain msgs)
 	{
-		XmlPartitioning_2_2 oldPartitioning = partitioning;
+		XmlPartitioning oldPartitioning = partitioning;
 		partitioning = newPartitioning;
 		if (eNotificationRequired())
 		{
@@ -695,7 +695,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getPartitioning()
 	 * @generated
 	 */
-	public void setPartitioning(XmlPartitioning_2_2 newPartitioning)
+	public void setPartitioning(XmlPartitioning newPartitioning)
 	{
 		if (newPartitioning != partitioning)
 		{
@@ -720,12 +720,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Replication Partitioning</em>' containment reference.
-	 * @see #setReplicationPartitioning(XmlReplicationPartitioning_2_2)
+	 * @see #setReplicationPartitioning(XmlReplicationPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_ReplicationPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlReplicationPartitioning_2_2 getReplicationPartitioning()
+	public XmlReplicationPartitioning getReplicationPartitioning()
 	{
 		return replicationPartitioning;
 	}
@@ -735,9 +735,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetReplicationPartitioning(XmlReplicationPartitioning_2_2 newReplicationPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetReplicationPartitioning(XmlReplicationPartitioning newReplicationPartitioning, NotificationChain msgs)
 	{
-		XmlReplicationPartitioning_2_2 oldReplicationPartitioning = replicationPartitioning;
+		XmlReplicationPartitioning oldReplicationPartitioning = replicationPartitioning;
 		replicationPartitioning = newReplicationPartitioning;
 		if (eNotificationRequired())
 		{
@@ -755,7 +755,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getReplicationPartitioning()
 	 * @generated
 	 */
-	public void setReplicationPartitioning(XmlReplicationPartitioning_2_2 newReplicationPartitioning)
+	public void setReplicationPartitioning(XmlReplicationPartitioning newReplicationPartitioning)
 	{
 		if (newReplicationPartitioning != replicationPartitioning)
 		{
@@ -780,12 +780,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Round Robin Partitioning</em>' containment reference.
-	 * @see #setRoundRobinPartitioning(XmlRoundRobinPartitioning_2_2)
+	 * @see #setRoundRobinPartitioning(XmlRoundRobinPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_RoundRobinPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlRoundRobinPartitioning_2_2 getRoundRobinPartitioning()
+	public XmlRoundRobinPartitioning getRoundRobinPartitioning()
 	{
 		return roundRobinPartitioning;
 	}
@@ -795,9 +795,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetRoundRobinPartitioning(XmlRoundRobinPartitioning_2_2 newRoundRobinPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetRoundRobinPartitioning(XmlRoundRobinPartitioning newRoundRobinPartitioning, NotificationChain msgs)
 	{
-		XmlRoundRobinPartitioning_2_2 oldRoundRobinPartitioning = roundRobinPartitioning;
+		XmlRoundRobinPartitioning oldRoundRobinPartitioning = roundRobinPartitioning;
 		roundRobinPartitioning = newRoundRobinPartitioning;
 		if (eNotificationRequired())
 		{
@@ -815,7 +815,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getRoundRobinPartitioning()
 	 * @generated
 	 */
-	public void setRoundRobinPartitioning(XmlRoundRobinPartitioning_2_2 newRoundRobinPartitioning)
+	public void setRoundRobinPartitioning(XmlRoundRobinPartitioning newRoundRobinPartitioning)
 	{
 		if (newRoundRobinPartitioning != roundRobinPartitioning)
 		{
@@ -840,12 +840,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pinned Partitioning</em>' containment reference.
-	 * @see #setPinnedPartitioning(XmlPinnedPartitioning_2_2)
+	 * @see #setPinnedPartitioning(XmlPinnedPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_PinnedPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlPinnedPartitioning_2_2 getPinnedPartitioning()
+	public XmlPinnedPartitioning getPinnedPartitioning()
 	{
 		return pinnedPartitioning;
 	}
@@ -855,9 +855,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPinnedPartitioning(XmlPinnedPartitioning_2_2 newPinnedPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetPinnedPartitioning(XmlPinnedPartitioning newPinnedPartitioning, NotificationChain msgs)
 	{
-		XmlPinnedPartitioning_2_2 oldPinnedPartitioning = pinnedPartitioning;
+		XmlPinnedPartitioning oldPinnedPartitioning = pinnedPartitioning;
 		pinnedPartitioning = newPinnedPartitioning;
 		if (eNotificationRequired())
 		{
@@ -875,7 +875,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getPinnedPartitioning()
 	 * @generated
 	 */
-	public void setPinnedPartitioning(XmlPinnedPartitioning_2_2 newPinnedPartitioning)
+	public void setPinnedPartitioning(XmlPinnedPartitioning newPinnedPartitioning)
 	{
 		if (newPinnedPartitioning != pinnedPartitioning)
 		{
@@ -900,12 +900,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Range Partitioning</em>' containment reference.
-	 * @see #setRangePartitioning(XmlRangePartitioning_2_2)
+	 * @see #setRangePartitioning(XmlRangePartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_RangePartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlRangePartitioning_2_2 getRangePartitioning()
+	public XmlRangePartitioning getRangePartitioning()
 	{
 		return rangePartitioning;
 	}
@@ -915,9 +915,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetRangePartitioning(XmlRangePartitioning_2_2 newRangePartitioning, NotificationChain msgs)
+	public NotificationChain basicSetRangePartitioning(XmlRangePartitioning newRangePartitioning, NotificationChain msgs)
 	{
-		XmlRangePartitioning_2_2 oldRangePartitioning = rangePartitioning;
+		XmlRangePartitioning oldRangePartitioning = rangePartitioning;
 		rangePartitioning = newRangePartitioning;
 		if (eNotificationRequired())
 		{
@@ -935,7 +935,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getRangePartitioning()
 	 * @generated
 	 */
-	public void setRangePartitioning(XmlRangePartitioning_2_2 newRangePartitioning)
+	public void setRangePartitioning(XmlRangePartitioning newRangePartitioning)
 	{
 		if (newRangePartitioning != rangePartitioning)
 		{
@@ -960,12 +960,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value Partitioning</em>' containment reference.
-	 * @see #setValuePartitioning(XmlValuePartitioning_2_2)
+	 * @see #setValuePartitioning(XmlValuePartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_ValuePartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlValuePartitioning_2_2 getValuePartitioning()
+	public XmlValuePartitioning getValuePartitioning()
 	{
 		return valuePartitioning;
 	}
@@ -975,9 +975,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetValuePartitioning(XmlValuePartitioning_2_2 newValuePartitioning, NotificationChain msgs)
+	public NotificationChain basicSetValuePartitioning(XmlValuePartitioning newValuePartitioning, NotificationChain msgs)
 	{
-		XmlValuePartitioning_2_2 oldValuePartitioning = valuePartitioning;
+		XmlValuePartitioning oldValuePartitioning = valuePartitioning;
 		valuePartitioning = newValuePartitioning;
 		if (eNotificationRequired())
 		{
@@ -995,7 +995,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getValuePartitioning()
 	 * @generated
 	 */
-	public void setValuePartitioning(XmlValuePartitioning_2_2 newValuePartitioning)
+	public void setValuePartitioning(XmlValuePartitioning newValuePartitioning)
 	{
 		if (newValuePartitioning != valuePartitioning)
 		{
@@ -1020,12 +1020,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hash Partitioning</em>' containment reference.
-	 * @see #setHashPartitioning(XmlHashPartitioning_2_2)
+	 * @see #setHashPartitioning(XmlHashPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_HashPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlHashPartitioning_2_2 getHashPartitioning()
+	public XmlHashPartitioning getHashPartitioning()
 	{
 		return hashPartitioning;
 	}
@@ -1035,9 +1035,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetHashPartitioning(XmlHashPartitioning_2_2 newHashPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetHashPartitioning(XmlHashPartitioning newHashPartitioning, NotificationChain msgs)
 	{
-		XmlHashPartitioning_2_2 oldHashPartitioning = hashPartitioning;
+		XmlHashPartitioning oldHashPartitioning = hashPartitioning;
 		hashPartitioning = newHashPartitioning;
 		if (eNotificationRequired())
 		{
@@ -1055,7 +1055,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getHashPartitioning()
 	 * @generated
 	 */
-	public void setHashPartitioning(XmlHashPartitioning_2_2 newHashPartitioning)
+	public void setHashPartitioning(XmlHashPartitioning newHashPartitioning)
 	{
 		if (newHashPartitioning != hashPartitioning)
 		{
@@ -1080,12 +1080,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Union Partitioning</em>' containment reference.
-	 * @see #setUnionPartitioning(XmlUnionPartitioning_2_2)
+	 * @see #setUnionPartitioning(XmlUnionPartitioning)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioningGroup_2_2_UnionPartitioning()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlUnionPartitioning_2_2 getUnionPartitioning()
+	public XmlUnionPartitioning getUnionPartitioning()
 	{
 		return unionPartitioning;
 	}
@@ -1095,9 +1095,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetUnionPartitioning(XmlUnionPartitioning_2_2 newUnionPartitioning, NotificationChain msgs)
+	public NotificationChain basicSetUnionPartitioning(XmlUnionPartitioning newUnionPartitioning, NotificationChain msgs)
 	{
-		XmlUnionPartitioning_2_2 oldUnionPartitioning = unionPartitioning;
+		XmlUnionPartitioning oldUnionPartitioning = unionPartitioning;
 		unionPartitioning = newUnionPartitioning;
 		if (eNotificationRequired())
 		{
@@ -1115,7 +1115,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getUnionPartitioning()
 	 * @generated
 	 */
-	public void setUnionPartitioning(XmlUnionPartitioning_2_2 newUnionPartitioning)
+	public void setUnionPartitioning(XmlUnionPartitioning newUnionPartitioning)
 	{
 		if (newUnionPartitioning != unionPartitioning)
 		{
@@ -1280,12 +1280,12 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Field</em>' containment reference.
-	 * @see #setField(XmlField_2_4)
+	 * @see #setField(XmlField)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection_2_4_Field()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlField_2_4 getField()
+	public XmlField getField()
 	{
 		return field;
 	}
@@ -1295,9 +1295,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetField(XmlField_2_4 newField, NotificationChain msgs)
+	public NotificationChain basicSetField(XmlField newField, NotificationChain msgs)
 	{
-		XmlField_2_4 oldField = field;
+		XmlField oldField = field;
 		field = newField;
 		if (eNotificationRequired())
 		{
@@ -1315,7 +1315,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @see #getField()
 	 * @generated
 	 */
-	public void setField(XmlField_2_4 newField)
+	public void setField(XmlField newField)
 	{
 		if (newField != field)
 		{
@@ -1616,28 +1616,28 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				setBatchFetch((XmlBatchFetch)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONING:
-				setPartitioning((XmlPartitioning_2_2)newValue);
+				setPartitioning((XmlPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__REPLICATION_PARTITIONING:
-				setReplicationPartitioning((XmlReplicationPartitioning_2_2)newValue);
+				setReplicationPartitioning((XmlReplicationPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ROUND_ROBIN_PARTITIONING:
-				setRoundRobinPartitioning((XmlRoundRobinPartitioning_2_2)newValue);
+				setRoundRobinPartitioning((XmlRoundRobinPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PINNED_PARTITIONING:
-				setPinnedPartitioning((XmlPinnedPartitioning_2_2)newValue);
+				setPinnedPartitioning((XmlPinnedPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__RANGE_PARTITIONING:
-				setRangePartitioning((XmlRangePartitioning_2_2)newValue);
+				setRangePartitioning((XmlRangePartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__VALUE_PARTITIONING:
-				setValuePartitioning((XmlValuePartitioning_2_2)newValue);
+				setValuePartitioning((XmlValuePartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__HASH_PARTITIONING:
-				setHashPartitioning((XmlHashPartitioning_2_2)newValue);
+				setHashPartitioning((XmlHashPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__UNION_PARTITIONING:
-				setUnionPartitioning((XmlUnionPartitioning_2_2)newValue);
+				setUnionPartitioning((XmlUnionPartitioning)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONED:
 				setPartitioned((String)newValue);
@@ -1652,7 +1652,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				setCompositeMember((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
-				setField((XmlField_2_4)newValue);
+				setField((XmlField)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL:
 				setDeleteAll((Boolean)newValue);
@@ -1702,28 +1702,28 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				setBatchFetch((XmlBatchFetch)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONING:
-				setPartitioning((XmlPartitioning_2_2)null);
+				setPartitioning((XmlPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__REPLICATION_PARTITIONING:
-				setReplicationPartitioning((XmlReplicationPartitioning_2_2)null);
+				setReplicationPartitioning((XmlReplicationPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ROUND_ROBIN_PARTITIONING:
-				setRoundRobinPartitioning((XmlRoundRobinPartitioning_2_2)null);
+				setRoundRobinPartitioning((XmlRoundRobinPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PINNED_PARTITIONING:
-				setPinnedPartitioning((XmlPinnedPartitioning_2_2)null);
+				setPinnedPartitioning((XmlPinnedPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__RANGE_PARTITIONING:
-				setRangePartitioning((XmlRangePartitioning_2_2)null);
+				setRangePartitioning((XmlRangePartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__VALUE_PARTITIONING:
-				setValuePartitioning((XmlValuePartitioning_2_2)null);
+				setValuePartitioning((XmlValuePartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__HASH_PARTITIONING:
-				setHashPartitioning((XmlHashPartitioning_2_2)null);
+				setHashPartitioning((XmlHashPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__UNION_PARTITIONING:
-				setUnionPartitioning((XmlUnionPartitioning_2_2)null);
+				setUnionPartitioning((XmlUnionPartitioning)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONED:
 				setPartitioned(PARTITIONED_EDEFAULT);
@@ -1738,7 +1738,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				setCompositeMember(COMPOSITE_MEMBER_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
-				setField((XmlField_2_4)null);
+				setField((XmlField)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL:
 				setDeleteAll(DELETE_ALL_EDEFAULT);

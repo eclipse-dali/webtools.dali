@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 
 /**
  * EclipseLink <code>orm.xml</code> file
@@ -40,7 +39,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	implements EclipseLinkPersistenceUnitDefaults
 {
 
-	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumnContainer;
+	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> tenantDiscriminatorColumnContainer;
 	protected final ReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 
 	protected String specifiedGetMethod;
@@ -139,7 +138,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		this.tenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ListIterable<XmlTenantDiscriminatorColumn_2_3> getXmlTenantDiscriminatorColumns() {
+	protected ListIterable<XmlTenantDiscriminatorColumn> getXmlTenantDiscriminatorColumns() {
 		if (getXmlDefaults() == null) {
 			return EmptyListIterable.instance();
 		}
@@ -151,22 +150,22 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	 *  tenant discriminator column container
 	 */
 	protected class TenantDiscriminatorColumnContainer
-		extends ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3>
+		extends ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return TENANT_DISCRIMINATOR_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn_2_3 resourceElement) {
+		protected OrmTenantDiscriminatorColumn2_3 buildContextElement(XmlTenantDiscriminatorColumn resourceElement) {
 			return OrmEclipseLinkPersistenceUnitDefaults.this.buildTenantDiscriminatorColumn(resourceElement);
 		}
 		@Override
-		protected ListIterable<XmlTenantDiscriminatorColumn_2_3> getResourceElements() {
+		protected ListIterable<XmlTenantDiscriminatorColumn> getResourceElements() {
 			return OrmEclipseLinkPersistenceUnitDefaults.this.getXmlTenantDiscriminatorColumns();
 		}
 		@Override
-		protected XmlTenantDiscriminatorColumn_2_3 getResourceElement(OrmTenantDiscriminatorColumn2_3 contextElement) {
+		protected XmlTenantDiscriminatorColumn getResourceElement(OrmTenantDiscriminatorColumn2_3 contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -175,11 +174,11 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		return new TenantDiscriminatorColumnOwner();
 	}
 
-	protected OrmTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn_2_3 xmlTenantDiscriminatorColumn) {
+	protected OrmTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn) {
 		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
 	}
 
-	protected ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> buildTenantDiscriminatorColumnContainer() {
+	protected ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn> buildTenantDiscriminatorColumnContainer() {
 		TenantDiscriminatorColumnContainer container = new TenantDiscriminatorColumnContainer();
 		container.initialize();
 		return container;
