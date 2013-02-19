@@ -40,7 +40,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
@@ -521,12 +520,12 @@ public abstract class SpecifiedOrmPersistentAttribute
 			return;
 		}
 		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+			this.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-				new String[] {name, javaType.getName()},
 				this.mapping,
-				this.mapping.getNameTextRange()
+				this.mapping.getNameTextRange(),
+				name,
+				javaType.getName()
 			)
 		);
 	}

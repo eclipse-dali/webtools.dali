@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.xml.EmfTools;
@@ -63,7 +64,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -1213,10 +1213,10 @@ public abstract class AbstractEntityMappings
 	protected void validateVersion(List<IMessage> messages) {
 		if (! this.getLatestDocumentVersion().equals(this.xmlEntityMappings.getDocumentVersion())) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.LOW_SEVERITY,
+				ValidationMessageTools.buildValidationMessage(
 					JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST,
-					this,
+					IMessage.LOW_SEVERITY,
+					this.getResource(),
 					this.xmlEntityMappings.getVersionTextRange()
 				)
 			);

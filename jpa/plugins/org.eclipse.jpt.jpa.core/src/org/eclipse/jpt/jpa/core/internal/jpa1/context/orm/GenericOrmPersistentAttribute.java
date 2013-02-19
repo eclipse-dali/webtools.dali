@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,15 +39,13 @@ public class GenericOrmPersistentAttribute
 			JavaPersistentType javaPersistentType = this.getOwningPersistentType().getJavaPersistentType();
 			if ((javaPersistentType != null) && (javaPersistentType.getAttributeNamed(this.javaPersistentAttribute.getName()) == null)) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
+						this.buildValidationMessage(
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
-							new String[] {
-								this.getName(),
-								this.getOwningPersistentType().getClass_()
-							},
+							IMessage.NORMAL_SEVERITY,
 							this.mapping,
-							this.mapping.getNameTextRange()
+							this.mapping.getNameTextRange(),
+							this.getName(),
+							this.getOwningPersistentType().getClass_()
 						)
 					);
 			}

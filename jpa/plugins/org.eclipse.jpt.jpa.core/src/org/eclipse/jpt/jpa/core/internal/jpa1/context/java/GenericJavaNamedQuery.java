@@ -18,7 +18,6 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
@@ -149,14 +148,12 @@ public class GenericJavaNamedQuery
 	protected void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(this.query)){
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
-							new String[] {this.name},
-							this,
-							this.getNameTextRange()
-							)
-					);
+							this.getNameTextRange(),
+							this.name
+					)
+			);
 		} else {
 			this.validateQuery_(queryHelper, messages, reporter);
 		}

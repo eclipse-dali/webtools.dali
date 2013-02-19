@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -111,10 +110,8 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED,
-					this,
 					this.getConverterClassTextRange()
 				)
 			);
@@ -128,12 +125,10 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 		if ( ! this.converterClassImplementsInterface(this.getEclipseLinkConverterInterface())) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					this.getEclipseLinkConverterInterfaceErrorMessage(),
-					new String[] {this.getFullyQualifiedConverterClass()},
-					this,
-					this.getConverterClassTextRange()
+					this.getConverterClassTextRange(),
+					this.getFullyQualifiedConverterClass()
 				)
 			);
 		}
@@ -141,12 +136,10 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages) {
 		messages.add(
-			DefaultEclipseLinkJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+			this.buildErrorValidationMessage(
 				JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
-				new String[] {this.getFullyQualifiedConverterClass()},
-				this,
-				this.getConverterClassTextRange()
+				this.getConverterClassTextRange(),
+				this.getFullyQualifiedConverterClass()
 			)
 		);
 	}
@@ -157,7 +150,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	 */
 	protected abstract String getEclipseLinkConverterInterface();
 
-	protected abstract String getEclipseLinkConverterInterfaceErrorMessage();
+	protected abstract ValidationMessage getEclipseLinkConverterInterfaceErrorMessage();
 
 	protected boolean converterClassExists() {
 		return this.typeExists(this.getFullyQualifiedConverterClass());

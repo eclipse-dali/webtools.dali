@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -104,6 +105,23 @@ public interface JpaProject
 	 */
 	IProjectFacetVersion FACET_VERSION = FACET.getVersion(FACET_VERSION_STRING);
 
+
+	// ********** JPA validation **********
+
+	String MARKER_TYPE_SCOPE = JptJpaCorePlugin.instance().getPluginID();
+	String MARKER_TYPE_SCOPE_ = MARKER_TYPE_SCOPE + '.';
+
+	String RELATIVE_MARKER_TYPE = "problem";  //$NON-NLS-1$
+
+	/**
+	 * The JPA validation marker type
+	 * (value: <code>"org.eclipse.jpt.jpa.core.problem"</code>).
+	 * <p>
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.resources.markers</code>.
+	 * 
+	 * @see org.eclipse.core.resources.IMarker#getType()
+	 */
+	String MARKER_TYPE = MARKER_TYPE_SCOPE_ + RELATIVE_MARKER_TYPE;
 
 	// ********** general **********
 

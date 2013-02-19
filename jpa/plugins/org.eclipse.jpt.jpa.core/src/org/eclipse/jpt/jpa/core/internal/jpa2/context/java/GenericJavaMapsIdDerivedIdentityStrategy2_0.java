@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -28,12 +29,11 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -339,22 +339,20 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return this.buildAttributeMappingChoices(this.getIdAttributeMappings());
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms) {
+	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
 		PersistentAttribute attribute = this.getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
-				JptJpaCoreValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC;
+				JptJpaCoreValidationArgumentMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC;
 		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
-		parms = ArrayTools.add(parms, 0, attributeDescription);
+		args = ArrayTools.add(args, 0, attributeDescription);
 		TextRange textRange = attribute.isVirtual() ? 
 				attribute.getValidationTextRange() :
 				this.getValidationTextRange();
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				parms,
-				this,
-				textRange
+		return this.buildErrorValidationMessage(
+				msg,
+				textRange,
+				args
 			);
 	}
 

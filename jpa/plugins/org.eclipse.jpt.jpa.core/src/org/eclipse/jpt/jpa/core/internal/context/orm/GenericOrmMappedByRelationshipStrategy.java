@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -20,11 +21,10 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedByMapping;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
@@ -205,16 +205,14 @@ public class GenericOrmMappedByRelationshipStrategy
 		}
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms) {
+	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
-		String attributeDescription = NLS.bind(JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
-		parms = ArrayTools.add(parms, 0, attributeDescription);
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				parms,
-				this,
-				this.getValidationTextRange()
+		String attributeDescription = NLS.bind(JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC, attribute.getName());
+		args = ArrayTools.add(args, 0, attributeDescription);
+		return this.buildErrorValidationMessage(
+				msg,
+				this.getValidationTextRange(),
+				args
 			);
 	}
 

@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractNamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -31,16 +32,13 @@ public class TenantDiscriminatorColumnValidator2_3
 	}
 
 	@Override
-	protected IMessage buildUnresolvedNameMessage(String message) {
-		return DefaultEclipseLinkJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(
 				message,
-				new String[] {
-					this.column.getName(),
-					this.column.getDbTable().getName()
-				},
-				this.column,
-				this.column.getNameValidationTextRange()
+				this.column.getResource(),
+				this.column.getNameValidationTextRange(),
+				this.column.getName(),
+				this.column.getDbTable().getName()
 			);
 	}
 
@@ -51,17 +49,17 @@ public class TenantDiscriminatorColumnValidator2_3
 				super.buildUnresolvedNameMessage();
 	}
 
-	protected String getVirtualTenantDiscriminatorColumnUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualTenantDiscriminatorColumnUnresolvedNameMessage() {
 		return JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_TENANT_DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
-	protected String getUnresolvedNameMessage() {
+	protected ValidationMessage getUnresolvedNameMessage() {
 		return JptJpaEclipseLinkCoreValidationMessages.TENANT_DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedNameMessage() {
 		return JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_TENANT_DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
 	}
 
@@ -82,36 +80,33 @@ public class TenantDiscriminatorColumnValidator2_3
 
 		@Override
 		protected IMessage buildTableNotValidMessage_() {
-			return DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+			return ValidationMessageTools.buildErrorValidationMessage(
 					this.getColumnTableNotValidMessage(),
-					new String[] {
-						this.getColumn().getTableName(),
-						this.getColumn().getName(),
-						this.getColumnTableDescriptionMessage()
-					},
-					this.getColumn(),
-					this.getColumn().getTableNameValidationTextRange()
+					this.getColumn().getResource(),
+					this.getColumn().getTableNameValidationTextRange(),
+					this.getColumn().getTableName(),
+					this.getColumn().getName(),
+					this.getColumnTableDescriptionMessage()
 				);
 		}
 
 		@Override
-		protected String getColumnTableNotValidMessage() {
+		protected ValidationMessage getColumnTableNotValidMessage() {
 			return this.getColumn().isVirtual() ?
 					this.getVirtualTenantDiscriminatorColumnTableNotValidMessage() :
 					this.getColumnTableNotValidMessage_();
 		}
 
-		protected String getVirtualTenantDiscriminatorColumnTableNotValidMessage() {
+		protected ValidationMessage getVirtualTenantDiscriminatorColumnTableNotValidMessage() {
 			return JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_TENANT_DISCRIMINATOR_COLUMN_TABLE_NOT_VALID;
 		}
 
-		protected String getColumnTableNotValidMessage_() {
+		protected ValidationMessage getColumnTableNotValidMessage_() {
 			return JptJpaEclipseLinkCoreValidationMessages.TENANT_DISCRIMINATOR_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
-		protected String getVirtualAttributeColumnTableNotValidMessage() {
+		protected ValidationMessage getVirtualAttributeColumnTableNotValidMessage() {
 			return JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_TENANT_DISCRIMINATOR_COLUMN_TABLE_NOT_VALID;
 		}
 	}

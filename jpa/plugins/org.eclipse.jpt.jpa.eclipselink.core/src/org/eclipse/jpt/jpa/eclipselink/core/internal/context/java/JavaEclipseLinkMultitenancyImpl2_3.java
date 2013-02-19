@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,7 +42,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminator
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
@@ -673,11 +672,9 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		super.validate(messages, reporter);
 		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && ! this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_4JpaPlatformFactory.VERSION)) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.NORMAL_SEVERITY,
+				this.buildValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
-					EMPTY_STRING_ARRAY,
-					this,
+					IMessage.NORMAL_SEVERITY,
 					this.getMultitenantAnnotationTextRange()
 				)
 			);			
@@ -686,23 +683,20 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			String targetDatabase = getPersistenceUnit().getOptions().getTargetDatabase();
 			if (targetDatabase == null) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.LOW_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED,
-						EMPTY_STRING_ARRAY,
-						this,
+						IMessage.LOW_SEVERITY,
 						this.getMultitenantAnnotationTextRange()
 					)
 				);
 			}
 			else if (!TargetDatabase.isOracleDatabase(targetDatabase)) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
-						new String[] {targetDatabase},
-						this,
-						this.getMultitenantAnnotationTextRange()
+						IMessage.NORMAL_SEVERITY,
+						this.getMultitenantAnnotationTextRange(),
+						targetDatabase
 					)
 				);
 			}
@@ -710,11 +704,9 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		if (this.getSpecifiedTenantDiscriminatorColumnsSize() > 0) {
 			if (!this.specifiedTenantDiscriminatorColumnsAllowed()) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
-						EMPTY_STRING_ARRAY,
-						this,
+						IMessage.NORMAL_SEVERITY,
 						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)
 					)
 				);
@@ -726,11 +718,9 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			}
 			else {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_NOT_SPECIFIED_WITH_TENANT_DISCRIMINATOR_COLUMNS,
-						EMPTY_STRING_ARRAY,
-						this,
+						IMessage.NORMAL_SEVERITY,
 						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)
 					)
 				);
@@ -744,11 +734,9 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		}
 		if (this.getSpecifiedIncludeCriteria() == Boolean.TRUE && getType() == EclipseLinkMultitenantType2_3.VPD) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.NORMAL_SEVERITY,
+				this.buildValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED,
-					EMPTY_STRING_ARRAY,
-					this,
+					IMessage.NORMAL_SEVERITY,
 					this.getMultitenantAnnotation().getIncludeCriteriaTextRange()
 				)
 			);			

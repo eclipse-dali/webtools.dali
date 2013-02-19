@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -312,10 +311,9 @@ public class GenericPersistence
 	protected void validateVersion(List<IMessage> messages) {
 		if (! this.getLatestDocumentVersion().equals(this.xmlPersistence.getDocumentVersion())) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.LOW_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST,
-						this,
+						IMessage.LOW_SEVERITY,
 						this.xmlPersistence.getVersionTextRange()));
 		}
 	}
@@ -332,10 +330,9 @@ public class GenericPersistence
 	protected void checkForMultiplePersistenceUnits(List<IMessage> messages) {
 		if (this.xmlPersistence.getPersistenceUnits().size() > 1) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.NORMAL_SEVERITY,
+				this.buildValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
-					this,
+					IMessage.NORMAL_SEVERITY,
 					this.getValidationTextRange()
 				)
 			);
@@ -345,10 +342,8 @@ public class GenericPersistence
 	protected void validatePersistenceUnit(List<IMessage> messages, IReporter reporter) {
 		if (this.persistenceUnit == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
-					this,
 					this.getValidationTextRange()
 				)
 			);

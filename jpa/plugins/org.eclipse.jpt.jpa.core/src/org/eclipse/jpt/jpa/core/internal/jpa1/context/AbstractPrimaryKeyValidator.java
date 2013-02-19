@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -77,21 +77,21 @@ public abstract class AbstractPrimaryKeyValidator
 		if (definesPrimaryKeyOnAncestor(typeMapping())) {
 			if (idClassReference().isSpecified()) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,
-							EMPTY_STRING_ARRAY,
-							typeMapping(),
-							idClassReference().getValidationTextRange()));
+							typeMapping().getResource(),
+							idClassReference().getValidationTextRange()
+						)
+					);
 			}
 			for (AttributeMapping each : getPrimaryKeyMappingsDefinedLocally(typeMapping())) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
-							EMPTY_STRING_ARRAY,
-							each,
-							getAttributeMappingTextRange(each)));
+							each.getResource(),
+							getAttributeMappingTextRange(each)
+						)
+					);
 			}
 			return;
 		}
@@ -101,12 +101,12 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateIdClassIsUsedIfNecessary(List<IMessage> messages, IReporter reporter) {
 		if (! specifiesIdClass() && idClassIsRequired()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED,
-						EMPTY_STRING_ARRAY,
-						typeMapping(),
-						typeMapping().getValidationTextRange()));
+						typeMapping().getResource(),
+						typeMapping().getValidationTextRange()
+					)
+				);
 		}
 	}
 	
@@ -115,12 +115,12 @@ public abstract class AbstractPrimaryKeyValidator
 		if (idClassReference().isSpecified()
 				&& IterableTools.size(typeMapping().getAllAttributeMappings(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) > 0) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED,
-						EMPTY_STRING_ARRAY,
-						typeMapping(),
-						typeMapping().getValidationTextRange()));
+						typeMapping().getResource(),
+						typeMapping().getValidationTextRange()
+					)
+				);
 		}
 	}
 	
@@ -128,12 +128,12 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateOneOfEmbeddedOrIdIsUsed(List<IMessage> messages, IReporter reporter) {
 		if (definesEmbeddedIdMapping(typeMapping) && definesIdMapping(typeMapping)) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_AND_EMBEDDED_ID_BOTH_USED,
-						EMPTY_STRING_ARRAY,
-						typeMapping(),
-						typeMapping().getValidationTextRange()));
+						typeMapping().getResource(),
+						typeMapping().getValidationTextRange()
+					)
+				);
 		}
 	}
 	
@@ -141,12 +141,12 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateOneEmbeddedId(List<IMessage> messages, IReporter reporter) {
 		if (IterableTools.size(getEmbeddedIdMappings(typeMapping())) > 1) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID,
-						EMPTY_STRING_ARRAY,
-						typeMapping(),
-						typeMapping().getValidationTextRange()));
+						typeMapping().getResource(),
+						typeMapping().getValidationTextRange()
+					)
+				);
 		}
 	}
 	
@@ -154,12 +154,14 @@ public abstract class AbstractPrimaryKeyValidator
 		for (SingleRelationshipMapping2_0 mapsIdRelationshipMapping : getMapsIdMappingsDefinedLocally(typeMapping())) {
 			// can't use maps id mappings with an id class
 			if (definesIdClass(typeMapping())) {
-				messages.add(DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID,
-						new String[] {mapsIdRelationshipMapping.getName()},
-						mapsIdRelationshipMapping,
-						getAttributeMappingTextRange(mapsIdRelationshipMapping)));
+				messages.add(
+						ValidationMessageTools.buildErrorValidationMessage(
+							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID,
+							mapsIdRelationshipMapping.getResource(),
+							getAttributeMappingTextRange(mapsIdRelationshipMapping),
+							mapsIdRelationshipMapping.getName()
+						)
+					);
 			}
 			
 			AttributeMapping resolvedAttributeMapping = 
@@ -168,12 +170,14 @@ public abstract class AbstractPrimaryKeyValidator
 					&& ! ClassNameTools.isAutoboxEquivalent(
 						resolvedAttributeMapping.getPersistentAttribute().getTypeName(), 
 						getTargetEntityPrimaryKeyTypeName(mapsIdRelationshipMapping))) {
-				messages.add(DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JptJpaCoreValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
-						new String[] {mapsIdRelationshipMapping.getName()},
-						mapsIdRelationshipMapping,
-						getAttributeMappingTextRange(mapsIdRelationshipMapping)));
+				messages.add(
+						ValidationMessageTools.buildErrorValidationMessage(
+							JptJpaCoreValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
+							mapsIdRelationshipMapping.getResource(),
+							getAttributeMappingTextRange(mapsIdRelationshipMapping),
+							mapsIdRelationshipMapping.getName()
+						)
+					);
 			}
 		}
 	}
@@ -197,12 +201,14 @@ public abstract class AbstractPrimaryKeyValidator
 					
 					// the matching attribute should be a primary key
 					if (! definesPrimaryKey(attributeMapping)) {
-						messages.add(DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
-								new String[] {idClassAttribute.getName()},
-								typeMapping(),
-								idClassReference().getValidationTextRange()));
+						messages.add(
+								ValidationMessageTools.buildErrorValidationMessage(
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
+									typeMapping().getResource(),
+									idClassReference().getValidationTextRange(),
+									idClassAttribute.getName()
+								)
+							);
 					}
 					
 					// the matching attribute's type should agree
@@ -211,23 +217,28 @@ public abstract class AbstractPrimaryKeyValidator
 					if (attributeMappingTypeName != null 	// if it's null, there should be 
 																// another failing validation elsewhere
 							&& ! ClassNameTools.isAutoboxEquivalent(idClassAttributeTypeName, attributeMappingTypeName)) {
-						messages.add(DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
-								new String[] {idClassAttribute.getName(), idClassAttributeTypeName},
-								typeMapping(),
-								idClassReference().getValidationTextRange()));
+						messages.add(
+								ValidationMessageTools.buildErrorValidationMessage(
+									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
+									typeMapping().getResource(),
+									idClassReference().getValidationTextRange(),
+									idClassAttribute.getName(),
+									idClassAttributeTypeName
+								)
+							);
 					}
 				}
 			}
 			
 			if (! foundMatch) {
-				messages.add(DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
-						new String[] {idClassAttribute.getName()},
-						typeMapping(),
-						idClassReference().getValidationTextRange()));
+				messages.add(
+						ValidationMessageTools.buildErrorValidationMessage(
+							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
+							typeMapping().getResource(),
+							idClassReference().getValidationTextRange(),
+							idClassAttribute.getName()
+						)
+					);
 			}
 		}
 
@@ -241,12 +252,14 @@ public abstract class AbstractPrimaryKeyValidator
 				// EclipseLink does not care about the existence status of property methods,
 				// but the matching field in the id class still needs to exist
 				if (!IterableTools.contains(getIdClassFieldNames(idClass), attributeMapping.getName())) {
-					messages.add(DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
-							new String[] {attributeMapping.getName()},
-							typeMapping(),
-							idClassReference().getValidationTextRange()));
+					messages.add(
+							ValidationMessageTools.buildErrorValidationMessage(
+								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
+								typeMapping().getResource(),
+								idClassReference().getValidationTextRange(),
+								attributeMapping.getName()
+							)
+						);
 				} else {
 					// Validation for missing property methods is only for generic platform
 					checkMissingAttributeWithPropertyAccess(idClass, attributeMapping, messages, reporter);
@@ -265,13 +278,14 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void checkMissingAttribute(JavaPersistentType idClass,
 			AttributeMapping attributeMapping, List<IMessage> messages, IReporter reporter) {
 		if (!IterableTools.contains(getIdClassAttributeNames(idClass), attributeMapping.getName())) {
-			messages.add(DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
-					new String[] {attributeMapping.getName()},
-					typeMapping(),
-					idClassReference().getValidationTextRange())
-					);
+			messages.add(
+					ValidationMessageTools.buildErrorValidationMessage(
+						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
+						typeMapping().getResource(),
+						idClassReference().getValidationTextRange(),
+						attributeMapping.getName()
+					)
+				);
 		}
 	}
 
@@ -283,13 +297,13 @@ public abstract class AbstractPrimaryKeyValidator
 			List<IMessage> messages, IReporter reporter) {
 		if (!idClass.getJavaResourceType().hasNoArgConstructor()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR,
-							new String[] {idClass.getName()}, 
-							typeMapping(),
-							idClassReference().getValidationTextRange())
-					);
+					ValidationMessageTools.buildErrorValidationMessage(
+						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR,
+						typeMapping().getResource(),
+						idClassReference().getValidationTextRange(),
+						idClass.getName()
+					)
+				);
 		}
 	}
 	
@@ -327,21 +341,25 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 	
 	protected void addNoIdClassAttributeMatchError(AttributeMapping attributeMapping, List<IMessage> messages) {
-		messages.add(DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH,
-				new String[] {attributeMapping.getName()},
-				typeMapping(),
-				idClassReference().getValidationTextRange()));
+		messages.add(
+				ValidationMessageTools.buildErrorValidationMessage(
+					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH,
+					typeMapping().getResource(),
+					idClassReference().getValidationTextRange(),
+					attributeMapping.getName()
+				)
+			);
 	}
 	
 	protected void addDuplicateIdClassAttributeMatchError(AttributeMapping attributeMapping, List<IMessage> messages) {
-		messages.add(DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH,
-				new String[] {attributeMapping.getName()},
-				typeMapping(),
-				idClassReference().getValidationTextRange()));
+		messages.add(
+				ValidationMessageTools.buildErrorValidationMessage(
+					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH,
+					typeMapping().getResource(),
+					idClassReference().getValidationTextRange(),
+					attributeMapping.getName()
+				)
+			);
 	}
 	
 	protected void validateIdClassPropertyMethods(
@@ -370,13 +388,15 @@ public abstract class AbstractPrimaryKeyValidator
 		JavaResourceMethod method = idClass.getJavaResourceType().getMethod(methodName);
 
 		if (!method.isPublicOrProtected()) {
-			messages.add(DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,
-					new String[] {idClass.getJavaResourceType().getTypeBinding().getQualifiedName(), methodName},
-					typeMapping(), 
-					idClassReference().getValidationTextRange()
-					));
+			messages.add(
+					ValidationMessageTools.buildErrorValidationMessage(
+						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,
+						typeMapping().getResource(), 
+						idClassReference().getValidationTextRange(),
+						idClass.getJavaResourceType().getTypeBinding().getQualifiedName(),
+						methodName
+					)
+				);
 		}
 	}
 

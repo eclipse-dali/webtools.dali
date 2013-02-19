@@ -29,7 +29,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -359,10 +358,8 @@ public abstract class AbstractJarFileRef
 
 		if (StringTools.isBlank(this.xmlJarFileRef.getFileName())) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,
-					this,
 					this.getValidationTextRange()
 				)
 			);
@@ -370,22 +367,19 @@ public abstract class AbstractJarFileRef
 		}
 
 		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.NORMAL_SEVERITY,
+			this.buildValidationMessage(
 				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,
-				this,
+				IMessage.NORMAL_SEVERITY,
 				this.getValidationTextRange()
 			)
 		);
 
 		if (this.jarFile == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,
-					new String[] {this.xmlJarFileRef.getFileName()},
-					this,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					this.xmlJarFileRef.getFileName()
 				)
 			);
 			return;

@@ -9,15 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.validation;
 
-import java.util.ArrayList;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -33,21 +34,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 /**
  * This class is referenced in the JPA extension for the
  * WTP validator extension point.
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.wst.validation.validatorV2</code>.
  */
 public class JpaValidator
 	extends AbstractValidator
 	implements IValidator
 {
+	private static final String OLD_RELATIVE_MARKER_TYPE = "jpaProblemMarker";  //$NON-NLS-1$
+	private static final String OLD_MARKER_TYPE = JpaProject.MARKER_TYPE_SCOPE_ + OLD_RELATIVE_MARKER_TYPE;
 
-	public static final String RELATIVE_MARKER_ID = "jpaProblemMarker";  //$NON-NLS-1$
-
-	/**
-	 * The identifier for the JPA validation marker
-	 * (value <code>"org.eclipse.jpt.jpa.core.jpaProblemMarker"</code>).
-	 * <p>
-	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.resources.markers</code>.
-	 */
-	public static final String MARKER_ID = JptJpaCorePlugin.instance().getPluginID() + '.' + RELATIVE_MARKER_ID;
 
 	public JpaValidator() {
 		super();
@@ -84,15 +80,7 @@ public class JpaValidator
 	// ********** internal **********
 
 	private void validate(IReporter reporter, IProject project) {
-		Iterable<IMessage> allMessages = this.buildValidationMessages(reporter, project);
-
-		ArrayList<IMessage> messages = new ArrayList<IMessage>();
-		for (IMessage message : allMessages) {
-			// check preferences for IGNORE
-			if (ObjectTools.notEquals(JpaPreferences.getProblemSeverity(project, message.getId()), JpaPreferences.PROBLEM_IGNORE)) {
-				messages.add(message);
-			}
-		}
+		Iterable<IMessage> messages = this.buildNonIgnoredValidationMessages(reporter, project);
 
 		// since the validation messages are usually built asynchronously
 		// and a workspace shutdown could occur in the meantime,
@@ -101,6 +89,24 @@ public class JpaValidator
 		
 		for (IMessage message : messages) {
 			reporter.addMessage(this, message);
+		}
+	}
+
+	/**
+	 * Filter out any message with an "ignore" severity (which would be
+	 * specified in the preferences).
+	 */
+	private Iterable<IMessage> buildNonIgnoredValidationMessages(IReporter reporter, IProject project) {
+		return IterableTools.filter(this.buildValidationMessages(reporter, project), NON_IGNORED_MESSAGE);
+	}
+
+	private static final Filter<IMessage> NON_IGNORED_MESSAGE = new NonIgnoredMessage();
+	/* CU private */ static class NonIgnoredMessage
+		extends Filter.Adapter<IMessage>
+	{
+		@Override
+		public boolean accept(IMessage message) {
+			return message.getSeverity() != -1;
 		}
 	}
 
@@ -128,8 +134,7 @@ public class JpaValidator
 	}
 
 	private IMessage buildValidationFailedMessage(IProject project) {
-		return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.JPA_VALIDATION_FAILED,
 					project
 				);
@@ -148,7 +153,9 @@ public class JpaValidator
 	}
 
 	private void clearMarkers_(IProject project) throws CoreException {
-		IMarker[] markers = project.findMarkers(MARKER_ID, true, IResource.DEPTH_INFINITE);
+		IMarker[] markers = project.findMarkers(JpaProject.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
+		// TODO post-Kepler: remove this line of code
+		ArrayTools.addAll(markers, project.findMarkers(OLD_MARKER_TYPE, true, IResource.DEPTH_INFINITE));
 		for (IMarker marker : markers) {
 			marker.delete();
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProv
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmMappingJoinColumnRelationshipStrategy
@@ -87,7 +87,7 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 	// ********** validation **********
 
 	public String getColumnTableNotValidDescription() {
-		return JptJpaCoreValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
+		return JptJpaCoreValidationArgumentMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 	public TextRange getValidationTextRange() {

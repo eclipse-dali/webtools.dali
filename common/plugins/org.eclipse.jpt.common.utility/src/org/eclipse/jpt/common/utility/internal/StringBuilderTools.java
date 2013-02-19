@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -215,7 +215,7 @@ public final class StringBuilderTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void pad_(StringBuilder sb, String string, int stringLength, int length, char c) {
 		sb.append(string);
@@ -223,7 +223,7 @@ public final class StringBuilderTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void pad_(StringBuilder sb, char[] string, int stringLength, int length, char c) {
 		sb.append(string);
@@ -358,7 +358,7 @@ public final class StringBuilderTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void frontPad_(StringBuilder sb, String string, int stringLength, int length, char c) {
 		fill(sb, stringLength, length, c);
@@ -366,7 +366,7 @@ public final class StringBuilderTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void frontPad_(StringBuilder sb, char[] string, int stringLength, int length, char c) {
 		fill(sb, stringLength, length, c);

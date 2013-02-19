@@ -15,13 +15,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -110,10 +110,8 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	protected void validateConverterClass(List<IMessage> messages) {
 		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED,
-					this,
 					this.getConverterClassTextRange()
 				)
 			);
@@ -123,12 +121,10 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		IType converterJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedConverterClass()); 
 		if (converterJdtType == null) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
-					new String[] {this.getFullyQualifiedConverterClass()},
-					this,
-					this.getConverterClassTextRange()
+					this.getConverterClassTextRange(),
+					this.getFullyQualifiedConverterClass()
 				)
 			);
 			return;
@@ -136,12 +132,10 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 		if ( ! this.converterClassImplementsInterface(this.getEclipseLinkConverterInterface())) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					this.getEclipseLinkConverterInterfaceErrorMessage(),
-					new String[] {this.getFullyQualifiedConverterClass()},
-					this,
-					this.getConverterClassTextRange()
+					this.getConverterClassTextRange(),
+					this.getFullyQualifiedConverterClass()
 				)
 			);
 		}
@@ -153,7 +147,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	 */
 	protected abstract String getEclipseLinkConverterInterface();
 
-	protected abstract String getEclipseLinkConverterInterfaceErrorMessage();
+	protected abstract ValidationMessage getEclipseLinkConverterInterfaceErrorMessage();
 
 	/**
 	 * Add <code>null</code> check.

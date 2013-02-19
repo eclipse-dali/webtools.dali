@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
-
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -75,40 +75,34 @@ public abstract class AbstractTableValidator
 				this.buildUnresolvedCatalogMessage(this.getUnresolvedCatalogMessage());
 	}
 
-	protected abstract String getUnresolvedCatalogMessage();
+	protected abstract ValidationMessage getUnresolvedCatalogMessage();
 
-	protected IMessage buildUnresolvedCatalogMessage(String message) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			message,
-			new String[] {
+	protected IMessage buildUnresolvedCatalogMessage(ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				message,
+				this.table.getResource(),
+				this.table.getCatalogValidationTextRange(),
 				this.table.getCatalog(),
 				this.table.getName()
-			},
-			this.table,
-			this.table.getCatalogValidationTextRange()
-		);
+			);
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedCatalogMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			this.getVirtualAttributeUnresolvedCatalogMessage(),
-			new String[] {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				this.getVirtualAttributeUnresolvedCatalogMessage(),
+				this.table.getResource(),
+				this.getVirtualAttributeValidationTextRange(),
 				this.persistentAttribute.getName(),
 				this.table.getCatalog(),
 				this.table.getName()
-			},
-			this.table,
-			this.getVirtualAttributeValidationTextRange()
-		);
+			);
 	}
 
 	protected TextRange getVirtualAttributeValidationTextRange() {
 		return this.persistentAttribute.getValidationTextRange();
 	}
 
-	protected abstract String getVirtualAttributeUnresolvedCatalogMessage();
+	protected abstract ValidationMessage getVirtualAttributeUnresolvedCatalogMessage();
 
 	protected IMessage buildUnresolvedSchemaMessage() {
 		return this.tableIsPartOfVirtualAttribute() ?
@@ -116,36 +110,30 @@ public abstract class AbstractTableValidator
 				this.buildUnresolvedSchemaMessage(this.getUnresolvedSchemaMessage());
 	}
 
-	protected abstract String getUnresolvedSchemaMessage();
+	protected abstract ValidationMessage getUnresolvedSchemaMessage();
 
-	protected IMessage buildUnresolvedSchemaMessage(String message) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			message,
-			new String[] {
+	protected IMessage buildUnresolvedSchemaMessage(ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				message,
+				this.table.getResource(),
+				this.table.getSchemaValidationTextRange(),
 				this.table.getSchema(),
 				this.table.getName()
-			},
-			this.table,
-			this.table.getSchemaValidationTextRange()
-		);
+			);
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedSchemaMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			this.getVirtualAttributeUnresolvedSchemaMessage(),
-			new String[] {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				this.getVirtualAttributeUnresolvedSchemaMessage(),
+				this.table.getResource(),
+				this.getVirtualAttributeValidationTextRange(),
 				this.persistentAttribute.getName(),
 				this.table.getSchema(),
 				this.table.getName()
-			},
-			this.table,
-			this.getVirtualAttributeValidationTextRange()
-		);
+			);
 	}
 
-	protected abstract String getVirtualAttributeUnresolvedSchemaMessage();
+	protected abstract ValidationMessage getVirtualAttributeUnresolvedSchemaMessage();
 
 	protected IMessage buildUnresolvedNameMessage() {
 		return this.tableIsPartOfVirtualAttribute() ?
@@ -153,32 +141,28 @@ public abstract class AbstractTableValidator
 				this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
 	}
 
-	protected abstract String getUnresolvedNameMessage();
+	protected abstract ValidationMessage getUnresolvedNameMessage();
 
-	protected IMessage buildUnresolvedNameMessage(String message) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			message,
-			new String[] {this.table.getName()},
-			this.table,
-			this.table.getNameValidationTextRange()
-		);
+	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				message,
+				this.table.getResource(),
+				this.table.getNameValidationTextRange(),
+				this.table.getName()
+			);
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 			this.getVirtualAttributeUnresolvedNameMessage(),
-			new String[] {
-				this.persistentAttribute.getName(),
-				this.table.getName()
-			},
-			this.table,
-			this.getVirtualAttributeValidationTextRange()
+			this.table.getResource(),
+			this.getVirtualAttributeValidationTextRange(),
+			this.persistentAttribute.getName(),
+			this.table.getName()
 		);
 	}
 
-	protected abstract String getVirtualAttributeUnresolvedNameMessage();
+	protected abstract ValidationMessage getVirtualAttributeUnresolvedNameMessage();
 
 	protected boolean tableIsPartOfVirtualAttribute() {
 		return (this.persistentAttribute != null) &&

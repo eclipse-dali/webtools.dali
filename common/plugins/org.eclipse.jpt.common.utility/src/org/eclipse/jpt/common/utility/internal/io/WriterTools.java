@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -200,7 +200,7 @@ public final class WriterTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void pad_(Writer writer, String string, int length, char c) throws IOException {
 		writer.write(string);
@@ -216,7 +216,7 @@ public final class WriterTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void pad_(Writer writer, char[] string, int stringLength, int length, char c) throws IOException {
 		writer.write(string);
@@ -351,7 +351,7 @@ public final class WriterTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void frontPad_(Writer writer, String string, int length, char c) throws IOException {
 		fill(writer, string, length, c);
@@ -359,7 +359,7 @@ public final class WriterTools {
 	}
 
 	/**
-	 * Pad the specified string without validating the parms.
+	 * Pad the specified string without validating the args.
 	 */
 	private static void frontPad_(Writer writer, char[] string, int stringLength, int length, char c) throws IOException {
 		fill(writer, stringLength, length, c);

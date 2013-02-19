@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
@@ -199,11 +198,8 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	protected void validateName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED,
-					EMPTY_STRING_ARRAY,
-					this,
 					this.getNameTextRange()
 				)
 			);

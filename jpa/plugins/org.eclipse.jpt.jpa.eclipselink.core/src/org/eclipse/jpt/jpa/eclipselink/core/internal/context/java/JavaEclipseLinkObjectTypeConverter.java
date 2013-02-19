@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -272,12 +271,10 @@ public class JavaEclipseLinkObjectTypeConverter
 			if (dups.size() > 1) {
 				for (JavaEclipseLinkConversionValue dup : dups) {
 					messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
-							new String[] {dup.getDataValue()},
-							this,
-							dup.getDataValueTextRange()
+							dup.getDataValueTextRange(),
+							dup.getDataValue()
 						)
 					);
 				}

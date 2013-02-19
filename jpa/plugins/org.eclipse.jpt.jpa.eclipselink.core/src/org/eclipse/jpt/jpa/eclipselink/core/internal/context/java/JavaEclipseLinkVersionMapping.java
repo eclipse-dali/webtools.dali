@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -114,23 +113,19 @@ public class JavaEclipseLinkVersionMapping
 		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getPersistentAttribute().getTypeName())) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-								new String[] {this.getName()},
-								this,
-								this.getVirtualPersistentAttributeTextRange()
+								this.getVirtualPersistentAttributeTextRange(),
+								this.getName()
 						)
 				);
 			}
 			else {
 				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-								new String[] {this.getName()},
-								this,
-								this.getValidationTextRange()
+								this.getValidationTextRange(),
+								this.getName()
 						)
 				);
 			}

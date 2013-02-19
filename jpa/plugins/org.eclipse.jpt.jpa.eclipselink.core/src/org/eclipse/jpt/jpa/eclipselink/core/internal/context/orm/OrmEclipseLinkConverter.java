@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -107,11 +106,8 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	protected void validateName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY, 
+				this.buildErrorValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_NAME_UNDEFINED, 
-					EMPTY_STRING_ARRAY,
-					this,
 					this.getNameTextRange()
 				)
 			);
@@ -120,11 +116,8 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 		if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
 			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaEclipseLinkCoreValidationMessages.RESERVED_CONVERTER_NAME,
-					EMPTY_STRING_ARRAY,
-					this,
 					this.getNameTextRange()
 				)
 			);

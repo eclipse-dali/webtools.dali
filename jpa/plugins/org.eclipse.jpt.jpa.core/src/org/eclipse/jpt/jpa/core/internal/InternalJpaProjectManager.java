@@ -62,7 +62,7 @@ import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
@@ -585,8 +585,7 @@ class InternalJpaProjectManager
 	}
 
 	private IMessage buildNoJpaProjectMessage(IProject project) {
-		return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.NO_JPA_PROJECT,
 					project
 				);

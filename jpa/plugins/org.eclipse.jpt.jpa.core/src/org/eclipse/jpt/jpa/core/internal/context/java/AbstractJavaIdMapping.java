@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Association;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
@@ -36,12 +35,11 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -461,19 +459,10 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
-		return this.buildMessage(
+		return this.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
-				EMPTY_STRING_ARRAY
-			);
-	}
-
-	protected IMessage buildMessage(String msgID, String[] parms) {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				ArrayTools.add(parms, 0, this.buildAttributeDescription()),
-				this,
-				getTextRange()
+				this.getTextRange(),
+				this.buildAttributeDescription()
 			);
 	}
 
@@ -483,8 +472,8 @@ public abstract class AbstractJavaIdMapping
 
 	protected String getAttributeDescriptionTemplate() {
 		return this.getPersistentAttribute().isVirtual() ?
-				JptJpaCoreValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC;
+				JptJpaCoreValidationArgumentMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC;
 	}
 
 	protected TextRange getTextRange() {

@@ -64,7 +64,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MultiRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -981,12 +980,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
-					new String[] {this.getFullyQualifiedAttributeType()},
-					this,
-					this.getAttributeTypeTextRange()
+					this.getAttributeTypeTextRange(),
+					this.getFullyQualifiedAttributeType()
 				)
 			);
 		}
@@ -1028,11 +1025,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	protected void validateMapKeyClass_(List<IMessage> messages) {
 		if (StringTools.isBlank(getMapKeyClass())) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
-					EMPTY_STRING_ARRAY,
-					this,
 					this.getMapKeyClassTextRange()
 				)
 			);
@@ -1047,12 +1041,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
 			if (mapKeyJdtType == null) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
-						new String[] {this.getFullyQualifiedMapKeyClass()},
-						this,
-						this.getMapKeyClassTextRange()
+						this.getMapKeyClassTextRange(),
+						this.getFullyQualifiedMapKeyClass()
 					)
 				);
 			}
@@ -1060,12 +1052,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
-					new String[] {this.getFullyQualifiedMapKeyClass()},
-					this,
-					this.getMapKeyClassTextRange()
+					this.getMapKeyClassTextRange(),
+					this.getFullyQualifiedMapKeyClass()
 				)
 			);
 		}

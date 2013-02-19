@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistent
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -252,12 +251,10 @@ public class OrmEclipseLinkEmbeddableImpl
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedParentClass());
 			if (jdtType == null) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST,
-						new String[] {this.getFullyQualifiedParentClass()},
-						this,
-						this.getParentClassTextRange()
+						this.getParentClassTextRange(),
+						this.getFullyQualifiedParentClass()
 					)
 				);
 			}

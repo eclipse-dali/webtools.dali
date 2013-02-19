@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -52,41 +53,35 @@ public class AttributeOverrideColumnValidator
 	}
 
 	protected IMessage buildVirtualColumnUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				this.getVirtualOverrideUnresolvedNameMessage(),
-				new String[] {
-					this.override.getName(),
-					this.column.getName(),
-					this.column.getDbTable().getName()
-				},
-				this.column,
-				this.column.getNameValidationTextRange()
+				this.column.getResource(),
+				this.column.getNameValidationTextRange(),
+				this.override.getName(),
+				this.column.getName(),
+				this.column.getDbTable().getName()
 			);
 	}
 
-	protected String getVirtualOverrideUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualOverrideUnresolvedNameMessage() {
 		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				this.getVirtualAttributeUnresolvedNameMessage(),
-				new String[] {
-					this.persistentAttribute.getName(),
-					this.override.getName(),
-					this.column.getName(),
-					this.column.getDbTable().getName()
-				},
-				this.column,
-				this.getVirtualAttributeTextRange()
+				this.column.getResource(),
+				this.getVirtualAttributeTextRange(),
+				this.persistentAttribute.getName(),
+				this.override.getName(),
+				this.column.getName(),
+				this.column.getDbTable().getName()
 			);
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedNameMessage() {
 		return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME;
 	}
 
@@ -108,43 +103,37 @@ public class AttributeOverrideColumnValidator
 		}
 
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage() {
-			return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+			return ValidationMessageTools.buildErrorValidationMessage(
 					this.getVirtualOverrideColumnTableNotValidMessage(),
-					new String[] {
-						AttributeOverrideColumnValidator.this.override.getName(),
-						this.getColumn().getTableName(),
-						this.getColumn().getName(),
-						this.getColumnTableDescriptionMessage()
-					},
-					this.getColumn(),
-					this.getColumn().getTableNameValidationTextRange()
+					this.getColumn().getResource(),
+					this.getColumn().getTableNameValidationTextRange(),
+					AttributeOverrideColumnValidator.this.override.getName(),
+					this.getColumn().getTableName(),
+					this.getColumn().getName(),
+					this.getColumnTableDescriptionMessage()
 				);
 		}
 
-		protected String getVirtualOverrideColumnTableNotValidMessage() {
+		protected ValidationMessage getVirtualOverrideColumnTableNotValidMessage() {
 			return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
-			return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+			return ValidationMessageTools.buildErrorValidationMessage(
 					this.getVirtualAttributeColumnTableNotValidMessage(),
-					new String[] {
-						AttributeOverrideColumnValidator.this.persistentAttribute.getName(),
-						AttributeOverrideColumnValidator.this.override.getName(),
-						this.getColumn().getTableName(),
-						this.getColumn().getName(),
-						this.getColumnTableDescriptionMessage()
-					},
-					this.getColumn(),
-					AttributeOverrideColumnValidator.this.persistentAttribute.getValidationTextRange()
+					this.getColumn().getResource(),
+					AttributeOverrideColumnValidator.this.persistentAttribute.getValidationTextRange(),
+					AttributeOverrideColumnValidator.this.persistentAttribute.getName(),
+					AttributeOverrideColumnValidator.this.override.getName(),
+					this.getColumn().getTableName(),
+					this.getColumn().getName(),
+					this.getColumnTableDescriptionMessage()
 				);
 		}
 
 		@Override
-		protected String getVirtualAttributeColumnTableNotValidMessage() {
+		protected ValidationMessage getVirtualAttributeColumnTableNotValidMessage() {
 			return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
 		}
 	}

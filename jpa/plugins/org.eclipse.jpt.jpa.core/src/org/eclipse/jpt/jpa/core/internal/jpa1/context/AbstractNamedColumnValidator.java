@@ -12,12 +12,13 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -88,36 +89,30 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 				this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
 	}
 
-	protected IMessage buildUnresolvedNameMessage(String message) {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(
 				message,
-				new String[] {
-					this.column.getName(),
-					this.column.getDbTable().getName()
-				},
-				this.column,
-				this.column.getNameValidationTextRange()
+				this.column.getResource(),
+				this.column.getNameValidationTextRange(),
+				this.column.getName(),
+				this.column.getDbTable().getName()
 			);
 	}
 
-	protected abstract String getUnresolvedNameMessage();
+	protected abstract ValidationMessage getUnresolvedNameMessage();
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				this.getVirtualAttributeUnresolvedNameMessage(),
-				new String[] {
-					this.persistentAttribute.getName(),
-					this.column.getName(),
-					this.column.getDbTable().getName()
-				},
-				this.column,
-				this.getVirtualAttributeTextRange()
+				this.column.getResource(),
+				this.getVirtualAttributeTextRange(),
+				this.persistentAttribute.getName(),
+				this.column.getName(),
+				this.column.getDbTable().getName()
 			);
 	}
 
-	protected abstract String getVirtualAttributeUnresolvedNameMessage();
+	protected abstract ValidationMessage getVirtualAttributeUnresolvedNameMessage();
 
 	protected boolean columnIsPartOfVirtualAttribute() {
 		return (this.persistentAttribute != null) &&
@@ -195,20 +190,17 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 	
 		protected IMessage buildTableNotValidMessage_() {
-			return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+			return ValidationMessageTools.buildErrorValidationMessage(
 					this.getColumnTableNotValidMessage(),
-					new String[] {
-						this.getColumn().getTableName(),
-						this.getColumn().getName(),
-						this.getColumnTableDescriptionMessage()
-					},
-					this.getColumn(),
-					this.getColumn().getTableNameValidationTextRange()
+					this.getColumn().getResource(),
+					this.getColumn().getTableNameValidationTextRange(),
+					this.getColumn().getTableName(),
+					this.getColumn().getName(),
+					this.getColumnTableDescriptionMessage()
 				);
 		}
 	
-		protected String getColumnTableNotValidMessage() {
+		protected ValidationMessage getColumnTableNotValidMessage() {
 			return JptJpaCoreValidationMessages.COLUMN_TABLE_NOT_VALID;
 		}
 	
@@ -217,21 +209,18 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
-			return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+			return ValidationMessageTools.buildErrorValidationMessage(
 					this.getVirtualAttributeColumnTableNotValidMessage(),
-					new String[] {
-						AbstractNamedColumnValidator.this.persistentAttribute.getName(),
-						this.getColumn().getTableName(),
-						this.getColumn().getName(),
-						this.getColumnTableDescriptionMessage()
-					},
-					this.getColumn(),
-					AbstractNamedColumnValidator.this.getVirtualAttributeTextRange()
+					this.getColumn().getResource(),
+					AbstractNamedColumnValidator.this.getVirtualAttributeTextRange(),
+					AbstractNamedColumnValidator.this.persistentAttribute.getName(),
+					this.getColumn().getTableName(),
+					this.getColumn().getName(),
+					this.getColumnTableDescriptionMessage()
 				);
 		}
 	
-		protected String getVirtualAttributeColumnTableNotValidMessage() {
+		protected ValidationMessage getVirtualAttributeColumnTableNotValidMessage() {
 			return JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID;
 		}
 	}

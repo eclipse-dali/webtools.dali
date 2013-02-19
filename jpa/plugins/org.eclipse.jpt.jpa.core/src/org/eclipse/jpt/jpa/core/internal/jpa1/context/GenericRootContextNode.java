@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
@@ -247,26 +247,20 @@ public class GenericRootContextNode
 	}
 
 	protected IMessage buildPersistenceXmlValidationMessage() {
-		int severity = IMessage.HIGH_SEVERITY;
 		IFile file = getPlatformFile();
 		if (file != null && file.exists()) {
 			JptXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
 			if (xmlResource != null 
 					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
-				return DefaultJpaValidationMessages.buildMessage(
-					severity,
+				return ValidationMessageTools.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT,
 					file);
 			}
-			return DefaultJpaValidationMessages.buildMessage(
-				severity,
+			return ValidationMessageTools.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
 				file);
 		}
-		return DefaultJpaValidationMessages.buildMessage(
-			severity,
-			JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML,
-			this);
+		return this.buildErrorValidationMessage(JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML);
 	}
 
 	protected IFile getPlatformFile() {
@@ -298,23 +292,22 @@ public class GenericRootContextNode
 		for (JavaResourceAbstractType jrat : orphans) {
 			if (jrat.isAnnotatedWithAnyOf(managedTypeAnnotationNames)) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,
-						new String[] {jrat.getTypeBinding().getQualifiedName()},
 						jrat.getFile(),
-						jrat.getNameTextRange()
+						jrat.getNameTextRange(),
+						jrat.getTypeBinding().getQualifiedName()
 					)
 				);
 			}
 			else {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					ValidationMessageTools.buildValidationMessage(
 						JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,
-						new String[] {jrat.getTypeBinding().getQualifiedName()},
+						IMessage.NORMAL_SEVERITY,
 						jrat.getFile(),
-						jrat.getNameTextRange()
+						jrat.getNameTextRange(),
+						jrat.getTypeBinding().getQualifiedName()
 					)
 				);
 			}

@@ -11,10 +11,17 @@ package org.eclipse.jpt.jpa.core.validation;
 
 import org.eclipse.osgi.util.NLS;
 
-public class JptJpaCoreValidationDescriptionMessages {
+/**
+ * Localized validation message arguments used by Dali JPA core.
+ * <p>
+ * <strong>NB:</strong> These strings are not typical messages; they are used as
+ * arguments to be bound to various of the validation messages in
+ * {@link JptJpaCoreValidationMessages}.
+ */
+public class JptJpaCoreValidationArgumentMessages {
 
-	private static final String BUNDLE_NAME = "jpt_jpa_core_validation_description"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationDescriptionMessages.class;
+	private static final String BUNDLE_NAME = "jpt_jpa_core_validation_argument"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationArgumentMessages.class;
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
@@ -29,7 +36,7 @@ public class JptJpaCoreValidationDescriptionMessages {
 	public static String ON_MAPPED_SUPERCLASS;
 	public static String ON_EMBEDDABLE;
 
-	private JptJpaCoreValidationDescriptionMessages() {
+	private JptJpaCoreValidationArgumentMessages() {
 		throw new UnsupportedOperationException();
 	}
 }

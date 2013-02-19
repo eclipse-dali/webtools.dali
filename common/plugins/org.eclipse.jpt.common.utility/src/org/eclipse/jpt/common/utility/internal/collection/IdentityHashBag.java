@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -160,7 +160,7 @@ public class IdentityHashBag<E>
 	 *     than zero
 	 */
 	public IdentityHashBag(int initialCapacity) {
-		this(initialCapacity, DEFAULT_LOAD_FACTOR, false);  // false = do not validate parms
+		this(initialCapacity, DEFAULT_LOAD_FACTOR, false);  // false = do not validate args
 	}
 
 	/**
@@ -173,13 +173,13 @@ public class IdentityHashBag<E>
 	 *     than zero or if the load factor is non-positive
 	 */
 	public IdentityHashBag(int initialCapacity, float loadFactor) {
-		this(initialCapacity, loadFactor, true);  // true = validate parms
+		this(initialCapacity, loadFactor, true);  // true = validate args
 	}
 
-	private IdentityHashBag(int initialCapacity, float loadFactor, boolean validateParms) {
+	private IdentityHashBag(int initialCapacity, float loadFactor, boolean validateArgs) {
 		super();
 		int capacity = initialCapacity;
-		if (validateParms) {
+		if (validateArgs) {
 			if (capacity < 0) {
 				throw new IllegalArgumentException("Illegal Initial Capacity: " + capacity); //$NON-NLS-1$
 			}

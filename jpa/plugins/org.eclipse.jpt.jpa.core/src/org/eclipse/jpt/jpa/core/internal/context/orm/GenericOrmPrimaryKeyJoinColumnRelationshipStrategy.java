@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -195,7 +195,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	public String getColumnTableNotValidDescription() {
-		return JptJpaCoreValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
+		return JptJpaCoreValidationArgumentMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 	protected TypeMapping getTypeMapping() {

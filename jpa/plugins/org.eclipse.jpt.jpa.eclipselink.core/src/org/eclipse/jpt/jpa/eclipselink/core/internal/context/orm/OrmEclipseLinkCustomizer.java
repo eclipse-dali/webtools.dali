@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -260,11 +259,8 @@ public class OrmEclipseLinkCustomizer
 		}
 		if (StringTools.isBlank(this.getCustomizerClass())) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
-							EMPTY_STRING_ARRAY,
-							this,
 							this.getValidationTextRange()
 					)
 			);
@@ -274,35 +270,29 @@ public class OrmEclipseLinkCustomizer
 		IType customizerJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
 		if (customizerJdtType == null) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
-							new String[] {this.getFullyQualifiedCustomizerClass()},
-							this,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							this.getFullyQualifiedCustomizerClass()
 					)
 			);
 			return;
 		}
 		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
-							new String[] {this.getFullyQualifiedCustomizerClass()},
-							this,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							this.getFullyQualifiedCustomizerClass()
 					)
 			);
 		}
 		if (!JDTTools.typeIsSubType(this.getJavaProject(), customizerJdtType, ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
-							new String[] {this.getFullyQualifiedCustomizerClass()},
-							this,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							this.getFullyQualifiedCustomizerClass()
 					)
 			);
 		}

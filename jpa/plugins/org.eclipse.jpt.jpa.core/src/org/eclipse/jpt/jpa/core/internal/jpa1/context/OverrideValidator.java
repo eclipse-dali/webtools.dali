@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
-
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -73,16 +73,15 @@ public abstract class OverrideValidator
 	}
 
 	protected IMessage buildUnresolvedOverrideTypeMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				this.getUnresolvedOverrideTypeMessage(),
-				new String[] {this.override.getName()},
-				this.override,
-				this.override.getNameTextRange()
+				this.override.getResource(),
+				this.override.getNameTextRange(),
+				this.override.getName()
 			); 
 	}
 
-	protected String getUnresolvedOverrideTypeMessage() {
+	protected ValidationMessage getUnresolvedOverrideTypeMessage() {
 		return this.override.isVirtual() ?
 				JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE :
 				JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE;
@@ -109,53 +108,44 @@ public abstract class OverrideValidator
 	}
 
 	protected IMessage buildVirtualUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				this.getVirtualOverrideUnresolvedNameMessage(),
-				new String[] {
-					this.override.getName(),
-					this.getOverrideDescriptionMessage(),
-					this.container.getOverridableTypeMapping().getName()
-				},
-				this.override,
-				this.override.getNameTextRange()
+				this.override.getResource(),
+				this.override.getNameTextRange(),
+				this.override.getName(),
+				this.getOverrideDescriptionMessage(),
+				this.container.getOverridableTypeMapping().getName()
 			);
 	}
 
-	protected abstract String getVirtualOverrideUnresolvedNameMessage();
+	protected abstract ValidationMessage getVirtualOverrideUnresolvedNameMessage();
 
-	protected IMessage buildUnresolvedNameMessage(String message) {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(
 				message,
-				new String[] {
-					this.override.getName(),
-					this.getOverrideDescriptionMessage(),
-					this.container.getOverridableTypeMapping().getName()
-				},
-				this.override,
-				this.override.getNameTextRange()
+				this.override.getResource(),
+				this.override.getNameTextRange(),
+				this.override.getName(),
+				this.getOverrideDescriptionMessage(),
+				this.container.getOverridableTypeMapping().getName()
 			);
 	}
 
-	protected abstract String getUnresolvedNameMessage();
+	protected abstract ValidationMessage getUnresolvedNameMessage();
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				this.getVirtualAttributeUnresolvedNameMessage(),
-				new String[] {
-					this.persistentAttribute.getName(),
-					this.override.getName(),
-					this.getOverrideDescriptionMessage(),
-					this.container.getOverridableTypeMapping().getName()
-				},
-				this.override,
-				this.persistentAttribute.getValidationTextRange()
+				this.override.getResource(),
+				this.persistentAttribute.getValidationTextRange(),
+				this.persistentAttribute.getName(),
+				this.override.getName(),
+				this.getOverrideDescriptionMessage(),
+				this.container.getOverridableTypeMapping().getName()
 			);
 	}
 
-	protected abstract String getVirtualAttributeUnresolvedNameMessage();
+	protected abstract ValidationMessage getVirtualAttributeUnresolvedNameMessage();
 
 	protected boolean overrideIsPartOfVirtualAttribute() {
 		return (this.persistentAttribute != null) &&

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,9 +133,9 @@ public class JpaPreferencesTests
 
 	public void testProblemSeverity_Project() throws Exception {
 		String value = JpaPreferences.PROBLEM_INFO;
-		JpaPreferences.setProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT, value);
+		JpaPreferences.setProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID(), value);
 		this.flushProjectPrefs();
-		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT));
+		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
 		assertEquals(value, this.readProjectPrefs().getProperty(PROBLEM_NO_JPA_PROJECT));
 	}
 	// DO NOT CHANGE THIS CONSTANT - as it is testing backward-compatibility
@@ -143,11 +143,11 @@ public class JpaPreferencesTests
 
 	public void testProblemSeverity_Workspace() throws Exception {
 		String value = JpaPreferences.PROBLEM_WARNING;
-		JpaPreferences.setProblemSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT, value);
+		JpaPreferences.setProblemSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID(), value);
 		this.flushWorkspacePrefs();
 		// verify workspace pref affects project-level pref
-		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT));
-		assertEquals(value, JpaPreferences.getProblemSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT));
+		assertEquals(value, JpaPreferences.getProblemSeverity(this.getProject(), JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
+		assertEquals(value, JpaPreferences.getProblemSeverity(JptJpaCoreValidationMessages.NO_JPA_PROJECT.getID()));
 		assertEquals(value, this.readWorkspacePrefs().getProperty(PROBLEM_NO_JPA_PROJECT));
 	}
 }

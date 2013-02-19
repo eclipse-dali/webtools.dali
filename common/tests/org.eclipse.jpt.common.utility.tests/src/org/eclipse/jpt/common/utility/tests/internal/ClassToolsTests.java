@@ -101,28 +101,28 @@ public class ClassToolsTests
 		int initialCapacity = 200;
 		Class<?>[] parmTypes = new Class[1];
 		parmTypes[0] = int.class;
-		Object[] parms = new Object[1];
-		parms[0] = new Integer(initialCapacity);
-		Vector<?> v = ClassTools.newInstance(java.util.Vector.class, parmTypes, parms);
+		Object[] args = new Object[1];
+		args[0] = new Integer(initialCapacity);
+		Vector<?> v = ClassTools.newInstance(java.util.Vector.class, parmTypes, args);
 		assertNotNull(v);
 		assertEquals(0, v.size());
 		Object[] elementData = (Object[]) ObjectTools.get(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 
-		parms[0] = new Integer(-1);
+		args[0] = new Integer(-1);
 		boolean exCaught = false;
 		try {
-			v = ClassTools.newInstance(java.util.Vector.class, parmTypes, parms);
+			v = ClassTools.newInstance(java.util.Vector.class, parmTypes, args);
 		} catch (RuntimeException ex) {
 			exCaught = true;
 		}
 		assertTrue("RuntimeException not thrown", exCaught);
 
 		parmTypes[0] = java.lang.String.class;
-		parms[0] = "foo";
+		args[0] = "foo";
 		exCaught = false;
 		try {
-			v = ClassTools.newInstance(java.util.Vector.class, parmTypes, parms);
+			v = ClassTools.newInstance(java.util.Vector.class, parmTypes, args);
 		} catch (RuntimeException ex) {
 			if (ex.getCause() instanceof NoSuchMethodException) {
 				exCaught = true;
@@ -148,16 +148,16 @@ public class ClassToolsTests
 	public void testExecuteClassStringClassArrayObjectArray() {
 		Class<?>[] parmTypes = new Class[1];
 		parmTypes[0] = boolean.class;
-		Object[] parms = new Object[1];
-		parms[0] = Boolean.TRUE;
-		String s = (String) ClassTools.execute(java.lang.String.class, "valueOf", parmTypes, parms);
+		Object[] args = new Object[1];
+		args[0] = Boolean.TRUE;
+		String s = (String) ClassTools.execute(java.lang.String.class, "valueOf", parmTypes, args);
 		assertNotNull(s);
 		assertEquals("true", s);
 
 		boolean exCaught = false;
 		Object bogusStaticMethodReturnValue = null;
 		try {
-			bogusStaticMethodReturnValue = ClassTools.execute(java.lang.String.class, "bogusStaticMethod", parmTypes, parms);
+			bogusStaticMethodReturnValue = ClassTools.execute(java.lang.String.class, "bogusStaticMethod", parmTypes, args);
 		} catch (RuntimeException ex) {
 			if (ex.getCause() instanceof NoSuchMethodException) {
 				exCaught = true;

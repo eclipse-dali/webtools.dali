@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -30,7 +32,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -275,10 +276,8 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 
 		if (StringTools.isBlank(this.fileName)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
-					this,
 					this.getValidationTextRange()
 				)
 			);
@@ -294,26 +293,22 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	}
 
 	protected IMessage buildMissingMappingFileValidationMessage() {
-		int severity = IMessage.HIGH_SEVERITY;
 		IFile file = this.getPlatformFile();
 		if ( ! file.exists()) {
-			return DefaultJpaValidationMessages.buildMessage(
-					severity,
+			return this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
-					new String[] {this.fileName},
-					this,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					this.fileName
 				);
 		}
-		String msgText = this.mappingFileContentIsUnsupported() ?
+		ValidationMessage msg = this.mappingFileContentIsUnsupported() ?
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE;
-		return DefaultJpaValidationMessages.buildMessage(
-				severity,
-				msgText,
-				new String[] {file.getName()},
-				file
-			);
+		return ValidationMessageTools.buildErrorValidationMessage(
+					msg,
+					file,
+					file.getName()
+				);
 	}
 
 	protected IFile getPlatformFile() {

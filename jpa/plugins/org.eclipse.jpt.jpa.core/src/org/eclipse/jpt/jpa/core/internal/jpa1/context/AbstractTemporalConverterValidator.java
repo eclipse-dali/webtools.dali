@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -64,27 +64,24 @@ public abstract class AbstractTemporalConverterValidator
 	}
 
 	protected IMessage buildInvalidTemporalMappingTypeMessage_() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			this.getInvalidTemporalMappingType(),
-			StringTools.EMPTY_STRING_ARRAY,
-			this.converter,
-			this.converter.getValidationTextRange()
-		);
+		return ValidationMessageTools.buildErrorValidationMessage(
+				this.getInvalidTemporalMappingTypeMessage(),
+				this.converter.getResource(),
+				this.converter.getValidationTextRange()
+			);
 	}
 
-	protected abstract String getInvalidTemporalMappingType();
+	protected abstract ValidationMessage getInvalidTemporalMappingTypeMessage();
 
 	protected IMessage buildVirtualAttributeInvalidTemporalMappingTypeMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			this.getVirtualAttributeInvalidTemporalMappingType(),
-			new String[] {this.getPersistentAttribute().getName()},
-			this.converter,
-			this.getPersistentAttribute().getValidationTextRange()
-		);
+		return ValidationMessageTools.buildErrorValidationMessage(
+				this.getVirtualAttributeInvalidTemporalMappingTypeMessage(),
+				this.converter.getResource(),
+				this.getPersistentAttribute().getValidationTextRange(),
+				this.getPersistentAttribute().getName()
+			);
 	}
 
-	protected abstract String getVirtualAttributeInvalidTemporalMappingType();
+	protected abstract ValidationMessage getVirtualAttributeInvalidTemporalMappingTypeMessage();
 
 }

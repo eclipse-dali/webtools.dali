@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibl
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -175,12 +174,10 @@ public class OrmEclipseLinkOneToManyMapping
 		if (this.isVirtualAccess()) {
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
-						new String[] {this.getName()},
-						this,
-						this.getAttributeTypeTextRange()
+						this.getAttributeTypeTextRange(),
+						this.getName()
 					)
 				);
 				return;
@@ -189,12 +186,10 @@ public class OrmEclipseLinkOneToManyMapping
 				IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 				if (jdtType == null) {
 					messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
-							new String[] {this.getFullyQualifiedAttributeType()},
-							this,
-							this.getAttributeTypeTextRange()
+							this.getAttributeTypeTextRange(),
+							this.getFullyQualifiedAttributeType()
 						)
 					);
 					return;

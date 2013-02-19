@@ -34,7 +34,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.DeleteEdit;
@@ -378,10 +377,8 @@ public class GenericClassRef
 
 		if (StringTools.isBlank(this.className)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-					this,
 					this.getValidationTextRange()
 				)
 			);
@@ -390,12 +387,10 @@ public class GenericClassRef
 
 		if (this.resourceType == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-					new String[] {this.getJavaClassName()},
-					this,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					this.getJavaClassName()
 				)
 			);
 			return;
@@ -404,12 +399,10 @@ public class GenericClassRef
 		if (this.isNotVirtual()) {
 			if (this.resourceType.getAstNodeType() == AstNodeType.ENUM) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
-						new String[] {this.getJavaClassName()},
-						this,
-						this.getValidationTextRange()
+						this.getValidationTextRange(),
+						this.getJavaClassName()
 					)
 				);
 				return;
@@ -417,12 +410,10 @@ public class GenericClassRef
 	
 			if (this.resourceType.getAstNodeType() == AstNodeType.TYPE && this.resourceType.getTypeBinding().isInterface()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
-						new String[] {this.getJavaClassName()},
-						this,
-						this.getValidationTextRange()
+						this.getValidationTextRange(),
+						this.getJavaClassName()
 					)
 				);
 				return;
@@ -439,12 +430,12 @@ public class GenericClassRef
 		for (MappingFileRef mappingFileRef : this.getPersistenceUnit().getMappingFileRefsContaining(this.getJavaClassName())) {
 			validateJavaManagedType = false;
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.LOW_SEVERITY,
+				this.buildValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-					new String[] {this.getJavaClassName(), mappingFileRef.getFileName()},
-					this,
-					this.getValidationTextRange()
+					IMessage.LOW_SEVERITY,
+					this.getValidationTextRange(),
+					this.getJavaClassName(),
+					mappingFileRef.getFileName()
 				)
 			);
 		}

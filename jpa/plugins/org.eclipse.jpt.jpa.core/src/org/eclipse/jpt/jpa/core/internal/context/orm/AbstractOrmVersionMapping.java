@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
@@ -279,12 +278,11 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	protected void validateAttributeType(List<IMessage> messages) {
 		if (! ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getFullyQualifiedAttributeType())) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-							new String[] {this.getName()},
-							this,
-							this.getNameTextRange()
+							IMessage.NORMAL_SEVERITY,
+							this.getNameTextRange(),
+							this.getName()
 					)
 			);
 		}

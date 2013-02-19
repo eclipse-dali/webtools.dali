@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -160,12 +159,10 @@ public class OrmEclipseLinkVersionMapping
 		if (this.isVirtualAccess()) {
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
-						new String[] {this.getName()},
-						this,
-						this.getAttributeTypeTextRange()
+						this.getAttributeTypeTextRange(),
+						this.getName()
 					)
 				);
 				return;
@@ -176,12 +173,10 @@ public class OrmEclipseLinkVersionMapping
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 			if (jdtType == null && this.getResolvedAttributeType() == null) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
-						new String[] {this.getFullyQualifiedAttributeType()},
-						this,
-						this.getAttributeTypeTextRange()
+						this.getAttributeTypeTextRange(),
+						this.getFullyQualifiedAttributeType()
 					)
 				);
 				return;
@@ -189,12 +184,10 @@ public class OrmEclipseLinkVersionMapping
 		}
 		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getFullyQualifiedAttributeType())) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-							new String[] {this.getName()},
-							this,
-							this.getAttributeTypeTextRange()
+							this.getAttributeTypeTextRange(),
+							this.getName()
 					)
 			);
 		}

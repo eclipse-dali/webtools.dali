@@ -90,7 +90,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
@@ -2219,12 +2218,12 @@ public abstract class AbstractPersistenceUnit
 		if (pumdMappingFileRefs.size() > 1) {
 			for (MappingFileRef mappingFileRef : pumdMappingFileRefs) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
-						new String[] {mappingFileRef.getFileName()},
+						IMessage.NORMAL_SEVERITY,
 						mappingFileRef.getMappingFile(),
-						mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
+						mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange(),
+						mappingFileRef.getFileName()
 					)
 				);
 			}
@@ -2241,15 +2240,13 @@ public abstract class AbstractPersistenceUnit
 			if (StringTools.isNotBlank(fileName)) {
 				ArrayList<MappingFileRef> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {fileName};
 					for (MappingFileRef dup : dups) {
 						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
-								parms,
 								dup,
-								dup.getValidationTextRange()
+								dup.getValidationTextRange(),
+								fileName
 							)
 						);
 					}
@@ -2282,15 +2279,14 @@ public abstract class AbstractPersistenceUnit
 			if (StringTools.isNotBlank(mtName)) {
 				ArrayList<ManagedType> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {mtName};
 					for (ManagedType dup : dups) {
 						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.NORMAL_SEVERITY,
+							this.buildValidationMessage(
 								JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
-								parms,
+								IMessage.NORMAL_SEVERITY,
 								dup,
-								dup.getValidationTextRange()
+								dup.getValidationTextRange(),
+								mtName
 							)
 						);
 					}
@@ -2330,15 +2326,13 @@ public abstract class AbstractPersistenceUnit
 			if (StringTools.isNotBlank(className)) {
 				ArrayList<ClassRef> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {className};
 					for (ClassRef dup : dups) {
 						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-								parms,
 								dup,
-								dup.getValidationTextRange()
+								dup.getValidationTextRange(),
+								className
 							)
 						);
 					}
@@ -2378,15 +2372,13 @@ public abstract class AbstractPersistenceUnit
 			if (StringTools.isNotBlank(fileName)) {
 				ArrayList<JarFileRef> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {fileName};
 					for (JarFileRef dup : dups) {
 						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
-								parms,
 								dup,
-								dup.getValidationTextRange()
+								dup.getValidationTextRange(),
+								fileName
 							)
 						);
 					}
@@ -2453,16 +2445,14 @@ public abstract class AbstractPersistenceUnit
 	 * Mark them appropriately.
 	 */
 	protected void validateGeneratorsWithSameName(String generatorName, ArrayList<Generator> dups, List<IMessage> messages) {
-		String[] parms = new String[] {generatorName};
 		for (Generator dup : dups) {
 			if (dup.supportsValidationMessages()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME,
-						parms,
 						dup,
-						dup.getNameTextRange()
+						dup.getNameTextRange(),
+						generatorName
 					)
 				);
 			}
@@ -2503,16 +2493,14 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void validateQueriesWithSameName(String queryName, ArrayList<Query> dups, List<IMessage> messages) {
-		String[] parms = new String[] {queryName};
 		for (Query dup : dups) {
 			if (dup.supportsValidationMessages()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME,
-						parms,
 						dup,
-						dup.getNameTextRange()
+						dup.getNameTextRange(),
+						queryName
 					)
 				);
 			}
@@ -2558,16 +2546,14 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void validateEntitiesWithSameName(String entityName, ArrayList<Entity> dups, List<IMessage> messages) {
-		String[] parms = new String[] {entityName};
 		for (Entity dup : dups) {
 			if (dup.supportsValidationMessages()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED,
-						parms,
 						dup,
-						dup.getNameTextRange()
+						dup.getNameTextRange(),
+						entityName
 					)
 				);
 			}

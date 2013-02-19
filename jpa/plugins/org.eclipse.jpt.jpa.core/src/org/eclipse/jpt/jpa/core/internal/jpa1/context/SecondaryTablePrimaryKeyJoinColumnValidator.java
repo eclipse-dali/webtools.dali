@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -44,21 +45,18 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
-				new String[] {
-					this.getSecondaryTableName(),
-					this.column.getName(),
-					this.column.getDbTable().getName()
-				},
-				this.column,
-				this.column.getNameValidationTextRange()
+				this.column.getResource(),
+				this.column.getNameValidationTextRange(),
+				this.getSecondaryTableName(),
+				this.column.getName(),
+				this.column.getDbTable().getName()
 			);
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedNameMessage() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -70,21 +68,18 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
-				new String[] {
-					this.getSecondaryTableName(),
-					this.column.getReferencedColumnName(),
-					this.column.getReferencedColumnDbTable().getName()
-				},
-				this.column,
-				this.column.getReferencedColumnNameTextRange()
+				this.column.getResource(),
+				this.column.getReferencedColumnNameTextRange(),
+				this.getSecondaryTableName(),
+				this.column.getReferencedColumnName(),
+				this.column.getReferencedColumnDbTable().getName()
 			);
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -96,17 +91,16 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-				new String[] {this.getSecondaryTableName()},
-				this.column,
-				this.column.getNameValidationTextRange()
+				this.column.getResource(),
+				this.column.getNameValidationTextRange(),
+				this.getSecondaryTableName()
 			);
 	}
 
 	@Override
-	protected String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
+	protected ValidationMessage getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -118,17 +112,16 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return ValidationMessageTools.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-				new String[] {this.getSecondaryTableName()},
-				this.column,
-				this.column.getReferencedColumnNameTextRange()
+				this.column.getResource(),
+				this.column.getReferencedColumnNameTextRange(),
+				this.getSecondaryTableName()
 			);
 	}
 
 	@Override
-	protected String getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+	protected ValidationMessage getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		throw new UnsupportedOperationException();
 	}
 }

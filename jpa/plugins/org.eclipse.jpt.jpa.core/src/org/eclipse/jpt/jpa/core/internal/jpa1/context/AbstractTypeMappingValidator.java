@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -47,13 +48,12 @@ public abstract class AbstractTypeMappingValidator<M extends TypeMapping>
 		return this.typeMapping.getJavaResourceType();
 	}
 
-	protected IMessage buildTypeMessage(String msgID) {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				new String[] {this.typeMapping.getName()},
-				this.typeMapping,
-				this.typeMapping.getValidationTextRange()
+	protected IMessage buildTypeMessage(ValidationMessage msg) {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				msg,
+				this.typeMapping.getResource(),
+				this.typeMapping.getValidationTextRange(),
+				this.typeMapping.getName()
 			);
 	}
 }

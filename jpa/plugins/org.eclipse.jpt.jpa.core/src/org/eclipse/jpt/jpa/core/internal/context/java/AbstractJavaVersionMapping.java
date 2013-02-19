@@ -30,7 +30,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -282,23 +281,21 @@ public abstract class AbstractJavaVersionMapping
 		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getPersistentAttribute().getTypeName())) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.NORMAL_SEVERITY,
+						this.buildValidationMessage(
 								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, //TODO KFB - different message for virtual attribute
-								new String[] {this.getName()},
-								this,
-								this.getVirtualPersistentAttributeTextRange()
+								IMessage.NORMAL_SEVERITY,
+								this.getVirtualPersistentAttributeTextRange(),
+								this.getName()
 						)
 				);
 			}
 			else {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.NORMAL_SEVERITY,
+						this.buildValidationMessage(
 								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-								new String[] {this.getName()},
-								this,
-								this.getValidationTextRange()
+								IMessage.NORMAL_SEVERITY,
+								this.getValidationTextRange(),
+								this.getName()
 						)
 				);
 			}

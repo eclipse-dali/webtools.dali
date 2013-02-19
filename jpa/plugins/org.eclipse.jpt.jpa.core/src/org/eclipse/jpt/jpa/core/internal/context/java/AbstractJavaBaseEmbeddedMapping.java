@@ -38,7 +38,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaEmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -214,23 +213,20 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		String targetEmbeddableTypeName = this.getPersistentAttribute().getTypeName();
 		if (this.getPersistentAttribute().isVirtual()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE,
-					new String[] {this.getName(), targetEmbeddableTypeName},
-					this,
-					this.getVirtualPersistentAttributeTextRange()
+					this.getVirtualPersistentAttributeTextRange(),
+					this.getName(),
+					targetEmbeddableTypeName
 				)
 			);
 		}
 		else {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
-					new String[] {targetEmbeddableTypeName},
-					this,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					targetEmbeddableTypeName
 				)
 			);
 		}

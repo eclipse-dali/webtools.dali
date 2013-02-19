@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
@@ -24,12 +25,11 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -257,15 +257,13 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		return this.buildCandidateIdAttributeMappings(this.getIdAttributeMappings());
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms) {
-		String attributeDescription = NLS.bind(JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
-		parms = ArrayTools.add(parms, 0, attributeDescription);
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				parms,
-				this,
-				this.getValidationTextRange()
+	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
+		String attributeDescription = NLS.bind(JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
+		args = ArrayTools.add(args, 0, attributeDescription);
+		return this.buildErrorValidationMessage(
+				msg,
+				this.getValidationTextRange(),
+				args
 			);
 	}
 

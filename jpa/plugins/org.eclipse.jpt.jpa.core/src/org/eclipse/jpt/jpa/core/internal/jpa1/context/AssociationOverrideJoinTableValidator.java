@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -44,16 +45,13 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedNameMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
-			new String[] {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
+				this.table.getResource(),
+				this.table.getNameValidationTextRange(),
 				this.override.getName(),
 				this.table.getName()
-			},
-			this.table, 
-			this.table.getNameValidationTextRange()
-		);
+			);
 	}
 
 	@Override
@@ -64,16 +62,13 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedCatalogMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
-			new String[] {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
+				this.table.getResource(),
+				this.table.getCatalogValidationTextRange(),
 				this.override.getName(),
 				this.table.getCatalog()
-			},
-			this.table, 
-			this.table.getCatalogValidationTextRange()
-		);
+			);
 	}
 
 	@Override
@@ -84,16 +79,13 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedSchemaMessage() {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
-			new String[] {
+		return ValidationMessageTools.buildErrorValidationMessage(
+				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
+				this.table.getResource(),
+				this.table.getSchemaValidationTextRange(),
 				this.override.getName(),
 				this.table.getSchema()
-			},
-			this.table, 
-			this.table.getSchemaValidationTextRange()
-		);
+			);
 	}
 
 	@Override
@@ -112,17 +104,17 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedCatalogMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedCatalogMessage() {
 		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedSchemaMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedSchemaMessage() {
 		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
-	protected String getVirtualAttributeUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualAttributeUnresolvedNameMessage() {
 		throw this.buildNestedJoinTableNotSupportedException();
 	}
 

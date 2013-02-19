@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaCascade;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
@@ -319,23 +318,19 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		if (this.getTargetEntity() == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
-							new String[] {this.getName()},
-							this,
-							this.getVirtualPersistentAttributeTextRange()
+							this.getVirtualPersistentAttributeTextRange(),
+							this.getName()
 						)
 					);
 			}
 			else {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-							new String[] {this.getName()},
-							this,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							this.getName()
 						)
 					);
 			}
@@ -350,22 +345,18 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		if (this.getResolvedTargetEntity() == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
-						this,
-						this.getVirtualPersistentAttributeTextRange()
+						this.getVirtualPersistentAttributeTextRange(),
+						this.getName(), this.getFullyQualifiedTargetEntity()
 					)
 				);
 			} else {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getFullyQualifiedTargetEntity()},
-						this,
-						this.getTargetEntityTextRange()
+						this.getTargetEntityTextRange(),
+						this.getFullyQualifiedTargetEntity()
 					)
 				);
 			}

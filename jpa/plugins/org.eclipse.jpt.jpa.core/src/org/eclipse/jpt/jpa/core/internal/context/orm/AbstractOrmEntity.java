@@ -101,7 +101,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionP
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MappedSuperclassOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEntity2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Inheritance;
@@ -1741,12 +1740,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected void validateEntityName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.getName())){
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.ENTITY_NAME_MISSING,
-							new String[] {this.getPersistentType().getClass_()}, 
-							this,
-							this.getNameTextRange()
+							this.getNameTextRange(),
+							this.getPersistentType().getClass_()
 					)
 			);
 		}
@@ -1773,12 +1770,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (this.isAbstractTablePerClass()) {
 			if (this.resourceTableIsSpecified()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
-						new String[] {this.getName()},
-						this,
-						this.table.getValidationTextRange()
+						this.table.getValidationTextRange(),
+						this.getName()
 					)
 				);
 			}
@@ -1787,12 +1782,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (this.isSingleTableDescendant() && this.getDataSource().connectionProfileIsActive()) {
 			if (this.specifiedTableDoesNotMatchRootTable()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
-						new String[] {this.getName()},
-						this,
-						this.table.getValidationTextRange()
+						this.table.getValidationTextRange(),
+						this.getName()
 					)
 				);
 			}
@@ -1823,23 +1816,19 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		else if (!this.discriminatorColumn.isVirtual()) {
 			if (this.isDescendant()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED,
-						new String[] {this.getName()},
-						this,
-						this.getDiscriminatorColumnTextRange()
+						this.getDiscriminatorColumnTextRange(),
+						this.getName()
 					)
 				);
 			}
 			else if (this.isTablePerClass()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED,
-						new String[] {this.getName()},
-						this,
-						this.getDiscriminatorColumnTextRange()
+						this.getDiscriminatorColumnTextRange(),
+						this.getName()
 					)
 				);
 
@@ -1851,23 +1840,21 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (this.discriminatorValueIsUndefined && (this.specifiedDiscriminatorValue != null)) {
 			if (this.isAbstract()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,
-						new String[] {this.getName()},
-						this,
-						this.getDiscriminatorValueTextRange()
+						IMessage.NORMAL_SEVERITY,
+						this.getDiscriminatorValueTextRange(),
+						this.getName()
 					)
 				);
 			}
 			else if (this.isTablePerClass()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED,
-						new String[] {this.getName()},
-						this,
-						this.getDiscriminatorValueTextRange()
+						IMessage.NORMAL_SEVERITY,
+						this.getDiscriminatorValueTextRange(),
+						this.getName()
 					)
 				);
 			}
@@ -1882,23 +1869,20 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if ((this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && this.isRootEntity()) {
 			if (tablePerConcreteClassInheritanceIsSupported == Supported.NO) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM,
-						new String[] {this.getName()},
-						this,
-						this.getInheritanceStrategyTextRange()
+						this.getInheritanceStrategyTextRange(),
+						this.getName()
 					)
 				);
 			}
 			else {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM,
-						new String[] {this.getName()},
-						this,
-						this.getInheritanceStrategyTextRange()
+						IMessage.NORMAL_SEVERITY,
+						this.getInheritanceStrategyTextRange(),
+						this.getName()
 					)
 				);
 			}

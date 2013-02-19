@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -135,16 +135,16 @@ public class ObjectToolsTests
 		Vector<String> v = new Vector<String>();
 		Class<?>[] parmTypes = new Class[1];
 		parmTypes[0] = java.lang.Object.class;
-		Object[] parms = new Object[1];
-		parms[0] = "foo";
-		boolean booleanResult = ((Boolean) ObjectTools.execute(v, "add", parmTypes, parms)).booleanValue();
+		Object[] args = new Object[1];
+		args[0] = "foo";
+		boolean booleanResult = ((Boolean) ObjectTools.execute(v, "add", parmTypes, args)).booleanValue();
 		assertTrue(booleanResult);
 		assertTrue(v.contains("foo"));
 
 		boolean exCaught = false;
 		Object bogusMethodReturnValue = null;
 		try {
-			bogusMethodReturnValue = ObjectTools.execute(v, "bogusMethod", parmTypes, parms);
+			bogusMethodReturnValue = ObjectTools.execute(v, "bogusMethod", parmTypes, args);
 		} catch (RuntimeException ex) {
 			if (ex.getCause() instanceof NoSuchMethodException) {
 				exCaught = true;

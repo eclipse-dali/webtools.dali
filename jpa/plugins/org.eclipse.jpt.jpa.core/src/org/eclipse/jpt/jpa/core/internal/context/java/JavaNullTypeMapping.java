@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -66,12 +65,10 @@ public class JavaNullTypeMapping
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+			this.buildErrorValidationMessage(
 				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
-				new String[] {this.getPersistentType().getName()},
-				this,
-				this.getValidationTextRange()
+				this.getValidationTextRange(),
+				this.getPersistentType().getName()
 			)
 		);
 	}

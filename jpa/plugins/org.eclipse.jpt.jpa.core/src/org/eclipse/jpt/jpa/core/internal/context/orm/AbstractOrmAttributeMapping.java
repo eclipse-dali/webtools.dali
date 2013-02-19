@@ -49,7 +49,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -496,10 +495,8 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		// and there will already be an XSD-driven error
 		if ((this.name != null) && StringTools.isBlank(this.name)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
-					this,
 					this.getValidationTextRange()
 				)
 			);
@@ -510,12 +507,10 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	protected void validateMapping(List<IMessage> messages) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {this.name},
-					this,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					this.name
 				)
 			);
 		}

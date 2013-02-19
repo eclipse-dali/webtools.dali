@@ -275,7 +275,7 @@
 
 	<extension
 		point="org.eclipse.core.resources.markers"
-		id="jpaProblemMarker" 
+		id="problem" 
 		name="%JPA_PROBLEM">
 
 		<persistent value="true"/>
@@ -635,7 +635,7 @@
 		
 		<validator
         	class="org.eclipse.jpt.jpa.core.internal.validation.JpaValidator"
-        	markerId="org.eclipse.jpt.jpa.core.jpaProblemMarker">
+        	markerId="org.eclipse.jpt.jpa.core.problem">
 			<include>
 				<rules>
 					<facet id="jpt.jpa"/>

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
@@ -83,7 +84,7 @@ public class JavaEclipseLinkCustomConverter
 	}
 
 	@Override
-	protected String getEclipseLinkConverterInterfaceErrorMessage() {
+	protected ValidationMessage getEclipseLinkConverterInterfaceErrorMessage() {
 		return JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER;
 	}
 

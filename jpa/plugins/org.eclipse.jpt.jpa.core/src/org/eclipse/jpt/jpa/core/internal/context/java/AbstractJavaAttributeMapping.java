@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.SimpleMetamodelField;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -304,23 +303,19 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING, //TODO KFB - different message for virtual attribute
-							new String[] {this.getName()},
-							this,
-							this.getVirtualPersistentAttributeTextRange()
+							this.getVirtualPersistentAttributeTextRange(),
+							this.getName()
 						)
 					);
 			}
 			else {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-						new String[] {this.getName()},
-						this,
-						this.getValidationTextRange()
+						this.getValidationTextRange(),
+						this.getName()
 					)
 				);
 			}

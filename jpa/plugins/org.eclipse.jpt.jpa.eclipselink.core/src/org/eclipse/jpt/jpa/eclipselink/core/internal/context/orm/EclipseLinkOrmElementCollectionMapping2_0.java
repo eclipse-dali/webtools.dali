@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.validation.JptJpaEclipseLinkCoreValidationMessages;
@@ -164,12 +164,11 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 		if (this.isVirtualAccess()) {
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
-						new String[] {this.getName()},
-						this,
-						this.getAttributeTypeTextRange()
+						this.getResource(),
+						this.getAttributeTypeTextRange(),
+						this.getName()
 					)
 				);
 				return;
@@ -178,12 +177,11 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 				IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 				if (jdtType == null) {
 					messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
-							new String[] {this.getFullyQualifiedAttributeType()},
-							this,
-							this.getAttributeTypeTextRange()
+							this.getResource(),
+							this.getAttributeTypeTextRange(),
+							this.getFullyQualifiedAttributeType()
 						)
 					);
 					return;

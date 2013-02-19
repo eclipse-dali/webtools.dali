@@ -32,7 +32,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.RelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCascade2_0;
@@ -385,11 +384,8 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	protected void validateTargetEntity(List<IMessage> messages) {
 		if (StringTools.isBlank(this.getTargetEntity())) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-					EMPTY_STRING_ARRAY,
-					this,
 					this.getTargetEntityTextRange()
 				)
 			);
@@ -399,12 +395,10 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
 			if (jdtType == null) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST,
-						new String[] {this.getFullyQualifiedTargetEntity()},
-						this,
-						this.getTargetEntityTextRange()
+						this.getTargetEntityTextRange(),
+						this.getFullyQualifiedTargetEntity()
 					)
 				);
 			}
@@ -412,12 +406,10 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		}
 		if (this.getResolvedTargetEntity() == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-					new String[] {this.getFullyQualifiedTargetEntity()},
-					this,
-					this.getTargetEntityTextRange()
+					this.getTargetEntityTextRange(),
+					this.getFullyQualifiedTargetEntity()
 				)
 			);
 		}

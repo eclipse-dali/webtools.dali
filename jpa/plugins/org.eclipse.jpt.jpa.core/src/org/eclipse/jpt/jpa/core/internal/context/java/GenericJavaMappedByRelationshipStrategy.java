@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -22,11 +23,10 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationship;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
-import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
@@ -238,22 +238,20 @@ public class GenericJavaMappedByRelationshipStrategy
 		}
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms) {
+	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
-				JptJpaCoreValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JptJpaCoreValidationDescriptionMessages.ATTRIBUTE_DESC;
+				JptJpaCoreValidationArgumentMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC;
 		TextRange textRange = attribute.isVirtual() ?
 				attribute.getValidationTextRange() :
 				this.getValidationTextRange();
 		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
-		parms = ArrayTools.add(parms, 0, attributeDescription);
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				parms,
-				this,
-				textRange
+		args = ArrayTools.add(args, 0, attributeDescription);
+		return this.buildErrorValidationMessage(
+				msg,
+				textRange,
+				args
 			);
 	}
 

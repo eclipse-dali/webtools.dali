@@ -83,7 +83,7 @@ import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
@@ -1487,10 +1487,9 @@ public abstract class AbstractJpaProject
 		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaProject.FACET);
 		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion, enablementVariables)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				ValidationMessageTools.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
-					this
+					this.getResource()
 				)
 			);
 		}
@@ -1500,10 +1499,10 @@ public abstract class AbstractJpaProject
 		String cpName = this.dataSource.getConnectionProfileName();
 		if (StringTools.isBlank(cpName)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.NORMAL_SEVERITY,
+				ValidationMessageTools.buildValidationMessage(
 					JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION,
-					this
+					IMessage.NORMAL_SEVERITY,
+					this.getResource()
 				)
 			);
 			return;
@@ -1511,22 +1510,22 @@ public abstract class AbstractJpaProject
 		ConnectionProfile cp = this.dataSource.getConnectionProfile();
 		if (cp == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.NORMAL_SEVERITY,
+				ValidationMessageTools.buildValidationMessage(
 					JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION,
-					new String[] {cpName},
-					this
+					IMessage.NORMAL_SEVERITY,
+					this.getResource(),
+					cpName
 				)
 			);
 			return;
 		}
 		if (cp.isInactive()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.NORMAL_SEVERITY,
+				ValidationMessageTools.buildValidationMessage(
 					JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION,
-					new String[] {cpName},
-					this
+					IMessage.NORMAL_SEVERITY,
+					this.getResource(),
+					cpName
 				)
 			);
 		}

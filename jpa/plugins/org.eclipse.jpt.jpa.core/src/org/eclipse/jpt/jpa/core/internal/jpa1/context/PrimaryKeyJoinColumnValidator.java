@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -37,7 +38,7 @@ public abstract class PrimaryKeyJoinColumnValidator
 				super.buildUnresolvedNameMessage();
 	}
 
-	protected String getVirtualPKJoinColumnUnresolvedNameMessage() {
+	protected ValidationMessage getVirtualPKJoinColumnUnresolvedNameMessage() {
 		return JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
 	}
 
@@ -48,7 +49,7 @@ public abstract class PrimaryKeyJoinColumnValidator
 				super.buildUnresolvedReferencedColumnNameMessage();
 	}
 
-	protected String getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage() {
+	protected ValidationMessage getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage() {
 		return JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
 	}
 
@@ -59,7 +60,7 @@ public abstract class PrimaryKeyJoinColumnValidator
 				super.buildUnspecifiedNameMultipleJoinColumnsMessage();
 	}
 
-	protected String getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage() {
+	protected ValidationMessage getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage() {
 		return JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
@@ -70,27 +71,27 @@ public abstract class PrimaryKeyJoinColumnValidator
 				super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 	}
 
-	protected String getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+	protected ValidationMessage getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
 	@Override
-	protected String getUnresolvedNameMessage() {
+	protected ValidationMessage getUnresolvedNameMessage() {
 		return JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
-	protected String getUnresolvedReferencedColumnNameMessage() {
+	protected ValidationMessage getUnresolvedReferencedColumnNameMessage() {
 		return JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
 	}
 
 	@Override
-	protected String getUnspecifiedNameMultipleJoinColumnsMessage() {
+	protected ValidationMessage getUnspecifiedNameMultipleJoinColumnsMessage() {
 		return JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
 	@Override
-	protected String getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+	protected ValidationMessage getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 }

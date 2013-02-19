@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId;
@@ -155,11 +154,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 				|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
 				|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
-							EMPTY_STRING_ARRAY,
-							this,
 							this.getValidationTextRange()
 					)
 			);
@@ -176,11 +172,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (!JDTTools.typeIsSubType(javaProject, targetEmbeddableClassName, Serializable.class.getName())) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
-							EMPTY_STRING_ARRAY,
-							this,
 							this.getValidationTextRange()
 					)
 			);
@@ -195,11 +188,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	protected void validateTargetEmbeddableIsPublic(List<IMessage> messages) {
 		if (!this.getTargetEmbeddable().getJavaResourceType().isPublic()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
-							EMPTY_STRING_ARRAY,
-							this,
 							this.getValidationTextRange()
 					)
 			);
@@ -215,11 +205,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		JavaResourceType resourceType = this.getTargetEmbeddable().getJavaResourceType();
 		if (!resourceType.hasHashCodeMethod() || !resourceType.hasEqualsMethod()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
-							EMPTY_STRING_ARRAY,
-							this,
 							this.getValidationTextRange()
 					)
 			);
@@ -236,11 +223,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, targetEmbeddableClassName)) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
-							EMPTY_STRING_ARRAY,
-							this,
 							this.getValidationTextRange()
 					)
 			);
@@ -254,10 +238,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		if (this.derived
 				&& (this.attributeOverrideContainer.getSpecifiedOverridesSize() > 0)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
-					EMPTY_STRING_ARRAY,
 					this.attributeOverrideContainer,
 					this.attributeOverrideContainer.getValidationTextRange()
 				)

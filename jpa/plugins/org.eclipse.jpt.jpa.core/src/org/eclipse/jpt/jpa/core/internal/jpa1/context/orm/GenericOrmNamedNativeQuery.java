@@ -18,7 +18,6 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -159,12 +158,10 @@ public class GenericOrmNamedNativeQuery
 	protected void validateQuery(@SuppressWarnings("unused") JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(this.query)){
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
-					new String[] {this.name},
-					this,
-					this.getNameTextRange()
+					this.getNameTextRange(),
+					this.name
 				)
 			);
 		}

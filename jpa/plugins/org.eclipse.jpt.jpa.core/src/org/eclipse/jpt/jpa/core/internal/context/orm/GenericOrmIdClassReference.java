@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
@@ -349,11 +348,8 @@ public class GenericOrmIdClassReference
 		if (this.isSpecified()) {
 			if (StringTools.isBlank(this.getIdClassName())) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
-								EMPTY_STRING_ARRAY, 
-								this,
 								this.getValidationTextRange()
 						)
 				);
@@ -362,12 +358,10 @@ public class GenericOrmIdClassReference
 			IType idClassJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedIdClassName());
 			if (idClassJdtType == null) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
-								new String[] {this.getFullyQualifiedIdClassName()},
-								this,
-								this.getValidationTextRange()
+								this.getValidationTextRange(),
+								this.getFullyQualifiedIdClassName()
 						)
 				);
 				return;
@@ -378,50 +372,42 @@ public class GenericOrmIdClassReference
 
 				if (!jrt.isPublic()) {
 					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
-									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
-									this,
-									this.getValidationTextRange()
-									)
-							);
+									this.getValidationTextRange(),
+									jrt.getTypeBinding().getQualifiedName()
+							)
+					);
 				}
 
 				if (!JDTTools.typeIsSubType(this.getJavaProject(), jrt.getTypeBinding().getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
 					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
-									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
-									this,
-									this.getValidationTextRange()
-									)
-							);
+									this.getValidationTextRange(),
+									jrt.getTypeBinding().getQualifiedName()
+							)
+					);
 				}
 
 				if (!jrt.hasEqualsMethod()) {
 					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
-									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
-									this,
-									this.getValidationTextRange()
-									)
-							);
+									this.getValidationTextRange(),
+									jrt.getTypeBinding().getQualifiedName()
+							)
+					);
 				}
 
 				if (!jrt.hasHashCodeMethod()) {
 					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
-									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
-									this,
-									this.getValidationTextRange()
-									)
-							);
+									this.getValidationTextRange(),
+									jrt.getTypeBinding().getQualifiedName()
+							)
+					);
 				}
 			}
 			

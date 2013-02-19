@@ -15,7 +15,7 @@ package org.eclipse.jpt.jpa.core.jpql;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
@@ -38,6 +37,7 @@ import org.eclipse.persistence.jpa.jpql.tools.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IQuery;
 import org.eclipse.persistence.jpa.jpql.tools.utility.XmlEscapeCharacterConverter;
+import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -226,23 +226,23 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 					done = true;
 				}
 
-				// Now create the TextRange of the problem
-				TextRange problemTextRange = new SimpleTextRange(
-					textRange.getOffset() + problemOffset,
-					partialProblemLength,
-					textRange.getLineNumber()
-				);
-
 				// Create the validation message
-				IMessage message = DefaultJpaValidationMessages.buildMessage(
+				IMessage message = new Message(
+					"jpt_jpa_core_jpql_validation",
 					IMessage.HIGH_SEVERITY,
 					problem.getMessageKey(),
 					problem.getMessageArguments(),
-					namedQuery,
-					problemTextRange
+					namedQuery.getResource()
 				);
+				message.setMarkerId(JpaProject.MARKER_TYPE);
+				int lineNumber = textRange.getLineNumber();
+				message.setLineNo(lineNumber);
+				if (lineNumber == IMessage.LINENO_UNSET) {
+					message.setAttribute(IMarker.LOCATION, " "); //$NON-NLS-1$
+				}
+				message.setOffset(textRange.getOffset() + problemOffset);
+				message.setLength(partialProblemLength);
 
-				message.setBundleName("jpt_jpa_core_jpql_validation");
 				messages.add(message);
 
 				// Done traversing the list of TextRanges
@@ -279,7 +279,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	protected String getValidationPreference(NamedQuery namedQuery) {
 		return JpaPreferences.getProblemSeverity(
 			namedQuery.getResource().getProject(),
-			JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION
+			JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION.getID()
 		);
 	}
 

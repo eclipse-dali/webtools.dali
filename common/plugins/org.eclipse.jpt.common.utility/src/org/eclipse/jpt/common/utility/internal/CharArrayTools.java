@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -104,7 +104,7 @@ public final class CharArrayTools {
 			return string;
 		}
 		if (stringLength > length) {
-			return ArrayTools.subArray_(string, ((stringLength - length) >> 1), length); // take fewer characters off the front
+			return ArrayTools.subArrayLength(string, ((stringLength - length) >> 1), length); // take fewer characters off the front
 		}
 		// stringLength < length
 		char[] result = new char[length];
@@ -155,7 +155,7 @@ public final class CharArrayTools {
 			return string;
 		}
 		if (stringLength > length) {
-			return ArrayTools.subArray_(string, 0, length);
+			return ArrayTools.subArrayLength(string, 0, length);
 		}
 		return pad(string, length, c, stringLength);
 	}
@@ -210,7 +210,7 @@ public final class CharArrayTools {
 			return string;
 		}
 		if (stringLength > length) {
-			return ArrayTools.subArray_(string, stringLength - length, length);
+			return ArrayTools.subArrayLength(string, stringLength - length, length);
 		}
 		return frontPad(string, length, c, stringLength);
 	}
@@ -453,7 +453,7 @@ public final class CharArrayTools {
 	 * No parm checks
 	 */
 	private static char[] undelimit(char[] string, int count, int resultLength) {
-		return ArrayTools.subArray_(string, count, resultLength);
+		return ArrayTools.subArrayLength(string, count, resultLength);
 	}
 
 

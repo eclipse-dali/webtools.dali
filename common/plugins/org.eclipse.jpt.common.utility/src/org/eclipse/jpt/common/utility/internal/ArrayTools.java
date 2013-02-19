@@ -2746,7 +2746,7 @@ public final class ArrayTools {
 	 * the specified index to the end of the specified array.
 	 */
 	public static <E> E[] subArray(E[] array, int index) {
-		return subArray(array, index, array.length);
+		return (index == 0) ? array : subArray_(array, index, array.length);
 	}
 
 	/**
@@ -2754,6 +2754,13 @@ public final class ArrayTools {
 	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
 	 */
 	public static <E> E[] subArray(E[] array, int fromIndex, int toIndex) {
+		return ((fromIndex == 0) && (toIndex == array.length)) ? array : subArray_(array, fromIndex, toIndex);
+	}
+
+	/**
+	 * assume we cannot simply return the array itself
+	 */
+	private static <E> E[] subArray_(E[] array, int fromIndex, int toIndex) {
 		int len = toIndex - fromIndex;
 		E[] result = newInstance(array, len);
 		if (len > 0) {
@@ -2767,7 +2774,7 @@ public final class ArrayTools {
 	 * the specified index to the end of the specified array.
 	 */
 	public static int[] subArray(int[] array, int index) {
-		return subArray(array, index, array.length);
+		return (index == 0) ? array : subArray_(array, index, array.length);
 	}
 
 	/**
@@ -2775,13 +2782,19 @@ public final class ArrayTools {
 	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
 	 */
 	public static int[] subArray(int[] array, int fromIndex, int toIndex) {
-		int len = toIndex - fromIndex;
-		return (len == 0) ? EMPTY_INT_ARRAY : subArray_(array, fromIndex, len);
+		return ((fromIndex == 0) && (toIndex == array.length)) ? array : subArray_(array, fromIndex, toIndex);
 	}
 
-	private static int[] subArray_(int[] array, int fromIndex, int length) {
-		int[] result = new int[length];
-		System.arraycopy(array, fromIndex, result, 0, length);
+	/**
+	 * assume we cannot simply return the array itself
+	 */
+	private static int[] subArray_(int[] array, int fromIndex, int toIndex) {
+		int len = toIndex - fromIndex;
+		if (len == 0) {
+			return EMPTY_INT_ARRAY;
+		}
+		int[] result = new int[len];
+		System.arraycopy(array, fromIndex, result, 0, len);
 		return result;
 	}
 
@@ -2790,7 +2803,7 @@ public final class ArrayTools {
 	 * the specified index to the end of the specified array.
 	 */
 	public static char[] subArray(char[] array, int index) {
-		return subArray(array, index, array.length);
+		return (index == 0) ? array : subArray_(array, index, array.length);
 	}
 
 	/**
@@ -2798,11 +2811,21 @@ public final class ArrayTools {
 	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
 	 */
 	public static char[] subArray(char[] array, int fromIndex, int toIndex) {
-		int len = toIndex - fromIndex;
-		return (len == 0) ? CharArrayTools.EMPTY_CHAR_ARRAY : subArray_(array, fromIndex, len);
+		return ((fromIndex == 0) && (toIndex == array.length)) ? array : subArray_(array, fromIndex, toIndex);
 	}
 
-	static char[] subArray_(char[] array, int fromIndex, int length) {
+	/**
+	 * assume we cannot simply return the array itself
+	 */
+	private static char[] subArray_(char[] array, int fromIndex, int toIndex) {
+		int len = toIndex - fromIndex;
+		return (len == 0) ? CharArrayTools.EMPTY_CHAR_ARRAY : subArrayLength(array, fromIndex, len);
+	}
+
+	/**
+	 * assume the length is not zero
+	 */
+	static char[] subArrayLength(char[] array, int fromIndex, int length) {
 		char[] result = new char[length];
 		System.arraycopy(array, fromIndex, result, 0, length);
 		return result;

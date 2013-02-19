@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Public access to the Dali JPA preferences.
@@ -242,11 +243,39 @@ public final class JpaPreferences {
 	private static final String WORKSPACE_PREFERENCES_OVERRIDDEN = "workspace_preferences_overriden"; //$NON-NLS-1$
 
 	/**
+	 * Project-level validation message preference.
+	 * Return <code>-1</code> if the specified message is to be ignored.
+	 * @see org.eclipse.wst.validation.internal.provisional.core.IMessage#getSeverity()
+	 */
+	public static int getValidationMessageSeverity(IProject project, String messageID, int defaultSeverity) {
+		return convertToValidationSeverity(getProblemSeverity(project, messageID), defaultSeverity);
+	}
+
+	private static int convertToValidationSeverity(String prefSeverity, int defaultSeverity) {
+		if (prefSeverity == null) {
+			return defaultSeverity;
+		}
+		if (prefSeverity.equals(PROBLEM_ERROR)) {
+			return IMessage.HIGH_SEVERITY;
+		}
+		if (prefSeverity.equals(PROBLEM_WARNING)) {
+			return IMessage.NORMAL_SEVERITY;
+		}
+		if (prefSeverity.equals(PROBLEM_INFO)) {
+			return IMessage.LOW_SEVERITY;
+		}
+		if (prefSeverity.equals(PROBLEM_IGNORE)) {
+			return VALIDATION_IGNORE_SEVERITY;
+		}
+		return defaultSeverity;
+	}
+
+	/**
 	 * Project-level problem preference.
 	 * @see #PROBLEM_ERROR
 	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_IGNORE
 	 * @see #PROBLEM_INFO
+	 * @see #PROBLEM_IGNORE
 	 */
 	public static String getProblemSeverity(IProject project, String messageID) {
 		return getPlugin().getPreference(project, PROBLEM_ + messageID);
@@ -256,8 +285,8 @@ public final class JpaPreferences {
 	 * Project-level problem preference.
 	 * @see #PROBLEM_ERROR
 	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_IGNORE
 	 * @see #PROBLEM_INFO
+	 * @see #PROBLEM_IGNORE
 	 */
 	public static void setProblemSeverity(IProject project, String messageID, String value) {
 		getPlugin().setPreference(project, PROBLEM_ + messageID, value);
@@ -267,8 +296,8 @@ public final class JpaPreferences {
 	 * Workspace-level problem preference.
 	 * @see #PROBLEM_ERROR
 	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_IGNORE
 	 * @see #PROBLEM_INFO
+	 * @see #PROBLEM_IGNORE
 	 */
 	public static String getProblemSeverity(String messageID) {
 		return getPlugin().getPreference(PROBLEM_ + messageID);
@@ -278,8 +307,8 @@ public final class JpaPreferences {
 	 * Workspace-level problem preference.
 	 * @see #PROBLEM_ERROR
 	 * @see #PROBLEM_WARNING
-	 * @see #PROBLEM_IGNORE
 	 * @see #PROBLEM_INFO
+	 * @see #PROBLEM_IGNORE
 	 */
 	public static void setProblemSeverity(String messageID, String value) {
 		getPlugin().setPreference(PROBLEM_ + messageID, value);
@@ -288,11 +317,11 @@ public final class JpaPreferences {
 	private static final String PROBLEM = "problem"; //$NON-NLS-1$
 	private static final String PROBLEM_ = PROBLEM + '.';
 
-	// TODO move to validation objects once we have them
 	public static final String PROBLEM_ERROR = "error"; //$NON-NLS-1$
 	public static final String PROBLEM_WARNING = "warning"; //$NON-NLS-1$
 	public static final String PROBLEM_INFO = "info"; //$NON-NLS-1$
 	public static final String PROBLEM_IGNORE = "ignore"; //$NON-NLS-1$
+	public static final int VALIDATION_IGNORE_SEVERITY = -1;
 
 
 	// ********** misc **********
