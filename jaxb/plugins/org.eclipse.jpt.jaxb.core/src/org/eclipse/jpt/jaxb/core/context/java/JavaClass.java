@@ -41,10 +41,10 @@ public interface JavaClass
 	String XML_REGISTRY_PROPERTY = "xmlRegistry";  //$NON-NLS-1$
 	
 	XmlRegistry getXmlRegistry();
+	
 	Transformer<JavaClass, XmlRegistry> XML_REGISTRY_TRANSFORMER = new XmlRegistryTransformer();
 	class XmlRegistryTransformer
-		extends TransformerAdapter<JavaClass, XmlRegistry>
-	{
+		extends TransformerAdapter<JavaClass, XmlRegistry> {
 		@Override
 		public XmlRegistry transform(JavaClass javaClass) {
 			return javaClass.getXmlRegistry();

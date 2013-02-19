@@ -70,11 +70,10 @@ public interface JaxbClassMapping
 	String SUPERCLASS_PROPERTY = "superclass"; //$NON-NLS-1$
 	
 	JaxbClassMapping getSuperclass();
-
+	
 	Transformer<JaxbClassMapping, JaxbClassMapping> SUPER_CLASS_TRANSFORMER = new SuperClassTransformer();
 	class SuperClassTransformer
-		extends AbstractTransformer<JaxbClassMapping, JaxbClassMapping>
-	{
+			extends AbstractTransformer<JaxbClassMapping, JaxbClassMapping> {
 		@Override
 		protected JaxbClassMapping transform_(JaxbClassMapping mapping) {
 			return mapping.getSuperclass();
@@ -88,18 +87,17 @@ public interface JaxbClassMapping
 	 * Return the attributes defined on this class (not its superclass)
 	 */
 	Iterable<JaxbPersistentAttribute> getAttributes();
-
+	
+	int getAttributesSize();
+	
 	Transformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
 	class AttributesTransformer
-		extends AbstractTransformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>>
-	{
+			extends AbstractTransformer<JaxbClassMapping, Iterable<JaxbPersistentAttribute>> {
 		@Override
 		protected Iterable<JaxbPersistentAttribute> transform_(JaxbClassMapping mapping) {
 			return mapping.getAttributes();
 		}
 	}
-	
-	int getAttributesSize();
 	
 	/**
 	 * <i>Included</i> attributes come from any direct superclasses that are mapped as @XmlTransient.
