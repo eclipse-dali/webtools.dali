@@ -462,6 +462,11 @@
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ParameterMode_2_1/OUT"/>
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ParameterMode_2_1/REF_CURSOR"/>
       </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//v2_1/ConstraintMode_2_1">
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ConstraintMode_2_1/CONSTRAINT"/>
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ConstraintMode_2_1/NO_CONSTRAINT"/>
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_1/ConstraintMode_2_1/PROVIDER_DEFAULT"/>
+      </genEnums>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/ColumnResult_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/ColumnResult_2_1/className"/>
       </genClasses>
@@ -510,8 +515,8 @@
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlForeignKey_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/description"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/constraintMode"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/foreignKeyDefinition"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlForeignKey_2_1/disableForeignKey"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_1/XmlIndex_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_1/XmlIndex_2_1/description"/>

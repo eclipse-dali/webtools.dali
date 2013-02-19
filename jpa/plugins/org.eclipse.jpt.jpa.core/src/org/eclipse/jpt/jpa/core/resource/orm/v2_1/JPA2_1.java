@@ -37,11 +37,11 @@ public interface JPA2_1
 	String ATTRIBUTE_NAME = "attribute-name";
 	String AUTO_APPLY = "auto-apply";
 	String COLUMN_LIST = "column-list";
+	String CONSTRAINT_MODE = "constraint-mode";
 	String CONSTRUCTOR_RESULT = "constructor-result";
 	String CONVERT = "convert";
 	String CONVERTER = "converter";
 	String DISABLE_CONVERSION = "disable-conversion";
-	String DISABLE_FOREIGN_KEY = "disable-foreign-key";
 	String FOREIGN_KEY = "foreign-key";
 	String FOREIGN_KEY_DEFINITION = "foreign-key-definition";
 	String INCLUDE_ALL_ATTRIBUTES = "include-all-attributes";

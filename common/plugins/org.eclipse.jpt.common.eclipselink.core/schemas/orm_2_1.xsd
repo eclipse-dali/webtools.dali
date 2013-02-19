@@ -9,7 +9,7 @@
 
   <xsd:annotation>
     <xsd:documentation>
-      @(#)orm_2_1.xsd 2.1  February 4 2013
+      @(#)orm_2_1.xsd 2.1  February 15 2013
     </xsd:documentation>
   </xsd:annotation>
 
@@ -26,7 +26,7 @@
   http://www.eclipse.org/org/documents/edl-v10.php.
   
   Contributors:
-      Linda DeMichiel - Java Persistence 2.1, Version 2.1 (February 4, 2013)
+      Linda DeMichiel - Java Persistence 2.1, Version 2.1 (February 15, 2013)
       Specification available from http://jcp.org/en/jsr/detail?id=338
   
     </xsd:documentation>
@@ -561,6 +561,24 @@
 
 <!-- **************************************************** -->
 
+  <xsd:simpleType name="constraint-mode">
+    <xsd:annotation>
+      <xsd:documentation>
+
+       public enum ConstraintMode {CONSTRAINT, NO_CONSTRAINT, PROVIDER_DEFAULT};
+
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="CONSTRAINT"/>
+      <xsd:enumeration value="NO_CONSTRAINT"/>
+      <xsd:enumeration value="PROVIDER_DEFAULT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+<!-- **************************************************** -->
+
+
   <xsd:complexType name="constructor-result">
     <xsd:annotation>
       <xsd:documentation>
@@ -1009,8 +1027,12 @@
         @Target({}) @Retention(RUNTIME)
         public @interface ForeignKey {
           String name() default "";
+	  ConstraintMode value() default CONSTRAINT;
           String foreign-key-definition() default "";
-          boolean disable-foreign-key() default false;
+
+        Note that the elements that embed the use of the annotation
+        default this use as @ForeignKey(PROVIDER_DEFAULT).
+
         }
 
       </xsd:documentation>
@@ -1019,8 +1041,8 @@
       <xsd:element name="description" type="xsd:string" minOccurs="0"/>
     </xsd:sequence>
     <xsd:attribute name="name" type="xsd:string"/>
+    <xsd:attribute name="constraint-mode" type="orm:constraint-mode"/>
     <xsd:attribute name="foreign-key-definition" type="xsd:string"/>
-    <xsd:attribute name="disable-foreign-key" type="xsd:boolean"/>
   </xsd:complexType>
 
 <!-- **************************************************** -->

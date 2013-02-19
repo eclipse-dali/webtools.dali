@@ -27,8 +27,8 @@ import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getConstraintMode <em>Constraint Mode</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getForeignKeyDefinition <em>Foreign Key Definition</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getDisableForeignKey <em>Disable Foreign Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,6 +92,35 @@ public interface XmlForeignKey_2_1 extends EBaseObject
 	void setName(String value);
 
 	/**
+	 * Returns the value of the '<em><b>Constraint Mode</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Constraint Mode</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Constraint Mode</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+	 * @see #setConstraintMode(ConstraintMode_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlForeignKey_2_1_ConstraintMode()
+	 * @model
+	 * @generated
+	 */
+	ConstraintMode_2_1 getConstraintMode();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getConstraintMode <em>Constraint Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Constraint Mode</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+	 * @see #getConstraintMode()
+	 * @generated
+	 */
+	void setConstraintMode(ConstraintMode_2_1 value);
+
+	/**
 	 * Returns the value of the '<em><b>Foreign Key Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -116,31 +145,5 @@ public interface XmlForeignKey_2_1 extends EBaseObject
 	 * @generated
 	 */
 	void setForeignKeyDefinition(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Disable Foreign Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Disable Foreign Key</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Disable Foreign Key</em>' attribute.
-	 * @see #setDisableForeignKey(Boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getXmlForeignKey_2_1_DisableForeignKey()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
-	 * @generated
-	 */
-	Boolean getDisableForeignKey();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getDisableForeignKey <em>Disable Foreign Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Disable Foreign Key</em>' attribute.
-	 * @see #getDisableForeignKey()
-	 * @generated
-	 */
-	void setDisableForeignKey(Boolean value);
 
 } // XmlForeignKey_2_1

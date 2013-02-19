@@ -103,6 +103,8 @@ public class OrmV2_1Factory extends EFactoryImpl
 		{
 			case OrmV2_1Package.PARAMETER_MODE_21:
 				return createParameterMode_2_1FromString(eDataType, initialValue);
+			case OrmV2_1Package.CONSTRAINT_MODE_21:
+				return createConstraintMode_2_1FromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -120,6 +122,8 @@ public class OrmV2_1Factory extends EFactoryImpl
 		{
 			case OrmV2_1Package.PARAMETER_MODE_21:
 				return convertParameterMode_2_1ToString(eDataType, instanceValue);
+			case OrmV2_1Package.CONSTRAINT_MODE_21:
+				return convertConstraintMode_2_1ToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -143,6 +147,28 @@ public class OrmV2_1Factory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertParameterMode_2_1ToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ConstraintMode_2_1 createConstraintMode_2_1FromString(EDataType eDataType, String initialValue)
+	{
+		ConstraintMode_2_1 result = ConstraintMode_2_1.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertConstraintMode_2_1ToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

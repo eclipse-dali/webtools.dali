@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1;
@@ -83,6 +84,22 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 	protected String name = NAME_EDEFAULT;
 
 	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final ConstraintMode_2_1 CONSTRAINT_MODE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getConstraintMode() <em>Constraint Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConstraintMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected ConstraintMode_2_1 constraintMode = CONSTRAINT_MODE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getForeignKeyDefinition() <em>Foreign Key Definition</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -101,26 +118,6 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 	 * @ordered
 	 */
 	protected String foreignKeyDefinition = FOREIGN_KEY_DEFINITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDisableForeignKey() <em>Disable Foreign Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDisableForeignKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean DISABLE_FOREIGN_KEY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDisableForeignKey() <em>Disable Foreign Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDisableForeignKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean disableForeignKey = DISABLE_FOREIGN_KEY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -214,6 +211,44 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Constraint Mode</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Constraint Mode</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Constraint Mode</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+	 * @see #setConstraintMode(ConstraintMode_2_1)
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlForeignKey_2_1_ConstraintMode()
+	 * @model
+	 * @generated
+	 */
+	public ConstraintMode_2_1 getConstraintMode()
+	{
+		return constraintMode;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey#getConstraintMode <em>Constraint Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Constraint Mode</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+	 * @see #getConstraintMode()
+	 * @generated
+	 */
+	public void setConstraintMode(ConstraintMode_2_1 newConstraintMode)
+	{
+		ConstraintMode_2_1 oldConstraintMode = constraintMode;
+		constraintMode = newConstraintMode == null ? CONSTRAINT_MODE_EDEFAULT : newConstraintMode;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_FOREIGN_KEY__CONSTRAINT_MODE, oldConstraintMode, constraintMode));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Foreign Key Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -249,41 +284,6 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Disable Foreign Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Disable Foreign Key</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Disable Foreign Key</em>' attribute.
-	 * @see #setDisableForeignKey(Boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlForeignKey_2_1_DisableForeignKey()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
-	 * @generated
-	 */
-	public Boolean getDisableForeignKey()
-	{
-		return disableForeignKey;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlForeignKey#getDisableForeignKey <em>Disable Foreign Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Disable Foreign Key</em>' attribute.
-	 * @see #getDisableForeignKey()
-	 * @generated
-	 */
-	public void setDisableForeignKey(Boolean newDisableForeignKey)
-	{
-		Boolean oldDisableForeignKey = disableForeignKey;
-		disableForeignKey = newDisableForeignKey;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_FOREIGN_KEY__DISABLE_FOREIGN_KEY, oldDisableForeignKey, disableForeignKey));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -297,10 +297,10 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 				return getDescription();
 			case OrmPackage.XML_FOREIGN_KEY__NAME:
 				return getName();
+			case OrmPackage.XML_FOREIGN_KEY__CONSTRAINT_MODE:
+				return getConstraintMode();
 			case OrmPackage.XML_FOREIGN_KEY__FOREIGN_KEY_DEFINITION:
 				return getForeignKeyDefinition();
-			case OrmPackage.XML_FOREIGN_KEY__DISABLE_FOREIGN_KEY:
-				return getDisableForeignKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -321,11 +321,11 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 			case OrmPackage.XML_FOREIGN_KEY__NAME:
 				setName((String)newValue);
 				return;
+			case OrmPackage.XML_FOREIGN_KEY__CONSTRAINT_MODE:
+				setConstraintMode((ConstraintMode_2_1)newValue);
+				return;
 			case OrmPackage.XML_FOREIGN_KEY__FOREIGN_KEY_DEFINITION:
 				setForeignKeyDefinition((String)newValue);
-				return;
-			case OrmPackage.XML_FOREIGN_KEY__DISABLE_FOREIGN_KEY:
-				setDisableForeignKey((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -347,11 +347,11 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 			case OrmPackage.XML_FOREIGN_KEY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case OrmPackage.XML_FOREIGN_KEY__CONSTRAINT_MODE:
+				setConstraintMode(CONSTRAINT_MODE_EDEFAULT);
+				return;
 			case OrmPackage.XML_FOREIGN_KEY__FOREIGN_KEY_DEFINITION:
 				setForeignKeyDefinition(FOREIGN_KEY_DEFINITION_EDEFAULT);
-				return;
-			case OrmPackage.XML_FOREIGN_KEY__DISABLE_FOREIGN_KEY:
-				setDisableForeignKey(DISABLE_FOREIGN_KEY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -371,10 +371,10 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_FOREIGN_KEY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case OrmPackage.XML_FOREIGN_KEY__CONSTRAINT_MODE:
+				return constraintMode != CONSTRAINT_MODE_EDEFAULT;
 			case OrmPackage.XML_FOREIGN_KEY__FOREIGN_KEY_DEFINITION:
 				return FOREIGN_KEY_DEFINITION_EDEFAULT == null ? foreignKeyDefinition != null : !FOREIGN_KEY_DEFINITION_EDEFAULT.equals(foreignKeyDefinition);
-			case OrmPackage.XML_FOREIGN_KEY__DISABLE_FOREIGN_KEY:
-				return DISABLE_FOREIGN_KEY_EDEFAULT == null ? disableForeignKey != null : !DISABLE_FOREIGN_KEY_EDEFAULT.equals(disableForeignKey);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -394,10 +394,10 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 		result.append(description);
 		result.append(", name: ");
 		result.append(name);
+		result.append(", constraintMode: ");
+		result.append(constraintMode);
 		result.append(", foreignKeyDefinition: ");
 		result.append(foreignKeyDefinition);
-		result.append(", disableForeignKey: ");
-		result.append(disableForeignKey);
 		result.append(')');
 		return result.toString();
 	}
@@ -416,8 +416,8 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildConstraintModeTranslator(),
 			buildForeignKeyDefinitionTranslator(),
-			buildDisableForeignKeyTranslator(),
 			buildDescriptionTranslator(),
 		};
 	}
@@ -430,8 +430,8 @@ public class XmlForeignKey extends EBaseObjectImpl implements XmlForeignKey_2_1
 		return new Translator(JPA2_1.FOREIGN_KEY_DEFINITION, OrmV2_1Package.eINSTANCE.getXmlForeignKey_2_1_ForeignKeyDefinition(), Translator.DOM_ATTRIBUTE);
 	}	
 
-	protected static Translator buildDisableForeignKeyTranslator() {
-		return new Translator(JPA2_1.DISABLE_FOREIGN_KEY, OrmV2_1Package.eINSTANCE.getXmlForeignKey_2_1_DisableForeignKey(), Translator.DOM_ATTRIBUTE);
+	protected static Translator buildConstraintModeTranslator() {
+		return new Translator(JPA2_1.CONSTRAINT_MODE, OrmV2_1Package.eINSTANCE.getXmlForeignKey_2_1_ConstraintMode(), Translator.DOM_ATTRIBUTE);
 	}	
 
 	protected static Translator buildDescriptionTranslator() {

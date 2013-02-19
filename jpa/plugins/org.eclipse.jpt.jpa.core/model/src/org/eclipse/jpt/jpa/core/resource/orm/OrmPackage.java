@@ -3854,6 +3854,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_FOREIGN_KEY__NAME = OrmV2_1Package.XML_FOREIGN_KEY_21__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Constraint Mode</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_FOREIGN_KEY__CONSTRAINT_MODE = OrmV2_1Package.XML_FOREIGN_KEY_21__CONSTRAINT_MODE;
+
+	/**
 	 * The feature id for the '<em><b>Foreign Key Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3861,15 +3870,6 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_FOREIGN_KEY__FOREIGN_KEY_DEFINITION = OrmV2_1Package.XML_FOREIGN_KEY_21__FOREIGN_KEY_DEFINITION;
-
-	/**
-	 * The feature id for the '<em><b>Disable Foreign Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_FOREIGN_KEY__DISABLE_FOREIGN_KEY = OrmV2_1Package.XML_FOREIGN_KEY_21__DISABLE_FOREIGN_KEY;
 
 	/**
 	 * The number of structural features of the '<em>Xml Foreign Key</em>' class.

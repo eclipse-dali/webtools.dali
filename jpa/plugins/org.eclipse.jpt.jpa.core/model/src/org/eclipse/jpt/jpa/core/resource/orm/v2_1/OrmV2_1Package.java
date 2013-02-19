@@ -727,22 +727,22 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int XML_FOREIGN_KEY_21__NAME = 1;
 
 	/**
+	 * The feature id for the '<em><b>Constraint Mode</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_FOREIGN_KEY_21__CONSTRAINT_MODE = 2;
+
+	/**
 	 * The feature id for the '<em><b>Foreign Key Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_FOREIGN_KEY_21__FOREIGN_KEY_DEFINITION = 2;
-
-	/**
-	 * The feature id for the '<em><b>Disable Foreign Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_FOREIGN_KEY_21__DISABLE_FOREIGN_KEY = 3;
+	public static final int XML_FOREIGN_KEY_21__FOREIGN_KEY_DEFINITION = 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Foreign Key 21</em>' class.
@@ -1259,6 +1259,16 @@ public class OrmV2_1Package extends EPackageImpl
 	public static final int PARAMETER_MODE_21 = 29;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1 <em>Constraint Mode 21</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getConstraintMode_2_1()
+	 * @generated
+	 */
+	public static final int CONSTRAINT_MODE_21 = 30;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1439,6 +1449,13 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 */
 	private EEnum parameterMode_2_1EEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum constraintMode_2_1EEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1857,6 +1874,21 @@ public class OrmV2_1Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getConstraintMode <em>Constraint Mode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Constraint Mode</em>'.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getConstraintMode()
+	 * @see #getXmlForeignKey_2_1()
+	 * @generated
+	 */
+	public EAttribute getXmlForeignKey_2_1_ConstraintMode()
+	{
+		return (EAttribute)xmlForeignKey_2_1EClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getForeignKeyDefinition <em>Foreign Key Definition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1866,21 +1898,6 @@ public class OrmV2_1Package extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getXmlForeignKey_2_1_ForeignKeyDefinition()
-	{
-		return (EAttribute)xmlForeignKey_2_1EClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getDisableForeignKey <em>Disable Foreign Key</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Disable Foreign Key</em>'.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlForeignKey_2_1#getDisableForeignKey()
-	 * @see #getXmlForeignKey_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlForeignKey_2_1_DisableForeignKey()
 	{
 		return (EAttribute)xmlForeignKey_2_1EClass.getEStructuralFeatures().get(3);
 	}
@@ -2769,6 +2786,20 @@ public class OrmV2_1Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1 <em>Constraint Mode 21</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Constraint Mode 21</em>'.
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+	 * @generated
+	 */
+	public EEnum getConstraintMode_2_1()
+	{
+		return constraintMode_2_1EEnum;
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1 <em>Xml Converter Container 21</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3023,8 +3054,8 @@ public class OrmV2_1Package extends EPackageImpl
 		xmlForeignKey_2_1EClass = createEClass(XML_FOREIGN_KEY_21);
 		createEAttribute(xmlForeignKey_2_1EClass, XML_FOREIGN_KEY_21__DESCRIPTION);
 		createEAttribute(xmlForeignKey_2_1EClass, XML_FOREIGN_KEY_21__NAME);
+		createEAttribute(xmlForeignKey_2_1EClass, XML_FOREIGN_KEY_21__CONSTRAINT_MODE);
 		createEAttribute(xmlForeignKey_2_1EClass, XML_FOREIGN_KEY_21__FOREIGN_KEY_DEFINITION);
-		createEAttribute(xmlForeignKey_2_1EClass, XML_FOREIGN_KEY_21__DISABLE_FOREIGN_KEY);
 
 		xmlIndex_2_1EClass = createEClass(XML_INDEX_21);
 		createEAttribute(xmlIndex_2_1EClass, XML_INDEX_21__DESCRIPTION);
@@ -3101,6 +3132,7 @@ public class OrmV2_1Package extends EPackageImpl
 
 		// Create enums
 		parameterMode_2_1EEnum = createEEnum(PARAMETER_MODE_21);
+		constraintMode_2_1EEnum = createEEnum(CONSTRAINT_MODE_21);
 	}
 
 	/**
@@ -3188,8 +3220,8 @@ public class OrmV2_1Package extends EPackageImpl
 		initEClass(xmlForeignKey_2_1EClass, XmlForeignKey_2_1.class, "XmlForeignKey_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlForeignKey_2_1_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlForeignKey_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlForeignKey_2_1_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlForeignKey_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlForeignKey_2_1_ConstraintMode(), this.getConstraintMode_2_1(), "constraintMode", null, 0, 1, XmlForeignKey_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlForeignKey_2_1_ForeignKeyDefinition(), theXMLTypePackage.getString(), "foreignKeyDefinition", null, 0, 1, XmlForeignKey_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlForeignKey_2_1_DisableForeignKey(), theXMLTypePackage.getBooleanObject(), "disableForeignKey", null, 0, 1, XmlForeignKey_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlIndex_2_1EClass, XmlIndex_2_1.class, "XmlIndex_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlIndex_2_1_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlIndex_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3270,6 +3302,11 @@ public class OrmV2_1Package extends EPackageImpl
 		addEEnumLiteral(parameterMode_2_1EEnum, ParameterMode_2_1.INOUT);
 		addEEnumLiteral(parameterMode_2_1EEnum, ParameterMode_2_1.OUT);
 		addEEnumLiteral(parameterMode_2_1EEnum, ParameterMode_2_1.REF_CURSOR);
+
+		initEEnum(constraintMode_2_1EEnum, ConstraintMode_2_1.class, "ConstraintMode_2_1");
+		addEEnumLiteral(constraintMode_2_1EEnum, ConstraintMode_2_1.CONSTRAINT);
+		addEEnumLiteral(constraintMode_2_1EEnum, ConstraintMode_2_1.NO_CONSTRAINT);
+		addEEnumLiteral(constraintMode_2_1EEnum, ConstraintMode_2_1.PROVIDER_DEFAULT);
 	}
 
 	/**
@@ -3471,20 +3508,20 @@ public class OrmV2_1Package extends EPackageImpl
 		public static final EAttribute XML_FOREIGN_KEY_21__NAME = eINSTANCE.getXmlForeignKey_2_1_Name();
 
 		/**
+		 * The meta object literal for the '<em><b>Constraint Mode</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_FOREIGN_KEY_21__CONSTRAINT_MODE = eINSTANCE.getXmlForeignKey_2_1_ConstraintMode();
+
+		/**
 		 * The meta object literal for the '<em><b>Foreign Key Definition</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute XML_FOREIGN_KEY_21__FOREIGN_KEY_DEFINITION = eINSTANCE.getXmlForeignKey_2_1_ForeignKeyDefinition();
-
-		/**
-		 * The meta object literal for the '<em><b>Disable Foreign Key</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_FOREIGN_KEY_21__DISABLE_FOREIGN_KEY = eINSTANCE.getXmlForeignKey_2_1_DisableForeignKey();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlIndex_2_1 <em>Xml Index 21</em>}' class.
@@ -4001,6 +4038,16 @@ public class OrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum PARAMETER_MODE_21 = eINSTANCE.getParameterMode_2_1();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1 <em>Constraint Mode 21</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.ConstraintMode_2_1
+		 * @see org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package#getConstraintMode_2_1()
+		 * @generated
+		 */
+		public static final EEnum CONSTRAINT_MODE_21 = eINSTANCE.getConstraintMode_2_1();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1 <em>Xml Converter Container 21</em>}' class.

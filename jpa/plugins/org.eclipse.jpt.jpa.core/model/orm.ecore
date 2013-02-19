@@ -669,9 +669,9 @@
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="constraintMode" eType="#//v2_1/ConstraintMode_2_1"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="foreignKeyDefinition"
           eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableForeignKey" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlIndex_2_1" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -797,6 +797,11 @@
       <eLiterals name="INOUT" value="1"/>
       <eLiterals name="OUT" value="2"/>
       <eLiterals name="REF_CURSOR" value="3"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="ConstraintMode_2_1">
+      <eLiterals name="CONSTRAINT"/>
+      <eLiterals name="NO_CONSTRAINT" value="1"/>
+      <eLiterals name="PROVIDER_DEFAULT" value="2"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
