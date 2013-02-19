@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,14 +54,10 @@ public class XmlNoSql extends EBaseObjectImpl implements XmlNoSql_2_4
 	protected String dataType = DATA_TYPE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getDataFormat() <em>Data Format</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDataFormat()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final DataFormatType DATA_FORMAT_EDEFAULT = DataFormatType.XML;
+	protected static final DataFormatType DATA_FORMAT_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getDataFormat() <em>Data Format</em>}' attribute.
