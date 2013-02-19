@@ -48,7 +48,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 
 public class GenericJavaClassMapping
@@ -65,6 +64,7 @@ public class GenericJavaClassMapping
 	protected static final String SUPERCLASSNAME_PROPERTY = "superclassName"; //$NON-NLS-1$ - used only to trigger update
 	protected JaxbClassMapping superclass;
 	
+	protected XmlAccessType accessType;
 	protected XmlAccessType defaultAccessType;
 	protected XmlAccessType specifiedAccessType;
 	
@@ -86,8 +86,7 @@ public class GenericJavaClassMapping
 		initFactoryClass();
 		initFactoryMethod();
 		initPropOrder();
-		initSpecifiedAccessType();
-		initDefaultAccessType();
+		initAccessType();
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
 		initSuperclassName();
@@ -120,7 +119,7 @@ public class GenericJavaClassMapping
 		syncFactoryClass();
 		syncFactoryMethod();
 		syncPropOrder();
-		syncSpecifiedAccessType();
+		syncAccessType();
 		syncSpecifiedAccessOrder();
 		syncSuperclassName();
 		this.attributesContainer.synchronizeWithResourceModel();
@@ -131,7 +130,7 @@ public class GenericJavaClassMapping
 	public void update() {
 		super.update();
 		updateSuperclass(); // done first because much depends on it
-		updateDefaultAccessType();
+		updateAccessType();
 		updateDefaultAccessOrder();
 		this.hasRootElementInHierarchy_loaded = false; // triggers that the value must be recalculated on next request
 		this.attributesContainer.update();
@@ -256,7 +255,13 @@ public class GenericJavaClassMapping
 	// ***** XmlAccessorType *****
 	
 	public XmlAccessType getAccessType() {
-		return (this.specifiedAccessType != null) ? this.specifiedAccessType : this.defaultAccessType;
+		return this.accessType;
+	}
+	
+	protected void setAccessType_(XmlAccessType accessType) {
+		XmlAccessType old = this.accessType;
+		this.accessType = accessType;
+		firePropertyChanged(ACCESS_TYPE_PROPERTY, old, accessType);
 	}
 	
 	public XmlAccessType getDefaultAccessType() {
@@ -284,19 +289,28 @@ public class GenericJavaClassMapping
 		firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, old, access);
 	}
 	
-	protected void initDefaultAccessType() {
-		this.defaultAccessType = buildDefaultAccessType();
+	protected void initAccessType() {
+		this.specifiedAccessType = getResourceAccessType();
 	}
 	
-	protected void updateDefaultAccessType() {
+	protected void syncAccessType() {
+		setSpecifiedAccessType(getResourceAccessType());
+	}
+	
+	protected void updateAccessType() {
 		setDefaultAccessType_(buildDefaultAccessType());
+		
+		XmlAccessType actual = (this.specifiedAccessType != null) ?
+				this.specifiedAccessType
+				: this.defaultAccessType;
+		setAccessType_(actual);
 	}
 	
 	/**
 	 * Default access type is determined by the following, in order of precedence:
 	 * - @XmlAccessorType annotation on a mapped (or transient, apparently) super class
 	 * - @XmlAccessorType annotation on the package
-	 * - default access type of {@link PUBLIC_MEMBER}
+	 * - default access type of {@link XmlAccessType#PUBLIC_MEMBER}
 	 */
 	protected XmlAccessType buildDefaultAccessType() {
 		XmlAccessType accessType = getSuperclassAccessType();
@@ -333,14 +347,6 @@ public class GenericJavaClassMapping
 	
 	protected XmlAccessType getResourceAccessType() {
 		return XmlAccessType.fromJavaResourceModel(getXmlAccessorTypeAnnotation().getValue());
-	}
-	
-	protected void initSpecifiedAccessType() {
-		this.specifiedAccessType = getResourceAccessType();
-	}
-	
-	protected void syncSpecifiedAccessType() {
-		setSpecifiedAccessType_(getResourceAccessType());
 	}
 	
 	
@@ -605,8 +611,8 @@ public class GenericJavaClassMapping
 	 */
 	protected Iterable<JaxbPersistentAttribute> getOtherInheritedAttributes() {
 		return IterableTools.children(
-						ObjectTools.chain(getSuperclass(), JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
-						JaxbClassMapping.ATTRIBUTES_TRANSFORMER);
+				ObjectTools.chain(getSuperclass(), JaxbClassMapping.SUPER_CLASS_TRANSFORMER),
+				JaxbClassMapping.ATTRIBUTES_TRANSFORMER);
 	}
 	
 	

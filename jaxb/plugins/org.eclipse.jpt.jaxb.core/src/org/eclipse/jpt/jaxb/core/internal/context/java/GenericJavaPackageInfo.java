@@ -45,7 +45,8 @@ public class GenericJavaPackageInfo
 	protected final JavaResourcePackage resourcePackage;
 
 	protected final JavaXmlSchema xmlSchema;
-
+	
+	protected XmlAccessType accessType;
 	protected XmlAccessType specifiedAccessType;
 
 	protected XmlAccessOrder specifiedAccessOrder;
@@ -58,10 +59,10 @@ public class GenericJavaPackageInfo
 		super(parent);
 		this.resourcePackage = resourcePackage;
 		this.xmlSchema = getFactory().buildJavaXmlSchema(this);
-		this.specifiedAccessType = getResourceAccessType();
+		initAccessType();
 		this.specifiedAccessOrder = getResourceAccessOrder();
-		this.xmlSchemaTypeContainer = this.buildXmlSchemaTypeContainer();
-		this.xmlJavaTypeAdapterContainer = this.buildXmlJavaTypeAdapterContainer();
+		this.xmlSchemaTypeContainer = buildXmlSchemaTypeContainer();
+		this.xmlJavaTypeAdapterContainer = buildXmlJavaTypeAdapterContainer();
 	}
 	
 	
@@ -84,18 +85,19 @@ public class GenericJavaPackageInfo
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.xmlSchema.synchronizeWithResourceModel();
-		this.setSpecifiedAccessType_(this.getResourceAccessType());
-		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
-		this.syncXmlSchemaTypes();
-		this.syncXmlJavaTypeAdapters();
+		syncAccessType();
+		setSpecifiedAccessOrder_(this.getResourceAccessOrder());
+		syncXmlSchemaTypes();
+		syncXmlJavaTypeAdapters();
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		this.xmlSchema.update();
-		this.updateXmlSchemaTypes();
-		this.updateXmlJavaTypeAdapters();
+		updateAccessType();
+		updateXmlSchemaTypes();
+		updateXmlJavaTypeAdapters();
 	}
 
 
@@ -104,36 +106,44 @@ public class GenericJavaPackageInfo
 	public JavaResourcePackage getResourcePackage() {
 		return this.resourcePackage;
 	}
-
+	
+	
 	// ********** xml schema **********
-
+	
 	public JavaXmlSchema getXmlSchema() {
 		return this.xmlSchema;
 	}
-
+	
+	
 	// ********** access type **********
-
+	
 	public XmlAccessType getAccessType() {
-		return (this.specifiedAccessType != null) ? this.specifiedAccessType : this.getDefaultAccessType();
+		return this.accessType;
 	}
-
+	
+	protected void setAccessType_(XmlAccessType accessType) {
+		XmlAccessType old = this.accessType;
+		this.accessType = accessType;
+		firePropertyChanged(ACCESS_TYPE_PROPERTY, old, accessType);
+	}
+	
+	public XmlAccessType getDefaultAccessType() {
+		return XmlAccessType.PUBLIC_MEMBER;
+	}
+	
 	public XmlAccessType getSpecifiedAccessType() {
 		return this.specifiedAccessType;
 	}
 	
 	public void setSpecifiedAccessType(XmlAccessType access) {
-		this.getAccessorTypeAnnotation().setValue(XmlAccessType.toJavaResourceModel(access));
-		this.setSpecifiedAccessType_(access);
+		getAccessorTypeAnnotation().setValue(XmlAccessType.toJavaResourceModel(access));
+		setSpecifiedAccessType_(access);
 	}
-
+	
 	protected void setSpecifiedAccessType_(XmlAccessType access) {
 		XmlAccessType old = this.specifiedAccessType;
 		this.specifiedAccessType = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, old, access);
-	}
-
-	public XmlAccessType getDefaultAccessType() {
-		return XmlAccessType.PUBLIC_MEMBER;
+		firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, old, access);
 	}
 	
 	protected XmlAccessType getResourceAccessType() {
@@ -143,12 +153,30 @@ public class GenericJavaPackageInfo
 	protected XmlAccessorTypeAnnotation getAccessorTypeAnnotation() {
 		return (XmlAccessorTypeAnnotation) this.resourcePackage.getNonNullAnnotation(JAXB.XML_ACCESSOR_TYPE);
 	}
-
-
+	
+	protected void initAccessType() {
+		XmlAccessType specified = getResourceAccessType();
+		XmlAccessType actual = (specified != null) ? specified : getDefaultAccessType();
+		this.specifiedAccessType = specified;
+		this.accessType = actual;
+	}
+	
+	protected void syncAccessType() {
+		setSpecifiedAccessType_(getResourceAccessType());
+	}
+	
+	protected void updateAccessType() {
+		XmlAccessType actual = (this.specifiedAccessType != null) ? 
+				this.specifiedAccessType 
+				: getDefaultAccessType();
+		setAccessType_(actual);
+	}
+	
+	
 	// ********** access order **********
 
 	public XmlAccessOrder getAccessOrder() {
-		return (this.specifiedAccessOrder != null) ? this.specifiedAccessOrder : this.getDefaultAccessOrder();
+		return (this.specifiedAccessOrder != null) ? this.specifiedAccessOrder : getDefaultAccessOrder();
 	}
 
 	public XmlAccessOrder getSpecifiedAccessOrder() {
@@ -156,14 +184,14 @@ public class GenericJavaPackageInfo
 	}
 	
 	public void setSpecifiedAccessOrder(XmlAccessOrder accessOrder) {
-		this.getAccessorOrderAnnotation().setValue(XmlAccessOrder.toJavaResourceModel(accessOrder));
-		this.setSpecifiedAccessOrder_(accessOrder);
+		getAccessorOrderAnnotation().setValue(XmlAccessOrder.toJavaResourceModel(accessOrder));
+		setSpecifiedAccessOrder_(accessOrder);
 	}
 
 	protected void setSpecifiedAccessOrder_(XmlAccessOrder accessOrder) {
 		XmlAccessOrder old = this.specifiedAccessOrder;
 		this.specifiedAccessOrder = accessOrder;
-		this.firePropertyChanged(SPECIFIED_ACCESS_ORDER_PROPERTY, old, accessOrder);
+		firePropertyChanged(SPECIFIED_ACCESS_ORDER_PROPERTY, old, accessOrder);
 	}
 
 	public XmlAccessOrder getDefaultAccessOrder() {
@@ -171,7 +199,7 @@ public class GenericJavaPackageInfo
 	}
 	
 	protected XmlAccessOrder getResourceAccessOrder() {
-		return XmlAccessOrder.fromJavaResourceModel(this.getAccessorOrderAnnotation().getValue());
+		return XmlAccessOrder.fromJavaResourceModel(getAccessorOrderAnnotation().getValue());
 	}
 
 	protected XmlAccessorOrderAnnotation getAccessorOrderAnnotation() {
@@ -195,7 +223,7 @@ public class GenericJavaPackageInfo
 	}
 
 	public void removeXmlSchemaType(XmlSchemaType xmlSchemaType) {
-		this.removeXmlSchemaType(this.xmlSchemaTypeContainer.indexOfContextElement(xmlSchemaType));
+		removeXmlSchemaType(this.xmlSchemaTypeContainer.indexOfContextElement(xmlSchemaType));
 	}
 
 	public void removeXmlSchemaType(int index) {
@@ -336,7 +364,7 @@ public class GenericJavaPackageInfo
 		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}		
-		for (XmlSchemaType xmlSchemaType : this.getXmlSchemaTypes()) {
+		for (XmlSchemaType xmlSchemaType : getXmlSchemaTypes()) {
 			result = xmlSchemaType.getCompletionProposals(pos);
 			if (!IterableTools.isEmpty(result)) {
 				return result;

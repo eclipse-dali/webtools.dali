@@ -63,6 +63,7 @@ public class OxmJavaTypeImpl
 	protected XmlAccessOrder specifiedAccessOrder;
 	
 	// accessor-type
+	protected XmlAccessType accessType;
 	protected XmlAccessType defaultAccessType;
 	protected XmlAccessType specifiedAccessType;
 	
@@ -81,8 +82,7 @@ public class OxmJavaTypeImpl
 		initSuperTypeName();
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
-		initSpecifiedAccessType();
-		initDefaultAccessType();
+		initAccessType();
 		initSpecifiedAttributes();
 	}
 	
@@ -123,7 +123,7 @@ public class OxmJavaTypeImpl
 		setSpecifiedName_(buildSpecifiedName());
 		syncSuperTypeName();
 		syncSpecifiedAccessOrder();
-		syncSpecifiedAccessType();
+		syncAccessType();
 		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
 	}
 	
@@ -133,7 +133,7 @@ public class OxmJavaTypeImpl
 		updateSuperTypeName();
 		updateSuperclass();
 		updateDefaultAccessOrder();
-		updateDefaultAccessType();
+		updateAccessType();
 		ContextContainerTools.update(this.specifiedAttributeContainerAdapter);
 	}
 	
@@ -355,10 +355,16 @@ public class OxmJavaTypeImpl
 	}
 	
 	
-	// ***** XmlAccessorType *****
+	// ***** xml-accessor-type *****
 	
 	public XmlAccessType getAccessType() {
-		return (this.specifiedAccessType != null) ? this.specifiedAccessType : this.defaultAccessType;
+		return this.accessType;
+	}
+	
+	protected void setAccessType_(XmlAccessType accessType) {
+		XmlAccessType old = this.accessType;
+		this.accessType = accessType;
+		firePropertyChanged(ACCESS_TYPE_PROPERTY, old, accessType);
 	}
 	
 	public XmlAccessType getDefaultAccessType() {
@@ -376,8 +382,8 @@ public class OxmJavaTypeImpl
 	}
 	
 	public void setSpecifiedAccessType(XmlAccessType access) {
-		getETypeMapping().setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(access));
 		setSpecifiedAccessType_(access);
+		getETypeMapping().setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(access));
 	}
 	
 	protected void setSpecifiedAccessType_(XmlAccessType access) {
@@ -386,12 +392,21 @@ public class OxmJavaTypeImpl
 		firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, old, access);
 	}
 	
-	protected void initDefaultAccessType() {
-		this.defaultAccessType = buildDefaultAccessType();
+	protected void initAccessType() {
+		this.specifiedAccessType = buildSpecifiedAccessType();
 	}
 	
-	protected void updateDefaultAccessType() {
+	protected void syncAccessType() {
+		setSpecifiedAccessType_(buildSpecifiedAccessType());
+	}
+	
+	protected void updateAccessType() {
 		setDefaultAccessType_(buildDefaultAccessType());
+		
+		XmlAccessType actual = (this.specifiedAccessType != null) ?
+				this.specifiedAccessType
+				: this.defaultAccessType;
+		setAccessType_(actual);
 	}
 	
 	/**
@@ -427,14 +442,6 @@ public class OxmJavaTypeImpl
 		}
 		
 		return XmlAccessType.PUBLIC_MEMBER;
-	}
-	
-	protected void initSpecifiedAccessType() {
-		this.specifiedAccessType = buildSpecifiedAccessType();
-	}
-	
-	protected void syncSpecifiedAccessType() {
-		setSpecifiedAccessType_(buildSpecifiedAccessType());
 	}
 	
 	protected XmlAccessType buildSpecifiedAccessType() {

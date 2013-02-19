@@ -39,6 +39,7 @@ public class OxmXmlBindingsImpl
 	
 	protected EXmlBindings eXmlBindings;
 	
+	protected XmlAccessType accessType;
 	protected XmlAccessType specifiedAccessType;
 	
 	protected XmlAccessOrder specifiedAccessOrder;
@@ -58,7 +59,7 @@ public class OxmXmlBindingsImpl
 	public OxmXmlBindingsImpl(OxmFile parent, EXmlBindings eXmlBindings) {
 		super(parent);
 		this.eXmlBindings = eXmlBindings;
-		this.specifiedAccessType = buildSpecifiedAccessType();
+		initAccessType();
 		this.specifiedAccessOrder = buildSpecifiedAccessOrder();
 		this.xmlMappingMetadataComplete = buildXmlMappingMetadataComplete();
 		this.specifiedPackageName = buildSpecifiedPackageName();
@@ -83,7 +84,7 @@ public class OxmXmlBindingsImpl
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		setSpecifiedAccessType_(buildSpecifiedAccessType());
+		syncAccessType();
 		setSpecifiedAccessOrder_(buildSpecifiedAccessOrder());
 		setXmlMappingMetadataComplete_(buildXmlMappingMetadataComplete());
 		setSpecifiedPackageName_(buildSpecifiedPackageName());
@@ -105,7 +106,13 @@ public class OxmXmlBindingsImpl
 	// ***** xml access type *****
 	
 	public XmlAccessType getAccessType() {
-		return (this.specifiedAccessType != null) ? this.specifiedAccessType : getDefaultAccessType();
+		return this.accessType;
+	}
+	
+	protected void setAccessType_(XmlAccessType accessType) {
+		XmlAccessType old = this.accessType;
+		this.accessType = accessType;
+		firePropertyChanged(ACCESS_TYPE_PROPERTY, old, accessType);
 	}
 	
 	public XmlAccessType getDefaultAccessType() {
@@ -117,8 +124,8 @@ public class OxmXmlBindingsImpl
 	}
 	
 	public void setSpecifiedAccessType(XmlAccessType newAccessType) {
-		this.eXmlBindings.setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(newAccessType));
 		setSpecifiedAccessType_(newAccessType);
+		this.eXmlBindings.setXmlAccessorType(ELXmlAccessType.toOxmResourceModel(newAccessType));
 	}
 	
 	protected void setSpecifiedAccessType_(XmlAccessType newAccessType) {
@@ -127,8 +134,22 @@ public class OxmXmlBindingsImpl
 		firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, oldAccessType, newAccessType);
 	}
 	
-	protected XmlAccessType buildSpecifiedAccessType() {
+	protected XmlAccessType getResourceAccessType() {
 		return ELXmlAccessType.fromOxmResourceModel(this.eXmlBindings.getXmlAccessorType());
+	}
+	
+	protected void initAccessType() {
+		XmlAccessType specified = getResourceAccessType();
+		XmlAccessType actual = (specified != null) ? specified : getDefaultAccessType();
+		this.specifiedAccessType = specified;
+		this.accessType = actual;
+	}
+	
+	protected void syncAccessType() {
+		XmlAccessType specified = getResourceAccessType();
+		XmlAccessType actual = (specified != null) ? specified : getDefaultAccessType();
+		setSpecifiedAccessType_(specified);
+		setAccessType_(actual);
 	}
 	
 	

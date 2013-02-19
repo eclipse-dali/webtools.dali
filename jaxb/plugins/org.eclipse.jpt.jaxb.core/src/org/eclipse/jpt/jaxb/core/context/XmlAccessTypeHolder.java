@@ -24,6 +24,11 @@ public interface XmlAccessTypeHolder
 		extends JaxbContextNode {
 	
 	/**
+	 * String constant associated with changes to the access type
+	 */
+	String ACCESS_TYPE_PROPERTY = "accessType"; //$NON-NLS-1$
+	
+	/**
 	 * Return the access type, whether specified or defaulted.
 	 * This should never return null since at least the default will be set
 	 */
