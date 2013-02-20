@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.text.edits.DeleteEdit;
@@ -307,10 +306,8 @@ public abstract class AbstractOrmManagedType
 	protected void validateClass(List<IMessage> messages) {
 		if (StringTools.isBlank(this.class_)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS,
-					this,
 					this.getClassTextRange()
 				)
 			);
@@ -322,12 +319,10 @@ public abstract class AbstractOrmManagedType
 	protected void validateClassResolves(List<IMessage> messages) {
 		if (this.javaManagedType == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS,
-					new String[] {this.getName()},
-					this,
-					this.getClassTextRange()
+					this.getClassTextRange(),
+					this.getName()
 				)
 			);
 		}
