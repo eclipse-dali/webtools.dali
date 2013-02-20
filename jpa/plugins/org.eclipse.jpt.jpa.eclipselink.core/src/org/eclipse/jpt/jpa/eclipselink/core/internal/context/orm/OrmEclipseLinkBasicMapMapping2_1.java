@@ -28,9 +28,9 @@ public class OrmEclipseLinkBasicMapMapping2_1
 		super.validate(messages, reporter);
 		messages.add(
 			this.buildValidationMessage(
-				JptJpaEclipseLinkCoreValidationMessages.BASIC_MAP_MAPPING_DEPRECATED,
-				IMessage.NORMAL_SEVERITY,
 				this.getValidationTextRange(),
+				IMessage.NORMAL_SEVERITY,
+				JptJpaEclipseLinkCoreValidationMessages.BASIC_MAP_MAPPING_DEPRECATED,
 				this.getName()
 			)
 		);

@@ -242,8 +242,9 @@ public class GenericJavaXmlElementRef
 		if (StringTools.isBlank(fqType)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE,
-							getTypeTextRange()));
+							getTypeTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE
+						));
 		}
 		else if (! StringTools.isBlank(this.specifiedType)
 				// verify that type actually exists before validating
@@ -252,8 +253,8 @@ public class GenericJavaXmlElementRef
 			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeValueType)) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
 								getTypeTextRange(),
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
 								attributeValueType));
 								
 			}
@@ -263,8 +264,8 @@ public class GenericJavaXmlElementRef
 			if (typeMapping != null && ! typeMapping.hasRootElementInHierarchy()) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
 								getTypeTextRange(),
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
 								attributeValueType));
 			}
 		}
@@ -350,8 +351,9 @@ public class GenericJavaXmlElementRef
 			if (registry == null) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_REGISTRY,
-								getValidationTextRange()));
+								getValidationTextRange(),
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_REGISTRY
+							));
 				return;
 			}
 			
@@ -363,9 +365,10 @@ public class GenericJavaXmlElementRef
 			}
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
 							getValidationTextRange(),
-							getNamespace(), getName()));
+							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
+							getNamespace(),
+							getName()));
 							
 		}
 	}

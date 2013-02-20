@@ -971,8 +971,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						this.getVirtualPersistentAttributeTextRange(),
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						getName()
 					)
 				);
@@ -980,8 +980,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			else {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
-						this.getValidationTextRange()
+						this.getValidationTextRange(),
+						JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE
 					)
 				);
 			}
@@ -1028,16 +1028,16 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						this.getVirtualPersistentAttributeTextRange(),
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						this.getName()
 					)
 				);
 			} else {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
-						this.getValidationTextRange()
+						this.getValidationTextRange(),
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED
 					)
 				);
 			}
@@ -1052,8 +1052,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getVirtualPersistentAttributeTextRange(),
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getName(),
 						this.getFullyQualifiedMapKeyClass()
 					)
@@ -1062,8 +1062,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			else {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getMapKeyClassTextRange(),
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getFullyQualifiedMapKeyClass()
 					)
 				);

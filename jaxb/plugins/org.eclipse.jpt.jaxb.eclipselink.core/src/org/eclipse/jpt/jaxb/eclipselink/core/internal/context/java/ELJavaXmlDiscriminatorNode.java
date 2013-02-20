@@ -116,18 +116,20 @@ public class ELJavaXmlDiscriminatorNode
 		if (StringTools.isBlank(this.value)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XML_DISCRIMINATOR_NODE__NOT_SPECIFIED,
 								ELJavaXmlDiscriminatorNode.this,
-								getValueTextRange()));
+								getValueTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XML_DISCRIMINATOR_NODE__NOT_SPECIFIED
+							));
 			return;
 		}
 		
 		if (this.value.startsWith(XPath.DELIM)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlDiscriminatorNode.this,
-								getValueTextRange()));
+								getValueTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
+							));
 			return;
 		}
 		

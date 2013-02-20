@@ -323,7 +323,7 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return this.name;
 	}
 

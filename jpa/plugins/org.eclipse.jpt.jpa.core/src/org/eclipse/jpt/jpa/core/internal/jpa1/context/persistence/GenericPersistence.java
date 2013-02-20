@@ -312,9 +312,10 @@ public class GenericPersistence
 		if (! this.getLatestDocumentVersion().equals(this.xmlPersistence.getDocumentVersion())) {
 			messages.add(
 					this.buildValidationMessage(
-						JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST,
+						this.xmlPersistence.getVersionTextRange(),
 						IMessage.LOW_SEVERITY,
-						this.xmlPersistence.getVersionTextRange()));
+						JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST
+					));
 		}
 	}
 
@@ -331,9 +332,9 @@ public class GenericPersistence
 		if (this.xmlPersistence.getPersistenceUnits().size() > 1) {
 			messages.add(
 				this.buildValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
+					this.getValidationTextRange(),
 					IMessage.NORMAL_SEVERITY,
-					this.getValidationTextRange()
+					JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS
 				)
 			);
 		}
@@ -343,8 +344,8 @@ public class GenericPersistence
 		if (this.persistenceUnit == null) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT
 				)
 			);
 			return;

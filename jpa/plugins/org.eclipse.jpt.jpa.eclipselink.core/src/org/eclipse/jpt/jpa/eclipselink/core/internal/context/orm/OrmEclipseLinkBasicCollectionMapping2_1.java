@@ -28,9 +28,9 @@ public class OrmEclipseLinkBasicCollectionMapping2_1
 		super.validate(messages, reporter);
 		messages.add(
 			this.buildValidationMessage(
-				JptJpaEclipseLinkCoreValidationMessages.BASIC_COLLECTION_MAPPING_DEPRECATED,
-				IMessage.NORMAL_SEVERITY,
 				this.getValidationTextRange(),
+				IMessage.NORMAL_SEVERITY,
+				JptJpaEclipseLinkCoreValidationMessages.BASIC_COLLECTION_MAPPING_DEPRECATED,
 				this.getName()
 			)
 		);

@@ -50,8 +50,9 @@ public class GenericJavaPackageXmlSchemaType
 		if (fqType == null || XmlSchemaTypeAnnotation.DEFAULT_TYPE.equals(fqType)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_NOT_SPECIFIED_ON_PACKAGE,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_NOT_SPECIFIED_ON_PACKAGE
+						));
 		}
 	}
 }

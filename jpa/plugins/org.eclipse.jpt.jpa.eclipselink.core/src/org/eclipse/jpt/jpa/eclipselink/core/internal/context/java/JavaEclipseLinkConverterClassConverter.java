@@ -111,10 +111,10 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED,
-					this.getConverterClassTextRange()
-				)
-			);
+						this.getConverterClassTextRange(),
+						JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED
+					)
+				);
 			return;
 		}
 
@@ -126,8 +126,8 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 		if ( ! this.converterClassImplementsInterface(this.getEclipseLinkConverterInterface())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					this.getEclipseLinkConverterInterfaceErrorMessage(),
 					this.getConverterClassTextRange(),
+					this.getEclipseLinkConverterInterfaceErrorMessage(),
 					this.getFullyQualifiedConverterClass()
 				)
 			);
@@ -137,8 +137,8 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages) {
 		messages.add(
 			this.buildErrorValidationMessage(
-				JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
 				this.getConverterClassTextRange(),
+				JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
 				this.getFullyQualifiedConverterClass()
 			)
 		);

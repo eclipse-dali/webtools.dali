@@ -164,9 +164,10 @@ public class GenericJavaXmlElementRefs
 			if (! isJaxbElement && xmlElementRefTypes.count(typeName) > 1) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_TYPE,
 								xmlElementRef,
-								xmlElementRef.getTypeTextRange(), typeName));
+								xmlElementRef.getTypeTextRange(),
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_TYPE,
+								typeName));
 			}
 			
 			String xmlElementNamespace = xmlElementRef.getQName().getNamespace();
@@ -174,9 +175,10 @@ public class GenericJavaXmlElementRefs
 			if (isJaxbElement && xmlElementRefQnames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_QNAME,
 								xmlElementRef,
-								xmlElementRef.getQName().getNameTextRange(), xmlElementName));
+								xmlElementRef.getQName().getNameTextRange(),
+								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_QNAME,
+								xmlElementName));
 			}
 		}
 	}

@@ -237,9 +237,10 @@ public class XPath {
 			if (getNextStep() != null) {
 				messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT,
 								context.getContextObject().getResource(),
-								getTextRange(context)));
+								getTextRange(context),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT
+							));
 				return;
 			}
 			
@@ -254,10 +255,11 @@ public class XPath {
 			if (xsdAttribute == null) {
 				messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
 								context.getContextObject().getResource(),
 								getTextRange(context),
-								namespace, this.localName));
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
+								namespace,
+								this.localName));
 				return null;
 			}
 			else {
@@ -303,10 +305,11 @@ public class XPath {
 			if (xsdElement == null) {
 				messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ELEMENT,
 								context.getContextObject().getResource(),
 								getTextRange(context),
-								namespace, this.localName));
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ELEMENT,
+								namespace,
+								this.localName));
 				return null;
 			}
 			else {
@@ -349,9 +352,9 @@ public class XPath {
 				Context context, XsdTypeDefinition previousType, List<IMessage> messages) {
 			
 			messages. add(ValidationMessageTools.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
 							context.getContextObject().getResource(),
 							getTextRange(context),
+							JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
 							getValue()));
 			return;
 		}
@@ -411,9 +414,9 @@ public class XPath {
 			if (namespace == null) {
 				messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_NS_PREFIX,
 								context.getContextObject().getResource(),
 								getTextRange(context),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_NS_PREFIX,
 								this.nsPrefix));
 			}
 			
@@ -459,9 +462,10 @@ public class XPath {
 			if (getIndex() != 0) {
 				messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT,
 								context.getContextObject().getResource(),
-								getTextRange(context)));
+								getTextRange(context),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT
+							));
 				return;
 			}
 			
@@ -574,9 +578,10 @@ public class XPath {
 			if (getNextStep() != null) {
 				messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT,
 								context.getContextObject().getResource(),
-								getTextRange(context)));
+								getTextRange(context),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT
+							));
 			}
 		}
 	}

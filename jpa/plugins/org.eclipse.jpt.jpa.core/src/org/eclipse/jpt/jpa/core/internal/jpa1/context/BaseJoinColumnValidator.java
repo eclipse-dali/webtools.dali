@@ -84,9 +84,9 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 
 	protected IMessage buildUnresolvedReferencedColumnNameMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.column.getResource(),
 				this.column.getReferencedColumnNameTextRange(),
+				message,
 				this.column.getReferencedColumnName(),
 				this.column.getReferencedColumnDbTable().getName()
 			);
@@ -94,9 +94,9 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 
 	protected IMessage buildVirtualAttributeUnresolvedReferencedColumnNameMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnresolvedReferencedColumnNameMessage(),
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
+				this.getVirtualAttributeUnresolvedReferencedColumnNameMessage(),
 				this.persistentAttribute.getName(),
 				this.column.getReferencedColumnName(),
 				this.column.getReferencedColumnDbTable().getName()
@@ -115,17 +115,17 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 
 	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.column.getResource(),
-				this.column.getNameValidationTextRange()
+				this.column.getNameValidationTextRange(),
+				message
 			);
 	}
 
 	protected IMessage buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
+				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
 				this.persistentAttribute.getName()
 			);
 	}
@@ -142,17 +142,17 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 
 	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.column.getResource(),
-				this.column.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange(),
+				message
 			);
 	}
 
 	protected IMessage buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
+				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
 				this.persistentAttribute.getName()
 			);
 	}

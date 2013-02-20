@@ -214,9 +214,10 @@ public class GenericJavaXmlAttributeMapping
 		if (! xsdFeature.typeIsValid(expectedSchemaType, isItemType)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
 							this.qName.getNameTextRange(),
-							getValueTypeName(), xsdFeature.getName()));
+							JptJaxbCoreValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
+							getValueTypeName(),
+							xsdFeature.getName()));
 		}
 	}
 	

@@ -90,7 +90,7 @@ public class GenericJavaAttributeOverride
 
 	// ********** column owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return this.name;
 	}
 
@@ -144,8 +144,8 @@ public class GenericJavaAttributeOverride
 		if (this.attributeIsDerivedId()) {
 			messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED,
-						this.getValidationTextRange()
+						this.getValidationTextRange(),
+						JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED
 					)
 				);
 

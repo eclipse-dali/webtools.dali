@@ -42,9 +42,9 @@ public class GenericMappedSuperclassPrimaryKeyValidator extends
 		if (!idClass.getJavaResourceType().hasPublicNoArgConstructor()) {
 			messages.add(
 					ValidationMessageTools.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR,
 						typeMapping().getResource(),
 						idClassReference().getValidationTextRange(),
+						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR,
 						idClass.getName()
 					)
 				);

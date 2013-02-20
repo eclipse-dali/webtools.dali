@@ -114,8 +114,8 @@ public class JavaEclipseLinkVersionMapping
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 								this.getVirtualPersistentAttributeTextRange(),
+								JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 								this.getName()
 						)
 				);
@@ -123,8 +123,8 @@ public class JavaEclipseLinkVersionMapping
 			else {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 								this.getValidationTextRange(),
+								JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 								this.getName()
 						)
 				);

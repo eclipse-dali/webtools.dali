@@ -230,7 +230,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return this.name;
 	}
 
@@ -279,9 +279,9 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 		if (! ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getFullyQualifiedAttributeType())) {
 			messages.add(
 					this.buildValidationMessage(
-							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-							IMessage.NORMAL_SEVERITY,
 							this.getNameTextRange(),
+							IMessage.NORMAL_SEVERITY,
+							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 							this.getName()
 					)
 			);

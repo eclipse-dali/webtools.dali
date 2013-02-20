@@ -458,8 +458,9 @@ public abstract class AbstractJavaTypeMapping
 							buildDefaultNamespace())) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
-						getXmlTypeAnnotation().getNamespaceTextRange()));
+						getXmlTypeAnnotation().getNamespaceTextRange(),
+						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE
+					));
 			}
 		}
 		

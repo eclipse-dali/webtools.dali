@@ -40,10 +40,10 @@ public class GenericOrmPersistentAttribute
 			if ((javaPersistentType != null) && (javaPersistentType.getAttributeNamed(this.javaPersistentAttribute.getName()) == null)) {
 				messages.add(
 						this.buildValidationMessage(
-							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
-							IMessage.NORMAL_SEVERITY,
 							this.mapping,
 							this.mapping.getNameTextRange(),
+							IMessage.NORMAL_SEVERITY,
+							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
 							this.getName(),
 							this.getOwningPersistentType().getClass_()
 						)

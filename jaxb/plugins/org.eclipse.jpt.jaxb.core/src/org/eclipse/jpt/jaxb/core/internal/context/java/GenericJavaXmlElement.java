@@ -362,8 +362,9 @@ public class GenericJavaXmlElement
 		if (StringTools.isBlank(fqType)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
-							getTypeTextRange()));
+							getTypeTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE
+						));
 		}
 		else {
 			//TODO - the following check can be removed once proper binary support is added to JAXB projects
@@ -379,8 +380,8 @@ public class GenericJavaXmlElement
 				if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJaxbCoreValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
 									getTypeTextRange(),
+									JptJaxbCoreValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
 									attributeBaseType));
 				}
 			}
@@ -422,9 +423,10 @@ public class GenericJavaXmlElement
 		if (! xsdElement.typeIsValid(expectedSchemaType, this.context.hasXmlList())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
 							this.qName.getNameTextRange(),
-							typeName, xsdElement.getName()));
+							JptJaxbCoreValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
+							typeName,
+							xsdElement.getName()));
 		}
 	}
 	

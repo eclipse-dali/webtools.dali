@@ -66,8 +66,9 @@ public class GenericJavaXmlValueMapping
 		if (! xsdClassType.hasTextContent()) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_VALUE__NO_TEXT_CONTENT,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_VALUE__NO_TEXT_CONTENT
+						));
 			return;
 		}
 		
@@ -81,8 +82,8 @@ public class GenericJavaXmlValueMapping
 		if (! xsdType.typeIsValid(expectedSchemaType, isXmlList())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_VALUE__INVALID_SCHEMA_TYPE,
 							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_VALUE__INVALID_SCHEMA_TYPE,
 							getValueTypeName()));
 		}
 	}

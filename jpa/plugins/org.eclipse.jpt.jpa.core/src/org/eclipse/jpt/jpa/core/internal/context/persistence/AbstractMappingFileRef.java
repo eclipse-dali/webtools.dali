@@ -277,8 +277,8 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		if (StringTools.isBlank(this.fileName)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE
 				)
 			);
 			return;
@@ -296,19 +296,15 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		IFile file = this.getPlatformFile();
 		if ( ! file.exists()) {
 			return this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
 					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
 					this.fileName
 				);
 		}
 		ValidationMessage msg = this.mappingFileContentIsUnsupported() ?
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE;
-		return ValidationMessageTools.buildErrorValidationMessage(
-					msg,
-					file,
-					file.getName()
-				);
+		return ValidationMessageTools.buildErrorValidationMessage(file, msg, file.getName());
 	}
 
 	protected IFile getPlatformFile() {

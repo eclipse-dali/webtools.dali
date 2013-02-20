@@ -268,8 +268,8 @@ public abstract class AbstractQName
 		if (StringTools.isBlank(getName())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 					getNameTextRange(),
+					JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 					getReferencedComponentTypeDescription()
 				)
 			);
@@ -280,8 +280,8 @@ public abstract class AbstractQName
 	
 	protected IMessage getUnresolveSchemaComponentMessage() {
 		return this.buildErrorValidationMessage(
-				JptJaxbCoreValidationMessages.QNAME__UNRESOLVED_COMPONENT,
 				getNameTextRange(),
+				JptJaxbCoreValidationMessages.QNAME__UNRESOLVED_COMPONENT,
 				getReferencedComponentTypeDescription(),
 				getNamespace(),
 				getName()

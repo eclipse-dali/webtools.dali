@@ -59,8 +59,9 @@ public class GenericJavaAttributeMappingXmlSchemaType
 		if (fqType != null && ! XmlSchemaTypeAnnotation.DEFAULT_TYPE.equals(fqType)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_SPECIFIED_ON_ATTRIBUTE,
-							getTypeTextRange()));
+							getTypeTextRange(),
+							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_SPECIFIED_ON_ATTRIBUTE
+						));
 		}
 	}
 }

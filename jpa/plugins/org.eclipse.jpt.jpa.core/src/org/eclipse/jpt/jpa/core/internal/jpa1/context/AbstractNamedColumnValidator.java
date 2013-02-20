@@ -91,9 +91,9 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 
 	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
+				message,
 				this.column.getName(),
 				this.column.getDbTable().getName()
 			);
@@ -103,9 +103,9 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnresolvedNameMessage(),
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
+				this.getVirtualAttributeUnresolvedNameMessage(),
 				this.persistentAttribute.getName(),
 				this.column.getName(),
 				this.column.getDbTable().getName()
@@ -191,9 +191,9 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 	
 		protected IMessage buildTableNotValidMessage_() {
 			return ValidationMessageTools.buildErrorValidationMessage(
-					this.getColumnTableNotValidMessage(),
 					this.getColumn().getResource(),
 					this.getColumn().getTableNameValidationTextRange(),
+					this.getColumnTableNotValidMessage(),
 					this.getColumn().getTableName(),
 					this.getColumn().getName(),
 					this.getColumnTableDescriptionMessage()
@@ -210,9 +210,9 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
 			return ValidationMessageTools.buildErrorValidationMessage(
-					this.getVirtualAttributeColumnTableNotValidMessage(),
 					this.getColumn().getResource(),
 					AbstractNamedColumnValidator.this.getVirtualAttributeTextRange(),
+					this.getVirtualAttributeColumnTableNotValidMessage(),
 					AbstractNamedColumnValidator.this.persistentAttribute.getName(),
 					this.getColumn().getTableName(),
 					this.getColumn().getName(),

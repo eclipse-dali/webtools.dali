@@ -245,8 +245,9 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJaxbCoreValidationMessages.XML_LIST__ATTRIBUTE_NOT_COLLECTION_TYPE,
-					getXmlListValidationTextRange()));
+					getXmlListValidationTextRange(),
+					JptJaxbCoreValidationMessages.XML_LIST__ATTRIBUTE_NOT_COLLECTION_TYPE
+				));
 		}
 		else {
 			XsdTypeDefinition xsdType = getDataTypeXsdTypeDefinition();
@@ -256,10 +257,10 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 				
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_LIST__ITEM_TYPE_NOT_MAPPED_TO_VALID_SCHEMA_TYPE,
 								getValidationTextRange(),
+								JptJaxbCoreValidationMessages.XML_LIST__ITEM_TYPE_NOT_MAPPED_TO_VALID_SCHEMA_TYPE,
 								getValueTypeName()
-								));
+							));
 			}
 		}
 	}

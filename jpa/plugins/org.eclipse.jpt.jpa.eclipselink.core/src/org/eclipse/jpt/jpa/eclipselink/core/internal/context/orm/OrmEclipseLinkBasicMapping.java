@@ -262,8 +262,8 @@ public class OrmEclipseLinkBasicMapping
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						this.getAttributeTypeTextRange(),
+						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						this.getName()
 					)
 				);
@@ -277,8 +277,8 @@ public class OrmEclipseLinkBasicMapping
 				if (jdtType == null) {
 					messages.add(
 						this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 							this.getAttributeTypeTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 							this.getFullyQualifiedAttributeType()
 						)
 					);

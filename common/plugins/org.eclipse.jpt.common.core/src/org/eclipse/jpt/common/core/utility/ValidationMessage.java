@@ -40,5 +40,5 @@ public interface ValidationMessage {
 	 * to be bound to the message template.
 	 * @see IMessage#getSeverity()
 	 */
-	IMessage buildValidationMessage(int defaultSeverity, IResource target, TextRange textRange, Object... args);
+	IMessage buildValidationMessage(IResource target, TextRange textRange, int defaultSeverity, Object... args);
 }

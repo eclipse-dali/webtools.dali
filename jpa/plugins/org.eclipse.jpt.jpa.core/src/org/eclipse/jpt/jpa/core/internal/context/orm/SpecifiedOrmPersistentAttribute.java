@@ -521,9 +521,9 @@ public abstract class SpecifiedOrmPersistentAttribute
 		}
 		messages.add(
 			this.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
 				this.mapping,
 				this.mapping.getNameTextRange(),
+				JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
 				name,
 				javaType.getName()
 			)

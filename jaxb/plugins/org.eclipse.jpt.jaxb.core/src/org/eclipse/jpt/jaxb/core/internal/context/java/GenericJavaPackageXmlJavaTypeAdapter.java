@@ -37,8 +37,9 @@ public class GenericJavaPackageXmlJavaTypeAdapter
 		if (getSpecifiedType() == null || getFullyQualifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJaxbCoreValidationMessages.PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED,
-					getAnnotation().getTypeTextRange()));
+					getAnnotation().getTypeTextRange(),
+					JptJaxbCoreValidationMessages.PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED
+				));
 		}
 
 	}

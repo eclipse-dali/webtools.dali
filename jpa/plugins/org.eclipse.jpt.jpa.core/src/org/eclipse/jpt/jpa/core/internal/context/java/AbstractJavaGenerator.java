@@ -82,8 +82,8 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 		if (StringTools.isBlank(this.name)){
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.GENERATOR_NAME_UNDEFINED,
-					this.getNameTextRange()
+					this.getNameTextRange(),
+					JptJpaCoreValidationMessages.GENERATOR_NAME_UNDEFINED
 				)
 			);
 		}

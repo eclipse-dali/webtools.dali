@@ -1488,8 +1488,8 @@ public abstract class AbstractJpaProject
 		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion, enablementVariables)) {
 			messages.add(
 				ValidationMessageTools.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
-					this.getResource()
+					this.getResource(),
+					JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER
 				)
 			);
 		}
@@ -1500,9 +1500,9 @@ public abstract class AbstractJpaProject
 		if (StringTools.isBlank(cpName)) {
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
-					JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION,
+					this.getResource(),
 					IMessage.NORMAL_SEVERITY,
-					this.getResource()
+					JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION
 				)
 			);
 			return;
@@ -1511,9 +1511,9 @@ public abstract class AbstractJpaProject
 		if (cp == null) {
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
-					JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION,
-					IMessage.NORMAL_SEVERITY,
 					this.getResource(),
+					IMessage.NORMAL_SEVERITY,
+					JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION,
 					cpName
 				)
 			);
@@ -1522,9 +1522,9 @@ public abstract class AbstractJpaProject
 		if (cp.isInactive()) {
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
-					JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION,
-					IMessage.NORMAL_SEVERITY,
 					this.getResource(),
+					IMessage.NORMAL_SEVERITY,
+					JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION,
 					cpName
 				)
 			);

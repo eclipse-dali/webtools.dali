@@ -585,10 +585,7 @@ class InternalJpaProjectManager
 	}
 
 	private IMessage buildNoJpaProjectMessage(IProject project) {
-		return ValidationMessageTools.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.NO_JPA_PROJECT,
-					project
-				);
+		return ValidationMessageTools.buildErrorValidationMessage(project, JptJpaCoreValidationMessages.NO_JPA_PROJECT);
 	}
 
 

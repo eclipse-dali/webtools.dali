@@ -460,8 +460,8 @@ public abstract class AbstractJavaIdMapping
 
 	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				this.getTextRange(),
+				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				this.buildAttributeDescription()
 			);
 	}

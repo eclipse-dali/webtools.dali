@@ -53,9 +53,9 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 		if (! definesPrimaryKey(typeMapping())) {
 			messages.add(
 					ValidationMessageTools.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ENTITY_NO_PK,
 						entity().getResource(),
-						entity().getValidationTextRange()
+						entity().getValidationTextRange(),
+						JptJpaCoreValidationMessages.ENTITY_NO_PK
 					)
 				);
 		}
@@ -78,9 +78,9 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 		if (idClassReference().isSpecified()) {
 			messages.add(
 					ValidationMessageTools.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
 						entity().getResource(),
-						idClassReference().getValidationTextRange()
+						idClassReference().getValidationTextRange(),
+						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED
 					)
 				);
 		}
@@ -90,9 +90,9 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 		for (AttributeMapping each : getPrimaryKeyMappingsDefinedLocally(typeMapping())) {
 			messages.add(
 					ValidationMessageTools.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
 						each.getResource(),
-						getAttributeMappingTextRange(each)
+						getAttributeMappingTextRange(each),
+						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED
 					)
 				);
 		}

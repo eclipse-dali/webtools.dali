@@ -163,14 +163,15 @@ public class OxmFileImpl
 			if (StringTools.isBlank(getPackageName())) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED,
-								getPackageNameTextRange()));
+								getPackageNameTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED
+							));
 			}
 			else {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
 								getPackageNameTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
 								getPackageName()));
 			}
 		}

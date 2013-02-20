@@ -79,9 +79,9 @@ public abstract class AbstractTableValidator
 
 	protected IMessage buildUnresolvedCatalogMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.table.getResource(),
 				this.table.getCatalogValidationTextRange(),
+				message,
 				this.table.getCatalog(),
 				this.table.getName()
 			);
@@ -89,9 +89,9 @@ public abstract class AbstractTableValidator
 
 	protected IMessage buildVirtualAttributeUnresolvedCatalogMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnresolvedCatalogMessage(),
 				this.table.getResource(),
 				this.getVirtualAttributeValidationTextRange(),
+				this.getVirtualAttributeUnresolvedCatalogMessage(),
 				this.persistentAttribute.getName(),
 				this.table.getCatalog(),
 				this.table.getName()
@@ -114,9 +114,9 @@ public abstract class AbstractTableValidator
 
 	protected IMessage buildUnresolvedSchemaMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.table.getResource(),
 				this.table.getSchemaValidationTextRange(),
+				message,
 				this.table.getSchema(),
 				this.table.getName()
 			);
@@ -124,9 +124,9 @@ public abstract class AbstractTableValidator
 
 	protected IMessage buildVirtualAttributeUnresolvedSchemaMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnresolvedSchemaMessage(),
 				this.table.getResource(),
 				this.getVirtualAttributeValidationTextRange(),
+				this.getVirtualAttributeUnresolvedSchemaMessage(),
 				this.persistentAttribute.getName(),
 				this.table.getSchema(),
 				this.table.getName()
@@ -145,18 +145,18 @@ public abstract class AbstractTableValidator
 
 	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.table.getResource(),
 				this.table.getNameValidationTextRange(),
+				message,
 				this.table.getName()
 			);
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-			this.getVirtualAttributeUnresolvedNameMessage(),
 			this.table.getResource(),
 			this.getVirtualAttributeValidationTextRange(),
+			this.getVirtualAttributeUnresolvedNameMessage(),
 			this.persistentAttribute.getName(),
 			this.table.getName()
 		);

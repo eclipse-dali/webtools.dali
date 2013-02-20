@@ -134,8 +134,8 @@ public class JpaValidator
 
 	private IMessage buildValidationFailedMessage(IProject project) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.JPA_VALIDATION_FAILED,
-					project
+					project,
+					JptJpaCoreValidationMessages.JPA_VALIDATION_FAILED
 				);
 	}
 

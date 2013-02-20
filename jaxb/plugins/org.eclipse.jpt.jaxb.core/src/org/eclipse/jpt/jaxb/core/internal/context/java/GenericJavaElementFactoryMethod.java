@@ -213,8 +213,9 @@ public class GenericJavaElementFactoryMethod
 		if (resourceMethod.getParametersSize() != 1) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_PARAM,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_PARAM
+						));
 		}
 	}
 	
@@ -224,8 +225,9 @@ public class GenericJavaElementFactoryMethod
 		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeBinding().getQualifiedName())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE
+						));
 		}
 	}
 	
@@ -387,16 +389,17 @@ public class GenericJavaElementFactoryMethod
 			if ("".equals(getName())) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 								getNameTextRange(),
+								JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 								getReferencedComponentTypeDescription()));
 			}
 			else if (! StringTools.isBlank(getName())) {
 				if (ObjectTools.equals(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NAME_EQUALS_NAME,
-									getNameTextRange()));
+									getNameTextRange(),
+									JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NAME_EQUALS_NAME
+								));
 				}
 			}
 		}
@@ -418,8 +421,8 @@ public class GenericJavaElementFactoryMethod
 			}
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NO_MATCHING_ELEMENT_DECL,
 							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NO_MATCHING_ELEMENT_DECL,
 							getNamespace(),
 							getName()));
 		}

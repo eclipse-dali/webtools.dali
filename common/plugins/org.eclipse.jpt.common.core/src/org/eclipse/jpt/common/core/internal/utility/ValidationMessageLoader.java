@@ -408,7 +408,7 @@ public class ValidationMessageLoader {
 			return this.description;
 		}
 
-		public IMessage buildValidationMessage(int defaultSeverity, IResource target, TextRange textRange, Object... args) {
+		public IMessage buildValidationMessage(IResource target, TextRange textRange, int defaultSeverity, Object... args) {
 			int severity = this.preferencesAdapter.getSeverity(target.getProject(), this.id, defaultSeverity);
 			String localizedMessage = this.bind(args);
 

@@ -405,8 +405,8 @@ public class OrmEclipseLinkMappedSuperclassImpl
 			if (jdtType == null) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST,
 						this.getParentClassTextRange(),
+						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST,
 						this.getFullyQualifiedParentClass()
 					)
 				);

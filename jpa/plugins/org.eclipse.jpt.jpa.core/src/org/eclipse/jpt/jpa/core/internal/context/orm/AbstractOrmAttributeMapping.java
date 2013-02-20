@@ -496,8 +496,8 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		if ((this.name != null) && StringTools.isBlank(this.name)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME
 				)
 			);
 		}
@@ -508,8 +508,8 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					this.name
 				)
 			);

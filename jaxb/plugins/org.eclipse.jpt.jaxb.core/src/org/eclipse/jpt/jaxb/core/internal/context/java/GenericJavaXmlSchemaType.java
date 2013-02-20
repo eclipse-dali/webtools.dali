@@ -156,8 +156,8 @@ public abstract class GenericJavaXmlSchemaType
 		if (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__NON_SIMPLE_TYPE,
 							getValidationTextRange(),
+							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__NON_SIMPLE_TYPE,
 							qName.getName()));
 		}
 	}

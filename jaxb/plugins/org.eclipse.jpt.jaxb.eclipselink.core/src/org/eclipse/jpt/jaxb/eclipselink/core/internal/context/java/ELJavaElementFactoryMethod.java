@@ -33,8 +33,9 @@ public class ELJavaElementFactoryMethod
 		if (! resourceMethod.getTypeBinding().isSubTypeOf(JAXB.JAXB_ELEMENT)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE
+						));
 		}
 	}
 }

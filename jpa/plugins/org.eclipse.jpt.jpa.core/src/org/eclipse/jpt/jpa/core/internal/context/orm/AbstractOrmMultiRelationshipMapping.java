@@ -981,8 +981,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 					this.getAttributeTypeTextRange(),
+					JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 					this.getFullyQualifiedAttributeType()
 				)
 			);
@@ -1026,8 +1026,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		if (StringTools.isBlank(getMapKeyClass())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
-					this.getMapKeyClassTextRange()
+					this.getMapKeyClassTextRange(),
+					JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED
 				)
 			);
 			return;
@@ -1042,8 +1042,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			if (mapKeyJdtType == null) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
 						this.getMapKeyClassTextRange(),
+						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
 						this.getFullyQualifiedMapKeyClass()
 					)
 				);
@@ -1053,8 +1053,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					this.getMapKeyClassTextRange(),
+					JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					this.getFullyQualifiedMapKeyClass()
 				)
 			);

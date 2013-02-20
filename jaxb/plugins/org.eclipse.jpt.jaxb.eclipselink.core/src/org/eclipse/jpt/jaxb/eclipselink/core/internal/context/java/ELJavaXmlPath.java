@@ -126,18 +126,20 @@ public class ELJavaXmlPath
 		if (StringTools.isBlank(this.value)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__NOT_SPECIFIED,
 								ELJavaXmlPath.this,
-								getValueTextRange()));
+								getValueTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__NOT_SPECIFIED
+							));
 			return;
 		}
 		
 		if (this.value.startsWith(XPath.DELIM)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlPath.this,
-								getValueTextRange()));
+								getValueTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
+							));
 			return;
 		}
 		

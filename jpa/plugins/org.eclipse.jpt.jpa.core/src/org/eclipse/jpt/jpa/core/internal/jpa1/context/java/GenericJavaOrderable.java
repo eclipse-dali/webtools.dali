@@ -442,9 +442,9 @@ public class GenericJavaOrderable
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 							this.getAttributeMapping(),
 							this.getPersistentAttribute().getValidationTextRange(),
+							JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 							this.getPersistentAttribute().getName()
 						)
 					);
@@ -452,9 +452,9 @@ public class GenericJavaOrderable
 			else {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 						this.getAttributeMapping(),
 						this.getOrderByAnnotationTextRange(),
+						JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 						this.getPersistentAttribute().getName()
 					)
 				);

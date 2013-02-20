@@ -241,25 +241,28 @@ public class GenericJavaEnumMapping
 		if (annotation.getFactoryClass() != null) {
 			messages.add(
 					this.buildValidationMessage(
-							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM,
+							annotation.getFactoryClassTextRange(),
 							IMessage.NORMAL_SEVERITY,
-							annotation.getFactoryClassTextRange()));
+							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM
+						));
 		}
 		
 		if (annotation.getFactoryMethod() != null) {
 			messages.add(
 					this.buildValidationMessage(
-							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM,
+							annotation.getFactoryMethodTextRange(),
 							IMessage.NORMAL_SEVERITY,
-							annotation.getFactoryMethodTextRange()));
+							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM
+						));
 		}
 		
 		if (! IterableTools.isEmpty(annotation.getPropOrder())) {
 			messages.add(
 					this.buildValidationMessage(
-							JptJaxbCoreValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM,
+							annotation.getPropOrderTextRange(),
 							IMessage.NORMAL_SEVERITY,
-							annotation.getPropOrderTextRange()));
+							JptJaxbCoreValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM
+						));
 		}
 	}
 	
@@ -271,8 +274,8 @@ public class GenericJavaEnumMapping
 				|| (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
 							getXmlEnumValueTextRange(),
+							JptJaxbCoreValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
 							getValue()));
 		}
 	}

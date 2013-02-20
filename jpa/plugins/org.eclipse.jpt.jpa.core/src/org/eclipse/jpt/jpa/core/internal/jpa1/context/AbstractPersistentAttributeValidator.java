@@ -38,11 +38,11 @@ public abstract class AbstractPersistentAttributeValidator
 
 	protected abstract void validateMappedAttribute(List<IMessage> messages);
 
-	protected IMessage buildAttributeMessage(ValidationMessage msgID) {
+	protected IMessage buildAttributeMessage(ValidationMessage msg) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				msgID,
 				this.persistentAttribute.getResource(),
 				this.persistentAttribute.getValidationTextRange(),
+				msg,
 				this.persistentAttribute.getName()
 			);
 	}

@@ -181,8 +181,8 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED,
-					this.getNameTextRange()
+					this.getNameTextRange(),
+					JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED
 				)
 			);
 		}

@@ -227,7 +227,7 @@ public abstract class AbstractJavaVersionMapping
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return this.getName();
 	}
 
@@ -282,9 +282,9 @@ public abstract class AbstractJavaVersionMapping
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						this.buildValidationMessage(
-								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, //TODO KFB - different message for virtual attribute
-								IMessage.NORMAL_SEVERITY,
 								this.getVirtualPersistentAttributeTextRange(),
+								IMessage.NORMAL_SEVERITY,
+								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, //TODO KFB - different message for virtual attribute
 								this.getName()
 						)
 				);
@@ -292,9 +292,9 @@ public abstract class AbstractJavaVersionMapping
 			else {
 				messages.add(
 						this.buildValidationMessage(
-								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-								IMessage.NORMAL_SEVERITY,
 								this.getValidationTextRange(),
+								IMessage.NORMAL_SEVERITY,
+								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 								this.getName()
 						)
 				);

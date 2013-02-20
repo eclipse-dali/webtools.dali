@@ -622,8 +622,9 @@ public class OxmJavaTypeImpl
 		if (StringTools.isBlank(this.specifiedName)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED,
-							getNameTextRange()));
+							getNameTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED
+						));
 			return;
 		}
 		
@@ -632,8 +633,9 @@ public class OxmJavaTypeImpl
 		if (! StringTools.isBlank(packageName) && ! ObjectTools.equals(packageName, getXmlBindings().getPackageName())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM,
-							getNameTextRange()));
+							getNameTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM
+						));
 		}
 	}
 	

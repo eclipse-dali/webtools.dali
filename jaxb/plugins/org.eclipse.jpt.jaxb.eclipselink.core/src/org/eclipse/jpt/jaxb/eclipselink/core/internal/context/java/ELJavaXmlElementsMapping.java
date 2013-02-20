@@ -162,16 +162,18 @@ public class ELJavaXmlElementsMapping
 		if (xmlElements.hasNext()) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS,
-							getXmlPathsTextRange()));
+							getXmlPathsTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS
+						));
 		}
 		
 		while (xmlPaths.hasNext()) {
 			ELJavaXmlPath xmlPath = xmlPaths.next();
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS,
-							xmlPath.getValidationTextRange()));
+							xmlPath.getValidationTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS
+						));
 		}
 		
 		for (ELJavaXmlPath xmlPath : this.xmlPathContainer.getContextElements()) {

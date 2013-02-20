@@ -133,11 +133,11 @@ public class GenericPackage
 		if (getJaxbProject().getSchemaLibrary().getSchema(getNamespace()) == null) {
 			messages.add(
 					this.buildValidationMessage(
-						JptJaxbCoreValidationMessages.PACKAGE_NO_SCHEMA_FOR_NAMESPACE,
 						IMessage.NORMAL_SEVERITY,
+						JptJaxbCoreValidationMessages.PACKAGE_NO_SCHEMA_FOR_NAMESPACE,
 						getNamespace(),
 						this.name
-						));
+					));
 		}
 		
 		if (this.packageInfo != null) {

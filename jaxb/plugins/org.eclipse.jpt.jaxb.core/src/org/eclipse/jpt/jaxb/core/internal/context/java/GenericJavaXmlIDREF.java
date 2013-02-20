@@ -67,8 +67,8 @@ public class GenericJavaXmlIDREF
 				if (classMapping == null || classMapping.getXmlIdMapping() == null) {
 					messages.add(
 					this.buildErrorValidationMessage(
-						JptJaxbCoreValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
 						ref.getTypeTextRange(),
+						JptJaxbCoreValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
 						typeName));				
 				}
 			}
@@ -81,8 +81,8 @@ public class GenericJavaXmlIDREF
 					&& ! xsdFeature.typeIsValid(XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF"), this.context.isList())) {
 				messages.add(
 						this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
 							ref.getXsdFeatureTextRange(),
+							JptJaxbCoreValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
 							xsdFeature.getName()));
 			}
 		}

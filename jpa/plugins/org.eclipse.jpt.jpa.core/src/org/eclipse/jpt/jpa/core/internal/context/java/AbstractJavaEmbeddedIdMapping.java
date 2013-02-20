@@ -110,18 +110,18 @@ public abstract class AbstractJavaEmbeddedIdMapping
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								this.attributeOverrideContainer,
 								this.getVirtualPersistentAttributeTextRange(),
+								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								this.getName()
 						)
 				);				
 			} else {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								this.attributeOverrideContainer,
-								this.attributeOverrideContainer.getValidationTextRange()
+								this.attributeOverrideContainer.getValidationTextRange(),
+								JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED
 						)
 				);
 			}
@@ -141,16 +141,16 @@ public abstract class AbstractJavaEmbeddedIdMapping
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									this.getVirtualPersistentAttributeTextRange(),
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									this.getName()
 							)
 					);						
 				} else {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
-									this.getValidationTextRange()
+									this.getValidationTextRange(),
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR
 							)
 					);
 				}
@@ -167,16 +167,16 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					if (this.getPersistentAttribute().isVirtual()) {
 						messages.add(
 								this.buildErrorValidationMessage(
-										JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										this.getVirtualPersistentAttributeTextRange(),
+										JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										this.getName()
 								)
 						);
 					} else {
 						messages.add(
 								this.buildErrorValidationMessage(
-										JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
-										this.getValidationTextRange()
+										this.getValidationTextRange(),
+										JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE
 								)
 						);
 					}
@@ -190,16 +190,16 @@ public abstract class AbstractJavaEmbeddedIdMapping
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									this.getVirtualPersistentAttributeTextRange(),
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									this.getName()
 							)
 					);					
 				} else {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
-									this.getValidationTextRange()
+									this.getValidationTextRange(),
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC
 							)
 					);
 				}
@@ -214,16 +214,16 @@ public abstract class AbstractJavaEmbeddedIdMapping
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									this.getVirtualPersistentAttributeTextRange(),
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									this.getName()
 							)
 					);					
 				} else {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
-									this.getValidationTextRange()
+									this.getValidationTextRange(),
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE
 							)
 					);
 				}
@@ -241,16 +241,16 @@ public abstract class AbstractJavaEmbeddedIdMapping
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									this.getVirtualPersistentAttributeTextRange(),
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									this.getName()
 							)
 					);
 				} else {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
-									this.getValidationTextRange()
+									this.getValidationTextRange(),
+									JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS
 							)
 					);
 				}

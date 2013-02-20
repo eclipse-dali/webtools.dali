@@ -352,7 +352,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return (this.derived && ! this.isColumnSpecified()) ? null : this.name;
 	}
 
@@ -421,8 +421,8 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				this.column.getValidationTextRange(),
+				JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				this.buildAttributeDescription()
 			);
 	}

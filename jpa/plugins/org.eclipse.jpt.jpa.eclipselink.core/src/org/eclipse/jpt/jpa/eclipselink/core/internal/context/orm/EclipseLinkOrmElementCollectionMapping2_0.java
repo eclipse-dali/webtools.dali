@@ -165,9 +165,9 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
 					ValidationMessageTools.buildErrorValidationMessage(
-						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						this.getResource(),
 						this.getAttributeTypeTextRange(),
+						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						this.getName()
 					)
 				);
@@ -178,9 +178,9 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 				if (jdtType == null) {
 					messages.add(
 						ValidationMessageTools.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 							this.getResource(),
 							this.getAttributeTypeTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 							this.getFullyQualifiedAttributeType()
 						)
 					);

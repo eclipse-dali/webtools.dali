@@ -319,8 +319,8 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
 							this.getVirtualPersistentAttributeTextRange(),
+							JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
 							this.getName()
 						)
 					);
@@ -328,8 +328,8 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			else {
 				messages.add(
 						this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
 							this.getValidationTextRange(),
+							JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
 							this.getName()
 						)
 					);
@@ -346,16 +346,17 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						this.getVirtualPersistentAttributeTextRange(),
-						this.getName(), this.getFullyQualifiedTargetEntity()
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						this.getName(),
+						this.getFullyQualifiedTargetEntity()
 					)
 				);
 			} else {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						this.getTargetEntityTextRange(),
+						JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						this.getFullyQualifiedTargetEntity()
 					)
 				);

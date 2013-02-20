@@ -636,8 +636,8 @@ public class JavaEclipseLinkCachingImpl
 		if ((this.expiry != null) && (this.expiryTimeOfDay != null)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaEclipseLinkCoreValidationMessages.CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED,
 					this.getValidationTextRange(),
+					JptJpaEclipseLinkCoreValidationMessages.CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED,
 					this.getPersistentType().getName()
 				)
 			);

@@ -173,8 +173,9 @@ public class GenericJavaXmlRegistry
 		if (IterableTools.size(registries) > 1) {
 			messages.add(
 					this.buildErrorValidationMessage(
-						JptJaxbCoreValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE,
-						getValidationTextRange()));
+						getValidationTextRange(),
+						JptJaxbCoreValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE
+					));
 		}
 		
 		validateDuplicateQNames(messages, reporter);
@@ -210,10 +211,11 @@ public class GenericJavaXmlRegistry
 				}
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,
 								xmlElementDecl,
 								xmlElementDecl.getQName().getNameTextRange(),
-								xmlElementName, scopeDesc));
+								JptJaxbCoreValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,
+								xmlElementName,
+								scopeDesc));
 			}
 		}
 	}

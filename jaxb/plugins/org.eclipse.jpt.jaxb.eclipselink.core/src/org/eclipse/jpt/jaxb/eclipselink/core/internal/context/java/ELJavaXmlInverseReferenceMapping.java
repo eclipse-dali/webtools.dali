@@ -165,8 +165,9 @@ public class ELJavaXmlInverseReferenceMapping
 		if (StringTools.isBlank(mappedBy)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED,
-							getMappedByTextRange()));
+							getMappedByTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED
+						));
 			return;
 		}
 		
@@ -180,9 +181,10 @@ public class ELJavaXmlInverseReferenceMapping
 		if (referencedAttribute == null) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
 							getMappedByTextRange(),
-							mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName()));
+							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
+							mappedBy,
+							referencedClassMapping.getTypeName().getFullyQualifiedName()));
 		}
 		else if (
 				! ArrayTools.contains(
@@ -190,9 +192,10 @@ public class ELJavaXmlInverseReferenceMapping
 						referencedAttribute.getMappingKey())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
 							getMappedByTextRange(),
-							mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName()));
+							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
+							mappedBy,
+							referencedClassMapping.getTypeName().getFullyQualifiedName()));
 		}
 	}
 

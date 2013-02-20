@@ -2219,10 +2219,10 @@ public abstract class AbstractPersistenceUnit
 			for (MappingFileRef mappingFileRef : pumdMappingFileRefs) {
 				messages.add(
 					this.buildValidationMessage(
-						JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
-						IMessage.NORMAL_SEVERITY,
 						mappingFileRef.getMappingFile(),
 						mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange(),
+						IMessage.NORMAL_SEVERITY,
+						JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
 						mappingFileRef.getFileName()
 					)
 				);
@@ -2243,9 +2243,9 @@ public abstract class AbstractPersistenceUnit
 					for (MappingFileRef dup : dups) {
 						messages.add(
 							this.buildErrorValidationMessage(
-								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
 								dup,
 								dup.getValidationTextRange(),
+								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
 								fileName
 							)
 						);
@@ -2282,10 +2282,10 @@ public abstract class AbstractPersistenceUnit
 					for (ManagedType dup : dups) {
 						messages.add(
 							this.buildValidationMessage(
-								JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
-								IMessage.NORMAL_SEVERITY,
 								dup,
 								dup.getValidationTextRange(),
+								IMessage.NORMAL_SEVERITY,
+								JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
 								mtName
 							)
 						);
@@ -2329,9 +2329,9 @@ public abstract class AbstractPersistenceUnit
 					for (ClassRef dup : dups) {
 						messages.add(
 							this.buildErrorValidationMessage(
-								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
 								dup,
 								dup.getValidationTextRange(),
+								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
 								className
 							)
 						);
@@ -2375,9 +2375,9 @@ public abstract class AbstractPersistenceUnit
 					for (JarFileRef dup : dups) {
 						messages.add(
 							this.buildErrorValidationMessage(
-								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
 								dup,
 								dup.getValidationTextRange(),
+								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
 								fileName
 							)
 						);
@@ -2449,9 +2449,9 @@ public abstract class AbstractPersistenceUnit
 			if (dup.supportsValidationMessages()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME,
 						dup,
 						dup.getNameTextRange(),
+						JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME,
 						generatorName
 					)
 				);
@@ -2497,9 +2497,9 @@ public abstract class AbstractPersistenceUnit
 			if (dup.supportsValidationMessages()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME,
 						dup,
 						dup.getNameTextRange(),
+						JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME,
 						queryName
 					)
 				);
@@ -2550,9 +2550,9 @@ public abstract class AbstractPersistenceUnit
 			if (dup.supportsValidationMessages()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED,
 						dup,
 						dup.getNameTextRange(),
+						JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED,
 						entityName
 					)
 				);

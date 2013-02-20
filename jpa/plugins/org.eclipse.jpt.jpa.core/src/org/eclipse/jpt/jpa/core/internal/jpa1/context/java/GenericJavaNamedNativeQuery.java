@@ -156,8 +156,8 @@ public class GenericJavaNamedNativeQuery
 		if (StringTools.isBlank(this.query)){
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
 					this.getNameTextRange(),
+					JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
 					this.name
 				)
 			);

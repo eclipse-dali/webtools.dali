@@ -353,9 +353,9 @@ public class GenericJavaXmlElementsMapping
 		if (xmlElementTypes.count(xmlElementType) > 1) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
 							xmlElement,
 							xmlElement.getTypeTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
 							xmlElementType));
 		}
 	}
@@ -367,9 +367,9 @@ public class GenericJavaXmlElementsMapping
 		if (xmlElementQNames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
 							xmlElement,
 							xmlElement.getQName().getNameTextRange(),
+							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
 							xmlElementName));
 		}	
 	}

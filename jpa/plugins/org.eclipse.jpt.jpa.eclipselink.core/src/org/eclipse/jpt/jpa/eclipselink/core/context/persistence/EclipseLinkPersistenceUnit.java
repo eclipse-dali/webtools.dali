@@ -43,6 +43,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -534,8 +535,9 @@ public class EclipseLinkPersistenceUnit
 			case DISABLE_SELECTIVE:
 			case UNSPECIFIED:
 				return true;
+			default:
+				throw new IllegalArgumentException("invalid shared cache mode: " + sharedCacheMode); //$NON-NLS-1$
 		}
-		return true;
 	}
 
 
@@ -582,7 +584,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<String> getEclipseLinkDynamicPersistentTypeNames() {
-		return IterableTools.transform(this.getEclipseLinkDynamicPersistentTypes(), PersistentType.NAME_TRANSFORMER);
+		return IterableTools.transform(this.getEclipseLinkDynamicPersistentTypes(), ManagedType.NAME_TRANSFORMER);
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkDynamicPersistentTypes() {
@@ -617,10 +619,10 @@ public class EclipseLinkPersistenceUnit
 			for(Property property: this.getLegacyEntityCachingProperties()) {
 				messages.add(
 					this.buildValidationMessage(
-						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING,
-						IMessage.NORMAL_SEVERITY,
 						this.getPersistenceUnit(),
 						property.getValidationTextRange(),
+						IMessage.NORMAL_SEVERITY,
+						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING,
 						property.getName()
 					)
 				);
@@ -628,10 +630,10 @@ public class EclipseLinkPersistenceUnit
 			for(Property property: this.getLegacyDescriptorCustomizerProperties()) {
 				messages.add(
 					this.buildValidationMessage(
-						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_LEGACY_DESCRIPTOR_CUSTOMIZER,
-						IMessage.NORMAL_SEVERITY,
 						this.getPersistenceUnit(),
 						property.getValidationTextRange(),
+						IMessage.NORMAL_SEVERITY,
+						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_LEGACY_DESCRIPTOR_CUSTOMIZER,
 						property.getName()
 					)
 				);
@@ -652,10 +654,10 @@ public class EclipseLinkPersistenceUnit
 			if(cachingProperty != null) {
 				messages.add(
 					this.buildValidationMessage(
-						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED,
-						IMessage.NORMAL_SEVERITY,
 						this.getPersistenceUnit(),
 						cachingProperty.getValidationTextRange(),
+						IMessage.NORMAL_SEVERITY,
+						JptJpaEclipseLinkCoreValidationMessages.PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED,
 						cachingProperty.getName()
 					)
 				);
@@ -676,17 +678,16 @@ public class EclipseLinkPersistenceUnit
 		if (StringTools.isBlank(loggerProperty.getValue())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED,
-							this.getPersistenceUnit(),
-							loggerProperty.getValidationTextRange()
+							loggerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED
 					)
 			);
 		} else if (JDTTools.findType(javaProject, loggerProperty.getValue()) == null) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_EXIST,
 							this.getPersistenceUnit(),
 							loggerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_NOT_EXIST,
 							loggerProperty.getValue()
 					)
 			);
@@ -695,9 +696,9 @@ public class EclipseLinkPersistenceUnit
 		) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_IMPLEMENTS_SESSION_LOG,
 							this.getPersistenceUnit(),
 							loggerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_LOGGER_CLASS_IMPLEMENTS_SESSION_LOG,
 							loggerProperty.getValue()
 					)
 			);
@@ -713,26 +714,25 @@ public class EclipseLinkPersistenceUnit
 		if (StringTools.isBlank(handlerProperty.getValue())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED,
-							this.getPersistenceUnit(),
-							handlerProperty.getValidationTextRange()
+							handlerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED
 					)
 			);
 		} else if (JDTTools.findType(javaProject, handlerProperty.getValue()) == null) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_EXIST,
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_EXIST,
 							handlerProperty.getValue()
 					)
 			);
 		} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, handlerProperty.getValue())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_VALID,
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_VALID,
 							handlerProperty.getValue()
 					)
 			);
@@ -741,9 +741,9 @@ public class EclipseLinkPersistenceUnit
 		) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_IMPLEMENTS_EXCEPTION_HANDLER,
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.EXCEPTION_HANDLER_CLASS_IMPLEMENTS_EXCEPTION_HANDLER,
 							handlerProperty.getValue()
 					)
 			);
@@ -764,26 +764,25 @@ public class EclipseLinkPersistenceUnit
 		if (StringTools.isBlank(profilerProperty.getValue())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED,
-							this.getPersistenceUnit(),
-							profilerProperty.getValidationTextRange()
+							profilerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED
 					)
 			);
 		} else if (JDTTools.findType(javaProject, profilerProperty.getValue()) == null) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_EXIST,
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_EXIST,
 							profilerProperty.getValue()
 					)
 			);
 		} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, profilerProperty.getValue())){
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_VALID,
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_NOT_VALID,
 							profilerProperty.getValue()
 					)
 			);
@@ -792,9 +791,9 @@ public class EclipseLinkPersistenceUnit
 		) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER,
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER,
 							profilerProperty.getValue()
 					)
 			);
@@ -811,26 +810,25 @@ public class EclipseLinkPersistenceUnit
 				if (StringTools.isBlank(property.getValue())) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED,
-									this.getPersistenceUnit(),
-									property.getValidationTextRange()
+									property.getValidationTextRange(),
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED
 							)
 					);
 				} else if (JDTTools.findType(javaProject, property.getValue()) == null) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_EXIST,
 									this.getPersistenceUnit(),
 									property.getValidationTextRange(),
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_EXIST,
 									property.getValue()
 							)
 					);
 				} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, property.getValue())){
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_VALID,
 									this.getPersistenceUnit(),
 									property.getValidationTextRange(),
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_VALID,
 									property.getValue()
 							)
 					);
@@ -839,9 +837,9 @@ public class EclipseLinkPersistenceUnit
 				) {
 					messages.add(
 							this.buildErrorValidationMessage(
-									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_IMPLEMENTS_SESSION_CUSTOMIZER,
 									this.getPersistenceUnit(),
 									property.getValidationTextRange(),
+									JptJpaEclipseLinkCoreValidationMessages.SESSION_CUSTOMIZER_CLASS_IMPLEMENTS_SESSION_CUSTOMIZER,
 									property.getValue()
 							)
 					);
@@ -989,9 +987,9 @@ public class EclipseLinkPersistenceUnit
 				if (dup.supportsValidationMessages()) {
 					messages.add(
 						this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.CONVERTER_DUPLICATE_NAME,
 							dup,
 							dup.getNameTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.CONVERTER_DUPLICATE_NAME,
 							converterName
 						)
 					);
@@ -1039,10 +1037,10 @@ public class EclipseLinkPersistenceUnit
 				if (dup.supportsValidationMessages()) {
 					messages.add(
 						this.buildValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.GENERATOR_EQUIVALENT,
-							IMessage.LOW_SEVERITY,
 							dup,
 							dup.getNameTextRange(),
+							IMessage.LOW_SEVERITY,
+							JptJpaEclipseLinkCoreValidationMessages.GENERATOR_EQUIVALENT,
 							generatorName
 						)
 					);
@@ -1063,10 +1061,10 @@ public class EclipseLinkPersistenceUnit
 				if (dup.supportsValidationMessages()) {
 					messages.add(
 						this.buildValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.QUERY_EQUIVALENT,
-							IMessage.LOW_SEVERITY,
 							dup,
 							dup.getNameTextRange(),
+							IMessage.LOW_SEVERITY,
+							JptJpaEclipseLinkCoreValidationMessages.QUERY_EQUIVALENT,
 							queryName
 						)
 					);

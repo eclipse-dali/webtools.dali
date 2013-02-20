@@ -155,8 +155,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 				|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS
 					)
 			);
 		}
@@ -173,8 +173,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		if (!JDTTools.typeIsSubType(javaProject, targetEmbeddableClassName, Serializable.class.getName())) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE
 					)
 			);
 		}
@@ -189,8 +189,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		if (!this.getTargetEmbeddable().getJavaResourceType().isPublic()) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC
 					)
 			);
 		}
@@ -206,8 +206,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		if (!resourceType.hasHashCodeMethod() || !resourceType.hasEqualsMethod()) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE
 					)
 			);
 		}
@@ -224,8 +224,8 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, targetEmbeddableClassName)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
-							this.getValidationTextRange()
+							this.getValidationTextRange(),
+							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR
 					)
 			);
 		}
@@ -239,9 +239,9 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 				&& (this.attributeOverrideContainer.getSpecifiedOverridesSize() > 0)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 					this.attributeOverrideContainer,
-					this.attributeOverrideContainer.getValidationTextRange()
+					this.attributeOverrideContainer.getValidationTextRange(),
+					JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED
 				)
 			);
 		}

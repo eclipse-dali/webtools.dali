@@ -385,8 +385,8 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (StringTools.isBlank(this.getTargetEntity())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-					this.getTargetEntityTextRange()
+					this.getTargetEntityTextRange(),
+					JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED
 				)
 			);
 			return;
@@ -396,8 +396,8 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			if (jdtType == null) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST,
 						this.getTargetEntityTextRange(),
+						JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST,
 						this.getFullyQualifiedTargetEntity()
 					)
 				);
@@ -407,8 +407,8 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (this.getResolvedTargetEntity() == null) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 					this.getTargetEntityTextRange(),
+					JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 					this.getFullyQualifiedTargetEntity()
 				)
 			);

@@ -128,8 +128,8 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_NAME_UNDEFINED, 
-					this.getNameTextRange()
+					this.getNameTextRange(),
+					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_NAME_UNDEFINED
 				)
 			);
 			return;
@@ -138,8 +138,8 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaEclipseLinkCoreValidationMessages.RESERVED_CONVERTER_NAME,
-					this.getNameTextRange()
+					this.getNameTextRange(),
+					JptJpaEclipseLinkCoreValidationMessages.RESERVED_CONVERTER_NAME
 				)
 			);
 		}

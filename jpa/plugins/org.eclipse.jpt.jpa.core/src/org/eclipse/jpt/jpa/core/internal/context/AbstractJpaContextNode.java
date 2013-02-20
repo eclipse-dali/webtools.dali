@@ -151,123 +151,123 @@ public abstract class AbstractJpaContextNode
 	}
 
 	/**
-	 * @see #buildErrorValidationMessage(ValidationMessage, JpaNode)
+	 * @see #buildErrorValidationMessage(JpaNode, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
 	protected IMessage buildErrorValidationMessage(ValidationMessage message) {
-		return this.buildErrorValidationMessage(message, this);
+		return this.buildErrorValidationMessage(this, message);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource)
+	 * @see ValidationMessageTools#buildErrorValidationMessage(IResource, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, JpaNode target) {
-		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource());
+	protected IMessage buildErrorValidationMessage(JpaNode target, ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(target.getResource(), message);
 	}
 
 	/**
-	 * @see #buildValidationMessage(ValidationMessage, int, JpaNode)
+	 * @see #buildValidationMessage(JpaNode, int, ValidationMessage)
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity) {
-		return this.buildValidationMessage(message, defaultSeverity, this);
+	protected IMessage buildValidationMessage(int defaultSeverity, ValidationMessage message) {
+		return this.buildValidationMessage(this, defaultSeverity, message);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource)
+	 * @see ValidationMessageTools#buildValidationMessage(IResource, int, ValidationMessage)
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JpaNode target) {
-		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource());
+	protected IMessage buildValidationMessage(JpaNode target, int defaultSeverity, ValidationMessage message) {
+		return ValidationMessageTools.buildValidationMessage(target.getResource(), defaultSeverity, message);
 	}
 
 	/**
-	 * @see #buildErrorValidationMessage(ValidationMessage, JpaNode, Object[])
+	 * @see #buildErrorValidationMessage(JpaNode, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
 	protected IMessage buildErrorValidationMessage(ValidationMessage message, Object... args) {
-		return this.buildErrorValidationMessage(message, this, args);
+		return this.buildErrorValidationMessage(this, message, args);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource, Object[])
+	 * @see ValidationMessageTools#buildErrorValidationMessage(IResource, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, JpaNode target, Object... args) {
-		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource(), args);
+	protected IMessage buildErrorValidationMessage(JpaNode target, ValidationMessage message, Object... args) {
+		return ValidationMessageTools.buildErrorValidationMessage(target.getResource(), message, args);
 	}
 
 	/**
-	 * @see #buildValidationMessage(ValidationMessage, int, JpaNode, Object[])
+	 * @see #buildValidationMessage(JpaNode, int, ValidationMessage, Object[])
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, Object... args) {
-		return this.buildValidationMessage(message, defaultSeverity, this, args);
+	protected IMessage buildValidationMessage(int defaultSeverity, ValidationMessage message, Object... args) {
+		return this.buildValidationMessage(this, defaultSeverity, message, args);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource, Object[])
+	 * @see ValidationMessageTools#buildValidationMessage(IResource, int, ValidationMessage, Object[])
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JpaNode target, Object... args) {
-		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource(), args);
+	protected IMessage buildValidationMessage(JpaNode target, int defaultSeverity, ValidationMessage message, Object... args) {
+		return ValidationMessageTools.buildValidationMessage(target.getResource(), defaultSeverity, message, args);
 	}
 
 	/**
-	 * @see #buildErrorValidationMessage(ValidationMessage, JpaNode, TextRange)
+	 * @see #buildErrorValidationMessage(JpaNode, TextRange, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, TextRange textRange) {
-		return this.buildErrorValidationMessage(message, this, textRange);
+	protected IMessage buildErrorValidationMessage(TextRange textRange, ValidationMessage message) {
+		return this.buildErrorValidationMessage(this, textRange, message);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource, TextRange)
+	 * @see ValidationMessageTools#buildErrorValidationMessage(IResource, TextRange, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, JpaNode target, TextRange textRange) {
-		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource(), textRange);
+	protected IMessage buildErrorValidationMessage(JpaNode target, TextRange textRange, ValidationMessage message) {
+		return ValidationMessageTools.buildErrorValidationMessage(target.getResource(), textRange, message);
 	}
 
 	/**
-	 * @see #buildValidationMessage(ValidationMessage, int, JpaNode, TextRange)
+	 * @see #buildValidationMessage(JpaNode, TextRange, int, ValidationMessage)
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, TextRange textRange) {
-		return this.buildValidationMessage(message, defaultSeverity, this, textRange);
+	protected IMessage buildValidationMessage(TextRange textRange, int defaultSeverity, ValidationMessage message) {
+		return this.buildValidationMessage(this, textRange, defaultSeverity, message);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource, TextRange)
+	 * @see ValidationMessageTools#buildValidationMessage(IResource, TextRange, int, ValidationMessage)
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JpaNode target, TextRange textRange) {
-		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource(), textRange);
+	protected IMessage buildValidationMessage(JpaNode target, TextRange textRange, int defaultSeverity, ValidationMessage message) {
+		return ValidationMessageTools.buildValidationMessage(target.getResource(), textRange, defaultSeverity, message);
 	}
 
 	/**
-	 * @see #buildErrorValidationMessage(ValidationMessage, JpaNode, TextRange, Object[])
+	 * @see #buildErrorValidationMessage(JpaNode, TextRange, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, TextRange textRange, Object... args) {
-		return this.buildErrorValidationMessage(message, this, textRange, args);
+	protected IMessage buildErrorValidationMessage(TextRange textRange, ValidationMessage message, Object... args) {
+		return this.buildErrorValidationMessage(this, textRange, message, args);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource, TextRange, Object[])
+	 * @see ValidationMessageTools#buildErrorValidationMessage(IResource, TextRange, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, JpaNode target, TextRange textRange, Object... args) {
-		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource(), textRange, args);
+	protected IMessage buildErrorValidationMessage(JpaNode target, TextRange textRange, ValidationMessage message, Object... args) {
+		return ValidationMessageTools.buildErrorValidationMessage(target.getResource(), textRange, message, args);
 	}
 
 	/**
-	 * @see #buildValidationMessage(ValidationMessage, int, JpaNode, TextRange, Object[])
+	 * @see #buildValidationMessage(JpaNode, TextRange, int, ValidationMessage, Object[])
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, TextRange textRange, Object... args) {
-		return this.buildValidationMessage(message, defaultSeverity, this, textRange, args);
+	protected IMessage buildValidationMessage(TextRange textRange, int defaultSeverity, ValidationMessage message, Object... args) {
+		return this.buildValidationMessage(this, textRange, defaultSeverity, message, args);
 	}
 
 	/**
-	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource, TextRange, Object[])
+	 * @see ValidationMessageTools#buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
 	 */
-	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JpaNode target, TextRange textRange, Object... args) {
-		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource(), textRange, args);
+	protected IMessage buildValidationMessage(JpaNode target, TextRange textRange, int defaultSeverity, ValidationMessage message, Object... args) {
+		return ValidationMessageTools.buildValidationMessage(target.getResource(), textRange, defaultSeverity, message, args);
 	}
 
 

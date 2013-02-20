@@ -342,9 +342,9 @@ public class GenericJavaXmlAnyElementMapping
 			if (xmlElementRefAnnotation != null) {
 				messages.add(
 						this.buildErrorValidationMessage(
-								JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
 								getPersistentAttribute(),
 								xmlElementRefAnnotation.getTextRange(),
+								JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
 								JAXB.XML_ELEMENT_REF,
 								JAXB.XML_ELEMENT_REFS));
 			}

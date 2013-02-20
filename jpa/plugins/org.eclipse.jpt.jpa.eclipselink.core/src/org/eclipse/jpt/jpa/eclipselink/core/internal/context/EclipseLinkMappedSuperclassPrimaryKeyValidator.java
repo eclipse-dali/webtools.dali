@@ -43,9 +43,9 @@ public class EclipseLinkMappedSuperclassPrimaryKeyValidator
 		if (idClassReference().isSpecified() && definesIdClassOnAncestor(typeMapping())) {
 			messages.add(
 					ValidationMessageTools.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED,
 						typeMapping().getResource(),
-						idClassReference().getValidationTextRange()
+						idClassReference().getValidationTextRange(),
+						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED
 					)
 				);
 		}

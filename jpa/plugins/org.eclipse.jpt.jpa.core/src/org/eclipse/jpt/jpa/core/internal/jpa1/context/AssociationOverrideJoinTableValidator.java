@@ -46,9 +46,9 @@ public class AssociationOverrideJoinTableValidator
 
 	protected IMessage buildVirtualOverrideUnresolvedNameMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
 				this.table.getResource(),
 				this.table.getNameValidationTextRange(),
+				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
 				this.override.getName(),
 				this.table.getName()
 			);
@@ -63,9 +63,9 @@ public class AssociationOverrideJoinTableValidator
 
 	protected IMessage buildVirtualOverrideUnresolvedCatalogMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
 				this.table.getResource(),
 				this.table.getCatalogValidationTextRange(),
+				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
 				this.override.getName(),
 				this.table.getCatalog()
 			);
@@ -80,9 +80,9 @@ public class AssociationOverrideJoinTableValidator
 
 	protected IMessage buildVirtualOverrideUnresolvedSchemaMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 				this.table.getResource(),
 				this.table.getSchemaValidationTextRange(),
+				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 				this.override.getName(),
 				this.table.getSchema()
 			);

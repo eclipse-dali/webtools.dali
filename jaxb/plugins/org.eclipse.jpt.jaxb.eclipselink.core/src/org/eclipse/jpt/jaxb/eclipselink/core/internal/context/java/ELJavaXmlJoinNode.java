@@ -185,18 +185,20 @@ public class ELJavaXmlJoinNode
 		if (StringTools.isBlank(this.xmlPath)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED,
 								ELJavaXmlJoinNode.this,
-								getXmlPathTextRange()));
+								getXmlPathTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED
+							));
 			return;
 		}
 		
 		if (this.xmlPath.startsWith(XPath.DELIM)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlJoinNode.this,
-								getXmlPathTextRange()));
+								getXmlPathTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
+							));
 			return;
 		}
 		
@@ -209,18 +211,20 @@ public class ELJavaXmlJoinNode
 		if (StringTools.isBlank(this.referencedXmlPath)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED,
 							ELJavaXmlJoinNode.this,
-							getReferencedXmlPathTextRange()));
+							getReferencedXmlPathTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED
+						));
 			return;
 		}
 		
 		if (this.referencedXmlPath.startsWith(XPath.DELIM)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 							ELJavaXmlJoinNode.this,
-							getReferencedXmlPathTextRange()));
+							getReferencedXmlPathTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
+						));
 			return;
 		}
 		
@@ -229,10 +233,11 @@ public class ELJavaXmlJoinNode
 				! IterableTools.contains(referencedClassMapping.getKeyXPaths(), this.referencedXmlPath)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange(),
-							referencedClassMapping.getJavaType().getTypeName().getFullyQualifiedName(), this.referencedXmlPath));
+							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,
+							referencedClassMapping.getJavaType().getTypeName().getFullyQualifiedName(),
+							this.referencedXmlPath));
 		}
 		
 		XsdTypeDefinition xsdType = getAttributeMapping().getReferencedXsdTypeDefinition();

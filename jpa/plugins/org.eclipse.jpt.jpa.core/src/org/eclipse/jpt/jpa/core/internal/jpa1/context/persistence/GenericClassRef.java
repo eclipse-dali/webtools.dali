@@ -378,8 +378,8 @@ public class GenericClassRef
 		if (StringTools.isBlank(this.className)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS
 				)
 			);
 			return;
@@ -388,8 +388,8 @@ public class GenericClassRef
 		if (this.resourceType == null) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
 					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
 					this.getJavaClassName()
 				)
 			);
@@ -400,8 +400,8 @@ public class GenericClassRef
 			if (this.resourceType.getAstNodeType() == AstNodeType.ENUM) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
 						this.getValidationTextRange(),
+						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
 						this.getJavaClassName()
 					)
 				);
@@ -411,8 +411,8 @@ public class GenericClassRef
 			if (this.resourceType.getAstNodeType() == AstNodeType.TYPE && this.resourceType.getTypeBinding().isInterface()) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
 						this.getValidationTextRange(),
+						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
 						this.getJavaClassName()
 					)
 				);
@@ -431,9 +431,9 @@ public class GenericClassRef
 			validateJavaManagedType = false;
 			messages.add(
 				this.buildValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-					IMessage.LOW_SEVERITY,
 					this.getValidationTextRange(),
+					IMessage.LOW_SEVERITY,
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
 					this.getJavaClassName(),
 					mappingFileRef.getFileName()
 				)

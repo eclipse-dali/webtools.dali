@@ -51,8 +51,9 @@ public class GenericJavaAttributeXmlJavaTypeAdapter
 		if (getType() == null || getFullyQualifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED,
-					getAnnotation().getTypeTextRange()));
+					getAnnotation().getTypeTextRange(),
+					JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED
+				));
 		}
 	}
 }

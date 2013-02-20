@@ -403,8 +403,8 @@ public class OrmEclipseLinkObjectTypeConverter
 				for (OrmEclipseLinkConversionValue dup : dups) {
 					messages.add(
 						this.buildErrorValidationMessage(
-							JptJpaEclipseLinkCoreValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
 							dup.getDataValueTextRange(),
+							JptJpaEclipseLinkCoreValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
 							dup.getDataValue()
 						)
 					);

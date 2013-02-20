@@ -179,9 +179,9 @@ public class ELJavaXmlJoinNodesMapping
 		if (referencedClass == null) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__INVALID_REFERENCED_CLASS,
 								ELJavaXmlJoinNodesMapping.this,
 								getValidationTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__INVALID_REFERENCED_CLASS,
 								getValueTypeName()));
 		}
 		
@@ -219,9 +219,9 @@ public class ELJavaXmlJoinNodesMapping
 		if (xmlPaths.count(xmlPath) > 1) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_XML_PATH,
 							joinNode,
 							joinNode.getXmlPathTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_XML_PATH,
 							xmlPath));
 		}
 	}
@@ -232,9 +232,9 @@ public class ELJavaXmlJoinNodesMapping
 		if (referencedXmlPaths.count(referencedXmlPath) > 1) {
 			messages.add(
 					this.buildErrorValidationMessage(
-							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH,
 							joinNode,
 							joinNode.getReferencedXmlPathTextRange(),
+							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH,
 							referencedXmlPath));
 		}
 	}

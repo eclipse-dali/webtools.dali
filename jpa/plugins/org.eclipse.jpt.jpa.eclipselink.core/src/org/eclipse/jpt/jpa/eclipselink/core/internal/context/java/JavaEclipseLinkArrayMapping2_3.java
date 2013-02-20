@@ -277,7 +277,7 @@ public class JavaEclipseLinkArrayMapping2_3
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return this.getName();
 	}
 

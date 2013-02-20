@@ -605,8 +605,9 @@ public abstract class AbstractOxmTypeMapping
 							this.buildDefaultNamespace())) {
 				messages.add(
 					this.buildErrorValidationMessage(
-						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
-						this.proxy.getNamespaceTextRange()));
+						this.proxy.getNamespaceTextRange(),
+						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE
+					));
 			}
 		}
 		

@@ -54,9 +54,9 @@ public class AttributeOverrideColumnValidator
 
 	protected IMessage buildVirtualColumnUnresolvedNameMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualOverrideUnresolvedNameMessage(),
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
+				this.getVirtualOverrideUnresolvedNameMessage(),
 				this.override.getName(),
 				this.column.getName(),
 				this.column.getDbTable().getName()
@@ -70,9 +70,9 @@ public class AttributeOverrideColumnValidator
 	@Override
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				this.getVirtualAttributeUnresolvedNameMessage(),
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
+				this.getVirtualAttributeUnresolvedNameMessage(),
 				this.persistentAttribute.getName(),
 				this.override.getName(),
 				this.column.getName(),
@@ -104,9 +104,9 @@ public class AttributeOverrideColumnValidator
 
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage() {
 			return ValidationMessageTools.buildErrorValidationMessage(
-					this.getVirtualOverrideColumnTableNotValidMessage(),
 					this.getColumn().getResource(),
 					this.getColumn().getTableNameValidationTextRange(),
+					this.getVirtualOverrideColumnTableNotValidMessage(),
 					AttributeOverrideColumnValidator.this.override.getName(),
 					this.getColumn().getTableName(),
 					this.getColumn().getName(),
@@ -121,9 +121,9 @@ public class AttributeOverrideColumnValidator
 		@Override
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
 			return ValidationMessageTools.buildErrorValidationMessage(
-					this.getVirtualAttributeColumnTableNotValidMessage(),
 					this.getColumn().getResource(),
 					AttributeOverrideColumnValidator.this.persistentAttribute.getValidationTextRange(),
+					this.getVirtualAttributeColumnTableNotValidMessage(),
 					AttributeOverrideColumnValidator.this.persistentAttribute.getName(),
 					AttributeOverrideColumnValidator.this.override.getName(),
 					this.getColumn().getTableName(),

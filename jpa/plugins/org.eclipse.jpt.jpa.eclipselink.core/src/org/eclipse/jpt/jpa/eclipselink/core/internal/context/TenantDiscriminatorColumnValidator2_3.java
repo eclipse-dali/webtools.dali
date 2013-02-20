@@ -34,9 +34,9 @@ public class TenantDiscriminatorColumnValidator2_3
 	@Override
 	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				message,
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
+				message,
 				this.column.getName(),
 				this.column.getDbTable().getName()
 			);
@@ -81,9 +81,9 @@ public class TenantDiscriminatorColumnValidator2_3
 		@Override
 		protected IMessage buildTableNotValidMessage_() {
 			return ValidationMessageTools.buildErrorValidationMessage(
-					this.getColumnTableNotValidMessage(),
 					this.getColumn().getResource(),
 					this.getColumn().getTableNameValidationTextRange(),
+					this.getColumnTableNotValidMessage(),
 					this.getColumn().getTableName(),
 					this.getColumn().getName(),
 					this.getColumnTableDescriptionMessage()

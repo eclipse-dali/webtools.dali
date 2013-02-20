@@ -274,7 +274,7 @@ public class OrmEclipseLinkArrayMapping2_3
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return this.name;
 	}
 

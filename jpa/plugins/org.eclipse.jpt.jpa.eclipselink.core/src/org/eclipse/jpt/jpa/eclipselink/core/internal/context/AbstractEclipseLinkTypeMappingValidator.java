@@ -40,9 +40,9 @@ public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapp
 
 	protected IMessage buildEclipseLinkTypeMessage(ValidationMessage validationMessage) {
 		return ValidationMessageTools.buildErrorValidationMessage(
-				validationMessage,
 				this.typeMapping.getResource(),
 				this.typeMapping.getValidationTextRange(),
+				validationMessage,
 				this.typeMapping.getName()
 			);
 	}

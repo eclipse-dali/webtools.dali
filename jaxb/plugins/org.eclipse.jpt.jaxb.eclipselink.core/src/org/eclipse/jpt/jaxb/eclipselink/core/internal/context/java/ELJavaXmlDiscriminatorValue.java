@@ -91,9 +91,10 @@ public class ELJavaXmlDiscriminatorValue
 		if (StringTools.isBlank(this.value)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-								JptJaxbEclipseLinkCoreValidationMessages.XML_DISCRIMINATOR_VALUE__NOT_SPECIFIED,
 								ELJavaXmlDiscriminatorValue.this,
-								getValueTextRange()));
+								getValueTextRange(),
+								JptJaxbEclipseLinkCoreValidationMessages.XML_DISCRIMINATOR_VALUE__NOT_SPECIFIED
+							));
 			return;
 		}
 	}

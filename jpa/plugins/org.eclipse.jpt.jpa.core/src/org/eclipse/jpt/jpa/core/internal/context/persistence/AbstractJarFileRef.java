@@ -359,8 +359,8 @@ public abstract class AbstractJarFileRef
 		if (StringTools.isBlank(this.xmlJarFileRef.getFileName())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,
-					this.getValidationTextRange()
+					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE
 				)
 			);
 			return;
@@ -368,17 +368,17 @@ public abstract class AbstractJarFileRef
 
 		messages.add(
 			this.buildValidationMessage(
-				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,
+				this.getValidationTextRange(),
 				IMessage.NORMAL_SEVERITY,
-				this.getValidationTextRange()
+				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING
 			)
 		);
 
 		if (this.jarFile == null) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,
 					this.getValidationTextRange(),
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,
 					this.xmlJarFileRef.getFileName()
 				)
 			);

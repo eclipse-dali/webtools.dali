@@ -266,7 +266,8 @@ public class ELJaxbContextRootImpl
 		
 		messages.add(
 				this.buildErrorValidationMessage(
-						JptJaxbEclipseLinkCoreValidationMessages.PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY,
-						getJaxbProject()));
+						getJaxbProject(),
+						JptJaxbEclipseLinkCoreValidationMessages.PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY
+					));
 	}
 }

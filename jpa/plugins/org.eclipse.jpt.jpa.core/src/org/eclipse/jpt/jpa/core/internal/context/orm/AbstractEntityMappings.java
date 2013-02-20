@@ -1214,10 +1214,10 @@ public abstract class AbstractEntityMappings
 		if (! this.getLatestDocumentVersion().equals(this.xmlEntityMappings.getDocumentVersion())) {
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
-					JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST,
-					IMessage.LOW_SEVERITY,
 					this.getResource(),
-					this.xmlEntityMappings.getVersionTextRange()
+					this.xmlEntityMappings.getVersionTextRange(),
+					IMessage.LOW_SEVERITY,
+					JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST
 				)
 			);
 		}

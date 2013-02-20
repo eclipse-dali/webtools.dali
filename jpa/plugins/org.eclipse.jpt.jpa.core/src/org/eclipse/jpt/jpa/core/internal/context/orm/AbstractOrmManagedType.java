@@ -307,8 +307,8 @@ public abstract class AbstractOrmManagedType
 		if (StringTools.isBlank(this.class_)) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS,
-					this.getClassTextRange()
+					this.getClassTextRange(),
+					JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS
 				)
 			);
 			return;
@@ -320,8 +320,8 @@ public abstract class AbstractOrmManagedType
 		if (this.javaManagedType == null) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS,
 					this.getClassTextRange(),
+					JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS,
 					this.getName()
 				)
 			);

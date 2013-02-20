@@ -61,8 +61,8 @@ public class GenericJavaXmlID
 		if (! xsdFeature.typeIsValid(idrefType, false)) {
 			messages.add(
 					this.buildErrorValidationMessage(
-						JptJaxbCoreValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
 						getValidationTextRange(),
+						JptJaxbCoreValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
 						xsdFeature.getName()));
 		}
 	}
@@ -71,8 +71,9 @@ public class GenericJavaXmlID
 		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
 			messages.add(
 				this.buildErrorValidationMessage(
-					JptJaxbCoreValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
-					getValidationTextRange()));
+					getValidationTextRange(),
+					JptJaxbCoreValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING
+				));
 		}
 	}
 

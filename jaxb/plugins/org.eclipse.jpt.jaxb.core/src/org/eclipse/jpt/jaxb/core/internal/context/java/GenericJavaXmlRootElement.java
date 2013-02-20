@@ -195,9 +195,10 @@ public class GenericJavaXmlRootElement
 						if (! schemaType.equals(schemaElement.getType())) {
 							messages.add(
 									this.buildErrorValidationMessage(
-										JptJaxbCoreValidationMessages.XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE,
 										getValidationTextRange(),
-										name, namespace));
+										JptJaxbCoreValidationMessages.XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE,
+										name,
+										namespace));
 						}
 					}
 				}

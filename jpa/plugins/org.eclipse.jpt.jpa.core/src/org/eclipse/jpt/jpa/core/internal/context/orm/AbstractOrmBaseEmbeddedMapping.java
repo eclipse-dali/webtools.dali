@@ -205,8 +205,8 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		}
 		messages.add(
 			this.buildErrorValidationMessage(
-				JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
 				this.getAttributeTypeTextRange(),
+				JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
 				this.getFullyQualifiedAttributeType()
 			)
 		);
