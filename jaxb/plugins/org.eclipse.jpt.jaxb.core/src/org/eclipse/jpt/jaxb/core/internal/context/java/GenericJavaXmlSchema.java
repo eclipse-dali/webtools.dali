@@ -319,7 +319,7 @@ public class GenericJavaXmlSchema
 //		if (schema != null) {
 //			if (formConflicts(getAttributeFormDefault(), schema.getXSDComponent().getAttributeFormDefault())) {
 //				messages.add(
-//				DefaultValidationMessages.buildMessage(
+//				this.buildErrorValidationMessage(
 //					IMessage.HIGH_SEVERITY,
 //					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ATTRIBUTE_FORM_DEFAULT,
 //					this,
@@ -328,7 +328,7 @@ public class GenericJavaXmlSchema
 //			
 //			if (formConflicts(getElementFormDefault(), schema.getXSDComponent().getElementFormDefault())) {
 //				messages.add(
-//				DefaultValidationMessages.buildMessage(
+//				this.buildErrorValidationMessage(
 //					IMessage.HIGH_SEVERITY,
 //					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ELEMENT_FORM_DEFAULT,
 //					this,

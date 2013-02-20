@@ -25,7 +25,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -424,12 +423,11 @@ public class GenericJavaPersistentAttribute
 			if (ObjectTools.notEquals(currentMappingDefinition.getAnnotationName(), annotation.getAnnotationName())
 					&& ! IterableTools.contains(supportingAnnotationNames, annotation.getAnnotationName())) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
-								new String[] { annotation.getAnnotationName(), currentMappingDefinition.getAnnotationName() },
-								this,
-								annotation.getTextRange()));
+								annotation.getTextRange(),
+								annotation.getAnnotationName(),
+								currentMappingDefinition.getAnnotationName()));
 			}
 		}
 		

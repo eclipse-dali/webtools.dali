@@ -17,7 +17,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -133,11 +132,12 @@ public class GenericPackage
 		
 		if (getJaxbProject().getSchemaLibrary().getSchema(getNamespace()) == null) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 						JptJaxbCoreValidationMessages.PACKAGE_NO_SCHEMA_FOR_NAMESPACE,
-						new String[] {getNamespace(), this.name},
-						this));
+						IMessage.NORMAL_SEVERITY,
+						getNamespace(),
+						this.name
+						));
 		}
 		
 		if (this.packageInfo != null) {

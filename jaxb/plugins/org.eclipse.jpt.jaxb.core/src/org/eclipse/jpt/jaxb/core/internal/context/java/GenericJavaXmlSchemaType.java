@@ -20,7 +20,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -156,12 +155,10 @@ public abstract class GenericJavaXmlSchemaType
 		XsdTypeDefinition xsdType = getXsdTypeDefinition();
 		if (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__NON_SIMPLE_TYPE,
-							new String[] { qName.getName() },
-							this,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							qName.getName()));
 		}
 	}
 	

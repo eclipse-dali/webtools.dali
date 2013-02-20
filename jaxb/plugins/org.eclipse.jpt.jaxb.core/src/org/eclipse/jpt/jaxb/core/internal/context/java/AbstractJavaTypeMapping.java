@@ -28,7 +28,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
@@ -458,10 +457,8 @@ public abstract class AbstractJavaTypeMapping
 							getNamespace(),
 							buildDefaultNamespace())) {
 				messages.add(
-					DefaultValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
-						this,
 						getXmlTypeAnnotation().getNamespaceTextRange()));
 			}
 		}

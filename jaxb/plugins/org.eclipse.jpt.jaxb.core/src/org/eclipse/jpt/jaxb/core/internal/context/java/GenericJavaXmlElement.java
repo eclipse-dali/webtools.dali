@@ -28,7 +28,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlAdaptableMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -362,10 +361,8 @@ public class GenericJavaXmlElement
 		String fqType = getFullyQualifiedType();
 		if (StringTools.isBlank(fqType)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
-							this,
 							getTypeTextRange()));
 		}
 		else {
@@ -381,12 +378,10 @@ public class GenericJavaXmlElement
 				String attributeBaseType = getAttributeMapping().getValueTypeName();
 				if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
 					messages.add(
-							DefaultValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 									JptJaxbCoreValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
-									new String[] { attributeBaseType },
-									this,
-									getTypeTextRange()));
+									getTypeTextRange(),
+									attributeBaseType));
 				}
 			}
 		}
@@ -426,12 +421,10 @@ public class GenericJavaXmlElement
 		
 		if (! xsdElement.typeIsValid(expectedSchemaType, this.context.hasXmlList())) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
-							new String[] { typeName, xsdElement.getName() },
-							this,
-							this.qName.getNameTextRange()));
+							this.qName.getNameTextRange(),
+							typeName, xsdElement.getName()));
 		}
 	}
 	

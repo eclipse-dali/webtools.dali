@@ -20,7 +20,6 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -163,20 +162,16 @@ public class OxmFileImpl
 		if (getJaxbPackage() == null) {
 			if (StringTools.isBlank(getPackageName())) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED,
-								this,
 								getPackageNameTextRange()));
 			}
 			else {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
-								new String[] { getPackageName() },
-								this,
-								getPackageNameTextRange()));
+								getPackageNameTextRange(),
+								getPackageName()));
 			}
 		}
 		

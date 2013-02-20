@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdAttributeUse;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -236,10 +236,9 @@ public class XPath {
 			
 			if (getNextStep() != null) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT,
-								context.getContextObject(),
+								context.getContextObject().getResource(),
 								getTextRange(context)));
 				return;
 			}
@@ -254,12 +253,11 @@ public class XPath {
 			XsdAttributeUse xsdAttribute= previousType.getAttribute(namespace, this.localName);
 			if (xsdAttribute == null) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
-								new String[] { namespace, this.localName },
-								context.getContextObject(),
-								getTextRange(context)));
+								context.getContextObject().getResource(),
+								getTextRange(context),
+								namespace, this.localName));
 				return null;
 			}
 			else {
@@ -304,12 +302,11 @@ public class XPath {
 			XsdElementDeclaration xsdElement = previousType.getElement(namespace, this.localName);
 			if (xsdElement == null) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ELEMENT,
-								new String[] { namespace, this.localName },
-								context.getContextObject(),
-								getTextRange(context)));
+								context.getContextObject().getResource(),
+								getTextRange(context),
+								namespace, this.localName));
 				return null;
 			}
 			else {
@@ -351,12 +348,11 @@ public class XPath {
 		protected void validate(
 				Context context, XsdTypeDefinition previousType, List<IMessage> messages) {
 			
-			messages. add(ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+			messages. add(ValidationMessageTools.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
-							new String[] { getValue() },
-							context.getContextObject(),
-							getTextRange(context)));
+							context.getContextObject().getResource(),
+							getTextRange(context),
+							getValue()));
 			return;
 		}
 	}
@@ -414,12 +410,11 @@ public class XPath {
 			
 			if (namespace == null) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_NS_PREFIX,
-								new String[] { this.nsPrefix },
-								context.getContextObject(),
-								getTextRange(context)));
+								context.getContextObject().getResource(),
+								getTextRange(context),
+								this.nsPrefix));
 			}
 			
 			XsdTypeDefinition nextType = (previousType == null) ? null : validateLocalName(context, previousType, namespace, messages);
@@ -463,10 +458,9 @@ public class XPath {
 			
 			if (getIndex() != 0) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT,
-								context.getContextObject(),
+								context.getContextObject().getResource(),
 								getTextRange(context)));
 				return;
 			}
@@ -579,10 +573,9 @@ public class XPath {
 			
 			if (getNextStep() != null) {
 				messages.add(
-						ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT,
-								context.getContextObject(),
+								context.getContextObject().getResource(),
 								getTextRange(context)));
 			}
 		}

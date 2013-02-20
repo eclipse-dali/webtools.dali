@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
@@ -70,6 +71,24 @@ public interface JaxbProject
 	 * The JAXB project facet.
 	 */
 	IProjectFacet FACET = ProjectFacetsManager.getProjectFacet(FACET_ID);
+
+
+	// ********** JAXB validation **********
+
+	String MARKER_TYPE_SCOPE = JptJaxbCorePlugin.instance().getPluginID();
+	String MARKER_TYPE_SCOPE_ = MARKER_TYPE_SCOPE + '.';
+
+	String RELATIVE_MARKER_TYPE = "problem";  //$NON-NLS-1$
+
+	/**
+	 * The JAXB validation marker type
+	 * (value: <code>"org.eclipse.jpt.jaxb.core.problem"</code>).
+	 * <p>
+	 * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.resources.markers</code>.
+	 * 
+	 * @see org.eclipse.core.resources.IMarker#getType()
+	 */
+	String MARKER_TYPE = MARKER_TYPE_SCOPE_ + RELATIVE_MARKER_TYPE;
 
 
 	// ********** general **********

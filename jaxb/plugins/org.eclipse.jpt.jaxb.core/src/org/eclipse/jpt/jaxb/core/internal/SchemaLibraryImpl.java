@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
@@ -129,11 +129,11 @@ public class SchemaLibraryImpl
 			
 			if (! entry.isLoaded()) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.PROJECT__UNRESOLVED_SCHEMA,
-								new String[] { entry.getLocation() },
-								this.project));
+								this.project.getProject(),
+								entry.getLocation()
+							));
 			}
 		}
 		
@@ -141,11 +141,11 @@ public class SchemaLibraryImpl
 			String namespace = stream.next();
 			if (namespaces.count(namespace) > 1) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						ValidationMessageTools.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.PROJECT__DUPLICATE_NAMESPACE,
-								new String[] { namespace },
-								this.project));
+								this.project.getProject(),
+								namespace
+								));
 			}
 		}
 	}

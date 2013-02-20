@@ -23,7 +23,6 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPathFactory;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -126,8 +125,7 @@ public class ELJavaXmlPath
 		
 		if (StringTools.isBlank(this.value)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__NOT_SPECIFIED,
 								ELJavaXmlPath.this,
 								getValueTextRange()));
@@ -136,8 +134,7 @@ public class ELJavaXmlPath
 		
 		if (this.value.startsWith(XPath.DELIM)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlPath.this,
 								getValueTextRange()));

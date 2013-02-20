@@ -15,10 +15,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -31,7 +29,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
@@ -355,12 +352,11 @@ public class GenericJavaXmlElementsMapping
 		String xmlElementType = xmlElement.getFullyQualifiedType();
 		if (xmlElementTypes.count(xmlElementType) > 1) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
-							new String[] { xmlElementType },
 							xmlElement,
-							xmlElement.getTypeTextRange()));
+							xmlElement.getTypeTextRange(),
+							xmlElementType));
 		}
 	}
 	
@@ -370,12 +366,11 @@ public class GenericJavaXmlElementsMapping
 		String xmlElementName = xmlElement.getQName().getName();
 		if (xmlElementQNames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
-							new String[] { xmlElementName },
 							xmlElement,
-							xmlElement.getQName().getNameTextRange()));
+							xmlElement.getQName().getNameTextRange(),
+							xmlElementName));
 		}	
 	}
 	

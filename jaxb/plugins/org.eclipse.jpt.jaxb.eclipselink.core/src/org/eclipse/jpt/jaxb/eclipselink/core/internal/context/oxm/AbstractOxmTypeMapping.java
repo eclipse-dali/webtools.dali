@@ -30,7 +30,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -605,10 +604,8 @@ public abstract class AbstractOxmTypeMapping
 							this.getNamespace(),
 							this.buildDefaultNamespace())) {
 				messages.add(
-					DefaultValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJaxbCoreValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
-						this,
 						this.proxy.getNamespaceTextRange()));
 			}
 		}

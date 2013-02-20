@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -66,10 +65,8 @@ public class GenericJavaXmlValueMapping
 		
 		if (! xsdClassType.hasTextContent()) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_VALUE__NO_TEXT_CONTENT,
-							this,
 							getValidationTextRange()));
 			return;
 		}
@@ -83,12 +80,10 @@ public class GenericJavaXmlValueMapping
 		
 		if (! xsdType.typeIsValid(expectedSchemaType, isXmlList())) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_VALUE__INVALID_SCHEMA_TYPE,
-							new String[] { getValueTypeName() },
-							this,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							getValueTypeName()));
 		}
 	}
 }

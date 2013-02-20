@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
@@ -61,22 +60,18 @@ public class GenericJavaXmlID
 		XsdTypeDefinition idrefType = XsdUtil.getSchemaForSchema().getTypeDefinition("ID");
 		if (! xsdFeature.typeIsValid(idrefType, false)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJaxbCoreValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
-						new String [] { xsdFeature.getName() },
-						this,
-						getValidationTextRange()));
+						getValidationTextRange(),
+						xsdFeature.getName()));
 		}
 	}
 	
 	protected void validateAttributeType(List<IMessage> messages) {
 		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
 			messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJaxbCoreValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
-					this,
 					getValidationTextRange()));
 		}
 	}

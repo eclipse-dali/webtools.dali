@@ -15,7 +15,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -33,20 +36,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 /**
  * This class is referenced in the JAXB extension for the
  * WTP validator extension point.
+ * <p>
+ * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.wst.validation.validatorV2</code>.
  */
 public class JaxbValidator
-		extends AbstractValidator
-		implements IValidator {
+	extends AbstractValidator
+	implements IValidator
+{
+	private static final String OLD_RELATIVE_MARKER_TYPE = "jaxbProblemMarker";  //$NON-NLS-1$
+	private static final String OLD_MARKER_TYPE = JaxbProject.MARKER_TYPE_SCOPE_ + OLD_RELATIVE_MARKER_TYPE;
 
-	public static final String RELATIVE_MARKER_ID = "jaxbProblemMarker";  //$NON-NLS-1$
-
-	/**
-	 * The identifier for the JAXB validation marker
-	 * (value <code>"org.eclipse.jpt.jaxb.core.jaxbProblemMarker"</code>).
-	 * <p>
-	 * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.resources.markers</code>.
-	 */
-	public static final String MARKER_ID = JptJaxbCorePlugin.instance().getPluginID() + '.' + RELATIVE_MARKER_ID;
 
 	public JaxbValidator() {
 		super();
@@ -74,7 +73,6 @@ public class JaxbValidator
 		ValidationResult result = new ValidationResult();
 		IReporter reporter = result.getReporter(monitor);
 		IProject project = resource.getProject();
-		this.clearMarkers(project);
 		result.setSuspendValidation(project);
 		this.validate(reporter, project);
 		return result;
@@ -83,41 +81,42 @@ public class JaxbValidator
 
 	// ********** internal **********
 
-	private void clearMarkers(IProject project) {
-		try {
-			this.clearMarkers_(project);
-		} catch (CoreException ex) {
-			JptJaxbCorePlugin.instance().logError(ex);
-		}
-	}
-
-	private void clearMarkers_(IProject project) throws CoreException {
-		IMarker[] markers = project.findMarkers(JaxbValidator.MARKER_ID, true, IResource.DEPTH_INFINITE);
-		for (IMarker marker : markers) {
-			marker.delete();
-		}
-	}
-
 	private void validate(IReporter reporter, IProject project) {
-		for (IMessage message : this.buildValidationMessages(reporter, project)) {
-			// TODO check preferences for IGNORE
-//			if (JpaValidationPreferences.problemIsNotIgnored(project, message.getId())) {
-				reporter.addMessage(this, message);
-//			}
+		Iterable<IMessage> messages = this.buildNonIgnoredValidationMessages(reporter, project);
 
+		// since the validation messages are usually built asynchronously
+		// and a workspace shutdown could occur in the meantime,
+		// wait until we actually get the new messages before we clear out the old messages
+		this.clearMarkers(project);
+
+		for (IMessage message : messages) {
+			reporter.addMessage(this, message);
+		}
+	}
+
+	/**
+	 * Filter out any message with an "ignore" severity (which would be
+	 * specified in the preferences).
+	 */
+	private Iterable<IMessage> buildNonIgnoredValidationMessages(IReporter reporter, IProject project) {
+		return IterableTools.filter(this.buildValidationMessages(reporter, project), NON_IGNORED_MESSAGE);
+	}
+
+	private static final Filter<IMessage> NON_IGNORED_MESSAGE = new NonIgnoredMessage();
+	/* CU private */ static class NonIgnoredMessage
+		extends Filter.Adapter<IMessage>
+	{
+		@Override
+		public boolean accept(IMessage message) {
+			return message.getSeverity() != -1;
 		}
 	}
 
 	private Iterable<IMessage> buildValidationMessages(IReporter reporter, IProject project) {
 		JaxbProject jaxbProject = this.getJaxbProject(project);
-		if (jaxbProject != null) {
-			return jaxbProject.getValidationMessages(reporter);
-		}
-		return new SingleElementIterable<IMessage>(
-				DefaultValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JptJaxbCoreValidationMessages.NO_JAXB_PROJECT,
-						project));
+		return (jaxbProject != null) ?
+			jaxbProject.getValidationMessages(reporter) :
+			this.buildValidationFailedMessages(project);
 	}
 
 	private JaxbProject getJaxbProject(IProject project) {
@@ -132,5 +131,33 @@ public class JaxbValidator
 
 	private JaxbWorkspace getJaxbWorkspace() {
 		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
+	private Iterable<IMessage> buildValidationFailedMessages(IProject project) {
+		return IterableTools.singletonIterable(this.buildValidationFailedMessage(project));
+	}
+
+	private IMessage buildValidationFailedMessage(IProject project) {
+		return ValidationMessageTools.buildErrorValidationMessage(
+					JptJaxbCoreValidationMessages.JAXB_VALIDATION_FAILED,
+					project
+				);
+	}
+
+	private void clearMarkers(IProject project) {
+		try {
+			this.clearMarkers_(project);
+		} catch (CoreException ex) {
+			JptJaxbCorePlugin.instance().logError(ex);
+		}
+	}
+
+	private void clearMarkers_(IProject project) throws CoreException {
+		IMarker[] markers = project.findMarkers(JaxbProject.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
+		// TODO post-Kepler: remove this line of code
+		ArrayTools.addAll(markers, project.findMarkers(OLD_MARKER_TYPE, true, IResource.DEPTH_INFINITE));
+		for (IMarker marker : markers) {
+			marker.delete();
+		}
 	}
 }

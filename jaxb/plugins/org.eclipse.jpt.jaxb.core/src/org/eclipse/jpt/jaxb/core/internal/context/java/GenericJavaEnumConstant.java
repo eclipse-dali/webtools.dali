@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -141,12 +140,10 @@ public class GenericJavaEnumConstant
 		
 		if (! ((XsdSimpleTypeDefinition) xsdType).getXSDComponent().isValidLiteral(value)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ENUM_VALUE__INVALID_LEXICAL_VALUE,
-							new String[] { value, xsdType.getName() },
-							this,
-							getValueTextRange()));
+							getValueTextRange(),
+							value, xsdType.getName()));
 		}
 	}
 	

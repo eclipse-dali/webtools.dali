@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -245,10 +244,8 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 	protected void validateXmlList(List<IMessage> messages, IReporter reporter) {
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJaxbCoreValidationMessages.XML_LIST__ATTRIBUTE_NOT_COLLECTION_TYPE,
-					this,
 					getXmlListValidationTextRange()));
 		}
 		else {
@@ -258,12 +255,11 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 							|| ((XsdSimpleTypeDefinition) xsdType).getXSDComponent().getVariety() == XSDVariety.LIST_LITERAL)) {
 				
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.XML_LIST__ITEM_TYPE_NOT_MAPPED_TO_VALID_SCHEMA_TYPE,
-								new String[] { getValueTypeName() },
-								this,
-								getValidationTextRange()));
+								getValidationTextRange(),
+								getValueTypeName()
+								));
 			}
 		}
 	}

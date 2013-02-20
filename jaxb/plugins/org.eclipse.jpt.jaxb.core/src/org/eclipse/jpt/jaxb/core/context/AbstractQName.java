@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -268,24 +267,25 @@ public abstract class AbstractQName
 	protected void validateName(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(getName())) {
 			messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
-					new String[] { getReferencedComponentTypeDescription() },
-					this,
-					getNameTextRange()));
+					getNameTextRange(),
+					getReferencedComponentTypeDescription()
+				)
+			);
 		}
 	}
 	
 	protected abstract void validateReference(List<IMessage> messages, IReporter reporter);
 	
 	protected IMessage getUnresolveSchemaComponentMessage() {
-		return DefaultValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
+		return this.buildErrorValidationMessage(
 				JptJaxbCoreValidationMessages.QNAME__UNRESOLVED_COMPONENT,
-				new String[] { getReferencedComponentTypeDescription(), getNamespace(), getName() },
-				this,
-				getNameTextRange());
+				getNameTextRange(),
+				getReferencedComponentTypeDescription(),
+				getNamespace(),
+				getName()
+			);
 	}
 	
 	

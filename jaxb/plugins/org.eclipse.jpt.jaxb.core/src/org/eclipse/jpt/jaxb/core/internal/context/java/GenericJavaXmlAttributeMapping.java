@@ -24,7 +24,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
@@ -214,12 +213,10 @@ public class GenericJavaXmlAttributeMapping
 		boolean isItemType = isXmlList() && this.xmlSchemaType == null;
 		if (! xsdFeature.typeIsValid(expectedSchemaType, isItemType)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
-							new String[] { getValueTypeName(), xsdFeature.getName() },
-							this,
-							this.qName.getNameTextRange()));
+							this.qName.getNameTextRange(),
+							getValueTypeName(), xsdFeature.getName()));
 		}
 	}
 	

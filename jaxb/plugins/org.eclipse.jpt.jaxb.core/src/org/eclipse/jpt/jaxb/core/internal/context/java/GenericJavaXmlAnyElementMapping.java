@@ -25,7 +25,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlMixed;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
@@ -342,12 +341,12 @@ public class GenericJavaXmlAnyElementMapping
 					(XmlElementRefAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_ELEMENT_REF);
 			if (xmlElementRefAnnotation != null) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
-								new String[] { JAXB.XML_ELEMENT_REF, JAXB.XML_ELEMENT_REFS },
 								getPersistentAttribute(),
-								xmlElementRefAnnotation.getTextRange()));
+								xmlElementRefAnnotation.getTextRange(),
+								JAXB.XML_ELEMENT_REF,
+								JAXB.XML_ELEMENT_REFS));
 			}
 		}
 		

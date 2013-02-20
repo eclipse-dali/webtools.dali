@@ -30,7 +30,6 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementsMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlJoinNodeAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -179,12 +178,11 @@ public class ELJavaXmlJoinNodesMapping
 		
 		if (referencedClass == null) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__INVALID_REFERENCED_CLASS,
-								new String[] { getValueTypeName() },
 								ELJavaXmlJoinNodesMapping.this,
-								getValidationTextRange()));
+								getValidationTextRange(),
+								getValueTypeName()));
 		}
 		
 		validateDuplicateXmlPaths(messages, reporter);
@@ -220,12 +218,11 @@ public class ELJavaXmlJoinNodesMapping
 		String xmlPath = joinNode.getXmlPath();
 		if (xmlPaths.count(xmlPath) > 1) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_XML_PATH,
-							new String[] { xmlPath },
 							joinNode,
-							joinNode.getXmlPathTextRange()));
+							joinNode.getXmlPathTextRange(),
+							xmlPath));
 		}
 	}
 	
@@ -234,12 +231,11 @@ public class ELJavaXmlJoinNodesMapping
 		String referencedXmlPath = joinNode.getReferencedXmlPath();
 		if (referencedXmlPaths.count(referencedXmlPath) > 1) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH,
-							new String[] { referencedXmlPath },
 							joinNode,
-							joinNode.getReferencedXmlPathTextRange()));
+							joinNode.getReferencedXmlPathTextRange(),
+							referencedXmlPath));
 		}
 	}
 	

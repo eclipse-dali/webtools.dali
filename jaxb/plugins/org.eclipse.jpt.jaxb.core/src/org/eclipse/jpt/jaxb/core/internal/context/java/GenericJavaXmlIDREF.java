@@ -16,7 +16,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
@@ -67,12 +66,10 @@ public class GenericJavaXmlIDREF
 				JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
 				if (classMapping == null || classMapping.getXmlIdMapping() == null) {
 					messages.add(
-					DefaultValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 						JptJaxbCoreValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
-						new String[] { typeName },
-						this,
-						ref.getTypeTextRange()));				
+						ref.getTypeTextRange(),
+						typeName));				
 				}
 			}
 			
@@ -83,12 +80,10 @@ public class GenericJavaXmlIDREF
 			if (xsdFeature != null 
 					&& ! xsdFeature.typeIsValid(XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF"), this.context.isList())) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
-							new String [] { xsdFeature.getName() },
-							this,
-							ref.getXsdFeatureTextRange()));
+							ref.getXsdFeatureTextRange(),
+							xsdFeature.getName()));
 			}
 		}
 	}

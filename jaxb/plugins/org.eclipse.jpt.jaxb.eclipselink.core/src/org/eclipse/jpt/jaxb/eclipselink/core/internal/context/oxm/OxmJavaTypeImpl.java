@@ -36,7 +36,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaJaxbClass;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlElement;
@@ -622,10 +621,8 @@ public class OxmJavaTypeImpl
 		// type name must be specified
 		if (StringTools.isBlank(this.specifiedName)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED,
-							this,
 							getNameTextRange()));
 			return;
 		}
@@ -634,10 +631,8 @@ public class OxmJavaTypeImpl
 		String packageName = TypeDeclarationTools.packageName(this.specifiedName);
 		if (! StringTools.isBlank(packageName) && ! ObjectTools.equals(packageName, getXmlBindings().getPackageName())) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM,
-							this,
 							getNameTextRange()));
 		}
 	}

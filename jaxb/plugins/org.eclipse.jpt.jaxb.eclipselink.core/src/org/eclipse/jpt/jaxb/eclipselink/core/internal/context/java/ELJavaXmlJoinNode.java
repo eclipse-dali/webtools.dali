@@ -27,7 +27,6 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPathFactory;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlJoinNodeAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -185,8 +184,7 @@ public class ELJavaXmlJoinNode
 	protected void validateXmlPath(List<IMessage> messages) {
 		if (StringTools.isBlank(this.xmlPath)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED,
 								ELJavaXmlJoinNode.this,
 								getXmlPathTextRange()));
@@ -195,8 +193,7 @@ public class ELJavaXmlJoinNode
 		
 		if (this.xmlPath.startsWith(XPath.DELIM)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-								IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlJoinNode.this,
 								getXmlPathTextRange()));
@@ -211,8 +208,7 @@ public class ELJavaXmlJoinNode
 	protected void validateReferencedXmlPath(List<IMessage> messages) {
 		if (StringTools.isBlank(this.referencedXmlPath)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED,
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange()));
@@ -221,8 +217,7 @@ public class ELJavaXmlJoinNode
 		
 		if (this.referencedXmlPath.startsWith(XPath.DELIM)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange()));
@@ -233,12 +228,11 @@ public class ELJavaXmlJoinNode
 		if (referencedClassMapping != null && 
 				! IterableTools.contains(referencedClassMapping.getKeyXPaths(), this.referencedXmlPath)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,
-							new String[] { referencedClassMapping.getJavaType().getTypeName().getFullyQualifiedName(), this.referencedXmlPath },
 							ELJavaXmlJoinNode.this,
-							getReferencedXmlPathTextRange()));
+							getReferencedXmlPathTextRange(),
+							referencedClassMapping.getJavaType().getTypeName().getFullyQualifiedName(), this.referencedXmlPath));
 		}
 		
 		XsdTypeDefinition xsdType = getAttributeMapping().getReferencedXsdTypeDefinition();

@@ -29,7 +29,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
@@ -242,10 +241,8 @@ public class GenericJavaXmlElementRef
 		String fqType = getFullyQualifiedType();
 		if (StringTools.isBlank(fqType)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE,
-							this,
 							getTypeTextRange()));
 		}
 		else if (! StringTools.isBlank(this.specifiedType)
@@ -254,12 +251,10 @@ public class GenericJavaXmlElementRef
 			String attributeValueType = getContext().getAttributeMapping().getValueTypeName();
 			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeValueType)) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
-								new String[] { attributeValueType },
-								this,
-								getTypeTextRange()));
+								getTypeTextRange(),
+								attributeValueType));
 								
 			}
 			
@@ -267,12 +262,10 @@ public class GenericJavaXmlElementRef
 			JaxbTypeMapping typeMapping = getJaxbProject().getContextRoot().getTypeMapping(fqType);
 			if (typeMapping != null && ! typeMapping.hasRootElementInHierarchy()) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
-								new String[] { attributeValueType },
-								this,
-								getTypeTextRange()));
+								getTypeTextRange(),
+								attributeValueType));
 			}
 		}
 	}
@@ -356,10 +349,8 @@ public class GenericJavaXmlElementRef
 			
 			if (registry == null) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_REGISTRY,
-								this,
 								getValidationTextRange()));
 				return;
 			}
@@ -371,12 +362,10 @@ public class GenericJavaXmlElementRef
 				}
 			}
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
-							new String[] { getNamespace(), getName() },
-							this,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							getNamespace(), getName()));
 							
 		}
 	}

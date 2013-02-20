@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -164,24 +163,20 @@ public class GenericJavaXmlElementRefs
 			boolean isJaxbElement = JAXB.JAXB_ELEMENT.equals(typeName);
 			if (! isJaxbElement && xmlElementRefTypes.count(typeName) > 1) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_TYPE,
-								new String[] { typeName },
 								xmlElementRef,
-								xmlElementRef.getTypeTextRange()));
+								xmlElementRef.getTypeTextRange(), typeName));
 			}
 			
 			String xmlElementNamespace = xmlElementRef.getQName().getNamespace();
 			String xmlElementName = xmlElementRef.getQName().getName();
 			if (isJaxbElement && xmlElementRefQnames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_QNAME,
-								new String[] { xmlElementName },
 								xmlElementRef,
-								xmlElementRef.getQName().getNameTextRange()));
+								xmlElementRef.getQName().getNameTextRange(), xmlElementName));
 			}
 		}
 	}

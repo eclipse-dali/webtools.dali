@@ -22,7 +22,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -161,12 +160,10 @@ public class OxmXmlRootElementImpl
 					if (schemaType != null) {
 						if (! schemaType.equals(schemaElement.getType())) {
 							messages.add(
-									DefaultValidationMessages.buildMessage(
-										IMessage.HIGH_SEVERITY,
+									this.buildErrorValidationMessage(
 										JptJaxbCoreValidationMessages.XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE,
-										new String[] {name, namespace},
-										this,
-										getValidationTextRange()));
+										getValidationTextRange(),
+										name, namespace));
 						}
 					}
 				}

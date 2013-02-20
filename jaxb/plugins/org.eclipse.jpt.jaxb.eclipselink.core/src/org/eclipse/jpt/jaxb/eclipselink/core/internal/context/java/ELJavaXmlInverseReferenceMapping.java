@@ -21,7 +21,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlInverseReferenceMapping;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlInverseReferenceAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -165,10 +164,8 @@ public class ELJavaXmlInverseReferenceMapping
 	protected void validateMappedBy(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(mappedBy)) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED,
-							this,
 							getMappedByTextRange()));
 			return;
 		}
@@ -182,24 +179,20 @@ public class ELJavaXmlInverseReferenceMapping
 		JaxbPersistentAttribute referencedAttribute = getReferencedAttribute();
 		if (referencedAttribute == null) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
-							new String[] { mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName() },
-							this,
-							getMappedByTextRange()));
+							getMappedByTextRange(),
+							mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName()));
 		}
 		else if (
 				! ArrayTools.contains(
 						getValidReferencedAttributeMappingKeys(),
 						referencedAttribute.getMappingKey())) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
-							new String[] { mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName() },
-							this,
-							getMappedByTextRange()));
+							getMappedByTextRange(),
+							mappedBy, referencedClassMapping.getTypeName().getFullyQualifiedName()));
 		}
 	}
 

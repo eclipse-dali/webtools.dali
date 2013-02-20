@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -50,10 +49,8 @@ public class GenericJavaPackageXmlSchemaType
 		String fqType = getFullyQualifiedType();
 		if (fqType == null || XmlSchemaTypeAnnotation.DEFAULT_TYPE.equals(fqType)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_NOT_SPECIFIED_ON_PACKAGE,
-							this,
 							getValidationTextRange()));
 		}
 	}

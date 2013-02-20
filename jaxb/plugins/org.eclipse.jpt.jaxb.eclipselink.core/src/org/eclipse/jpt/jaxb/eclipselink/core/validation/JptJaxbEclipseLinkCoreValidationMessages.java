@@ -9,62 +9,97 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.validation;
 
-@SuppressWarnings("nls")
-public interface JptJaxbEclipseLinkCoreValidationMessages {
-	
-	// bundle name
-	String BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation";
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
+
+/**
+ * Localized validation messages used by Dali EclipseLink JAXB core.
+ * <b>
+ * <strong>NB:</strong> These are not loaded like "normal" message
+ * (i.e. like messages loaded by {@link org.eclipse.osgi.util.NLS});
+ * instead they are loaded as {@link ValidationMessage}s.
+ * @see ValidationMessageLoader
+ */
+public class JptJaxbEclipseLinkCoreValidationMessages {
+
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
+	private static class PreferencesAdapter
+		implements ValidationMessageLoader.PreferencesAdapter
+	{
+		PreferencesAdapter() {
+			super();
+		}
+		// TODO
+		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
+			return defaultSeverity;
+			// return JaxbEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation"; //$NON-NLS-1$
+	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation_description"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJaxbEclipseLinkCoreValidationMessages.class;
+	static {
+		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JaxbProject.MARKER_TYPE, PREFERENCES_ADAPTER);
+	}
 	
 	
 	// validation on project
-	String PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY = "PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY";
+	public static ValidationMessage PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY;
 	
 	// oxm file
-	String OXM_FILE__NO_PACKAGE_SPECIFIED = "OXM_FILE__NO_PACKAGE_SPECIFIED";
-	String OXM_FILE__NO_SUCH_PACKAGE = "OXM_FILE__NO_SUCH_PACKAGE";
+	public static ValidationMessage OXM_FILE__NO_PACKAGE_SPECIFIED;
+	public static ValidationMessage OXM_FILE__NO_SUCH_PACKAGE;
 	
 	// oxm java type
-	String OXM_JAVA_TYPE__NAME_NOT_SPECIFIED = "OXM_JAVA_TYPE__NAME_NOT_SPECIFIED";
-	String OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM = "OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM";
+	public static ValidationMessage OXM_JAVA_TYPE__NAME_NOT_SPECIFIED;
+	public static ValidationMessage OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM;
 	
 	// xml discriminator node
-	String XML_DISCRIMINATOR_NODE__NOT_SPECIFIED = "XML_DISCRIMINATOR_NODE__NOT_SPECIFIED";
+	public static ValidationMessage XML_DISCRIMINATOR_NODE__NOT_SPECIFIED;
 	
 	// xml discriminator value
-	String XML_DISCRIMINATOR_VALUE__NOT_SPECIFIED = "XML_DISCRIMINATOR_VALUE__NOT_SPECIFIED";
+	public static ValidationMessage XML_DISCRIMINATOR_VALUE__NOT_SPECIFIED;
 	
 	// xml element decl
-	String XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE = "XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE";
+	public static ValidationMessage XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE;
 	
 	// xml inverse reference
-	String XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED = "XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED";
-	String XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED = "XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED";
-	String XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE = "XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE";
+	public static ValidationMessage XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED;
+	public static ValidationMessage XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED;
+	public static ValidationMessage XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE;
 	
 	// xml join node
-	String XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED = "XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED";
-	String XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED = "XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED";
-	String XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS = "XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS";
+	public static ValidationMessage XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED;
+	public static ValidationMessage XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED;
+	public static ValidationMessage XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS;
 	
 	// xml join nodes
-	String XML_JOIN_NODES__INVALID_REFERENCED_CLASS = "XML_JOIN_NODES__INVALID_REFERENCED_CLASS";
-	String XML_JOIN_NODES__DUPLICATE_XML_PATH = "XML_JOIN_NODES__DUPLICATE_XML_PATH";
-	String XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH = "XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH";
+	public static ValidationMessage XML_JOIN_NODES__INVALID_REFERENCED_CLASS;
+	public static ValidationMessage XML_JOIN_NODES__DUPLICATE_XML_PATH;
+	public static ValidationMessage XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH;
 	
 	// xml path
-	String XML_PATH__NOT_SPECIFIED = "XML_PATH__NOT_SPECIFIED";
+	public static ValidationMessage XML_PATH__NOT_SPECIFIED;
 	
 		// used on XmlElements mapping
-	String XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS = "XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS";
-	String XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS = "XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS";
+	public static ValidationMessage XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS;
+	public static ValidationMessage XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS;
 	
 	// for all XPath usage
-	String XPATH__INVALID_FORM_ILLEGAL_SEGMENT = "XPATH__INVALID_FORM_ILLEGAL_SEGMENT";
-	String XPATH__ROOT_NOT_SUPPORTED = "XPATH__ROOT_NOT_SUPPORTED";
-	String XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT = "XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT";
-	String XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT = "XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT";
-	String XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT = "XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT";
-	String XPATH__INVALID_NS_PREFIX = "XPATH__INVALID_NS_PREFIX";
-	String XPATH__UNRESOLVED_ELEMENT = "XPATH__UNRESOLVED_ELEMENT";
-	String XPATH__UNRESOLVED_ATTRIBUTE = "XPATH__UNRESOLVED_ATTRIBUTE";
+	public static ValidationMessage XPATH__INVALID_FORM_ILLEGAL_SEGMENT;
+	public static ValidationMessage XPATH__ROOT_NOT_SUPPORTED;
+	public static ValidationMessage XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT;
+	public static ValidationMessage XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT;
+	public static ValidationMessage XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT;
+	public static ValidationMessage XPATH__INVALID_NS_PREFIX;
+	public static ValidationMessage XPATH__UNRESOLVED_ELEMENT;
+	public static ValidationMessage XPATH__UNRESOLVED_ATTRIBUTE;
 }

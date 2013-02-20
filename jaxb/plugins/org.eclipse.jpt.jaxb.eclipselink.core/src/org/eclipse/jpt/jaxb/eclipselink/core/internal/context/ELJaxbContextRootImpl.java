@@ -37,7 +37,6 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm.OxmFileImpl;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -266,8 +265,7 @@ public class ELJaxbContextRootImpl
 		}
 		
 		messages.add(
-				ELJaxbValidationMessageBuilder.buildMessage(
-						IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 						JptJaxbEclipseLinkCoreValidationMessages.PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY,
 						getJaxbProject()));
 	}

@@ -23,7 +23,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
@@ -204,10 +203,8 @@ public class GenericJavaXmlElementWrapper
 		
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJaxbCoreValidationMessages.XML_ELEMENT_WRAPPER_DEFINED_ON_NON_ARRAY_NON_COLLECTION,
-					this,
 					getValidationTextRange()));
 		}
 		

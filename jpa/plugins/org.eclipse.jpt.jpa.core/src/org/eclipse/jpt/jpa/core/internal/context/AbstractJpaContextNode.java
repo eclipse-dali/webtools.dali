@@ -169,7 +169,7 @@ public abstract class AbstractJpaContextNode
 	/**
 	 * @see #buildValidationMessage(ValidationMessage, int, JpaNode)
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, int defaultSeverity) {
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity) {
 		return this.buildValidationMessage(message, defaultSeverity, this);
 	}
 
@@ -199,7 +199,7 @@ public abstract class AbstractJpaContextNode
 	/**
 	 * @see #buildValidationMessage(ValidationMessage, int, JpaNode, Object[])
 	 */
-	protected IMessage buildErrorValidationMessage(ValidationMessage message, int defaultSeverity, Object... args) {
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, Object... args) {
 		return this.buildValidationMessage(message, defaultSeverity, this, args);
 	}
 

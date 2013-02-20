@@ -123,6 +123,7 @@ public interface JpaProject
 	 */
 	String MARKER_TYPE = MARKER_TYPE_SCOPE_ + RELATIVE_MARKER_TYPE;
 
+
 	// ********** general **********
 
 	/**

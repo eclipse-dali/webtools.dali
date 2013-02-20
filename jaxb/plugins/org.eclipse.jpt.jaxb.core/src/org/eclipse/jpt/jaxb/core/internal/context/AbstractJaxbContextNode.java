@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.List;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -114,5 +117,125 @@ public abstract class AbstractJaxbContextNode
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
+	}
+
+	/**
+	 * @see #buildErrorValidationMessage(ValidationMessage, JaxbNode)
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message) {
+		return this.buildErrorValidationMessage(message, this);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource)
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, JaxbNode target) {
+		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource());
+	}
+
+	/**
+	 * @see #buildValidationMessage(ValidationMessage, int, JaxbNode)
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity) {
+		return this.buildValidationMessage(message, defaultSeverity, this);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource)
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JaxbNode target) {
+		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource());
+	}
+
+	/**
+	 * @see #buildErrorValidationMessage(ValidationMessage, JaxbNode, Object[])
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, Object... args) {
+		return this.buildErrorValidationMessage(message, this, args);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource, Object[])
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, JaxbNode target, Object... args) {
+		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource(), args);
+	}
+
+	/**
+	 * @see #buildValidationMessage(ValidationMessage, int, JaxbNode, Object[])
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, Object... args) {
+		return this.buildValidationMessage(message, defaultSeverity, this, args);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource, Object[])
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JaxbNode target, Object... args) {
+		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource(), args);
+	}
+
+	/**
+	 * @see #buildErrorValidationMessage(ValidationMessage, JaxbNode, TextRange)
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, TextRange textRange) {
+		return this.buildErrorValidationMessage(message, this, textRange);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource, TextRange)
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, JaxbNode target, TextRange textRange) {
+		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource(), textRange);
+	}
+
+	/**
+	 * @see #buildValidationMessage(ValidationMessage, int, JaxbNode, TextRange)
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, TextRange textRange) {
+		return this.buildValidationMessage(message, defaultSeverity, this, textRange);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource, TextRange)
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JaxbNode target, TextRange textRange) {
+		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource(), textRange);
+	}
+
+	/**
+	 * @see #buildErrorValidationMessage(ValidationMessage, JaxbNode, TextRange, Object[])
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, TextRange textRange, Object... args) {
+		return this.buildErrorValidationMessage(message, this, textRange, args);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildErrorValidationMessage(ValidationMessage, IResource, TextRange, Object[])
+	 * @see IMessage#HIGH_SEVERITY
+	 */
+	protected IMessage buildErrorValidationMessage(ValidationMessage message, JaxbNode target, TextRange textRange, Object... args) {
+		return ValidationMessageTools.buildErrorValidationMessage(message, target.getResource(), textRange, args);
+	}
+
+	/**
+	 * @see #buildValidationMessage(ValidationMessage, int, JaxbNode, TextRange, Object[])
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, TextRange textRange, Object... args) {
+		return this.buildValidationMessage(message, defaultSeverity, this, textRange, args);
+	}
+
+	/**
+	 * @see ValidationMessageTools#buildValidationMessage(ValidationMessage, int, IResource, TextRange, Object[])
+	 */
+	protected IMessage buildValidationMessage(ValidationMessage message, int defaultSeverity, JaxbNode target, TextRange textRange, Object... args) {
+		return ValidationMessageTools.buildValidationMessage(message, defaultSeverity, target.getResource(), textRange, args);
 	}
 }

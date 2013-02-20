@@ -24,7 +24,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
@@ -213,10 +212,8 @@ public class GenericJavaElementFactoryMethod
 		
 		if (resourceMethod.getParametersSize() != 1) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_PARAM,
-							this,
 							getValidationTextRange()));
 		}
 	}
@@ -226,10 +223,8 @@ public class GenericJavaElementFactoryMethod
 		
 		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeBinding().getQualifiedName())) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE,
-							this,
 							getValidationTextRange()));
 		}
 	}
@@ -391,20 +386,16 @@ public class GenericJavaElementFactoryMethod
 			// need to ignore the unspecified (null) case
 			if ("".equals(getName())) {
 				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
+						this.buildErrorValidationMessage(
 								JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
-								new String[] { getReferencedComponentTypeDescription() },
-								this,
-								getNameTextRange()));
+								getNameTextRange(),
+								getReferencedComponentTypeDescription()));
 			}
 			else if (! StringTools.isBlank(getName())) {
 				if (ObjectTools.equals(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
 					messages.add(
-							DefaultValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
+							this.buildErrorValidationMessage(
 									JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NAME_EQUALS_NAME,
-									this,
 									getNameTextRange()));
 				}
 			}
@@ -426,12 +417,11 @@ public class GenericJavaElementFactoryMethod
 				}
 			}
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NO_MATCHING_ELEMENT_DECL,
-							new String[] { getNamespace(), getName() },
-							this,
-							getValidationTextRange()));
+							getValidationTextRange(),
+							getNamespace(),
+							getName()));
 		}
 	}
 	

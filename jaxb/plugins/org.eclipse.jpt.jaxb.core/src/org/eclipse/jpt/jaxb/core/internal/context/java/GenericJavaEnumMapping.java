@@ -20,7 +20,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
@@ -241,28 +240,25 @@ public class GenericJavaEnumMapping
 		
 		if (annotation.getFactoryClass() != null) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM,
-							this,
+							IMessage.NORMAL_SEVERITY,
 							annotation.getFactoryClassTextRange()));
 		}
 		
 		if (annotation.getFactoryMethod() != null) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM,
-							this,
+							IMessage.NORMAL_SEVERITY,
 							annotation.getFactoryMethodTextRange()));
 		}
 		
 		if (! IterableTools.isEmpty(annotation.getPropOrder())) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
+					this.buildValidationMessage(
 							JptJaxbCoreValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM,
-							this,
+							IMessage.NORMAL_SEVERITY,
 							annotation.getPropOrderTextRange()));
 		}
 	}
@@ -274,12 +270,10 @@ public class GenericJavaEnumMapping
 		if ((xsdSchema != null && xsdType == null)
 				|| (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE)) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbCoreValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
-							new String[] { getValue() },
-							this,
-							getXmlEnumValueTextRange()));
+							getXmlEnumValueTextRange(),
+							getValue()));
 		}
 	}
 	

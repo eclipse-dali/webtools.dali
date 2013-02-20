@@ -30,7 +30,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementsMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.validation.JptJaxbEclipseLinkCoreValidationMessages;
@@ -162,20 +161,16 @@ public class ELJavaXmlElementsMapping
 		
 		if (xmlElements.hasNext()) {
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS,
-							this,
 							getXmlPathsTextRange()));
 		}
 		
 		while (xmlPaths.hasNext()) {
 			ELJavaXmlPath xmlPath = xmlPaths.next();
 			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
+					this.buildErrorValidationMessage(
 							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS,
-							this,
 							xmlPath.getValidationTextRange()));
 		}
 		

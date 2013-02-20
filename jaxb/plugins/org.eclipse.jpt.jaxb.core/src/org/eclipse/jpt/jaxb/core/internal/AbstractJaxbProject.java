@@ -41,6 +41,7 @@ import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -54,7 +55,6 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -71,7 +71,6 @@ import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.utility.CallbackSynchronousSynchronizer;
 import org.eclipse.jpt.jaxb.core.internal.utility.SynchronousSynchronizer;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
@@ -1127,10 +1126,9 @@ public abstract class AbstractJaxbProject
 		}
 		if (! lp.isEnabledFor(facetedProject, facetVersion) || ! lid.validate().isOK()) {
 			messages.add(
-					DefaultValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					ValidationMessageTools.buildErrorValidationMessage(
 						JptJaxbCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
-						this));
+						this.project));
 		}
 		lid.dispose();
 	}

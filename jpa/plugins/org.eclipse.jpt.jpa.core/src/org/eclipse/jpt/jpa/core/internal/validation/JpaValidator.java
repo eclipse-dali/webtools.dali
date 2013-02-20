@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -130,7 +129,7 @@ public class JpaValidator
 	 * and the Dali plug-ins have been "stopped" before this validator is invoked.
 	 */
 	private Iterable<IMessage> buildValidationFailedMessages(IProject project) {
-		return new SingleElementIterable<IMessage>(this.buildValidationFailedMessage(project));
+		return IterableTools.singletonIterable(this.buildValidationFailedMessage(project));
 	}
 
 	private IMessage buildValidationFailedMessage(IProject project) {

@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.validation.JptJaxbCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -37,10 +36,8 @@ public class GenericJavaPackageXmlJavaTypeAdapter
 		super.validate(messages, reporter);
 		if (getSpecifiedType() == null || getFullyQualifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
 			messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				this.buildErrorValidationMessage(
 					JptJaxbCoreValidationMessages.PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED,
-					this,
 					getAnnotation().getTypeTextRange()));
 		}
 

@@ -159,7 +159,7 @@
 	-->
 	<extension
 		point="org.eclipse.core.resources.markers"
-		id="jaxbProblemMarker" 
+		id="problem" 
 		name="%JAXB_PROBLEM_MARKER">
 
 		<persistent value="true"/>
@@ -387,7 +387,7 @@
 		
 		<validator
         	class="org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidator"
-        	markerId="org.eclipse.jpt.jaxb.core.jaxbProblemMarker">
+        	markerId="org.eclipse.jpt.jaxb.core.problem">
 			<include>
 				<rules>
 					<facet id="jpt.jaxb"/>
