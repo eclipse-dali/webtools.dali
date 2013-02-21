@@ -82,7 +82,7 @@ public final class JptJpaUiImages {
 	public static final ImageDescriptor ENTITY = buildImageDescriptor(OBJECTS_ + "entity.gif");
 	public static final ImageDescriptor EMBEDDABLE = buildImageDescriptor(OBJECTS_ + "embeddable.gif");
 	public static final ImageDescriptor MAPPED_SUPERCLASS = buildImageDescriptor(OBJECTS_ + "mapped-superclass.gif");
-	public static final ImageDescriptor NULL_TYPE_MAPPING = buildImageDescriptor(OBJECTS_ + "null-type-mapping.gif");
+	public static final ImageDescriptor NULL_TYPE_MAPPING = buildImageDescriptor(OBJECTS_ + "java-class.gif");
 	public static final ImageDescriptor ID = buildImageDescriptor(OBJECTS_ + "id.gif");
 	public static final ImageDescriptor EMBEDDED_ID = buildImageDescriptor(OBJECTS_ + "embedded-id.gif");
 	public static final ImageDescriptor BASIC = buildImageDescriptor(OBJECTS_ + "basic.gif");
