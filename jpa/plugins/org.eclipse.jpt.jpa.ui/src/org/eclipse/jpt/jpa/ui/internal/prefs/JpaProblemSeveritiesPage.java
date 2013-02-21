@@ -123,8 +123,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	private static final String JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesProperties"; //$NON-NLS-1$
 
 	/**
-	 * A constant used to store and retrieve the preference key (message ID) from
-	 * the combo.
+	 * A constant used to store and retrieve the corresponding validation
+	 * message from the combo.
 	 */
 	private static final String PREFERENCE_KEY = "preferenceKey"; //$NON-NLS-1$
 
@@ -661,7 +661,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Combo combo = (Combo) e.widget;
-				String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
+				ValidationMessage vm = (ValidationMessage) combo.getData(PREFERENCE_KEY);
+				String preferenceKey = vm.getID();
 				String value = convertToPreferenceValue(combo.getSelectionIndex());
 				JpaProblemSeveritiesPage.this.severityLevels.put(preferenceKey, value);
 			}
@@ -799,7 +800,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	protected void revertToDefault() {
 		for (Combo combo : this.combos) {
-			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
+			ValidationMessage vm = (ValidationMessage) combo.getData(PREFERENCE_KEY);
+			String preferenceKey = vm.getID();
 			combo.select(convertPreferenceValueToComboIndex(getDefaultPreferenceValue(preferenceKey)));
 			//UI will show the defaults from the workspace, but set all preferences
 			//to null so they will be deleted from project preferences
@@ -809,7 +811,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	protected void overrideWorkspacePreferences() {
 		for (Combo combo : this.combos) {
-			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
+			ValidationMessage vm = (ValidationMessage) combo.getData(PREFERENCE_KEY);
+			String preferenceKey = vm.getID();
 			String workspacePreference = JpaPreferences.getProblemSeverity(preferenceKey);
 			String defaultPreference = getDefaultPreferenceValue(preferenceKey);
 			if (workspacePreference != null && !workspacePreference.equals(defaultPreference)) {
