@@ -19,11 +19,14 @@ import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
-import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.NamedStoredProcedureQuery2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmNamedStoredProcedureQuery2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -33,12 +36,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmQueryContainer
 	extends AbstractOrmXmlContextNode
-	implements OrmQueryContainer
+	implements OrmQueryContainer2_1
 {
 	protected final XmlQueryContainer xmlQueryContainer;
 
 	protected final ContextListContainer<OrmNamedQuery, XmlNamedQuery> namedQueryContainer;
 	protected final ContextListContainer<OrmNamedNativeQuery, XmlNamedNativeQuery> namedNativeQueryContainer;
+	protected final ContextListContainer<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery> namedStoredProcedureQueryContainer;
 
 
 	public GenericOrmQueryContainer(JpaContextNode parent, XmlQueryContainer xmlQueryContainer) {
@@ -46,6 +50,7 @@ public class GenericOrmQueryContainer
 		this.xmlQueryContainer = xmlQueryContainer;
 		this.namedQueryContainer = this.buildNamedQueryContainer();
 		this.namedNativeQueryContainer = this.buildNamedNativeQueryContainer();
+		this.namedStoredProcedureQueryContainer = this.buildNamedStoredProcedureQueryContainer();
 	}
 
 
@@ -56,6 +61,7 @@ public class GenericOrmQueryContainer
 		super.synchronizeWithResourceModel();
 		this.syncNamedQueries();
 		this.syncNamedNativeQueries();
+		this.syncNamedStoredProcedureQueries();
 	}
 
 	@Override
@@ -63,6 +69,7 @@ public class GenericOrmQueryContainer
 		super.update();
 		this.updateNodes(this.getNamedQueries());
 		this.updateNodes(this.getNamedNativeQueries());
+		this.updateNodes(this.getNamedStoredProcedureQueries());
 	}
 
 
@@ -70,7 +77,10 @@ public class GenericOrmQueryContainer
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Query> getQueries() {
-		return IterableTools.<Query>concatenate(this.getNamedQueries(), this.getNamedNativeQueries());
+		return IterableTools.<Query>concatenate(
+				this.getNamedQueries(), 
+				this.getNamedNativeQueries(),
+				this.getNamedStoredProcedureQueries());
 	}
 
 
@@ -234,6 +244,91 @@ public class GenericOrmQueryContainer
 		}
 		@Override
 		protected XmlNamedNativeQuery getResourceElement(OrmNamedNativeQuery contextElement) {
+			return contextElement.getXmlQuery();
+		}
+	}
+
+
+	// ********** named stored procedure queries **********
+
+	public ListIterable<OrmNamedStoredProcedureQuery2_1> getNamedStoredProcedureQueries() {
+		return this.namedStoredProcedureQueryContainer.getContextElements();
+	}
+
+	public int getNamedStoredProcedureQueriesSize() {
+		return this.namedStoredProcedureQueryContainer.getContextElementsSize();
+	}
+
+	public OrmNamedStoredProcedureQuery2_1 addNamedStoredProcedureQuery() {
+		return this.addNamedStoredProcedureQuery(this.getNamedStoredProcedureQueriesSize());
+	}
+
+	public OrmNamedStoredProcedureQuery2_1 addNamedStoredProcedureQuery(int index) {
+		XmlNamedStoredProcedureQuery xmlQuery = this.buildXmlNamedStoredProcedureQuery();
+		OrmNamedStoredProcedureQuery2_1 query = this.namedStoredProcedureQueryContainer.addContextElement(index, xmlQuery);
+		this.xmlQueryContainer.getNamedStoredProcedureQueries().add(index, xmlQuery);
+		return query;
+	}
+
+	protected XmlNamedStoredProcedureQuery buildXmlNamedStoredProcedureQuery() {
+		return OrmFactory.eINSTANCE.createXmlNamedStoredProcedureQuery();
+	}
+
+	public void removeNamedStoredProcedureQuery(NamedStoredProcedureQuery2_1 namedQuery) {
+		this.removeNamedStoredProcedureQuery(this.namedStoredProcedureQueryContainer.indexOfContextElement((OrmNamedStoredProcedureQuery2_1) namedQuery));
+	}
+
+	public void removeNamedStoredProcedureQuery(int index) {
+		this.namedStoredProcedureQueryContainer.removeContextElement(index);
+		this.xmlQueryContainer.getNamedStoredProcedureQueries().remove(index);
+	}
+
+	public void moveNamedStoredProcedureQuery(int targetIndex, int sourceIndex) {
+		this.namedStoredProcedureQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.xmlQueryContainer.getNamedStoredProcedureQueries().move(targetIndex, sourceIndex);
+	}
+
+	protected OrmNamedStoredProcedureQuery2_1 buildNamedStoredProcedureQuery(XmlNamedStoredProcedureQuery xmlNamedQuery) {
+		return this.isOrmXml2_1Compatible() ?
+				this.getContextNodeFactory2_1().buildOrmNamedStoredProcedureQuery2_1(this, xmlNamedQuery) :
+				null;
+	}
+
+	protected void syncNamedStoredProcedureQueries() {
+		this.namedStoredProcedureQueryContainer.synchronizeWithResourceModel();
+	}
+
+	protected ListIterable<XmlNamedStoredProcedureQuery> getXmlNamedStoredProcedureQueries() {
+		// clone to reduce chance of concurrency problems
+		return IterableTools.cloneLive(this.xmlQueryContainer.getNamedStoredProcedureQueries());
+	}
+
+	protected ContextListContainer<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery> buildNamedStoredProcedureQueryContainer() {
+		NamedStoredProcedureQueryContainer container = new NamedStoredProcedureQueryContainer();
+		container.initialize();
+		return container;
+	}
+
+	/**
+	 * named query container
+	 */
+	protected class NamedStoredProcedureQueryContainer
+		extends ContextListContainer<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return NAMED_STORED_PROCEDURE_QUERIES_LIST;
+		}
+		@Override
+		protected OrmNamedStoredProcedureQuery2_1 buildContextElement(XmlNamedStoredProcedureQuery resourceElement) {
+			return GenericOrmQueryContainer.this.buildNamedStoredProcedureQuery(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlNamedStoredProcedureQuery> getResourceElements() {
+			return GenericOrmQueryContainer.this.getXmlNamedStoredProcedureQueries();
+		}
+		@Override
+		protected XmlNamedStoredProcedureQuery getResourceElement(OrmNamedStoredProcedureQuery2_1 contextElement) {
 			return contextElement.getXmlQuery();
 		}
 	}
