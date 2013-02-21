@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
 /**
@@ -25,7 +25,7 @@ public final class BinaryStoredProcedureParameter2_1Annotation
 	implements StoredProcedureParameter2_1Annotation
 {
 	private String name;
-	private ParameterMode2_1 mode;
+	private ParameterMode_2_1 mode;
 	private String type;
 
 
@@ -89,22 +89,22 @@ public final class BinaryStoredProcedureParameter2_1Annotation
 	}
 	
 	// ***** mode
-	public ParameterMode2_1 getMode() {
+	public ParameterMode_2_1 getMode() {
 		return this.mode;
 	}
 
-	public void setMode(ParameterMode2_1 mode) {
+	public void setMode(ParameterMode_2_1 mode) {
 		throw new UnsupportedOperationException();
 	}
 
-	private void setMode_(ParameterMode2_1 mode) {
-		ParameterMode2_1 old = this.mode;
+	private void setMode_(ParameterMode_2_1 mode) {
+		ParameterMode_2_1 old = this.mode;
 		this.mode = mode;
 		this.firePropertyChanged(MODE_PROPERTY, old, mode);
 	}
 
-	private ParameterMode2_1 buildMode() {
-		return ParameterMode2_1.fromJavaAnnotationValue(this.getJdtMemberValue(this.getModeElementName()));
+	private ParameterMode_2_1 buildMode() {
+		return ParameterMode_2_1.fromJavaAnnotationValue(this.getJdtMemberValue(this.getModeElementName()));
 	}
 
 	public TextRange getModeTextRange() {
@@ -112,11 +112,11 @@ public final class BinaryStoredProcedureParameter2_1Annotation
 	}
 
 	// ***** type
-	public String getType() {
+	public String getTypeName() {
 		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setTypeName(String type) {
 		throw new UnsupportedOperationException();
 	}
 
