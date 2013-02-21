@@ -11,11 +11,6 @@ package org.eclipse.jpt.jpa.core.jpa2_1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmNamedStoredProcedureQuery2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmStoredProcedureParameter2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 /**
  * JPA 2.1 <code>orm.xml</code> context node factory
@@ -32,13 +27,5 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 public interface OrmXml2_1ContextNodeFactory
 	extends OrmXmlContextNodeFactory
 {
-	OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter);
-
-	OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery2_1(
-			OrmQueryContainer2_1 parent,
-			XmlNamedStoredProcedureQuery xmlNamedQuery);
-
-	OrmStoredProcedureParameter2_1 buildOrmStoredProcedureParameter(
-			OrmNamedStoredProcedureQuery2_1 parent,
-			XmlStoredProcedureParameter xmlParameter);
+	OrmConverterType2_1 buildOrmConverter(EntityMappings2_1 parent, XmlConverter xmlConverter);
 }

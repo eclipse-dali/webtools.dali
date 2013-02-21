@@ -48,6 +48,6 @@ public class OrmConverterTypeDefinition
 	}
 
 	public OrmManagedType buildContextManagedType(JpaContextNode parent, XmlManagedType resourceManagedType, OrmXmlContextNodeFactory factory) {
-		return ((OrmXml2_1ContextNodeFactory) factory).buildOrmConverterType((EntityMappings2_1) parent, (XmlConverter) resourceManagedType);
+		return ((OrmXml2_1ContextNodeFactory) factory).buildOrmConverter((EntityMappings2_1) parent, (XmlConverter) resourceManagedType);
 	}
 }

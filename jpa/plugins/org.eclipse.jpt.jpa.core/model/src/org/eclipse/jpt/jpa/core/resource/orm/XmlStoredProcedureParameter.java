@@ -10,11 +10,15 @@
 package org.eclipse.jpt.jpa.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.ParameterMode_2_1;
@@ -60,10 +64,14 @@ public class XmlStoredProcedureParameter extends EBaseObjectImpl implements XmlS
 	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
+	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMode()
+	 * @generated
+	 * @ordered
 	 */
-	protected static final ParameterMode_2_1 MODE_EDEFAULT = null;
+	protected static final ParameterMode_2_1 MODE_EDEFAULT = ParameterMode_2_1.IN;
 
 	/**
 	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute.

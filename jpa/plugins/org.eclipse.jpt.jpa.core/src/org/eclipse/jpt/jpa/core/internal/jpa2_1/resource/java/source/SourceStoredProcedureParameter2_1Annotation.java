@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
 /**
@@ -43,7 +43,7 @@ public final class SourceStoredProcedureParameter2_1Annotation
 
 	private DeclarationAnnotationElementAdapter<String> modeDeclarationAdapter;
 	private AnnotationElementAdapter<String> modeAdapter;
-	private ParameterMode_2_1 mode;
+	private ParameterMode2_1 mode;
 	private TextRange modeTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> typeDeclarationAdapter;
@@ -166,25 +166,25 @@ public final class SourceStoredProcedureParameter2_1Annotation
 	}
 
 	// ***** mode
-	public ParameterMode_2_1 getMode() {
+	public ParameterMode2_1 getMode() {
 		return this.mode;
 	}
 
-	public void setMode(ParameterMode_2_1 mode) {
+	public void setMode(ParameterMode2_1 mode) {
 		if (this.attributeValueHasChanged(this.mode, mode)) {
 			this.mode = mode;
-			this.modeAdapter.setValue(ParameterMode_2_1.toJavaAnnotationValue(mode));
+			this.modeAdapter.setValue(ParameterMode2_1.toJavaAnnotationValue(mode));
 		}
 	}
 
-	private void syncMode(ParameterMode_2_1 astValue) {
-		ParameterMode_2_1 old = this.mode;
+	private void syncMode(ParameterMode2_1 astValue) {
+		ParameterMode2_1 old = this.mode;
 		this.mode = astValue;
 		this.firePropertyChanged(MODE_PROPERTY, old, astValue);
 	}
 
-	private ParameterMode_2_1 buildMode(Annotation astAnnotation) {
-		return ParameterMode_2_1.fromJavaAnnotationValue(this.modeAdapter.getValue(astAnnotation));
+	private ParameterMode2_1 buildMode(Annotation astAnnotation) {
+		return ParameterMode2_1.fromJavaAnnotationValue(this.modeAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getModeTextRange() {
@@ -204,11 +204,11 @@ public final class SourceStoredProcedureParameter2_1Annotation
 	}
 	
 	// ***** type
-	public String getTypeName() {
+	public String getType() {
 		return this.type;
 	}
 
-	public void setTypeName(String type) {
+	public void setType(String type) {
 		if (this.attributeValueHasChanged(this.type, type)) {
 			this.type = type;
 			this.fqTypeNameStale = true;

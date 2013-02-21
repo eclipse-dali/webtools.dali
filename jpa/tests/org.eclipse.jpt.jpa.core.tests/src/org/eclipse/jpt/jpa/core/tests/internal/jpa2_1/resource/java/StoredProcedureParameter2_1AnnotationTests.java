@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode_2_1;
+import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ParameterMode2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
 @SuppressWarnings("nls")
@@ -85,7 +85,7 @@ public class StoredProcedureParameter2_1AnnotationTests
 		
 		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		StoredProcedureParameter2_1Annotation parameter = namedQuery.parameterAt(0);
-		assertEquals(ParameterMode_2_1.IN, parameter.getMode());
+		assertEquals(ParameterMode2_1.IN, parameter.getMode());
 	}
 
 	public void testSetMode() throws Exception {
@@ -94,10 +94,10 @@ public class StoredProcedureParameter2_1AnnotationTests
 		
 		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		StoredProcedureParameter2_1Annotation parameter = namedQuery.parameterAt(0);
-		assertEquals(ParameterMode_2_1.IN, parameter.getMode());
+		assertEquals(ParameterMode2_1.IN, parameter.getMode());
 		
-		parameter.setMode(ParameterMode_2_1.INOUT);
-		assertEquals(ParameterMode_2_1.INOUT, parameter.getMode());
+		parameter.setMode(ParameterMode2_1.INOUT);
+		assertEquals(ParameterMode2_1.INOUT, parameter.getMode());
 		assertSourceContains("@StoredProcedureParameter(name = \"MyParameter\", mode = INOUT, type = MyType.class)", cu);
 	
 		parameter.setMode(null);
@@ -114,7 +114,7 @@ public class StoredProcedureParameter2_1AnnotationTests
 		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		StoredProcedureParameter2_1Annotation parameter = namedQuery.parameterAt(0);
 
-		assertEquals("MyType", parameter.getTypeName());
+		assertEquals("MyType", parameter.getType());
 	}
 
 	public void testSetType() throws Exception {
@@ -124,14 +124,14 @@ public class StoredProcedureParameter2_1AnnotationTests
 		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		StoredProcedureParameter2_1Annotation parameter = namedQuery.parameterAt(0);
 
-		assertEquals("MyType", parameter.getTypeName());
+		assertEquals("MyType", parameter.getType());
 		
-		parameter.setTypeName("Foo");
-		assertEquals("Foo", parameter.getTypeName());	
+		parameter.setType("Foo");
+		assertEquals("Foo", parameter.getType());	
 		assertSourceContains("@StoredProcedureParameter(name = \"MyParameter\", mode = ParameterMode.IN, type = Foo.class", cu);
 		
-		parameter.setTypeName(null);
-		assertNull(parameter.getTypeName());
+		parameter.setType(null);
+		assertNull(parameter.getType());
 		assertSourceDoesNotContain("type", cu);
 		assertSourceContains("@StoredProcedureParameter(name = \"MyParameter\", mode = ParameterMode.IN", cu);
 	}
@@ -143,10 +143,10 @@ public class StoredProcedureParameter2_1AnnotationTests
 		NamedStoredProcedureQuery2_1Annotation namedQuery = (NamedStoredProcedureQuery2_1Annotation) resourceType.getAnnotation(0, JPA2_1.NAMED_STORED_PROCEDURE_QUERY);
 		StoredProcedureParameter2_1Annotation parameter = namedQuery.parameterAt(0);
 
-		assertNotNull(parameter.getTypeName());
+		assertNotNull(parameter.getType());
 		assertEquals("MyType", parameter.getFullyQualifiedTypeName());
 
-		parameter.setTypeName(TYPE_NAME);		
+		parameter.setType(TYPE_NAME);		
 		
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, parameter.getFullyQualifiedTypeName());				
 		assertSourceContains("@StoredProcedureParameter(name = \"MyParameter\", mode = ParameterMode.IN, type = " + TYPE_NAME + ".class)", cu);

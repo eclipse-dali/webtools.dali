@@ -11,13 +11,8 @@ package org.eclipse.jpt.jpa.core.jpa2_1;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaNamedStoredProcedureQuery2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaQueryContainer2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaStoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQuery2_1Annotation;
-import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
 
 /**
  * JPA 2.1 factory
@@ -34,15 +29,6 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1
 public interface JpaFactory2_1
 	extends JpaFactory2_0
 {
-	// ********** Java Context Model **********
 
 	JavaConverterType2_1 buildJavaConverterType(JpaContextNode parent, JavaResourceType jrt); 
-
-	JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery2_1(
-			JavaQueryContainer2_1 parent,
-			NamedStoredProcedureQuery2_1Annotation namedStoredProcedureQueryAnnotation);
-
-	JavaStoredProcedureParameter2_1 buildJavaStoredProcedureParameter2_1(
-			JavaNamedStoredProcedureQuery2_1 parent, 
-			StoredProcedureParameter2_1Annotation parameterAnnotation);
 }
