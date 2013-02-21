@@ -16,9 +16,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
@@ -102,12 +102,12 @@ public class JaxbValidator
 		return IterableTools.filter(this.buildValidationMessages(reporter, project), NON_IGNORED_MESSAGE);
 	}
 
-	private static final Filter<IMessage> NON_IGNORED_MESSAGE = new NonIgnoredMessage();
+	private static final Predicate<IMessage> NON_IGNORED_MESSAGE = new NonIgnoredMessage();
 	/* CU private */ static class NonIgnoredMessage
-		extends Filter.Adapter<IMessage>
+		extends Predicate.Adapter<IMessage>
 	{
 		@Override
-		public boolean accept(IMessage message) {
+		public boolean evaluate(IMessage message) {
 			return message.getSeverity() != -1;
 		}
 	}
