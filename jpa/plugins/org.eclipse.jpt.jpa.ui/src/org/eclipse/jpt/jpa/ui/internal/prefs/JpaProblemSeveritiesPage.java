@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.prefs;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -52,81 +51,79 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 
 /**
- * This page shows the Java Persistence validation options. It supports
- * workspace and project levels severities.
- *
- * @version 2.3
- * @since 2.2
+ * This page shows the JPA validation severity settings. It supports
+ * workspace- and project-level severities.
  */
 @SuppressWarnings("restriction")
-public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
-
+public class JpaProblemSeveritiesPage
+	extends PropertyAndPreferencePage
+{
 	/**
-	 * Severity level state is stored in this Map and is either committed or discarded
-	 * based on user action.
-	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
-	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WARNING INFO IGNORE
+	 * Changed severities are stored in this map and either committed
+	 * (e.g. when the user presses the OK button) or discarded
+	 * (e.g. when the user presses the Cancel button).<ul>
+	 * <li> key = preference key (which is the
+	 * {@link ValidationMessage#getID() validation message ID})
+	 * <li> value = preference severity level:<ul>
+	 *   <li>{@link JpaPreferences#PROBLEM_ERROR}
+	 *   <li>{@link JpaPreferences#PROBLEM_WARNING}
+	 *   <li>{@link JpaPreferences#PROBLEM_INFO}
+	 *   <li>{@link JpaPreferences#PROBLEM_IGNORE}
+	 *   </ul>
+	 * </ul>
 	 */
-	Map<String, String> severityLevels;
+	/* CU private */ HashMap<String, String> changedSeverities = new HashMap<String, String>();
 
 	/**
-	 * Default severity levels are stored here,  ERROR is the default default so only need
-	 * to include WARNING, INFO, IGNORE in this Map. These will be displayed if neither the project
-	 * or workspace preference applies.
-	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
-	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WARNING INFO IGNORE
+	 * Map preference keys to their default severity.
+	 * This is a "sparse" map that contains only the severities that are
+	 * <em>not</em> {@link JpaPreferences#PROBLEM_ERROR}.
+	 * The default severity will be displayed if there is neither a project
+	 * nor a workspace preference for a particular validation message.
+	 * <li> key = preference key (which is the
+	 * {@link ValidationMessage#getID() validation message ID})
+	 * <li> value = default severity level:<ul>
+	 *   <li>{@link JpaPreferences#PROBLEM_ERROR}
+	 *   <li>{@link JpaPreferences#PROBLEM_WARNING}
+	 *   <li>{@link JpaPreferences#PROBLEM_INFO}
+	 *   <li>{@link JpaPreferences#PROBLEM_IGNORE}
+	 *   </ul>
+	 * </ul>
+	 * <strong>NB:</strong> These defaults must match the defaults specified in
+	 * the code that builds the validation messages at runtime
+	 * (i.e. the severity passed to
+	 * {@link ValidationMessage#buildValidationMessage(org.eclipse.core.resources.IResource, org.eclipse.jpt.common.core.utility.TextRange, int, Object...)}.
 	 */
 	private HashMap<String, String> defaultSeverities;
 
 	/**
-	 * The list of <code>Combo</code>s is cached in order to perform a revert of
-	 * the properties.
+	 * Cache the {@link Combo}s so we can revert the settings.
 	 */
-	private List<Combo> combos;
+	private ArrayList<Combo> combos = new ArrayList<Combo>();
 
 	/**
-	 * The list of <code>ExpandableComposite</code> is cached in order to save
-	 * and restore the expansion state.
+	 * Cache the {@link ExpandableComposite}s so we can save
+	 * and restore the page's expansion state.
 	 */
-	private List<ExpandableComposite> expandablePanes;
-
-	/**
-	 * The position of the "Error" choice in the combo's model.
-	 */
-	private static final int ERROR_INDEX = 0;
-
-	/**
-	 * The position of the "Warning" choice in the combo's model.
-	 */
-	private static final int WARNING_INDEX = 1;
-
-	/**
-	 * The position of the "Info" choice in the combo's model.
-	 */
-	private static final int INFO_INDEX = 2;
-
-	/**
-	 * The position of the "Ignore" choice in the combo's model.
-	 */
-	private static final int IGNORE_INDEX = 3;
+	private ArrayList<ExpandableComposite> expandablePanes = new ArrayList<ExpandableComposite>();
 
 	/**
 	 * The unique identifier for this page when it is shown in the IDE
 	 * preferences dialog.
 	 */
-	private static final String JPT_PREFERENCES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesPreferences"; //$NON-NLS-1$
+	private static final String PREFERENCE_PAGE_ID = "org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesPreferences"; //$NON-NLS-1$
 
 	/**
 	 * The unique identifier for this page when it is shown in the project
-	 * preferences dialog.
+	 * properties dialog.
 	 */
-	private static final String JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesProperties"; //$NON-NLS-1$
+	private static final String PROPERTY_PAGE_ID = "org.eclipse.jpt.jpa.ui.jpaProblemSeveritiesProperties"; //$NON-NLS-1$
 
 	/**
-	 * A constant used to store and retrieve the corresponding validation
-	 * message from the combo.
+	 * The key used to store and retrieve a combo's validation message.
+	 * @see org.eclipse.swt.widgets.Widget#getData(String)
 	 */
-	private static final String PREFERENCE_KEY = "preferenceKey"; //$NON-NLS-1$
+	/* CU private */ static final String VALIDATION_MESSAGE = ValidationMessage.class.getName();
 
 	/**
 	 * The scrollable pane used to show the content of this page.
@@ -136,7 +133,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	/**
 	 * The possible choices which describes the severity of a single problem.
 	 */
+	private PreferenceSeverity[] preferenceSeverities;
 	private String[] severityDisplayStrings;
+
+	private Boolean hasProjectSpecificPreferences = null;
 
 	/**
 	 * Constant used to store the expansion state of each expandable pane.
@@ -149,8 +149,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 */
 	public static final String SETTINGS_SECTION_NAME = "JpaProblemSeveritiesPage"; //$NON-NLS-1$
 
-
-	private Boolean hasProjectSpecificPreferences = null;
 
 	/**
 	 * Creates a new <code>JpaProblemSeveritiesPage</code>.
@@ -167,17 +165,58 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	protected void initialize() {
-		this.combos = new ArrayList<Combo>();
-		this.expandablePanes = new ArrayList<ExpandableComposite>();
+		this.preferenceSeverities = this.buildPreferenceSeverities();
 		this.severityDisplayStrings = this.buildSeverityDisplayStrings();
-		this.severityLevels = new HashMap<String, String>();
 		this.defaultSeverities = this.buildDefaultSeverities();
 	}
 
-	//since most of our problems have a default severity of ERROR, we are just defining the WARNING, INFO, IGNORE cases
+	protected PreferenceSeverity[] buildPreferenceSeverities() {
+		return DEFAULT_PREFERENCE_SEVERITIES;
+	}
+
+	protected static final PreferenceSeverity[] DEFAULT_PREFERENCE_SEVERITIES = buildDefaultPreferenceSeverities();
+	protected static PreferenceSeverity[] buildDefaultPreferenceSeverities() {
+		ArrayList<PreferenceSeverity> severities = new ArrayList<PreferenceSeverity>();
+		severities.add(new PreferenceSeverity(JpaPreferences.PROBLEM_ERROR, JptJpaUiMessages.JpaProblemSeveritiesPage_Error));
+		severities.add(new PreferenceSeverity(JpaPreferences.PROBLEM_WARNING, JptJpaUiMessages.JpaProblemSeveritiesPage_Warning));
+		severities.add(new PreferenceSeverity(JpaPreferences.PROBLEM_INFO, JptJpaUiMessages.JpaProblemSeveritiesPage_Info));
+		severities.add(new PreferenceSeverity(JpaPreferences.PROBLEM_IGNORE, JptJpaUiMessages.JpaProblemSeveritiesPage_Ignore));
+		return severities.toArray(new PreferenceSeverity[severities.size()]);
+	}
+
+	/**
+	 * Pair a preference value with its localized display string
+	 * (e.g. <code>"error"</code> and <code>"Error"</code>).
+	 */
+	public static class PreferenceSeverity {
+		public final String preferenceValue;
+		public final String displayString;
+		public PreferenceSeverity(String preferenceValue, String displayString) {
+			super();
+			this.preferenceValue = preferenceValue;
+			this.displayString = displayString;
+		}
+	}
+
+	/**
+	 * Pre-condition: {@link #preferenceSeverities} is already built.
+	 */
+	protected String[] buildSeverityDisplayStrings() {
+		int len = this.preferenceSeverities.length;
+		String[] displayStrings = new String[len];
+		for (int i = 0; i < len; i++) {
+			displayStrings[i] = this.preferenceSeverities[i].displayString;
+		}
+		return displayStrings;
+	}
+
+	/**
+	 * @see #defaultSeverities
+	 */
 	protected HashMap<String, String> buildDefaultSeverities() {
 		 HashMap<String, String> result = new HashMap<String, String>();
 
+		 // WARNINGs
 		 result.put(JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS.getID(), JpaPreferences.PROBLEM_WARNING);
 		 result.put(JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION.getID(), JpaPreferences.PROBLEM_WARNING);
 		 result.put(JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION.getID(), JpaPreferences.PROBLEM_WARNING);
@@ -192,6 +231,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		 result.put(JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED.getID(), JpaPreferences.PROBLEM_WARNING);
 		 result.put(JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM.getID(), JpaPreferences.PROBLEM_WARNING);
 
+		 // INFOs
 		 result.put(JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST.getID(), JpaPreferences.PROBLEM_INFO);
 		 result.put(JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS.getID(), JpaPreferences.PROBLEM_INFO);
 
@@ -230,16 +270,16 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		parent.setLayout(layout);
 
 		// Add each expandable category
-		addProjectLevelCategory(parent);
-		addPersistenceUnitLevelCategory(parent);
-		addTypeLevelCategory(parent);
-		addAttributeLevelCategory(parent);
-		addDatabaseCategory(parent);
-		addInheritanceStrategyCategory(parent);
-		addQueriesGeneratorsCategory(parent);
+		this.addProjectLevelCategory(parent);
+		this.addPersistenceUnitLevelCategory(parent);
+		this.addTypeLevelCategory(parent);
+		this.addAttributeLevelCategory(parent);
+		this.addDatabaseCategory(parent);
+		this.addInheritanceStrategyCategory(parent);
+		this.addQueriesGeneratorsCategory(parent);
 
 		// Restore the expansion states
-		restoreSectionExpansionStates(getDialogPreferences());
+		this.restoreSectionExpansionStates(this.getDialogPreferences());
 
 		return container;
 	}
@@ -265,341 +305,341 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	//In each category below, entries are listed alphabetically.
 	//If adding a new entry, please add it to the corresponding category at the right place.
-	
+
 	private void addProjectLevelCategory(Composite parent) {
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.PROJECT_LEVEL_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.PROJECT_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.NO_JPA_PROJECT);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.NO_JPA_PROJECT);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST);
 	}
 
 	private void addPersistenceUnitLevelCategory(Composite parent) {
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.PERSISTENCE_UNIT_LEVEL_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.PERSISTENCE_UNIT_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT);
 	}
 
 	private void addTypeLevelCategory(Composite parent) {
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.TYPE_LEVEL_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.TYPE_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NAME_MISSING); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NO_PK);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR);		
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_FINAL_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_AND_EMBEDDED_ID_BOTH_USED);	
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST);	//3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD);	//3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD); //3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR); //3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR); //3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE);	//3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC);	//3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC);	//3.2
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_MEMBER_CLASS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE);	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NAME_MISSING); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NO_PK);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_FINAL_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_AND_EMBEDDED_ID_BOTH_USED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST);	//3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD);	//3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD); //3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR); //3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR); //3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE);	//3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC);	//3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC);	//3.2
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_MEMBER_CLASS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE);	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS);	//3.0 M7
 	}
 
 	private void addAttributeLevelCategory(Composite parent) {
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.ATTRIBUTE_LEVEL_CATEGORY);
-		
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED); 	//3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPS_ID_VALUE_INVALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_INVALID_MAPPED_BY);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAP_KEY_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.ATTRIBUTE_LEVEL_CATEGORY);
 
-		parent = addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
-		
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED);		
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED);	
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAP_KEY_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED); 	//3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPS_ID_VALUE_INVALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_INVALID_MAPPED_BY);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAP_KEY_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE);
+
+		parent = this.addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
+
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAP_KEY_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE);
 	}
 
 	private void addDatabaseCategory(Composite parent) {
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.DATABASE_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.DATABASE_CATEGORY);
 		parent.setLayout(new GridLayout(1, false));
 
-		addTableCategory(parent);
-		addColumnCategory(parent);
-		addOverridesCategory(parent);
+		this.addTableCategory(parent);
+		this.addColumnCategory(parent);
+		this.addOverridesCategory(parent);
 	}
 
 	private void addTableCategory(Composite parent) {
-		
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.TABLE_CATEGORY);
-		
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.TABLE_UNRESOLVED_SCHEMA);
 
-		parent = addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.TABLE_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA);
-	}
-	
-	private void addColumnCategory(Composite parent) {	
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.COLUMN_CATEGORY);
-		
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME); // 3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.TABLE_UNRESOLVED_SCHEMA);
 
-		parent = addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
+		parent = this.addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME); // 3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_MAP_KEY_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_MAP_KEY_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA);
 	}
 
-	private void addOverridesCategory(Composite parent) {	
+	private void addColumnCategory(Composite parent) {
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.COLUMN_CATEGORY);
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.OVERRIDES_CATEGORY);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_TABLE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME); // 3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.MAP_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ASSOCIATION_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME);
+		parent = this.addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
+
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME); // 3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_MAP_KEY_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_MAP_KEY_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+	}
+
+	private void addOverridesCategory(Composite parent) {
+
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.OVERRIDES_CATEGORY);
+
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ASSOCIATION_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME);
 
 
-		parent = addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
+		parent = this.addSubExpandableSection(parent, JptJpaUiPreferencesValidationMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME); //3.0 M7
 	}
 
 	private void addInheritanceStrategyCategory(Composite parent) {
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.INHERITANCE_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.INHERITANCE_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM);
 	}
 
 	private void addQueriesGeneratorsCategory(Composite parent) {
 
-		parent = addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.QUERIES_GENERATORS_CATEGORY);
+		parent = this.addExpandableSection(parent, JptJpaUiPreferencesValidationMessages.QUERIES_GENERATORS_CATEGORY);
 
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.GENERATOR_NAME_UNDEFINED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME);
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED); //3.0 M7
-		addLabeledCombo(parent, JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.GENERATOR_NAME_UNDEFINED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.JPQL_QUERY_VALIDATION);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME);
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED); //3.0 M7
+		this.addLabeledCombo(parent, JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED); //3.0 M7
 	}
 
 	private Composite addExpandableSection(Composite parent, String text) {
-		return addExpandableSection(parent, text, new GridData(GridData.FILL, GridData.FILL, true, false));
+		return this.addExpandableSection(parent, text, new GridData(GridData.FILL, GridData.FILL, true, false));
 	}
 
 	private Composite addSubExpandableSection(Composite parent, String text) {
-		return addExpandableSection(parent, text, new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1));
+		return this.addExpandableSection(parent, text, new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1));
 	}
 
 	/**
@@ -621,7 +661,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		expandablePane.setText(text);
 		expandablePane.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DIALOG_FONT));
 		expandablePane.setLayoutData(gridData);
-		expandablePane.addExpansionListener(buildExpansionListener());
+		expandablePane.addExpansionListener(this.buildExpansionListener());
 
 		this.scrollable.adaptChild(expandablePane);
 		this.expandablePanes.add(expandablePane);
@@ -631,6 +671,24 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		expandablePane.setClient(parent);
 
 		return parent;
+	}
+
+	private ExpansionAdapter buildExpansionListener() {
+		return new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanged(ExpansionEvent e) {
+				JpaProblemSeveritiesPage.this.expansionStateChanged();
+			}
+		};
+	}
+
+	/**
+	 * Revalidates the layout in order to show or hide the vertical scroll bar
+	 * after a section was either expanded or collapsed. This unfortunately does
+	 * not happen automatically.
+	 */
+	protected void expansionStateChanged() {
+		this.scrollable.reflow(true);
 	}
 
 	/**
@@ -648,115 +706,85 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		Combo combo = new Combo(parent, SWT.READ_ONLY);
 		combo.setItems(this.severityDisplayStrings);
 		combo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		combo.setData(PREFERENCE_KEY, validationMessage);
-		combo.select(convertPreferenceKeyToComboIndex(validationMessage));
-		combo.addSelectionListener(buildComboSelectionListener());
+		combo.setData(VALIDATION_MESSAGE, validationMessage);
+		combo.select(this.getInitialComboIndex(validationMessage));
+		combo.addSelectionListener(this.buildComboSelectionListener());
 
 		this.scrollable.adaptChild(combo);
 		this.combos.add(combo);
+	}
+
+	/**
+	 * Return the combo index corresponding to the specified validation message's
+	 * current preference value.
+	 * <p>
+	 * Only called during initialization.
+	 */
+	protected int getInitialComboIndex(ValidationMessage validationMessage) {
+		return this.convertPreferenceValueToComboIndex(this.getPreferenceValue(validationMessage));
+	}
+
+	/**
+	 * Return the current preference value for the specified validation message.
+	 * <p>
+	 * Only called during initialization.
+	 */
+	protected String getPreferenceValue(ValidationMessage validationMessage) {
+		String prefKey = validationMessage.getID();
+		String prefValue = null;
+		// useProjectSettings() won't work since the page is being under construction
+		if (this.isProjectPreferencePage() && this.hasProjectSpecificOptions(this.getProject())) {
+			prefValue = JpaPreferences.getProblemSeverity(this.getProject(), prefKey);
+		} else {
+			prefValue = JpaPreferences.getProblemSeverity(prefKey);
+		}
+		if (prefValue == null) {
+			prefValue = this.getDefaultPreferenceValue(prefKey);
+		}
+		return prefValue;
+	}
+
+	/**
+	 * Return the default severity or ERROR if no default exists.
+	 */
+	protected String getDefaultPreferenceValue(String prefKey) {
+		String prefValue = this.defaultSeverities.get(prefKey);
+		return (prefValue != null) ? prefValue : JpaPreferences.PROBLEM_ERROR;
+	}
+
+	protected int convertPreferenceValueToComboIndex(String prefValue) {
+		for (int i = 0; i < this.preferenceSeverities.length; i++) {
+			if (prefValue.equals(this.preferenceSeverities[i].preferenceValue)) {
+				return i;
+			}
+		}
+		throw new IllegalArgumentException("unknown preference value: " + prefValue); //$NON-NLS-1$
 	}
 
 	private SelectionListener buildComboSelectionListener() {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Combo combo = (Combo) e.widget;
-				ValidationMessage vm = (ValidationMessage) combo.getData(PREFERENCE_KEY);
-				String preferenceKey = vm.getID();
-				String value = convertToPreferenceValue(combo.getSelectionIndex());
-				JpaProblemSeveritiesPage.this.severityLevels.put(preferenceKey, value);
+				JpaProblemSeveritiesPage.this.comboSelected((Combo) e.widget);
 			}
 		};
 	}
 
-	private ExpansionAdapter buildExpansionListener() {
-		return new ExpansionAdapter() {
-			@Override
-			public void expansionStateChanged(ExpansionEvent e) {
-				JpaProblemSeveritiesPage.this.expansionStateChanged();
-			}
-		};
-	}
-
-	protected String[] buildSeverityDisplayStrings() {
-		String[] severities = new String[4];
-		severities[ERROR_INDEX]   = JptJpaUiMessages.JpaProblemSeveritiesPage_Error;
-		severities[WARNING_INDEX] = JptJpaUiMessages.JpaProblemSeveritiesPage_Warning;
-		severities[INFO_INDEX]    = JptJpaUiMessages.JpaProblemSeveritiesPage_Info;
-		severities[IGNORE_INDEX]  = JptJpaUiMessages.JpaProblemSeveritiesPage_Ignore;
-		return severities;
-	}
-
-	protected int convertPreferenceKeyToComboIndex(ValidationMessage validationMessage) {
-		return convertPreferenceValueToComboIndex(getPreferenceValue(validationMessage));
-	}
-
-	protected String getPreferenceValue(ValidationMessage validationMessage) {
-		String id = validationMessage.getID();
-		String preference = null;
-		if (this.isProjectPreferencePage() && this.hasProjectSpecificOptions(this.getProject())) { //useProjectSettings() won't work since the page is being built
-			preference = JpaPreferences.getProblemSeverity(this.getProject(), id);
-		} else {
-			//don't get the workspace preference when the project has overridden workspace preferences
-			preference = JpaPreferences.getProblemSeverity(id);
-		}
-		if (preference == null) {
-			preference = getDefaultPreferenceValue(id);
-		}
-		return preference;
-	}
-
-	/**
-	 * Return the default severity or ERROR if no default exists.
-	 */
-	protected String getDefaultPreferenceValue(String preferenceKey) {
-		String preference = this.defaultSeverities.get(preferenceKey);
-		return (preference != null) ? preference : JpaPreferences.PROBLEM_ERROR;
-	}
-
-	protected int convertPreferenceValueToComboIndex(String preferenceValue) {
-		if (JpaPreferences.PROBLEM_ERROR.equals(preferenceValue)) {
-			return ERROR_INDEX;
-		}
-		if (JpaPreferences.PROBLEM_WARNING.equals(preferenceValue)) {
-			return WARNING_INDEX;
-		}
-		if (JpaPreferences.PROBLEM_INFO.equals(preferenceValue)) {
-			return INFO_INDEX;
-		}
-		if (JpaPreferences.PROBLEM_IGNORE.equals(preferenceValue)) {
-			return IGNORE_INDEX;
-		}
-		throw new IllegalStateException();
-	}
-
-	protected String convertToPreferenceValue(int selectionIndex) {
-		switch (selectionIndex) {
-			case ERROR_INDEX:   return JpaPreferences.PROBLEM_ERROR;
-			case WARNING_INDEX: return JpaPreferences.PROBLEM_WARNING;
-			case INFO_INDEX:    return JpaPreferences.PROBLEM_INFO;
-			case IGNORE_INDEX:  return JpaPreferences.PROBLEM_IGNORE;
-			default:            return null;
-		}
-	}
-
-	/**
-	 * Revalidates the layout in order to show or hide the vertical scroll bar
-	 * after a section was either expanded or collapsed. This unfortunately does
-	 * not happen automatically.
-	 */
-	protected void expansionStateChanged() {
-		this.scrollable.reflow(true);
+	protected void comboSelected(Combo combo) {
+		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = vm.getID();
+		String prefValue = this.preferenceSeverities[combo.getSelectionIndex()].preferenceValue;
+		this.changedSeverities.put(prefKey, prefValue);
 	}
 
 	@Override
 	protected String getPreferencePageID() {
-		return JPT_PREFERENCES_PROBLEM_SEVERITIES_ID;
+		return PREFERENCE_PAGE_ID;
 	}
 
 	@Override
 	protected String getPropertyPageID() {
-		return JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID;
+		return PROPERTY_PAGE_ID;
 	}
 
 	@Override
@@ -764,19 +792,48 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		return JpaPreferences.getWorkspaceValidationPreferencesOverridden(project);
 	}
 
+	/**
+	 * For a project properties page, the superclass implementation calls
+	 * {@link #enableProjectSpecificSettings(boolean)}, with an argument of
+	 * <code>false</code>; so we need handle only the workspace preferences
+	 * page case here.
+	 */
 	@Override
 	protected void performDefaults() {
+		if ( ! this.isProjectPreferencePage()) {
+			this.revertWorkspaceToDefaultPreferences();
+		}
 		super.performDefaults();
-		//this call would be redundant on project preference page - bug in the JDT superclass
-		if (!isProjectPreferencePage()) {
-			revertToDefault();
+	}
+
+	/**
+	 * This is called only when the page is a workspace preferences page.
+	 */
+	protected void revertWorkspaceToDefaultPreferences() {
+		for (Combo combo : this.combos) {
+			this.revertWorkspaceToDefaultPreference(combo);
 		}
 	}
 
+	/**
+	 * This is called only when the page is a workspace preferences page.
+	 */
+	protected void revertWorkspaceToDefaultPreference(Combo combo) {
+		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = vm.getID();
+		String prefValue = this.getDefaultPreferenceValue(prefKey);
+		combo.select(this.convertPreferenceValueToComboIndex(prefValue));
+		// force the workspace-level preference to be removed
+		this.changedSeverities.put(prefKey, null);
+	}
+
+	/**
+	 * This is called only when the page is a project properties page.
+	 */
 	@Override
 	protected void enableProjectSpecificSettings(boolean useProjectSpecificSettings) {
 		super.enableProjectSpecificSettings(useProjectSpecificSettings);
-		if (getDefaultsButton() == null) {
+		if (this.getDefaultsButton() == null) {
 			//@Hack("If the defaults button is null the control is currently being built," +
 			//      "otherwise the 'enable project specific settings' checkbox is being pressed")
 			return;
@@ -784,13 +841,64 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 		this.hasProjectSpecificPreferences = Boolean.valueOf(useProjectSpecificSettings);
 
-		//set all specified workspace preferences in the project preferences
 		if (useProjectSpecificSettings){
-			this.overrideWorkspacePreferences();
+			this.copyCurrentPreferencesToProject();
+		} else {
+			this.revertProjectPreferences();
 		}
-		else {//remove any project specific settings if set to false
-			this.revertToDefault();
+	}
+
+	/**
+	 * Copy <em>all</em> the current settings to the project-level settings.
+	 * This locks down all the settings; otherwise future changes to the
+	 * workspace-level settings would affect any project-level settings
+	 * that were not copied over.
+	 * <p>
+	 * This is called only when the page is a project properties page.
+	 */
+	protected void copyCurrentPreferencesToProject() {
+		for (Combo combo : this.combos) {
+			this.copyCurrentPreferenceToProject(combo);
 		}
+	}
+
+	/**
+	 * This is called only when the page is a project properties page.
+	 */
+	protected void copyCurrentPreferenceToProject(Combo combo) {
+		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = vm.getID();
+		String prefValue = JpaPreferences.getProblemSeverity(prefKey);
+		if (prefValue == null) {
+			prefValue = this.getDefaultPreferenceValue(prefKey);
+		}
+		combo.select(this.convertPreferenceValueToComboIndex(prefValue));
+		// combo does not fire a selection event when set programmatically...
+		this.changedSeverities.put(prefKey, prefValue);
+	}
+
+	/**
+	 * This is called only when the page is a project properties page.
+	 */
+	protected void revertProjectPreferences() {
+		for (Combo combo : this.combos) {
+			this.revertProjectPreference(combo);
+		}
+	}
+
+	/**
+	 * This is called only when the page is a project properties page.
+	 */
+	protected void revertProjectPreference(Combo combo) {
+		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = vm.getID();
+		String prefValue = JpaPreferences.getProblemSeverity(prefKey);
+		if (prefValue == null) {
+			prefValue = this.getDefaultPreferenceValue(prefKey);
+		}
+		combo.select(this.convertPreferenceValueToComboIndex(prefValue));
+		// force the project-level preference to be removed
+		this.changedSeverities.put(prefKey, null);
 	}
 
 	@Override
@@ -798,33 +906,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		throw new IllegalStateException("Don't call this, see enableProjectSpecificSettings for the hack that looks for the defaultsButton being null"); //$NON-NLS-1$
 	}
 
-	protected void revertToDefault() {
-		for (Combo combo : this.combos) {
-			ValidationMessage vm = (ValidationMessage) combo.getData(PREFERENCE_KEY);
-			String preferenceKey = vm.getID();
-			combo.select(convertPreferenceValueToComboIndex(getDefaultPreferenceValue(preferenceKey)));
-			//UI will show the defaults from the workspace, but set all preferences
-			//to null so they will be deleted from project preferences
-			this.severityLevels.put(preferenceKey, null);
-		}
-	}
-
-	protected void overrideWorkspacePreferences() {
-		for (Combo combo : this.combos) {
-			ValidationMessage vm = (ValidationMessage) combo.getData(PREFERENCE_KEY);
-			String preferenceKey = vm.getID();
-			String workspacePreference = JpaPreferences.getProblemSeverity(preferenceKey);
-			String defaultPreference = getDefaultPreferenceValue(preferenceKey);
-			if (workspacePreference != null && !workspacePreference.equals(defaultPreference)) {
-				combo.select(convertPreferenceValueToComboIndex(workspacePreference));
-				//silly combo doesn't fire a selection event, so we can't expect our listener to set this
-				this.severityLevels.put(preferenceKey, workspacePreference);
-			}
-			else {
-				combo.select(convertPreferenceValueToComboIndex(defaultPreference));
-			}
-		}
-	}
 
 	// ********** OK/Revert/Apply behavior **********
 
@@ -834,8 +915,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		if (this.hasProjectSpecificPreferences != null) {
 			JpaPreferences.setWorkspaceValidationPreferencesOverridden(this.getProject(), this.hasProjectSpecificPreferences.booleanValue());
 		}
-		for (String validationPreferenceKey : this.severityLevels.keySet()) {
-			this.updatePreference(validationPreferenceKey, this.severityLevels.get(validationPreferenceKey));
+		for (Map.Entry<String, String> entry : this.changedSeverities.entrySet()) {
+			this.updatePreference(entry.getKey(), entry.getValue());
 		}
 		try {
 			// true=fork; false=uncancellable
@@ -853,11 +934,11 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		return true;
 	}
 
-	protected void updatePreference(String preferenceKey, String value) {
+	protected void updatePreference(String prefKey, String value) {
 		if (this.isProjectPreferencePage()) {
-			JpaPreferences.setProblemSeverity(this.getProject(), preferenceKey, value);
+			JpaPreferences.setProblemSeverity(this.getProject(), prefKey, value);
 		} else {
-			JpaPreferences.setProblemSeverity(preferenceKey, value);
+			JpaPreferences.setProblemSeverity(prefKey, value);
 		}
 	}
 
@@ -908,7 +989,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	@Override
 	public void dispose() {
-		storeSectionExpansionStates(getDialogPreferences());
+		this.storeSectionExpansionStates(this.getDialogPreferences());
 		super.dispose();
 	}
 
