@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.jpa2_1.resource.java;
  * @version 3.3
  * @since 3.3
  */
-public enum ParameterMode_2_1
+public enum ParameterMode2_1
 {
 
 	IN(JPA2_1.PARAMETER_MODE__IN),
@@ -34,7 +34,7 @@ public enum ParameterMode_2_1
 
 	private String javaAnnotationValue;
 
-	ParameterMode_2_1(String javaAnnotationValue) {
+	ParameterMode2_1(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
 			throw new NullPointerException();
 		}
@@ -48,12 +48,12 @@ public enum ParameterMode_2_1
 
 	// ********** static methods **********
 
-	public static ParameterMode_2_1 fromJavaAnnotationValue(Object javaAnnotationValue) {
+	public static ParameterMode2_1 fromJavaAnnotationValue(Object javaAnnotationValue) {
 		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
 	}
 
-	private static ParameterMode_2_1 fromJavaAnnotationValue_(Object javaAnnotationValue) {
-		for (ParameterMode_2_1 parameterMode : ParameterMode_2_1.values()) {
+	private static ParameterMode2_1 fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (ParameterMode2_1 parameterMode : ParameterMode2_1.values()) {
 			if (parameterMode.getJavaAnnotationValue().equals(javaAnnotationValue)) {
 				return parameterMode;
 			}
@@ -61,7 +61,7 @@ public enum ParameterMode_2_1
 		return null;
 	}
 
-	public static String toJavaAnnotationValue(ParameterMode_2_1 parameterMode) {
+	public static String toJavaAnnotationValue(ParameterMode2_1 parameterMode) {
 		return (parameterMode == null) ? null : parameterMode.getJavaAnnotationValue();
 	}
 }

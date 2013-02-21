@@ -56,14 +56,14 @@ public interface StoredProcedureParameter2_1Annotation
 	 * Corresponds to the 'mode' element of the StoredProcedureParameter annotation.
 	 * Return null if the element does not exist in the annotation
 	 */
-	ParameterMode_2_1 getMode();
+	ParameterMode2_1 getMode();
 		String MODE_PROPERTY = "mode"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the 'mode' element of the StoredProcedureParameter annotation.
 	 * Setting to null will remove the element.
 	 */
-	void setMode(ParameterMode_2_1 mode);
+	void setMode(ParameterMode2_1 mode);
 
 	/**
 	 * Return the {@link TextRange} for the 'mode' element. If the element 
@@ -77,14 +77,14 @@ public interface StoredProcedureParameter2_1Annotation
 	 * Corresponds to the 'type' element of the StoredProcedureParameter annotation.
 	 * Return null if the element does not exist in the annotation
 	 */
-	String getTypeName();
+	String getType();
 		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the 'type' element of the StoredProcedureParameter annotation.
 	 * Setting to null will remove the element.
 	 */
-	void setTypeName(String type);
+	void setType(String type);
 
 	/**
 	 * Return the {@link TextRange} for the 'type' element. If the element 

@@ -13,8 +13,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 
-public abstract class Generic2_1ContextModelTestCase
-	extends ContextModelTestCase
+public abstract class Generic2_1ContextModelTestCase extends ContextModelTestCase
 {
 	protected Generic2_1ContextModelTestCase(String name) {
 		super(name);

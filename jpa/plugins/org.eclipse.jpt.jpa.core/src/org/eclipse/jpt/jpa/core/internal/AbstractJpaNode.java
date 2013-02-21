@@ -158,7 +158,6 @@ public abstract class AbstractJpaNode
 	protected JpaFactory2_0 getJpaFactory2_0() {
 		return (JpaFactory2_0) this.getJpaFactory();
 	}
-
 	/**
 	 * Call {@link #isJpa2_1Compatible()} before calling this method.
 	 */
