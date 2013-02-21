@@ -116,6 +116,11 @@ public interface NamedStoredProcedureQuery2_1Annotation
 	/**
 	 * Corresponds to the 'resultClasses' element of the NamedStoredProcedureQuery annotation.
 	 */
+	void addResultClass(int index, String resultClass);
+
+	/**
+	 * Corresponds to the 'resultClasses' element of the NamedStoredProcedureQuery annotation.
+	 */
 	void moveResultClass(int targetIndex, int sourceIndex);
 
 	/**
@@ -152,6 +157,11 @@ public interface NamedStoredProcedureQuery2_1Annotation
 	 * Corresponds to the 'resultSetMappings' element of the NamedStoredProcedureQuery annotation.
 	 */
 	void addResultSetMapping(String resultSetMapping);
+
+	/**
+	 * Corresponds to the 'resultSetMappings' element of the NamedStoredProcedureQuery annotation.
+	 */
+	void addResultSetMapping(int index, String resultSetMapping);
 
 	/**
 	 * Corresponds to the 'resultSetMappings' element of the NamedStoredProcedureQuery annotation.

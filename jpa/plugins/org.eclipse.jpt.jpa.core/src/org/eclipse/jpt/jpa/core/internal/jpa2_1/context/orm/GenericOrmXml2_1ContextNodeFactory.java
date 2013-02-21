@@ -14,13 +14,27 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 public class GenericOrmXml2_1ContextNodeFactory
 	extends GenericOrmXml2_0ContextNodeFactory
 	implements OrmXml2_1ContextNodeFactory
 {
 
-	public OrmConverterType2_1 buildOrmConverter(EntityMappings2_1 parent, XmlConverter xmlConverter) {
+	public OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter) {
 		return new GenericOrmConverterType(parent, xmlConverter);
+	}
+
+	public OrmNamedStoredProcedureQuery2_1 buildOrmNamedStoredProcedureQuery2_1(
+			OrmQueryContainer2_1 parent, 
+			XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {
+		return new GenericOrmNamedStoredProcedureQuery2_1(parent, xmlNamedStoredProcedureQuery);
+	}
+	
+	public OrmStoredProcedureParameter2_1 buildOrmStoredProcedureParameter(
+			OrmNamedStoredProcedureQuery2_1 parent,
+			XmlStoredProcedureParameter xmlParameter) {
+		return new GenericOrmStoredProcedureParameter2_1(parent, xmlParameter);
 	}
 }
