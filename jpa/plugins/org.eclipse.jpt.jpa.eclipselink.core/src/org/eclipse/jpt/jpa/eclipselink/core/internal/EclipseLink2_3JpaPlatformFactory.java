@@ -18,10 +18,10 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_3;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class EclipseLink2_3JpaPlatformFactory
 	implements JpaPlatformFactory
@@ -46,7 +46,7 @@ public class EclipseLink2_3JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(JpaPlatform.Config config) {
 		return new GenericJpaPlatform(
 			config,
-			buildJpaVersion(),
+			buildJpaVersion(config.getJpaFacetVersion()),
 			new EclipseLink2_0JpaFactory(),
 			buildAnnotationProvider(),
 			EclipseLink2_3JpaPlatformProvider.instance(),
@@ -54,8 +54,8 @@ public class EclipseLink2_3JpaPlatformFactory
 			EclipseLinkJPQLGrammar2_3.instance());
 	}
 
-	protected JpaPlatform.Version buildJpaVersion() {
-		return new EclipseLinkJpaPlatformVersion(VERSION, JpaProject2_0.FACET_VERSION_STRING);
+	protected JpaPlatform.Version buildJpaVersion(IProjectFacetVersion jpaFacetVersion) {
+		return new EclipseLinkJpaPlatformVersion(VERSION, jpaFacetVersion.getVersionString());
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {

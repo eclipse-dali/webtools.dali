@@ -14,13 +14,13 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
-import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -49,7 +49,7 @@ public class EclipseLink1_1JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(JpaPlatform.Config config) {
 		return new GenericJpaPlatform(
 			config,
-			buildJpaVersion(),
+			buildJpaVersion(config.getJpaFacetVersion()),
 			new EclipseLinkJpaFactory(),
 			buildAnnotationProvider(),
 			EclipseLink1_1JpaPlatformProvider.instance(),
@@ -77,7 +77,7 @@ public class EclipseLink1_1JpaPlatformFactory
 		};
 	}
 
-	private JpaPlatform.Version buildJpaVersion() {
-		return new EclipseLinkJpaPlatformVersion(VERSION, JpaProject.FACET_VERSION_STRING);
+	private JpaPlatform.Version buildJpaVersion(IProjectFacetVersion jpaFacetVersion) {
+		return new EclipseLinkJpaPlatformVersion(VERSION, jpaFacetVersion.getVersionString());
 	}
 }

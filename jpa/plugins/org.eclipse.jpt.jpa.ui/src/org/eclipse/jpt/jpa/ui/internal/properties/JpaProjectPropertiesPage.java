@@ -447,6 +447,10 @@ public class JpaProjectPropertiesPage
 			return null;
 		}
 
+		public IProjectFacetVersion getJpaFacetVersion() {
+			return null;
+		}
+
 		public boolean supportsJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
 			return false;
 		}

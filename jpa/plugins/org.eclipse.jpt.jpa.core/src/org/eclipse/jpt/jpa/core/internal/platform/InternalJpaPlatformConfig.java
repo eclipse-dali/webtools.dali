@@ -57,6 +57,10 @@ class InternalJpaPlatformConfig
 		return this.factoryClassName;
 	}
 
+	public IProjectFacetVersion getJpaFacetVersion() {
+		return this.jpaFacetVersion;
+	}
+
 	void setJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
 		this.jpaFacetVersion = jpaFacetVersion;
 	}

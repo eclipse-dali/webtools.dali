@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,8 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_0;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -39,7 +39,7 @@ public class Generic2_0JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(JpaPlatform.Config config) {
 		return new GenericJpaPlatform(
 			config,
-			this.buildJpaVersion(),
+			this.buildJpaVersion(config.getJpaFacetVersion()),
 			new GenericJpaFactory2_0(),
 			new JpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
 			Generic2_0JpaPlatformProvider.instance(),
@@ -47,8 +47,8 @@ public class Generic2_0JpaPlatformFactory
 			JPQLGrammar2_0.instance());
 	}
 
-	private JpaPlatform.Version buildJpaVersion() {
-		return new GenericJpaPlatformVersion(JpaProject2_0.FACET_VERSION_STRING);
+	private JpaPlatform.Version buildJpaVersion(IProjectFacetVersion jpaFacetVersion) {
+		return new GenericJpaPlatformVersion(jpaFacetVersion.getVersionString());
 	}
 
 	protected JpaPlatformVariation buildJpaPlatformVariation() {

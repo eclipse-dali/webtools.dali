@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
@@ -219,6 +220,7 @@ public interface JpaPlatform
 		 * Return the highest JPA specification version supported by the platform.
 		 * @see JpaProject#FACET_VERSION_STRING
 		 * @see JpaProject2_0#FACET_VERSION_STRING
+		 * @see JpaProject2_1#FACET_VERSION_STRING
 		 */
 		String getJpaVersion();
 
@@ -227,6 +229,7 @@ public interface JpaPlatform
 		 * specification version.
 		 * @see JpaProject#FACET_VERSION_STRING
 		 * @see JpaProject2_0#FACET_VERSION_STRING
+		 * @see JpaProject2_1#FACET_VERSION_STRING
 		 */
 		boolean isCompatibleWithJpaVersion(String jpaVersion);
 	}
@@ -261,10 +264,16 @@ public interface JpaPlatform
 		String getLabel();
 
 		/**
+		 * Return the config's JPA facet version or null if the extension
+		 * does <em>not</em> specify a JPA facet version.
+		 */
+		IProjectFacetVersion getJpaFacetVersion();
+
+		/**
 		 * Return whether the config's JPA platform supports the specified
 		 * JPA facet version. If the extension specifies a JPA facet version, it
 		 * must be the same as the specified JPA facet version. If the extension
-		 * does <em>not</em> specify a JPA facet verion, the config's JPA
+		 * does <em>not</em> specify a JPA facet version, the config's JPA
 		 * platform supports all JPA facet versions.
 		 * @exception IllegalArgumentException if the specified facet version is
 		 * not for a JPA facet
