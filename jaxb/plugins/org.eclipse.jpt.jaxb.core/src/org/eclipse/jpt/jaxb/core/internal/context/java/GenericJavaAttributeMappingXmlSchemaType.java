@@ -58,7 +58,7 @@ public class GenericJavaAttributeMappingXmlSchemaType
 		String fqType = getFullyQualifiedType();
 		if (fqType != null && ! XmlSchemaTypeAnnotation.DEFAULT_TYPE.equals(fqType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getTypeTextRange(),
 							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_SPECIFIED_ON_ATTRIBUTE
 						));

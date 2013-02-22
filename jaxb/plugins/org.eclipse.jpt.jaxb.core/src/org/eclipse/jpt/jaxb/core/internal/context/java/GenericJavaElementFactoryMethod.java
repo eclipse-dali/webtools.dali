@@ -212,7 +212,7 @@ public class GenericJavaElementFactoryMethod
 		
 		if (resourceMethod.getParametersSize() != 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_PARAM
 						));
@@ -224,7 +224,7 @@ public class GenericJavaElementFactoryMethod
 		
 		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeBinding().getQualifiedName())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE
 						));
@@ -388,7 +388,7 @@ public class GenericJavaElementFactoryMethod
 			// need to ignore the unspecified (null) case
 			if ("".equals(getName())) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getNameTextRange(),
 								JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 								getReferencedComponentTypeDescription()));
@@ -396,7 +396,7 @@ public class GenericJavaElementFactoryMethod
 			else if (! StringTools.isBlank(getName())) {
 				if (ObjectTools.equals(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
 					messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 									getNameTextRange(),
 									JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NAME_EQUALS_NAME
 								));
@@ -420,7 +420,7 @@ public class GenericJavaElementFactoryMethod
 				}
 			}
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NO_MATCHING_ELEMENT_DECL,
 							getNamespace(),

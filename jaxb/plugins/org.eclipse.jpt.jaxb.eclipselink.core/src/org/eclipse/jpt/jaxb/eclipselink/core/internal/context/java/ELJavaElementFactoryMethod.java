@@ -32,7 +32,7 @@ public class ELJavaElementFactoryMethod
 		
 		if (! resourceMethod.getTypeBinding().isSubTypeOf(JAXB.JAXB_ELEMENT)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE
 						));

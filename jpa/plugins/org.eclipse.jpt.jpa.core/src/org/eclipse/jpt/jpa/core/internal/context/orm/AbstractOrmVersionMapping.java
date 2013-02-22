@@ -280,7 +280,6 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 			messages.add(
 					this.buildValidationMessage(
 							this.getNameTextRange(),
-							IMessage.NORMAL_SEVERITY,
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 							this.getName()
 					)

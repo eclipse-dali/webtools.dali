@@ -159,7 +159,7 @@ public class OrmEclipseLinkVersionMapping
 		if (this.isVirtualAccess()) {
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getAttributeTypeTextRange(),
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						this.getName()
@@ -173,7 +173,7 @@ public class OrmEclipseLinkVersionMapping
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 			if (jdtType == null && this.getResolvedAttributeType() == null) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getAttributeTypeTextRange(),
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 						this.getFullyQualifiedAttributeType()
@@ -184,7 +184,7 @@ public class OrmEclipseLinkVersionMapping
 		}
 		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getFullyQualifiedAttributeType())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getAttributeTypeTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 							this.getName()

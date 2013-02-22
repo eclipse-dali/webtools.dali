@@ -48,7 +48,7 @@ public class GenericJavaXmlAnyAttributeMapping
 		
 		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(Map.class.getName())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getValidationTextRange(),
 					JptJaxbCoreValidationMessages.XML_ANY_ATTRIBUTE__NON_MAP_TYPE
 				));

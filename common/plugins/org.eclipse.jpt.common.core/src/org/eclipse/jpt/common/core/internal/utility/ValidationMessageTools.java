@@ -21,70 +21,32 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public final class ValidationMessageTools {
 
 	/**
-	 * Build a validation message with a default severity of "error".
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
-	 * @see IMessage#HIGH_SEVERITY
+	 * @see #buildValidationMessage(IResource, TextRange, ValidationMessage, Object[])
 	 */
-	public static IMessage buildErrorValidationMessage(IResource target, ValidationMessage message) {
-		return buildValidationMessage(target, IMessage.HIGH_SEVERITY, message);
+	public static IMessage buildValidationMessage(IResource target, ValidationMessage message) {
+		return buildValidationMessage(target, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
+	 * @see #buildValidationMessage(IResource, TextRange, ValidationMessage, Object[])
 	 */
-	public static IMessage buildValidationMessage(IResource target, int defaultSeverity, ValidationMessage message) {
-		return buildValidationMessage(target, defaultSeverity, message, ObjectTools.EMPTY_OBJECT_ARRAY);
+	public static IMessage buildValidationMessage(IResource target, ValidationMessage message, Object... args) {
+		return buildValidationMessage(target, TextRange.Empty.instance(), message, args);
 	}
 
 	/**
-	 * Build a validation message with a default severity of "error".
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
-	 * @see IMessage#HIGH_SEVERITY
+	 * @see #buildValidationMessage(IResource, TextRange, ValidationMessage, Object[])
 	 */
-	public static IMessage buildErrorValidationMessage(IResource target, ValidationMessage message, Object... args) {
-		return buildValidationMessage(target, IMessage.HIGH_SEVERITY, message, args);
+	public static IMessage buildValidationMessage(IResource target, TextRange textRange, ValidationMessage message) {
+		return buildValidationMessage(target, textRange, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
+	 * Build a validation message with the specified target, text range,
+	 * message, and arguments to be bound to the message template.
+	 * @see ValidationMessage#buildValidationMessage(IResource, TextRange, Object[])
 	 */
-	public static IMessage buildValidationMessage(IResource target, int defaultSeverity, ValidationMessage message, Object... args) {
-		return buildValidationMessage(target, TextRange.Empty.instance(), defaultSeverity, message, args);
-	}
-
-	/**
-	 * Build a validation message with a default severity of "error".
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
-	 * @see IMessage#HIGH_SEVERITY
-	 */
-	public static IMessage buildErrorValidationMessage(IResource target, TextRange textRange, ValidationMessage message) {
-		return buildValidationMessage(target, textRange, IMessage.HIGH_SEVERITY, message);
-	}
-
-	/**
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
-	 */
-	public static IMessage buildValidationMessage(IResource target, TextRange textRange, int defaultSeverity, ValidationMessage message) {
-		return buildValidationMessage(target, textRange, defaultSeverity, message, ObjectTools.EMPTY_OBJECT_ARRAY);
-	}
-
-	/**
-	 * Build a validation message with a default severity of "error".
-	 * @see #buildValidationMessage(IResource, TextRange, int, ValidationMessage, Object[])
-	 * @see IMessage#HIGH_SEVERITY
-	 */
-	public static IMessage buildErrorValidationMessage(IResource target, TextRange textRange, ValidationMessage message, Object... args) {
-		return buildValidationMessage(target, textRange, IMessage.HIGH_SEVERITY, message, args);
-	}
-
-	/**
-	 * Build a validation message with the specified message, default severity
-	 * (i.e. the severity of the message in the absence of a user-specified
-	 * preference), target, text range, and arguments to be bound to the
-	 * message template.
-	 * @see IMessage#getSeverity()
-	 */
-	public static IMessage buildValidationMessage(IResource target, TextRange textRange, int defaultSeverity, ValidationMessage message, Object... args) {
-		return message.buildValidationMessage(target, textRange, defaultSeverity, args);
+	public static IMessage buildValidationMessage(IResource target, TextRange textRange, ValidationMessage message, Object... args) {
+		return message.buildValidationMessage(target, textRange, args);
 	}
 }

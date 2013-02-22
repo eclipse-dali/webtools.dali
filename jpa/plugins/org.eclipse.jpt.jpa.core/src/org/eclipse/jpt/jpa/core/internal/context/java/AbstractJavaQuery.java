@@ -180,7 +180,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	protected void validateName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED
 				)

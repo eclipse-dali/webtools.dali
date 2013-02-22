@@ -348,7 +348,7 @@ public class GenericOrmIdClassReference
 		if (this.isSpecified()) {
 			if (StringTools.isBlank(this.getIdClassName())) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								this.getValidationTextRange(),
 								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY
 						)
@@ -358,7 +358,7 @@ public class GenericOrmIdClassReference
 			IType idClassJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedIdClassName());
 			if (idClassJdtType == null) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								this.getValidationTextRange(),
 								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
 								this.getFullyQualifiedIdClassName()
@@ -372,7 +372,7 @@ public class GenericOrmIdClassReference
 
 				if (!jrt.isPublic()) {
 					messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 									this.getValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
 									jrt.getTypeBinding().getQualifiedName()
@@ -382,7 +382,7 @@ public class GenericOrmIdClassReference
 
 				if (!JDTTools.typeIsSubType(this.getJavaProject(), jrt.getTypeBinding().getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
 					messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 									this.getValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
 									jrt.getTypeBinding().getQualifiedName()
@@ -392,7 +392,7 @@ public class GenericOrmIdClassReference
 
 				if (!jrt.hasEqualsMethod()) {
 					messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 									this.getValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
 									jrt.getTypeBinding().getQualifiedName()
@@ -402,7 +402,7 @@ public class GenericOrmIdClassReference
 
 				if (!jrt.hasHashCodeMethod()) {
 					messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 									this.getValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
 									jrt.getTypeBinding().getQualifiedName()

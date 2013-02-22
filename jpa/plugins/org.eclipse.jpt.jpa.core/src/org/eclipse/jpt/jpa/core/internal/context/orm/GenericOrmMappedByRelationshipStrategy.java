@@ -209,7 +209,7 @@ public class GenericOrmMappedByRelationshipStrategy
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
 		String attributeDescription = NLS.bind(JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC, attribute.getName());
 		args = ArrayTools.add(args, 0, attributeDescription);
-		return this.buildErrorValidationMessage(this.getValidationTextRange(), msg, args);
+		return this.buildValidationMessage(this.getValidationTextRange(), msg, args);
 	}
 
 	public TextRange getValidationTextRange() {

@@ -65,7 +65,7 @@ public class GenericJavaXmlValueMapping
 		
 		if (! xsdClassType.hasTextContent()) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_VALUE__NO_TEXT_CONTENT
 						));
@@ -81,7 +81,7 @@ public class GenericJavaXmlValueMapping
 		
 		if (! xsdType.typeIsValid(expectedSchemaType, isXmlList())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_VALUE__INVALID_SCHEMA_TYPE,
 							getValueTypeName()));

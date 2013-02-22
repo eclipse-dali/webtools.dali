@@ -236,7 +236,7 @@ public class GenericPersistenceXml
 		super.validate(messages, reporter);
 
 		if (this.root == null) {
-			messages.add(this.buildErrorValidationMessage(JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT));
+			messages.add(this.buildValidationMessage(JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT));
 		} else {
 			this.root.validate(messages, reporter);
 		}

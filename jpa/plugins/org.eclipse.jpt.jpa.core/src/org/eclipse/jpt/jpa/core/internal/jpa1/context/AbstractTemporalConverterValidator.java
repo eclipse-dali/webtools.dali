@@ -64,7 +64,7 @@ public abstract class AbstractTemporalConverterValidator
 	}
 
 	protected IMessage buildInvalidTemporalMappingTypeMessage_() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.converter.getResource(),
 				this.converter.getValidationTextRange(),
 				this.getInvalidTemporalMappingTypeMessage()
@@ -74,7 +74,7 @@ public abstract class AbstractTemporalConverterValidator
 	protected abstract ValidationMessage getInvalidTemporalMappingTypeMessage();
 
 	protected IMessage buildVirtualAttributeInvalidTemporalMappingTypeMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.converter.getResource(),
 				this.getPersistentAttribute().getValidationTextRange(),
 				this.getVirtualAttributeInvalidTemporalMappingTypeMessage(),

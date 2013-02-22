@@ -138,7 +138,7 @@ public class JaxbValidator
 	}
 
 	private IMessage buildValidationFailedMessage(IProject project) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 					project,
 					JptJaxbCoreValidationMessages.JAXB_VALIDATION_FAILED
 				);

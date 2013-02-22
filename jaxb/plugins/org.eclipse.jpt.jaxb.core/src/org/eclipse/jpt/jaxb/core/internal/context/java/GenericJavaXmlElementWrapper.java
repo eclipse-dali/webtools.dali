@@ -203,7 +203,7 @@ public class GenericJavaXmlElementWrapper
 		
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getValidationTextRange(),
 					JptJaxbCoreValidationMessages.XML_ELEMENT_WRAPPER_DEFINED_ON_NON_ARRAY_NON_COLLECTION
 				));

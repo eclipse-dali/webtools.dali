@@ -271,7 +271,7 @@ public class JavaEclipseLinkObjectTypeConverter
 			if (dups.size() > 1) {
 				for (JavaEclipseLinkConversionValue dup : dups) {
 					messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 							dup.getDataValueTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
 							dup.getDataValue()

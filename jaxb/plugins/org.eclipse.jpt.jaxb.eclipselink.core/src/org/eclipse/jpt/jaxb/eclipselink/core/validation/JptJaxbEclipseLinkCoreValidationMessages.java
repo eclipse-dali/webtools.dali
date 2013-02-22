@@ -24,32 +24,6 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
  * @see ValidationMessageLoader
  */
 public class JptJaxbEclipseLinkCoreValidationMessages {
-
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		// TODO
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return defaultSeverity;
-			// return JaxbEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
-
-	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation"; //$NON-NLS-1$
-	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation_description"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptJaxbEclipseLinkCoreValidationMessages.class;
-	static {
-		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JaxbProject.MARKER_TYPE, PREFERENCES_ADAPTER);
-	}
-	
 	
 	// validation on project
 	public static ValidationMessage PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY;
@@ -102,4 +76,32 @@ public class JptJaxbEclipseLinkCoreValidationMessages {
 	public static ValidationMessage XPATH__INVALID_NS_PREFIX;
 	public static ValidationMessage XPATH__UNRESOLVED_ELEMENT;
 	public static ValidationMessage XPATH__UNRESOLVED_ATTRIBUTE;
+
+
+	// ********** static initialization **********
+
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
+	private static class PreferencesAdapter
+		implements ValidationMessageLoader.PreferencesAdapter
+	{
+		PreferencesAdapter() {
+			super();
+		}
+		// TODO
+		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
+			return defaultSeverity;
+			// return JaxbEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation"; //$NON-NLS-1$
+	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_eclipselink_core_validation_description"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJaxbEclipseLinkCoreValidationMessages.class;
+	static {
+		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JaxbProject.MARKER_TYPE, PREFERENCES_ADAPTER);
+	}
 }

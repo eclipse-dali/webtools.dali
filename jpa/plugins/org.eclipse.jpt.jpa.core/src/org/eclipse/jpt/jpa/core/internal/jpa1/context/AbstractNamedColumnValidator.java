@@ -90,7 +90,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 	}
 
 	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
 				message,
@@ -102,7 +102,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 	protected abstract ValidationMessage getUnresolvedNameMessage();
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
 				this.getVirtualAttributeUnresolvedNameMessage(),
@@ -190,7 +190,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 	
 		protected IMessage buildTableNotValidMessage_() {
-			return ValidationMessageTools.buildErrorValidationMessage(
+			return ValidationMessageTools.buildValidationMessage(
 					this.getColumn().getResource(),
 					this.getColumn().getTableNameValidationTextRange(),
 					this.getColumnTableNotValidMessage(),
@@ -209,7 +209,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
-			return ValidationMessageTools.buildErrorValidationMessage(
+			return ValidationMessageTools.buildValidationMessage(
 					this.getColumn().getResource(),
 					AbstractNamedColumnValidator.this.getVirtualAttributeTextRange(),
 					this.getVirtualAttributeColumnTableNotValidMessage(),

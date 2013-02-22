@@ -178,7 +178,7 @@ public class ELJavaXmlJoinNodesMapping
 		
 		if (referencedClass == null) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlJoinNodesMapping.this,
 								getValidationTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__INVALID_REFERENCED_CLASS,
@@ -218,7 +218,7 @@ public class ELJavaXmlJoinNodesMapping
 		String xmlPath = joinNode.getXmlPath();
 		if (xmlPaths.count(xmlPath) > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							joinNode,
 							joinNode.getXmlPathTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_XML_PATH,
@@ -231,7 +231,7 @@ public class ELJavaXmlJoinNodesMapping
 		String referencedXmlPath = joinNode.getReferencedXmlPath();
 		if (referencedXmlPaths.count(referencedXmlPath) > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							joinNode,
 							joinNode.getReferencedXmlPathTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH,

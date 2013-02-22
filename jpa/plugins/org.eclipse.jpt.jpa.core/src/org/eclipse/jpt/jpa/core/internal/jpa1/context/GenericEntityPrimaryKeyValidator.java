@@ -41,7 +41,7 @@ public class GenericEntityPrimaryKeyValidator
 			List<IMessage> messages, IReporter reporter) {
 		if (!idClass.getJavaResourceType().hasPublicNoArgConstructor()) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						idClassReference().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR,

@@ -50,7 +50,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapter
 		super.validate(messages, reporter);
 		if (getType() == null || getFullyQualifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getAnnotation().getTypeTextRange(),
 					JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED
 				));

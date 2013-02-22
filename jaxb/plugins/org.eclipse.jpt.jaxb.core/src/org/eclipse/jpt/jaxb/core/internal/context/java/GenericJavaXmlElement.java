@@ -361,7 +361,7 @@ public class GenericJavaXmlElement
 		String fqType = getFullyQualifiedType();
 		if (StringTools.isBlank(fqType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getTypeTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE
 						));
@@ -379,7 +379,7 @@ public class GenericJavaXmlElement
 				String attributeBaseType = getAttributeMapping().getValueTypeName();
 				if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
 					messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 									getTypeTextRange(),
 									JptJaxbCoreValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
 									attributeBaseType));
@@ -422,7 +422,7 @@ public class GenericJavaXmlElement
 		
 		if (! xsdElement.typeIsValid(expectedSchemaType, this.context.hasXmlList())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.qName.getNameTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
 							typeName,

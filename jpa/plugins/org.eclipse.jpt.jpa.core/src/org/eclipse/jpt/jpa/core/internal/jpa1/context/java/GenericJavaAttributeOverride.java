@@ -143,7 +143,7 @@ public class GenericJavaAttributeOverride
 
 		if (this.attributeIsDerivedId()) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED
 					)

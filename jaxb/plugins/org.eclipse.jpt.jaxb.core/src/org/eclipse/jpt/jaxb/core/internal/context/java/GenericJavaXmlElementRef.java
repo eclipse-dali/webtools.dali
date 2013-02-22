@@ -241,7 +241,7 @@ public class GenericJavaXmlElementRef
 		String fqType = getFullyQualifiedType();
 		if (StringTools.isBlank(fqType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getTypeTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE
 						));
@@ -252,7 +252,7 @@ public class GenericJavaXmlElementRef
 			String attributeValueType = getContext().getAttributeMapping().getValueTypeName();
 			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeValueType)) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getTypeTextRange(),
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
 								attributeValueType));
@@ -263,7 +263,7 @@ public class GenericJavaXmlElementRef
 			JaxbTypeMapping typeMapping = getJaxbProject().getContextRoot().getTypeMapping(fqType);
 			if (typeMapping != null && ! typeMapping.hasRootElementInHierarchy()) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getTypeTextRange(),
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
 								attributeValueType));
@@ -350,7 +350,7 @@ public class GenericJavaXmlElementRef
 			
 			if (registry == null) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getValidationTextRange(),
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_REGISTRY
 							));
@@ -364,7 +364,7 @@ public class GenericJavaXmlElementRef
 				}
 			}
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
 							getNamespace(),

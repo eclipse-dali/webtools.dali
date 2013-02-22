@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Localized validation messages used by Dali JPA core.
@@ -25,30 +26,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
  * @see ValidationMessageLoader
  */
 public class JptJpaCoreValidationMessages {
-
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return JpaPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
-
-	private static final String MESSAGE_BUNDLE_NAME = "jpt_jpa_core_validation"; //$NON-NLS-1$
-	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jpa_core_validation_description"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationMessages.class;
-	static {
-		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JpaProject.MARKER_TYPE, PREFERENCES_ADAPTER);
-	}
-
 	//Content is organized based on the categories and entries in each categories are listed alphabetically.
 	//If adding a new entry, please be sure to add it to the corresponding category at the right place.
 	
@@ -337,4 +314,49 @@ public class JptJpaCoreValidationMessages {
 	public static ValidationMessage QUERY_DUPLICATE_NAME;
 	public static ValidationMessage QUERY_NAME_UNDEFINED;
 	public static ValidationMessage QUERY_STATEMENT_UNDEFINED;
+
+
+	// ********** static initialization **********
+
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
+	private static class PreferencesAdapter
+		implements ValidationMessageLoader.PreferencesAdapter
+	{
+		PreferencesAdapter() {
+			super();
+		}
+		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
+			return JpaPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	private static final String MESSAGE_BUNDLE_NAME = "jpt_jpa_core_validation"; //$NON-NLS-1$
+	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jpa_core_validation_description"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationMessages.class;
+	static {
+		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JpaProject.MARKER_TYPE, PREFERENCES_ADAPTER);
+
+		// WARNINGs
+		ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENT_TYPE_DUPLICATE_CLASS.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PROJECT_INACTIVE_CONNECTION.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PROJECT_INVALID_CONNECTION.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PROJECT_NO_CONNECTION.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+
+		// INFOs
+		XML_VERSION_NOT_LATEST.setDefaultSeverity(IMessage.LOW_SEVERITY);
+		PERSISTENCE_UNIT_REDUNDANT_CLASS.setDefaultSeverity(IMessage.LOW_SEVERITY);
+	}
 }

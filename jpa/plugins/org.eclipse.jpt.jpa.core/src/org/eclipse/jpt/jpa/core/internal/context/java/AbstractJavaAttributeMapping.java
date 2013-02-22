@@ -303,7 +303,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 							this.getVirtualPersistentAttributeTextRange(),
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING, //TODO KFB - different message for virtual attribute
 							this.getName()
@@ -312,7 +312,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 			}
 			else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 						this.getName()

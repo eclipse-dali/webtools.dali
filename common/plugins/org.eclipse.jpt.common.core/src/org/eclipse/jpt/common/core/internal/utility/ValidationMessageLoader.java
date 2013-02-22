@@ -391,6 +391,7 @@ public class ValidationMessageLoader {
 		private final PreferencesAdapter preferencesAdapter;
 		/* final */ String template;
 		/* final */ String description;
+		private int defaultSeverity = IMessage.HIGH_SEVERITY;
 
 
 		SimpleValidationMessage(String id, String markerType, PreferencesAdapter preferencesAdapter) {
@@ -408,8 +409,16 @@ public class ValidationMessageLoader {
 			return this.description;
 		}
 
-		public IMessage buildValidationMessage(IResource target, TextRange textRange, int defaultSeverity, Object... args) {
-			int severity = this.preferencesAdapter.getSeverity(target.getProject(), this.id, defaultSeverity);
+		public int getDefaultSeverity() {
+			return this.defaultSeverity;
+		}
+
+		public void setDefaultSeverity(int severity) {
+			this.defaultSeverity = severity;
+		}
+
+		public IMessage buildValidationMessage(IResource target, TextRange textRange, Object... args) {
+			int severity = this.preferencesAdapter.getSeverity(target.getProject(), this.id, this.defaultSeverity);
 			String localizedMessage = this.bind(args);
 
 			IMessage message = new LocalizedValidationMessage(severity, this.id, target, localizedMessage);

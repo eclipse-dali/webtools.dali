@@ -161,7 +161,7 @@ public class ELJavaXmlElementsMapping
 		
 		if (xmlElements.hasNext()) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getXmlPathsTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS
 						));
@@ -170,7 +170,7 @@ public class ELJavaXmlElementsMapping
 		while (xmlPaths.hasNext()) {
 			ELJavaXmlPath xmlPath = xmlPaths.next();
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							xmlPath.getValidationTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS
 						));

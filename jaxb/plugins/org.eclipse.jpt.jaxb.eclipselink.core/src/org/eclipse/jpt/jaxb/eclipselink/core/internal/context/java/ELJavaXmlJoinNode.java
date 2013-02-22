@@ -184,7 +184,7 @@ public class ELJavaXmlJoinNode
 	protected void validateXmlPath(List<IMessage> messages) {
 		if (StringTools.isBlank(this.xmlPath)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlJoinNode.this,
 								getXmlPathTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED
@@ -194,7 +194,7 @@ public class ELJavaXmlJoinNode
 		
 		if (this.xmlPath.startsWith(XPath.DELIM)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlJoinNode.this,
 								getXmlPathTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
@@ -210,7 +210,7 @@ public class ELJavaXmlJoinNode
 	protected void validateReferencedXmlPath(List<IMessage> messages) {
 		if (StringTools.isBlank(this.referencedXmlPath)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED
@@ -220,7 +220,7 @@ public class ELJavaXmlJoinNode
 		
 		if (this.referencedXmlPath.startsWith(XPath.DELIM)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED
@@ -232,7 +232,7 @@ public class ELJavaXmlJoinNode
 		if (referencedClassMapping != null && 
 				! IterableTools.contains(referencedClassMapping.getKeyXPaths(), this.referencedXmlPath)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							ELJavaXmlJoinNode.this,
 							getReferencedXmlPathTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,

@@ -377,7 +377,7 @@ public class GenericClassRef
 
 		if (StringTools.isBlank(this.className)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS
 				)
@@ -387,7 +387,7 @@ public class GenericClassRef
 
 		if (this.resourceType == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
 					this.getJavaClassName()
@@ -399,7 +399,7 @@ public class GenericClassRef
 		if (this.isNotVirtual()) {
 			if (this.resourceType.getAstNodeType() == AstNodeType.ENUM) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_ENUM,
 						this.getJavaClassName()
@@ -410,7 +410,7 @@ public class GenericClassRef
 	
 			if (this.resourceType.getAstNodeType() == AstNodeType.TYPE && this.resourceType.getTypeBinding().isInterface()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_LISTED_CLASS_IS_AN_INTERFACE,
 						this.getJavaClassName()
@@ -432,7 +432,6 @@ public class GenericClassRef
 			messages.add(
 				this.buildValidationMessage(
 					this.getValidationTextRange(),
-					IMessage.LOW_SEVERITY,
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
 					this.getJavaClassName(),
 					mappingFileRef.getFileName()

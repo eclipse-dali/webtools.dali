@@ -110,7 +110,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	protected void validateConverterClass(List<IMessage> messages) {
 		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getConverterClassTextRange(),
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED
 				)
@@ -121,7 +121,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		IType converterJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedConverterClass()); 
 		if (converterJdtType == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getConverterClassTextRange(),
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
 					this.getFullyQualifiedConverterClass()
@@ -132,7 +132,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 		if ( ! this.converterClassImplementsInterface(this.getEclipseLinkConverterInterface())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getConverterClassTextRange(),
 					this.getEclipseLinkConverterInterfaceErrorMessage(),
 					this.getFullyQualifiedConverterClass()

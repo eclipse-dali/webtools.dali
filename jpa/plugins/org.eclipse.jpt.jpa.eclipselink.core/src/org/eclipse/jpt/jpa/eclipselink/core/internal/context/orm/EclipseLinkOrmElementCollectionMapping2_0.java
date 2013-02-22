@@ -164,7 +164,7 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 		if (this.isVirtualAccess()) {
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						this.getResource(),
 						this.getAttributeTypeTextRange(),
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
@@ -177,7 +177,7 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 				IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 				if (jdtType == null) {
 					messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 							this.getResource(),
 							this.getAttributeTypeTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,

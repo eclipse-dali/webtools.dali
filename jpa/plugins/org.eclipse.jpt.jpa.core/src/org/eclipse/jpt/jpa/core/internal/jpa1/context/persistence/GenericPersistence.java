@@ -313,9 +313,9 @@ public class GenericPersistence
 			messages.add(
 					this.buildValidationMessage(
 						this.xmlPersistence.getVersionTextRange(),
-						IMessage.LOW_SEVERITY,
 						JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST
-					));
+					)
+				);
 		}
 	}
 
@@ -333,7 +333,6 @@ public class GenericPersistence
 			messages.add(
 				this.buildValidationMessage(
 					this.getValidationTextRange(),
-					IMessage.NORMAL_SEVERITY,
 					JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS
 				)
 			);
@@ -343,7 +342,7 @@ public class GenericPersistence
 	protected void validatePersistenceUnit(List<IMessage> messages, IReporter reporter) {
 		if (this.persistenceUnit == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT
 				)

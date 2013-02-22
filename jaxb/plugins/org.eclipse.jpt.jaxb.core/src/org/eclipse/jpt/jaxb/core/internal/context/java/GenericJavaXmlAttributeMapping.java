@@ -213,7 +213,7 @@ public class GenericJavaXmlAttributeMapping
 		boolean isItemType = isXmlList() && this.xmlSchemaType == null;
 		if (! xsdFeature.typeIsValid(expectedSchemaType, isItemType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.qName.getNameTextRange(),
 							JptJaxbCoreValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
 							getValueTypeName(),

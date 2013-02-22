@@ -115,7 +115,7 @@ public class ELJavaXmlDiscriminatorNode
 		
 		if (StringTools.isBlank(this.value)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlDiscriminatorNode.this,
 								getValueTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XML_DISCRIMINATOR_NODE__NOT_SPECIFIED
@@ -125,7 +125,7 @@ public class ELJavaXmlDiscriminatorNode
 		
 		if (this.value.startsWith(XPath.DELIM)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlDiscriminatorNode.this,
 								getValueTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED

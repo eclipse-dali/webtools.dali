@@ -265,7 +265,7 @@ public class ELJaxbContextRootImpl
 		}
 		
 		messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 						getJaxbProject(),
 						JptJaxbEclipseLinkCoreValidationMessages.PROJECT_MISSING_ECLIPSELINK_JAXB_CONTEXT_FACTORY
 					));

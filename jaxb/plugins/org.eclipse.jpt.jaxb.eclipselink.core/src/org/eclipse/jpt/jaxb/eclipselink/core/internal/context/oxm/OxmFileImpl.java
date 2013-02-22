@@ -162,14 +162,14 @@ public class OxmFileImpl
 		if (getJaxbPackage() == null) {
 			if (StringTools.isBlank(getPackageName())) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getPackageNameTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_PACKAGE_SPECIFIED
 							));
 			}
 			else {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getPackageNameTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.OXM_FILE__NO_SUCH_PACKAGE,
 								getPackageName()));

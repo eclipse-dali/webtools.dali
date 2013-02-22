@@ -267,7 +267,7 @@ public abstract class AbstractQName
 	protected void validateName(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(getName())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getNameTextRange(),
 					JptJaxbCoreValidationMessages.QNAME__MISSING_NAME,
 					getReferencedComponentTypeDescription()
@@ -279,7 +279,7 @@ public abstract class AbstractQName
 	protected abstract void validateReference(List<IMessage> messages, IReporter reporter);
 	
 	protected IMessage getUnresolveSchemaComponentMessage() {
-		return this.buildErrorValidationMessage(
+		return this.buildValidationMessage(
 				getNameTextRange(),
 				JptJaxbCoreValidationMessages.QNAME__UNRESOLVED_COMPONENT,
 				getReferencedComponentTypeDescription(),

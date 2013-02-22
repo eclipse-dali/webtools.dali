@@ -276,7 +276,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 
 		if (StringTools.isBlank(this.fileName)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE
 				)
@@ -295,7 +295,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	protected IMessage buildMissingMappingFileValidationMessage() {
 		IFile file = this.getPlatformFile();
 		if ( ! file.exists()) {
-			return this.buildErrorValidationMessage(
+			return this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
 					this.fileName
@@ -304,7 +304,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		ValidationMessage msg = this.mappingFileContentIsUnsupported() ?
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
 					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE;
-		return ValidationMessageTools.buildErrorValidationMessage(file, msg, file.getName());
+		return ValidationMessageTools.buildValidationMessage(file, msg, file.getName());
 	}
 
 	protected IFile getPlatformFile() {

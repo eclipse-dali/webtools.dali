@@ -520,7 +520,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 			return;
 		}
 		messages.add(
-			this.buildErrorValidationMessage(
+			this.buildValidationMessage(
 				this.mapping,
 				this.mapping.getNameTextRange(),
 				JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,

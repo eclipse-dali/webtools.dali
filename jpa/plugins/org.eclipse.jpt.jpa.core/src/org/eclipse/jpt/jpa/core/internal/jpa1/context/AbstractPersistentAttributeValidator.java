@@ -39,7 +39,7 @@ public abstract class AbstractPersistentAttributeValidator
 	protected abstract void validateMappedAttribute(List<IMessage> messages);
 
 	protected IMessage buildAttributeMessage(ValidationMessage msg) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.persistentAttribute.getResource(),
 				this.persistentAttribute.getValidationTextRange(),
 				msg,

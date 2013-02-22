@@ -106,7 +106,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	protected void validateName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_NAME_UNDEFINED
 				)
@@ -116,7 +116,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 		if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaEclipseLinkCoreValidationMessages.RESERVED_CONVERTER_NAME
 				)

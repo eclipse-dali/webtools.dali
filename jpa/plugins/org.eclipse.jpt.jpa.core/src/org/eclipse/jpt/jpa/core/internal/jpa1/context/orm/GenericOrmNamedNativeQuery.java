@@ -158,7 +158,7 @@ public class GenericOrmNamedNativeQuery
 	protected void validateQuery(@SuppressWarnings("unused") JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(this.query)){
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaCoreValidationMessages.QUERY_STATEMENT_UNDEFINED,
 					this.name

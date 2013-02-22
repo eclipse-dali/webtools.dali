@@ -163,7 +163,7 @@ public class GenericJavaXmlElementRefs
 			boolean isJaxbElement = JAXB.JAXB_ELEMENT.equals(typeName);
 			if (! isJaxbElement && xmlElementRefTypes.count(typeName) > 1) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								xmlElementRef,
 								xmlElementRef.getTypeTextRange(),
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_TYPE,
@@ -174,7 +174,7 @@ public class GenericJavaXmlElementRefs
 			String xmlElementName = xmlElementRef.getQName().getName();
 			if (isJaxbElement && xmlElementRefQnames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								xmlElementRef,
 								xmlElementRef.getQName().getNameTextRange(),
 								JptJaxbCoreValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_QNAME,

@@ -260,7 +260,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
 		String attributeDescription = NLS.bind(JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
 		args = ArrayTools.add(args, 0, attributeDescription);
-		return this.buildErrorValidationMessage(this.getValidationTextRange(), msg, args);
+		return this.buildValidationMessage(this.getValidationTextRange(), msg, args);
 	}
 
 	public TextRange getValidationTextRange() {

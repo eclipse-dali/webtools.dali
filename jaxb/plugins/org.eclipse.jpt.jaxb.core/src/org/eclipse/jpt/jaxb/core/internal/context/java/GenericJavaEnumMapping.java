@@ -242,7 +242,6 @@ public class GenericJavaEnumMapping
 			messages.add(
 					this.buildValidationMessage(
 							annotation.getFactoryClassTextRange(),
-							IMessage.NORMAL_SEVERITY,
 							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM
 						));
 		}
@@ -251,7 +250,6 @@ public class GenericJavaEnumMapping
 			messages.add(
 					this.buildValidationMessage(
 							annotation.getFactoryMethodTextRange(),
-							IMessage.NORMAL_SEVERITY,
 							JptJaxbCoreValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM
 						));
 		}
@@ -260,7 +258,6 @@ public class GenericJavaEnumMapping
 			messages.add(
 					this.buildValidationMessage(
 							annotation.getPropOrderTextRange(),
-							IMessage.NORMAL_SEVERITY,
 							JptJaxbCoreValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM
 						));
 		}
@@ -273,7 +270,7 @@ public class GenericJavaEnumMapping
 		if ((xsdSchema != null && xsdType == null)
 				|| (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getXmlEnumValueTextRange(),
 							JptJaxbCoreValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
 							getValue()));

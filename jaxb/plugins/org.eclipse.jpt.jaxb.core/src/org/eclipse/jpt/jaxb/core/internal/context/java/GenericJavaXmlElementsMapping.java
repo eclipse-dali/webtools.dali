@@ -352,7 +352,7 @@ public class GenericJavaXmlElementsMapping
 		String xmlElementType = xmlElement.getFullyQualifiedType();
 		if (xmlElementTypes.count(xmlElementType) > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							xmlElement,
 							xmlElement.getTypeTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
@@ -366,7 +366,7 @@ public class GenericJavaXmlElementsMapping
 		String xmlElementName = xmlElement.getQName().getName();
 		if (xmlElementQNames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							xmlElement,
 							xmlElement.getQName().getNameTextRange(),
 							JptJaxbCoreValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,

@@ -36,7 +36,7 @@ public class GenericJavaPackageXmlJavaTypeAdapter
 		super.validate(messages, reporter);
 		if (getSpecifiedType() == null || getFullyQualifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getAnnotation().getTypeTextRange(),
 					JptJaxbCoreValidationMessages.PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED
 				));

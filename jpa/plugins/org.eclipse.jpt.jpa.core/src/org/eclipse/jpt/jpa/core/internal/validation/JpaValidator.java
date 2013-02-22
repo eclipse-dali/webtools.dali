@@ -105,7 +105,7 @@ public class JpaValidator
 	{
 		@Override
 		public boolean evaluate(IMessage message) {
-			return message.getSeverity() != -1;
+			return message.getSeverity() != JpaProject.VALIDATION_IGNORE_SEVERITY;
 		}
 	}
 
@@ -133,7 +133,7 @@ public class JpaValidator
 	}
 
 	private IMessage buildValidationFailedMessage(IProject project) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 					project,
 					JptJpaCoreValidationMessages.JPA_VALIDATION_FAILED
 				);

@@ -45,7 +45,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
@@ -68,7 +68,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getReferencedColumnNameTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
@@ -91,7 +91,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
@@ -112,7 +112,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getReferencedColumnNameTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,

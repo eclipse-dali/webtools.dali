@@ -248,7 +248,7 @@ public class GenericJavaMappedByRelationshipStrategy
 				this.getValidationTextRange();
 		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
 		args = ArrayTools.add(args, 0, attributeDescription);
-		return this.buildErrorValidationMessage(textRange, msg, args);
+		return this.buildValidationMessage(textRange, msg, args);
 	}
 
 	public TextRange getValidationTextRange() {

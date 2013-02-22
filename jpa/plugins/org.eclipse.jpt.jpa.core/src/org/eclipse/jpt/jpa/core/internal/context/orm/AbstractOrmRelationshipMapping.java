@@ -384,7 +384,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	protected void validateTargetEntity(List<IMessage> messages) {
 		if (StringTools.isBlank(this.getTargetEntity())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getTargetEntityTextRange(),
 					JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_DEFINED
 				)
@@ -395,7 +395,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
 			if (jdtType == null) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getTargetEntityTextRange(),
 						JptJpaCoreValidationMessages.TARGET_ENTITY_NOT_EXIST,
 						this.getFullyQualifiedTargetEntity()
@@ -406,7 +406,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		}
 		if (this.getResolvedTargetEntity() == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getTargetEntityTextRange(),
 					JptJpaCoreValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 					this.getFullyQualifiedTargetEntity()

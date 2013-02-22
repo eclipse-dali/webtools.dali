@@ -694,7 +694,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			messages.add(
 				this.buildValidationMessage(
 					this.getValidationTextRange(),
-					IMessage.NORMAL_SEVERITY,
 					JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED
 				)
 			);			
@@ -705,7 +704,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					this.buildValidationMessage(
 						this.getValidationTextRange(),
-						IMessage.LOW_SEVERITY,
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED
 					)
 				);
@@ -714,7 +712,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					this.buildValidationMessage(
 						this.getValidationTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
 						targetDatabase
 					)
@@ -726,7 +723,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					this.buildValidationMessage(
 						this.getXmlMultitenant().getValidationTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY
 					)
 				);
@@ -747,7 +743,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			messages.add(
 				this.buildValidationMessage(
 					this.getXmlMultitenant().getIncludeCriteriaTextRange(),
-					IMessage.NORMAL_SEVERITY,
 					JptJpaEclipseLinkCoreValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED
 				)
 			);			

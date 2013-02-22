@@ -73,7 +73,7 @@ public abstract class OverrideValidator
 	}
 
 	protected IMessage buildUnresolvedOverrideTypeMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.override.getResource(),
 				this.override.getNameTextRange(),
 				this.getUnresolvedOverrideTypeMessage(),
@@ -108,7 +108,7 @@ public abstract class OverrideValidator
 	}
 
 	protected IMessage buildVirtualUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.override.getResource(),
 				this.override.getNameTextRange(),
 				this.getVirtualOverrideUnresolvedNameMessage(),
@@ -121,7 +121,7 @@ public abstract class OverrideValidator
 	protected abstract ValidationMessage getVirtualOverrideUnresolvedNameMessage();
 
 	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.override.getResource(),
 				this.override.getNameTextRange(),
 				message,
@@ -134,7 +134,7 @@ public abstract class OverrideValidator
 	protected abstract ValidationMessage getUnresolvedNameMessage();
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.override.getResource(),
 				this.persistentAttribute.getValidationTextRange(),
 				this.getVirtualAttributeUnresolvedNameMessage(),

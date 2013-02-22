@@ -283,7 +283,6 @@ public abstract class AbstractJavaVersionMapping
 				messages.add(
 						this.buildValidationMessage(
 								this.getVirtualPersistentAttributeTextRange(),
-								IMessage.NORMAL_SEVERITY,
 								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, //TODO KFB - different message for virtual attribute
 								this.getName()
 						)
@@ -293,7 +292,6 @@ public abstract class AbstractJavaVersionMapping
 				messages.add(
 						this.buildValidationMessage(
 								this.getValidationTextRange(),
-								IMessage.NORMAL_SEVERITY,
 								JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 								this.getName()
 						)

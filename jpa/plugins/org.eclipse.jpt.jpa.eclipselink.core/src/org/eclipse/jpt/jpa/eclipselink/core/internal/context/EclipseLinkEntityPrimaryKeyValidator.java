@@ -42,7 +42,7 @@ public class EclipseLinkEntityPrimaryKeyValidator
 	protected void validatePrimaryKeyIsNotRedefined(List<IMessage> messages, IReporter reporter) {
 		if (idClassReference().isSpecified() && definesIdClassOnAncestor(typeMapping())) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						idClassReference().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED

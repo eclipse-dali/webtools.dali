@@ -164,7 +164,7 @@ public class ELJavaXmlInverseReferenceMapping
 	protected void validateMappedBy(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.isBlank(mappedBy)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getMappedByTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED
 						));
@@ -180,7 +180,7 @@ public class ELJavaXmlInverseReferenceMapping
 		JaxbPersistentAttribute referencedAttribute = getReferencedAttribute();
 		if (referencedAttribute == null) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getMappedByTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
 							mappedBy,
@@ -191,7 +191,7 @@ public class ELJavaXmlInverseReferenceMapping
 						getValidReferencedAttributeMappingKeys(),
 						referencedAttribute.getMappingKey())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getMappedByTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
 							mappedBy,

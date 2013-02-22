@@ -203,7 +203,7 @@ public class GenericJavaGeneratedValue
 
 		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getAttributeMapping(),
 					this.getAttributeMapping().getPersistentAttribute().getValidationTextRange(),
 					JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME, //TODO KFB need a different message for virtual
@@ -213,7 +213,7 @@ public class GenericJavaGeneratedValue
 		}
 		else {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getAttributeMapping(),
 						this.getGeneratorTextRange(),
 						JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME,

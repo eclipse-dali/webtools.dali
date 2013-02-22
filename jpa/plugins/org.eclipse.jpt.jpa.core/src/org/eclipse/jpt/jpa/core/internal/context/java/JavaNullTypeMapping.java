@@ -65,7 +65,7 @@ public class JavaNullTypeMapping
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		messages.add(
-			this.buildErrorValidationMessage(
+			this.buildValidationMessage(
 				this.getValidationTextRange(),
 				JptJpaCoreValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
 				this.getPersistentType().getName()

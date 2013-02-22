@@ -127,7 +127,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	protected void validateName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaEclipseLinkCoreValidationMessages.CONVERTER_NAME_UNDEFINED
 				)
@@ -137,7 +137,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 		if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaEclipseLinkCoreValidationMessages.RESERVED_CONVERTER_NAME
 				)

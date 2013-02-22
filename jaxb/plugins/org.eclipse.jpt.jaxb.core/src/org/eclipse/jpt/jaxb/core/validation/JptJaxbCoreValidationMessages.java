@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.internal.utility.ValidationMessageLoader;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Localized validation messages used by Dali JAXB core.
@@ -24,31 +25,6 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
  * @see ValidationMessageLoader
  */
 public class JptJaxbCoreValidationMessages {
-
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		// TODO
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return defaultSeverity;
-			// return JaxbPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
-
-	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_core_validation"; //$NON-NLS-1$
-	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_core_validation_description"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptJaxbCoreValidationMessages.class;
-	static {
-		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JaxbProject.MARKER_TYPE, PREFERENCES_ADAPTER);
-	}
 
 	// validation on project
 	
@@ -153,4 +129,41 @@ public class JptJaxbCoreValidationMessages {
 	
 	public static ValidationMessage QNAME__MISSING_NAME;
 	public static ValidationMessage QNAME__UNRESOLVED_COMPONENT;
+
+
+	// ********** static initialization **********
+
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
+	private static class PreferencesAdapter
+		implements ValidationMessageLoader.PreferencesAdapter
+	{
+		PreferencesAdapter() {
+			super();
+		}
+		// TODO
+		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
+			return defaultSeverity;
+			// return JaxbPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	private static final String MESSAGE_BUNDLE_NAME = "jpt_jaxb_core_validation"; //$NON-NLS-1$
+	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jaxb_core_validation_description"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJaxbCoreValidationMessages.class;
+	static {
+		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JaxbProject.MARKER_TYPE, PREFERENCES_ADAPTER);
+
+		// WARNINGs
+		PACKAGE_NO_SCHEMA_FOR_NAMESPACE.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+
+		// INFOs
+		// none...
+	}
 }

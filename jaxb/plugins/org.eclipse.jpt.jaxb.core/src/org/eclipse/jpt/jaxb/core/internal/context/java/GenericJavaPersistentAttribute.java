@@ -423,7 +423,7 @@ public class GenericJavaPersistentAttribute
 			if (ObjectTools.notEquals(currentMappingDefinition.getAnnotationName(), annotation.getAnnotationName())
 					&& ! IterableTools.contains(supportingAnnotationNames, annotation.getAnnotationName())) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								annotation.getTextRange(),
 								JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
 								annotation.getAnnotationName(),

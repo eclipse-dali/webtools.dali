@@ -349,7 +349,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		TextRange textRange = attribute.isVirtual() ? 
 				attribute.getValidationTextRange() :
 				this.getValidationTextRange();
-		return this.buildErrorValidationMessage(textRange, msg, args);
+		return this.buildValidationMessage(textRange, msg, args);
 	}
 
 	public TextRange getValidationTextRange() {

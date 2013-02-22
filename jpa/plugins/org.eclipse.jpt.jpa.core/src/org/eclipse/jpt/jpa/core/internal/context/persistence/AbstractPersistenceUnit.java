@@ -2220,7 +2220,6 @@ public abstract class AbstractPersistenceUnit
 					this.buildValidationMessage(
 						mappingFileRef.getMappingFile(),
 						mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
 						mappingFileRef.getFileName()
 					)
@@ -2241,7 +2240,7 @@ public abstract class AbstractPersistenceUnit
 				if (dups.size() > 1) {
 					for (MappingFileRef dup : dups) {
 						messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 								dup,
 								dup.getValidationTextRange(),
 								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
@@ -2283,7 +2282,6 @@ public abstract class AbstractPersistenceUnit
 							this.buildValidationMessage(
 								dup,
 								dup.getValidationTextRange(),
-								IMessage.NORMAL_SEVERITY,
 								JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
 								mtName
 							)
@@ -2327,7 +2325,7 @@ public abstract class AbstractPersistenceUnit
 				if (dups.size() > 1) {
 					for (ClassRef dup : dups) {
 						messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 								dup,
 								dup.getValidationTextRange(),
 								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
@@ -2373,7 +2371,7 @@ public abstract class AbstractPersistenceUnit
 				if (dups.size() > 1) {
 					for (JarFileRef dup : dups) {
 						messages.add(
-							this.buildErrorValidationMessage(
+							this.buildValidationMessage(
 								dup,
 								dup.getValidationTextRange(),
 								JptJpaCoreValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
@@ -2447,7 +2445,7 @@ public abstract class AbstractPersistenceUnit
 		for (Generator dup : dups) {
 			if (dup.supportsValidationMessages()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						dup,
 						dup.getNameTextRange(),
 						JptJpaCoreValidationMessages.GENERATOR_DUPLICATE_NAME,
@@ -2495,7 +2493,7 @@ public abstract class AbstractPersistenceUnit
 		for (Query dup : dups) {
 			if (dup.supportsValidationMessages()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						dup,
 						dup.getNameTextRange(),
 						JptJpaCoreValidationMessages.QUERY_DUPLICATE_NAME,
@@ -2548,7 +2546,7 @@ public abstract class AbstractPersistenceUnit
 		for (Entity dup : dups) {
 			if (dup.supportsValidationMessages()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						dup,
 						dup.getNameTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_NAME_DUPLICATED,

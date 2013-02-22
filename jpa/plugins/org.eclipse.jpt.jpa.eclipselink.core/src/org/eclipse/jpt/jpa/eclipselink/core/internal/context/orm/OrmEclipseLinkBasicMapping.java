@@ -261,7 +261,7 @@ public class OrmEclipseLinkBasicMapping
 		if (this.isVirtualAccess()) {
 			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getAttributeTypeTextRange(),
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
 						this.getName()
@@ -276,7 +276,7 @@ public class OrmEclipseLinkBasicMapping
 				IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedAttributeType());
 				if (jdtType == null) {
 					messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 							this.getAttributeTypeTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST,
 							this.getFullyQualifiedAttributeType()

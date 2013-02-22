@@ -154,7 +154,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 				|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
 				|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS
 					)
@@ -172,7 +172,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (!JDTTools.typeIsSubType(javaProject, targetEmbeddableClassName, Serializable.class.getName())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE
 					)
@@ -188,7 +188,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 	protected void validateTargetEmbeddableIsPublic(List<IMessage> messages) {
 		if (!this.getTargetEmbeddable().getJavaResourceType().isPublic()) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC
 					)
@@ -205,7 +205,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		JavaResourceType resourceType = this.getTargetEmbeddable().getJavaResourceType();
 		if (!resourceType.hasHashCodeMethod() || !resourceType.hasEqualsMethod()) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE
 					)
@@ -223,7 +223,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, targetEmbeddableClassName)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaCoreValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR
 					)
@@ -238,7 +238,7 @@ public abstract class AbstractOrmEmbeddedIdMapping<X extends XmlEmbeddedId>
 		if (this.derived
 				&& (this.attributeOverrideContainer.getSpecifiedOverridesSize() > 0)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.attributeOverrideContainer,
 					this.attributeOverrideContainer.getValidationTextRange(),
 					JptJpaCoreValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED

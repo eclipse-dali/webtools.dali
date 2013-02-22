@@ -140,7 +140,7 @@ public class GenericJavaEnumConstant
 		
 		if (! ((XsdSimpleTypeDefinition) xsdType).getXSDComponent().isValidLiteral(value)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValueTextRange(),
 							JptJaxbCoreValidationMessages.XML_ENUM_VALUE__INVALID_LEXICAL_VALUE,
 							value,

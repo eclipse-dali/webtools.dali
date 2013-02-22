@@ -165,7 +165,7 @@ public class GenericOrmGeneratedValue
 		}
 
 		messages.add(
-			this.buildErrorValidationMessage(
+			this.buildValidationMessage(
 				this.getParent(),
 				this.getGeneratorTextRange(),
 				JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME,

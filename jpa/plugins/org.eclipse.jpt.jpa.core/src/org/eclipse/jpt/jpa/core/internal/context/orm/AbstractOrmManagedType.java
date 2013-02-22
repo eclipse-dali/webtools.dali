@@ -306,7 +306,7 @@ public abstract class AbstractOrmManagedType
 	protected void validateClass(List<IMessage> messages) {
 		if (StringTools.isBlank(this.class_)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getClassTextRange(),
 					JptJpaCoreValidationMessages.MANAGED_TYPE_UNSPECIFIED_CLASS
 				)
@@ -319,7 +319,7 @@ public abstract class AbstractOrmManagedType
 	protected void validateClassResolves(List<IMessage> messages) {
 		if (this.javaManagedType == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getClassTextRange(),
 					JptJpaCoreValidationMessages.MANAGED_TYPE_UNRESOLVED_CLASS,
 					this.getName()

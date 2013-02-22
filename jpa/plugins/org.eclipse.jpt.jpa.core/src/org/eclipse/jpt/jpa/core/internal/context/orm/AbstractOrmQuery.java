@@ -198,7 +198,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	protected void validateName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaCoreValidationMessages.QUERY_NAME_UNDEFINED
 				)

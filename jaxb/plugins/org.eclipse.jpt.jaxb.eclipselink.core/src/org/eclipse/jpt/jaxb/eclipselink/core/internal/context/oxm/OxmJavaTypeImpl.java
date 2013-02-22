@@ -621,7 +621,7 @@ public class OxmJavaTypeImpl
 		// type name must be specified
 		if (StringTools.isBlank(this.specifiedName)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getNameTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED
 						));
@@ -632,7 +632,7 @@ public class OxmJavaTypeImpl
 		String packageName = TypeDeclarationTools.packageName(this.specifiedName);
 		if (! StringTools.isBlank(packageName) && ! ObjectTools.equals(packageName, getXmlBindings().getPackageName())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getNameTextRange(),
 							JptJaxbEclipseLinkCoreValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM
 						));

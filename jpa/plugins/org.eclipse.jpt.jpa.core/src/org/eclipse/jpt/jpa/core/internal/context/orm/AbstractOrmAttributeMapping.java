@@ -495,7 +495,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		// and there will already be an XSD-driven error
 		if ((this.name != null) && StringTools.isBlank(this.name)) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME
 				)
@@ -507,7 +507,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	protected void validateMapping(List<IMessage> messages) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					this.name

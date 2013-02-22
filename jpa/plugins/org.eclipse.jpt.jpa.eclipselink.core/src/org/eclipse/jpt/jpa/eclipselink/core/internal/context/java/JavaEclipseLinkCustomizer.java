@@ -173,7 +173,7 @@ public class JavaEclipseLinkCustomizer
 		}
 		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getCustomizerClassTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 							this.getFullyQualifiedCustomizerClass()
@@ -182,7 +182,7 @@ public class JavaEclipseLinkCustomizer
 		} 
 		if (!customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getCustomizerClassTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 							this.getFullyQualifiedCustomizerClass()

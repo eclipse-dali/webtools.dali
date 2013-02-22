@@ -1487,7 +1487,7 @@ public abstract class AbstractJpaProject
 		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaProject.FACET);
 		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion, enablementVariables)) {
 			messages.add(
-				ValidationMessageTools.buildErrorValidationMessage(
+				ValidationMessageTools.buildValidationMessage(
 					this.getResource(),
 					JptJpaCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER
 				)
@@ -1501,7 +1501,6 @@ public abstract class AbstractJpaProject
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
 					this.getResource(),
-					IMessage.NORMAL_SEVERITY,
 					JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION
 				)
 			);
@@ -1512,7 +1511,6 @@ public abstract class AbstractJpaProject
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
 					this.getResource(),
-					IMessage.NORMAL_SEVERITY,
 					JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION,
 					cpName
 				)
@@ -1523,7 +1521,6 @@ public abstract class AbstractJpaProject
 			messages.add(
 				ValidationMessageTools.buildValidationMessage(
 					this.getResource(),
-					IMessage.NORMAL_SEVERITY,
 					JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION,
 					cpName
 				)

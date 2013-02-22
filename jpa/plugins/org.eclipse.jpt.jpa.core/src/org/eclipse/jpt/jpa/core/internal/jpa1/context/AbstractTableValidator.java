@@ -78,7 +78,7 @@ public abstract class AbstractTableValidator
 	protected abstract ValidationMessage getUnresolvedCatalogMessage();
 
 	protected IMessage buildUnresolvedCatalogMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.table.getCatalogValidationTextRange(),
 				message,
@@ -88,7 +88,7 @@ public abstract class AbstractTableValidator
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedCatalogMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.getVirtualAttributeValidationTextRange(),
 				this.getVirtualAttributeUnresolvedCatalogMessage(),
@@ -113,7 +113,7 @@ public abstract class AbstractTableValidator
 	protected abstract ValidationMessage getUnresolvedSchemaMessage();
 
 	protected IMessage buildUnresolvedSchemaMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.table.getSchemaValidationTextRange(),
 				message,
@@ -123,7 +123,7 @@ public abstract class AbstractTableValidator
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedSchemaMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.getVirtualAttributeValidationTextRange(),
 				this.getVirtualAttributeUnresolvedSchemaMessage(),
@@ -144,7 +144,7 @@ public abstract class AbstractTableValidator
 	protected abstract ValidationMessage getUnresolvedNameMessage();
 
 	protected IMessage buildUnresolvedNameMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.table.getNameValidationTextRange(),
 				message,
@@ -153,7 +153,7 @@ public abstract class AbstractTableValidator
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 			this.table.getResource(),
 			this.getVirtualAttributeValidationTextRange(),
 			this.getVirtualAttributeUnresolvedNameMessage(),

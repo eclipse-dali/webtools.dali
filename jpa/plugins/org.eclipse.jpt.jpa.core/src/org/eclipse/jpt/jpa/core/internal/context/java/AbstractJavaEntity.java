@@ -1284,7 +1284,7 @@ public abstract class AbstractJavaEntity
 	protected void validateEntityName(List<IMessage> messages) {
 		if (StringTools.isBlank(this.getName())){
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getMappingAnnotation().getNameTextRange(),
 							JptJpaCoreValidationMessages.ENTITY_NAME_MISSING,
 							this.getPersistentType().getName()
@@ -1313,7 +1313,7 @@ public abstract class AbstractJavaEntity
 		if (this.isAbstractTablePerClass()) {
 			if (this.table.isSpecifiedInResource()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.table.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
 						this.getName()
@@ -1325,7 +1325,7 @@ public abstract class AbstractJavaEntity
 		if (this.isSingleTableDescendant() && this.getDataSource().connectionProfileIsActive()) {
 			if (this.specifiedTableDoesNotMatchRootTable()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.table.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
 						this.getName()
@@ -1359,7 +1359,7 @@ public abstract class AbstractJavaEntity
 		else if (!this.discriminatorColumn.isVirtual()) {
 			if (this.isDescendant()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getDiscriminatorColumnTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED,
 						this.getName()
@@ -1368,7 +1368,7 @@ public abstract class AbstractJavaEntity
 			}
 			else if (this.isTablePerClass()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getDiscriminatorColumnTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED,
 						this.getName()
@@ -1384,7 +1384,6 @@ public abstract class AbstractJavaEntity
 				messages.add(
 					this.buildValidationMessage(
 						this.getDiscriminatorValueTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,
 						this.getName()
 					)
@@ -1394,7 +1393,6 @@ public abstract class AbstractJavaEntity
 				messages.add(
 					this.buildValidationMessage(
 						this.getDiscriminatorValueTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED,
 						this.getName()
 					)
@@ -1411,7 +1409,7 @@ public abstract class AbstractJavaEntity
 		if ((this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && this.isRootEntity()) {
 			if (tablePerConcreteClassInheritanceIsSupported == Supported.NO) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getInheritanceStrategyTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM,
 						this.getName()
@@ -1422,7 +1420,6 @@ public abstract class AbstractJavaEntity
 				messages.add(
 					this.buildValidationMessage(
 						this.getInheritanceStrategyTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM,
 						this.getName()
 					)

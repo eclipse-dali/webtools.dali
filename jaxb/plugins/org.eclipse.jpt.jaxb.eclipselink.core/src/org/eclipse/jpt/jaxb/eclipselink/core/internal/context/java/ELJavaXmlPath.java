@@ -125,7 +125,7 @@ public class ELJavaXmlPath
 		
 		if (StringTools.isBlank(this.value)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlPath.this,
 								getValueTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XML_PATH__NOT_SPECIFIED
@@ -135,7 +135,7 @@ public class ELJavaXmlPath
 		
 		if (this.value.startsWith(XPath.DELIM)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 								ELJavaXmlPath.this,
 								getValueTextRange(),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ROOT_NOT_SUPPORTED

@@ -129,7 +129,7 @@ public class SchemaLibraryImpl
 			
 			if (! entry.isLoaded()) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								this.project.getProject(),
 								JptJaxbCoreValidationMessages.PROJECT__UNRESOLVED_SCHEMA,
 								entry.getLocation()
@@ -141,7 +141,7 @@ public class SchemaLibraryImpl
 			String namespace = stream.next();
 			if (namespaces.count(namespace) > 1) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								this.project.getProject(),
 								JptJaxbCoreValidationMessages.PROJECT__DUPLICATE_NAMESPACE,
 								namespace

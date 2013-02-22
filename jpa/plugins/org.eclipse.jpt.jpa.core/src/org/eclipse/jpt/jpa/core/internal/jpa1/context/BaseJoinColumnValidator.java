@@ -83,7 +83,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	protected abstract ValidationMessage getUnresolvedReferencedColumnNameMessage();
 
 	protected IMessage buildUnresolvedReferencedColumnNameMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getReferencedColumnNameTextRange(),
 				message,
@@ -93,7 +93,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	}
 
 	protected IMessage buildVirtualAttributeUnresolvedReferencedColumnNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
 				this.getVirtualAttributeUnresolvedReferencedColumnNameMessage(),
@@ -114,7 +114,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	protected abstract ValidationMessage getUnspecifiedNameMultipleJoinColumnsMessage();
 
 	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
 				message
@@ -122,7 +122,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	}
 
 	protected IMessage buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
 				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
@@ -141,7 +141,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	protected abstract ValidationMessage getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 
 	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(ValidationMessage message) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getReferencedColumnNameTextRange(),
 				message
@@ -149,7 +149,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	}
 
 	protected IMessage buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
 				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),

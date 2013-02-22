@@ -1216,7 +1216,6 @@ public abstract class AbstractEntityMappings
 				ValidationMessageTools.buildValidationMessage(
 					this.getResource(),
 					this.xmlEntityMappings.getVersionTextRange(),
-					IMessage.LOW_SEVERITY,
 					JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST
 				)
 			);

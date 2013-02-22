@@ -66,7 +66,7 @@ public class GenericJavaXmlIDREF
 				JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
 				if (classMapping == null || classMapping.getXmlIdMapping() == null) {
 					messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						ref.getTypeTextRange(),
 						JptJaxbCoreValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
 						typeName));				
@@ -80,7 +80,7 @@ public class GenericJavaXmlIDREF
 			if (xsdFeature != null 
 					&& ! xsdFeature.typeIsValid(XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF"), this.context.isList())) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 							ref.getXsdFeatureTextRange(),
 							JptJaxbCoreValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
 							xsdFeature.getName()));

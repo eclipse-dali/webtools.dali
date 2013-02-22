@@ -52,7 +52,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 		// if the primary key is not defined on an ancestor, it must be defined here
 		if (! definesPrimaryKey(typeMapping())) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						entity().getResource(),
 						entity().getValidationTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_NO_PK
@@ -77,7 +77,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 	protected void validateNonRootEntityDoesNotSpecifyIdClass(List<IMessage> messages, IReporter reporter) {
 		if (idClassReference().isSpecified()) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						entity().getResource(),
 						idClassReference().getValidationTextRange(),
 						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED
@@ -89,7 +89,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 	protected void validateNonRootEntityDoesNotSpecifyPrimaryKeyAttributes(List<IMessage> messages, IReporter reporter) {
 		for (AttributeMapping each : getPrimaryKeyMappingsDefinedLocally(typeMapping())) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						each.getResource(),
 						getAttributeMappingTextRange(each),
 						JptJpaCoreValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED

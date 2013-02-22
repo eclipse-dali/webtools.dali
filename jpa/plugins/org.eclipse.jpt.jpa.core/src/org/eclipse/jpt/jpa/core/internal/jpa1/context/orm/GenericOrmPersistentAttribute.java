@@ -42,7 +42,6 @@ public class GenericOrmPersistentAttribute
 						this.buildValidationMessage(
 							this.mapping,
 							this.mapping.getNameTextRange(),
-							IMessage.NORMAL_SEVERITY,
 							JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
 							this.getName(),
 							this.getOwningPersistentType().getClass_()

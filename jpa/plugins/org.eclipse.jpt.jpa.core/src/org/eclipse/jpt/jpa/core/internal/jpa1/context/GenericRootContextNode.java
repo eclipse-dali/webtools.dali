@@ -252,13 +252,13 @@ public class GenericRootContextNode
 			JptXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
 			if (xmlResource != null 
 					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
-				return ValidationMessageTools.buildErrorValidationMessage(file, 
+				return ValidationMessageTools.buildValidationMessage(file, 
 					JptJpaCoreValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT);
 			}
-			return ValidationMessageTools.buildErrorValidationMessage(file,
+			return ValidationMessageTools.buildValidationMessage(file,
 				JptJpaCoreValidationMessages.PERSISTENCE_XML_INVALID_CONTENT);
 		}
-		return this.buildErrorValidationMessage(JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML);
+		return this.buildValidationMessage(JptJpaCoreValidationMessages.PROJECT_NO_PERSISTENCE_XML);
 	}
 
 	protected IFile getPlatformFile() {
@@ -290,7 +290,7 @@ public class GenericRootContextNode
 		for (JavaResourceAbstractType jrat : orphans) {
 			if (jrat.isAnnotatedWithAnyOf(managedTypeAnnotationNames)) {
 				messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						jrat.getFile(),
 						jrat.getNameTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MANAGED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,
@@ -303,7 +303,6 @@ public class GenericRootContextNode
 					ValidationMessageTools.buildValidationMessage(
 						jrat.getFile(),
 						jrat.getNameTextRange(),
-						IMessage.NORMAL_SEVERITY,
 						JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML,
 						jrat.getTypeBinding().getQualifiedName()
 					)

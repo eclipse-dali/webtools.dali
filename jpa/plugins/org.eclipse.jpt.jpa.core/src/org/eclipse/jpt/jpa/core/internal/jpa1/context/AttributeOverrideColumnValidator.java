@@ -53,7 +53,7 @@ public class AttributeOverrideColumnValidator
 	}
 
 	protected IMessage buildVirtualColumnUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.column.getNameValidationTextRange(),
 				this.getVirtualOverrideUnresolvedNameMessage(),
@@ -69,7 +69,7 @@ public class AttributeOverrideColumnValidator
 
 	@Override
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.column.getResource(),
 				this.getVirtualAttributeTextRange(),
 				this.getVirtualAttributeUnresolvedNameMessage(),
@@ -103,7 +103,7 @@ public class AttributeOverrideColumnValidator
 		}
 
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage() {
-			return ValidationMessageTools.buildErrorValidationMessage(
+			return ValidationMessageTools.buildValidationMessage(
 					this.getColumn().getResource(),
 					this.getColumn().getTableNameValidationTextRange(),
 					this.getVirtualOverrideColumnTableNotValidMessage(),
@@ -120,7 +120,7 @@ public class AttributeOverrideColumnValidator
 
 		@Override
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
-			return ValidationMessageTools.buildErrorValidationMessage(
+			return ValidationMessageTools.buildValidationMessage(
 					this.getColumn().getResource(),
 					AttributeOverrideColumnValidator.this.persistentAttribute.getValidationTextRange(),
 					this.getVirtualAttributeColumnTableNotValidMessage(),

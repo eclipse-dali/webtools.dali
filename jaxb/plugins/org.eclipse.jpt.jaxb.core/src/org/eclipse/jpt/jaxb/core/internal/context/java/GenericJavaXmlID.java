@@ -60,7 +60,7 @@ public class GenericJavaXmlID
 		XsdTypeDefinition idrefType = XsdUtil.getSchemaForSchema().getTypeDefinition("ID");
 		if (! xsdFeature.typeIsValid(idrefType, false)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						getValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
 						xsdFeature.getName()));
@@ -70,7 +70,7 @@ public class GenericJavaXmlID
 	protected void validateAttributeType(List<IMessage> messages) {
 		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getValidationTextRange(),
 					JptJaxbCoreValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING
 				));

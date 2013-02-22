@@ -341,7 +341,7 @@ public class GenericJavaXmlAnyElementMapping
 					(XmlElementRefAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_ELEMENT_REF);
 			if (xmlElementRefAnnotation != null) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getPersistentAttribute(),
 								xmlElementRefAnnotation.getTextRange(),
 								JptJaxbCoreValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,

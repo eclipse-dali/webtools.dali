@@ -213,7 +213,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		String targetEmbeddableTypeName = this.getPersistentAttribute().getTypeName();
 		if (this.getPersistentAttribute().isVirtual()) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getVirtualPersistentAttributeTextRange(),
 					JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE,
 					this.getName(),
@@ -223,7 +223,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		}
 		else {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getValidationTextRange(),
 					JptJpaCoreValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
 					targetEmbeddableTypeName

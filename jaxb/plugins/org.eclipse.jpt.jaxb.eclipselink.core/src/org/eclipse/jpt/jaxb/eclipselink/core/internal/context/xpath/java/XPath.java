@@ -236,7 +236,7 @@ public class XPath {
 			
 			if (getNextStep() != null) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								context.getContextObject().getResource(),
 								getTextRange(context),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT
@@ -254,7 +254,7 @@ public class XPath {
 			XsdAttributeUse xsdAttribute= previousType.getAttribute(namespace, this.localName);
 			if (xsdAttribute == null) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								context.getContextObject().getResource(),
 								getTextRange(context),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
@@ -304,7 +304,7 @@ public class XPath {
 			XsdElementDeclaration xsdElement = previousType.getElement(namespace, this.localName);
 			if (xsdElement == null) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								context.getContextObject().getResource(),
 								getTextRange(context),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__UNRESOLVED_ELEMENT,
@@ -351,7 +351,7 @@ public class XPath {
 		protected void validate(
 				Context context, XsdTypeDefinition previousType, List<IMessage> messages) {
 			
-			messages. add(ValidationMessageTools.buildErrorValidationMessage(
+			messages. add(ValidationMessageTools.buildValidationMessage(
 							context.getContextObject().getResource(),
 							getTextRange(context),
 							JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
@@ -413,7 +413,7 @@ public class XPath {
 			
 			if (namespace == null) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								context.getContextObject().getResource(),
 								getTextRange(context),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__INVALID_NS_PREFIX,
@@ -461,7 +461,7 @@ public class XPath {
 			
 			if (getIndex() != 0) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								context.getContextObject().getResource(),
 								getTextRange(context),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT
@@ -577,7 +577,7 @@ public class XPath {
 			
 			if (getNextStep() != null) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 								context.getContextObject().getResource(),
 								getTextRange(context),
 								JptJaxbEclipseLinkCoreValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT

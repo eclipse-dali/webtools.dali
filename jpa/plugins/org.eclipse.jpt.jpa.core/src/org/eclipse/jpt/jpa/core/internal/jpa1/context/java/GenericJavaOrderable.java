@@ -441,7 +441,7 @@ public class GenericJavaOrderable
 		if (this.orderColumnAnnotationIsPresent() && (this.getOrderByAnnotation() != null)) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 							this.getAttributeMapping(),
 							this.getPersistentAttribute().getValidationTextRange(),
 							JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
@@ -451,7 +451,7 @@ public class GenericJavaOrderable
 			}
 			else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getAttributeMapping(),
 						this.getOrderByAnnotationTextRange(),
 						JptJpaCoreValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,

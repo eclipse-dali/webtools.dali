@@ -123,6 +123,14 @@ public interface JpaProject
 	 */
 	String MARKER_TYPE = MARKER_TYPE_SCOPE_ + RELATIVE_MARKER_TYPE;
 
+	/**
+	 * Any validation messages with this severity will be ignored and no
+	 * markers produced.
+	 * 
+	 * @see IMessage#getSeverity()
+	 */
+	int VALIDATION_IGNORE_SEVERITY = -1;
+
 
 	// ********** general **********
 

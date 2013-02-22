@@ -1522,7 +1522,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (prohibitedMappingFound) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								this.getVirtualPersistentAttributeTextRange(),
 								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
 								this.getName(),
@@ -1532,7 +1532,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				);				
 			} else {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								this.getValidationTextRange(),
 								JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
 								embeddable.getName(),
@@ -1548,7 +1548,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (elementCollectionMappings.iterator().hasNext()) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								this.getVirtualPersistentAttributeTextRange(),
 								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 								this.getName(),
@@ -1558,7 +1558,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				);				
 			} else {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								this.getValidationTextRange(),
 								JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 								embeddable.getName(),
@@ -1574,7 +1574,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getVirtualPersistentAttributeTextRange(),
 						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						this.getName()
@@ -1583,7 +1583,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			}
 			else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE
 					)
@@ -1597,7 +1597,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (targetClassName == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getVirtualPersistentAttributeTextRange(),
 						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
 						this.getName()
@@ -1605,7 +1605,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				);
 			} else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED
 					)
@@ -1620,7 +1620,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (this.getResolvedTargetEmbeddable() == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getVirtualPersistentAttributeTextRange(),
 						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getName(),
@@ -1629,7 +1629,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				);
 			} else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getTargetClassTextRange(),
 						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 						targetClassName
@@ -1663,7 +1663,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (this.getMapKeyClass() == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getVirtualPersistentAttributeTextRange(),
 						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						this.getName()
@@ -1671,7 +1671,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				);
 			} else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getMapKeyClassTextRange(),
 						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED
 					)
@@ -1686,7 +1686,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getVirtualPersistentAttributeTextRange(),
 						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getName(),
@@ -1695,7 +1695,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				);
 			} else {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getMapKeyClassTextRange(),
 						JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						this.getFullyQualifiedMapKeyClass()

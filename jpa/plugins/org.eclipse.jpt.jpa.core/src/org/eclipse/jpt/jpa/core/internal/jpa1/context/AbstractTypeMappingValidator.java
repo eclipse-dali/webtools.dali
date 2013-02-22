@@ -49,7 +49,7 @@ public abstract class AbstractTypeMappingValidator<M extends TypeMapping>
 	}
 
 	protected IMessage buildTypeMessage(ValidationMessage msg) {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.typeMapping.getResource(),
 				this.typeMapping.getValidationTextRange(),
 				msg,

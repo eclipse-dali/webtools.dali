@@ -45,7 +45,7 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedNameMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.table.getNameValidationTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
@@ -62,7 +62,7 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedCatalogMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.table.getCatalogValidationTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
@@ -79,7 +79,7 @@ public class AssociationOverrideJoinTableValidator
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedSchemaMessage() {
-		return ValidationMessageTools.buildErrorValidationMessage(
+		return ValidationMessageTools.buildValidationMessage(
 				this.table.getResource(),
 				this.table.getSchemaValidationTextRange(),
 				JptJpaCoreValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,

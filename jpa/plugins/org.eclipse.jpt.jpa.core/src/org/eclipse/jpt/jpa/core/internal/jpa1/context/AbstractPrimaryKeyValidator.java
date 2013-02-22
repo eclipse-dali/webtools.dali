@@ -76,7 +76,7 @@ public abstract class AbstractPrimaryKeyValidator
 		if (definesPrimaryKeyOnAncestor(typeMapping())) {
 			if (idClassReference().isSpecified()) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 							typeMapping().getResource(),
 							idClassReference().getValidationTextRange(),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS
@@ -85,7 +85,7 @@ public abstract class AbstractPrimaryKeyValidator
 			}
 			for (AttributeMapping each : getPrimaryKeyMappingsDefinedLocally(typeMapping())) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 							each.getResource(),
 							getAttributeMappingTextRange(each),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE
@@ -100,7 +100,7 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateIdClassIsUsedIfNecessary(List<IMessage> messages, IReporter reporter) {
 		if (! specifiesIdClass() && idClassIsRequired()) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						typeMapping().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED
@@ -114,7 +114,7 @@ public abstract class AbstractPrimaryKeyValidator
 		if (idClassReference().isSpecified()
 				&& IterableTools.size(typeMapping().getAllAttributeMappings(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) > 0) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						typeMapping().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED
@@ -127,7 +127,7 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateOneOfEmbeddedOrIdIsUsed(List<IMessage> messages, IReporter reporter) {
 		if (definesEmbeddedIdMapping(typeMapping) && definesIdMapping(typeMapping)) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						typeMapping().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_AND_EMBEDDED_ID_BOTH_USED
@@ -140,7 +140,7 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateOneEmbeddedId(List<IMessage> messages, IReporter reporter) {
 		if (IterableTools.size(getEmbeddedIdMappings(typeMapping())) > 1) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						typeMapping().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID
@@ -154,7 +154,7 @@ public abstract class AbstractPrimaryKeyValidator
 			// can't use maps id mappings with an id class
 			if (definesIdClass(typeMapping())) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 							mapsIdRelationshipMapping.getResource(),
 							getAttributeMappingTextRange(mapsIdRelationshipMapping),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID,
@@ -170,7 +170,7 @@ public abstract class AbstractPrimaryKeyValidator
 						resolvedAttributeMapping.getPersistentAttribute().getTypeName(), 
 						getTargetEntityPrimaryKeyTypeName(mapsIdRelationshipMapping))) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 							mapsIdRelationshipMapping.getResource(),
 							getAttributeMappingTextRange(mapsIdRelationshipMapping),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
@@ -201,7 +201,7 @@ public abstract class AbstractPrimaryKeyValidator
 					// the matching attribute should be a primary key
 					if (! definesPrimaryKey(attributeMapping)) {
 						messages.add(
-								ValidationMessageTools.buildErrorValidationMessage(
+								ValidationMessageTools.buildValidationMessage(
 									typeMapping().getResource(),
 									idClassReference().getValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
@@ -217,7 +217,7 @@ public abstract class AbstractPrimaryKeyValidator
 																// another failing validation elsewhere
 							&& ! ClassNameTools.isAutoboxEquivalent(idClassAttributeTypeName, attributeMappingTypeName)) {
 						messages.add(
-								ValidationMessageTools.buildErrorValidationMessage(
+								ValidationMessageTools.buildValidationMessage(
 									typeMapping().getResource(),
 									idClassReference().getValidationTextRange(),
 									JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
@@ -231,7 +231,7 @@ public abstract class AbstractPrimaryKeyValidator
 			
 			if (! foundMatch) {
 				messages.add(
-						ValidationMessageTools.buildErrorValidationMessage(
+						ValidationMessageTools.buildValidationMessage(
 							typeMapping().getResource(),
 							idClassReference().getValidationTextRange(),
 							JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
@@ -252,7 +252,7 @@ public abstract class AbstractPrimaryKeyValidator
 				// but the matching field in the id class still needs to exist
 				if (!IterableTools.contains(getIdClassFieldNames(idClass), attributeMapping.getName())) {
 					messages.add(
-							ValidationMessageTools.buildErrorValidationMessage(
+							ValidationMessageTools.buildValidationMessage(
 								typeMapping().getResource(),
 								idClassReference().getValidationTextRange(),
 								JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
@@ -278,7 +278,7 @@ public abstract class AbstractPrimaryKeyValidator
 			AttributeMapping attributeMapping, List<IMessage> messages, IReporter reporter) {
 		if (!IterableTools.contains(getIdClassAttributeNames(idClass), attributeMapping.getName())) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						idClassReference().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
@@ -296,7 +296,7 @@ public abstract class AbstractPrimaryKeyValidator
 			List<IMessage> messages, IReporter reporter) {
 		if (!idClass.getJavaResourceType().hasNoArgConstructor()) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(),
 						idClassReference().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR,
@@ -341,7 +341,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	protected void addNoIdClassAttributeMatchError(AttributeMapping attributeMapping, List<IMessage> messages) {
 		messages.add(
-				ValidationMessageTools.buildErrorValidationMessage(
+				ValidationMessageTools.buildValidationMessage(
 					typeMapping().getResource(),
 					idClassReference().getValidationTextRange(),
 					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH,
@@ -352,7 +352,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	protected void addDuplicateIdClassAttributeMatchError(AttributeMapping attributeMapping, List<IMessage> messages) {
 		messages.add(
-				ValidationMessageTools.buildErrorValidationMessage(
+				ValidationMessageTools.buildValidationMessage(
 					typeMapping().getResource(),
 					idClassReference().getValidationTextRange(),
 					JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH,
@@ -388,7 +388,7 @@ public abstract class AbstractPrimaryKeyValidator
 
 		if (!method.isPublicOrProtected()) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(
+					ValidationMessageTools.buildValidationMessage(
 						typeMapping().getResource(), 
 						idClassReference().getValidationTextRange(),
 						JptJpaCoreValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,

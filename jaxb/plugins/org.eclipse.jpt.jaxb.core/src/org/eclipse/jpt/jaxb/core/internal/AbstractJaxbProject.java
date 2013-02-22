@@ -1126,7 +1126,7 @@ public abstract class AbstractJaxbProject
 		}
 		if (! lp.isEnabledFor(facetedProject, facetVersion) || ! lid.validate().isOK()) {
 			messages.add(
-					ValidationMessageTools.buildErrorValidationMessage(this.project,
+					ValidationMessageTools.buildValidationMessage(this.project,
 						JptJaxbCoreValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER));
 		}
 		lid.dispose();

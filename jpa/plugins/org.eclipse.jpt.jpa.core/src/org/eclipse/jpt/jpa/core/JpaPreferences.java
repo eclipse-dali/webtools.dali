@@ -248,26 +248,34 @@ public final class JpaPreferences {
 	 * @see org.eclipse.wst.validation.internal.provisional.core.IMessage#getSeverity()
 	 */
 	public static int getValidationMessageSeverity(IProject project, String messageID, int defaultSeverity) {
-		return convertToValidationSeverity(getProblemSeverity(project, messageID), defaultSeverity);
+		String prefSeverity = getProblemSeverity(project, messageID);
+		return (prefSeverity == null) ? defaultSeverity : convertPreferenceValueToMessageSeverity(prefSeverity);
 	}
 
-	private static int convertToValidationSeverity(String prefSeverity, int defaultSeverity) {
-		if (prefSeverity == null) {
-			return defaultSeverity;
+	private static int convertPreferenceValueToMessageSeverity(String prefSeverity) {
+		for (PreferenceSeverityMapping mapping : PREFERENCE_SEVERITY_MAPPINGS) {
+			if (prefSeverity.equals(mapping.preferenceValue)) {
+				return mapping.validationSeverity;
+			}
 		}
-		if (prefSeverity.equals(PROBLEM_ERROR)) {
-			return IMessage.HIGH_SEVERITY;
+		throw new IllegalArgumentException("unknown preference severity: " + prefSeverity); //$NON-NLS-1$
+	}
+
+	/**
+	 * Convert the specified validation message severity to the corresponding
+	 * problem severity preference value.
+	 * @see #getProblemSeverity(String)
+	 * @see #getProblemSeverity(IProject, String)
+	 * @see IMessage#getSeverity()
+	 * @see org.eclipse.jpt.common.core.utility.ValidationMessage#getDefaultSeverity()
+	 */
+	public static String convertMessageSeverityToPreferenceValue(int severity) {
+		for (PreferenceSeverityMapping mapping : PREFERENCE_SEVERITY_MAPPINGS) {
+			if (severity == mapping.validationSeverity) {
+				return mapping.preferenceValue;
+			}
 		}
-		if (prefSeverity.equals(PROBLEM_WARNING)) {
-			return IMessage.NORMAL_SEVERITY;
-		}
-		if (prefSeverity.equals(PROBLEM_INFO)) {
-			return IMessage.LOW_SEVERITY;
-		}
-		if (prefSeverity.equals(PROBLEM_IGNORE)) {
-			return VALIDATION_IGNORE_SEVERITY;
-		}
-		return defaultSeverity;
+		throw new IllegalArgumentException("unknown severity: " + severity); //$NON-NLS-1$
 	}
 
 	/**
@@ -321,7 +329,34 @@ public final class JpaPreferences {
 	public static final String PROBLEM_WARNING = "warning"; //$NON-NLS-1$
 	public static final String PROBLEM_INFO = "info"; //$NON-NLS-1$
 	public static final String PROBLEM_IGNORE = "ignore"; //$NON-NLS-1$
-	public static final int VALIDATION_IGNORE_SEVERITY = -1;
+
+
+	/**
+	 * Map the problem severity preference values to their corresponding
+	 * validation message severities, and vice-versa.
+	 * 
+	 * @see IMessage#getSeverity()
+	 */
+	private static final PreferenceSeverityMapping[] PREFERENCE_SEVERITY_MAPPINGS = new PreferenceSeverityMapping[] {
+		new PreferenceSeverityMapping(PROBLEM_ERROR, IMessage.HIGH_SEVERITY),
+		new PreferenceSeverityMapping(PROBLEM_WARNING, IMessage.NORMAL_SEVERITY),
+		new PreferenceSeverityMapping(PROBLEM_INFO, IMessage.LOW_SEVERITY),
+		new PreferenceSeverityMapping(PROBLEM_IGNORE, JpaProject.VALIDATION_IGNORE_SEVERITY)
+	};
+
+	private static class PreferenceSeverityMapping {
+		final String preferenceValue;
+		final int validationSeverity;
+		PreferenceSeverityMapping(String preferenceValue, int validationSeverity) {
+			super();
+			this.preferenceValue = preferenceValue;
+			this.validationSeverity = validationSeverity;
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.preferenceValue);
+		}
+	}
 
 
 	// ********** misc **********

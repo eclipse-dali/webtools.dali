@@ -1463,7 +1463,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getAttributeTypeTextRange(),
 					JptJpaCoreValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 					this.getFullyQualifiedAttributeType()
@@ -1549,7 +1549,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			}
 			if (prohibitedMappingFound) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
 						embeddable.getName(),
@@ -1563,7 +1563,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			Iterable<AttributeMapping> elementCollectionMappings = embeddable.getAllAttributeMappings(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 			if (elementCollectionMappings.iterator().hasNext()) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getValidationTextRange(),
 						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 						embeddable.getName(),
@@ -1576,7 +1576,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		protected void validateTargetClass(List<IMessage> messages) {
 		if (StringTools.isBlank(this.getTargetClass())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getTargetClassTextRange(),
 					JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED
 				)
@@ -1592,7 +1592,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetClass());
 			if (jdtType == null) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getTargetClassTextRange(),
 						JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
 						this.getFullyQualifiedTargetClass()
@@ -1603,7 +1603,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 		if (this.getResolvedTargetEmbeddable() == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getTargetClassTextRange(),
 					JptJpaCoreValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 					this.getFullyQualifiedTargetClass()
@@ -1625,7 +1625,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected void validateMapKeyClass_(List<IMessage> messages) {
 		if (StringTools.isBlank(this.getMapKeyClass())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getMapKeyClassTextRange(),
 					JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_DEFINED
 				)
@@ -1641,7 +1641,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
 			if (mapKeyJdtType == null) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getMapKeyClassTextRange(),
 						JptJpaCoreValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
 						this.getFullyQualifiedMapKeyClass()
@@ -1652,7 +1652,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getMapKeyClassTextRange(),
 					JptJpaCoreValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					this.getFullyQualifiedMapKeyClass()

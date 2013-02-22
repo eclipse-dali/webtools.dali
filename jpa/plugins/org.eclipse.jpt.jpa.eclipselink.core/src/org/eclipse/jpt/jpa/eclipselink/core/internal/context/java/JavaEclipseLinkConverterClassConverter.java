@@ -110,7 +110,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getConverterClassTextRange(),
 						JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_DEFINED
 					)
@@ -125,7 +125,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 		if ( ! this.converterClassImplementsInterface(this.getEclipseLinkConverterInterface())) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getConverterClassTextRange(),
 					this.getEclipseLinkConverterInterfaceErrorMessage(),
 					this.getFullyQualifiedConverterClass()
@@ -136,7 +136,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages) {
 		messages.add(
-			this.buildErrorValidationMessage(
+			this.buildValidationMessage(
 				this.getConverterClassTextRange(),
 				JptJpaEclipseLinkCoreValidationMessages.CONVERTER_CLASS_EXISTS,
 				this.getFullyQualifiedConverterClass()

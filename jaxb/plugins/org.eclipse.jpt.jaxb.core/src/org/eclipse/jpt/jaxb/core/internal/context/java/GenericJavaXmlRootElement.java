@@ -194,7 +194,7 @@ public class GenericJavaXmlRootElement
 					if (schemaType != null) {
 						if (! schemaType.equals(schemaElement.getType())) {
 							messages.add(
-									this.buildErrorValidationMessage(
+									this.buildValidationMessage(
 										getValidationTextRange(),
 										JptJaxbCoreValidationMessages.XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE,
 										name,

@@ -171,7 +171,7 @@ public class GenericJavaXmlRegistry
 		Iterable<XmlRegistry> registries = getContextRoot().getXmlRegistries(getJaxbPackage());
 		if (IterableTools.size(registries) > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						getValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE
 					));
@@ -209,7 +209,7 @@ public class GenericJavaXmlRegistry
 					scopeDesc = NLS.bind(JptJaxbCoreMessages.XML_ELEMENT_DECL__SCOPE, fqScope);
 				}
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								xmlElementDecl,
 								xmlElementDecl.getQName().getNameTextRange(),
 								JptJaxbCoreValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,

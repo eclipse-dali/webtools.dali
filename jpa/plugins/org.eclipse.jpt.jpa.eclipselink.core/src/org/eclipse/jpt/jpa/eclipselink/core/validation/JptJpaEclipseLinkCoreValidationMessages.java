@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Localized validation messages used by Dali EclipseLink JPA core.
@@ -25,33 +26,6 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
  * @see ValidationMessageLoader
  */
 public class JptJpaEclipseLinkCoreValidationMessages {
-
-	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
-	private static class PreferencesAdapter
-		implements ValidationMessageLoader.PreferencesAdapter
-	{
-		PreferencesAdapter() {
-			super();
-		}
-		// TODO
-		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
-			return defaultSeverity;
-			// return JpaEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.toString(this);
-		}
-	}
-
-	private static final String MESSAGE_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation"; //$NON-NLS-1$
-	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation_description"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationMessages.class;
-	static {
-		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JpaProject.MARKER_TYPE, PREFERENCES_ADAPTER);
-	}
-
-
 
 	public static ValidationMessage CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED;
 
@@ -125,4 +99,49 @@ public class JptJpaEclipseLinkCoreValidationMessages {
 	public static ValidationMessage VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED;
 	public static ValidationMessage VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_DOES_NOT_EXIST;
 	public static ValidationMessage VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST;
+
+
+	// ********** static initialization **********
+
+	private static final ValidationMessageLoader.PreferencesAdapter PREFERENCES_ADAPTER = new PreferencesAdapter();
+	private static class PreferencesAdapter
+		implements ValidationMessageLoader.PreferencesAdapter
+	{
+		PreferencesAdapter() {
+			super();
+		}
+		// TODO
+		public int getSeverity(IProject project, String messageID, int defaultSeverity) {
+			return defaultSeverity;
+			// return JpaEclipseLinkPreferences.getValidationMessageSeverity(project, messageID, defaultSeverity);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	private static final String MESSAGE_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation"; //$NON-NLS-1$
+	private static final String DESCRIPTION_BUNDLE_NAME = "jpt_jpa_eclipselink_core_validation_description"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptJpaCoreValidationMessages.class;
+	static {
+		ValidationMessageLoader.load(BUNDLE_CLASS, MESSAGE_BUNDLE_NAME, DESCRIPTION_BUNDLE_NAME, JpaProject.MARKER_TYPE, PREFERENCES_ADAPTER);
+
+		// WARNINGs
+		BASIC_COLLECTION_MAPPING_DEPRECATED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		BASIC_MAP_MAPPING_DEPRECATED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		MULTITENANT_NOT_SPECIFIED_WITH_TENANT_DISCRIMINATOR_COLUMNS.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENCE_UNIT_LEGACY_DESCRIPTOR_CUSTOMIZER.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+
+		// INFOs
+		GENERATOR_EQUIVALENT.setDefaultSeverity(IMessage.LOW_SEVERITY);
+		QUERY_EQUIVALENT.setDefaultSeverity(IMessage.LOW_SEVERITY);
+		MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED.setDefaultSeverity(IMessage.LOW_SEVERITY);
+	}
 }

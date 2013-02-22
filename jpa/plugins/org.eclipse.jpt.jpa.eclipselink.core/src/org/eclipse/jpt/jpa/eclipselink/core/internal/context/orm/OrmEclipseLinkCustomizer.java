@@ -259,7 +259,7 @@ public class OrmEclipseLinkCustomizer
 		}
 		if (StringTools.isBlank(this.getCustomizerClass())) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED
 					)
@@ -270,7 +270,7 @@ public class OrmEclipseLinkCustomizer
 		IType customizerJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
 		if (customizerJdtType == null) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
 							this.getFullyQualifiedCustomizerClass()
@@ -280,7 +280,7 @@ public class OrmEclipseLinkCustomizer
 		}
 		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 							this.getFullyQualifiedCustomizerClass()
@@ -289,7 +289,7 @@ public class OrmEclipseLinkCustomizer
 		}
 		if (!JDTTools.typeIsSubType(this.getJavaProject(), customizerJdtType, ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							this.getValidationTextRange(),
 							JptJpaEclipseLinkCoreValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 							this.getFullyQualifiedCustomizerClass()

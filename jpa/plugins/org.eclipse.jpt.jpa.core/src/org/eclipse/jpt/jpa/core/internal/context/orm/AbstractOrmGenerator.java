@@ -82,7 +82,7 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 
 		if (StringTools.isBlank(this.name)){
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					this.getNameTextRange(),
 					JptJpaCoreValidationMessages.GENERATOR_NAME_UNDEFINED
 				)

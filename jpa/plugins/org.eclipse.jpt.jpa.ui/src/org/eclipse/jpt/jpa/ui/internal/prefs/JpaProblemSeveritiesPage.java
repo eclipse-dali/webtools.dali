@@ -75,28 +75,6 @@ public class JpaProblemSeveritiesPage
 	/* CU private */ HashMap<String, String> changedSeverities = new HashMap<String, String>();
 
 	/**
-	 * Map preference keys to their default severity.
-	 * This is a "sparse" map that contains only the severities that are
-	 * <em>not</em> {@link JpaPreferences#PROBLEM_ERROR}.
-	 * The default severity will be displayed if there is neither a project
-	 * nor a workspace preference for a particular validation message.
-	 * <li> key = preference key (which is the
-	 * {@link ValidationMessage#getID() validation message ID})
-	 * <li> value = default severity level:<ul>
-	 *   <li>{@link JpaPreferences#PROBLEM_ERROR}
-	 *   <li>{@link JpaPreferences#PROBLEM_WARNING}
-	 *   <li>{@link JpaPreferences#PROBLEM_INFO}
-	 *   <li>{@link JpaPreferences#PROBLEM_IGNORE}
-	 *   </ul>
-	 * </ul>
-	 * <strong>NB:</strong> These defaults must match the defaults specified in
-	 * the code that builds the validation messages at runtime
-	 * (i.e. the severity passed to
-	 * {@link ValidationMessage#buildValidationMessage(org.eclipse.core.resources.IResource, org.eclipse.jpt.common.core.utility.TextRange, int, Object...)}.
-	 */
-	private HashMap<String, String> defaultSeverities;
-
-	/**
 	 * Cache the {@link Combo}s so we can revert the settings.
 	 */
 	private ArrayList<Combo> combos = new ArrayList<Combo>();
@@ -167,7 +145,6 @@ public class JpaProblemSeveritiesPage
 	protected void initialize() {
 		this.preferenceSeverities = this.buildPreferenceSeverities();
 		this.severityDisplayStrings = this.buildSeverityDisplayStrings();
-		this.defaultSeverities = this.buildDefaultSeverities();
 	}
 
 	protected PreferenceSeverity[] buildPreferenceSeverities() {
@@ -208,34 +185,6 @@ public class JpaProblemSeveritiesPage
 			displayStrings[i] = this.preferenceSeverities[i].displayString;
 		}
 		return displayStrings;
-	}
-
-	/**
-	 * @see #defaultSeverities
-	 */
-	protected HashMap<String, String> buildDefaultSeverities() {
-		 HashMap<String, String> result = new HashMap<String, String>();
-
-		 // WARNINGs
-		 result.put(JptJpaCoreValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PROJECT_NO_CONNECTION.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PROJECT_INVALID_CONNECTION.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PROJECT_INACTIVE_CONNECTION.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS.getID(), JpaPreferences.PROBLEM_WARNING); //3.0 M7
-		 result.put(JptJpaCoreValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE.getID(), JpaPreferences.PROBLEM_WARNING); //3.0 M7
-		 result.put(JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED.getID(), JpaPreferences.PROBLEM_WARNING);
-		 result.put(JptJpaCoreValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM.getID(), JpaPreferences.PROBLEM_WARNING);
-
-		 // INFOs
-		 result.put(JptJpaCoreValidationMessages.XML_VERSION_NOT_LATEST.getID(), JpaPreferences.PROBLEM_INFO);
-		 result.put(JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS.getID(), JpaPreferences.PROBLEM_INFO);
-
-		 return result;
 	}
 
 	@Override
@@ -739,17 +688,9 @@ public class JpaProblemSeveritiesPage
 			prefValue = JpaPreferences.getProblemSeverity(prefKey);
 		}
 		if (prefValue == null) {
-			prefValue = this.getDefaultPreferenceValue(prefKey);
+			prefValue = JpaPreferences.convertMessageSeverityToPreferenceValue(validationMessage.getDefaultSeverity());
 		}
 		return prefValue;
-	}
-
-	/**
-	 * Return the default severity or ERROR if no default exists.
-	 */
-	protected String getDefaultPreferenceValue(String prefKey) {
-		String prefValue = this.defaultSeverities.get(prefKey);
-		return (prefValue != null) ? prefValue : JpaPreferences.PROBLEM_ERROR;
 	}
 
 	protected int convertPreferenceValueToComboIndex(String prefValue) {
@@ -819,9 +760,9 @@ public class JpaProblemSeveritiesPage
 	 * This is called only when the page is a workspace preferences page.
 	 */
 	protected void revertWorkspaceToDefaultPreference(Combo combo) {
-		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
-		String prefKey = vm.getID();
-		String prefValue = this.getDefaultPreferenceValue(prefKey);
+		ValidationMessage validationMessage = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = validationMessage.getID();
+		String prefValue = JpaPreferences.convertMessageSeverityToPreferenceValue(validationMessage.getDefaultSeverity());
 		combo.select(this.convertPreferenceValueToComboIndex(prefValue));
 		// force the workspace-level preference to be removed
 		this.changedSeverities.put(prefKey, null);
@@ -866,11 +807,11 @@ public class JpaProblemSeveritiesPage
 	 * This is called only when the page is a project properties page.
 	 */
 	protected void copyCurrentPreferenceToProject(Combo combo) {
-		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
-		String prefKey = vm.getID();
+		ValidationMessage validationMessage = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = validationMessage.getID();
 		String prefValue = JpaPreferences.getProblemSeverity(prefKey);
 		if (prefValue == null) {
-			prefValue = this.getDefaultPreferenceValue(prefKey);
+			prefValue = JpaPreferences.convertMessageSeverityToPreferenceValue(validationMessage.getDefaultSeverity());
 		}
 		combo.select(this.convertPreferenceValueToComboIndex(prefValue));
 		// combo does not fire a selection event when set programmatically...
@@ -890,11 +831,11 @@ public class JpaProblemSeveritiesPage
 	 * This is called only when the page is a project properties page.
 	 */
 	protected void revertProjectPreference(Combo combo) {
-		ValidationMessage vm = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
-		String prefKey = vm.getID();
+		ValidationMessage validationMessage = (ValidationMessage) combo.getData(VALIDATION_MESSAGE);
+		String prefKey = validationMessage.getID();
 		String prefValue = JpaPreferences.getProblemSeverity(prefKey);
 		if (prefValue == null) {
-			prefValue = this.getDefaultPreferenceValue(prefKey);
+			prefValue = JpaPreferences.convertMessageSeverityToPreferenceValue(validationMessage.getDefaultSeverity());
 		}
 		combo.select(this.convertPreferenceValueToComboIndex(prefValue));
 		// force the project-level preference to be removed

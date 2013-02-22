@@ -427,7 +427,7 @@ public class OrmEclipseLinkEntityImpl
 			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedParentClass());
 			if (jdtType == null) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						this.getParentClassTextRange(),
 						JptJpaEclipseLinkCoreValidationMessages.VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST,
 						this.getFullyQualifiedParentClass()

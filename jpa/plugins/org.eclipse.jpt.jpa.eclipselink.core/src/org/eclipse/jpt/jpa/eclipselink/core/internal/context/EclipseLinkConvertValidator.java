@@ -66,7 +66,7 @@ public class EclipseLinkConvertValidator
 		}
 
 		messages.add(
-			ValidationMessageTools.buildErrorValidationMessage(
+			ValidationMessageTools.buildValidationMessage(
 				this.getAttributeMapping().getResource(),
 				this.getValidationTextRange(),
 				JptJpaEclipseLinkCoreValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,

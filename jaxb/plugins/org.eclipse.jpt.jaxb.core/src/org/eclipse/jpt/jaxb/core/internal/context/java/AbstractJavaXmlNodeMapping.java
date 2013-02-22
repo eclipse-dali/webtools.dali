@@ -244,7 +244,7 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 	protected void validateXmlList(List<IMessage> messages, IReporter reporter) {
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
-				this.buildErrorValidationMessage(
+				this.buildValidationMessage(
 					getXmlListValidationTextRange(),
 					JptJaxbCoreValidationMessages.XML_LIST__ATTRIBUTE_NOT_COLLECTION_TYPE
 				));
@@ -256,7 +256,7 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 							|| ((XsdSimpleTypeDefinition) xsdType).getXSDComponent().getVariety() == XSDVariety.LIST_LITERAL)) {
 				
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getValidationTextRange(),
 								JptJaxbCoreValidationMessages.XML_LIST__ITEM_TYPE_NOT_MAPPED_TO_VALID_SCHEMA_TYPE,
 								getValueTypeName()

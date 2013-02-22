@@ -34,11 +34,22 @@ public interface ValidationMessage {
 	String getDescription();
 
 	/**
-	 * Build a validation message with the specified default
-	 * severity (i.e. the severity of the message in the absence of a
-	 * user-specified preference), target resource, text range, and arguments
-	 * to be bound to the message template.
+	 * Return the message's default severity (i.e. the severity of the message in
+	 * the absence of a user-specified preference).
 	 * @see IMessage#getSeverity()
 	 */
-	IMessage buildValidationMessage(IResource target, TextRange textRange, int defaultSeverity, Object... args);
+	int getDefaultSeverity();
+
+	/**
+	 * Set the message's default severity (i.e. the severity of the message in
+	 * the absence of a user-specified preference).
+	 * @see IMessage#getSeverity()
+	 */
+	void setDefaultSeverity(int severity);
+
+	/**
+	 * Build a validation message with the specified target resource, text
+	 * range, and arguments to be bound to the message template.
+	 */
+	IMessage buildValidationMessage(IResource target, TextRange textRange, Object... args);
 }

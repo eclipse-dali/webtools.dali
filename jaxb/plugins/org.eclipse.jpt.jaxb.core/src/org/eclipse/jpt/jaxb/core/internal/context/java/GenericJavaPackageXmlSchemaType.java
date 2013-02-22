@@ -49,7 +49,7 @@ public class GenericJavaPackageXmlSchemaType
 		String fqType = getFullyQualifiedType();
 		if (fqType == null || XmlSchemaTypeAnnotation.DEFAULT_TYPE.equals(fqType)) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_SCHEMA_TYPE__TYPE_NOT_SPECIFIED_ON_PACKAGE
 						));

@@ -745,7 +745,7 @@ public class GenericJavaClassMapping
 		if (! JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS.equals(getFactoryClass())) {
 			if (StringTools.isBlank(getFactoryMethod())) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getFactoryClassTextRange(),
 								JptJaxbCoreValidationMessages.XML_TYPE__UNSPECIFIED_FACTORY_METHOD
 							));
@@ -756,7 +756,7 @@ public class GenericJavaClassMapping
 					&& getJavaType().getXmlJavaTypeAdapter() == null
 					&& ! getJavaResourceType().hasPublicOrProtectedNoArgConstructor()) {
 				messages.add(
-						this.buildErrorValidationMessage(
+						this.buildValidationMessage(
 								getValidationTextRange(),
 								JptJaxbCoreValidationMessages.XML_TYPE__NO_PUBLIC_OR_PROTECTED_CONSTRUCTOR
 							));
@@ -826,7 +826,7 @@ public class GenericJavaClassMapping
 		
 		for (int i : duplicateProps) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getPropTextRange(i),
 							JptJaxbCoreValidationMessages.XML_TYPE__DUPLICATE_PROP,
 							getProp(i)));
@@ -834,7 +834,7 @@ public class GenericJavaClassMapping
 		
 		for (String missingProp : missingProps) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getPropOrderTextRange(),
 							JptJaxbCoreValidationMessages.XML_TYPE__MISSING_PROP,
 							missingProp));
@@ -842,7 +842,7 @@ public class GenericJavaClassMapping
 		
 		for (int i : nonexistentProps) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getPropTextRange(i),
 							JptJaxbCoreValidationMessages.XML_TYPE__NONEXISTENT_PROP,
 							getProp(i)));
@@ -850,7 +850,7 @@ public class GenericJavaClassMapping
 		
 		for (int i : transientProps) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getPropTextRange(i),
 							JptJaxbCoreValidationMessages.XML_TYPE__TRANSIENT_PROP,
 							getProp(i)));
@@ -876,14 +876,14 @@ public class GenericJavaClassMapping
 		
 		if (allAttributes.size() > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED
 						));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED
@@ -911,14 +911,14 @@ public class GenericJavaClassMapping
 		
 		if (allAttributes.size() > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED
 						));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED
@@ -946,14 +946,14 @@ public class GenericJavaClassMapping
 		
 		if (allAttributes.size() > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED
 						));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED
@@ -986,14 +986,14 @@ public class GenericJavaClassMapping
 		
 		if (allAttributes.size() > 1) {
 			messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 							getValidationTextRange(),
 							JptJaxbCoreValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED
 						));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
-					this.buildErrorValidationMessage(
+					this.buildValidationMessage(
 						anyAttribute.getMapping(),
 						anyAttribute.getMapping().getValidationTextRange(),
 						JptJaxbCoreValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED
