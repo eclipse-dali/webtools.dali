@@ -34,14 +34,14 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 
 public class GenericOrmXml2_0ContextNodeFactory
 	extends AbstractOrmXmlContextModelFactory
-	implements OrmXml2_0ContextNodeFactory
+	implements OrmXmlContextModelFactory2_0
 {	
 	@Override
 	public Orderable buildOrmOrderable(OrmAttributeMapping parent) {

@@ -37,12 +37,12 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 
 public class EclipseLinkOrmXml2_0ContextNodeFactory
 	extends EclipseLinkOrmXmlContextNodeFactory
-	implements OrmXml2_0ContextNodeFactory
+	implements OrmXmlContextModelFactory2_0
 {	
 
 	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer2_0.Owner owner) {

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_1Definition;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
 
 /**
@@ -65,8 +65,8 @@ public abstract class AbstractOrmXmlContextModel
 	/**
 	 * Call {@link #isOrmXml2_0Compatible()} before calling this method.
 	 */
-	protected OrmXml2_0ContextNodeFactory getContextNodeFactory2_0() {
-		return (OrmXml2_0ContextNodeFactory) this.getContextNodeFactory();
+	protected OrmXmlContextModelFactory2_0 getContextNodeFactory2_0() {
+		return (OrmXmlContextModelFactory2_0) this.getContextNodeFactory();
 	}
 
 	/**

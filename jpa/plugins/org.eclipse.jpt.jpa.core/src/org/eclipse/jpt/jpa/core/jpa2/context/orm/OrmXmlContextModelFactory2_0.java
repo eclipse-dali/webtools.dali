@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
  * @version 3.3
  * @since 2.3
  */
-public interface OrmXml2_0ContextNodeFactory
+public interface OrmXmlContextModelFactory2_0
 	extends OrmXmlContextModelFactory
 {
 	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer2_0.Owner owner);

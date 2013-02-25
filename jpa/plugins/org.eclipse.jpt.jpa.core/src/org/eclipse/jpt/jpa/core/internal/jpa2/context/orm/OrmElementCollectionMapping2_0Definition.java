@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
@@ -60,7 +60,7 @@ public class OrmElementCollectionMapping2_0Definition
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping xmlMapping, 
 			OrmXmlContextModelFactory factory) {
-		return ((OrmXml2_0ContextNodeFactory) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) xmlMapping);
+		return ((OrmXmlContextModelFactory2_0) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) xmlMapping);
 	}
 	
 	public boolean isSingleRelationshipMapping() {
