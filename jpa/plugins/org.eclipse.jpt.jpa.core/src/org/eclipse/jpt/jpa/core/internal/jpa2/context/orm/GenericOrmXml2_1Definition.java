@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPersistentTypeDefinition
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.Generic2_1JpaPlatformProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXml2_1ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlContextModelFactory2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -68,7 +68,7 @@ public class GenericOrmXml2_1Definition
 
 	@Override
 	protected OrmXmlContextModelFactory buildContextNodeFactory() {
-		return new GenericOrmXml2_1ContextNodeFactory();
+		return new GenericOrmXmlContextModelFactory2_1();
 	}
 
 	// ********* Managed Types *********
