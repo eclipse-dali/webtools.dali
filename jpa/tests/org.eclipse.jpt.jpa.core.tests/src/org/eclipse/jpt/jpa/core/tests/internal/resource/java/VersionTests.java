@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -44,7 +44,7 @@ public class VersionTests extends JpaJavaResourceModelTestCase {
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
-		JavaResourceNode mappingAnnotation = resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME);
+		JavaResourceModel mappingAnnotation = resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof VersionAnnotation);
 	}
 }

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
@@ -20,7 +20,7 @@ public final class NullJoinColumnAnnotation
 	extends NullBaseColumnAnnotation<JoinColumnAnnotation>
 	implements JoinColumnAnnotation
 {	
-	public NullJoinColumnAnnotation(JavaResourceNode parent) {
+	public NullJoinColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

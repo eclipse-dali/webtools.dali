@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -40,14 +40,14 @@ final class SourceEclipseLinkConversionValueAnnotation
 	private TextRange objectValueTextRange;
 	
 	public static SourceEclipseLinkConversionValueAnnotation buildNestedSourceConversionValueAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
 		return new SourceEclipseLinkConversionValueAnnotation(parent, element, idaa);
 	}
 
-	private SourceEclipseLinkConversionValueAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	private SourceEclipseLinkConversionValueAnnotation(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 		this.dataValueDeclarationAdapter = this.buildDataValueDeclarationAdapter();
 		this.dataValueAdapter = this.buildDataValueAdapter();

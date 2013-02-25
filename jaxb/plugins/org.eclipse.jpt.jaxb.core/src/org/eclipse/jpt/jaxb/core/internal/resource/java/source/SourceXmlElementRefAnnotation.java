@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotation
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -73,7 +73,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 	
 	public static SourceXmlElementRefAnnotation buildNestedSourceXmlElementRefAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement annotatedElement, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
@@ -82,7 +82,7 @@ public final class SourceXmlElementRefAnnotation
 	
 	
 	private SourceXmlElementRefAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement annotatedElement, 
 			DeclarationAnnotationAdapter daa) {
 		
@@ -90,7 +90,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 	
 	private SourceXmlElementRefAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement annotatedElement, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
@@ -98,7 +98,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 	
 	private SourceXmlElementRefAnnotation(
-			JavaResourceNode parent,
+			JavaResourceModel parent,
 			AnnotatedElement annotatedElement, 
 			DeclarationAnnotationAdapter daa,
 			AnnotationAdapter annotationAdapter) {

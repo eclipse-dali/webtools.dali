@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
@@ -27,7 +27,7 @@ final class BinaryEclipseLinkConversionValueAnnotation
 	private String objectValue;
 
 
-	BinaryEclipseLinkConversionValueAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	BinaryEclipseLinkConversionValueAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.dataValue = this.buildDataValue();
 		this.objectValue = this.buildObjectValue();

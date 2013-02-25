@@ -29,25 +29,25 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @version 3.3
  * @since 3.0
  */
-public interface JavaResourceNode
+public interface JavaResourceModel
 	extends Model
 {
 	/**
-	 * Return the node's parent node.
+	 * Return the model's parent.
 	 */
-	JavaResourceNode getParent();
+	JavaResourceModel getParent();
 
 	/**
 	 * Return the Eclipse file that contains the Java resource node
 	 * (typically either a Java source code file or a JAR).
 	 */
 	IFile getFile();
-	Transformer<JavaResourceNode, IFile> FILE_TRANSFORMER = new FileTransformer();
+	Transformer<JavaResourceModel, IFile> FILE_TRANSFORMER = new FileTransformer();
 	class FileTransformer
-		extends TransformerAdapter<JavaResourceNode, IFile>
+		extends TransformerAdapter<JavaResourceModel, IFile>
 	{
 		@Override
-		public IFile transform(JavaResourceNode table) {
+		public IFile transform(JavaResourceModel table) {
 			return table.getFile();
 		}
 	}
@@ -73,8 +73,8 @@ public interface JavaResourceNode
 	 * Root of Java resource model containment hierarchy.
 	 */
 	interface Root
-			extends JavaResourceNode, JptResourceModel {
-		
+		extends JavaResourceModel, JptResourceModel
+	{
 		/**
 		 * Return the root's Java resource "abstract" types.
 		 */

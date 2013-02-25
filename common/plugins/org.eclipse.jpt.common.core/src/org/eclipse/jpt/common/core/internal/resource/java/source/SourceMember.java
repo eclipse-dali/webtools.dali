@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 
 /**
@@ -35,7 +35,7 @@ abstract class SourceMember<M extends Member>
 
 	// ********** construction/initialization **********
 
-	SourceMember(JavaResourceNode parent, M member) {
+	SourceMember(JavaResourceModel parent, M member) {
 		super(parent, member);
 	}
 

@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.core.internal.resource.java;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
@@ -21,26 +21,26 @@ import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
  */
 public abstract class AbstractJavaResourceNode
 	extends AbstractModel
-	implements JavaResourceNode
+	implements JavaResourceModel
 {
-	protected final JavaResourceNode parent;
+	protected final JavaResourceModel parent;
 
 
 	// ********** constructor **********
 	
-	protected AbstractJavaResourceNode(JavaResourceNode parent) {
+	protected AbstractJavaResourceNode(JavaResourceModel parent) {
 		super();
 		this.checkParent(parent);
 		this.parent = parent;
 	}
 
-	public JavaResourceNode getParent() {
+	public JavaResourceModel getParent() {
 		return this.parent;
 	}
 
 	// ********** parent **********
 
-	protected void checkParent(JavaResourceNode p) {
+	protected void checkParent(JavaResourceModel p) {
 		if (p == null) {
 			if (this.requiresParent()) {
 				throw new IllegalArgumentException("'parent' cannot be null"); //$NON-NLS-1$

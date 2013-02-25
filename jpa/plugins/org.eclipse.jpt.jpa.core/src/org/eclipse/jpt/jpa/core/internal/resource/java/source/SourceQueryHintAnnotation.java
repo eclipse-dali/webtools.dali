@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotatio
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -43,27 +43,27 @@ public final class SourceQueryHintAnnotation
 	private TextRange valueTextRange;
 
 
-	static SourceQueryHintAnnotation buildNamedQueryQueryHint(JavaResourceNode parent, AnnotatedElement element,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
+	static SourceQueryHintAnnotation buildNamedQueryQueryHint(JavaResourceModel parent, AnnotatedElement element,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
 		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedQueryQueryHintAnnotationAdapter(namedQueryAdapter, index));
 	}
 
-	static SourceQueryHintAnnotation buildNamedNativeQueryQueryHint(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
+	static SourceQueryHintAnnotation buildNamedNativeQueryQueryHint(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
 		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedNativeQueryQueryHintAnnotationAdapter(namedNativeQueryAdapter, index));
 	}
 	
-	public static SourceQueryHintAnnotation buildNamedStoredProcedureQuery2_1QueryHint(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter namedStoredProcedureQuery2_1Adapter, int index) {
+	public static SourceQueryHintAnnotation buildNamedStoredProcedureQuery2_1QueryHint(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter namedStoredProcedureQuery2_1Adapter, int index) {
 		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedStoredProcedureQuery2_1QueryHintAnnotationAdapter(namedStoredProcedureQuery2_1Adapter, index));
 	}
 	
 	public static SourceQueryHintAnnotation buildNestedSourceQueryHintAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
 		return new SourceQueryHintAnnotation(parent, element, idaa);
 	}
 
-	private SourceQueryHintAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	private SourceQueryHintAnnotation(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
 		this.nameAdapter = this.buildNameAdapter();

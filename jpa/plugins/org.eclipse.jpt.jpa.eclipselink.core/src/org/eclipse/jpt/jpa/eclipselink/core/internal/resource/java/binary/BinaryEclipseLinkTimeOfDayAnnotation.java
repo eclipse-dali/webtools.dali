@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
@@ -29,7 +29,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 	private Integer millisecond;
 
 
-	public BinaryEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryEclipseLinkTimeOfDayAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.hour = this.buildHour();
 		this.minute = this.buildMinute();

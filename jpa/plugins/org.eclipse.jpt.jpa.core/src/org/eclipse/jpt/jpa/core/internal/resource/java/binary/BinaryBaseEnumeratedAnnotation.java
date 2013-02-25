@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.BaseEnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
@@ -29,7 +29,7 @@ public abstract class BinaryBaseEnumeratedAnnotation
 	private EnumType value;
 	
 
-	protected BinaryBaseEnumeratedAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryBaseEnumeratedAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}

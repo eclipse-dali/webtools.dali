@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
@@ -23,7 +23,7 @@ public abstract class NullCompleteColumnAnnotation<A extends CompleteColumnAnnot
 	extends NullBaseColumnAnnotation<A>
 	implements CompleteColumnAnnotation
 {
-	public NullCompleteColumnAnnotation(JavaResourceNode parent) {
+	public NullCompleteColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

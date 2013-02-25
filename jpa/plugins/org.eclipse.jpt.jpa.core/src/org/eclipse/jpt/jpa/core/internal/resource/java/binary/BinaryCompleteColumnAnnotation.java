@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
@@ -29,7 +29,7 @@ public abstract class BinaryCompleteColumnAnnotation
 	protected Integer scale;
 
 
-	protected BinaryCompleteColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryCompleteColumnAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.length = this.buildLength();
 		this.precision = this.buildPrecision();

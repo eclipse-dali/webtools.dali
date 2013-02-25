@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -66,11 +66,11 @@ final class BinaryType
 	
 	// ***** construction/initialization *****
 	
-	BinaryType(JavaResourceNode parent, IType type) {
+	BinaryType(JavaResourceModel parent, IType type) {
 		this(parent, new TypeAdapter(type));
 	}
 	
-	private BinaryType(JavaResourceNode parent, TypeAdapter adapter) {
+	private BinaryType(JavaResourceModel parent, TypeAdapter adapter) {
 		super(parent, adapter);
 		this.superclassQualifiedName = buildSuperclassQualifiedName();
 		this.abstract_ = buildAbstract();

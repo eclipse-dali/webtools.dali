@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -36,7 +36,7 @@ public final class SourceMapKeyJoinColumn2_0Annotation
 
 	
 	public static SourceMapKeyJoinColumn2_0Annotation buildSourceMapKeyJoinColumnAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element) {
 		
 		return new SourceMapKeyJoinColumn2_0Annotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -56,22 +56,22 @@ public final class SourceMapKeyJoinColumn2_0Annotation
 	}
 	
 	public static SourceMapKeyJoinColumn2_0Annotation buildNestedSourceMapKeyJoinColumnAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
 		return new SourceMapKeyJoinColumn2_0Annotation(parent, element, idaa);
 	}
 
-	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
-	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 	}
 

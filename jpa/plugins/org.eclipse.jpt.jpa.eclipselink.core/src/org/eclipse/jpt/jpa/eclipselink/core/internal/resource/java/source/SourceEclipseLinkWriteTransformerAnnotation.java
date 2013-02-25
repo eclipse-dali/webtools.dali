@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -153,7 +153,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 		return new NestedDeclarationAnnotationAdapter(writeTransformerAnnotationAdapter, EclipseLink.WRITE_TRANSFORMER__COLUMN, JPA.COLUMN);
 	}
 
-	private static ColumnAnnotation createColumn(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {
+	private static ColumnAnnotation createColumn(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {
 		return new SourceColumnAnnotation(parent, element, buildColumnAnnotationAdapter(writeTransformerAnnotationAdapter));
 	}
 

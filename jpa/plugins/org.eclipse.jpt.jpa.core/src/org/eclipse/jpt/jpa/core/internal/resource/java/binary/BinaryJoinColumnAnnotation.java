@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
@@ -21,7 +21,7 @@ public final class BinaryJoinColumnAnnotation
 	extends BinaryBaseJoinColumnAnnotation
 	implements JoinColumnAnnotation
 {
-	public BinaryJoinColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryJoinColumnAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

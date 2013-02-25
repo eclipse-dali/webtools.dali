@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -28,7 +28,7 @@ public abstract class NullBaseTableAnnotation<A extends BaseTableAnnotation>
 	extends NullAnnotation<A>
 	implements BaseTableAnnotation
 {
-	protected NullBaseTableAnnotation(JavaResourceNode parent) {
+	protected NullBaseTableAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 	

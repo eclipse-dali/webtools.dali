@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -21,7 +21,7 @@ public final class NullMapKeyJoinColumnAnnotation
 	extends NullBaseColumnAnnotation<MapKeyJoinColumn2_0Annotation>
 	implements MapKeyJoinColumn2_0Annotation
 {	
-	public NullMapKeyJoinColumnAnnotation(JavaResourceNode parent) {
+	public NullMapKeyJoinColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

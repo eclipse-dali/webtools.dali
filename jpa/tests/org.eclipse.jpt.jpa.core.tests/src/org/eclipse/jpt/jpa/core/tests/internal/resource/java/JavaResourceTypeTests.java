@@ -14,7 +14,7 @@ import java.util.Iterator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
@@ -356,7 +356,7 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		assertNotNull(resourceType.getAnnotation(JPA.EMBEDDABLE));
 		assertNotNull(resourceType.getAnnotation(JPA.ENTITY));
 		
-		JavaResourceNode javaTypeMappingAnnotation = resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
+		JavaResourceModel javaTypeMappingAnnotation = resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
 		assertTrue(javaTypeMappingAnnotation instanceof EmbeddableAnnotation);
 		assertSourceContains("@Entity", cu);
 		assertSourceContains("@Embeddable", cu);

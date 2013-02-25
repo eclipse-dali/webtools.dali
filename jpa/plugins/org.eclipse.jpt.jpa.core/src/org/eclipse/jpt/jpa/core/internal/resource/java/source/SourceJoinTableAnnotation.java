@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -38,11 +38,11 @@ public final class SourceJoinTableAnnotation
 	private final InverseJoinColumnsAnnotationContainer inverseJoinColumnsContainer = new InverseJoinColumnsAnnotationContainer();
 
 
-	public SourceJoinTableAnnotation(JavaResourceNode parent, AnnotatedElement element) {
+	public SourceJoinTableAnnotation(JavaResourceModel parent, AnnotatedElement element) {
 		this(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
-	public SourceJoinTableAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	public SourceJoinTableAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 	}
 

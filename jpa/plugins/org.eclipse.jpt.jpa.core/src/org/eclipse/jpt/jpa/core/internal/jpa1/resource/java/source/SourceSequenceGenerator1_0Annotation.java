@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.source;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
 
@@ -20,7 +20,7 @@ public final class SourceSequenceGenerator1_0Annotation
 	extends SourceSequenceGeneratorAnnotation
 {
 
-	public SourceSequenceGenerator1_0Annotation(JavaResourceNode parent, AnnotatedElement element) {
+	public SourceSequenceGenerator1_0Annotation(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element);
 	}
 

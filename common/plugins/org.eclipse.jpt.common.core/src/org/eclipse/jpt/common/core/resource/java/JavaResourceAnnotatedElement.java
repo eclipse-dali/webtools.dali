@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaResourceAnnotatedElement
-	extends JavaResourceNode
+	extends JavaResourceModel
 {
 	// ********** annotations **********
 	

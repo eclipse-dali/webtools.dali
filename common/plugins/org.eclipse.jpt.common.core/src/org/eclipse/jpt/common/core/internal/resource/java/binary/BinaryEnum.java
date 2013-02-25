@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -35,11 +35,11 @@ final class BinaryEnum
 	
 	// ********** construction/initialization **********
 	
-	BinaryEnum(JavaResourceNode parent, IType type) {
+	BinaryEnum(JavaResourceModel parent, IType type) {
 		this(parent, new TypeAdapter(type));
 	}
 	
-	private BinaryEnum(JavaResourceNode parent, TypeAdapter adapter) {
+	private BinaryEnum(JavaResourceModel parent, TypeAdapter adapter) {
 		super(parent, adapter);
 		CollectionTools.addAll(this.enumConstants, buildEnumConstants());
 	}

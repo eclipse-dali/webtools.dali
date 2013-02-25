@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
@@ -25,7 +25,7 @@ public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 	extends NullNamedColumnAnnotation<A>
 	implements BaseColumnAnnotation
 {
-	protected NullBaseColumnAnnotation(JavaResourceNode parent) {
+	protected NullBaseColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

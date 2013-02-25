@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.List;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
@@ -28,7 +28,7 @@ public final class BinaryNamedNativeQueryAnnotation
 	private String resultSetMapping;
 
 
-	public BinaryNamedNativeQueryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedNativeQueryAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.query = this.buildQuery();
 		this.resultClass = this.buildResultClass();

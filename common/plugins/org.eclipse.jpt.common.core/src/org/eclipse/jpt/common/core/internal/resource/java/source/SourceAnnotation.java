@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotati
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -48,14 +48,14 @@ public abstract class SourceAnnotation
 	/**
 	 * constructor for straight member annotation
 	 */
-	protected SourceAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	protected SourceAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
 	/**
 	 * constructor for nested annotation (typically)
 	 */
-	protected SourceAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent);
 		this.annotatedElement = element;
 		this.daa = daa;

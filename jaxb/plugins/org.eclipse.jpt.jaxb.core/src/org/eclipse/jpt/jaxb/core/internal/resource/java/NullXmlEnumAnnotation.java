@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
@@ -22,7 +22,7 @@ public final class NullXmlEnumAnnotation
 	extends NullAnnotation<XmlEnumAnnotation>
 	implements XmlEnumAnnotation
 {
-	protected NullXmlEnumAnnotation(JavaResourceNode parent) {
+	protected NullXmlEnumAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

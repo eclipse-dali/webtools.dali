@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -22,7 +22,7 @@ public final class BinaryColumnAnnotation
 	implements ColumnAnnotation
 {
 
-	public BinaryColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryColumnAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

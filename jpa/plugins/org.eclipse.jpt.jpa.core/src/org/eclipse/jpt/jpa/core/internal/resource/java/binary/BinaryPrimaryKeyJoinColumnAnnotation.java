@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
@@ -25,7 +25,7 @@ public final class BinaryPrimaryKeyJoinColumnAnnotation
 	private String referencedColumnName;
 
 
-	public BinaryPrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryPrimaryKeyJoinColumnAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.referencedColumnName = this.buildReferencedColumnName();
 	}

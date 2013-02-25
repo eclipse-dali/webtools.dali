@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -59,7 +59,7 @@ abstract class BinaryAnnotatedElement
 	
 	// ********** construction/initialization **********
 	
-	BinaryAnnotatedElement(JavaResourceNode parent, Adapter adapter) {
+	BinaryAnnotatedElement(JavaResourceModel parent, Adapter adapter) {
 		super(parent);
 		this.javaElement = adapter.getElement();
 		initializeAnnotations(adapter);

@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.IType;
  * @since 2.2
  */
 public interface JavaResourceTypeCache
-	extends JavaResourceNode.Root
+	extends JavaResourceModel.Root
 {
 
 	/**

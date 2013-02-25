@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 
 /**
@@ -40,7 +40,7 @@ abstract class BinaryMember
 	
 	// ********** construction/initialization **********
 	
-	public BinaryMember(JavaResourceNode parent, MemberAdapter adapter) {
+	public BinaryMember(JavaResourceModel parent, MemberAdapter adapter) {
 		super(parent, adapter);
 		this.final_ = this.buildFinal();
 		this.transient_ = this.buildTransient();

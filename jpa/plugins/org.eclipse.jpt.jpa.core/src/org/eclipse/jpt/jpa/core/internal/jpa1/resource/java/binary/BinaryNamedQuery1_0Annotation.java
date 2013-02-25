@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedQueryAnnotation;
 
 /**
@@ -20,7 +20,7 @@ public final class BinaryNamedQuery1_0Annotation
 	extends BinaryNamedQueryAnnotation
 {
 
-	public BinaryNamedQuery1_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedQuery1_0Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 	

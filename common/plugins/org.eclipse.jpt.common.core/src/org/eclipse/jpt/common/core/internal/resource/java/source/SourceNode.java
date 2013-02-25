@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -38,7 +38,7 @@ public abstract class SourceNode
 	extends AbstractJavaResourceNode
 {
 
-	protected SourceNode(JavaResourceNode parent) {
+	protected SourceNode(JavaResourceModel parent) {
 		super(parent);
 	}
 

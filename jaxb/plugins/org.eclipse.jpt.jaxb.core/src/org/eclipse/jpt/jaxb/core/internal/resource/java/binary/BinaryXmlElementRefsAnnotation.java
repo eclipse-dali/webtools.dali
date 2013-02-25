@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -28,7 +28,7 @@ public class BinaryXmlElementRefsAnnotation
 	private final Vector<XmlElementRefAnnotation> xmlElementRefs;
 	
 	
-	public BinaryXmlElementRefsAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlElementRefsAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.xmlElementRefs = this.buildXmlElementRefs();
 	}

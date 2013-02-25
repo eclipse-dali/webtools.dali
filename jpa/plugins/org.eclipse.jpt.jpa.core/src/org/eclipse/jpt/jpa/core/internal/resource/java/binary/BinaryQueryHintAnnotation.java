@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
@@ -27,7 +27,7 @@ class BinaryQueryHintAnnotation
 	private String value;
 
 
-	BinaryQueryHintAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	BinaryQueryHintAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.value = this.buildValue();

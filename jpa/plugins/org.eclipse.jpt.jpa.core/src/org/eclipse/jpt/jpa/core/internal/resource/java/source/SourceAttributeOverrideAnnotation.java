@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -43,7 +43,7 @@ public final class SourceAttributeOverrideAnnotation
 
 	
 	public static SourceAttributeOverrideAnnotation buildSourceAttributeOverrideAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element) {
 		
 		return new SourceAttributeOverrideAnnotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -63,7 +63,7 @@ public final class SourceAttributeOverrideAnnotation
 	}
 	
 	public static SourceAttributeOverrideAnnotation buildNestedSourceAttributeOverrideAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
@@ -71,7 +71,7 @@ public final class SourceAttributeOverrideAnnotation
 	}
 	
 	private SourceAttributeOverrideAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			DeclarationAnnotationAdapter daa) {
 		
@@ -79,14 +79,14 @@ public final class SourceAttributeOverrideAnnotation
 	}
 	
 	private SourceAttributeOverrideAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceAttributeOverrideAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceAttributeOverrideAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.columnAdapter = this.buildColumnAdapter();
 		this.nullColumn = this.buildNullColumn();

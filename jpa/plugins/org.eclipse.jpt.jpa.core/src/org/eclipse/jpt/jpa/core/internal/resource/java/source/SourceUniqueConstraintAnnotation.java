@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotati
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -44,7 +44,7 @@ public final class SourceUniqueConstraintAnnotation
 	private TextRange columnNamesTextRange;
 
 
-	public SourceUniqueConstraintAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	public SourceUniqueConstraintAnnotation(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 		this.columnNamesDeclarationAdapter = buildColumnNamesDeclarationAdapter();
 		this.columnNamesAdapter = buildColumnNamesAdapter();

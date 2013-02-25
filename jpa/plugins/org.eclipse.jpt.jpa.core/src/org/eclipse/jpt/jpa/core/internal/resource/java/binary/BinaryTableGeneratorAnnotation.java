@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -35,7 +35,7 @@ public final class BinaryTableGeneratorAnnotation
 	private final Vector<UniqueConstraintAnnotation> uniqueConstraints;
 
 
-	public BinaryTableGeneratorAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryTableGeneratorAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.table = this.buildTable();
 		this.schema = this.buildSchema();

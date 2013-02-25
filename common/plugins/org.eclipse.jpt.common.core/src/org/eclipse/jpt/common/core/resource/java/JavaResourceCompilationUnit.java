@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.command.CommandExecutor;
  * @since 3.0
  */
 public interface JavaResourceCompilationUnit
-	extends JavaResourceNode.Root
+	extends JavaResourceModel.Root
 {
 	/**
 	 * Return the corresponding JDT compilation unit.

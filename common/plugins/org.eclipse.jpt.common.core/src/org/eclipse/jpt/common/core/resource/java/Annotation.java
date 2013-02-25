@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Annotation
-	extends JavaResourceNode
+	extends JavaResourceModel
 {
 
 	/**

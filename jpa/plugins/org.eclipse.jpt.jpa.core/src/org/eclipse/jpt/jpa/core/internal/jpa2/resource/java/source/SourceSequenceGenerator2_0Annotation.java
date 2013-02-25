@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -39,7 +39,7 @@ public final class SourceSequenceGenerator2_0Annotation
 
 
 	// ********** constructor **********
-	public SourceSequenceGenerator2_0Annotation(JavaResourceNode parent, AnnotatedElement element) {
+	public SourceSequenceGenerator2_0Annotation(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
 		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);

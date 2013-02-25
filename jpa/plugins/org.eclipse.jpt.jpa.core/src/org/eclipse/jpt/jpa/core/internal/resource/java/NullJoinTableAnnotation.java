@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -22,7 +22,7 @@ public class NullJoinTableAnnotation
 	extends NullBaseTableAnnotation<JoinTableAnnotation>
 	implements JoinTableAnnotation
 {	
-	public NullJoinTableAnnotation(JavaResourceNode parent) {
+	public NullJoinTableAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

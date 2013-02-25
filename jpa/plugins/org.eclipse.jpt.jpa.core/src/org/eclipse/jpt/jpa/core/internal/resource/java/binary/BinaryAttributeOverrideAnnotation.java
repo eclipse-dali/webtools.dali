@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullAttributeOverrideColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -27,7 +27,7 @@ public final class BinaryAttributeOverrideAnnotation
 	private final ColumnAnnotation nullColumn;
 
 
-	public BinaryAttributeOverrideAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryAttributeOverrideAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.column = this.buildColumn();
 		this.nullColumn = this.buildNullColumn();

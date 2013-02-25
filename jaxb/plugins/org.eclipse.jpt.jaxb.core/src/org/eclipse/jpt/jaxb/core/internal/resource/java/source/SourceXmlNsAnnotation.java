@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotatio
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -41,7 +41,7 @@ public class SourceXmlNsAnnotation
 	private TextRange prefixTextRange;
 	
 	
-	public SourceXmlNsAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+	public SourceXmlNsAnnotation(JavaResourceModel parent, AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, annotatedElement, idaa, new ElementIndexedAnnotationAdapter(annotatedElement, idaa));
 		this.namespaceURIDeclarationAdapter = this.buildNamespaceURIDeclarationAdapter(idaa);
 		this.namespaceURIAdapter = this.buildAdapter(this.namespaceURIDeclarationAdapter);

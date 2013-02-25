@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullCompleteColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 
@@ -20,7 +20,7 @@ public final class NullMapKeyColumnAnnotation
 	extends NullCompleteColumnAnnotation<MapKeyColumn2_0Annotation>
 	implements MapKeyColumn2_0Annotation
 {
-	public NullMapKeyColumnAnnotation(JavaResourceNode parent) {
+	public NullMapKeyColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

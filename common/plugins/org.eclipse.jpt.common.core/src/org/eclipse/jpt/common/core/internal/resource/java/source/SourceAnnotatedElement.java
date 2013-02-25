@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -76,7 +76,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	// ********** construction/initialization **********
 
-	SourceAnnotatedElement(JavaResourceNode parent, E annotatedElement) {
+	SourceAnnotatedElement(JavaResourceModel parent, E annotatedElement) {
 		super(parent);
 		this.annotatedElement = annotatedElement;
 	}

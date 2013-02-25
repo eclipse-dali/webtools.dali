@@ -46,7 +46,7 @@ import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
@@ -662,7 +662,7 @@ public abstract class AbstractJaxbProject
 	// ********** annotated Java source classes **********
 	
 	public Iterable<JavaResourceAbstractType> getJavaSourceResourceTypes() {
-		return IterableTools.children(this.getInternalJavaResourceCompilationUnits(), JavaResourceNode.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getInternalJavaResourceCompilationUnits(), JavaResourceModel.Root.TYPES_TRANSFORMER);
 	}
 	
 	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceResourceTypes() {
@@ -750,11 +750,11 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
-		return IterableTools.children(this.getJavaResourceNodeRoots(), JavaResourceNode.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getJavaResourceNodeRoots(), JavaResourceModel.Root.TYPES_TRANSFORMER);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
+	protected Iterable<JavaResourceModel.Root> getJavaResourceNodeRoots() {
 		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 //					this.getInternalJavaResourcePackageFragmentRoots(),

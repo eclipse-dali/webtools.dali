@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
@@ -358,7 +358,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		assertNotNull(resourceAttribute.getAnnotation(JPA.BASIC));
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		
-		JavaResourceNode javaAttributeMappingAnnotation = resourceAttribute.getAnnotation(BasicAnnotation.ANNOTATION_NAME);
+		JavaResourceModel javaAttributeMappingAnnotation = resourceAttribute.getAnnotation(BasicAnnotation.ANNOTATION_NAME);
 		assertTrue(javaAttributeMappingAnnotation instanceof BasicAnnotation);
 		assertSourceContains("@Basic", cu);
 		assertSourceContains("@Id", cu);

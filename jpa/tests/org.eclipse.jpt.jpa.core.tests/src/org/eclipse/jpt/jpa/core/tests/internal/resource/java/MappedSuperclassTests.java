@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
@@ -56,7 +56,7 @@ public class MappedSuperclassTests extends JpaJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestMappedSuperclass();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		JavaResourceNode mappingAnnotation = resourceType.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME);
+		JavaResourceModel mappingAnnotation = resourceType.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof MappedSuperclassAnnotation);
 	}
 	
@@ -64,7 +64,7 @@ public class MappedSuperclassTests extends JpaJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestMappedSuperclassAndEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		JavaResourceNode mappingAnnotation = resourceType.getAnnotation(EntityAnnotation.ANNOTATION_NAME);
+		JavaResourceModel mappingAnnotation = resourceType.getAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof EntityAnnotation);
 		
 		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) resourceType.getAnnotation(JPA.MAPPED_SUPERCLASS);

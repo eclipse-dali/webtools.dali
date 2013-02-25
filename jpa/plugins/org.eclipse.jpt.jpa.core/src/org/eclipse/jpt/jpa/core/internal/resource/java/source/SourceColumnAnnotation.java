@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
@@ -28,7 +28,7 @@ public final class SourceColumnAnnotation
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 
-	public SourceColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	public SourceColumnAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 	}
 
@@ -96,7 +96,7 @@ public final class SourceColumnAnnotation
 
 	// ********** static methods **********
 
-	static ColumnAnnotation createAttributeOverrideColumn(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
+	static ColumnAnnotation createAttributeOverrideColumn(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
 		return new SourceColumnAnnotation(parent, element, buildAttributeOverrideAnnotationAdapter(attributeOverrideAnnotationAdapter));
 	}
 

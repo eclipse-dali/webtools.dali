@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -44,7 +44,7 @@ public abstract class SourceCompleteColumnAnnotation
 	protected TextRange scaleTextRange;
 
 
-	protected SourceCompleteColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	protected SourceCompleteColumnAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
 		this.lengthAdapter = this.buildLengthAdapter();

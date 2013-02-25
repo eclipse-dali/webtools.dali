@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.ListenerList;
  */
 abstract class RootBinaryNode
 	extends BinaryNode
-	implements JavaResourceNode.Root
+	implements JavaResourceModel.Root
 {
 	/** pluggable annotation provider */
 	private final AnnotationProvider annotationProvider;
@@ -33,7 +33,7 @@ abstract class RootBinaryNode
 
 	// ********** construction **********
 	
-	RootBinaryNode(JavaResourceNode parent, AnnotationProvider annotationProvider) {
+	RootBinaryNode(JavaResourceModel parent, AnnotationProvider annotationProvider) {
 		super(parent);
 		this.annotationProvider = annotationProvider;
 	}

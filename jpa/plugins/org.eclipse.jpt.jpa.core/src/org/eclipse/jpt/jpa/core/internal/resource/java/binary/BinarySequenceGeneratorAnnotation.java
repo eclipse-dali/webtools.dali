@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
@@ -25,7 +25,7 @@ public abstract class BinarySequenceGeneratorAnnotation
 	private String sequenceName;
 
 
-	protected BinarySequenceGeneratorAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinarySequenceGeneratorAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.sequenceName = this.buildSequenceName();
 	}

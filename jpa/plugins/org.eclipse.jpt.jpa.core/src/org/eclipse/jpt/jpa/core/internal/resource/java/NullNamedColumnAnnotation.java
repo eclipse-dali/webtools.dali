@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 
@@ -29,7 +29,7 @@ public abstract class NullNamedColumnAnnotation<A extends NamedColumnAnnotation>
 	extends NullAnnotation<A>
 	implements NamedColumnAnnotation
 {
-	protected NullNamedColumnAnnotation(JavaResourceNode parent) {
+	protected NullNamedColumnAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 

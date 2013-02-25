@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
  * @since 2.2
  */
 public interface JavaResourcePackageFragmentRoot
-	extends JavaResourceNode.Root
+	extends JavaResourceModel.Root
 {
 	/**
 	 * The content type for Java archives (<code>.jar</code>).

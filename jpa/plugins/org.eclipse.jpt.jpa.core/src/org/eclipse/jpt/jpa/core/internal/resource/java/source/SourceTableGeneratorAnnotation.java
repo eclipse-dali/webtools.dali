@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -72,7 +72,7 @@ public final class SourceTableGeneratorAnnotation
 	private final UniqueConstraintsAnnotationContainer uniqueConstraintsContainer = new UniqueConstraintsAnnotationContainer();
 
 
-	public SourceTableGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element) {
+	public SourceTableGeneratorAnnotation(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.tableAdapter = this.buildAdapter(TABLE_ADAPTER);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);

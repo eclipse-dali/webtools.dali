@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -27,7 +27,7 @@ public final class BinarySecondaryTableAnnotation
 {
 	private final Vector<PrimaryKeyJoinColumnAnnotation> pkJoinColumns;
 
-	public BinarySecondaryTableAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinarySecondaryTableAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.pkJoinColumns = this.buildPkJoinColumns();
 	}

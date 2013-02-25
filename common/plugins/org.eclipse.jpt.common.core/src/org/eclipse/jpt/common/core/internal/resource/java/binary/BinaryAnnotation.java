@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 
 /**
  * JAR annotation
@@ -23,7 +23,7 @@ public abstract class BinaryAnnotation
 {
 	final IAnnotation jdtAnnotation;
 
-	protected BinaryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent);
 		this.jdtAnnotation = jdtAnnotation;
 	}

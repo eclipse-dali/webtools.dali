@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -38,7 +38,7 @@ abstract class BinaryAbstractType
 	
 	// ********** construction/initialization **********
 	
-	protected BinaryAbstractType(JavaResourceNode parent, TypeAdapter adapter) {
+	protected BinaryAbstractType(JavaResourceModel parent, TypeAdapter adapter) {
 		super(parent, adapter);
 		this.typeBinding = buildTypeBinding(adapter.getTypeBinding());
 		this.declaringTypeName = buildDeclaringTypeName();

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -23,7 +23,7 @@ public final class BinaryMapKeyJoinColumn2_0Annotation
 	implements MapKeyJoinColumn2_0Annotation
 {
 
-	public BinaryMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryMapKeyJoinColumn2_0Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

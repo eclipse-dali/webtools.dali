@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -28,7 +28,7 @@ final class BinaryUniqueConstraintAnnotation
 	private final Vector<String> columnNames;
 
 
-	BinaryUniqueConstraintAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	BinaryUniqueConstraintAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.columnNames = this.buildColumnNames();
 	}

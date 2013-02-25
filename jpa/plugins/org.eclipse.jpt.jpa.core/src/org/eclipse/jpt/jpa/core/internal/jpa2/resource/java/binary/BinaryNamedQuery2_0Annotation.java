@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -26,7 +26,7 @@ public final class BinaryNamedQuery2_0Annotation
 {
 	private LockModeType_2_0 lockMode;
 
-	public BinaryNamedQuery2_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedQuery2_0Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.lockMode = this.buildLockMode();
 	}

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -41,7 +41,7 @@ public abstract class SourceSequenceGeneratorAnnotation
 	private TextRange sequenceNameTextRange;
 
 
-	protected SourceSequenceGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element) {
+	protected SourceSequenceGeneratorAnnotation(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.sequenceNameAdapter = this.buildAdapter(SEQUENCE_NAME_ADAPTER);
 	}

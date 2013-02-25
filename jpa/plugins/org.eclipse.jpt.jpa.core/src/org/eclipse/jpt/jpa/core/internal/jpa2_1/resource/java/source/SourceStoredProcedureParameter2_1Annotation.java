@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotation
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.TypeStringExpressionConverter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -56,7 +56,7 @@ public final class SourceStoredProcedureParameter2_1Annotation
 	private boolean fqTypeNameStale = true;
 	
 	public static SourceStoredProcedureParameter2_1Annotation buildNamedStoredProcedureQuery2_1Parameter(
-			JavaResourceNode parent,
+			JavaResourceModel parent,
 			AnnotatedElement element,
 			DeclarationAnnotationAdapter namedStoredProcedureQueryAdapter,
 			int index)
@@ -70,7 +70,7 @@ public final class SourceStoredProcedureParameter2_1Annotation
 
 	
 	public static SourceStoredProcedureParameter2_1Annotation buildNestedSourceStoredProcedureParameter2_1Annotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) 
 	{
@@ -81,7 +81,7 @@ public final class SourceStoredProcedureParameter2_1Annotation
 	}
 
 	private SourceStoredProcedureParameter2_1Annotation(
-			JavaResourceNode parent,
+			JavaResourceModel parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter idaa)
 	{

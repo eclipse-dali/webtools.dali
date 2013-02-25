@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseTableAnnotation;
@@ -23,7 +23,7 @@ public final class NullCollectionTable2_0Annotation
 	extends NullBaseTableAnnotation<CollectionTable2_0Annotation>
 	implements CollectionTable2_0Annotation
 {
-	public NullCollectionTable2_0Annotation(JavaResourceNode parent) {
+	public NullCollectionTable2_0Annotation(JavaResourceModel parent) {
 		super(parent);
 	}
 	

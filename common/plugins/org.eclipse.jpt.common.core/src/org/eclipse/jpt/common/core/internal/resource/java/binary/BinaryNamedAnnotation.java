@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 
 /**
  * Used for annotations that have no behavior, just a name
@@ -21,7 +21,7 @@ public final class BinaryNamedAnnotation
 
 	private final String annotationName;
 
-	public BinaryNamedAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation, String annotationName) {
+	public BinaryNamedAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation, String annotationName) {
 		super(parent, jdtAnnotation);
 		this.annotationName = annotationName;
 	}

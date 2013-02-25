@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.List;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
@@ -25,7 +25,7 @@ public abstract class BinaryNamedQueryAnnotation
 {
 	private String query;
 	
-	public BinaryNamedQueryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedQueryAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.query = this.buildQuery();
 	}

@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 public abstract class BinaryNode
 	extends AbstractJavaResourceNode
 {
-	protected BinaryNode(JavaResourceNode parent) {
+	protected BinaryNode(JavaResourceModel parent) {
 		super(parent);
 	}
 

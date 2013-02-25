@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -33,7 +33,7 @@ public final class BinaryNamedStoredProcedureQuery2_1Annotation
 	private final Vector<String> resultSetMappings;
 
 
-	public BinaryNamedStoredProcedureQuery2_1Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryNamedStoredProcedureQuery2_1Annotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.procedureName = this.buildProcedureName();
 		this.parameters = this.buildParameters();

@@ -33,7 +33,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -2684,7 +2684,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<IFile> getGeneratedMetamodelFiles() {
-		return IterableTools.transform(this.getGeneratedMetamodelTopLevelTypes(), JavaResourceNode.FILE_TRANSFORMER);
+		return IterableTools.transform(this.getGeneratedMetamodelTopLevelTypes(), JavaResourceModel.FILE_TRANSFORMER);
 	}
 
 	protected Iterable<JavaResourceAbstractType> getGeneratedMetamodelTopLevelTypes() {

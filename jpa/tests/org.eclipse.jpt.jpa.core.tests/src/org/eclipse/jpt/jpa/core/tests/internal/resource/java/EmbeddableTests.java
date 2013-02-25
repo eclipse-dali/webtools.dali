@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
@@ -56,7 +56,7 @@ public class EmbeddableTests extends JpaJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestEmbeddable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		JavaResourceNode mappingAnnotation = resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
+		JavaResourceModel mappingAnnotation = resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 	}
 	
@@ -64,7 +64,7 @@ public class EmbeddableTests extends JpaJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestEmbeddableAndEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		JavaResourceNode mappingAnnotation = resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
+		JavaResourceModel mappingAnnotation = resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 		
 		EntityAnnotation entity = (EntityAnnotation) resourceType.getAnnotation(JPA.ENTITY);

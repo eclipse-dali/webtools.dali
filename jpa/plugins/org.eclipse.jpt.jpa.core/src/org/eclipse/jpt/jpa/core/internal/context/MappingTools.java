@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
@@ -528,7 +528,7 @@ public final class MappingTools {
 	 * any messages for types in another project (e.g. referenced by
 	 * persistence.xml)
 	 */
-	public static boolean nodeIsInternalSource(JpaContextModel contextNode, JavaResourceNode resourceNode) {
+	public static boolean nodeIsInternalSource(JpaContextModel contextNode, JavaResourceModel resourceNode) {
 		IResource resource = contextNode.getResource();
 		// 'resource' will be null if the node is "external" and binary;
 		// the resource will be in a different project if the node is "external" and source;

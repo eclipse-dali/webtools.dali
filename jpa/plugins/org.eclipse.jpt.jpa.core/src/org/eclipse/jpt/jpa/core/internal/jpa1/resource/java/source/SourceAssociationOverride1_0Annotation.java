@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.source;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -28,7 +28,7 @@ public final class SourceAssociationOverride1_0Annotation
 {
 	
 	public static SourceAssociationOverride1_0Annotation buildSourceAssociationOverrideAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element) {
 
 		return new SourceAssociationOverride1_0Annotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -48,7 +48,7 @@ public final class SourceAssociationOverride1_0Annotation
 	}
 
 	public static SourceAssociationOverride1_0Annotation buildNestedSourceAssociationOverrideAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
@@ -56,7 +56,7 @@ public final class SourceAssociationOverride1_0Annotation
 	}
 
 	private SourceAssociationOverride1_0Annotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			DeclarationAnnotationAdapter daa) {
 
@@ -64,14 +64,14 @@ public final class SourceAssociationOverride1_0Annotation
 	}
 
 	private SourceAssociationOverride1_0Annotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourceAssociationOverride1_0Annotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceAssociationOverride1_0Annotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 	}
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotation
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -82,7 +82,7 @@ public final class SourceXmlElementAnnotation
 	}
 	
 	public static SourceXmlElementAnnotation buildNestedSourceXmlElementAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement annotatedElement, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
@@ -90,16 +90,16 @@ public final class SourceXmlElementAnnotation
 	}
 	
 	
-	private SourceXmlElementAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa) {
+	private SourceXmlElementAnnotation(JavaResourceModel parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa) {
 		this(parent, annotatedElement, daa, new ElementAnnotationAdapter(annotatedElement, daa));
 	}
 	
-	private SourceXmlElementAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+	private SourceXmlElementAnnotation(JavaResourceModel parent, AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, annotatedElement, idaa, new ElementIndexedAnnotationAdapter(annotatedElement, idaa));
 	}
 	
 	private SourceXmlElementAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement annotatedElement, 
 			DeclarationAnnotationAdapter daa, 
 			AnnotationAdapter annotationAdapter) {

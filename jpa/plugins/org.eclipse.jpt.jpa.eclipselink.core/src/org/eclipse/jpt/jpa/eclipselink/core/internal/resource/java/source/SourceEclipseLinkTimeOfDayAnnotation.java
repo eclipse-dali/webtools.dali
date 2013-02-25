@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotatio
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NumberIntegerExpressionConverter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -51,7 +51,7 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	private TextRange millisecondTextRange;
 
 
-	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.hourDeclarationAdapter = buildHourAdapter(daa);
 		this.hourAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, this.hourDeclarationAdapter);

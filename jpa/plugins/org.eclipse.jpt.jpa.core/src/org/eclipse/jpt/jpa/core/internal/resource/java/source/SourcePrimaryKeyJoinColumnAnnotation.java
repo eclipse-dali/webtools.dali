@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -44,7 +44,7 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 
 
 	public static SourcePrimaryKeyJoinColumnAnnotation buildSourcePrimaryKeyJoinColumnAnnotation(
-		JavaResourceNode parent, 
+		JavaResourceModel parent, 
 		AnnotatedElement element) {
 	
 		return new SourcePrimaryKeyJoinColumnAnnotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -64,22 +64,22 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 	}
 	
 	public static SourcePrimaryKeyJoinColumnAnnotation buildNestedSourcePrimaryKeyJoinColumnAnnotation(
-			JavaResourceNode parent, 
+			JavaResourceModel parent, 
 			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter idaa) {
 		
 		return new SourcePrimaryKeyJoinColumnAnnotation(parent, element, idaa);
 	}
 
-	private SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	private SourcePrimaryKeyJoinColumnAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
-	private SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+	private SourcePrimaryKeyJoinColumnAnnotation(JavaResourceModel parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 	}
 
-	private SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourcePrimaryKeyJoinColumnAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.referencedColumnNameDeclarationAdapter = this.buildReferencedColumnNameDeclarationAdapter();
 		this.referencedColumnNameAdapter = this.buildReferencedColumnNameAdapter();

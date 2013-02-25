@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @since 2.2
  */
 public interface JavaResourcePackageFragment
-	extends JavaResourceNode
+	extends JavaResourceModel
 {
 	/**
 	 * Return the package fragment's class files that contain "annotated" types.

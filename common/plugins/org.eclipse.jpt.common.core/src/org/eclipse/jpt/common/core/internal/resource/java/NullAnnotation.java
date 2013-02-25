@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -24,7 +24,7 @@ public abstract class NullAnnotation<A extends Annotation>
 	implements Annotation
 {
 
-	protected NullAnnotation(JavaResourceNode parent) {
+	protected NullAnnotation(JavaResourceModel parent) {
 		super(parent);
 	}
 	

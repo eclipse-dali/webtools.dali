@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @since 3.0
  */
 public interface JavaResourceClassFile
-	extends JavaResourceNode
+	extends JavaResourceModel
 {
 	/**
 	 * Return the class file's type.

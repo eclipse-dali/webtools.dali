@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
@@ -26,7 +26,7 @@ public class BinaryXmlNsAnnotation
 	private String prefix;
 	
 	
-	public BinaryXmlNsAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlNsAnnotation(JavaResourceModel parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.namespaceURI = this.buildNamespaceURI();
 		this.prefix = this.buildPrefix();
