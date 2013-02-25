@@ -28,7 +28,7 @@ public class JptCommonUtilityPredicateTests {
 		suite.addTestSuite(PredicateTests.class);
 		suite.addTestSuite(PredicateWrapperTests.class);
 		suite.addTestSuite(TransformerPredicateTests.class);
-		suite.addTestSuite(TransformingPredicateWrapperTests.class);
+		suite.addTestSuite(TransformationPredicateTests.class);
 		suite.addTestSuite(UniquePredicateTests.class);
 		suite.addTestSuite(UniqueIdentityPredicateTests.class);
 		suite.addTestSuite(XORPredicateTests.class);

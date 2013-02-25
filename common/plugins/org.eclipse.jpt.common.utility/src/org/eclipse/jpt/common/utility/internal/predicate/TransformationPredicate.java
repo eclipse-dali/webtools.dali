@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  *   passed to its transformer before being forwarded to the wrapped predicate)
  * @param <O> the type of objects to be evaluated by the wrapped predicate
  */
-public class TransformingPredicateWrapper<I, O>
+public class TransformationPredicate<I, O>
 	implements Predicate<I>, Cloneable, Serializable
 {
 	protected final Predicate<? super O> predicate;
@@ -31,7 +31,7 @@ public class TransformingPredicateWrapper<I, O>
 	private static final long serialVersionUID = 1L;
 
 
-	public TransformingPredicateWrapper(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
+	public TransformationPredicate(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
 		super();
 		if ((predicate == null) || (transformer == null)) {
 			throw new NullPointerException();
@@ -53,10 +53,10 @@ public class TransformingPredicateWrapper<I, O>
 	}
 
 	@Override
-	public TransformingPredicateWrapper<I, O> clone() {
+	public TransformationPredicate<I, O> clone() {
 		try {
 			@SuppressWarnings("unchecked")
-			TransformingPredicateWrapper<I, O> clone = (TransformingPredicateWrapper<I, O>) super.clone();
+			TransformationPredicate<I, O> clone = (TransformationPredicate<I, O>) super.clone();
 			return clone;
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
@@ -65,11 +65,11 @@ public class TransformingPredicateWrapper<I, O>
 
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof TransformingPredicateWrapper)) {
+		if ( ! (o instanceof TransformationPredicate)) {
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-		TransformingPredicateWrapper<I, O> other = (TransformingPredicateWrapper<I, O>) o;
+		TransformationPredicate<I, O> other = (TransformationPredicate<I, O>) o;
 		return this.predicate.equals(other.predicate) && this.transformer.equals(other.transformer);
 	}
 

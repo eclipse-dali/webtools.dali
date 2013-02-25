@@ -187,8 +187,8 @@ public final class PredicateTools {
 	 * specified transformer to transform a variable before evaluating it
 	 * with the wrapped predicate.
 	 */
-	public static <I, O> TransformingPredicateWrapper<I, O> wrap(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
-		return new TransformingPredicateWrapper<I, O>(predicate, transformer);
+	public static <I, O> TransformationPredicate<I, O> wrap(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
+		return new TransformationPredicate<I, O>(predicate, transformer);
 	}
 
 

@@ -12,20 +12,20 @@ package org.eclipse.jpt.common.utility.tests.internal.predicate;
 import java.io.Serializable;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.predicate.TransformingPredicateWrapper;
+import org.eclipse.jpt.common.utility.internal.predicate.TransformationPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
-public class TransformingPredicateWrapperTests
+public class TransformationPredicateTests
 	extends TestCase
 {
-	private TransformingPredicateWrapper<Person, String> predicate;
+	private TransformationPredicate<Person, String> predicate;
 
 
-	public TransformingPredicateWrapperTests(String name) {
+	public TransformationPredicateTests(String name) {
 		super(name);
 	}
 
@@ -48,20 +48,20 @@ public class TransformingPredicateWrapperTests
 	}
 
 	public void testClone() {
-		TransformingPredicateWrapper<Person, String> predicate2 = this.predicate.clone();
+		TransformationPredicate<Person, String> predicate2 = this.predicate.clone();
 		assertEquals(this.predicate, predicate2);
 		assertNotSame(this.predicate, predicate2);
 	}
 
 	public void testEquals() {
-		TransformingPredicateWrapper<Person, String> predicate2 = PredicateTools.wrap(Predicate.NotNull.<String>instance(), Person.NAME_TRANSFORMER);
+		TransformationPredicate<Person, String> predicate2 = PredicateTools.wrap(Predicate.NotNull.<String>instance(), Person.NAME_TRANSFORMER);
 		assertEquals(this.predicate, predicate2);
 		assertEquals(this.predicate.hashCode(), predicate2.hashCode());
 		assertFalse(this.predicate.equals(Predicate.NotNull.instance()));
 	}
 
 	public void testSerialization() throws Exception {
-		TransformingPredicateWrapper<Person, String> predicate2 = TestTools.serialize(this.predicate);
+		TransformationPredicate<Person, String> predicate2 = TestTools.serialize(this.predicate);
 		assertEquals(this.predicate, predicate2);
 		assertNotSame(this.predicate, predicate2);
 	}
