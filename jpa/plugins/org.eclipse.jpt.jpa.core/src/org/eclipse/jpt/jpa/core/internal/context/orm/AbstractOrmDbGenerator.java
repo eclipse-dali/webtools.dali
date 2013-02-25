@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -36,7 +36,7 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	protected int defaultAllocationSize;
 
 
-	protected AbstractOrmDbGenerator(JpaContextNode parent, X xmlGenerator) {
+	protected AbstractOrmDbGenerator(JpaContextModel parent, X xmlGenerator) {
 		super(parent, xmlGenerator);
 		this.specifiedInitialValue = xmlGenerator.getInitialValue();
 		this.specifiedAllocationSize = xmlGenerator.getAllocationSize();

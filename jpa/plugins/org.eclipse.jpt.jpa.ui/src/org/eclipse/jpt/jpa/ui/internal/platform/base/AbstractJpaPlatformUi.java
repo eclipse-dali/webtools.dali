@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -154,9 +154,9 @@ public abstract class AbstractJpaPlatformUi
 	/* CU private */ class UiDefinitionFilter
 		extends Predicate.Adapter<MappingUiDefinition>
 	{
-		private final JpaContextNode node;
+		private final JpaContextModel node;
 		
-		public UiDefinitionFilter(JpaContextNode node) {
+		public UiDefinitionFilter(JpaContextModel node) {
 			super();
 			this.node =  node;
 		}

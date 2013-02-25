@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.db.Schema;
  * @since 2.0
  */
 public interface TypeMapping
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	PersistentType getPersistentType();
 

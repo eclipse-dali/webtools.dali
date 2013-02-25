@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Config;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -139,7 +139,7 @@ public class GenericJpaFactory2_0
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
 
-	public JavaColumn buildJavaMapKeyColumn(JpaContextNode parent, JavaColumn.Owner owner) {
+	public JavaColumn buildJavaMapKeyColumn(JpaContextModel parent, JavaColumn.Owner owner) {
 		return new GenericJavaColumn(parent, owner);
 	}
 

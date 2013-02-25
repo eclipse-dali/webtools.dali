@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Java generator container
@@ -49,7 +49,7 @@ public interface JavaGeneratorContainer
 		/**
 		 * Return the container's parent.
 		 */
-		JpaContextNode getGeneratorContainerParent();
+		JpaContextModel getGeneratorContainerParent();
 
 		/**
 		 * Return the element that is annotated with generators.

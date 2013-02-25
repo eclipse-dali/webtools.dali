@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface Cascade
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	boolean isAll();
 	void setAll(boolean value);

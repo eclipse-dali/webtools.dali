@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 
@@ -43,5 +43,5 @@ public interface OrmManagedTypeDefinition
 	 * Build a context managed type for the specified parent 
 	 * and resource managed type, using the specified factory.
 	 */
-	OrmManagedType buildContextManagedType(JpaContextNode parent, XmlManagedType resourceManagedType, OrmXmlContextNodeFactory factory);
+	OrmManagedType buildContextManagedType(JpaContextModel parent, XmlManagedType resourceManagedType, OrmXmlContextNodeFactory factory);
 }

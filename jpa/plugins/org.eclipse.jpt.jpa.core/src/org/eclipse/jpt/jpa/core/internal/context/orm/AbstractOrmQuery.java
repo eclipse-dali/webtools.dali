@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
@@ -47,7 +47,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	protected final ContextListContainer<OrmQueryHint, XmlQueryHint> hintContainer;
 
 
-	protected AbstractOrmQuery(JpaContextNode parent, X xmlQuery) {
+	protected AbstractOrmQuery(JpaContextModel parent, X xmlQuery) {
 		super(parent);
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();

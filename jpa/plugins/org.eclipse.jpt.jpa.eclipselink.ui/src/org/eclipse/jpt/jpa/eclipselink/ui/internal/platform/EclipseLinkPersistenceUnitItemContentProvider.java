@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -31,7 +31,7 @@ public class EclipseLinkPersistenceUnitItemContentProvider
 	}
 	
 	@Override
-	protected void addChildrenModelsTo(ArrayList<CollectionValueModel<? extends JpaContextNode>> list) {
+	protected void addChildrenModelsTo(ArrayList<CollectionValueModel<? extends JpaContextModel>> list) {
 		super.addChildrenModelsTo(list);
 		// add after the implied mapping file
 		list.add(3, this.buildImpliedEclipseLinkMappingFilesModel());

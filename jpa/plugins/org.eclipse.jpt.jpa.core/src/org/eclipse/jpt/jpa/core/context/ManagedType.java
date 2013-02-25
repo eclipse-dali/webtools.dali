@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @since 3.3
  */
 public interface ManagedType
-	extends JpaContextNode
+	extends JpaContextModel
 {
 
 	/**

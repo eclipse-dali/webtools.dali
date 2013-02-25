@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
  * @since 2.0
  */
 public interface JpaRootContextNode
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	// ********** persistence.xml **********
 

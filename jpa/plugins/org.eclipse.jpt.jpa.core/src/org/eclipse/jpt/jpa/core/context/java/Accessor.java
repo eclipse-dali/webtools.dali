@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * @since 3.1
  */
 public interface Accessor
-	extends JpaContextNode, JavaElementReference
+	extends JpaContextModel, JavaElementReference
 {
 	/**
 	 * Return the <em>resource</em> attribute(field/method) that is to be annotated. 

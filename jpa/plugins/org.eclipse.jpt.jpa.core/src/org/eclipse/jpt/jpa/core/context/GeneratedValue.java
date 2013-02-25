@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 2.0
  */
 public interface GeneratedValue
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	GenerationType getStrategy();
 	GenerationType getSpecifiedStrategy();

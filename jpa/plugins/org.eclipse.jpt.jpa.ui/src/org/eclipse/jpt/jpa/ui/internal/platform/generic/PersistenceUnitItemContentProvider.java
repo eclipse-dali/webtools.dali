@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
  * Item content provider for project explorer.
  */
 public class PersistenceUnitItemContentProvider
-	extends AbstractItemTreeContentProvider<PersistenceUnit, JpaContextNode>
+	extends AbstractItemTreeContentProvider<PersistenceUnit, JpaContextModel>
 {
 	public PersistenceUnitItemContentProvider(PersistenceUnit persistenceUnit, Manager manager) {
 		super(persistenceUnit, manager);
@@ -52,13 +52,13 @@ public class PersistenceUnitItemContentProvider
 	}
 
 	@Override
-	protected CollectionValueModel<JpaContextNode> buildChildrenModel() {
-		ArrayList<CollectionValueModel<? extends JpaContextNode>> list = new ArrayList<CollectionValueModel<? extends JpaContextNode>>(4);
+	protected CollectionValueModel<JpaContextModel> buildChildrenModel() {
+		ArrayList<CollectionValueModel<? extends JpaContextModel>> list = new ArrayList<CollectionValueModel<? extends JpaContextModel>>(4);
 		this.addChildrenModelsTo(list);
 		return CompositeCollectionValueModel.forModels(list);
 	}
 
-	protected void addChildrenModelsTo(ArrayList<CollectionValueModel<? extends JpaContextNode>> list) {
+	protected void addChildrenModelsTo(ArrayList<CollectionValueModel<? extends JpaContextModel>> list) {
 		list.add(this.buildNotNullSpecifiedMappingFilesModel());
 		list.add(this.buildImpliedMappingFilesModel());
 		list.add(this.buildNotNullJavaManagedTypesModel());

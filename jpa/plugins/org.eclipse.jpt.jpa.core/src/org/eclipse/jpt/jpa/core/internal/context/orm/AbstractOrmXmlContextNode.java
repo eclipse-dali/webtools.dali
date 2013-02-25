@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
 public abstract class AbstractOrmXmlContextNode
 	extends AbstractJpaContextNode
 {
-	protected AbstractOrmXmlContextNode(JpaContextNode parent) {
+	protected AbstractOrmXmlContextNode(JpaContextModel parent) {
 		super(parent);
 	}
 

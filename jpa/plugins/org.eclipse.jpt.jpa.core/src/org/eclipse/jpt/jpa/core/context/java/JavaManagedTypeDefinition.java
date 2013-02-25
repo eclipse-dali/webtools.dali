@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 
 /**
@@ -60,5 +60,5 @@ public interface JavaManagedTypeDefinition
 	/**
 	 * Return a new <code>JavaManagedType</code>
 	 */
-	JavaManagedType buildContextManagedType(JpaContextNode parent, JavaResourceType jrt, JpaFactory factory);
+	JavaManagedType buildContextManagedType(JpaContextModel parent, JavaResourceType jrt, JpaFactory factory);
 }

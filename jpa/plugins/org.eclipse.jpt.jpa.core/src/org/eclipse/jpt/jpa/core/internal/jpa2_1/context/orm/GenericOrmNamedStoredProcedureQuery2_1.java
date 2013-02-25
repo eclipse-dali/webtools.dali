@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaNamedStoredProcedureQuery2_1;
@@ -39,7 +39,7 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	protected final Vector<String> resultSetMappings = new Vector<String>();
 
 
-	public GenericOrmNamedStoredProcedureQuery2_1(JpaContextNode parent, XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {
+	public GenericOrmNamedStoredProcedureQuery2_1(JpaContextModel parent, XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery) {
 		super(parent, xmlNamedStoredProcedureQuery);
 		this.procedureName = this.xmlQuery.getProcedureName();
 		this.parameterContainer = this.buildParameterContainer();

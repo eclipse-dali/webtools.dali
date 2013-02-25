@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -34,11 +34,11 @@ public class GenericOrmJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner) {
 		this(parent, owner, null);
 	}
 
-	public GenericOrmJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
+	public GenericOrmJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}

@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @since 2.3
  */
 public interface OverrideContainer
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the type mapping that contains the override container.

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its column annotation
  * must:<ul>
  * <li>call the "super" constructor that takes a column annotation
- *     {@link #AbstractJavaNamedColumn(JpaContextNode, ReadOnlyNamedColumn.Owner, NamedColumnAnnotation)}
+ *     {@link #AbstractJavaNamedColumn(JpaContextModel, ReadOnlyNamedColumn.Owner, NamedColumnAnnotation)}
  * <li>override {@link #setColumnAnnotation(NamedColumnAnnotation)} to set the column annotation
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
@@ -54,11 +54,11 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 
 	protected Table dbTable;
 
-	protected AbstractJavaNamedColumn(JpaContextNode parent, O owner) {
+	protected AbstractJavaNamedColumn(JpaContextModel parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaNamedColumn(JpaContextNode parent, O owner, A columnAnnotation) {
+	protected AbstractJavaNamedColumn(JpaContextModel parent, O owner, A columnAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setColumnAnnotation(columnAnnotation);

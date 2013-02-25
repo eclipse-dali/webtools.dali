@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 
@@ -50,10 +50,10 @@ public class JpaNavigatorItemLabelProviderFactory
 	}
 
 	private ItemExtendedLabelProviderFactory getDelegate(Object item) {
-		return (item instanceof JpaContextNode) ? this.getDelegate((JpaContextNode) item) : null;
+		return (item instanceof JpaContextModel) ? this.getDelegate((JpaContextModel) item) : null;
 	}
 
-	private synchronized ItemExtendedLabelProviderFactory getDelegate(JpaContextNode item) {
+	private synchronized ItemExtendedLabelProviderFactory getDelegate(JpaContextModel item) {
 		JpaPlatform jpaPlatform = item.getJpaProject().getJpaPlatform();
 		ItemExtendedLabelProviderFactory delegate = this.delegates.get(jpaPlatform);
 		if (delegate == null) {

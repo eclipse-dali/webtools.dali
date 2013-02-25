@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -109,10 +109,10 @@ public class MappingFileWizard extends Wizard
 	}
 	
 	private PersistenceUnit extractPersistenceUnit(Object selection) {
-		if (selection instanceof JpaContextNode) {
+		if (selection instanceof JpaContextModel) {
 			// may be null if node is above level of persistence unit, but in those cases
 			// null is the expected result
-			return ((JpaContextNode) selection).getPersistenceUnit();
+			return ((JpaContextModel) selection).getPersistenceUnit();
 		}
 
 		// also get the persistence unit for a given jpa project selection
@@ -158,8 +158,8 @@ public class MappingFileWizard extends Wizard
 		if (selection instanceof IContainer) {
 			return (IContainer) selection;
 		}
-		if (selection instanceof JpaContextNode) {
-			return getDefaultContainer(((JpaContextNode) selection).getJpaProject().getProject());
+		if (selection instanceof JpaContextModel) {
+			return getDefaultContainer(((JpaContextModel) selection).getJpaProject().getProject());
 		}
 		
 		IResource resource = PlatformTools.getAdapter(selection, IResource.class);
@@ -171,7 +171,7 @@ public class MappingFileWizard extends Wizard
 				return (IContainer) resource;
 			}
 		}
-		JpaContextNode node = PlatformTools.getAdapter(selection, JpaContextNode.class);
+		JpaContextModel node = PlatformTools.getAdapter(selection, JpaContextModel.class);
 		if (node != null) {
 			return getDefaultContainer(node.getJpaProject().getProject());
 		}

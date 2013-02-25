@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.1
  */
 public interface MappingFilePersistenceUnitDefaults
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Covariant override.

@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
@@ -33,7 +33,7 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 	protected VirtualJoinColumn defaultJoinColumn;
 
 
-	protected AbstractJavaVirtualReferenceTable(JpaContextNode parent, Owner owner, T overridenTable) {
+	protected AbstractJavaVirtualReferenceTable(JpaContextModel parent, Owner owner, T overridenTable) {
 		super(parent, owner, overridenTable);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();

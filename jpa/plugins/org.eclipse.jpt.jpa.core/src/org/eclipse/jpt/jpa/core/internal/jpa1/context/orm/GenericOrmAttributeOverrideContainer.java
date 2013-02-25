@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
@@ -32,7 +32,7 @@ public class GenericOrmAttributeOverrideContainer
 		>
 	implements OrmAttributeOverrideContainer
 {
-	public GenericOrmAttributeOverrideContainer(JpaContextNode parent, OrmAttributeOverrideContainer.Owner owner) {
+	public GenericOrmAttributeOverrideContainer(JpaContextModel parent, OrmAttributeOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 

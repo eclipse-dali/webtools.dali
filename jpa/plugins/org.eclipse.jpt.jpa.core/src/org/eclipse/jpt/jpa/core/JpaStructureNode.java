@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core;
 import java.util.Collection;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Interface implemented by any object to appear in the JPA Structure view
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.0
  */
 public interface JpaStructureNode
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the text range for the structure node's <em>full</em> text

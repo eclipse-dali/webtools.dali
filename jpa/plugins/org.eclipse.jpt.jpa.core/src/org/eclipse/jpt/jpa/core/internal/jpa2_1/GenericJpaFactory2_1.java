@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2_1;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaFactory2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.GenericJavaConverterType;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.GenericJavaNamedStoredProcedureQuery2_1;
@@ -37,7 +37,7 @@ public class GenericJpaFactory2_1
 		super();
 	}
 
-	public JavaConverterType2_1 buildJavaConverterType(JpaContextNode parent, JavaResourceType jrt) {
+	public JavaConverterType2_1 buildJavaConverterType(JpaContextModel parent, JavaResourceType jrt) {
 		return new GenericJavaConverterType(parent, jrt);
 	}
 

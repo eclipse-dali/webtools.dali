@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -50,7 +50,7 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory
 	}
 	
 	@Override
-	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent, org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
+	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextModel parent, org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	

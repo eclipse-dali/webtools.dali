@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
@@ -38,7 +38,7 @@ public class GenericOrmAssociationOverrideContainer
 		>
 	implements OrmAssociationOverrideContainer2_0
 {
-	public GenericOrmAssociationOverrideContainer(JpaContextNode parent, OrmAssociationOverrideContainer.Owner owner) {
+	public GenericOrmAssociationOverrideContainer(JpaContextModel parent, OrmAssociationOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 

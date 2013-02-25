@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -47,7 +47,7 @@ public class GenericOrmQueryContainer
 	protected final ContextListContainer<OrmNamedStoredProcedureQuery2_1, XmlNamedStoredProcedureQuery> namedStoredProcedureQueryContainer;
 
 
-	public GenericOrmQueryContainer(JpaContextNode parent, XmlQueryContainer xmlQueryContainer) {
+	public GenericOrmQueryContainer(JpaContextModel parent, XmlQueryContainer xmlQueryContainer) {
 		super(parent);
 		this.xmlQueryContainer = xmlQueryContainer;
 		this.namedQueryContainer = this.buildNamedQueryContainer();

@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityDataModelProvider;
@@ -144,7 +144,7 @@ public class EntityWizard
 			return javaElement.getJavaProject().getProject().getName();
 		}
 
-		JpaContextNode node = PlatformTools.getAdapter(object, JpaContextNode.class);
+		JpaContextModel node = PlatformTools.getAdapter(object, JpaContextModel.class);
 		if (node != null) {
 			return node.getJpaProject().getProject().getName();
 		}

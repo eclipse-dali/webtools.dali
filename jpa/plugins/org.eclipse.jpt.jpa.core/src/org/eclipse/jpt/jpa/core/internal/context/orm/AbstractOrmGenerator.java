@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
@@ -35,7 +35,7 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 	protected String name;
 
 
-	protected AbstractOrmGenerator(JpaContextNode parent, X xmlGenerator) {
+	protected AbstractOrmGenerator(JpaContextModel parent, X xmlGenerator) {
 		super(parent);
 		this.xmlGenerator = xmlGenerator;
 		this.name = xmlGenerator.getName();

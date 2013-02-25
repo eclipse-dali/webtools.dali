@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
@@ -77,7 +77,7 @@ public class JavaEclipseLinkIdMapping
 
 	// ********** converter container parent adapter **********
 
-	public JpaContextNode getConverterContainerParent() {
+	public JpaContextModel getConverterContainerParent() {
 		return this;  // no adapter
 	}
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmSequenceGenerator;
@@ -34,7 +34,7 @@ public class GenericOrmSequenceGenerator2_0
 	protected String defaultSchema;
 
 
-	public GenericOrmSequenceGenerator2_0(JpaContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+	public GenericOrmSequenceGenerator2_0(JpaContextModel parent, XmlSequenceGenerator xmlSequenceGenerator) {
 		super(parent, xmlSequenceGenerator);
 		this.specifiedCatalog = xmlSequenceGenerator.getCatalog();
 		this.specifiedSchema = xmlSequenceGenerator.getSchema();

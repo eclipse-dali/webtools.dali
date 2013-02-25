@@ -204,7 +204,7 @@ public interface PersistentType
 	// ********** owner interface **********
 
 	interface Owner
-		extends JpaContextNode
+		extends JpaContextModel
 	{
 		/**
 		 * Return the access type that overrides the client persistent type's

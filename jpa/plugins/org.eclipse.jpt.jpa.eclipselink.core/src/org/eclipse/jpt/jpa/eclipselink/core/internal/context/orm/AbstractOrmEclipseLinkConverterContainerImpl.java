@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -48,7 +48,7 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
-	protected AbstractOrmEclipseLinkConverterContainerImpl(JpaContextNode parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
+	protected AbstractOrmEclipseLinkConverterContainerImpl(JpaContextModel parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
 		super(parent);
 		this.owner = owner;
 		this.xmlConverterContainer = xmlConverterContainer;

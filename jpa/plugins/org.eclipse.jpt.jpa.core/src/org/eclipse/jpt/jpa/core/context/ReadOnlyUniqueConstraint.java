@@ -19,7 +19,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyUniqueConstraint
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the unique constraint's column names.

@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface ReadOnlyAccessHolder
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the access type, whether specified or defaulted.

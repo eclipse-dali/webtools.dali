@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Corresponds to a Customizer resource model object
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.1
  */
 public interface EclipseLinkCustomizer
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	String getCustomizerClass();
 	

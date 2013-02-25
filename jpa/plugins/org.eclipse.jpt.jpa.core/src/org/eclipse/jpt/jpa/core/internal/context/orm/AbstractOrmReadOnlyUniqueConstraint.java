@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 
 public abstract class AbstractOrmReadOnlyUniqueConstraint
@@ -21,7 +21,7 @@ public abstract class AbstractOrmReadOnlyUniqueConstraint
 	protected final Vector<String> columnNames = new Vector<String>();
 
 
-	public AbstractOrmReadOnlyUniqueConstraint(JpaContextNode parent) {
+	public AbstractOrmReadOnlyUniqueConstraint(JpaContextModel parent) {
 		super(parent);
 	}
 

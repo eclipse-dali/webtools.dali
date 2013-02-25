@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
@@ -231,7 +231,7 @@ public class JavaEclipseLinkEntityImpl
 
 	// ********** converter container parent adapter **********
 
-	public JpaContextNode getConverterContainerParent() {
+	public JpaContextModel getConverterContainerParent() {
 		return this;  // no adapter
 	}
 

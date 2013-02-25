@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
@@ -20,7 +20,7 @@ public final class OrmEclipseLinkEntityMappingsConverterContainer
 	extends AbstractOrmEclipseLinkConverterContainerImpl
 {
 
-	public OrmEclipseLinkEntityMappingsConverterContainer(JpaContextNode parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
+	public OrmEclipseLinkEntityMappingsConverterContainer(JpaContextModel parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
 		super(parent, owner, xmlConverterContainer);
 	}
 

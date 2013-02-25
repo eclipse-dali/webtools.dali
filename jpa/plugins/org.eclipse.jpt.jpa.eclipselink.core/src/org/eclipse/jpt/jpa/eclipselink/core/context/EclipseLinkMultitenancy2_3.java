@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * EclipseLink multitenancy
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 3.1
  */
 public interface EclipseLinkMultitenancy2_3
-	extends JpaContextNode
+	extends JpaContextModel
 {
 
 	boolean isMultitenant();

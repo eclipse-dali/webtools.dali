@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
@@ -387,7 +387,7 @@ public abstract class AbstractJpaModel
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class AbstractContextCollectionContainer<C extends JpaContextNode, R>
+	protected abstract class AbstractContextCollectionContainer<C extends JpaContextModel, R>
 		extends CollectionContainer<C, R>
 	{
 		protected AbstractContextCollectionContainer() {
@@ -478,7 +478,7 @@ public abstract class AbstractJpaModel
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class ContextCollectionContainer<C extends JpaContextNode, R>
+	protected abstract class ContextCollectionContainer<C extends JpaContextModel, R>
 		extends AbstractContextCollectionContainer<C, R>
 	{
 		protected ContextCollectionContainer() {
@@ -526,7 +526,7 @@ public abstract class AbstractJpaModel
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class ContextListContainer<C extends JpaContextNode, R>
+	protected abstract class ContextListContainer<C extends JpaContextModel, R>
 		extends AbstractContextCollectionContainer<C, R>
 	{
 		protected ContextListContainer() {

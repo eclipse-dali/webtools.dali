@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
@@ -224,7 +224,7 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	// ********** converter container parent adapter **********
 
-	public JpaContextNode getConverterContainerParent() {
+	public JpaContextModel getConverterContainerParent() {
 		return this;  // no adapter
 	}
 

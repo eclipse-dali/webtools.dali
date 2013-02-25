@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
@@ -52,7 +52,7 @@ public interface JavaEclipseLinkConverterContainer
 		/**
 		 * Return the container's parent.
 		 */
-		JpaContextNode getConverterContainerParent();
+		JpaContextModel getConverterContainerParent();
 
 		/**
 		 * Return the element that is annotated with converters.

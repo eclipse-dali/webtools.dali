@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
@@ -28,14 +28,14 @@ public class GenericJavaPrimaryKeyJoinColumn
 	extends AbstractJavaNamedColumn<PrimaryKeyJoinColumnAnnotation, ReadOnlyBaseJoinColumn.Owner>
 	implements JavaPrimaryKeyJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextNode, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ PrimaryKeyJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaPrimaryKeyJoinColumn(JpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaPrimaryKeyJoinColumn(JpaContextModel parent, ReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 

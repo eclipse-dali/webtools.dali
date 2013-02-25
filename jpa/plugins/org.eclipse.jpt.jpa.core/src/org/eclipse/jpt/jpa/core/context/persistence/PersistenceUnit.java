@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
@@ -527,7 +527,7 @@ public interface PersistenceUnit
 	 * Simple property interface.
 	 */
 	interface Property
-		extends JpaContextNode, TypeRefactoringParticipant
+		extends JpaContextModel, TypeRefactoringParticipant
 	{
 		PersistenceUnit getParent();
 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
@@ -30,7 +30,7 @@ public abstract class AbstractOrmSequenceGenerator
 	protected String defaultSequenceName;
 
 
-	protected AbstractOrmSequenceGenerator(JpaContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+	protected AbstractOrmSequenceGenerator(JpaContextModel parent, XmlSequenceGenerator xmlSequenceGenerator) {
 		super(parent, xmlSequenceGenerator);
 		this.specifiedSequenceName = xmlSequenceGenerator.getSequenceName();
 	}

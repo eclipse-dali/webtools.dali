@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -64,11 +64,11 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmTable(JpaContextNode parent, Owner owner) {
+	protected AbstractOrmTable(JpaContextModel parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmTable(JpaContextNode parent, Owner owner, X xmlTable) {
+	protected AbstractOrmTable(JpaContextModel parent, Owner owner, X xmlTable) {
 		super(parent);
 		this.owner = owner;
 		this.setXmlTable(xmlTable);

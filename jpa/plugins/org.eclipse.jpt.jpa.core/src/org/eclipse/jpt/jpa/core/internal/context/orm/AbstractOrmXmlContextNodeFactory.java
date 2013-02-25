@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -219,11 +219,11 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualSecondaryTable(parent, owner, javaSecondaryTable);
 	}
 	
-	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
+	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextModel parent, ReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePrimaryKeyJoinColumn);
 	}
 
-	public OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
+	public OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
 		return new GenericOrmVirtualPrimaryKeyJoinColumn(parent, owner, javaPrimaryKeyJoinColumn);
 	}
 	
@@ -235,19 +235,19 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
-	public OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
+	public OrmJoinColumn buildOrmJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
 		return new GenericOrmJoinColumn(parent, owner, xmlJoinColumn);
 	}
 
-	public VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		return new GenericOrmVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	
-	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(JpaContextNode parent, OrmAttributeOverrideContainer.Owner owner) {
+	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(JpaContextModel parent, OrmAttributeOverrideContainer.Owner owner) {
 		return new GenericOrmAttributeOverrideContainer(parent, owner);
 	}
 	
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(JpaContextNode parent, OrmAssociationOverrideContainer.Owner owner) {
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(JpaContextModel parent, OrmAssociationOverrideContainer.Owner owner) {
 		return new GenericOrmAssociationOverrideContainer(parent, owner);
 	}
 	
@@ -279,39 +279,39 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 	
-	public OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
+	public OrmColumn buildOrmColumn(JpaContextModel parent, OrmColumn.Owner owner) {
 		return new GenericOrmColumn(parent, owner);
 	}
 	
-	public VirtualColumn buildOrmVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner) {
+	public VirtualColumn buildOrmVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner) {
 		return new GenericOrmVirtualColumn(parent, owner);
 	}
 	
-	public OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent, XmlGeneratedValue resourceGeneratedValue) {
+	public OrmGeneratedValue buildOrmGeneratedValue(JpaContextModel parent, XmlGeneratedValue resourceGeneratedValue) {
 		return new GenericOrmGeneratedValue(parent, resourceGeneratedValue);
 	}
 	
-	public OrmGeneratorContainer buildOrmGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
+	public OrmGeneratorContainer buildOrmGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer resourceGeneratorContainer) {
 		return new GenericOrmGeneratorContainer(parent, resourceGeneratorContainer);
 	}
 	
-	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
+	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextModel parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator(parent, resourceSequenceGenerator);
 	}
 	
-	public OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent, XmlTableGenerator resourceTableGenerator) {
+	public OrmTableGenerator buildOrmTableGenerator(JpaContextModel parent, XmlTableGenerator resourceTableGenerator) {
 		return new GenericOrmTableGenerator(parent, resourceTableGenerator);
 	}
 	
-	public OrmQueryContainer buildOrmQueryContainer(JpaContextNode parent, XmlQueryContainer resourceQueryContainer) {
+	public OrmQueryContainer buildOrmQueryContainer(JpaContextModel parent, XmlQueryContainer resourceQueryContainer) {
 		return new GenericOrmQueryContainer(parent, resourceQueryContainer);
 	}
 	
-	public OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextNode parent, XmlNamedNativeQuery resourceNamedNativeQuery) {
+	public OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextModel parent, XmlNamedNativeQuery resourceNamedNativeQuery) {
 		return new GenericOrmNamedNativeQuery(parent, resourceNamedNativeQuery);
 	}
 	
-	public OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
+	public OrmNamedQuery buildOrmNamedQuery(JpaContextModel parent, XmlNamedQuery resourceNamedQuery) {
 		return new GenericOrmNamedQuery(parent, resourceNamedQuery);
 	}
 	
@@ -367,11 +367,11 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new UnsupportedOrmAttributeMapping(parent, resourceMapping);
 	}
 	
-	public OrmUniqueConstraint buildOrmUniqueConstraint(JpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
+	public OrmUniqueConstraint buildOrmUniqueConstraint(JpaContextModel parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
 		return new GenericOrmUniqueConstraint(parent, owner, resourceUniqueConstraint);
 	}
 
-	public VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
+	public VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextModel parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
 		return new GenericOrmVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 

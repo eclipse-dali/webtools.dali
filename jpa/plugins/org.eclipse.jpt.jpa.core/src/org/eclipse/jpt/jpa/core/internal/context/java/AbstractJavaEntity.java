@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -934,7 +934,7 @@ public abstract class AbstractJavaEntity
 
 	// ********** generator container parent adapter **********
 
-	public JpaContextNode getGeneratorContainerParent() {
+	public JpaContextModel getGeneratorContainerParent() {
 		return this;  // no adapter
 	}
 

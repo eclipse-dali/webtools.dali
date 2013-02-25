@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Utility methods for manipulating context containers.
@@ -28,7 +28,7 @@ public class ContextContainerTools {
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	public interface Adapter<C extends JpaContextNode, R> {
+	public interface Adapter<C extends JpaContextModel, R> {
 
 		/**
 		 * Return the container's context elements.
@@ -77,14 +77,14 @@ public class ContextContainerTools {
 	 * appropriate (as opposed to simply rebuilding them in place).
 	 * </ul>
 	 */
-	public static <C extends JpaContextNode, R> void synchronizeWithResourceModel(Adapter<C, R> adapter) {
+	public static <C extends JpaContextModel, R> void synchronizeWithResourceModel(Adapter<C, R> adapter) {
 		sync(adapter, true);  // true = sync
 	}
 
 	/**
 	 * @see #synchronizeWithResourceModel(Adapter)
 	 */
-	public static <C extends JpaContextNode, R> void update(Adapter<C, R> adapter) {
+	public static <C extends JpaContextModel, R> void update(Adapter<C, R> adapter) {
 		sync(adapter, false);  // false = update
 	}
 
@@ -93,7 +93,7 @@ public class ContextContainerTools {
 	 * context nodes are either <em>synchronized</em> (<code>true</code>) or
 	 * <em>updated</em> (<code>false</code>).
 	 */
-	protected static <C extends JpaContextNode, R> void sync(Adapter<C, R> adapter, boolean sync) {
+	protected static <C extends JpaContextModel, R> void sync(Adapter<C, R> adapter, boolean sync) {
 		HashSet<C> contextElements = CollectionTools.set(adapter.getContextElements());
 		ArrayList<C> contextElementsToSync = new ArrayList<C>(contextElements.size());
 		int resourceIndex = 0;

@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -37,7 +37,7 @@ public class GenericJavaJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 

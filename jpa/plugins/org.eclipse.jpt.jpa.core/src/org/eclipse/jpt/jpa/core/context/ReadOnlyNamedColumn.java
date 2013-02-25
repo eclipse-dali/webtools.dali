@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyNamedColumn
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	// ********** name **********
 

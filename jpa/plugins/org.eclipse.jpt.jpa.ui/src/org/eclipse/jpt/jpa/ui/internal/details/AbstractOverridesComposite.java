@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
@@ -54,7 +54,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
 @SuppressWarnings("nls")
-public abstract class AbstractOverridesComposite<T extends JpaContextNode>
+public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 	extends Pane<T>
 {
 	private Pane<ReadOnlyAttributeOverride> attributeOverridePane;

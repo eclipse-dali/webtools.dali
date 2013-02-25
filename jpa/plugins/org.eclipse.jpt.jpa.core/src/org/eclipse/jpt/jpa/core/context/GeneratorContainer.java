@@ -27,7 +27,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.3
  */
 public interface GeneratorContainer
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the container's sequence and table generators.

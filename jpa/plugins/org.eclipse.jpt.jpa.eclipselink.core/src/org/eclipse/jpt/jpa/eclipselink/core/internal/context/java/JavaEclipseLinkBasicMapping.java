@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValueHolder;
@@ -97,7 +97,7 @@ public class JavaEclipseLinkBasicMapping
 
 	// ********** converter container parent adapter **********
 
-	public JpaContextNode getConverterContainerParent() {
+	public JpaContextModel getConverterContainerParent() {
 		return this;  // no adapter
 	}
 
@@ -140,7 +140,7 @@ public class JavaEclipseLinkBasicMapping
 
 	// ********** generator container parent adapter **********
 
-	public JpaContextNode getGeneratorContainerParent() {
+	public JpaContextModel getGeneratorContainerParent() {
 		return this;  // no adapter
 	}
 

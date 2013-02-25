@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
@@ -50,7 +50,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	private String defaultObjectValue;
 
 
-	public OrmEclipseLinkObjectTypeConverter(JpaContextNode parent, XmlObjectTypeConverter xmlConverter) {
+	public OrmEclipseLinkObjectTypeConverter(JpaContextModel parent, XmlObjectTypeConverter xmlConverter) {
 		super(parent, xmlConverter);
 		this.dataType = xmlConverter.getDataType();
 		this.objectType = xmlConverter.getObjectType();

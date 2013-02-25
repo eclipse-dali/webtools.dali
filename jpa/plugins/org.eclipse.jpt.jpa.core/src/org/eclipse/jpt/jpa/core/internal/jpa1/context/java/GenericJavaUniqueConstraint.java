@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -28,7 +28,7 @@ public class GenericJavaUniqueConstraint
 	protected final UniqueConstraintAnnotation uniqueConstraintAnnotation;
 
 
-	public GenericJavaUniqueConstraint(JpaContextNode parent, Owner owner, UniqueConstraintAnnotation uniqueConstraintAnnotation) {
+	public GenericJavaUniqueConstraint(JpaContextModel parent, Owner owner, UniqueConstraintAnnotation uniqueConstraintAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.uniqueConstraintAnnotation = uniqueConstraintAnnotation;

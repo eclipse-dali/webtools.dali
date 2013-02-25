@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -143,7 +143,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 		if (javaElement != null) {
 			return javaElement.getJavaProject().getProject();
 		}
-		JpaContextNode node = PlatformTools.getAdapter(selectedObj, JpaContextNode.class);
+		JpaContextModel node = PlatformTools.getAdapter(selectedObj, JpaContextModel.class);
 		if (node != null) {
 			return node.getJpaProject().getProject();
 		}

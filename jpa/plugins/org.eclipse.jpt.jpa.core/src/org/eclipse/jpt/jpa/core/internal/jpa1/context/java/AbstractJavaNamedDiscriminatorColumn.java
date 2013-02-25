@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
@@ -29,11 +29,11 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<A extends Discriminat
 	protected Integer specifiedLength;
 	protected int defaultLength = DEFAULT_LENGTH;
 
-	protected AbstractJavaNamedDiscriminatorColumn(JpaContextNode parent, O owner) {
+	protected AbstractJavaNamedDiscriminatorColumn(JpaContextModel parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaNamedDiscriminatorColumn(JpaContextNode parent, O owner, A columnAnnotation) {
+	protected AbstractJavaNamedDiscriminatorColumn(JpaContextModel parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 

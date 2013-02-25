@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -27,7 +27,7 @@ public class GenericOrmUniqueConstraint
 	protected final XmlUniqueConstraint xmlUniqueConstraint;
 
 
-	public GenericOrmUniqueConstraint(JpaContextNode parent, Owner owner, XmlUniqueConstraint xmlUniqueConstraint) {
+	public GenericOrmUniqueConstraint(JpaContextModel parent, Owner owner, XmlUniqueConstraint xmlUniqueConstraint) {
 		super(parent);
 		this.owner = owner;
 		this.xmlUniqueConstraint = xmlUniqueConstraint;

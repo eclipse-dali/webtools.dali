@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 3.3
  */
 public interface GeneratedValueHolder
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	GeneratedValue getGeneratedValue();
 	GeneratedValue addGeneratedValue();

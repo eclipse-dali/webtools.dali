@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -81,7 +81,7 @@ public interface MappingUiDefinition {
 	 */
 	JpaComposite buildMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<? extends JpaContextNode> nodeModel,
+			PropertyValueModel<? extends JpaContextModel> nodeModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -106,16 +106,16 @@ public interface MappingUiDefinition {
 	 * Return whether the ui represented by this definition is enabled for the given
 	 * node.  This is almost always true.
 	 */
-	boolean isEnabledFor(JpaContextNode node);
+	boolean isEnabledFor(JpaContextModel node);
 
 
 	// ********** null composite **********
 
 	static class NullComposite
-		extends Pane<JpaContextNode>
+		extends Pane<JpaContextModel>
 		implements JpaComposite
 	{
-		public NullComposite(PropertyValueModel<? extends JpaContextNode> mappingModel, Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		public NullComposite(PropertyValueModel<? extends JpaContextModel> mappingModel, Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
 			super(mappingModel, parent, widgetFactory, resourceManager);
 		}
 

@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyTable
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	// ********** name **********
 

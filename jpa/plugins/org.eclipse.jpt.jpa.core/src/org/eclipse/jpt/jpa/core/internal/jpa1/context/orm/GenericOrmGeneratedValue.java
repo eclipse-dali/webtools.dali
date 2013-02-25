@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
@@ -37,7 +37,7 @@ public class GenericOrmGeneratedValue
 	protected String defaultGenerator;
 
 
-	public GenericOrmGeneratedValue(JpaContextNode parent, XmlGeneratedValue xmlGeneratedValue) {
+	public GenericOrmGeneratedValue(JpaContextModel parent, XmlGeneratedValue xmlGeneratedValue) {
 		super(parent);
 		this.xmlGeneratedValue = xmlGeneratedValue;
 		this.specifiedStrategy = this.buildSpecifiedStrategy();

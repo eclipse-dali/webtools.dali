@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
  * @since 2.0
  */
 public interface AttributeMapping
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the mapping's attribute (typically its parent node in the

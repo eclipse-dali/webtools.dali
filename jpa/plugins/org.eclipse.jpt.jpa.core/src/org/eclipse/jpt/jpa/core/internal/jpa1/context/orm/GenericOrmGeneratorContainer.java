@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
@@ -36,7 +36,7 @@ public class GenericOrmGeneratorContainer
 	protected OrmTableGenerator tableGenerator;
 
 
-	public GenericOrmGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer xmlGeneratorContainer) {
+	public GenericOrmGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer xmlGeneratorContainer) {
 		super(parent);
 		this.xmlGeneratorContainer = xmlGeneratorContainer;
 		this.sequenceGenerator = this.buildSequenceGenerator();

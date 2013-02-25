@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * EclipseLink change tracking
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.1
  */
 public interface EclipseLinkChangeTracking
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the specified type if it is present, otherwise return the default

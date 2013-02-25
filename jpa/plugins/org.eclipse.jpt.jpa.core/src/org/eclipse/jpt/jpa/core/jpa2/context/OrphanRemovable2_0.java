@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Oprhan removal
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.3
  */
 public interface OrphanRemovable2_0
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	boolean isOrphanRemoval();
 

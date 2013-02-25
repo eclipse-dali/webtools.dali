@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
@@ -33,7 +33,7 @@ public class OrmEclipseLinkTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	public OrmEclipseLinkTypeConverter(JpaContextNode parent, XmlTypeConverter xmlConverter) {
+	public OrmEclipseLinkTypeConverter(JpaContextModel parent, XmlTypeConverter xmlConverter) {
 		super(parent, xmlConverter);
 		this.dataType = xmlConverter.getDataType();
 		this.objectType = xmlConverter.getObjectType();

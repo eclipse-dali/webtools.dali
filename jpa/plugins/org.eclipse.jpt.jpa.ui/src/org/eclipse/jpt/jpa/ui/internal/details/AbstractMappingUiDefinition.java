@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 
@@ -25,7 +25,7 @@ public abstract class AbstractMappingUiDefinition
 		return JptJpaUiImages.JPA_CONTENT;
 	}
 
-	public boolean isEnabledFor(JpaContextNode node) {
+	public boolean isEnabledFor(JpaContextModel node) {
 		return true;
 	}
 }

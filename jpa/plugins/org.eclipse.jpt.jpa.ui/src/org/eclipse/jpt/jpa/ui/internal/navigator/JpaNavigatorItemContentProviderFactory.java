@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 
@@ -56,10 +56,10 @@ public class JpaNavigatorItemContentProviderFactory
 	}
 
 	private ItemTreeContentProviderFactory getDelegate(Object element) {
-		return (element instanceof JpaContextNode) ? this.getDelegate((JpaContextNode) element) : null;
+		return (element instanceof JpaContextModel) ? this.getDelegate((JpaContextModel) element) : null;
 	}
 
-	private synchronized ItemTreeContentProviderFactory getDelegate(JpaContextNode contextNode) {
+	private synchronized ItemTreeContentProviderFactory getDelegate(JpaContextModel contextNode) {
 		JpaPlatform jpaPlatform = contextNode.getJpaPlatform();
 		ItemTreeContentProviderFactory delegate = this.delegates.get(jpaPlatform);
 		if (delegate == null) {

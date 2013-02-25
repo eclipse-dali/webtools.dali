@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface QueryHint
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	String getName();
 	void setName(String name);

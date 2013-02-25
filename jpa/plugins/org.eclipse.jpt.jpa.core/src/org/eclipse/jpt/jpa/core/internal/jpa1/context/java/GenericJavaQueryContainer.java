@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -44,7 +44,7 @@ public class GenericJavaQueryContainer
 	protected final ContextListContainer<JavaNamedStoredProcedureQuery2_1, NamedStoredProcedureQuery2_1Annotation> namedStoredProcedureQueryContainer;
 
 
-	public GenericJavaQueryContainer(JpaContextNode parent, Owner owner) {
+	public GenericJavaQueryContainer(JpaContextModel parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 		this.namedQueryContainer = this.buildNamedQueryContainer();

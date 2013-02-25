@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -40,7 +40,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	protected JavaJoinColumn defaultJoinColumn;
 
 
-	protected GenericJavaReferenceTable(JpaContextNode parent, Owner owner) {
+	protected GenericJavaReferenceTable(JpaContextModel parent, Owner owner) {
 		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();

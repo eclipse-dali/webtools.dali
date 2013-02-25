@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -245,11 +245,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaTable(parent, owner);
 	}
 	
-	public JavaColumn buildJavaColumn(JpaContextNode parent, JavaColumn.Owner owner) {
+	public JavaColumn buildJavaColumn(JpaContextModel parent, JavaColumn.Owner owner) {
 		return new GenericJavaColumn(parent, owner);
 	}
 	
-	public VirtualColumn buildJavaVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner) {
+	public VirtualColumn buildJavaVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner) {
 		return new GenericJavaVirtualColumn(parent, owner);
 	}
 	
@@ -257,11 +257,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	
-	public JavaJoinColumn buildJavaJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
+	public JavaJoinColumn buildJavaJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
 		return new GenericJavaJoinColumn(parent, owner, joinColumnAnnotation);
 	}
 
-	public VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		return new GenericJavaVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	
@@ -337,15 +337,15 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaGeneratedValue(parent, generatedValueAnnotation);
 	}
 	
-	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
+	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JpaContextModel parent, ReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
 		return new GenericJavaPrimaryKeyJoinColumn(parent, owner, pkJoinColumnAnnotation);
 	}
 	
-	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JpaContextNode parent, JavaAttributeOverrideContainer.Owner owner) {
+	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JpaContextModel parent, JavaAttributeOverrideContainer.Owner owner) {
 		return new GenericJavaAttributeOverrideContainer(parent, owner);
 	}
 	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JpaContextModel parent, JavaAssociationOverrideContainer.Owner owner) {
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
 	}
 	
@@ -373,7 +373,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualOverrideRelationship(parent);
 	}
 	
-	public JavaQueryContainer buildJavaQueryContainer(JpaContextNode parent, JavaQueryContainer.Owner owner) {
+	public JavaQueryContainer buildJavaQueryContainer(JpaContextModel parent, JavaQueryContainer.Owner owner) {
 		return new GenericJavaQueryContainer(parent, owner);
 	}
 	
@@ -389,11 +389,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaQueryHint(parent, queryHintAnnotation);
 	}
 	
-	public JavaUniqueConstraint buildJavaUniqueConstraint(JpaContextNode parent, UniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation) {
+	public JavaUniqueConstraint buildJavaUniqueConstraint(JpaContextModel parent, UniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation) {
 		return new GenericJavaUniqueConstraint(parent, owner, constraintAnnotation);
 	}
 	
-	public VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
+	public VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextModel parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
 		return new GenericJavaVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 	

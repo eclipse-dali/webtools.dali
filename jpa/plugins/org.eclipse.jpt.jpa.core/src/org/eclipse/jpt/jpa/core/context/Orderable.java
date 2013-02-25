@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.3
  */
 public interface Orderable
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	AttributeMapping getParent();
 

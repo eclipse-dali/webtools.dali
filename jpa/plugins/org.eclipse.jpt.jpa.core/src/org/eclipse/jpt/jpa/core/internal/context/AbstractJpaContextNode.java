@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.JpaModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaModel;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJpaContextNode
 	extends AbstractJpaModel
-	implements JpaContextNode
+	implements JpaContextModel
 {
 	protected AbstractJpaContextNode(JpaModel parent) {
 		super(parent);
@@ -45,8 +45,8 @@ public abstract class AbstractJpaContextNode
 	/**
 	 * convenience method
 	 */
-	protected void synchronizeNodesWithResourceModel(Iterable<? extends JpaContextNode> nodes) {
-		for (JpaContextNode node : nodes) {
+	protected void synchronizeNodesWithResourceModel(Iterable<? extends JpaContextModel> nodes) {
+		for (JpaContextModel node : nodes) {
 			node.synchronizeWithResourceModel();
 		}
 	}
@@ -58,8 +58,8 @@ public abstract class AbstractJpaContextNode
 	/**
 	 * convenience method
 	 */
-	protected void updateNodes(Iterable<? extends JpaContextNode> nodes) {
-		for (JpaContextNode node : nodes) {
+	protected void updateNodes(Iterable<? extends JpaContextModel> nodes) {
+		for (JpaContextModel node : nodes) {
 			node.update();
 		}
 	}
@@ -71,8 +71,8 @@ public abstract class AbstractJpaContextNode
 	 * covariant override
 	 */
 	@Override
-	public JpaContextNode getParent() {
-		return (JpaContextNode) super.getParent();
+	public JpaContextModel getParent() {
+		return (JpaContextModel) super.getParent();
 	}
 
 	/**
@@ -135,7 +135,7 @@ public abstract class AbstractJpaContextNode
 	/**
 	 * Validate the specified node if it is not <code>null</code>.
 	 */
-	protected void validateNode(JpaContextNode node, List<IMessage> messages, IReporter reporter) {
+	protected void validateNode(JpaContextModel node, List<IMessage> messages, IReporter reporter) {
 		if (node != null) {
 			node.validate(messages, reporter);
 		}
@@ -144,8 +144,8 @@ public abstract class AbstractJpaContextNode
 	/**
 	 * Validate the specified nodes.
 	 */
-	protected void validateNodes(Iterable<? extends JpaContextNode> nodes, List<IMessage> messages, IReporter reporter) {
-		for (JpaContextNode node : nodes) {
+	protected void validateNodes(Iterable<? extends JpaContextModel> nodes, List<IMessage> messages, IReporter reporter) {
+		for (JpaContextModel node : nodes) {
 			node.validate(messages, reporter);
 		}
 	}

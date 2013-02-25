@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
@@ -19,7 +19,7 @@ public class EclipseLinkOrmXml2_4ContextNodeFactory
 {
 
 	@Override
-	public OrmGeneratorContainer buildOrmGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
+	public OrmGeneratorContainer buildOrmGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer resourceGeneratorContainer) {
 		return new OrmEclipseLinkGeneratorContainer(parent, (XmlGeneratorContainer2_4) resourceGeneratorContainer);
 	}
 

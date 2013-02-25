@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
@@ -32,7 +32,7 @@ public abstract class AbstractJavaManagedType
 	protected String name;
 
 
-	protected AbstractJavaManagedType(JpaContextNode parent, JavaResourceType resourceType) {
+	protected AbstractJavaManagedType(JpaContextModel parent, JavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
 		this.name = this.resourceType.getTypeBinding().getQualifiedName();

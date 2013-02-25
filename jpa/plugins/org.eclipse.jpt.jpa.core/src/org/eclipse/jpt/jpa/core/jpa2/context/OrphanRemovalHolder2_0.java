@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.3
  */
 public interface OrphanRemovalHolder2_0
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	OrphanRemovable2_0 getOrphanRemoval();
 }

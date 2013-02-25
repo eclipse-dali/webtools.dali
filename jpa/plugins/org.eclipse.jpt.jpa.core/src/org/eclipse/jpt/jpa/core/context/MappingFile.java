@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
  * @since 2.1
  */
 public interface MappingFile
-	extends JpaContextNode, PersistentTypeContainer, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
+	extends JpaContextModel, PersistentTypeContainer, DeleteTypeRefactoringParticipant, TypeRefactoringParticipant
 {
 	MappingFileRef getParent();
 

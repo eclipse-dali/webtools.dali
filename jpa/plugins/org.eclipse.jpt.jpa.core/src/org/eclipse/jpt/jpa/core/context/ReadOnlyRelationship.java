@@ -33,7 +33,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @see AssociationOverride
  */
 public interface ReadOnlyRelationship
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the relationship's mapping; which for a mapping relationship is

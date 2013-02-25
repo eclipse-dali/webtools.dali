@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaNamedContextNode
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$

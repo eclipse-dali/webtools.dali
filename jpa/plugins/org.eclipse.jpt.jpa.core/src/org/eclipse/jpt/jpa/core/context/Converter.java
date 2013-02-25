@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * @since 2.1
  */
 public interface Converter
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	AttributeMapping getParent();
 

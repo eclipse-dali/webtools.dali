@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualBaseColumn;
@@ -31,7 +31,7 @@ public class GenericJavaVirtualColumn
 	protected int defaultScale;
 
 
-	public GenericJavaVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner) {
+	public GenericJavaVirtualColumn(JpaContextModel parent, VirtualColumn.Owner owner) {
 		super(parent, owner);
 	}
 

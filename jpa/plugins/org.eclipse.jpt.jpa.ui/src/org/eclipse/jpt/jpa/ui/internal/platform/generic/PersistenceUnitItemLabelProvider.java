@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 
@@ -75,15 +75,15 @@ public class PersistenceUnitItemLabelProvider
 	// ********** component description model **********
 
 	@SuppressWarnings("unchecked")
-	public static PropertyValueModel<String> buildQuotedComponentDescriptionModel(JpaContextNode node, PropertyValueModel<String> nodeTextModel) {
+	public static PropertyValueModel<String> buildQuotedComponentDescriptionModel(JpaContextModel node, PropertyValueModel<String> nodeTextModel) {
 		return buildComponentDescriptionModel(node, true, nodeTextModel);
 	}
 
-	public static PropertyValueModel<String> buildNonQuotedComponentDescriptionModel(JpaContextNode node, PropertyValueModel<String>... nodeTextModels) {
+	public static PropertyValueModel<String> buildNonQuotedComponentDescriptionModel(JpaContextModel node, PropertyValueModel<String>... nodeTextModels) {
 		return buildComponentDescriptionModel(node, false, nodeTextModels);
 	}
 
-	protected static PropertyValueModel<String> buildComponentDescriptionModel(JpaContextNode node, boolean quote, PropertyValueModel<String>... nodeTextModels) {
+	protected static PropertyValueModel<String> buildComponentDescriptionModel(JpaContextModel node, boolean quote, PropertyValueModel<String>... nodeTextModels) {
 		IResource nodeResource = node.getResource();
 		String nodePath = (nodeResource == null) ? null : nodeResource.getFullPath().makeRelative().toString();
 		return new ComponentDescriptionModel(

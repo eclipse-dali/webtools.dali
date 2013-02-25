@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,8 +22,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * Common protocol for JPA objects that have a context, as opposed to
- * resource objects.
+ * Common protocol for JPA models that have a context, as opposed to
+ * resource models.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -34,22 +34,22 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @version 3.3
  * @since 2.0
  */
-public interface JpaContextNode
+public interface JpaContextModel
 	extends JpaModel, JptResourceTypeReference
 {
 	/**
-	 * Return the persistence unit if the context node is within a 
+	 * Return the persistence unit if the context model is within a 
 	 * persistence unit. Otherwise throw an exception.
 	 */
 	PersistenceUnit getPersistenceUnit();
 
 	/**
-	 * Return the mapping file root if the context node is within a 
+	 * Return the mapping file root if the context model is within a 
 	 * mapping file. Otherwise throw an exception.
 	 */
 	MappingFile.Root getMappingFileRoot();
 
-	JpaContextNode getParent();
+	JpaContextModel getParent();
 
 
 	// ********** database stuff **********
@@ -66,7 +66,8 @@ public interface JpaContextNode
 	TextRange getValidationTextRange();
 
 	/**
-	 * Add to the list of current validation messages
+	 * Add the model's validation messages to the specified "collecting
+	 * parameter".
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
 
@@ -90,8 +91,8 @@ public interface JpaContextNode
 
 	/**
 	 * Some non-trivial state in the JPA project has changed; update the
-	 * parts of the context node that are dependent on yet other parts of the
-	 * node's JPA project.
+	 * state of the context model that is dependent on yet other parts of the
+	 * model's JPA project.
 	 * If the dependent state changes also, yet another <em>update</em> will be
 	 * triggered, possibly followed by yet more <em>updates</em>; until the JPA
 	 * project's state quiesces.

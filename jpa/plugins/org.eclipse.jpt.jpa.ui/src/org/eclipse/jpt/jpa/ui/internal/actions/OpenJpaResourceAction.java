@@ -19,7 +19,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -40,7 +40,7 @@ import org.eclipse.ui.part.FileEditorInput;
 public class OpenJpaResourceAction
 	extends BaseSelectionListenerAction
 {
-	private JpaContextNode selectedNode;
+	private JpaContextModel selectedNode;
 
 
 	public OpenJpaResourceAction() {
@@ -55,7 +55,7 @@ public class OpenJpaResourceAction
 
 	private boolean updateSelection_(IStructuredSelection s) {
 		if (s.size() == 1) {
-			this.selectedNode = (JpaContextNode) s.getFirstElement();
+			this.selectedNode = (JpaContextModel) s.getFirstElement();
 			return true;
 		}
 		return false;

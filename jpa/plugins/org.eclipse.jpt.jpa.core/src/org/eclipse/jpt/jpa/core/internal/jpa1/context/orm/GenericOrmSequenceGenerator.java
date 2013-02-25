@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 public class GenericOrmSequenceGenerator
 	extends AbstractOrmSequenceGenerator
 {
-	public GenericOrmSequenceGenerator(JpaContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+	public GenericOrmSequenceGenerator(JpaContextModel parent, XmlSequenceGenerator xmlSequenceGenerator) {
 		super(parent, xmlSequenceGenerator);
 	}
 

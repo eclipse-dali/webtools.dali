@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
@@ -60,7 +60,7 @@ public class GenericOrmTableGenerator
 
 	// ********** constructor **********
 
-	public GenericOrmTableGenerator(JpaContextNode parent, XmlTableGenerator xmlTableGenerator) {
+	public GenericOrmTableGenerator(JpaContextModel parent, XmlTableGenerator xmlTableGenerator) {
 		super(parent, xmlTableGenerator);
 		this.specifiedTableName = xmlTableGenerator.getTable();
 		this.specifiedSchema = xmlTableGenerator.getSchema();

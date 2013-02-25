@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
@@ -40,7 +40,7 @@ public class GenericOrmNamedNativeQuery
 	protected String resultSetMapping;
 
 
-	public GenericOrmNamedNativeQuery(JpaContextNode parent, XmlNamedNativeQuery xmlNamedNativeQuery) {
+	public GenericOrmNamedNativeQuery(JpaContextModel parent, XmlNamedNativeQuery xmlNamedNativeQuery) {
 		super(parent, xmlNamedNativeQuery);
 		this.query = this.xmlQuery.getQuery();
 		this.resultClass = xmlNamedNativeQuery.getResultClass();

@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
  * @since 2.3
  */
 public interface XmlFile
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the XML file's root element.

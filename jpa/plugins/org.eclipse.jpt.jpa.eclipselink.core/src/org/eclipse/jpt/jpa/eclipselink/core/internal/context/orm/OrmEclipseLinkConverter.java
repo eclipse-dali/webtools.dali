@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -36,7 +36,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	protected String name;
 
 
-	protected OrmEclipseLinkConverter(JpaContextNode parent, X xmlConverter) {
+	protected OrmEclipseLinkConverter(JpaContextModel parent, X xmlConverter) {
 		super(parent);
 		this.xmlConverter = xmlConverter;
 		this.name = xmlConverter.getName();

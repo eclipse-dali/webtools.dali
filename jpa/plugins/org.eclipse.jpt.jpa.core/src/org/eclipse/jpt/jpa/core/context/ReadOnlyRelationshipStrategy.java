@@ -28,7 +28,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @see ReadOnlyRelationship
  */
 public interface ReadOnlyRelationshipStrategy
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	/**
 	 * Return the strategy's relationship.

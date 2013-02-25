@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -55,7 +55,7 @@ public abstract class AbstractOrmOverrideContainer<
 	protected final VirtualOverrideContainerAdapter virtualOverrideContainerAdapter = new VirtualOverrideContainerAdapter();
 
 
-	protected AbstractOrmOverrideContainer(JpaContextNode parent, O owner) {
+	protected AbstractOrmOverrideContainer(JpaContextModel parent, O owner) {
 		super(parent);
 		this.owner = owner;
 		this.initializeSpecifiedOverrides();

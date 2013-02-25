@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
@@ -132,7 +132,7 @@ public abstract class AbstractJavaIdMapping
 
 	// ********** generator container parent adapter **********
 
-	public JpaContextNode getGeneratorContainerParent() {
+	public JpaContextModel getGeneratorContainerParent() {
 		return this;  // no adapter
 	}
 

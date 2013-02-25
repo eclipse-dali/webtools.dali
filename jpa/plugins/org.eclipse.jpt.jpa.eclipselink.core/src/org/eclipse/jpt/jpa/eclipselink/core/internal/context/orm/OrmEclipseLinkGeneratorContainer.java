@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
@@ -28,7 +28,7 @@ public class OrmEclipseLinkGeneratorContainer
 	protected OrmUuidGenerator uuidGenerator;
 
 
-	public OrmEclipseLinkGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
+	public OrmEclipseLinkGeneratorContainer(JpaContextModel parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
 		super(parent, xmlGeneratorContainer);
 		this.uuidGenerator = this.buildUuidGenerator();
 	}

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 
@@ -34,7 +34,7 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyBaseColumn.
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractOrmVirtualBaseColumn(JpaContextNode parent, O owner) {
+	protected AbstractOrmVirtualBaseColumn(JpaContextModel parent, O owner) {
 		super(parent, owner);
 	}
 

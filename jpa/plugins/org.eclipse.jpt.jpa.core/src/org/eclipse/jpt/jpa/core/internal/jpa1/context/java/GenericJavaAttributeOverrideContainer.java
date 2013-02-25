@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
@@ -31,7 +31,7 @@ public class GenericJavaAttributeOverrideContainer
 		>
 	implements JavaAttributeOverrideContainer2_0
 {
-	public GenericJavaAttributeOverrideContainer(JpaContextNode parent, JavaAttributeOverrideContainer.Owner owner) {
+	public GenericJavaAttributeOverrideContainer(JpaContextModel parent, JavaAttributeOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 

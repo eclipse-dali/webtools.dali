@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.1
  */
 public interface EclipseLinkPrivateOwned
-	extends JpaContextNode
+	extends JpaContextModel
 {
 	boolean isPrivateOwned();
 	void setPrivateOwned(boolean privateOwned);

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * Derived identity
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.3
  */
 public interface DerivedIdentity2_0
-	extends JpaContextNode
+	extends JpaContextModel
 {
 // TODO bjv rename methods
 	/**

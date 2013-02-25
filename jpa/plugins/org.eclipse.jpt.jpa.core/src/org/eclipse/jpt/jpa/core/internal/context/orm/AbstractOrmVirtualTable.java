@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
@@ -46,7 +46,7 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	protected final ContextListContainer<VirtualUniqueConstraint, ReadOnlyUniqueConstraint> uniqueConstraintContainer;
 
 
-	protected AbstractOrmVirtualTable(JpaContextNode parent, Owner owner, T overridenTable) {
+	protected AbstractOrmVirtualTable(JpaContextModel parent, Owner owner, T overridenTable) {
 		super(parent);
 		this.owner = owner;
 		this.overriddenTable = overridenTable;

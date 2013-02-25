@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
@@ -38,7 +38,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	private String converterClass;
 
 
-	public JavaEclipseLinkConverterClassConverter(JpaContextNode parent, A converterAnnotation, String converterClass) {
+	public JavaEclipseLinkConverterClassConverter(JpaContextModel parent, A converterAnnotation, String converterClass) {
 		super(parent, converterAnnotation);
 		this.converterClass = converterClass;
 	}

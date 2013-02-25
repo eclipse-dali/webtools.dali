@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.UuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
@@ -25,7 +25,7 @@ public class OrmEclipseLinkUuidGenerator
 {
 
 
-	public OrmEclipseLinkUuidGenerator(JpaContextNode parent, XmlUuidGenerator_2_4 xmlSequenceGenerator) {
+	public OrmEclipseLinkUuidGenerator(JpaContextModel parent, XmlUuidGenerator_2_4 xmlSequenceGenerator) {
 		super(parent, xmlSequenceGenerator);
 	}
 

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
@@ -30,7 +30,7 @@ public class GenericOrmColumn
 	protected Integer specifiedScale;
 
 
-	public GenericOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
+	public GenericOrmColumn(JpaContextModel parent, OrmColumn.Owner owner) {
 		super(parent, owner);
 		this.specifiedLength = this.buildSpecifiedLength();
 		this.specifiedPrecision = this.buildSpecifiedPrecision();

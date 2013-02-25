@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
@@ -43,7 +43,7 @@ public final class GenericOrmNamedQuery
 	private LockModeType2_0 specifiedLockMode;
 	private LockModeType2_0 defaultLockMode;
 
-	public GenericOrmNamedQuery(JpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
+	public GenericOrmNamedQuery(JpaContextModel parent, XmlNamedQuery resourceNamedQuery) {
 		super(parent, resourceNamedQuery);
 		this.query = this.xmlQuery.getQuery();
 		this.specifiedLockMode = this.buildSpecifiedLockMode();

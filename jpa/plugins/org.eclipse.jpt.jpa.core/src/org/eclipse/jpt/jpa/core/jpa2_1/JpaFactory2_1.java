@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2_1;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaNamedStoredProcedureQuery2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaQueryContainer2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaStoredProcedureParameter2_1;
@@ -36,7 +36,7 @@ public interface JpaFactory2_1
 {
 	// ********** Java Context Model **********
 
-	JavaConverterType2_1 buildJavaConverterType(JpaContextNode parent, JavaResourceType jrt); 
+	JavaConverterType2_1 buildJavaConverterType(JpaContextModel parent, JavaResourceType jrt); 
 
 	JavaNamedStoredProcedureQuery2_1 buildJavaNamedStoredProcedureQuery2_1(
 			JavaQueryContainer2_1 parent,

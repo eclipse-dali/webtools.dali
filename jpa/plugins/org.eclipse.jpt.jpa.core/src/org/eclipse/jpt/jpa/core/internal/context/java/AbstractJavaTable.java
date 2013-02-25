@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -62,11 +62,11 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
-	protected AbstractJavaTable(JpaContextNode parent, Owner owner) {
+	protected AbstractJavaTable(JpaContextModel parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaTable(JpaContextNode parent, Owner owner, A tableAnnotation) {
+	protected AbstractJavaTable(JpaContextModel parent, Owner owner, A tableAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setTableAnnotation(tableAnnotation);

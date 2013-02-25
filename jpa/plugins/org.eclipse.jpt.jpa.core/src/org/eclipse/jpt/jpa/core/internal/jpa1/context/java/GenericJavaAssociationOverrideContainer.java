@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
@@ -37,7 +37,7 @@ public class GenericJavaAssociationOverrideContainer
 		>
 	implements JavaAssociationOverrideContainer2_0
 {
-	public GenericJavaAssociationOverrideContainer(JpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
+	public GenericJavaAssociationOverrideContainer(JpaContextModel parent, JavaAssociationOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 
