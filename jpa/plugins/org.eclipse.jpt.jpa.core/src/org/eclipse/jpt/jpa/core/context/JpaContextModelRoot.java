@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
  * @version 3.3
  * @since 2.0
  */
-public interface JpaRootContextNode
+public interface JpaContextModelRoot
 	extends JpaContextModel
 {
 	// ********** persistence.xml **********
@@ -36,9 +36,8 @@ public interface JpaRootContextNode
 
 	/** 
 	 * Return the content represented by the <code>persistence.xml</code>
-	 * file associated with the root context node's JPA project.
-	 * This may be null. 
+	 * file associated with the context model root's JPA project.
+	 * This may be <code>null</code>.
 	 */
 	PersistenceXml getPersistenceXml();
-
 }

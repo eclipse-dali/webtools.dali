@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -167,12 +167,12 @@ public interface JpaFactory
 	 * The root context node will be built once, but updated many times.
 	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
+	JpaContextModelRoot buildRootContextNode(JpaProject jpaProject);
 
 
 	// ********** XML Context Model **********
 
-	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JptXmlResource resource);
+	PersistenceXml buildPersistenceXml(JpaContextModelRoot parent, JptXmlResource resource);
 
 	MappingFile buildMappingFile(MappingFileRef parent, Object resourceMappingFile);
 

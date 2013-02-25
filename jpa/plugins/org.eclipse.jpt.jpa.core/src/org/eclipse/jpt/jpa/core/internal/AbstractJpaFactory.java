@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -191,14 +191,14 @@ public abstract class AbstractJpaFactory
 
 	// ********** Context Nodes **********
 	
-	public JpaRootContextNode buildRootContextNode(JpaProject parent) {
+	public JpaContextModelRoot buildRootContextNode(JpaProject parent) {
 		return new GenericRootContextNode(parent);
 	}
 
 
 	// ********** XML Context Model **********
 
-	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JptXmlResource resource) {
+	public PersistenceXml buildPersistenceXml(JpaContextModelRoot parent, JptXmlResource resource) {
 		return new GenericPersistenceXml(parent, resource);
 	}
 	

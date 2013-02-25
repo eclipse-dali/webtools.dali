@@ -79,7 +79,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -173,7 +173,7 @@ public abstract class AbstractJpaProject
 	 * The root of the model representing the collated resources associated with
 	 * the JPA project.
 	 */
-	protected final JpaRootContextNode rootContextNode;
+	protected final JpaContextModelRoot rootContextNode;
 
 	/**
 	 * A repeating command that keeps the JPA project's context model
@@ -278,7 +278,7 @@ public abstract class AbstractJpaProject
 		return new BinaryTypeCache(this.jpaPlatform.getAnnotationProvider());
 	}
 
-	protected JpaRootContextNode buildRootContextNode() {
+	protected JpaContextModelRoot buildRootContextNode() {
 		return this.getJpaFactory().buildRootContextNode(this);
 	}
 
@@ -765,7 +765,7 @@ public abstract class AbstractJpaProject
 
 	// ********** context model **********
 
-	public JpaRootContextNode getRootContextNode() {
+	public JpaContextModelRoot getRootContextNode() {
 		return this.rootContextNode;
 	}
 

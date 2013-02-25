@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 
 /**
- * Standard adapter for retrieving a {@link JpaRootContextNode JPA root
+ * Standard adapter for retrieving a {@link JpaContextModelRoot JPA root
  * context node} model with change notification when the JPA root context
  * node is created or destroyed:
  * <pre>
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
  * @see org.eclipse.jpt.jpa.ui.internal.ProjectAdapterFactory
  */
 public interface JpaRootContextNodeModel
-	extends PropertyValueModel<JpaRootContextNode>
+	extends PropertyValueModel<JpaContextModelRoot>
 {
 	/**
 	 * Return the project corresponding to the JPA root context model.

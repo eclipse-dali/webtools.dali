@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 
@@ -40,10 +40,10 @@ public class JpaRootContextNodeModelItemContentProvider
 	}
 
 	public static class PersistenceXmlModel
-		extends PropertyAspectAdapter<JpaRootContextNode, PersistenceXml>
+		extends PropertyAspectAdapter<JpaContextModelRoot, PersistenceXml>
 	{
-		public PersistenceXmlModel(PropertyValueModel<JpaRootContextNode> rootContextNodeModel) {
-			super(rootContextNodeModel, JpaRootContextNode.PERSISTENCE_XML_PROPERTY);
+		public PersistenceXmlModel(PropertyValueModel<JpaContextModelRoot> rootContextNodeModel) {
+			super(rootContextNodeModel, JpaContextModelRoot.PERSISTENCE_XML_PROPERTY);
 		}
 		@Override
 		protected PersistenceXml buildValue_() {

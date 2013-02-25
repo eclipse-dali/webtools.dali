@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
@@ -138,7 +138,7 @@ public class ProjectAdapterFactory
 	 * JPA projects in the end.
 	 */
 	/* CU private */ static class JpaRootContextNodeModelAdapter
-		extends TransformationPropertyValueModel<JpaProject, JpaRootContextNode>
+		extends TransformationPropertyValueModel<JpaProject, JpaContextModelRoot>
 		implements JpaRootContextNodeModel
 	{
 		JpaRootContextNodeModelAdapter(JpaProjectModel jpaProjectsModel) {

@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -158,15 +158,15 @@ public interface JpaProject
 	/**
 	 * Return the root of the JPA project's context model.
 	 */
-	JpaRootContextNode getRootContextNode();
+	JpaContextModelRoot getRootContextNode();
 
-	Transformer<JpaProject, JpaRootContextNode> ROOT_CONTEXT_NODE_TRANSFORMER = new RootContextNodeTransformer();
+	Transformer<JpaProject, JpaContextModelRoot> ROOT_CONTEXT_NODE_TRANSFORMER = new RootContextNodeTransformer();
 
 	class RootContextNodeTransformer
-		extends AbstractTransformer<JpaProject, JpaRootContextNode>
+		extends AbstractTransformer<JpaProject, JpaContextModelRoot>
 	{
 		@Override
-		protected JpaRootContextNode transform_(JpaProject jpaProject) {
+		protected JpaContextModelRoot transform_(JpaProject jpaProject) {
 			return jpaProject.getRootContextNode();
 		}
 	}

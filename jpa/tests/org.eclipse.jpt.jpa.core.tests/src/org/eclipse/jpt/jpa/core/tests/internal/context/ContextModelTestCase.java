@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -232,7 +232,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 	}
 
-	protected JpaRootContextNode getRootContextNode() {
+	protected JpaContextModelRoot getRootContextNode() {
 		return getJavaProject().getJpaProject().getRootContextNode();
 	}
 	

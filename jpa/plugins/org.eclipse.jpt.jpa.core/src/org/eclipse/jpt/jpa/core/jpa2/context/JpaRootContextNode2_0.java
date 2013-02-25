@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
  * @since 2.3
  */
 public interface JpaRootContextNode2_0
-	extends JpaRootContextNode, MetamodelSynchronizer
+	extends JpaContextModelRoot, MetamodelSynchronizer
 {
 	// nothing yet...
 }

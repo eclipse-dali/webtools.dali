@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.Persistence2_0;
@@ -55,7 +55,7 @@ public class GenericPersistenceXml
 	protected Persistence root;
 
 
-	public GenericPersistenceXml(JpaRootContextNode parent, JptXmlResource xmlResource) {
+	public GenericPersistenceXml(JpaContextModelRoot parent, JptXmlResource xmlResource) {
 		super(parent);
 		this.checkXmlResource(xmlResource);
 		this.xmlResource = xmlResource;

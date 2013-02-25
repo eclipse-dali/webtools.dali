@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
@@ -31,32 +31,32 @@ public class JpaRootContextNodeModelItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<ImageDescriptor> buildImageDescriptorModel() {
-		return new TransformationPropertyValueModel<JpaRootContextNode, ImageDescriptor>(this.item, IMAGE_DESCRIPTOR_TRANSFORMER);
+		return new TransformationPropertyValueModel<JpaContextModelRoot, ImageDescriptor>(this.item, IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 
-	protected static final Transformer<JpaRootContextNode, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
+	protected static final Transformer<JpaContextModelRoot, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
 
 	protected static class ImageDescriptorTransformer
-		extends TransformerAdapter<JpaRootContextNode, ImageDescriptor>
+		extends TransformerAdapter<JpaContextModelRoot, ImageDescriptor>
 	{
 		@Override
-		public ImageDescriptor transform(JpaRootContextNode root) {
+		public ImageDescriptor transform(JpaContextModelRoot root) {
 			return JptCommonUiImages.gray(JptJpaUiImages.JPA_CONTENT, (root == null));
 		}
 	}
 
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new TransformationPropertyValueModel<JpaRootContextNode, String>(this.item, TEXT_TRANSFORMER);
+		return new TransformationPropertyValueModel<JpaContextModelRoot, String>(this.item, TEXT_TRANSFORMER);
 	}
 
-	protected static final Transformer<JpaRootContextNode, String> TEXT_TRANSFORMER = new TextTransformer();
+	protected static final Transformer<JpaContextModelRoot, String> TEXT_TRANSFORMER = new TextTransformer();
 
 	protected static class TextTransformer
-		extends TransformerAdapter<JpaRootContextNode, String>
+		extends TransformerAdapter<JpaContextModelRoot, String>
 	{
 		@Override
-		public String transform(JpaRootContextNode root) {
+		public String transform(JpaContextModelRoot root) {
 			String text = JptJpaUiMessages.JpaContent_label;
 			return (root != null) ? text : "[" + text + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -64,16 +64,16 @@ public class JpaRootContextNodeModelItemLabelProvider
 
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new TransformationPropertyValueModel<JpaRootContextNode, String>(this.item, DESCRIPTION_TRANSFORMER);
+		return new TransformationPropertyValueModel<JpaContextModelRoot, String>(this.item, DESCRIPTION_TRANSFORMER);
 	}
 
-	protected static final Transformer<JpaRootContextNode, String> DESCRIPTION_TRANSFORMER = new DescriptionTransformer();
+	protected static final Transformer<JpaContextModelRoot, String> DESCRIPTION_TRANSFORMER = new DescriptionTransformer();
 
 	protected static class DescriptionTransformer
-		extends TransformerAdapter<JpaRootContextNode, String>
+		extends TransformerAdapter<JpaContextModelRoot, String>
 	{
 		@Override
-		public String transform(JpaRootContextNode root) {
+		public String transform(JpaContextModelRoot root) {
 			if (root == null) {
 				return null;
 			}

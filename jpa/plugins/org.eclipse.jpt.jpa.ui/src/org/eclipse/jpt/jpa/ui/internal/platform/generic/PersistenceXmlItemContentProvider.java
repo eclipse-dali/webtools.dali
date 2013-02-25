@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -28,8 +28,8 @@ public class PersistenceXmlItemContentProvider
 		super(persistenceXml, manager);
 	}
 	
-	public JpaRootContextNode getParent() {
-		return (JpaRootContextNode) this.item.getParent();
+	public JpaContextModelRoot getParent() {
+		return (JpaContextModelRoot) this.item.getParent();
 	}
 	
 	@Override

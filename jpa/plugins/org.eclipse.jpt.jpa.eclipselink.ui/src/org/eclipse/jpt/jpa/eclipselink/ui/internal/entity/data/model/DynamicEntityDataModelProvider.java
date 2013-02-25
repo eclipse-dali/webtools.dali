@@ -38,7 +38,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -659,7 +659,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		JpaRootContextNode rcn = this.getJpaProject().getRootContextNode();
+		JpaContextModelRoot rcn = this.getJpaProject().getRootContextNode();
 		return (rcn == null) ? null : rcn.getPersistenceXml();
 	}
 	
