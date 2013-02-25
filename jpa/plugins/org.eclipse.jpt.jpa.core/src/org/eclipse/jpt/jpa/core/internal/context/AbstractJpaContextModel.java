@@ -91,7 +91,7 @@ public abstract class AbstractJpaContextModel
 	 * Overridden in:<ul>
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#getPersistenceUnit() AbstractPersistenceUnit}
 	 * to return itself
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericRootContextNode#getPersistenceUnit() GenericRootContextNode}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getPersistenceUnit() GenericRootContextNode}
 	 * to return <code>null</code>
 	 * </ul>
 	 */
@@ -103,7 +103,7 @@ public abstract class AbstractJpaContextModel
 	 * Overridden in:<ul>
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings#getMappingFileRoot() AbstractEntityMappings}
 	 * to return itself
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericRootContextNode#getMappingFileRoot() GenericRootContextNode}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getMappingFileRoot() GenericRootContextNode}
 	 * to return <code>null</code>
 	 * </ul>
 	 */

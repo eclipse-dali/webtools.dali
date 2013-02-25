@@ -93,7 +93,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFile;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaProject;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericRootContextNode;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAttributeOverride;
@@ -192,7 +192,7 @@ public abstract class AbstractJpaFactory
 	// ********** Context Nodes **********
 	
 	public JpaContextModelRoot buildRootContextNode(JpaProject parent) {
-		return new GenericRootContextNode(parent);
+		return new GenericContextModelRoot(parent);
 	}
 
 

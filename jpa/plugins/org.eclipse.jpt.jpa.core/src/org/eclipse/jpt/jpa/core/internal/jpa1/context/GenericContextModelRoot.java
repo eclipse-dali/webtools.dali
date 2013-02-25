@@ -40,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * the context model root
  */
-public class GenericRootContextNode
+public class GenericContextModelRoot
 	extends AbstractJpaContextModel
 	implements JpaContextModelRoot2_0
 {
@@ -51,7 +51,7 @@ public class GenericRootContextNode
 	protected PersistenceXml persistenceXml;
 
 
-	public GenericRootContextNode(JpaProject jpaProject) {
+	public GenericContextModelRoot(JpaProject jpaProject) {
 		super(null);  // the JPA project is not really a "parent"...
 
 		if (jpaProject == null) {
