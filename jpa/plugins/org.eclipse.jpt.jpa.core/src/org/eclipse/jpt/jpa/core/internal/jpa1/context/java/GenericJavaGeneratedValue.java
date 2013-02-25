@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java generated value
  */
 public class GenericJavaGeneratedValue
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaGeneratedValue
 {
 	protected final GeneratedValueAnnotation generatedValueAnnotation;

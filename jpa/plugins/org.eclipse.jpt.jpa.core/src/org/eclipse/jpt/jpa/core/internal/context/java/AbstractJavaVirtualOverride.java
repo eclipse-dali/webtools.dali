@@ -26,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Virtual Java override
  */
 public abstract class AbstractJavaVirtualOverride<C extends JavaOverrideContainer>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaVirtualOverride
 {
 	protected final String name;  // never null

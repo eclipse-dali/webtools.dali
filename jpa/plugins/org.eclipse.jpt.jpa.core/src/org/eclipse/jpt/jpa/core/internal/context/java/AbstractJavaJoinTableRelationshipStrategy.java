@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaJoinTableRelationshipStrategy
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected JavaJoinTable joinTable;

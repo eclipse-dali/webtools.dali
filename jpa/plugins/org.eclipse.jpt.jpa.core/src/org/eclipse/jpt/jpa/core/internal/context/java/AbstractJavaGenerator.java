@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java sequence or table generator
  */
 public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaGenerator
 {
 	protected final A generatorAnnotation;

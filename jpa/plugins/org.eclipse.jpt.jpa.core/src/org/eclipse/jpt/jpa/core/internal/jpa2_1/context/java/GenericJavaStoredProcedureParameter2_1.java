@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1
  * Java stored procedure parameter
  */
 public class GenericJavaStoredProcedureParameter2_1
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaStoredProcedureParameter2_1
 {
 	protected final StoredProcedureParameter2_1Annotation parameterAnnotation;

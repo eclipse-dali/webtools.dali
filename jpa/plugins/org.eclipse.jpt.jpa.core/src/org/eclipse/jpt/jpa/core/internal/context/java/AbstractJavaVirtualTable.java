@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaVirtualTable<T extends ReadOnlyTable>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements VirtualTable
 {
 	protected final Owner owner;

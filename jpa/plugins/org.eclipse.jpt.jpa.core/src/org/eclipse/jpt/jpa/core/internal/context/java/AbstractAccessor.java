@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 
 public abstract class AbstractAccessor
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements Accessor
 {
 

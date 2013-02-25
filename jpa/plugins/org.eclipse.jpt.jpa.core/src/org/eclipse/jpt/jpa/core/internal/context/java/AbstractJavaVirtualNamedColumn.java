@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * is derived from the resource model).
  */
 public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends ReadOnlyNamedColumn>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements VirtualNamedColumn
 {
 	protected final O owner;

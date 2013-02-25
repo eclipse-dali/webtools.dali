@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java query
  */
 public abstract class AbstractJavaQuery<A extends QueryAnnotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaQuery
 {
 	protected final A queryAnnotation;

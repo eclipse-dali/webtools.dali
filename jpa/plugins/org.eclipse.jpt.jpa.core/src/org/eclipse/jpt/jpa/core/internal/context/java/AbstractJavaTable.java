@@ -45,7 +45,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaTable, UniqueConstraint.Owner
 {
 	protected final Owner owner;

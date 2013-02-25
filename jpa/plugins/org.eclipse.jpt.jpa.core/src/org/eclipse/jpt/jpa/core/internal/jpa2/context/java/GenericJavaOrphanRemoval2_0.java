@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0Annotation;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0A
  * Java orphan removal
  */
 public class GenericJavaOrphanRemoval2_0
-		extends AbstractJavaJpaContextNode
+		extends AbstractJavaJpaContextModel
 		implements OrphanRemovable2_0
 {
 	protected Boolean specifiedOrphanRemoval;

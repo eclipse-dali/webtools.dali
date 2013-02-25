@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </code>
  */
 public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConverterAnnotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements EclipseLinkConverter
 {
 	protected final A converterAnnotation;

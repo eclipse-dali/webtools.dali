@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -21,7 +21,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaIdDerivedIdentityStrategy2_0
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements IdDerivedIdentityStrategy2_0
 {
 	protected boolean value;

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
  * is set during {@link #update()}.
  */
 public abstract class AbstractJavaMappingRelationship<M extends JavaRelationshipMapping>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaMappingRelationship
 {
 	protected RelationshipStrategy strategy;

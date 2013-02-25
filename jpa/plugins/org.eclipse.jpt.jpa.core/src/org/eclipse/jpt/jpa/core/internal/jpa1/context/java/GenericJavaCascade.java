@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 
 public class GenericJavaCascade
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements Cascade2_0
 {
 	protected boolean all;

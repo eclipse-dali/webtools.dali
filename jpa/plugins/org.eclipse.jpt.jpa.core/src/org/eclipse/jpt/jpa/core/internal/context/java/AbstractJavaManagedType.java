@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
 public abstract class AbstractJavaManagedType
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaManagedType
 {
 	protected final JavaResourceType resourceType;

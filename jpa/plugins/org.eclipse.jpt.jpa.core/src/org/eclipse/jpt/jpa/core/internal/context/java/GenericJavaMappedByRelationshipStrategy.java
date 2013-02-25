@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaMappedByRelationshipStrategy
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements MappingRelationshipStrategy2_0, MappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;

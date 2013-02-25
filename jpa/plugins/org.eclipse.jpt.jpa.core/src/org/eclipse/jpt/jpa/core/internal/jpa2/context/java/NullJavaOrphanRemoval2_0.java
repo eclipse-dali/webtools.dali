@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
  * Null Java orphan removal
  */
 public class NullJavaOrphanRemoval2_0
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements OrphanRemovable2_0
 {
 	public NullJavaOrphanRemoval2_0(OrphanRemovalHolder2_0 parent) {

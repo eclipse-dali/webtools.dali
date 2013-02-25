@@ -41,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java type mapping
  */
 public abstract class AbstractJavaTypeMapping<A extends Annotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaTypeMapping
 {
 	// this can be null for a "null" type mapping

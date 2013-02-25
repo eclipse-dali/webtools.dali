@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java ID class reference
  */
 public class GenericJavaIdClassReference
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaIdClassReference
 {
 	protected String idClassName;

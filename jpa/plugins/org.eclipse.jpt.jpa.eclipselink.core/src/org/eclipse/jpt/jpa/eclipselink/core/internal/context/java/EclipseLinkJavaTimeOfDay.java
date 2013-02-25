@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 public class EclipseLinkJavaTimeOfDay
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements EclipseLinkTimeOfDay
 {
 	protected final EclipseLinkTimeOfDayAnnotation todAnnotation;

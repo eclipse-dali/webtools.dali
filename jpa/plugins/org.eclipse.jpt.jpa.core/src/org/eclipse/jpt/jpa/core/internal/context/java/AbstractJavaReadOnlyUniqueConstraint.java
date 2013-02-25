@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 
 public abstract class AbstractJavaReadOnlyUniqueConstraint
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements ReadOnlyUniqueConstraint
 {
 	protected final Vector<String> columnNames = new Vector<String>();

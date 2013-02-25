@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Specified Java override
  */
 public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A extends OverrideAnnotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaOverride
 {
 	protected final A overrideAnnotation;

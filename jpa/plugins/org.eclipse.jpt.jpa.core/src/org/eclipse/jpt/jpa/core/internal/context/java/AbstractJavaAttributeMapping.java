@@ -47,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * {@link JavaPersistentAttribute#setMappingKey(String)}.
  */
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaAttributeMapping, AttributeMapping2_0
 {
 	protected boolean default_;

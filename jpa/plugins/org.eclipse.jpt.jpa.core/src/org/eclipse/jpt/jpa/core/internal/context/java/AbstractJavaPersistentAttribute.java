@@ -50,7 +50,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java persistent attributes
  */
 public abstract class AbstractJavaPersistentAttribute
-		extends AbstractJavaJpaContextNode
+		extends AbstractJavaJpaContextModel
 		implements JavaPersistentAttribute, PersistentAttribute2_0 {
 	
 	protected final Accessor accessor;

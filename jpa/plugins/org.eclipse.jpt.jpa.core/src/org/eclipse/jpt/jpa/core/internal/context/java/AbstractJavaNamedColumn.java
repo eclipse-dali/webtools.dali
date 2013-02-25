@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O extends ReadOnlyNamedColumn.Owner>
-	extends AbstractJavaJpaContextNode
+	extends AbstractJavaJpaContextModel
 	implements JavaNamedColumn
 {
 	protected final O owner;
