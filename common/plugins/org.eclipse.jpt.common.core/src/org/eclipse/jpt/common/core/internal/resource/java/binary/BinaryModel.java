@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,12 +23,12 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * Binary convenience methods
  */
-// TODO hopefully this class can go away with some sort of refactoring of the
+// TODO the hope is that this class can go away with some sort of refactoring of the
 // source and binary hierarchies...
-public abstract class BinaryNode
+public abstract class BinaryModel
 	extends AbstractJavaResourceModel
 {
-	protected BinaryNode(JavaResourceModel parent) {
+	protected BinaryModel(JavaResourceModel parent) {
 		super(parent);
 	}
 

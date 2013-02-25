@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.ListenerList;
  * JAR and external types
  */
 abstract class RootBinaryNode
-	extends BinaryNode
+	extends BinaryModel
 	implements JavaResourceModel.Root
 {
 	/** pluggable annotation provider */

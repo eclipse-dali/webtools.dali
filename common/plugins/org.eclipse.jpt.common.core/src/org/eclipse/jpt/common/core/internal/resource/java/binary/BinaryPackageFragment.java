@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * binary package fragment
  */
 final class BinaryPackageFragment
-	extends BinaryNode
+	extends BinaryModel
 	implements JavaResourcePackageFragment
 {
 	/** JDT package fragment */

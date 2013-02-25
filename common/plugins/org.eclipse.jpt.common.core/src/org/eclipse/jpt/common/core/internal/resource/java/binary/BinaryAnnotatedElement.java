@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * Java binary annotated element
  */
 abstract class BinaryAnnotatedElement
-		extends BinaryNode
+		extends BinaryModel
 		implements JavaResourceAnnotatedElement {
 	
 	private final IJavaElement javaElement;

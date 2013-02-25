@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
  * JAR annotation
  */
 public abstract class BinaryAnnotation
-	extends BinaryNode
+	extends BinaryModel
 	implements Annotation
 {
 	final IAnnotation jdtAnnotation;

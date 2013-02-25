@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
  * binary class file
  */
 final class BinaryClassFile
-	extends BinaryNode
+	extends BinaryModel
 	implements JavaResourceClassFile
 {
 	/** JDT class file */
