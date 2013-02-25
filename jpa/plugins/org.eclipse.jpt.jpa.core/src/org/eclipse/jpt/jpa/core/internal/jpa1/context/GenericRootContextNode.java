@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
-import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextModelRoot2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericRootContextNode
 	extends AbstractJpaContextModel
-	implements JpaRootContextNode2_0
+	implements JpaContextModelRoot2_0
 {
 	/* This object has no parent, so it must point to the JPA project explicitly. */
 	protected final JpaProject jpaProject;

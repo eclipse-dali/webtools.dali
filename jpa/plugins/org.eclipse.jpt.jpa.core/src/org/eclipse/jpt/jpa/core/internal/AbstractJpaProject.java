@@ -86,7 +86,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
-import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextModelRoot2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
@@ -1041,7 +1041,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void initializeMetamodel() {
-		((JpaRootContextNode2_0) this.rootContextNode).initializeMetamodel();
+		((JpaContextModelRoot2_0) this.rootContextNode).initializeMetamodel();
 	}
 
 	/**
@@ -1109,11 +1109,11 @@ public abstract class AbstractJpaProject
 	 * Called by the {@link SynchronizeMetamodelJob#runInWorkspace(IProgressMonitor)}.
 	 */
 	protected IStatus synchronizeMetamodel_(IProgressMonitor monitor) {
-		return ((JpaRootContextNode2_0) this.rootContextNode).synchronizeMetamodel(monitor);
+		return ((JpaContextModelRoot2_0) this.rootContextNode).synchronizeMetamodel(monitor);
 	}
 
 	protected void disposeMetamodel() {
-		((JpaRootContextNode2_0) this.rootContextNode).disposeMetamodel();
+		((JpaContextModelRoot2_0) this.rootContextNode).disposeMetamodel();
 	}
 
 	public IPackageFragmentRoot getMetamodelPackageFragmentRoot() {
