@@ -66,7 +66,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -514,7 +514,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmConverter buildConverter() {
-		OrmXmlContextNodeFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
 		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {
@@ -955,7 +955,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmConverter buildMapKeyConverter() {
-		OrmXmlContextNodeFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
 		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {

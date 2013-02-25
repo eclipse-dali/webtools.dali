@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
@@ -58,7 +58,7 @@ public class OrmEclipseLinkBasicMapMappingDefinition
 	public OrmAttributeMapping buildContextMapping(
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
-			OrmXmlContextNodeFactory factory) {
+			OrmXmlContextModelFactory factory) {
 		return ((EclipseLinkOrmXmlContextNodeFactory) factory).
 				buildOrmEclipseLinkBasicMapMapping(parent, (XmlBasicMap) resourceMapping);
 	}

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
@@ -59,7 +59,7 @@ public class OrmElementCollectionMapping2_0Definition
 	public OrmAttributeMapping buildContextMapping(
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping xmlMapping, 
-			OrmXmlContextNodeFactory factory) {
+			OrmXmlContextModelFactory factory) {
 		return ((OrmXml2_0ContextNodeFactory) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) xmlMapping);
 	}
 	

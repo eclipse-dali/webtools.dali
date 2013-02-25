@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -61,7 +61,7 @@ public class OrmEntityDefinition
 	public OrmEntity buildContextMapping(
 			OrmPersistentType parent, 
 			XmlTypeMapping resourceMapping, 
-			OrmXmlContextNodeFactory factory) {
+			OrmXmlContextModelFactory factory) {
 		return factory.buildOrmEntity(parent, (XmlEntity) resourceMapping);
 	}
 }

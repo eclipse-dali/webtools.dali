@@ -61,7 +61,7 @@ public interface OrmBaseTemporalConverter
 			return BaseTemporalConverter.class;
 		}
 
-		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
 			return (xmlMapping.getTemporal() == null) ? null : factory.buildOrmBaseTemporalConverter(parent, this.buildOwner(xmlMapping));
 		}
@@ -73,7 +73,7 @@ public interface OrmBaseTemporalConverter
 			return ((XmlConvertibleMapping) xmlMapping).getTemporal() != null;
 		}
 
-		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			return factory.buildOrmBaseTemporalConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
 		}
 
@@ -162,7 +162,7 @@ public interface OrmBaseTemporalConverter
 			return BaseTemporalConverter.class;
 		}
 
-		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlMapKeyConvertibleMapping_2_0 xmlMapping = (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping();
 			return (xmlMapping.getMapKeyTemporal() == null) ? null : factory.buildOrmBaseTemporalConverter(parent, this.buildOwner(xmlMapping));
 		}
@@ -191,7 +191,7 @@ public interface OrmBaseTemporalConverter
 			return ((XmlMapKeyConvertibleMapping_2_0) xmlMapping).getMapKeyTemporal() != null;
 		}
 
-		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			return factory.buildOrmBaseTemporalConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
 		}
 

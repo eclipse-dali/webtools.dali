@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.UnsupportedOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 public abstract class AbstractOrmXmlDefinition
 	implements OrmXmlDefinition
 {
-	protected final OrmXmlContextNodeFactory factory;
+	protected final OrmXmlContextModelFactory factory;
 
 	protected ArrayList<OrmManagedTypeDefinition> managedTypeDefinitions;
 
@@ -50,9 +50,9 @@ public abstract class AbstractOrmXmlDefinition
 
 	// ********** factory **********
 
-	protected abstract OrmXmlContextNodeFactory buildContextNodeFactory();
+	protected abstract OrmXmlContextModelFactory buildContextNodeFactory();
 
-	public OrmXmlContextNodeFactory getContextNodeFactory() {
+	public OrmXmlContextModelFactory getContextNodeFactory() {
 		return this.factory;
 	}
 

@@ -45,5 +45,5 @@ public interface OrmTypeMappingDefinition
 	OrmTypeMapping buildContextMapping(
 			OrmPersistentType parent, 
 			XmlTypeMapping resourceMapping, 
-			OrmXmlContextNodeFactory factory);
+			OrmXmlContextModelFactory factory);
 }

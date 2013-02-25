@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 
@@ -46,7 +46,7 @@ public class OrmPersistentTypeDefinition
 		return XmlTypeMapping.class;
 	}
 
-	public OrmManagedType buildContextManagedType(JpaContextModel parent, XmlManagedType resourceManagedType, OrmXmlContextNodeFactory factory) {
+	public OrmManagedType buildContextManagedType(JpaContextModel parent, XmlManagedType resourceManagedType, OrmXmlContextModelFactory factory) {
 		return factory.buildOrmPersistentType((EntityMappings) parent, (XmlTypeMapping) resourceManagedType);
 	}
 }

@@ -43,5 +43,5 @@ public interface OrmManagedTypeDefinition
 	 * Build a context managed type for the specified parent 
 	 * and resource managed type, using the specified factory.
 	 */
-	OrmManagedType buildContextManagedType(JpaContextModel parent, XmlManagedType resourceManagedType, OrmXmlContextNodeFactory factory);
+	OrmManagedType buildContextManagedType(JpaContextModel parent, XmlManagedType resourceManagedType, OrmXmlContextModelFactory factory);
 }

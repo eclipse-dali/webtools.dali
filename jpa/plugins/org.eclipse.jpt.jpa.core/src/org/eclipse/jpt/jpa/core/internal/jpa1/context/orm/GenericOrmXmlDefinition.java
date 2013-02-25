@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlDefinition;
@@ -65,7 +65,7 @@ public class GenericOrmXmlDefinition
 	}
 
 	@Override
-	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+	protected OrmXmlContextModelFactory buildContextNodeFactory() {
 		return new GenericOrmXmlContextNodeFactory();
 	}
 

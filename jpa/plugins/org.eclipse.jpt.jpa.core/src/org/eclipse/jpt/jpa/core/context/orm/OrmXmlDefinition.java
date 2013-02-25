@@ -35,7 +35,7 @@ public interface OrmXmlDefinition
 	/**
 	 * Return the factory for building XML context nodes.
 	 */
-	OrmXmlContextNodeFactory getContextNodeFactory();
+	OrmXmlContextModelFactory getContextNodeFactory();
 
 
 	// ********** managed types **********

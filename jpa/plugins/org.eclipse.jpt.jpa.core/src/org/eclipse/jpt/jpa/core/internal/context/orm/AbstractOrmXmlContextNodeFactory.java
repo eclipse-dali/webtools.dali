@@ -79,7 +79,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
@@ -165,7 +165,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlVersion;
 
 public abstract class AbstractOrmXmlContextNodeFactory
-	implements OrmXmlContextNodeFactory
+	implements OrmXmlContextModelFactory
 {
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings(parent, xmlEntityMappings);

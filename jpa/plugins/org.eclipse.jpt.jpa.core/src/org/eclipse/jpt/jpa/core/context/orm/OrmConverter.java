@@ -59,7 +59,7 @@ public interface OrmConverter
 		 * This is used to build a converter during construction of the
 		 * converter's mapping.
 		 */
-		OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory);
+		OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory);
 
 		/**
 		 * Return whether the specified XML mapping has the
@@ -67,7 +67,7 @@ public interface OrmConverter
 		 * mapping's converter does not match the adapter, the mapping will
 		 * build a new converter (via the adapter).
 		 * 
-		 * @see #buildNewConverter(OrmAttributeMapping, OrmXmlContextNodeFactory)
+		 * @see #buildNewConverter(OrmAttributeMapping, OrmXmlContextModelFactory)
 		 */
 		boolean isActive(XmlAttributeMapping xmlMapping);
 
@@ -82,7 +82,7 @@ public interface OrmConverter
 		 * 
 		 * @see #isActive(XmlConvertibleMapping)
 		 */
-		OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory);
+		OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory);
 
 		/**
 		 * Clear the adapter's XML value from the specified XML mapping.

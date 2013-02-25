@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
@@ -44,7 +44,7 @@ public class EclipseLinkOrmXml1_1Definition
 	}
 
 	@Override
-	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+	protected OrmXmlContextModelFactory buildContextNodeFactory() {
 		return EclipseLinkOrmXmlDefinition.instance().getContextNodeFactory();
 	}
 

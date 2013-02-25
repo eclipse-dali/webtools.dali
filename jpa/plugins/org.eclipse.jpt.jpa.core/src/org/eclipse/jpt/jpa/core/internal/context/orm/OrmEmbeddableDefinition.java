@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -61,7 +61,7 @@ public class OrmEmbeddableDefinition
 	public OrmEmbeddable buildContextMapping(
 			OrmPersistentType parent, 
 			XmlTypeMapping resourceMapping, 
-			OrmXmlContextNodeFactory factory) {
+			OrmXmlContextModelFactory factory) {
 		return factory.buildOrmEmbeddable(parent, (XmlEmbeddable) resourceMapping);
 	}
 }

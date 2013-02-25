@@ -63,7 +63,7 @@ public interface OrmBaseEnumeratedConverter
 			return BaseEnumeratedConverter.class;
 		}
 
-		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
 			return (xmlMapping.getEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner(xmlMapping));
 		}
@@ -89,7 +89,7 @@ public interface OrmBaseEnumeratedConverter
 			return ((XmlConvertibleMapping) xmlMapping).getEnumerated() != null;
 		}
 
-		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			return factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
 		}
 
@@ -116,7 +116,7 @@ public interface OrmBaseEnumeratedConverter
 			return BaseEnumeratedConverter.class;
 		}
 
-		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlMapKeyConvertibleMapping_2_0 xmlMapping = (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping();
 			return (xmlMapping.getMapKeyEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner(xmlMapping));
 		}
@@ -145,7 +145,7 @@ public interface OrmBaseEnumeratedConverter
 			return ((XmlMapKeyConvertibleMapping_2_0) xmlMapping).getMapKeyEnumerated() != null;
 		}
 
-		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			return factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
 		}
 

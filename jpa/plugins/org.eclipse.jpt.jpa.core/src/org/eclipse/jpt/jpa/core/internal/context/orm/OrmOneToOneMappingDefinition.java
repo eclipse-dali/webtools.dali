@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
@@ -58,7 +58,7 @@ public class OrmOneToOneMappingDefinition
 	public OrmAttributeMapping buildContextMapping(
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
-			OrmXmlContextNodeFactory factory) {
+			OrmXmlContextModelFactory factory) {
 		return factory.buildOrmOneToOneMapping(parent, (XmlOneToOne) resourceMapping);
 	}
 	

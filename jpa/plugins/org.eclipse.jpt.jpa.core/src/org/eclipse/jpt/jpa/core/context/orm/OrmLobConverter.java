@@ -45,7 +45,7 @@ public interface OrmLobConverter
 			return LobConverter.class;
 		}
 
-		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
 			return xmlMapping.isLob() ? factory.buildOrmLobConverter(parent, this) : null;
 		}
@@ -54,7 +54,7 @@ public interface OrmLobConverter
 			return ((XmlConvertibleMapping) xmlMapping).isLob();
 		}
 
-		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			return factory.buildOrmLobConverter(parent, this);
 		}
 

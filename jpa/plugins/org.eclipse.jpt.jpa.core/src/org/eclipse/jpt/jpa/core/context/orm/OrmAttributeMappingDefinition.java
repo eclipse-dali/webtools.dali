@@ -43,7 +43,7 @@ public interface OrmAttributeMappingDefinition
 	OrmAttributeMapping buildContextMapping(
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
-			OrmXmlContextNodeFactory factory);	
+			OrmXmlContextModelFactory factory);	
 	
 	boolean isSingleRelationshipMapping();
 	

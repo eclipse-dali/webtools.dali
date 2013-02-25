@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition;
@@ -50,7 +50,7 @@ public class EclipseLinkOrmXml2_5Definition
 	}
 
 	@Override
-	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+	protected OrmXmlContextModelFactory buildContextNodeFactory() {
 		return new EclipseLinkOrmXml2_5ContextNodeFactory();
 	}
 

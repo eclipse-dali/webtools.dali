@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
@@ -163,7 +163,7 @@ public class OrmEclipseLinkConvert
 			return EclipseLinkConvert.class;
 		}
 
-		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			XmlConvertibleMapping_2_1 xmlMapping = (XmlConvertibleMapping_2_1) parent.getXmlAttributeMapping();
 			XmlConvert xmlConvert = (XmlConvert) xmlMapping.getConvert();
 			return (xmlConvert == null) ? null : new OrmEclipseLinkConvert(parent, this);
@@ -173,7 +173,7 @@ public class OrmEclipseLinkConvert
 			return ((XmlConvertibleMapping_2_1) xmlMapping).getConvert() != null;
 		}
 
-		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
+		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextModelFactory factory) {
 			return new OrmEclipseLinkConvert(parent, this);
 		}
 

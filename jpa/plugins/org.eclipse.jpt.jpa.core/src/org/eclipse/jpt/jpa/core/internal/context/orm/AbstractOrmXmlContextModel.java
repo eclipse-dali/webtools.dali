@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
@@ -76,7 +76,7 @@ public abstract class AbstractOrmXmlContextModel
 		return (OrmXml2_1ContextNodeFactory) this.getContextNodeFactory();
 	}
 
-	protected OrmXmlContextNodeFactory getContextNodeFactory() {
+	protected OrmXmlContextModelFactory getContextNodeFactory() {
 		return this.getMappingFileDefinition().getContextNodeFactory();
 	}
 }
