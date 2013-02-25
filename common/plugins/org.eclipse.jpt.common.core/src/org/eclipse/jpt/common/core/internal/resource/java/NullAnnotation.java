@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * Simplify null annotation classes
  */
 public abstract class NullAnnotation<A extends Annotation>
-	extends AbstractJavaResourceNode
+	extends AbstractJavaResourceModel
 	implements Annotation
 {
 

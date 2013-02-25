@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 // TODO hopefully this class can go away with some sort of refactoring of the
 // source and binary hierarchies...
 public abstract class BinaryNode
-	extends AbstractJavaResourceNode
+	extends AbstractJavaResourceModel
 {
 	protected BinaryNode(JavaResourceModel parent) {
 		super(parent);

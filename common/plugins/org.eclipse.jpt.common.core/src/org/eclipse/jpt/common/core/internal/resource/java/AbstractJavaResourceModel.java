@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 /**
  * Java resource containment hierarchy
  */
-public abstract class AbstractJavaResourceNode
+public abstract class AbstractJavaResourceModel
 	extends AbstractModel
 	implements JavaResourceModel
 {
@@ -28,7 +28,7 @@ public abstract class AbstractJavaResourceNode
 
 	// ********** constructor **********
 	
-	protected AbstractJavaResourceNode(JavaResourceModel parent) {
+	protected AbstractJavaResourceModel(JavaResourceModel parent) {
 		super();
 		this.checkParent(parent);
 		this.parent = parent;
@@ -71,7 +71,7 @@ public abstract class AbstractJavaResourceNode
 	private AspectChangeSupport.Listener buildChangeSupportListener() {
 		return new AspectChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
-				AbstractJavaResourceNode.this.aspectChanged(aspectName);
+				AbstractJavaResourceModel.this.aspectChanged(aspectName);
 			}
 		};
 	}

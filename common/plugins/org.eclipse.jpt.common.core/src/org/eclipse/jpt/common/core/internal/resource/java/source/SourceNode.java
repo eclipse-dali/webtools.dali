@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * Source convenience methods
  */
 public abstract class SourceNode
-	extends AbstractJavaResourceNode
+	extends AbstractJavaResourceModel
 {
 
 	protected SourceNode(JavaResourceModel parent) {
