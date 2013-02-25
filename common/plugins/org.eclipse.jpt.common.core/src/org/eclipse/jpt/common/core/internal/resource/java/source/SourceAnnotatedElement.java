@@ -45,7 +45,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * Java source annotated element
  */
 abstract class SourceAnnotatedElement<E extends AnnotatedElement>
-	extends SourceNode
+	extends SourceModel
 	implements JavaResourceAnnotatedElement
 {
 	final E annotatedElement;

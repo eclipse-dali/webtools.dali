@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.HashMap;
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
@@ -53,7 +53,7 @@ public abstract class AbstractAccessor
 	 * Wrap another Java resource member and suppress all its annotations.
 	 */
 	protected abstract class UnannotatedJavaResourceMember<M extends JavaResourceMember>
-		extends SourceNode
+		extends SourceModel
 		implements JavaResourceMember
 	{
 		protected final M member;

@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -535,7 +535,7 @@ public final class MappingTools {
 		// the node will be binary if it is in a JAR in the current project
 		return (resource != null) &&
 				resource.getProject().equals(contextNode.getJpaProject().getProject()) &&
-				(resourceNode instanceof SourceNode);
+				(resourceNode instanceof SourceModel);
 	}
 
 	/**

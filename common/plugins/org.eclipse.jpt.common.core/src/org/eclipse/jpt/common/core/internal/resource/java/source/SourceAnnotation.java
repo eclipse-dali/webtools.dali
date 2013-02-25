@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationEleme
  * and lots of convenience methods
  */
 public abstract class SourceAnnotation
-	extends SourceNode
+	extends SourceModel
 	implements Annotation
 {
 	protected final AnnotatedElement annotatedElement;

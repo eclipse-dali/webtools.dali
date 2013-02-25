@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.ListenerList;
  * Java compilation unit (source file)
  */
 public abstract class SourceCompilationUnit
-	extends SourceNode
+	extends SourceModel
 	implements JavaResourceCompilationUnit
 {
 	/** JDT compilation unit */

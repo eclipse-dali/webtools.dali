@@ -34,11 +34,11 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 /**
  * Source convenience methods
  */
-public abstract class SourceNode
+public abstract class SourceModel
 	extends AbstractJavaResourceModel
 {
 
-	protected SourceNode(JavaResourceModel parent) {
+	protected SourceModel(JavaResourceModel parent) {
 		super(parent);
 	}
 
@@ -331,7 +331,7 @@ public abstract class SourceNode
 		}
 
 		void nestedAnnotationAdded(int index, A addedAnnotation) {
-			SourceNode.this.nestedAnnotationAdded(this.getNestedAnnotationsListName(), index, addedAnnotation);
+			SourceModel.this.nestedAnnotationAdded(this.getNestedAnnotationsListName(), index, addedAnnotation);
 		}
 
 		/**
@@ -346,7 +346,7 @@ public abstract class SourceNode
 		}
 
 		void nestedAnnotationsRemoved(int index, List<A> removedAnnotations) {
-			SourceNode.this.nestedAnnotationsRemoved(this.getNestedAnnotationsListName(), index, removedAnnotations);
+			SourceModel.this.nestedAnnotationsRemoved(this.getNestedAnnotationsListName(), index, removedAnnotations);
 		}
 
 		/**
@@ -360,7 +360,7 @@ public abstract class SourceNode
 		}
 
 		AnnotationProvider getAnnotationProvider() {
-			return SourceNode.this.getAnnotationProvider();
+			return SourceModel.this.getAnnotationProvider();
 		}
 
 		@Override

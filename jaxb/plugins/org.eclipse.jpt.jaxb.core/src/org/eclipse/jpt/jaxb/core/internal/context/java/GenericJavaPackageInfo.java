@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -364,7 +364,7 @@ public class GenericJavaPackageInfo
 		// the type will be binary if it is in a JAR in the current project
 		if ((file != null) 
 				&& file.getProject().equals(getJaxbProject().getProject()) 
-				&& (this.resourcePackage instanceof SourceNode)) {
+				&& (this.resourcePackage instanceof SourceModel)) {
 
 			this.xmlSchema.validate(messages, reporter);
 			

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -304,7 +304,7 @@ public abstract class AbstractJavaType
 		// the type will be binary if it is in a JAR in the current project
 		if ((file != null) 
 				&& file.getProject().equals(getJaxbProject().getProject()) 
-				&& (this.resourceType instanceof SourceNode)) {
+				&& (this.resourceType instanceof SourceModel)) {
 
 			if (this.mapping != null) {
 				this.mapping.validate(messages, reporter);
