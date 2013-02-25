@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmBasicMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmEmbeddedMappingDefinition;
@@ -66,7 +66,7 @@ public class GenericOrmXmlDefinition
 
 	@Override
 	protected OrmXmlContextModelFactory buildContextNodeFactory() {
-		return new GenericOrmXmlContextNodeFactory();
+		return new GenericOrmXmlContextModelFactory();
 	}
 
 	@Override

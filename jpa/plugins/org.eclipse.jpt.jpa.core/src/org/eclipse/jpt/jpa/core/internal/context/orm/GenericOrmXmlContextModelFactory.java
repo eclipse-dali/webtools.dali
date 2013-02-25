@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 
-public class GenericOrmXmlContextNodeFactory
+public class GenericOrmXmlContextModelFactory
 	extends AbstractOrmXmlContextModelFactory
 {
 	// nothing
