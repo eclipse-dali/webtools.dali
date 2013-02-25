@@ -87,7 +87,7 @@ public abstract class AbstractJavaResourceModel
 	// ********** JavaResourceNode implementation **********
 
 	/**
-	 * @see org.eclipse.jpt.common.core.internal.resource.java.binary.RootBinaryNode#getRoot()
+	 * @see org.eclipse.jpt.common.core.internal.resource.java.binary.RootBinaryModel#getRoot()
 	 * @see org.eclipse.jpt.common.core.internal.resource.java.source.SourceCompilationUnit#getRoot()
 	 */
 	public Root getRoot() {

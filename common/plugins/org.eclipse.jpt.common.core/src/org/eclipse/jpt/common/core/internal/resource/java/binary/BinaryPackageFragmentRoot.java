@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
  * binary package fragment root
  */
 public final class BinaryPackageFragmentRoot
-	extends RootBinaryNode
+	extends RootBinaryModel
 	implements JavaResourcePackageFragmentRoot
 {
 	/** JDT package fragment root */

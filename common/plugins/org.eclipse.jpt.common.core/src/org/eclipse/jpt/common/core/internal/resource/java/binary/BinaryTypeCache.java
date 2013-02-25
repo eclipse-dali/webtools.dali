@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * (typically derived from JARs on the project's build path)
  */
 public final class BinaryTypeCache
-	extends RootBinaryNode
+	extends RootBinaryModel
 	implements JavaResourceTypeCache
 {
 	/** populated on-demand */
