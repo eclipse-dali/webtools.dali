@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
+import org.eclipse.jpt.jpa.core.internal.AbstractJpaModel;
 
 /**
  * The transition between a JPA project and the resource model associated
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
  * context model.
  */
 public class GenericJpaFile
-	extends AbstractJpaNode
+	extends AbstractJpaModel
 	implements JpaFile
 {
 	/**

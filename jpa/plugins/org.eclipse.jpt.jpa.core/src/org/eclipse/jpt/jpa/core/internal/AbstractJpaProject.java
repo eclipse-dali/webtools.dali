@@ -124,7 +124,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * The data source is an adapter to the DTP meta-data model.
  */
 public abstract class AbstractJpaProject
-	extends AbstractJpaNode
+	extends AbstractJpaModel
 	implements JpaProject2_1
 {
 	/**

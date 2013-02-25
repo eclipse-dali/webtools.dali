@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
+import org.eclipse.jpt.jpa.core.internal.AbstractJpaModel;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJpaContextNode
-	extends AbstractJpaNode
+	extends AbstractJpaModel
 	implements JpaContextNode
 {
 	protected AbstractJpaContextNode(JpaModel parent) {

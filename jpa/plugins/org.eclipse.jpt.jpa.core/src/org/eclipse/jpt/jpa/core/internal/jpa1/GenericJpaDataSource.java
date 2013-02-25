@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
+import org.eclipse.jpt.jpa.core.internal.AbstractJpaModel;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * GenericJpaDataSource
  */
 public class GenericJpaDataSource
-	extends AbstractJpaNode
+	extends AbstractJpaModel
 	implements JpaDataSource
 {
 	/**
