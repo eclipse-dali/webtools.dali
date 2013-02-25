@@ -230,7 +230,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 
 	/**
 	 * The method {@link #getMappingFileRoot()} is already defined by
-	 * {@link org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode}
+	 * {@link org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel}
 	 * for getting what would be the "mapping file root" that <em>contains</em>
 	 * the context node. We want something slightly different here: i.e. the
 	 * "mapping file root" contained by the mapping file ref (since, actually,

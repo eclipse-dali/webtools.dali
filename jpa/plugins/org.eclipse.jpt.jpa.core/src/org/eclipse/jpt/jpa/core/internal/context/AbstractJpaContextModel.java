@@ -27,11 +27,11 @@ import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledExcepti
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJpaContextNode
+public abstract class AbstractJpaContextModel
 	extends AbstractJpaModel
 	implements JpaContextModel
 {
-	protected AbstractJpaContextNode(JpaModel parent) {
+	protected AbstractJpaContextModel(JpaModel parent) {
 		super(parent);
 	}
 

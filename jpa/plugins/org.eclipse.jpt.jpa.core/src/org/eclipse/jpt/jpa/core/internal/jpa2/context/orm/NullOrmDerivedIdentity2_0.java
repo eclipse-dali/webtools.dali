@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmIdDerivedIdentityStrategy2_0;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrateg
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 
 public class NullOrmDerivedIdentity2_0
-	extends AbstractJpaContextNode
+	extends AbstractJpaContextModel
 	implements OrmDerivedIdentity2_0
 {
 	public NullOrmDerivedIdentity2_0(OrmSingleRelationshipMapping2_0 parent) {

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> ID class reference
  */
 public class GenericOrmIdClassReference
-	extends AbstractJpaContextNode
+	extends AbstractJpaContextModel
 	implements OrmIdClassReference
 {
 	protected final Owner owner;

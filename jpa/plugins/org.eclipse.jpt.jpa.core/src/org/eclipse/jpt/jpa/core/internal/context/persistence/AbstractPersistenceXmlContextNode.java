@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 
 /**
  * Use this abstract class for context nodes that are part of an
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
  * implementation.
  */
 public abstract class AbstractPersistenceXmlContextNode
-	extends AbstractJpaContextNode
+	extends AbstractJpaContextModel
 {
 	// ********** constructor **********
 
