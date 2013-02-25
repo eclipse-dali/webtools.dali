@@ -94,7 +94,6 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
@@ -120,8 +119,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>persistence-unit</code> element
  */
 public abstract class AbstractPersistenceUnit
-	extends AbstractPersistenceXmlContextNode
-	implements PersistenceUnit2_0, PersistenceUnit2_1
+	extends AbstractPersistenceXmlContextModel
+	implements PersistenceUnit2_1
 {
 	protected final XmlPersistenceUnit xmlPersistenceUnit;
 

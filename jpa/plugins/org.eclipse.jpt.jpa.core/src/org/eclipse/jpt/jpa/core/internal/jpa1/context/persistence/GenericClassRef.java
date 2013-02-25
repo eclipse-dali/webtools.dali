@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -47,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>class</code> element
  */
 public class GenericClassRef
-	extends AbstractPersistenceXmlContextNode
+	extends AbstractPersistenceXmlContextModel
 	implements ClassRef
 {
 	/**

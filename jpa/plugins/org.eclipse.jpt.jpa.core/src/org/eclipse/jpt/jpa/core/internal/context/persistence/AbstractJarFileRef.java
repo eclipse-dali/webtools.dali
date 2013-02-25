@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>jar-file</code> element
  */
 public abstract class AbstractJarFileRef
-	extends AbstractPersistenceXmlContextNode
+	extends AbstractPersistenceXmlContextModel
 	implements JarFileRef
 {
 	protected final XmlJarFileRef xmlJarFileRef;

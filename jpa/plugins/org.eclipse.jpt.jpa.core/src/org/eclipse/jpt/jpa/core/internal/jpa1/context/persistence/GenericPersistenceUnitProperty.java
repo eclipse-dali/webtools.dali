@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -24,7 +24,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * Notifies the persistence unit of any changes to the property.
  */
 public class GenericPersistenceUnitProperty
-	extends AbstractPersistenceXmlContextNode
+	extends AbstractPersistenceXmlContextModel
 	implements PersistenceUnit.Property
 {
 	protected final XmlProperty xmlProperty;

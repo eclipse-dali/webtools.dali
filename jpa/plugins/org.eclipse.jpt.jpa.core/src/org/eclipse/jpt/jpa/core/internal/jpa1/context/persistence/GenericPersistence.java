@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>persistence</code> element
  */
 public class GenericPersistence
-	extends AbstractPersistenceXmlContextNode
+	extends AbstractPersistenceXmlContextModel
 	implements Persistence2_0
 {
 	protected final XmlPersistence xmlPersistence;

@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModel;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Context JAR file
  */
 public class GenericJarFile
-	extends AbstractPersistenceXmlContextNode
+	extends AbstractPersistenceXmlContextModel
 	implements JarFile, PersistentType.Owner
 {
 	protected final JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;

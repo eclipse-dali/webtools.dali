@@ -44,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>mapping-file</code> element
  */
 public abstract class AbstractMappingFileRef<MF extends MappingFile>
-	extends AbstractPersistenceXmlContextNode
+	extends AbstractPersistenceXmlContextModel
 	implements MappingFileRef
 {
 	protected String fileName;

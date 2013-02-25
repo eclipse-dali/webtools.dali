@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,17 +16,15 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 
 /**
- * Use this abstract class for context nodes that are part of an
- * <code>orm.xml</code> file.
- * This will not work for a pure {@link org.eclipse.jpt.jpa.core.context.MappingFile}
- * implementation.
+ * Use this abstract class for context models that are part of an
+ * <code>persistence.xml</code> file.
  */
-public abstract class AbstractPersistenceXmlContextNode
+public abstract class AbstractPersistenceXmlContextModel
 	extends AbstractJpaContextModel
 {
 	// ********** constructor **********
 
-	protected AbstractPersistenceXmlContextNode(JpaContextModel parent) {
+	protected AbstractPersistenceXmlContextModel(JpaContextModel parent) {
 		super(parent);
 	}
 
