@@ -59,7 +59,7 @@ public class OrmEclipseLinkBasicCollectionMappingDefinition
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextModelFactory factory) {
-		return ((EclipseLinkOrmXmlContextNodeFactory) factory).
+		return ((EclipseLinkOrmXmlContextModelFactory) factory).
 				buildOrmEclipseLinkBasicCollectionMapping(parent, (XmlBasicCollection) resourceMapping);
 	}
 	

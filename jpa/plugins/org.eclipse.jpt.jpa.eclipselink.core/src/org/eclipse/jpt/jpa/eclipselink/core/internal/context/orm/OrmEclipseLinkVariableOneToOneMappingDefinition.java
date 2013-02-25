@@ -59,7 +59,7 @@ public class OrmEclipseLinkVariableOneToOneMappingDefinition
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextModelFactory factory) {
-		return ((EclipseLinkOrmXmlContextNodeFactory) factory).
+		return ((EclipseLinkOrmXmlContextModelFactory) factory).
 				buildOrmEclipseLinkVariableOneToOneMapping(parent, (XmlVariableOneToOne) resourceMapping);
 	}
 	

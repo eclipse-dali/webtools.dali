@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 
-public class EclipseLinkOrmXmlContextNodeFactory
+public class EclipseLinkOrmXmlContextModelFactory
 	extends AbstractOrmXmlContextModelFactory
 {	
 

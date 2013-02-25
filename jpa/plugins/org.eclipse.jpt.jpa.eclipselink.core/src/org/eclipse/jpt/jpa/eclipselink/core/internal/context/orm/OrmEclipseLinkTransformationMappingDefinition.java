@@ -59,7 +59,7 @@ public class OrmEclipseLinkTransformationMappingDefinition
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextModelFactory factory) {
-		return ((EclipseLinkOrmXmlContextNodeFactory) factory).
+		return ((EclipseLinkOrmXmlContextModelFactory) factory).
 				buildOrmEclipseLinkTransformationMapping(parent, (XmlTransformation) resourceMapping);
 	}
 	
