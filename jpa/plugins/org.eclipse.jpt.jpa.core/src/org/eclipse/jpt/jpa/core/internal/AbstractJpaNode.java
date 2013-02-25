@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -53,20 +53,20 @@ import org.eclipse.jpt.jpa.db.Database;
  */
 public abstract class AbstractJpaNode
 	extends AbstractModel
-	implements JpaNode
+	implements JpaModel
 {
-	protected final JpaNode parent;
+	protected final JpaModel parent;
 
 
 	// ********** constructor/initialization **********
 
-	protected AbstractJpaNode(JpaNode parent) {
+	protected AbstractJpaNode(JpaModel parent) {
 		super();
 		this.checkParent(parent);
 		this.parent = parent;
 	}
 
-	protected void checkParent(JpaNode p) {
+	protected void checkParent(JpaModel p) {
 		if (p == null) {
 			if (this.requiresParent()) {
 				throw new IllegalArgumentException("'parent' cannot be null"); //$NON-NLS-1$
@@ -110,7 +110,7 @@ public abstract class AbstractJpaNode
 
 	// ********** JpaNode implementation **********
 
-	public JpaNode getParent() {
+	public JpaModel getParent() {
 		return this.parent;
 	}
 

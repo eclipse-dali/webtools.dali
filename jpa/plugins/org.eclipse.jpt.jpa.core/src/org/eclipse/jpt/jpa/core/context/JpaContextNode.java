@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 2.0
  */
 public interface JpaContextNode
-	extends JpaNode, JptResourceTypeReference
+	extends JpaModel, JptResourceTypeReference
 {
 	/**
 	 * Return the persistence unit if the context node is within a 

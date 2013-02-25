@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.ui.internal.jface.ResourceManagerLabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -61,7 +61,7 @@ import com.ibm.icu.text.Collator;
  * -----------------------------------------------------------------------------</pre>
  */
 @SuppressWarnings("nls")
-public abstract class MapAsComposite<T extends JpaNode>
+public abstract class MapAsComposite<T extends JpaModel>
 	extends Pane<T>
 {
 	protected boolean dragEvent;

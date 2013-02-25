@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -31,7 +31,7 @@ public abstract class AbstractJpaContextNode
 	extends AbstractJpaNode
 	implements JpaContextNode
 {
-	protected AbstractJpaContextNode(JpaNode parent) {
+	protected AbstractJpaContextNode(JpaModel parent) {
 		super(parent);
 	}
 
@@ -151,7 +151,7 @@ public abstract class AbstractJpaContextNode
 	}
 
 	/**
-	 * @see #buildValidationMessage(JpaNode, ValidationMessage)
+	 * @see #buildValidationMessage(JpaModel, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
 	protected IMessage buildValidationMessage(ValidationMessage message) {
@@ -162,12 +162,12 @@ public abstract class AbstractJpaContextNode
 	 * @see ValidationMessageTools#buildValidationMessage(IResource, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildValidationMessage(JpaNode target, ValidationMessage message) {
+	protected IMessage buildValidationMessage(JpaModel target, ValidationMessage message) {
 		return ValidationMessageTools.buildValidationMessage(target.getResource(), message);
 	}
 
 	/**
-	 * @see #buildValidationMessage(JpaNode, ValidationMessage, Object[])
+	 * @see #buildValidationMessage(JpaModel, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
 	protected IMessage buildValidationMessage(ValidationMessage message, Object... args) {
@@ -178,12 +178,12 @@ public abstract class AbstractJpaContextNode
 	 * @see ValidationMessageTools#buildValidationMessage(IResource, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildValidationMessage(JpaNode target, ValidationMessage message, Object... args) {
+	protected IMessage buildValidationMessage(JpaModel target, ValidationMessage message, Object... args) {
 		return ValidationMessageTools.buildValidationMessage(target.getResource(), message, args);
 	}
 
 	/**
-	 * @see #buildValidationMessage(JpaNode, TextRange, ValidationMessage)
+	 * @see #buildValidationMessage(JpaModel, TextRange, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
 	protected IMessage buildValidationMessage(TextRange textRange, ValidationMessage message) {
@@ -194,12 +194,12 @@ public abstract class AbstractJpaContextNode
 	 * @see ValidationMessageTools#buildValidationMessage(IResource, TextRange, ValidationMessage)
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildValidationMessage(JpaNode target, TextRange textRange, ValidationMessage message) {
+	protected IMessage buildValidationMessage(JpaModel target, TextRange textRange, ValidationMessage message) {
 		return ValidationMessageTools.buildValidationMessage(target.getResource(), textRange, message);
 	}
 
 	/**
-	 * @see #buildValidationMessage(JpaNode, TextRange, ValidationMessage, Object[])
+	 * @see #buildValidationMessage(JpaModel, TextRange, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
 	protected IMessage buildValidationMessage(TextRange textRange, ValidationMessage message, Object... args) {
@@ -210,7 +210,7 @@ public abstract class AbstractJpaContextNode
 	 * @see ValidationMessageTools#buildValidationMessage(IResource, TextRange, ValidationMessage, Object[])
 	 * @see IMessage#HIGH_SEVERITY
 	 */
-	protected IMessage buildValidationMessage(JpaNode target, TextRange textRange, ValidationMessage message, Object... args) {
+	protected IMessage buildValidationMessage(JpaModel target, TextRange textRange, ValidationMessage message, Object... args) {
 		return ValidationMessageTools.buildValidationMessage(target.getResource(), textRange, message, args);
 	}
 

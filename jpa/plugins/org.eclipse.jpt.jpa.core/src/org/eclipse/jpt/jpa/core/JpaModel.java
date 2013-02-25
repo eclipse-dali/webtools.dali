@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.model.Model;
  * @version 2.1
  * @since 2.0
  */
-public interface JpaNode
+public interface JpaModel
 	extends Model, IAdaptable
 {
 	/**
@@ -40,14 +40,19 @@ public interface JpaNode
 	JpaProject getJpaProject();
 
 	/**
-	 * Return the JPA node's parent. The JPA project will not have a parent.
+	 * Return the model's JPA platform.
 	 */
-	JpaNode getParent();
+	JpaPlatform getJpaPlatform();
 
 	/**
-	 * Some state or child (or grandchild etc.) of the JPA node changed.
+	 * Return the JPA node's parent. The JPA project will not have a parent.
+	 */
+	JpaModel getParent();
+
+	/**
+	 * Some state or child (or grandchild etc.) of the JPA model changed.
 	 * Fire a state change event. Implied by this behavior is that any change
-	 * to any JPA node in a JPA project will trigger the JPA project to fire a
+	 * to any JPA model in a JPA project will trigger the JPA project to fire a
 	 * state change event.
 	 * 
 	 * @see Model#addStateChangeListener(org.eclipse.jpt.common.utility.model.listener.StateChangeListener)
@@ -57,12 +62,7 @@ public interface JpaNode
 	void stateChanged();
 
 	/**
-	 * Return the node's resource, typically for validation messages.
+	 * Return the model's resource, typically used for validation messages.
 	 */
 	IResource getResource();
-
-	/**
-	 * Return the model's JPA platform.
-	 */
-	JpaPlatform getJpaPlatform();
 }

@@ -69,7 +69,7 @@ import org.eclipse.graphiti.util.IPredefinedRenderingStyle;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -306,7 +306,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         	CompilationUnit cu = (CompilationUnit)newObj;
         	JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
         	if (jpt != null) return new AddJPAEntityFeature(this, true);
-        } else if ((newObj instanceof JpaNode)) {
+        } else if ((newObj instanceof JpaModel)) {
         	return new AddAllEntitiesFeature(this);
         } else if (newObj instanceof SourceType) {
         	return new AddJPAEntityFeature(this, true);

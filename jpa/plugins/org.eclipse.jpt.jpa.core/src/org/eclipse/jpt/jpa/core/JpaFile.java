@@ -46,7 +46,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @see org.eclipse.jpt.jpa.core.internal.FileAdapterFactory
  */
 public interface JpaFile
-	extends JpaNode, ContentTypeReference
+	extends JpaModel, ContentTypeReference
 {
 	/**
 	 * Return the JPA file's Eclipse file.

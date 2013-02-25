@@ -1,7 +1,7 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.propertytester;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 
 public class JpaProjectFacetVersionPropertyTester extends PropertyTester{
@@ -12,7 +12,7 @@ public class JpaProjectFacetVersionPropertyTester extends PropertyTester{
 		String[] subValues = ((String) value).split(":"); //$NON-NLS-1$
 		String receiverId = subValues[0];
 
-		if (receiver instanceof JpaNode) {
+		if (receiver instanceof JpaModel) {
 			if(receiverId.equals(JpaProject.FACET_ID)){
 				return true;
 			}			

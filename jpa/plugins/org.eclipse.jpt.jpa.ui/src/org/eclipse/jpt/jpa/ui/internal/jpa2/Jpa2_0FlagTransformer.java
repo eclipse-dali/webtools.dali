@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
  * flag indicating whether the node supports JPA 2.0.
  * The flag is <code>null</code> if the JPA node is <code>null</code>.
  */
-public final class Jpa2_0FlagTransformer<T extends JpaNode>
+public final class Jpa2_0FlagTransformer<T extends JpaModel>
 	extends AbstractTransformer<T, Boolean>
 	implements Serializable
 {
@@ -31,7 +31,7 @@ public final class Jpa2_0FlagTransformer<T extends JpaNode>
 	 * whether the JPA node supports JPA 2.0.
 	 * The flag is <code>null</code> if the JPA node is <code>null</code>.
 	 */
-	public static <T extends JpaNode> PropertyValueModel<Boolean> convertToFlagModel(PropertyValueModel<T> jpaNodeModel) {
+	public static <T extends JpaModel> PropertyValueModel<Boolean> convertToFlagModel(PropertyValueModel<T> jpaNodeModel) {
 		return new TransformationPropertyValueModel<T, Boolean>(jpaNodeModel, Jpa2_0FlagTransformer.<T>instance());
 	}
 
@@ -39,7 +39,7 @@ public final class Jpa2_0FlagTransformer<T extends JpaNode>
 	private static final Transformer INSTANCE = new Jpa2_0FlagTransformer();
 
 	@SuppressWarnings("unchecked")
-	public static <T extends JpaNode> Transformer<T, Boolean> instance() {
+	public static <T extends JpaModel> Transformer<T, Boolean> instance() {
 		return INSTANCE;
 	}
 

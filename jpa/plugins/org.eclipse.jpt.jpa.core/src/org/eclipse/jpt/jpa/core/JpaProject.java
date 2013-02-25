@@ -77,7 +77,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @see org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory
  */
 public interface JpaProject
-	extends JpaNode
+	extends JpaModel
 {
 	// ********** JPA facet **********
 

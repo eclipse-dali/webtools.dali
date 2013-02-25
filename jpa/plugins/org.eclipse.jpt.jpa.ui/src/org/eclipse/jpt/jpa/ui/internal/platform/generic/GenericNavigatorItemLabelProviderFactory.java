@@ -14,7 +14,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -99,11 +99,11 @@ public class GenericNavigatorItemLabelProviderFactory
 		return this.buildResourceItemLabelProvider(item, JptJpaUiImages.JAR_FILE, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node, ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaModel node, ItemExtendedLabelProvider.Manager manager) {
 		return this.buildResourceItemLabelProvider(node.getResource(), manager);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node, ImageDescriptor imageDescriptor, ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaModel node, ImageDescriptor imageDescriptor, ItemExtendedLabelProvider.Manager manager) {
 		return this.buildResourceItemLabelProvider(node.getResource(), imageDescriptor, manager);
 	}
 

@@ -42,7 +42,7 @@ import org.eclipse.jface.dialogs.IconAndMessageDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
@@ -180,8 +180,8 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		Object firstElement = ((IStructuredSelection) selection).getFirstElement();
 		if(firstElement instanceof JpaRootContextNodeModel){
 			jpaProject = JpaArtifactFactory.instance().getJpaProject(((JpaRootContextNodeModel)firstElement).getProject());
-		} else if (firstElement instanceof JpaNode) {
-        	jpaProject = ((JpaNode)firstElement).getJpaProject();
+		} else if (firstElement instanceof JpaModel) {
+        	jpaProject = ((JpaModel)firstElement).getJpaProject();
         } else if (firstElement instanceof IProject) {
         	jpaProject = JpaArtifactFactory.instance().getJpaProject((IProject)firstElement);
         	int cnt = 0;

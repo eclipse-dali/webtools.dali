@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.ui.internal.details.db;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This combo-box displays the database's catalogs.
  */
-public abstract class CatalogCombo<T extends JpaNode>
+public abstract class CatalogCombo<T extends JpaModel>
 	extends DatabaseObjectCombo<T>
 {
 	protected CatalogCombo(

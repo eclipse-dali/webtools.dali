@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @since 2.0
  */
 public interface JpaDataSource
-	extends JpaNode
+	extends JpaModel
 {
 	/**
 	 * Return the data source's connection profile name.

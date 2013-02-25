@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.ui.internal.details.db;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This combo-box displays a schema's tables.
  */
-public abstract class TableCombo<T extends JpaNode>
+public abstract class TableCombo<T extends JpaModel>
 	extends DatabaseObjectCombo<T>
 {
 	protected TableCombo(

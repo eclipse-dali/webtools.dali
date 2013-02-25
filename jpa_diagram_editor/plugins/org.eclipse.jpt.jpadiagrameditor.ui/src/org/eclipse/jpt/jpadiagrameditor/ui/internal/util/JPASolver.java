@@ -83,7 +83,7 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
@@ -1216,7 +1216,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (!MappedByRelationshipStrategy.class.isInstance(m))
 				return;
 			MappedByRelationshipStrategy js = (MappedByRelationshipStrategy)m;
-			JpaNode nd = js.getParent();
+			JpaModel nd = js.getParent();
 			if (nd == null)
 				return;
 			nd = nd.getParent();
@@ -1250,7 +1250,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		
 		synchronized public void propertyChanged(PropertyChangeEvent event) {		
 			Relationship rr = (Relationship)event.getSource();
-			JpaNode p = rr.getParent();
+			JpaModel p = rr.getParent();
 			if (p == null)
 				return;
 			p = p.getParent();
