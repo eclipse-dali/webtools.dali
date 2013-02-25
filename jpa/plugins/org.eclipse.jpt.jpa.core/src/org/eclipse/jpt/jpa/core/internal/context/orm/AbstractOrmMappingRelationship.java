@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
  * is set during {@link #update()}.
  */
 public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMapping>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmMappingRelationship
 {
 	protected RelationshipStrategy strategy;

@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements VirtualJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;

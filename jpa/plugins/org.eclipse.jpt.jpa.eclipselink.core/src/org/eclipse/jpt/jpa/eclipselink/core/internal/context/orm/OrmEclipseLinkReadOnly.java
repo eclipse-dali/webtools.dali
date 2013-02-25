@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbedda
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReadOnly;
 
 public class OrmEclipseLinkReadOnly
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements EclipseLinkReadOnly
 {
 	protected Boolean specifiedReadOnly;

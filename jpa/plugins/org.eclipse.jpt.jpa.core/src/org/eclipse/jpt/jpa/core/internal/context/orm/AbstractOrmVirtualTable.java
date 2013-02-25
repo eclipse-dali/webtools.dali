@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements VirtualTable
 {
 	protected final Owner owner;

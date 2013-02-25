@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements MappingRelationshipStrategy2_0, OrmPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;

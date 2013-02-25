@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Specified <code>orm.xml</code> override
  */
 public abstract class AbstractOrmOverride<C extends OrmOverrideContainer, X extends XmlOverride>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmOverride
 {
 	protected final X xmlOverride;

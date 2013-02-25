@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.orm.NullOrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOverrideJoinTableRelationshipStrategy2_0;
@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmOverrideRelationship
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmOverrideRelationship2_0
 {
 	protected RelationshipStrategy strategy;

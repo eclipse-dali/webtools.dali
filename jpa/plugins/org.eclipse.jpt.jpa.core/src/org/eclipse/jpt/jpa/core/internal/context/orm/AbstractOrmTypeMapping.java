@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> type mapping
  */
 public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmTypeMapping
 {
 	// never null

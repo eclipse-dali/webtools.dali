@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> sequence or table generator
  */
 public abstract class AbstractOrmGenerator<X extends XmlGenerator>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmGenerator
 {
 	protected final X xmlGenerator;

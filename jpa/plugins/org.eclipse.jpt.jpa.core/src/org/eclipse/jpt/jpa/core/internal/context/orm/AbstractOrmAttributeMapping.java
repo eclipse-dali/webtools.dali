@@ -60,7 +60,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmAttributeMapping, AttributeMapping2_0
 {
 	// never null

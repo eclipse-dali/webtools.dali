@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
  * null <code>orm.xml</code> cacheable
  */
 public class NullOrmCacheable2_0
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements Cacheable2_0
 {
 	public NullOrmCacheable2_0(OrmCacheableHolder2_0 parent) {

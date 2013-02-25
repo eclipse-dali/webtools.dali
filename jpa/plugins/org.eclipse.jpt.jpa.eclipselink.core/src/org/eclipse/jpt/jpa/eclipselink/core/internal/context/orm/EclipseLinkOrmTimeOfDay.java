@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class EclipseLinkOrmTimeOfDay
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements EclipseLinkTimeOfDay
 {
 	protected final XmlTimeOfDay xmlTimeOfDay;

@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinColumnRelationshipStrategy
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;

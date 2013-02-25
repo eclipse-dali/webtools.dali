@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmMappedByRelationshipStrategy
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements MappingRelationshipStrategy2_0, MappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;

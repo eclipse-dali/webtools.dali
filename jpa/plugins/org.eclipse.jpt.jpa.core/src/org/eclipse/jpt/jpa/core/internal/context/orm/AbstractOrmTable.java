@@ -45,7 +45,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractOrmTable<X extends AbstractXmlTable>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmTable, UniqueConstraint.Owner
 {
 	protected final Owner owner;

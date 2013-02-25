@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinTableRelationshipStrategy
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected OrmJoinTable joinTable;

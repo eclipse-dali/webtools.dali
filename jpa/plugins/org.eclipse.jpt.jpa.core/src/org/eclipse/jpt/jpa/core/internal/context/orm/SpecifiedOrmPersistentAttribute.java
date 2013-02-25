@@ -53,7 +53,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <em>specified</em> <code>orm.xml</code> persistent attribute
  */
 public abstract class SpecifiedOrmPersistentAttribute
-		extends AbstractOrmXmlContextNode
+		extends AbstractOrmXmlContextModel
 		implements OrmPersistentAttribute, PersistentAttribute2_0 {
 	
 	protected OrmAttributeMapping mapping;  // never null

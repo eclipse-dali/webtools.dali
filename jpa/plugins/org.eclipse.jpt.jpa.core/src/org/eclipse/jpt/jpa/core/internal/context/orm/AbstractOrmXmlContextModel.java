@@ -22,15 +22,15 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
 
 /**
- * Use this abstract class for context nodes that are part of an
+ * Use this abstract class for context models that are part of an
  * <code>orm.xml</code> file.
- * This will not work for a pure {@link org.eclipse.jpt.jpa.core.context.MappingFile}
+ * Do not use this for a pure {@link org.eclipse.jpt.jpa.core.context.MappingFile}
  * implementation.
  */
-public abstract class AbstractOrmXmlContextNode
+public abstract class AbstractOrmXmlContextModel
 	extends AbstractJpaContextModel
 {
-	protected AbstractOrmXmlContextNode(JpaContextModel parent) {
+	protected AbstractOrmXmlContextModel(JpaContextModel parent) {
 		super(parent);
 	}
 

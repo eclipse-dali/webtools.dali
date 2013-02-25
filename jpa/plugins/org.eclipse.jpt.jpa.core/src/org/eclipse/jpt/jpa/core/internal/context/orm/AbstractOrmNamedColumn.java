@@ -41,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * column; since the context column only exists if the XML column exists.
  */
 public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends ReadOnlyNamedColumn.Owner>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmNamedColumn
 {
 	protected final O owner;

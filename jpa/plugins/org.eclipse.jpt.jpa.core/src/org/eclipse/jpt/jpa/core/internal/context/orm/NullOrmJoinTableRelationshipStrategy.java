@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class NullOrmJoinTableRelationshipStrategy
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements MappingRelationshipStrategy2_0, OrmJoinTableRelationshipStrategy
 {
 	public NullOrmJoinTableRelationshipStrategy(OrmJoinTableRelationship parent) {

@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> query
  */
 public abstract class AbstractOrmQuery<X extends XmlQuery>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmQuery
 {
 	protected final X xmlQuery;

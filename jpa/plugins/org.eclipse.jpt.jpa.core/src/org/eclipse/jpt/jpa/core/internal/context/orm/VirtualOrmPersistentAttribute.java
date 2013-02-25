@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <em>virtual</em> <code>orm.xml</code> persistent attribute
  */
 public class VirtualOrmPersistentAttribute
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmReadOnlyPersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
 	protected final Accessor javaAccessor; // never null

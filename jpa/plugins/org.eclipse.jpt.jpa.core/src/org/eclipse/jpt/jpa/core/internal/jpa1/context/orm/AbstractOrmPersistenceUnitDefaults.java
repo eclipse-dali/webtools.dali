@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * <code>persistence-unit-defaults</code> element
  */
 public abstract class AbstractOrmPersistenceUnitDefaults
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements OrmPersistenceUnitDefaults2_0
 {
 	protected AccessType specifiedAccess;

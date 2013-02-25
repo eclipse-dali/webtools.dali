@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractOrmManagedType
-		extends AbstractOrmXmlContextNode
+		extends AbstractOrmXmlContextModel
 		implements OrmManagedType {
 
 	protected XmlManagedType xmlManagedType;

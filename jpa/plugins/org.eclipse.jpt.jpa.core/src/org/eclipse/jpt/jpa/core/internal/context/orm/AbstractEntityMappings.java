@@ -94,7 +94,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>entity-mappings</code> element
  */
 public abstract class AbstractEntityMappings
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements EntityMappings2_1
 {
 	protected final XmlEntityMappings xmlEntityMappings;

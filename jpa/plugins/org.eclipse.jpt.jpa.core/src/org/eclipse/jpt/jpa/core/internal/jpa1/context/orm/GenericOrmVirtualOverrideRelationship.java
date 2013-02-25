@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmVirtualOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmVirtualOverrideRelationship
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements VirtualOverrideRelationship2_0
 {
 	protected VirtualRelationshipStrategy strategy;

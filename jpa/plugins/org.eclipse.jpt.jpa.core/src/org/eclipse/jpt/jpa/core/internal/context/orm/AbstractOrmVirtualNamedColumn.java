@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * is derived from the resource model).
  */
 public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends ReadOnlyNamedColumn>
-	extends AbstractOrmXmlContextNode
+	extends AbstractOrmXmlContextModel
 	implements VirtualNamedColumn
 {
 	protected final O owner;
