@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 
-public class EclipseLinkOrmXml2_1ContextNodeFactory
+public class EclipseLinkOrmXmlContextModelFactory2_1
 	extends EclipseLinkOrmXmlContextModelFactory2_0
 {
 
