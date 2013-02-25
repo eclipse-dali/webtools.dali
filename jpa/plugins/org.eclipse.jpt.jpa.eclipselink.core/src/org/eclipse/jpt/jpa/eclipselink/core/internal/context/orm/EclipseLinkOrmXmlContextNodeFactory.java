@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 
 public class EclipseLinkOrmXmlContextNodeFactory
-	extends AbstractOrmXmlContextNodeFactory
+	extends AbstractOrmXmlContextModelFactory
 {	
 
 	// ********** EclipseLink-specific ORM Context Model **********

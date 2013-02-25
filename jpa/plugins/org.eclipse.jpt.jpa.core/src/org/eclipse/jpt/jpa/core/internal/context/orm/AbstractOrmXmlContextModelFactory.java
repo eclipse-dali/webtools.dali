@@ -164,7 +164,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlVersion;
 
-public abstract class AbstractOrmXmlContextNodeFactory
+public abstract class AbstractOrmXmlContextModelFactory
 	implements OrmXmlContextModelFactory
 {
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {

@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 
 public class GenericOrmXml2_0ContextNodeFactory
-	extends AbstractOrmXmlContextNodeFactory
+	extends AbstractOrmXmlContextModelFactory
 	implements OrmXml2_0ContextNodeFactory
 {	
 	@Override
