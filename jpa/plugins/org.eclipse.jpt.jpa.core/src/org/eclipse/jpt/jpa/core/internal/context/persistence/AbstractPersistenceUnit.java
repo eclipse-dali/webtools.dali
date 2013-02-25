@@ -1544,7 +1544,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<String> getGeneratorNames() {
-		return new TransformationIterable<Generator, String>(this.getGenerators(), JpaNamedContextNode.NameTransformer.<Generator>instance());
+		return new TransformationIterable<Generator, String>(this.getGenerators(), JpaNamedContextNode.NAME_TRANSFORMER);
 	}
 
 	protected void setGenerators(Iterable<Generator> generators) {

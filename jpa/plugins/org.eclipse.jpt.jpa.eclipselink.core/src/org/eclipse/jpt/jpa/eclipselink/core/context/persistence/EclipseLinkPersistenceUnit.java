@@ -426,7 +426,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<String> getConverterNames() {
-		return new TransformationIterable<EclipseLinkConverter, String>(this.getConverters(), JpaNamedContextNode.NameTransformer.<EclipseLinkConverter>instance());
+		return new TransformationIterable<EclipseLinkConverter, String>(this.getConverters(), JpaNamedContextNode.NAME_TRANSFORMER);
 	}
 
 	protected void setConverters(Iterable<EclipseLinkConverter> converters) {

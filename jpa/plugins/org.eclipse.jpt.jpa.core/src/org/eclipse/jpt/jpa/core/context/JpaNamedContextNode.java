@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.io.Serializable;
-
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 
 /**
- * Named context node. Sorta. :-)
+ * Named context model. Sorta. :-)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -30,40 +27,23 @@ public interface JpaNamedContextNode
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	void setName(String name);
 
+	TransformerAdapter<JpaNamedContextNode, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<JpaNamedContextNode, String>
+	{
+		@Override
+		public String transform(JpaNamedContextNode node) {
+			return node.getName();
+		}
+	}
+
 	Class<? extends JpaNamedContextNode> getType();
 
 	/**
-	 * Return whether the specified node is <em>not</em> this node and it has
-	 * the same state. Typically the specified node would be the same type as
-	 * this node.
+	 * Return whether the specified model is <em>not</em> this model and it has
+	 * the same state. Typically the specified model would be the same type as
+	 * this model.
 	 * @see #getType()
 	 */
 	boolean isEquivalentTo(JpaNamedContextNode node);
-
-	final class NameTransformer<N extends JpaNamedContextNode>
-		implements Transformer<N, String>, Serializable
-	{
-		@SuppressWarnings("rawtypes")
-		public static final NameTransformer INSTANCE = new NameTransformer();
-		@SuppressWarnings("unchecked")
-		public static <T extends JpaNamedContextNode> Transformer<T, String> instance() {
-			return INSTANCE;
-		}
-		// ensure single instance
-		private NameTransformer() {
-			super();
-		}
-		public String transform(N node) {
-			return node.getName();
-		}
-		@Override
-		public String toString() {
-			return ObjectTools.singletonToString(this);
-		}
-		private static final long serialVersionUID = 1L;
-		private Object readResolve() {
-			// replace this object with the singleton
-			return INSTANCE;
-		}
-	}
 }
