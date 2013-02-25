@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm;
 
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 public class GenericOrmXml2_1ContextNodeFactory
-	extends GenericOrmXml2_0ContextNodeFactory
+	extends GenericOrmXmlContextModelFactory2_0
 	implements OrmXmlContextModelFactory2_1
 {
 

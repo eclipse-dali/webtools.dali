@@ -65,7 +65,7 @@ public class GenericOrmXml2_0Definition
 
 	@Override
 	protected OrmXmlContextModelFactory buildContextNodeFactory() {
-		return new GenericOrmXml2_0ContextNodeFactory();
+		return new GenericOrmXmlContextModelFactory2_0();
 	}
 
 	@Override

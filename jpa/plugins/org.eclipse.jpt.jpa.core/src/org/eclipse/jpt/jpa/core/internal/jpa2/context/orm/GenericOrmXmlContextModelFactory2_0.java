@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 
-public class GenericOrmXml2_0ContextNodeFactory
+public class GenericOrmXmlContextModelFactory2_0
 	extends AbstractOrmXmlContextModelFactory
 	implements OrmXmlContextModelFactory2_0
 {	
