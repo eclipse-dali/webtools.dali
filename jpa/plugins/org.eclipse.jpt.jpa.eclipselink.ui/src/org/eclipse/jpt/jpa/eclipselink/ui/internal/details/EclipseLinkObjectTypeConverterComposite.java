@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -99,7 +99,7 @@ public class EclipseLinkObjectTypeConverterComposite
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
-				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
+				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

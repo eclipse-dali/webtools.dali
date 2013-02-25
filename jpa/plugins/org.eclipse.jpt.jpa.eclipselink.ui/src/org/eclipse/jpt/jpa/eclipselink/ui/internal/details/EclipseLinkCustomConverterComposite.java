@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -62,7 +62,7 @@ public class EclipseLinkCustomConverterComposite
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkCustomConverter, String>(
-				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
+				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

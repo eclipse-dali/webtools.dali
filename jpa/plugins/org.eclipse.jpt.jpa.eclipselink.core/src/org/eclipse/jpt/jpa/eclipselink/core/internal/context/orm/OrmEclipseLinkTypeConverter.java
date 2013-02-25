@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
@@ -245,7 +245,7 @@ public class OrmEclipseLinkTypeConverter
 	// ********** validation *********
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
+	public boolean isEquivalentTo(JpaNamedContextModel node) {
 		return super.isEquivalentTo(node)
 				&& this.isEquivalentTo((EclipseLinkTypeConverter) node);
 	}

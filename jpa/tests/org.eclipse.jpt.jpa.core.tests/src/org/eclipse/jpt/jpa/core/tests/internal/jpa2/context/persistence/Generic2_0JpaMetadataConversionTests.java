@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
@@ -284,7 +284,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		
 	}
 
-	public static <N extends JpaNamedContextNode> N selectNodeNamed(Iterable<N> nodes, String name) {
+	public static <N extends JpaNamedContextModel> N selectNodeNamed(Iterable<N> nodes, String name) {
 		for (N node : nodes) {
 			if (node.getName().equals(name)) {
 				return node;

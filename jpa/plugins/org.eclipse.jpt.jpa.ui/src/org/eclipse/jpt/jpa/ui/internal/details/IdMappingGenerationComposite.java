@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -519,7 +519,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected ListValueModel<Generator> buildGeneratorsModel() {
-		return new ItemPropertyListValueModelAdapter<Generator>(this.buildGeneratorsModel_(), JpaNamedContextNode.NAME_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<Generator>(this.buildGeneratorsModel_(), JpaNamedContextModel.NAME_PROPERTY);
 	}
 
 	protected CollectionValueModel<Generator> buildGeneratorsModel_() {

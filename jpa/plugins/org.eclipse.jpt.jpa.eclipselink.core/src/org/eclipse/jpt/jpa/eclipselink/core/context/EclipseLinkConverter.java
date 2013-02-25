@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 
 /**
  * EclipseLink converter:<ul>
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
  * @since 2.1
  */
 public interface EclipseLinkConverter
-	extends JpaNamedContextNode
+	extends JpaNamedContextModel
 {
 	/**
 	 * Return the converter's type.

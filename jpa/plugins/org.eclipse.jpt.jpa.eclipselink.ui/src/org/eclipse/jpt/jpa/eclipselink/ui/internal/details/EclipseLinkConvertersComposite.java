@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -262,7 +262,7 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 	private ListValueModel<EclipseLinkConverter> buildDisplayableConvertersListHolder() {
 		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(
 			buildEclipseLinkConvertersHolder(),
-			JpaNamedContextNode.NAME_PROPERTY
+			JpaNamedContextModel.NAME_PROPERTY
 		);
 	}
 

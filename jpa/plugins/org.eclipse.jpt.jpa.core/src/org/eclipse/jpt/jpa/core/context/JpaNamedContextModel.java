@@ -20,24 +20,24 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaNamedContextNode
+public interface JpaNamedContextModel
 	extends JpaContextModel
 {
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	void setName(String name);
 
-	TransformerAdapter<JpaNamedContextNode, String> NAME_TRANSFORMER = new NameTransformer();
+	TransformerAdapter<JpaNamedContextModel, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
-		extends TransformerAdapter<JpaNamedContextNode, String>
+		extends TransformerAdapter<JpaNamedContextModel, String>
 	{
 		@Override
-		public String transform(JpaNamedContextNode node) {
+		public String transform(JpaNamedContextModel node) {
 			return node.getName();
 		}
 	}
 
-	Class<? extends JpaNamedContextNode> getType();
+	Class<? extends JpaNamedContextModel> getType();
 
 	/**
 	 * Return whether the specified model is <em>not</em> this model and it has
@@ -45,5 +45,5 @@ public interface JpaNamedContextNode
 	 * this model.
 	 * @see #getType()
 	 */
-	boolean isEquivalentTo(JpaNamedContextNode node);
+	boolean isEquivalentTo(JpaNamedContextModel node);
 }

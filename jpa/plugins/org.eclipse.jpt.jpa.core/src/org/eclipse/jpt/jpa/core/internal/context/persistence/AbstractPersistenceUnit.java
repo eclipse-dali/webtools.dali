@@ -60,7 +60,7 @@ import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
@@ -1544,7 +1544,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<String> getGeneratorNames() {
-		return new TransformationIterable<Generator, String>(this.getGenerators(), JpaNamedContextNode.NAME_TRANSFORMER);
+		return new TransformationIterable<Generator, String>(this.getGenerators(), JpaNamedContextModel.NAME_TRANSFORMER);
 	}
 
 	protected void setGenerators(Iterable<Generator> generators) {
@@ -2143,15 +2143,15 @@ public abstract class AbstractPersistenceUnit
 		return this.xmlPersistenceUnit;
 	}
 
-	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextNode> nodes) {
+	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextModel> nodes) {
 		HashSet<String> names = new HashSet<String>(nodes.size());
-		for (JpaNamedContextNode node : nodes) {
+		for (JpaNamedContextModel node : nodes) {
 			names.add(node.getName());
 		}
 		return names;
 	}
 
-	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> mapByName(Iterable<N> nodes) {
+	protected <N extends JpaNamedContextModel> HashMap<String, ArrayList<N>> mapByName(Iterable<N> nodes) {
 		HashMap<String, ArrayList<N>> map = new HashMap<String, ArrayList<N>>();
 		for (N node : nodes) {
 			String nodeName = node.getName();
@@ -2169,7 +2169,7 @@ public abstract class AbstractPersistenceUnit
 	 * Return the Java nodes that are neither overridden nor duplicated
 	 * (by default any Java nodes with the same name are "duplicates").
 	 */
-	protected <N extends JpaNamedContextNode> ArrayList<N> extractConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
+	protected <N extends JpaNamedContextModel> ArrayList<N> extractConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextModel> mappingFileNodes) {
 		ArrayList<N> convertibleNodes = new ArrayList<N>();
 
 		HashSet<String> mappingFileNodeNames = this.convertToNames(ListTools.list(mappingFileNodes));

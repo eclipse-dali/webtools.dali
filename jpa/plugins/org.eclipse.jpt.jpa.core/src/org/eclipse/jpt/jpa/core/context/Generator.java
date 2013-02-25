@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
  * @since 2.0
  */
 public interface Generator
-	extends JpaNamedContextNode
+	extends JpaNamedContextModel
 {
 
 	/**

@@ -41,7 +41,7 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JptJpaCoreMessages;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
@@ -426,7 +426,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<String> getConverterNames() {
-		return new TransformationIterable<EclipseLinkConverter, String>(this.getConverters(), JpaNamedContextNode.NAME_TRANSFORMER);
+		return new TransformationIterable<EclipseLinkConverter, String>(this.getConverters(), JpaNamedContextModel.NAME_TRANSFORMER);
 	}
 
 	protected void setConverters(Iterable<EclipseLinkConverter> converters) {
@@ -998,16 +998,16 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether all the specified nodes are "equivalent"
 	 * (i.e. they all have the same state).
 	 */
-	protected boolean allNodesAreEquivalent(ArrayList<? extends JpaNamedContextNode> nodes) {
+	protected boolean allNodesAreEquivalent(ArrayList<? extends JpaNamedContextModel> nodes) {
 		return ! this.anyNodesAreInequivalent(nodes);
 	}
 
-	protected boolean anyNodesAreInequivalent(ArrayList<? extends JpaNamedContextNode> nodes) {
+	protected boolean anyNodesAreInequivalent(ArrayList<? extends JpaNamedContextModel> nodes) {
 		if (nodes.size() < 2) {
 			throw new IllegalArgumentException();
 		}
-		Iterator<? extends JpaNamedContextNode> stream = nodes.iterator();
-		JpaNamedContextNode first = stream.next();
+		Iterator<? extends JpaNamedContextModel> stream = nodes.iterator();
+		JpaNamedContextModel first = stream.next();
 		while (stream.hasNext()) {
 			if ( ! stream.next().isEquivalentTo(first)) {
 				return true;
@@ -1282,7 +1282,7 @@ public class EclipseLinkPersistenceUnit
 		return cumulativeSize;
 	}
 
-	protected <N extends JpaNamedContextNode> boolean hasAnyEquivalentJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
+	protected <N extends JpaNamedContextModel> boolean hasAnyEquivalentJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextModel> mappingFileNodes) {
 		HashMap<String, ArrayList<N>> convertibleJavaNodes = this.extractEclipseLinkConvertibleJavaNodes(allJavaNodes, mappingFileNodes);
 		for (Map.Entry<String, ArrayList<N>> entry : convertibleJavaNodes.entrySet()) {
 			if (entry.getValue().size() > 1) {
@@ -1297,7 +1297,7 @@ public class EclipseLinkPersistenceUnit
 	 * (by default any Java nodes with the same name are "duplicates");
 	 * but, in EclipseLink we return any "equivalent" nodes also.
 	 */
-	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
+	protected <N extends JpaNamedContextModel> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextModel> mappingFileNodes) {
 		HashMap<String, ArrayList<N>> convertibleNodes = new HashMap<String, ArrayList<N>>();
 
 		HashSet<String> mappingFileNodeNames = this.convertToNames(ListTools.list(mappingFileNodes));

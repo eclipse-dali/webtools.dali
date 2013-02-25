@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
@@ -99,7 +99,7 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 		return this.getValidationTextRange(this.xmlGenerator.getNameTextRange());
 	}
 
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
+	public boolean isEquivalentTo(JpaNamedContextModel node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
 				this.isEquivalentTo((Generator) node);

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
@@ -215,7 +215,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
 	}
 
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
+	public boolean isEquivalentTo(JpaNamedContextModel node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
 				this.isEquivalentTo((Query) node);

@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
@@ -133,7 +133,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
 	}
 
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
+	public boolean isEquivalentTo(JpaNamedContextModel node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
 				ObjectTools.equals(this.name, node.getName());

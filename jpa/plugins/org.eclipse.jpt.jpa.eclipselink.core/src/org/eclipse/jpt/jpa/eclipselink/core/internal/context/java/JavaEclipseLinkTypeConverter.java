@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
@@ -126,7 +126,7 @@ public class JavaEclipseLinkTypeConverter
 	// ********** validation *********
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
+	public boolean isEquivalentTo(JpaNamedContextModel node) {
 		return super.isEquivalentTo(node)
 				&& this.isEquivalentTo((EclipseLinkTypeConverter) node);
 	}

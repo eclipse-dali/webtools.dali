@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 2.0
  */
 public interface Query
-	extends JpaNamedContextNode
+	extends JpaNamedContextModel
 {
 
 	/**

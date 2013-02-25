@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -152,7 +152,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 	private ListValueModel<OrmGenerator> buildDisplayableGeneratorListHolder() {
 		return new ItemPropertyListValueModelAdapter<OrmGenerator>(
 			buildGeneratorsListHolder(),
-			JpaNamedContextNode.NAME_PROPERTY
+			JpaNamedContextModel.NAME_PROPERTY
 		);
 	}
 
