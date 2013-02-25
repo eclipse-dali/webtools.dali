@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
  * @version 3.3
  * @since 3.3
  */
-public interface OrmXml2_1ContextNodeFactory
+public interface OrmXmlContextModelFactory2_1
 	extends OrmXmlContextModelFactory
 {
 	OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter);

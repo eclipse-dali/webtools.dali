@@ -17,14 +17,14 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmQueryContainer2_1
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmStoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 public class EclipseLinkOrmXml2_5ContextNodeFactory
 	extends EclipseLinkOrmXml2_4ContextNodeFactory
-	implements OrmXml2_1ContextNodeFactory
+	implements OrmXmlContextModelFactory2_1
 {
 	public OrmConverterType2_1 buildOrmConverterType(EntityMappings2_1 parent, XmlConverter xmlConverter) {
 		return new GenericOrmConverterType(parent, xmlConverter);

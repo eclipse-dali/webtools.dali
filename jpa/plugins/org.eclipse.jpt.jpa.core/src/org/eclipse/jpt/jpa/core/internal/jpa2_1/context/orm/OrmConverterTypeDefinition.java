@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.EntityMappings2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXml2_1ContextNodeFactory;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManagedType;
 
@@ -48,6 +48,6 @@ public class OrmConverterTypeDefinition
 	}
 
 	public OrmManagedType buildContextManagedType(JpaContextModel parent, XmlManagedType resourceManagedType, OrmXmlContextModelFactory factory) {
-		return ((OrmXml2_1ContextNodeFactory) factory).buildOrmConverterType((EntityMappings2_1) parent, (XmlConverter) resourceManagedType);
+		return ((OrmXmlContextModelFactory2_1) factory).buildOrmConverterType((EntityMappings2_1) parent, (XmlConverter) resourceManagedType);
 	}
 }
