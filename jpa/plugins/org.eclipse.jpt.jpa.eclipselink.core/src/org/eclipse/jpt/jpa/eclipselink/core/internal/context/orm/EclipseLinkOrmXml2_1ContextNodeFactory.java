@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 
 public class EclipseLinkOrmXml2_1ContextNodeFactory
-	extends EclipseLinkOrmXml2_0ContextNodeFactory
+	extends EclipseLinkOrmXmlContextModelFactory2_0
 {
 
 	@Override

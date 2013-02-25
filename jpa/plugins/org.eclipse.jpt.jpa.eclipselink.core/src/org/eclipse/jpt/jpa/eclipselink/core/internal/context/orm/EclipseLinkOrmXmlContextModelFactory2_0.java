@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 
-public class EclipseLinkOrmXml2_0ContextNodeFactory
+public class EclipseLinkOrmXmlContextModelFactory2_0
 	extends EclipseLinkOrmXmlContextModelFactory
 	implements OrmXmlContextModelFactory2_0
 {	

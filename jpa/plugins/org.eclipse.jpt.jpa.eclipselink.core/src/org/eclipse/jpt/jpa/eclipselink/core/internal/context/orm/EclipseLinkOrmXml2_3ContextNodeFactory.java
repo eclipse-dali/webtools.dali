@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructure;
 
 public class EclipseLinkOrmXml2_3ContextNodeFactory
-	extends EclipseLinkOrmXml2_0ContextNodeFactory
+	extends EclipseLinkOrmXmlContextModelFactory2_0
 {
 
 	public OrmEclipseLinkArrayMapping2_3 buildOrmEclipseLinkArrayMapping(OrmPersistentAttribute parent, XmlArray resourceMapping) {

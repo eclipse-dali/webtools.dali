@@ -59,7 +59,7 @@ public class EclipseLinkOrmXml2_0Definition
 
 	@Override
 	protected OrmXmlContextModelFactory buildContextNodeFactory() {
-		return new EclipseLinkOrmXml2_0ContextNodeFactory();
+		return new EclipseLinkOrmXmlContextModelFactory2_0();
 	}
 
 	@Override
