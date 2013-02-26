@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJarFile;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericJarFileRef;
@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
 
 public abstract class AbstractPersistenceXmlContextNodeFactory
-	implements PersistenceXmlContextNodeFactory
+	implements PersistenceXmlContextModelFactory
 {
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		return new GenericPersistence(parent, xmlPersistence);

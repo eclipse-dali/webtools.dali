@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 public abstract class AbstractPersistenceXmlDefinition
 	implements PersistenceXmlDefinition
 {
-	private final PersistenceXmlContextNodeFactory factory;
+	private final PersistenceXmlContextModelFactory factory;
 
 
 	/**
@@ -33,9 +33,9 @@ public abstract class AbstractPersistenceXmlDefinition
 		this.factory = this.buildContextNodeFactory();
 	}
 
-	protected abstract PersistenceXmlContextNodeFactory buildContextNodeFactory();
+	protected abstract PersistenceXmlContextModelFactory buildContextNodeFactory();
 
-	public PersistenceXmlContextNodeFactory getContextNodeFactory() {
+	public PersistenceXmlContextModelFactory getContextNodeFactory() {
 		return this.factory;
 	}
 

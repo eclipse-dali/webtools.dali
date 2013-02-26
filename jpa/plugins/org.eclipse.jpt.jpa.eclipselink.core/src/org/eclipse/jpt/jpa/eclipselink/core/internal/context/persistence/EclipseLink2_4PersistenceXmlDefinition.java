@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
@@ -47,7 +47,7 @@ public class EclipseLink2_4PersistenceXmlDefinition
 	}
 
 	@Override
-	protected PersistenceXmlContextNodeFactory buildContextNodeFactory() {
+	protected PersistenceXmlContextModelFactory buildContextNodeFactory() {
 		return new EclipseLink2_4PersistenceXmlContextNodeFactory();
 	}
 }

@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 
-public interface EclipseLinkPersistenceXmlContextNodeFactory extends PersistenceXmlContextNodeFactory
+public interface EclipseLinkPersistenceXmlContextNodeFactory extends PersistenceXmlContextModelFactory
 {	
 
 	PersistenceUnitProperties buildLogging(PersistenceUnit parent);

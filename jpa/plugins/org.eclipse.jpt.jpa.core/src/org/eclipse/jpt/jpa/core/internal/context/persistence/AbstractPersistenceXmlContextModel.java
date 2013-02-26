@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 
@@ -39,7 +39,7 @@ public abstract class AbstractPersistenceXmlContextModel
 		return this.getPersistenceXmlDefinition().getResourceNodeFactory();
 	}
 
-	protected PersistenceXmlContextNodeFactory getContextNodeFactory() {
+	protected PersistenceXmlContextModelFactory getContextNodeFactory() {
 		return this.getPersistenceXmlDefinition().getContextNodeFactory();
 	}
 }

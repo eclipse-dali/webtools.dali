@@ -29,5 +29,5 @@ public interface PersistenceXmlDefinition
 {
 	EFactory getResourceNodeFactory();
 
-	PersistenceXmlContextNodeFactory getContextNodeFactory();
+	PersistenceXmlContextModelFactory getContextNodeFactory();
 }

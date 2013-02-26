@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
  * @version 2.3
  * @since 2.3
  */
-public interface PersistenceXmlContextNodeFactory
+public interface PersistenceXmlContextModelFactory
 {	
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
 	
