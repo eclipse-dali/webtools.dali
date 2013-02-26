@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkModifiableAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
  */
 public class OrmEclipseLinkPersistentAttribute
 	extends SpecifiedOrmPersistentAttribute
-	implements EclipseLinkAccessMethodsHolder
+	implements EclipseLinkModifiableAccessMethodsContainer
 {
 	//TODO defaults from the persistentType if the access is VIRTUAL
 	protected String specifiedGetMethod;

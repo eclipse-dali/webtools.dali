@@ -11,12 +11,12 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkModifiableAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 
 public interface EclipseLinkEntityMappings 
-	extends EntityMappings, EclipseLinkAccessMethodsHolder
+	extends EntityMappings, EclipseLinkModifiableAccessMethodsContainer
 {
 	/**
 	 * Return all the converters defined in both the entity mappings and its

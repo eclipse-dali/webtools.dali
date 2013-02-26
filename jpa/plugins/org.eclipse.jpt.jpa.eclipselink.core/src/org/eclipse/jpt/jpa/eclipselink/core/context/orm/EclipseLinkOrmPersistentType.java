@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkModifiableAccessMethodsContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 /**
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
  * </ul>
  */
 public interface EclipseLinkOrmPersistentType
-	extends OrmPersistentType, PersistentType2_0, EclipseLinkAccessMethodsHolder
+	extends OrmPersistentType, PersistentType2_0, EclipseLinkModifiableAccessMethodsContainer
 {
 
 	//*************** dynamic *****************
