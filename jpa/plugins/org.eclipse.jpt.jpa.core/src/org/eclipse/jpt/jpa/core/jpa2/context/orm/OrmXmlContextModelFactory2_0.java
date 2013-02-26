@@ -41,7 +41,7 @@ public interface OrmXmlContextModelFactory2_0
 	
 	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping);
 	
-	Cacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent);
+	Cacheable2_0 buildOrmCacheable(OrmCacheableReference2_0 parent);
 	
 	OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalHolder2_0 parent);
 	

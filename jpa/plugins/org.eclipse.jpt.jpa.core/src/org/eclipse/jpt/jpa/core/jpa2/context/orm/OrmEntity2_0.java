@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
  * @since 3.3
  */
 public interface OrmEntity2_0 
-	extends OrmEntity, OrmCacheableHolder2_0
+	extends OrmEntity, OrmCacheableReference2_0
 {
 	//combine interfaces
 }

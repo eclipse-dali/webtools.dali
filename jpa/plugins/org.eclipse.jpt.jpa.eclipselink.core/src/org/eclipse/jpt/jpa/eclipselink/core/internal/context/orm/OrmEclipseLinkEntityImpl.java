@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
@@ -284,8 +284,8 @@ public class OrmEclipseLinkEntityImpl
 		return this.getCacheableHolder().calculateDefaultCacheable();
 	}
 
-	protected OrmCacheableHolder2_0 getCacheableHolder() {
-		return (OrmCacheableHolder2_0) this.caching;
+	protected OrmCacheableReference2_0 getCacheableHolder() {
+		return (OrmCacheableReference2_0) this.caching;
 	}
 
 	public XmlCacheable_2_0 getXmlCacheable() {

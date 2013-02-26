@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class OrmEclipseLinkCachingImpl
 	extends AbstractOrmXmlContextModel<OrmEclipseLinkNonEmbeddableTypeMapping>
-	implements EclipseLinkCaching, OrmCacheableHolder2_0
+	implements EclipseLinkCaching, OrmCacheableReference2_0
 {
 	protected EclipseLinkCacheType specifiedType;
 	protected EclipseLinkCacheType defaultType = DEFAULT_TYPE;

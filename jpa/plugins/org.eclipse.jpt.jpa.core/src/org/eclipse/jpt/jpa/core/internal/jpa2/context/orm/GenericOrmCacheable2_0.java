@@ -12,21 +12,21 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 
 /**
  * <code>orm.xml</code> cacheable
  */
 public class GenericOrmCacheable2_0
-	extends AbstractOrmXmlContextModel<OrmCacheableHolder2_0>
+	extends AbstractOrmXmlContextModel<OrmCacheableReference2_0>
 	implements Cacheable2_0
 {
 	protected Boolean specifiedCacheable;
 	protected boolean defaultCacheable;
 
 
-	public GenericOrmCacheable2_0(OrmCacheableHolder2_0 parent) {
+	public GenericOrmCacheable2_0(OrmCacheableReference2_0 parent) {
 		super(parent);
 		this.specifiedCacheable = this.getXmlCacheable().getCacheable();
 	}
@@ -85,7 +85,7 @@ public class GenericOrmCacheable2_0
 
 	// ********** misc **********
 
-	protected OrmCacheableHolder2_0 getCacheableHolder() {
+	protected OrmCacheableReference2_0 getCacheableHolder() {
 		return this.parent;
 	}
 
