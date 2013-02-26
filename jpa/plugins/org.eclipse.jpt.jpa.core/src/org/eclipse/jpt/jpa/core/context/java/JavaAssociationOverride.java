@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
  * @since 2.0
  */
 public interface JavaAssociationOverride
-	extends AssociationOverride, JavaOverride
+	extends SpecifiedAssociationOverride, JavaOverride
 {
 	JavaVirtualAssociationOverride convertToVirtual();
 

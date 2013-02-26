@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
  * @see RelationshipMapping
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  * @see JoinColumnRelationship
  *
  * @version 3.2

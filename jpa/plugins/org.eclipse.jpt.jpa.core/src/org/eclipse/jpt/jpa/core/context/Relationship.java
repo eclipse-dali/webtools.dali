@@ -17,7 +17,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
  * @see RelationshipMapping
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  *
  * @version 2.3
  * @since 2.2

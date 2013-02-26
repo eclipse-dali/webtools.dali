@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -1317,7 +1317,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
-		ListIterator<? extends AssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends SpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("addresses", associationOverrides.next().getName());
 		assertEquals("address", associationOverrides.next().getName());
 
@@ -1357,7 +1357,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		embeddedResource.getAssociationOverrides().add(2, associationOverride);
 		associationOverride.setName("BAZ");
 			
-		ListIterator<? extends AssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends SpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
@@ -1415,7 +1415,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertFalse(virtualAssociationOverrides.hasNext());
 
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
-		AssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		SpecifiedAssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertFalse(specifiedAssociationOverride.isVirtual());
 		
 		
@@ -1574,7 +1574,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		ormPersistentAttribute.removeFromXml();
 		EmbeddedMapping2_0 virtualEmbeddedMapping = (EmbeddedMapping2_0) ormPersistentType.getAttributeNamed("myEmbedded").getMapping();
 		overrideContainer = virtualEmbeddedMapping.getAssociationOverrideContainer();
-		AssociationOverride associationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		SpecifiedAssociationOverride associationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals("addresses", associationOverride.getName());
 		ReadOnlyJoinTableRelationshipStrategy strategy = ((ReadOnlyOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 		joinTable = strategy.getJoinTable();

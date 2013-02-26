@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -907,7 +907,7 @@ public abstract class AbstractJavaEntity
 	@Override
 	public Relationship resolveOverriddenRelationship(String attributeName) {
 		// check for an override before looking at attribute mappings
-		AssociationOverride override = this.associationOverrideContainer.getSpecifiedOverrideNamed(attributeName);
+		SpecifiedAssociationOverride override = this.associationOverrideContainer.getSpecifiedOverrideNamed(attributeName);
 		return (override != null) ? override.getRelationship() : super.resolveOverriddenRelationship(attributeName);
 	}
 

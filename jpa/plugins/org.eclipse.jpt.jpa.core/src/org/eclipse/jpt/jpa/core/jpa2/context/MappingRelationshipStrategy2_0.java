@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.MappingRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see RelationshipMapping
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  * @see MappingRelationship
  */
 public interface MappingRelationshipStrategy2_0

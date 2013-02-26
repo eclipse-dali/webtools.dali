@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
@@ -172,7 +172,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
-		AssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		SpecifiedAssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		
 		assertEquals("address", specifiedAssociationOverride.getName());
 		assertEquals("address", xmlAssociationOverride.getName());
@@ -252,7 +252,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		OrmVirtualAssociationOverride ormAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address", ormAssociationOverride.getName());
 	
-		AssociationOverride specifiedOverride = ormAssociationOverride.convertToSpecified();
+		SpecifiedAssociationOverride specifiedOverride = ormAssociationOverride.convertToSpecified();
 		JoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		

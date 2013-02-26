@@ -43,12 +43,12 @@ public interface AssociationOverrideContainer
 	// covariant overrides
 	ListIterable<? extends ReadOnlyAssociationOverride> getOverrides();
 	ReadOnlyAssociationOverride getOverrideNamed(String name);
-	ListIterable<? extends AssociationOverride> getSpecifiedOverrides();
-	AssociationOverride getSpecifiedOverride(int index);
-	AssociationOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<? extends SpecifiedAssociationOverride> getSpecifiedOverrides();
+	SpecifiedAssociationOverride getSpecifiedOverride(int index);
+	SpecifiedAssociationOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<? extends VirtualAssociationOverride> getVirtualOverrides();
 	VirtualAssociationOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	AssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	SpecifiedAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** owner **********

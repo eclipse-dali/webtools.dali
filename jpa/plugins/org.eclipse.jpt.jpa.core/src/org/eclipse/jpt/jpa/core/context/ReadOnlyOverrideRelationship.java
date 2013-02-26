@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  */
 public interface ReadOnlyOverrideRelationship
 	extends ReadOnlyJoinColumnRelationship

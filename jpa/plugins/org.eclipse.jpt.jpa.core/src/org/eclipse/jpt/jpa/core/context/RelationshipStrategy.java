@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Strategy describing how two entities are joined, either for a
- * {@link RelationshipMapping} or an {@link AssociationOverride}:<ul>
+ * {@link RelationshipMapping} or an {@link SpecifiedAssociationOverride}:<ul>
  * <li>join column
  * <li>join table
  * <li>"mapped by"
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see RelationshipMapping
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  * @see Relationship
  * 
  * @version 2.3

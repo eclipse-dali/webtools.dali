@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  * 
  * @version 2.3
  * @since 2.3

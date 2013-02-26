@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context;
 
 /**
  * A relationship contains the settings describing how entities are related
- * in a {@link RelationshipMapping} or {@link AssociationOverride}:<ul>
+ * in a {@link RelationshipMapping} or {@link SpecifiedAssociationOverride}:<ul>
  * <li>join column
  * <li>join table
  * <li>"mapped by"
@@ -30,7 +30,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
  * @see RelationshipMapping
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  */
 public interface ReadOnlyRelationship
 	extends JpaContextModel

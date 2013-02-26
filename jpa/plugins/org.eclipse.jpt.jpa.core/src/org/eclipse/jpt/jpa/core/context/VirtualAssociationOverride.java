@@ -24,7 +24,7 @@ public interface VirtualAssociationOverride
 	ReadOnlyRelationship resolveOverriddenRelationship();
 
 	// covariant overrides
-	AssociationOverride convertToSpecified();
+	SpecifiedAssociationOverride convertToSpecified();
 
 	VirtualOverrideRelationship getRelationship();
 }

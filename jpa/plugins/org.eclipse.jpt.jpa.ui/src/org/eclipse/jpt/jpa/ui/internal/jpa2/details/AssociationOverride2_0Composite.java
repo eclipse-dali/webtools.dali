@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see AssociationOverride
+ * @see SpecifiedAssociationOverride
  * @see EntityOverridesComposite - The parent container
  * @see JoinColumnsComposite
  *

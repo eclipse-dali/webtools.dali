@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
  * @since 2.0
  */
 public interface OrmAssociationOverride
-	extends AssociationOverride, OrmOverride
+	extends SpecifiedAssociationOverride, OrmOverride
 {
 	OrmVirtualAssociationOverride convertToVirtual();
 
