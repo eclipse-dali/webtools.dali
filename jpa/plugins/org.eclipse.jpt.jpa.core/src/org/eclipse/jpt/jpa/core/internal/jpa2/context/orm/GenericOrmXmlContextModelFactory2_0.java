@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -76,7 +76,7 @@ public class GenericOrmXmlContextModelFactory2_0
 		return new GenericOrmCacheable2_0(parent);
 	}
 	
-	public OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalHolder2_0 parent) {
+	public OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalMapping2_0 parent) {
 		return new GenericOrmOrphanRemoval2_0(parent);
 	}
 

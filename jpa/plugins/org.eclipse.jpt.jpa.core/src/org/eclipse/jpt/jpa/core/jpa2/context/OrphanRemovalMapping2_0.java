@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2012 Oracle. All rights reserved.
+* Copyright (c) 2009, 2013 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,8 +21,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
  * @version 3.3
  * @since 2.3
  */
-public interface OrphanRemovalHolder2_0
-	extends JpaContextModel
+public interface OrphanRemovalMapping2_0
+	extends RelationshipMapping
 {
 	OrphanRemovable2_0 getOrphanRemoval();
 }

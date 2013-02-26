@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
  * @since 2.3
  */
 public interface OneToManyMapping2_0
-	extends OneToManyMapping, MultiRelationshipMapping2_0, OrphanRemovalHolder2_0
+	extends OneToManyMapping, MultiRelationshipMapping2_0, OrphanRemovalMapping2_0
 {
 	OneToManyRelationship getRelationship();
 }

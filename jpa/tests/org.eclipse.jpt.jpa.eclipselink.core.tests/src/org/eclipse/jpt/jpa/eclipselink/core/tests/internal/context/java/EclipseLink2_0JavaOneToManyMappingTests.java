@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -328,7 +328,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 	}
 	
 	private OrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
-		return ((OrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+		return ((OrphanRemovalMapping2_0) oneToManyMapping).getOrphanRemoval();
 	}
 
 	public void testDefaultOneToManyGetDefaultOrphanRemoval() throws Exception {

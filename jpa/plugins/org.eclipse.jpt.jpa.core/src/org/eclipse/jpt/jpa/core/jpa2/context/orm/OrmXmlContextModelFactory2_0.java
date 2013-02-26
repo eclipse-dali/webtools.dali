@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 
 /**
@@ -43,7 +43,7 @@ public interface OrmXmlContextModelFactory2_0
 	
 	Cacheable2_0 buildOrmCacheable(OrmCacheableReference2_0 parent);
 	
-	OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalHolder2_0 parent);
+	OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalMapping2_0 parent);
 	
 	OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner);
 	

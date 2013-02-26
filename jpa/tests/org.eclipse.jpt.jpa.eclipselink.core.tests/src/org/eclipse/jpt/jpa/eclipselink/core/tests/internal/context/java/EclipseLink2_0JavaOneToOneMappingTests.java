@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
@@ -501,7 +501,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 	}
 
 	private OrphanRemovable2_0 getOrphanRemovalOf(OneToOneMapping2_0 oneToOneMapping) {
-		return ((OrphanRemovalHolder2_0) oneToOneMapping).getOrphanRemoval();
+		return ((OrphanRemovalMapping2_0) oneToOneMapping).getOrphanRemoval();
 	}
 
 	public void testDefaultOneToOneGetDefaultOrphanRemoval() throws Exception {

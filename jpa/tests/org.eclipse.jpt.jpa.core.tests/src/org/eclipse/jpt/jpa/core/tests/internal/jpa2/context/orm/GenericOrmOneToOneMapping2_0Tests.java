@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -574,7 +574,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertEquals("foo", stateFooMapping.getName());
 	}
 	private OrphanRemovable2_0 getOrphanRemovalOf(OneToOneMapping2_0 oneToOneMapping) {
-		return ((OrphanRemovalHolder2_0) oneToOneMapping).getOrphanRemoval();
+		return ((OrphanRemovalMapping2_0) oneToOneMapping).getOrphanRemoval();
 	}
 	
 	public void testUpdateSpecifiedOrphanRemoval() throws Exception {
@@ -938,7 +938,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertTrue(cascade.isRefresh());
 		assertTrue(cascade.isDetach());
 
-		assertTrue(((OrphanRemovalHolder2_0) virtualOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
+		assertTrue(((OrphanRemovalMapping2_0) virtualOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
@@ -984,6 +984,6 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertFalse(cascade.isRefresh());
 		assertFalse(cascade.isDetach());
 
-		assertFalse(((OrphanRemovalHolder2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
+		assertFalse(((OrphanRemovalMapping2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 }

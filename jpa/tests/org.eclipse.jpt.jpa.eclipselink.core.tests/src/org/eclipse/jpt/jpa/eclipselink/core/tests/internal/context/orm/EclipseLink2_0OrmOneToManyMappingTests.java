@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -256,7 +256,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 	}
 
 	private OrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
-		return ((OrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+		return ((OrphanRemovalMapping2_0) oneToManyMapping).getOrphanRemoval();
 	}
 	
 	public void testUpdateSpecifiedOrphanRemoval() throws Exception {
@@ -1063,7 +1063,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertTrue(virtualOneToManyMapping.getOrderable().isCustomOrdering());
 		assertEquals("city", virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
 
-		assertTrue(((OrphanRemovalHolder2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
+		assertTrue(((OrphanRemovalMapping2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
 		assertEquals(EclipseLinkJoinFetchType.INNER, virtualOneToManyMapping.getJoinFetch().getValue());
 	}
 
@@ -1096,7 +1096,7 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertTrue(virtualOneToManyMapping.getOrderable().isNoOrdering());
 		assertEquals(null, virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
 
-		assertFalse(((OrphanRemovalHolder2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
+		assertFalse(((OrphanRemovalMapping2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
 		assertEquals(null, virtualOneToManyMapping.getJoinFetch().getValue());
 	}
 

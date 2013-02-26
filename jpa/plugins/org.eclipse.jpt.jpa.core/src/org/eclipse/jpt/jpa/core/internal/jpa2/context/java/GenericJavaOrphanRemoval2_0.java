@@ -13,21 +13,21 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0Annotation;
 
 /**
  * Java orphan removal
  */
 public class GenericJavaOrphanRemoval2_0
-		extends AbstractJavaContextModel<OrphanRemovalHolder2_0>
+		extends AbstractJavaContextModel<OrphanRemovalMapping2_0>
 		implements OrphanRemovable2_0
 {
 	protected Boolean specifiedOrphanRemoval;
 	protected boolean defaultOrphanRemoval;
 
 
-	public GenericJavaOrphanRemoval2_0(OrphanRemovalHolder2_0 parent) {
+	public GenericJavaOrphanRemoval2_0(OrphanRemovalMapping2_0 parent) {
 		super(parent);
 		this.specifiedOrphanRemoval = this.buildSpecifiedOrphanRemoval();
 	}

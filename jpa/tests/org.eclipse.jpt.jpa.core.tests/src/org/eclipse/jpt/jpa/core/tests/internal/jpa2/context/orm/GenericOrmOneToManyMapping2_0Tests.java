@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -367,7 +367,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 	}
 
 	private OrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
-		return ((OrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+		return ((OrphanRemovalMapping2_0) oneToManyMapping).getOrphanRemoval();
 	}
 	
 	public void testUpdateSpecifiedOrphanRemoval() throws Exception {
@@ -1202,7 +1202,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertTrue(virtualOneToManyMapping.getOrderable().isCustomOrdering());
 		assertEquals("city", virtualOneToManyMapping.getOrderable().getSpecifiedOrderBy());
 
-		assertTrue(((OrphanRemovalHolder2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
+		assertTrue(((OrphanRemovalMapping2_0) virtualOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
@@ -1239,7 +1239,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
 		assertEquals(null, ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
 
-		assertFalse(((OrphanRemovalHolder2_0) ormOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
+		assertFalse(((OrphanRemovalMapping2_0) ormOneToManyMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 
 	public void testUpdateSpecifiedEnumerated() throws Exception {
