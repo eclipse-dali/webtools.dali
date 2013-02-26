@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
  * @since 2.0
  */
 public interface OrmAssociationOverride
-	extends SpecifiedAssociationOverride, OrmOverride
+	extends SpecifiedAssociationOverride, OrmSpecifiedOverride
 {
 	OrmVirtualAssociationOverride convertToVirtual();
 

@@ -32,12 +32,12 @@ public interface OrmOverrideContainer
 	extends OverrideContainer
 {
 	// covariant overrides
-	ListIterable<? extends OrmOverride> getSpecifiedOverrides();
-	OrmOverride getSpecifiedOverride(int index);
-	OrmOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<? extends OrmSpecifiedOverride> getSpecifiedOverrides();
+	OrmSpecifiedOverride getSpecifiedOverride(int index);
+	OrmSpecifiedOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<? extends OrmVirtualOverride> getVirtualOverrides();
 	OrmVirtualOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	OrmOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	OrmSpecifiedOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	interface Owner

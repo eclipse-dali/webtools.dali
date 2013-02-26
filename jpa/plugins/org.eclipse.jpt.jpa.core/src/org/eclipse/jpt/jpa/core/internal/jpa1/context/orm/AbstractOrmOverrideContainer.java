@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractOrmOverrideContainer<
 			O extends OrmOverrideContainer.Owner,
 			R extends Override_,
-			S extends OrmOverride,
+			S extends OrmSpecifiedOverride,
 			V extends OrmVirtualOverride,
 			X extends XmlOverride
 		>
