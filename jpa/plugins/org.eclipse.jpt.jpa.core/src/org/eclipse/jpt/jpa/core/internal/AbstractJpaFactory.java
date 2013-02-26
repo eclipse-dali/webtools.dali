@@ -94,7 +94,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFile;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaProject;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAttributeOverrideContainer;
@@ -358,7 +358,7 @@ public abstract class AbstractJpaFactory
 	}
 	
 	public JavaSpecifiedAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
-		return new GenericJavaAssociationOverride(parent, annotation);
+		return new GenericJavaSpecifiedAssociationOverride(parent, annotation);
 	}
 	
 	public JavaVirtualAssociationOverride buildJavaVirtualAssociationOverride(JavaAssociationOverrideContainer parent, String name) {

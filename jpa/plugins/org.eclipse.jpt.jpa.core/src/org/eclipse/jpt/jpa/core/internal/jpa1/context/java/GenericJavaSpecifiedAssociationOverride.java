@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,14 +28,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified Java association override
  */
-public class GenericJavaAssociationOverride
+public class GenericJavaSpecifiedAssociationOverride
 	extends AbstractJavaSpecifiedOverride<JavaAssociationOverrideContainer, AssociationOverrideAnnotation>
 	implements JavaSpecifiedAssociationOverride2_0
 {
 	protected final JavaOverrideRelationship relationship;
 
 
-	public GenericJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
+	public GenericJavaSpecifiedAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
 		super(parent, annotation);
 		this.relationship = this.buildRelationship();
 	}
