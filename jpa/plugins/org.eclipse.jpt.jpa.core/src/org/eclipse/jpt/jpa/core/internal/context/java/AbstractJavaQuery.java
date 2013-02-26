@@ -65,7 +65,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getHints());
+		this.updateModels(this.getHints());
 	}
 
 
@@ -169,7 +169,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	// ********** validation **********
 
 	public boolean supportsValidationMessages() {
-		return MappingTools.nodeIsInternalSource(this, this.getQueryAnnotation());
+		return MappingTools.modelIsInternalSource(this, this.getQueryAnnotation());
 	}
 
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {

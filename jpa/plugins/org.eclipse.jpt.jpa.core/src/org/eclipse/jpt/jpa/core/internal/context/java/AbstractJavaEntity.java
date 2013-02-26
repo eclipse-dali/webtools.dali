@@ -205,10 +205,10 @@ public abstract class AbstractJavaEntity
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
 
-		this.updateNodes(this.getSecondaryTables());
+		this.updateModels(this.getSecondaryTables());
 
 		this.updateDefaultPrimaryKeyJoinColumn();
-		this.updateNodes(this.getPrimaryKeyJoinColumns());
+		this.updateModels(this.getPrimaryKeyJoinColumns());
 
 		this.discriminatorColumn.update();
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
@@ -1294,7 +1294,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	public boolean supportsValidationMessages() {
-		return MappingTools.nodeIsInternalSource(this, this.getJavaResourceType());
+		return MappingTools.modelIsInternalSource(this, this.getJavaResourceType());
 	}
 
 	public TextRange getNameTextRange() {

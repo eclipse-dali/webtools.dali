@@ -37,7 +37,7 @@ public class OrmEclipseLinkPersistenceUnitMetadata
 	@Override
 	protected XmlPersistenceUnitMetadata buildXmlPersistenceUnitMetadata_() {
 		return EmfTools.create(
-				this.getResourceNodeFactory(),
+				this.getResourceModelFactory(),
 				EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata(),
 				XmlPersistenceUnitMetadata.class
 			);

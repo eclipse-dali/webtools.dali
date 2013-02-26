@@ -94,7 +94,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		this.setDefaultName(this.buildDefaultName());
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.updateNodes(this.getUniqueConstraints());
+		this.updateModels(this.getUniqueConstraints());
 	}
 
 

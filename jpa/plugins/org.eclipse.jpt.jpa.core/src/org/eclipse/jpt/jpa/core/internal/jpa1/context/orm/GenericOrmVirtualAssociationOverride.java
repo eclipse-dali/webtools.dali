@@ -70,7 +70,7 @@ public class GenericOrmVirtualAssociationOverride
 	 * creation of the virtual override).
 	 */
 	protected VirtualOverrideRelationship buildRelationship() {
-		return this.getContextNodeFactory().buildOrmVirtualOverrideRelationship(this);
+		return this.getContextModelFactory().buildOrmVirtualOverrideRelationship(this);
 	}
 
 	public ReadOnlyRelationship resolveOverriddenRelationship() {

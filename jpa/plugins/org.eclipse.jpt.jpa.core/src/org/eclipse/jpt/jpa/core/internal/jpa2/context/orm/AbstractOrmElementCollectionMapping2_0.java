@@ -246,7 +246,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.mapKeyColumn.update();
 		this.mapKeyConverter.update();
 		this.mapKeyAttributeOverrideContainer.update();
-		this.updateNodes(this.getSpecifiedMapKeyJoinColumns());
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
 		this.updateDefaultMapKeyJoinColumn();
 	}
 
@@ -383,7 +383,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected OrmOrderable2_0 buildOrderable() {
 		// we wouldn't be here if we weren't orm.xml 2.0 compatible
-		return this.getContextNodeFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner());
+		return this.getContextModelFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner());
 	}
 
 	protected Orderable2_0.Owner buildOrderableOwner() {
@@ -413,7 +413,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected OrmCollectionTable2_0 buildCollectionTable() {
 		// we wouldn't be here if we weren't orm.xml 2.0 compatible
-		return this.getContextNodeFactory2_0().buildOrmCollectionTable(this, this.buildCollectionTableOwner());
+		return this.getContextModelFactory2_0().buildOrmCollectionTable(this, this.buildCollectionTableOwner());
 	}
 
 	protected Table.Owner buildCollectionTableOwner() {
@@ -463,7 +463,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmColumn buildValueColumn() {
-		return this.getContextNodeFactory().buildOrmColumn(this, this.buildValueColumnOwner());
+		return this.getContextModelFactory().buildOrmColumn(this, this.buildValueColumnOwner());
 	}
 
 	protected OrmColumn.Owner buildValueColumnOwner() {
@@ -497,7 +497,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected OrmConverter buildConverter(OrmConverter.Adapter converterAdapter) {
 		 return (converterAdapter != null) ?
-				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				converterAdapter.buildNewConverter(this, this.getContextModelFactory()) :
 				this.nullConverter;
 	}
 
@@ -514,7 +514,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmConverter buildConverter() {
-		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextModelFactory();
 		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {
@@ -534,7 +534,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			if (this.converter.getType() == adapter.getConverterType()) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
-				this.setConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}
 		}
 	}
@@ -579,7 +579,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmAttributeOverrideContainer buildValueAttributeOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAttributeOverrideContainer(this, this.buildValueAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildValueAttributeOverrideContainerOwner());
 	}
 
 	protected OrmAttributeOverrideContainer.Owner buildValueAttributeOverrideContainerOwner() {
@@ -594,7 +594,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmAssociationOverrideContainer buildValueAssociationOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAssociationOverrideContainer(this, this.buildValueAssociationOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAssociationOverrideContainer(this, this.buildValueAssociationOverrideContainerOwner());
 	}
 
 	protected OrmAssociationOverrideContainer.Owner buildValueAssociationOverrideContainerOwner() {
@@ -904,7 +904,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmColumn buildMapKeyColumn() {
-		return this.getContextNodeFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
+		return this.getContextModelFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
 	}
 
 	protected OrmColumn.Owner buildMapKeyColumnOwner() {
@@ -938,7 +938,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected OrmConverter buildMapKeyConverter(OrmConverter.Adapter converterAdapter) {
 		 return (converterAdapter != null) ?
-				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				converterAdapter.buildNewConverter(this, this.getContextModelFactory()) :
 				this.nullConverter;
 	}
 
@@ -955,7 +955,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmConverter buildMapKeyConverter() {
-		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextModelFactory();
 		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {
@@ -975,7 +975,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			if (this.mapKeyConverter.getType() == adapter.getConverterType()) {
 				this.mapKeyConverter.synchronizeWithResourceModel();
 			} else {
-				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}
 		}
 	}
@@ -1018,7 +1018,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
 	}
 
 	protected OrmAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
@@ -1124,7 +1124,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmJoinColumn buildMapKeyJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
 	}
 
 	protected ReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {

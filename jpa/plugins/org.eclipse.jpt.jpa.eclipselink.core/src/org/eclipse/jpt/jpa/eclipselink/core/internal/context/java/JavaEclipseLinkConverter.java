@@ -115,7 +115,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	// ********** validation **********
 
 	public boolean supportsValidationMessages() {
-		return MappingTools.nodeIsInternalSource(this, this.getConverterAnnotation());
+		return MappingTools.modelIsInternalSource(this, this.getConverterAnnotation());
 	}
 
 	@Override

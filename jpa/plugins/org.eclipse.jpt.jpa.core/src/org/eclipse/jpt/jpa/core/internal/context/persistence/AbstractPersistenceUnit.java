@@ -261,7 +261,7 @@ public abstract class AbstractPersistenceUnit
 		this.syncJarFileRefs();
 
 		this.syncSpecifiedClassRefs();
-		this.synchronizeNodesWithResourceModel(this.getImpliedClassRefs());
+		this.synchronizeModelsWithResourceModel(this.getImpliedClassRefs());
 
 		this.syncProperties();
 
@@ -282,18 +282,18 @@ public abstract class AbstractPersistenceUnit
 		// update specified class refs before mapping file refs because of
 		// JpaFile root structure nodes - we want the mapping file to "win",
 		// as it would in a JPA runtime implementation
-		this.updateNodes(this.getSpecifiedClassRefs());
+		this.updateModels(this.getSpecifiedClassRefs());
 
-		this.updateNodes(this.getSpecifiedMappingFileRefs());
+		this.updateModels(this.getSpecifiedMappingFileRefs());
 		this.updateImpliedMappingFileRef();
 
-		this.updateNodes(this.getJarFileRefs());
+		this.updateModels(this.getJarFileRefs());
 
 		// update the implied class refs after all the other types, both
 		// specified here and specified in the mapping files, are in place
 		this.updateImpliedClassRefs();
 
-		this.updateNodes(this.getProperties());
+		this.updateModels(this.getProperties());
 
 		this.updatePersistenceUnitMetadata();
 
@@ -315,7 +315,7 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	// ********** JpaContextNode implementation **********
+	// ********** JpaContextModel implementation **********
 
 	@Override
 	public Persistence getParent() {
@@ -609,7 +609,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildSpecifiedMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
-		return this.getContextNodeFactory().buildMappingFileRef(this, xmlMappingFileRef);
+		return this.getContextModelFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 
 	public void removeSpecifiedMappingFileRef(MappingFileRef mappingFileRef) {
@@ -682,7 +682,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildImpliedMappingFileRef() {
-		return this.getContextNodeFactory().buildVirtualMappingFileRef(this);
+		return this.getContextModelFactory().buildVirtualMappingFileRef(this);
 	}
 
 	protected void syncImpliedMappingFileRef() {
@@ -754,7 +754,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected JarFileRef buildJarFileRef(XmlJarFileRef xmlJarFileRef) {
-		return this.getContextNodeFactory().buildJarFileRef(this, xmlJarFileRef);
+		return this.getContextModelFactory().buildJarFileRef(this, xmlJarFileRef);
 	}
 
 	public void removeJarFileRef(JarFileRef jarFileRef) {
@@ -866,7 +866,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ClassRef buildClassRef(XmlJavaClassRef xmlClassRef) {
-		return this.getContextNodeFactory().buildClassRef(this, xmlClassRef);
+		return this.getContextModelFactory().buildClassRef(this, xmlClassRef);
 	}
 
 	public void removeSpecifiedClassRef(ClassRef classRef) {
@@ -942,7 +942,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ClassRef buildClassRef(JavaResourceAbstractType jrat) {
-		return this.getContextNodeFactory().buildClassRef(this, jrat);
+		return this.getContextModelFactory().buildClassRef(this, jrat);
 	}
 
 	protected void updateImpliedClassRefs() {
@@ -1110,7 +1110,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Property buildProperty(XmlProperty xmlProperty) {
-		return this.getContextNodeFactory().buildProperty(this, xmlProperty);
+		return this.getContextModelFactory().buildProperty(this, xmlProperty);
 	}
 
 	protected XmlProperties buildXmlProperties() {
@@ -1223,9 +1223,9 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void initializeProperties() {
-		this.connection = this.getContextNodeFactory().buildConnection(this);
-		this.options = this.getContextNodeFactory().buildOptions(this);
-		this.genericSchemaGeneration = this.getContextNodeFactory().buildSchemaGeneration(this);
+		this.connection = this.getContextModelFactory().buildConnection(this);
+		this.options = this.getContextModelFactory().buildOptions(this);
+		this.genericSchemaGeneration = this.getContextModelFactory().buildSchemaGeneration(this);
 	}
 
 	protected void syncProperties() {
@@ -1606,7 +1606,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ArrayList<JavaGenerator> getConvertibleJavaGenerators() {
-		return this.extractConvertibleJavaNodes(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+		return this.extractConvertibleJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators());
 	}
 
 
@@ -1693,7 +1693,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ArrayList<JavaQuery> getConvertibleJavaQueries() {
-		return this.extractConvertibleJavaNodes(this.getAllJavaQueries(), this.getMappingFileQueries());
+		return this.extractConvertibleJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries());
 	}
 
 
@@ -2169,23 +2169,23 @@ public abstract class AbstractPersistenceUnit
 	 * Return the Java nodes that are neither overridden nor duplicated
 	 * (by default any Java nodes with the same name are "duplicates").
 	 */
-	protected <N extends JpaNamedContextModel> ArrayList<N> extractConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextModel> mappingFileNodes) {
-		ArrayList<N> convertibleNodes = new ArrayList<N>();
+	protected <N extends JpaNamedContextModel> ArrayList<N> extractConvertibleJavaModels(Iterable<N> allJavaModels, Iterable<? extends JpaNamedContextModel> mappingFileModels) {
+		ArrayList<N> convertibleModels = new ArrayList<N>();
 
-		HashSet<String> mappingFileNodeNames = this.convertToNames(ListTools.list(mappingFileNodes));
-		HashMap<String, ArrayList<N>> allJavaNodesByName = this.mapByName(allJavaNodes);
-		for (Map.Entry<String, ArrayList<N>> entry : allJavaNodesByName.entrySet()) {
-			String javaNodeName = entry.getKey();
-			if (StringTools.isBlank(javaNodeName)) {
+		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.list(mappingFileModels));
+		HashMap<String, ArrayList<N>> allJavaModelsByName = this.mapByName(allJavaModels);
+		for (Map.Entry<String, ArrayList<N>> entry : allJavaModelsByName.entrySet()) {
+			String javaModelName = entry.getKey();
+			if (StringTools.isBlank(javaModelName)) {
 				continue;  // ignore any nodes with an empty name(?)
 			}
-			ArrayList<N> javaNodesWithSameName = entry.getValue();
-			if ((javaNodesWithSameName.size() == 1) && ! mappingFileNodeNames.contains(javaNodeName)) {
-				convertibleNodes.add(javaNodesWithSameName.get(0));
+			ArrayList<N> javaModelsWithSameName = entry.getValue();
+			if ((javaModelsWithSameName.size() == 1) && ! mappingFileModelNames.contains(javaModelName)) {
+				convertibleModels.add(javaModelsWithSameName.get(0));
 			}
 		}
 
-		return convertibleNodes;
+		return convertibleModels;
 	}
 
 	@Override

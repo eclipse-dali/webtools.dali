@@ -86,7 +86,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	}
 
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAttributeOverrideContainer(this, this.buildAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildAttributeOverrideContainerOwner());
 	}
 
 	protected abstract OrmAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner();

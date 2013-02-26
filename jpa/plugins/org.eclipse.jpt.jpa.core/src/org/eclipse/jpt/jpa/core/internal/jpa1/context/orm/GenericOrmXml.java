@@ -195,7 +195,7 @@ public class GenericOrmXml
 	}
 
 	protected EntityMappings buildRoot(XmlEntityMappings xmlEntityMappings) {
-		return this.getContextNodeFactory().buildEntityMappings(this, xmlEntityMappings);
+		return this.getContextModelFactory().buildEntityMappings(this, xmlEntityMappings);
 	}
 
 

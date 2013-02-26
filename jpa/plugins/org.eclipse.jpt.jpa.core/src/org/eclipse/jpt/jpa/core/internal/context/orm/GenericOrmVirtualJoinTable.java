@@ -224,7 +224,7 @@ public class GenericOrmVirtualJoinTable
 	@Override
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
 		super.validateJoinColumns(messages, reporter);
-		this.validateNodes(this.getInverseJoinColumns(), messages, reporter);
+		this.validateModels(this.getInverseJoinColumns(), messages, reporter);
 	}
 
 	public boolean validatesAgainstDatabase() {

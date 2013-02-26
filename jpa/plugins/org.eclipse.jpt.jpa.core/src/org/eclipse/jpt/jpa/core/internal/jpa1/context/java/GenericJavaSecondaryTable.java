@@ -64,7 +64,7 @@ public class GenericJavaSecondaryTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedPrimaryKeyJoinColumns());
+		this.updateModels(this.getSpecifiedPrimaryKeyJoinColumns());
 		this.updateDefaultPrimaryKeyJoinColumn();
 	}
 

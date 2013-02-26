@@ -70,7 +70,7 @@ public class GenericOrmAssociationOverride
 	}
 
 	protected OrmOverrideRelationship buildRelationship() {
-		return this.getContextNodeFactory().buildOrmOverrideRelationship(this);
+		return this.getContextModelFactory().buildOrmOverrideRelationship(this);
 	}
 
 

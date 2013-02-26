@@ -134,13 +134,13 @@ public abstract class SpecifiedOrmPersistentAttribute
 
 	protected void setMappingKey_(String mappingKey) {
 		OrmAttributeMappingDefinition mappingDefinition = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
-		XmlAttributeMapping xmlAttributeMapping = mappingDefinition.buildResourceMapping(this.getResourceNodeFactory());
+		XmlAttributeMapping xmlAttributeMapping = mappingDefinition.buildResourceMapping(this.getResourceModelFactory());
 		this.setMapping(this.buildMapping(xmlAttributeMapping));
 	}
 
 	protected final OrmAttributeMapping buildMapping(XmlAttributeMapping xmlAttributeMapping) {
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(xmlAttributeMapping.getMappingKey());
-		return md.buildContextMapping(this, xmlAttributeMapping, this.getContextNodeFactory());
+		return md.buildContextMapping(this, xmlAttributeMapping, this.getContextModelFactory());
 	}
 
 	protected void setMapping(OrmAttributeMapping mapping) {

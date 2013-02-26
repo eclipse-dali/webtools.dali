@@ -38,7 +38,7 @@ public class EclipseLink2_4PersistenceXmlDefinition
 		super();
 	}
 	
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return PersistenceV2_0Factory.eINSTANCE;
 	}
 
@@ -47,7 +47,7 @@ public class EclipseLink2_4PersistenceXmlDefinition
 	}
 
 	@Override
-	protected PersistenceXmlContextModelFactory buildContextNodeFactory() {
+	protected PersistenceXmlContextModelFactory buildContextModelFactory() {
 		return new EclipseLinkPersistenceXmlContextModelFactory2_4();
 	}
 }

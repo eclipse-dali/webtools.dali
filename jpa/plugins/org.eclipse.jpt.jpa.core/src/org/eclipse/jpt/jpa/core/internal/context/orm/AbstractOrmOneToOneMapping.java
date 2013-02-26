@@ -60,7 +60,7 @@ public abstract class AbstractOrmOneToOneMapping<X extends XmlOneToOne>
 
 	protected OrphanRemovable2_0 buildOrphanRemoval() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmOrphanRemoval(this) :
+				this.getContextModelFactory2_0().buildOrmOrphanRemoval(this) :
 				new NullOrmOrphanRemoval2_0(this);
 	}
 

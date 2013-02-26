@@ -247,7 +247,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.collection(entityMappings.getQueryContainer().getNamedNativeQueries());
 
 		// test the first mapping file query
-		OrmNamedNativeQuery nnq1 = selectNodeNamed(namedNativeQueries, "nnq1");
+		OrmNamedNativeQuery nnq1 = selectModelNamed(namedNativeQueries, "nnq1");
 		assertEquals("nnq1", (nnq1.getName()));
 		assertEquals("abcd", (nnq1.getQuery()));
 		assertEquals("foo1", nnq1.getResultClass());
@@ -268,7 +268,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("bbb", nnq1hint2.getValue());
 		
 		// test the second mapping file query
-		OrmNamedNativeQuery nnq2 = selectNodeNamed(namedNativeQueries, "nnq2");
+		OrmNamedNativeQuery nnq2 = selectModelNamed(namedNativeQueries, "nnq2");
 		assertEquals("nnq2", (nnq2.getName()));
 		assertEquals("efgh", (nnq2.getQuery()));
 		assertEquals("foo2", nnq2.getResultClass());
@@ -284,8 +284,8 @@ public class Generic2_0JpaMetadataConversionTests extends
 		
 	}
 
-	public static <N extends JpaNamedContextModel> N selectNodeNamed(Iterable<N> nodes, String name) {
-		for (N node : nodes) {
+	public static <M extends JpaNamedContextModel> M selectModelNamed(Iterable<M> models, String name) {
+		for (M node : models) {
 			if (node.getName().equals(name)) {
 				return node;
 			}
@@ -410,7 +410,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.collection(entityMappings.getQueryContainer().getNamedNativeQueries());
 
 		// test the first mapping file query
-		OrmNamedNativeQuery nnq1 = selectNodeNamed(namedNativeQueries, "nnq1");
+		OrmNamedNativeQuery nnq1 = selectModelNamed(namedNativeQueries, "nnq1");
 		assertEquals("nnq1", (nnq1.getName()));
 		assertEquals("abcd", (nnq1.getQuery()));
 		assertEquals("foo1", nnq1.getResultClass());
@@ -431,7 +431,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("bbb", nnq1hint2.getValue());
 		
 		// test the second mapping file query
-		OrmNamedNativeQuery nnq2 = selectNodeNamed(namedNativeQueries, "nnq2");
+		OrmNamedNativeQuery nnq2 = selectModelNamed(namedNativeQueries, "nnq2");
 		assertEquals("nnq2", (nnq2.getName()));
 		assertEquals("efgh", (nnq2.getQuery()));
 		assertEquals("foo2", nnq2.getResultClass());

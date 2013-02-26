@@ -104,7 +104,7 @@ public class GenericOrmGeneratorContainer
 	}
 
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
-		return this.getContextNodeFactory().buildOrmSequenceGenerator(this, xmlSequenceGenerator);
+		return this.getContextModelFactory().buildOrmSequenceGenerator(this, xmlSequenceGenerator);
 	}
 
 	protected void syncSequenceGenerator() {
@@ -168,7 +168,7 @@ public class GenericOrmGeneratorContainer
 	}
 
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator xmlTableGenerator) {
-		return this.getContextNodeFactory().buildOrmTableGenerator(this, xmlTableGenerator);
+		return this.getContextModelFactory().buildOrmTableGenerator(this, xmlTableGenerator);
 	}
 
 	protected void syncTableGenerator() {

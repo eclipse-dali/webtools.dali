@@ -63,7 +63,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getPrimaryKeyJoinColumns());
+		this.updateModels(this.getPrimaryKeyJoinColumns());
 	}
 
 
@@ -153,7 +153,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
 	}
 
 	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnContainer() {

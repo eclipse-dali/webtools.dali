@@ -30,7 +30,7 @@ public class GenericOrmPersistenceUnitMetadata
 	@Override
 	protected XmlPersistenceUnitMetadata buildXmlPersistenceUnitMetadata_() {
 		return EmfTools.create(
-				this.getResourceNodeFactory(),
+				this.getResourceModelFactory(),
 				OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata(),
 				XmlPersistenceUnitMetadata.class
 			);

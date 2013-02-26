@@ -191,7 +191,7 @@ public abstract class AbstractJpaFactory
 
 	// ********** Context Nodes **********
 	
-	public JpaContextModelRoot buildRootContextNode(JpaProject parent) {
+	public JpaContextModelRoot buildContextModelRoot(JpaProject parent) {
 		return new GenericContextModelRoot(parent);
 	}
 

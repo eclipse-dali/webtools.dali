@@ -71,7 +71,7 @@ public class GenericOrmAttributeOverride
 	}
 
 	protected OrmColumn buildColumn() {
-		return this.getContextNodeFactory().buildOrmColumn(this, this);
+		return this.getContextModelFactory().buildOrmColumn(this, this);
 	}
 
 

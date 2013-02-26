@@ -95,7 +95,7 @@ public abstract class AbstractJavaPersistentType
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncMapping();
-		this.synchronizeNodesWithResourceModel(this.getAttributes());
+		this.synchronizeModelsWithResourceModel(this.getAttributes());
 	}
 
 	@Override
@@ -999,7 +999,7 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (MappingTools.nodeIsInternalSource(this, this.resourceType)) {
+		if (MappingTools.modelIsInternalSource(this, this.resourceType)) {
 			this.validateMapping(messages, reporter);
 			this.validateAttributes(messages, reporter);
 		}

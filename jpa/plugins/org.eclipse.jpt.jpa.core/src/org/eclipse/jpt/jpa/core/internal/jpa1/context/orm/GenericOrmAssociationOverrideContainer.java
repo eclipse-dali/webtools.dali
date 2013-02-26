@@ -80,7 +80,7 @@ public class GenericOrmAssociationOverrideContainer
 
 	@Override
 	protected OrmAssociationOverride buildSpecifiedOverride(XmlAssociationOverride xmlOverride) {
-		return this.getContextNodeFactory().buildOrmAssociationOverride(this, xmlOverride);
+		return this.getContextModelFactory().buildOrmAssociationOverride(this, xmlOverride);
 	}
 
 	@Override
@@ -90,6 +90,6 @@ public class GenericOrmAssociationOverrideContainer
 
 	@Override
 	protected OrmVirtualAssociationOverride buildVirtualOverride(String name) {
-		return this.getContextNodeFactory().buildOrmVirtualAssociationOverride(this, name);
+		return this.getContextModelFactory().buildOrmVirtualAssociationOverride(this, name);
 	}
 }

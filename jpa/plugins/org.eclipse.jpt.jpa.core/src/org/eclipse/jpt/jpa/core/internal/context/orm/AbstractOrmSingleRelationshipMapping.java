@@ -101,7 +101,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<X extends AbstractXml
 
 	protected OrmDerivedIdentity2_0 buildDerivedIdentity() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmDerivedIdentity(this) :
+				this.getContextModelFactory2_0().buildOrmDerivedIdentity(this) :
 				new NullOrmDerivedIdentity2_0(this);
 	}
 

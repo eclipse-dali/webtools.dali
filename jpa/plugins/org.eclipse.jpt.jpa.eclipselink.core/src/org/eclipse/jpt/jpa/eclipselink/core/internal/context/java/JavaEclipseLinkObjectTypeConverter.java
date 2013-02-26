@@ -70,7 +70,7 @@ public class JavaEclipseLinkObjectTypeConverter
 		super.update();
 		this.setFullyQualifiedDataType(this.converterAnnotation.getFullyQualifiedDataType());
 		this.setFullyQualifiedObjectType(this.converterAnnotation.getFullyQualifiedObjectType());
-		this.updateNodes(this.getConversionValues());
+		this.updateModels(this.getConversionValues());
 	}
 
 

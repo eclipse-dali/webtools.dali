@@ -61,7 +61,7 @@ public class ProjectAdapterFactory
 			return this.getJpaProjectModel(project);
 		}
 		if (adapterType == JpaContextModelRootModel.class) {
-			return this.getJpaRootContextNodeModel(project);
+			return this.getJpaContextModelRootModel(project);
 		}
 		return null;
 	}
@@ -74,7 +74,7 @@ public class ProjectAdapterFactory
 		return (JpaProjectsModel) workspace.getAdapter(JpaProjectsModel.class);
 	}
 
-	private JpaContextModelRootModel getJpaRootContextNodeModel(IProject project) {
+	private JpaContextModelRootModel getJpaContextModelRootModel(IProject project) {
 		return new JpaContextModelRootModelAdapter(this.getJpaProjectModel(project));
 	}
 

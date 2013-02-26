@@ -66,7 +66,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getHints());
+		this.updateModels(this.getHints());
 	}
 
 
@@ -132,7 +132,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected OrmQueryHint buildHint(XmlQueryHint xmlHint) {
-		return this.getContextNodeFactory().buildOrmQueryHint(this, xmlHint);
+		return this.getContextModelFactory().buildOrmQueryHint(this, xmlHint);
 	}
 
 	protected void syncHints() {

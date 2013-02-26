@@ -450,10 +450,10 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		
 		// test the mapping file converter have correct values
 		Collection<OrmEclipseLinkCustomConverter> customConverters = CollectionTools.collection(entityMappings.getConverterContainer().getCustomConverters());
-		EclipseLinkCustomConverter custom1 = Generic2_0JpaMetadataConversionTests.selectNodeNamed(customConverters, "custom1");
+		EclipseLinkCustomConverter custom1 = Generic2_0JpaMetadataConversionTests.selectModelNamed(customConverters, "custom1");
 		assertEquals("custom1", custom1.getName());
 		assertEquals("foo1", custom1.getConverterClass());
-		EclipseLinkCustomConverter custom2 = Generic2_0JpaMetadataConversionTests.selectNodeNamed(customConverters, "custom2");
+		EclipseLinkCustomConverter custom2 = Generic2_0JpaMetadataConversionTests.selectModelNamed(customConverters, "custom2");
 		assertEquals("custom2", custom2.getName());
 		assertEquals("foo2", custom2.getConverterClass());
 	}

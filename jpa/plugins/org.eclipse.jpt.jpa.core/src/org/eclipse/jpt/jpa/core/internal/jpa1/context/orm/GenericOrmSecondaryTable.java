@@ -71,7 +71,7 @@ public class GenericOrmSecondaryTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedPrimaryKeyJoinColumns());
+		this.updateModels(this.getSpecifiedPrimaryKeyJoinColumns());
 		this.updateDefaultPrimaryKeyJoinColumn();
 	}
 
@@ -294,7 +294,7 @@ public class GenericOrmSecondaryTable
 	}
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
 	}
 
 
@@ -333,7 +333,7 @@ public class GenericOrmSecondaryTable
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
-			this.validateNodes(this.getPrimaryKeyJoinColumns(), messages, reporter);
+			this.validateModels(this.getPrimaryKeyJoinColumns(), messages, reporter);
 		}
 	}
 

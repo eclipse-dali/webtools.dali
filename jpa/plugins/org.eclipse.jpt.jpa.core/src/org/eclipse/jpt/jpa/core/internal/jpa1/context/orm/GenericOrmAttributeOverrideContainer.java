@@ -54,7 +54,7 @@ public class GenericOrmAttributeOverrideContainer
 
 	@Override
 	protected OrmAttributeOverride buildSpecifiedOverride(XmlAttributeOverride xmlOverride) {
-		return this.getContextNodeFactory().buildOrmAttributeOverride(this, xmlOverride);
+		return this.getContextModelFactory().buildOrmAttributeOverride(this, xmlOverride);
 	}
 
 	public void initializeFrom(OrmAttributeOverrideContainer oldContainer) {
@@ -70,6 +70,6 @@ public class GenericOrmAttributeOverrideContainer
 
 	@Override
 	protected OrmVirtualAttributeOverride buildVirtualOverride(String name) {
-		return this.getContextNodeFactory().buildOrmVirtualAttributeOverride(this, name);
+		return this.getContextModelFactory().buildOrmVirtualAttributeOverride(this, name);
 	}
 }

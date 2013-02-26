@@ -254,7 +254,7 @@ public abstract class AbstractJpaProject
 			}
 		}
 
-		this.contextModelRoot = this.buildRootContextNode();
+		this.contextModelRoot = this.buildContextModelRoot();
 
 		this.updateCommandListener = this.buildUpdateCommandListener();
 		this.initializeContextModel();
@@ -278,8 +278,8 @@ public abstract class AbstractJpaProject
 		return new BinaryTypeCache(this.jpaPlatform.getAnnotationProvider());
 	}
 
-	protected JpaContextModelRoot buildRootContextNode() {
-		return this.getJpaFactory().buildRootContextNode(this);
+	protected JpaContextModelRoot buildContextModelRoot() {
+		return this.getJpaFactory().buildContextModelRoot(this);
 	}
 
 	/**
@@ -914,11 +914,11 @@ public abstract class AbstractJpaProject
 	 * persistence.xml
 	 */
 	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
-		return IterableTools.children(this.getJavaResourceNodeRoots(), JavaResourceModel.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getJavaResourceModelRoots(), JavaResourceModel.Root.TYPES_TRANSFORMER);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Iterable<JavaResourceModel.Root> getJavaResourceNodeRoots() {
+	protected Iterable<JavaResourceModel.Root> getJavaResourceModelRoots() {
 		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getInternalJavaResourcePackageFragmentRoots(),

@@ -169,7 +169,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 		this.mapKeyColumn.update();
 		this.mapKeyConverter.update();
-		this.updateNodes(this.getSpecifiedMapKeyJoinColumns());
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
 		this.updateDefaultMapKeyJoinColumn();
 
 		this.mapKeyAttributeOverrideContainer.update();

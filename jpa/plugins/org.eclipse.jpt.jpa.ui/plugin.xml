@@ -929,7 +929,7 @@
 			
 			<triggerPoints>
 				<or>
-					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
 					<instanceof value="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel"/>
 					<adapt type="org.eclipse.core.resources.IProject"> 
 						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
@@ -938,14 +938,14 @@
 			</triggerPoints>
 			
 			<possibleChildren>
-				<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+				<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
 			</possibleChildren>
 			
 			<actionProvider
 				class="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider"
 				id="org.eclipse.jpt.jpa.ui.jpaActionProvider">
 				<enablement>
-					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
 				</enablement>
 			</actionProvider>
 			

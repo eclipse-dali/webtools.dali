@@ -60,12 +60,12 @@ public class GenericOrmXmlDefinition
 		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA.SCHEMA_VERSION);
 	}
 
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return OrmFactory.eINSTANCE;
 	}
 
 	@Override
-	protected OrmXmlContextModelFactory buildContextNodeFactory() {
+	protected OrmXmlContextModelFactory buildContextModelFactory() {
 		return new GenericOrmXmlContextModelFactory();
 	}
 

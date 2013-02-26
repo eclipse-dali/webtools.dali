@@ -177,7 +177,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.mapKeyConverter.update();
 
 		this.mapKeyAttributeOverrideContainer.update();
-		this.updateNodes(this.getSpecifiedMapKeyJoinColumns());
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
 		this.updateDefaultMapKeyJoinColumn();
 	}
 
@@ -190,8 +190,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected Orderable buildOrderable() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner()) :
-				this.getContextNodeFactory().buildOrmOrderable(this);
+				this.getContextModelFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner()) :
+				this.getContextModelFactory().buildOrmOrderable(this);
 	}
 
 	protected Orderable2_0.Owner buildOrderableOwner() {
@@ -545,7 +545,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmColumn buildMapKeyColumn() {
-		return this.getContextNodeFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
+		return this.getContextModelFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
 	}
 
 	protected OrmColumn.Owner buildMapKeyColumnOwner() {
@@ -593,7 +593,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected OrmConverter buildMapKeyConverter(OrmConverter.Adapter converterAdapter) {
 		 return (converterAdapter != null) ?
-				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				converterAdapter.buildNewConverter(this, this.getContextModelFactory()) :
 				this.nullConverter;
 	}
 
@@ -610,7 +610,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmConverter buildMapKeyConverter() {
-		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextModelFactory();
 		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {
@@ -630,7 +630,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			if (this.mapKeyConverter.getType() == adapter.getConverterType()) {
 				this.mapKeyConverter.synchronizeWithResourceModel();
 			} else {
-				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}
 		}
 	}
@@ -674,7 +674,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
 	}
 
 	protected OrmAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
@@ -796,7 +796,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmJoinColumn buildMapKeyJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
 	}
 
 	protected ReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {

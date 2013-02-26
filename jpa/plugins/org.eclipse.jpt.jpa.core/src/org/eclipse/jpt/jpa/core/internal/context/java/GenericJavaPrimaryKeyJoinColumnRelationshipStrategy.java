@@ -63,7 +63,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getPrimaryKeyJoinColumns());
+		this.updateModels(this.getPrimaryKeyJoinColumns());
 	}
 
 

@@ -42,12 +42,12 @@ public class EclipseLink2_0PersistenceXmlDefinition
 		return GenericPersistenceXml2_0Definition.instance().getResourceType();
 	}
 
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return PersistenceV2_0Factory.eINSTANCE;
 	}
 
 	@Override
-	protected PersistenceXmlContextModelFactory buildContextNodeFactory() {
+	protected PersistenceXmlContextModelFactory buildContextModelFactory() {
 		return new EclipseLinkPersistenceXmlContextModelFactory2_0();
 	}
 }

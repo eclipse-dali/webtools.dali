@@ -98,7 +98,7 @@ public class GenericJavaTableGenerator
 		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
 		this.setDefaultValueColumnName(this.buildDefaultValueColumnName());
 		this.setDefaultPkColumnValue(this.buildDefaultPkColumnValue());
-		this.updateNodes(this.getUniqueConstraints());
+		this.updateModels(this.getUniqueConstraints());
 	}
 
 

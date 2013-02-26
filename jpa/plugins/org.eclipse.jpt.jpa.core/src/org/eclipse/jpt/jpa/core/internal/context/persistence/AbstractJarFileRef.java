@@ -288,7 +288,7 @@ public abstract class AbstractJarFileRef
 	 * pre-condition: 'jrpfr' is not null
 	 */
 	protected JarFile buildJarFile(JavaResourcePackageFragmentRoot jrpfr) {
-		return this.getContextNodeFactory().buildJarFile(this, jrpfr);
+		return this.getContextModelFactory().buildJarFile(this, jrpfr);
 	}
 
 

@@ -72,7 +72,7 @@ public class GenericPersistence
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getPersistenceUnits());
+		this.updateModels(this.getPersistenceUnits());
 		this.updateChildren();
 	}
 
@@ -192,7 +192,7 @@ public class GenericPersistence
 	}
 
 	protected PersistenceUnit buildPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
-		return this.getContextNodeFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
+		return this.getContextModelFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 
 	// ********** metamodel **********

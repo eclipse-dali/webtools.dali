@@ -54,7 +54,7 @@ public class GenericOrmEntity
 
 	protected Cacheable2_0 buildCacheable() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
+				this.getContextModelFactory2_0().buildOrmCacheable(this) :
 				new NullOrmCacheable2_0(this);
 	}
 

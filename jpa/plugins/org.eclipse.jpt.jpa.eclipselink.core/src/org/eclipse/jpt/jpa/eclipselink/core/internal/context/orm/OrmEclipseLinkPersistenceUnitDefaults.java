@@ -83,7 +83,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getTenantDiscriminatorColumns());
+		this.updateModels(this.getTenantDiscriminatorColumns());
 	}
 
 

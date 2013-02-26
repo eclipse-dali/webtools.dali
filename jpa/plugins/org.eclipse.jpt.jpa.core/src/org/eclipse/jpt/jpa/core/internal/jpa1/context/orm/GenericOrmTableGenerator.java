@@ -95,7 +95,7 @@ public class GenericOrmTableGenerator
 		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
 		this.setDefaultValueColumnName(this.buildDefaultValueColumnName());
 		this.setDefaultPkColumnValue(this.buildDefaultPkColumnValue());
-		this.updateNodes(this.getUniqueConstraints());
+		this.updateModels(this.getUniqueConstraints());
 	}
 
 
@@ -374,7 +374,7 @@ public class GenericOrmTableGenerator
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
-		return this.getContextNodeFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
+		return this.getContextModelFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
 	}
 
 	protected void syncUniqueConstraints() {

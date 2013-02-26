@@ -75,7 +75,7 @@ public class OrmEclipseLinkObjectTypeConverter
 		super.update();
 		this.setFullyQualifiedDataType(this.buildFullyQualifiedDataType());
 		this.setFullyQualifiedObjectType(this.buildFullyQualifiedObjectType());
-		this.updateNodes(this.getConversionValues());
+		this.updateModels(this.getConversionValues());
 	}
 
 

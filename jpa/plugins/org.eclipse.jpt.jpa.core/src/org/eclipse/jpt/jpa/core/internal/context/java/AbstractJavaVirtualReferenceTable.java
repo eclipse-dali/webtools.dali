@@ -205,6 +205,6 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
-		this.validateNodes(this.getJoinColumns(), messages, reporter);
+		this.validateModels(this.getJoinColumns(), messages, reporter);
 	}
 }

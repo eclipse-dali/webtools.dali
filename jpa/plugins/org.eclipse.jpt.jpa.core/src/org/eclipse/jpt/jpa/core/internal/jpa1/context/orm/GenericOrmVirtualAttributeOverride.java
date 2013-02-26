@@ -59,7 +59,7 @@ public class GenericOrmVirtualAttributeOverride
 	 * attribute is what precipitated the creation of the virtual override).
 	 */
 	protected VirtualColumn buildColumn() {
-		return this.getContextNodeFactory().buildOrmVirtualColumn(this, this);
+		return this.getContextModelFactory().buildOrmVirtualColumn(this, this);
 	}
 
 

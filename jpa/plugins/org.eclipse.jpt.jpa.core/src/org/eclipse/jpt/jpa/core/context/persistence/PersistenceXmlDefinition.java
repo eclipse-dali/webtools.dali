@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.ResourceDefinition;
 public interface PersistenceXmlDefinition 
 	extends ResourceDefinition
 {
-	EFactory getResourceNodeFactory();
+	EFactory getResourceModelFactory();
 
-	PersistenceXmlContextModelFactory getContextNodeFactory();
+	PersistenceXmlContextModelFactory getContextModelFactory();
 }

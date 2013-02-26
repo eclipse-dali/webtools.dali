@@ -72,7 +72,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	// ********** validation **********
 
 	public boolean supportsValidationMessages() {
-		return MappingTools.nodeIsInternalSource(this, this.getGeneratorAnnotation());
+		return MappingTools.modelIsInternalSource(this, this.getGeneratorAnnotation());
 	}
 
 	@Override

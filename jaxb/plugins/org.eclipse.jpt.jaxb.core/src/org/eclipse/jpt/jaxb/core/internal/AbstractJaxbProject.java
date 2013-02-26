@@ -750,11 +750,11 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
-		return IterableTools.children(this.getJavaResourceNodeRoots(), JavaResourceModel.Root.TYPES_TRANSFORMER);
+		return IterableTools.children(this.getJavaResourceModelRoots(), JavaResourceModel.Root.TYPES_TRANSFORMER);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Iterable<JavaResourceModel.Root> getJavaResourceNodeRoots() {
+	protected Iterable<JavaResourceModel.Root> getJavaResourceModelRoots() {
 		return IterableTools.concatenate(
 					this.getInternalJavaResourceCompilationUnits(),
 //					this.getInternalJavaResourcePackageFragmentRoots(),

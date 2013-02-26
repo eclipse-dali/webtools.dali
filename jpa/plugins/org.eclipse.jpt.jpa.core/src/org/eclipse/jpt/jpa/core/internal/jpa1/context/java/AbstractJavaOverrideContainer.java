@@ -89,7 +89,7 @@ public abstract class AbstractJavaOverrideContainer<
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.synchronizeNodesWithResourceModel(this.getSpecifiedOverrides());
+		this.synchronizeModelsWithResourceModel(this.getSpecifiedOverrides());
 		// the virtual overrides do not need a sync
 	}
 

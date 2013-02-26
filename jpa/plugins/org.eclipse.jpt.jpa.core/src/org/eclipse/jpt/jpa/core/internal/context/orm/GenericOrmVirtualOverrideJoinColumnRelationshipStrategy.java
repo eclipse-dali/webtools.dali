@@ -294,7 +294,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected VirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn overriddenJoinColumn) {
-		return this.getContextNodeFactory().buildOrmVirtualJoinColumn(this, this.joinColumnOwner, overriddenJoinColumn);
+		return this.getContextModelFactory().buildOrmVirtualJoinColumn(this, this.joinColumnOwner, overriddenJoinColumn);
 	}
 
 

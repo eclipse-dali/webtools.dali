@@ -75,7 +75,7 @@ public class GenericOrmJoinTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedInverseJoinColumns());
+		this.updateModels(this.getSpecifiedInverseJoinColumns());
 		this.updateDefaultInverseJoinColumn();
 	}
 
@@ -280,7 +280,7 @@ public class GenericOrmJoinTable
 	}
 
 	protected OrmJoinColumn buildInverseJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmJoinColumn(this, this.inverseJoinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this, this.inverseJoinColumnOwner, xmlJoinColumn);
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
@@ -297,7 +297,7 @@ public class GenericOrmJoinTable
 	@Override
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
 		super.validateJoinColumns(messages, reporter);
-		this.validateNodes(this.getInverseJoinColumns(), messages, reporter);
+		this.validateModels(this.getInverseJoinColumns(), messages, reporter);
 	}
 
 	public boolean validatesAgainstDatabase() {

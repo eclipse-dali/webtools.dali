@@ -155,7 +155,7 @@ public class GenericPersistenceXml
 	}
 
 	protected Persistence buildRoot(XmlPersistence xmlPersistence) {
-		return this.getContextNodeFactory().buildPersistence(this, xmlPersistence);
+		return this.getContextModelFactory().buildPersistence(this, xmlPersistence);
 	}
 
 

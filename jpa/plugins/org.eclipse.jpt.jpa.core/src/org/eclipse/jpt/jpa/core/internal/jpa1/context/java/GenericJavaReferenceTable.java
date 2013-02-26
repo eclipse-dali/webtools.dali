@@ -58,7 +58,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedJoinColumns());
+		this.updateModels(this.getSpecifiedJoinColumns());
 		this.updateDefaultJoinColumn();
 	}
 
@@ -277,7 +277,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
-		this.validateNodes(this.getJoinColumns(), messages, reporter);
+		this.validateModels(this.getJoinColumns(), messages, reporter);
 	}
 }
 

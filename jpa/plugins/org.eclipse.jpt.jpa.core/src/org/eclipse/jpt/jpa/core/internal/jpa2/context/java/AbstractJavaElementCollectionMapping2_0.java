@@ -246,7 +246,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.mapKeyColumn.update();
 		this.mapKeyConverter.update();
 		this.mapKeyAttributeOverrideContainer.update();
-		this.updateNodes(this.getSpecifiedMapKeyJoinColumns());
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
 		this.updateDefaultMapKeyJoinColumn();
 	}
 

@@ -66,7 +66,7 @@ public class GenericJarFile
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getJavaManagedTypes());
+		this.updateModels(this.getJavaManagedTypes());
 	}
 
 	public JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot() {

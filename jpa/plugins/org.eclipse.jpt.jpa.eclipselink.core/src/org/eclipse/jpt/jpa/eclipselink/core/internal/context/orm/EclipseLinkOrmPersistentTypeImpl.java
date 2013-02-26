@@ -153,7 +153,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 		this.getXmlTypeMapping().setAttributes(xmlAttributes);  // possibly a NOP
 
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
-		XmlAttributeMapping xmlMapping = (XmlAttributeMapping) md.buildResourceMapping(this.getResourceNodeFactory());
+		XmlAttributeMapping xmlMapping = (XmlAttributeMapping) md.buildResourceMapping(this.getResourceModelFactory());
 		xmlMapping.setName(attributeName);
 		xmlMapping.setVirtualAttributeTypes(attributeType, targetType);
 		if (this.getAccess() != EclipseLinkAccessType.VIRTUAL) {

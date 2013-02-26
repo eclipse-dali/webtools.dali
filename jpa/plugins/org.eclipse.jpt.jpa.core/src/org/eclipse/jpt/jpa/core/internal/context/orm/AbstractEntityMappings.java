@@ -185,10 +185,10 @@ public abstract class AbstractEntityMappings
 
 		this.persistenceUnitMetadata.update();
 
-		this.updateNodes(this.getManagedTypes());
+		this.updateModels(this.getManagedTypes());
 
-		this.updateNodes(this.getSequenceGenerators());
-		this.updateNodes(this.getTableGenerators());
+		this.updateModels(this.getSequenceGenerators());
+		this.updateModels(this.getTableGenerators());
 
 		this.queryContainer.update();
 		this.updateChildren();
@@ -304,7 +304,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmPersistenceUnitMetadata buildPersistenceUnitMetadata() {
-		return this.getContextNodeFactory().buildOrmPersistenceUnitMetadata(this);
+		return this.getContextModelFactory().buildOrmPersistenceUnitMetadata(this);
 	}
 
 
@@ -700,7 +700,7 @@ public abstract class AbstractEntityMappings
 
 	public OrmPersistentType addPersistentType(String mappingKey, String className) {
 		OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
-		XmlTypeMapping xmlManagedType = md.buildResourceMapping(this.getResourceNodeFactory());
+		XmlTypeMapping xmlManagedType = md.buildResourceMapping(this.getResourceModelFactory());
 		return (OrmPersistentType) this.addManagedType(xmlManagedType, className);
 	}
 
@@ -796,7 +796,7 @@ public abstract class AbstractEntityMappings
 				String className = type.getFullyQualifiedName();
 				sm.subTask(NLS.bind(JptJpaCoreMessages.MAKE_PERSISTENT_BUILDING_PERSISTENT_TYPE, className));
 				OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(type.getMappingKey());
-				XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceNodeFactory());
+				XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceModelFactory());
 
 				// adds short name if package name is relevant
 				className = this.normalizeClassName(className);
@@ -831,7 +831,7 @@ public abstract class AbstractEntityMappings
 
 	protected OrmManagedType buildManagedType(XmlManagedType xmlManagedType) {
 		OrmManagedTypeDefinition md = this.getMappingFileDefinition().getManagedTypeDefinition(xmlManagedType.getType());
-		return md.buildContextManagedType(this, xmlManagedType, this.getContextNodeFactory());
+		return md.buildContextManagedType(this, xmlManagedType, this.getContextModelFactory());
 	}
 
 	protected int calculateInsertionIndex(OrmManagedType ormManagedType) {
@@ -971,7 +971,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
-		return this.getContextNodeFactory().buildOrmSequenceGenerator(this, xmlSequenceGenerator);
+		return this.getContextModelFactory().buildOrmSequenceGenerator(this, xmlSequenceGenerator);
 	}
 
 	public void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
@@ -1054,7 +1054,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator xmlTableGenerator) {
-		return this.getContextNodeFactory().buildOrmTableGenerator(this, xmlTableGenerator);
+		return this.getContextModelFactory().buildOrmTableGenerator(this, xmlTableGenerator);
 	}
 
 	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
@@ -1144,7 +1144,7 @@ public abstract class AbstractEntityMappings
 
 	protected XmlConverter buildXmlConverter() {
 		return EmfTools.create(
-			this.getResourceNodeFactory(), 
+			this.getResourceModelFactory(), 
 			OrmPackage.eINSTANCE.getXmlConverter(), 
 			XmlConverter.class);
 	}
@@ -1157,7 +1157,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmQueryContainer buildQueryContainer() {
-		return this.getContextNodeFactory().buildOrmQueryContainer(this, this.xmlEntityMappings);
+		return this.getContextModelFactory().buildOrmQueryContainer(this, this.xmlEntityMappings);
 	}
 
 

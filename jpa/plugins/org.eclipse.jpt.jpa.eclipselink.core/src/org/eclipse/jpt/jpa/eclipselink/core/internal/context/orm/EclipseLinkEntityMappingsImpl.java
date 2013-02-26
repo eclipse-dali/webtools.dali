@@ -100,11 +100,11 @@ public class EclipseLinkEntityMappingsImpl
 	public void update() {
 		super.update();
 		this.converterContainer.update();
-		this.updateNodes(this.getSpecifiedTenantDiscriminatorColumns());
+		this.updateModels(this.getSpecifiedTenantDiscriminatorColumns());
 		this.updateDefaultTenantDiscriminatorColumns();
 		this.setDefaultGetMethod(this.buildDefaultGetMethod());
 		this.setDefaultSetMethod(this.buildDefaultSetMethod());
-		this.updateNodes(this.getUuidGenerators());
+		this.updateModels(this.getUuidGenerators());
 	}
 
 	@Override

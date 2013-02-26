@@ -42,7 +42,7 @@ public abstract class AbstractOrmPersistenceUnitMetadata
 	}
 
 	protected OrmPersistenceUnitDefaults buildPersistenceUnitDefaults() {
-		return this.getContextNodeFactory().buildOrmPersistenceUnitDefaults(this);
+		return this.getContextModelFactory().buildOrmPersistenceUnitDefaults(this);
 	}
 
 

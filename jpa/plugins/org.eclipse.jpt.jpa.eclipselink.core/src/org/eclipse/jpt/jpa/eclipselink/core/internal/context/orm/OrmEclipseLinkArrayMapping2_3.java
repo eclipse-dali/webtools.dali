@@ -119,7 +119,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	}
 
 	protected OrmColumn buildColumn() {
-		return this.getContextNodeFactory().buildOrmColumn(this, this);
+		return this.getContextModelFactory().buildOrmColumn(this, this);
 	}
 
 
@@ -149,7 +149,7 @@ public class OrmEclipseLinkArrayMapping2_3
 
 	protected OrmConverter buildConverter(OrmConverter.Adapter converterAdapter) {
 		 return (converterAdapter != null) ?
-				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				converterAdapter.buildNewConverter(this, this.getContextModelFactory()) :
 				this.nullConverter;
 	}
 
@@ -166,7 +166,7 @@ public class OrmEclipseLinkArrayMapping2_3
 	}
 
 	protected OrmConverter buildConverter() {
-		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextModelFactory();
 		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {
@@ -186,7 +186,7 @@ public class OrmEclipseLinkArrayMapping2_3
 			if (this.converter.getType() == adapter.getConverterType()) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
-				this.setConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}
 		}
 	}

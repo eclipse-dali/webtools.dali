@@ -30,12 +30,12 @@ public abstract class AbstractPersistenceXmlDefinition
 	 */
 	protected AbstractPersistenceXmlDefinition() {
 		super();
-		this.factory = this.buildContextNodeFactory();
+		this.factory = this.buildContextModelFactory();
 	}
 
-	protected abstract PersistenceXmlContextModelFactory buildContextNodeFactory();
+	protected abstract PersistenceXmlContextModelFactory buildContextModelFactory();
 
-	public PersistenceXmlContextModelFactory getContextNodeFactory() {
+	public PersistenceXmlContextModelFactory getContextModelFactory() {
 		return this.factory;
 	}
 

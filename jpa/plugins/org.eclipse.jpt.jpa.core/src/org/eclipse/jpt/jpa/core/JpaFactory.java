@@ -162,12 +162,12 @@ public interface JpaFactory
 	// ********** Context Nodes **********
 	
 	/**
-	 * Build a (/an updated) root context node to be associated with the given 
-	 * JPA project.
-	 * The root context node will be built once, but updated many times.
+	 * Build a (/an updated) context model root for the
+	 * specified JPA project.
+	 * The root will be built once, but updated many times.
 	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	JpaContextModelRoot buildRootContextNode(JpaProject jpaProject);
+	JpaContextModelRoot buildContextModelRoot(JpaProject jpaProject);
 
 
 	// ********** XML Context Model **********

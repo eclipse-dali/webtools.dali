@@ -44,15 +44,15 @@ public abstract class AbstractOrmXmlDefinition
 	 */
 	protected AbstractOrmXmlDefinition() {
 		super();
-		this.factory = this.buildContextNodeFactory();
+		this.factory = this.buildContextModelFactory();
 	}
 
 
 	// ********** factory **********
 
-	protected abstract OrmXmlContextModelFactory buildContextNodeFactory();
+	protected abstract OrmXmlContextModelFactory buildContextModelFactory();
 
-	public OrmXmlContextModelFactory getContextNodeFactory() {
+	public OrmXmlContextModelFactory getContextModelFactory() {
 		return this.factory;
 	}
 

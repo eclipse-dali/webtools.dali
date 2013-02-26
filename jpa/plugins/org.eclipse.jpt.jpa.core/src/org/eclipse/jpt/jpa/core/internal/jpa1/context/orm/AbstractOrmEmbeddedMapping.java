@@ -91,7 +91,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmAssociationOverrideContainer(this, this.buildAssociationOverrideContainerOwner()) :
+				this.getContextModelFactory2_0().buildOrmAssociationOverrideContainer(this, this.buildAssociationOverrideContainerOwner()) :
 				new GenericOrmAssociationOverrideContainer(this, null);
 	}
 

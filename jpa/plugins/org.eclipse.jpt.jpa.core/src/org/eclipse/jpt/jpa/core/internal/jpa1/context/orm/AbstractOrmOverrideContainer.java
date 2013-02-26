@@ -74,7 +74,7 @@ public abstract class AbstractOrmOverrideContainer<
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedOverrides());
+		this.updateModels(this.getSpecifiedOverrides());
 		this.updateVirtualOverrides();
 	}
 

@@ -126,7 +126,7 @@ public class OrmEclipseLinkBasicMapping
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlAttributeMapping);
+		return this.getContextModelFactory().buildOrmGeneratorContainer(this, this.xmlAttributeMapping);
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class OrmEclipseLinkBasicMapping
 	}
 
 	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue xmlGeneratedValue) {
-		return this.getContextNodeFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
+		return this.getContextModelFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
 	}
 
 	protected void syncGeneratedValue() {

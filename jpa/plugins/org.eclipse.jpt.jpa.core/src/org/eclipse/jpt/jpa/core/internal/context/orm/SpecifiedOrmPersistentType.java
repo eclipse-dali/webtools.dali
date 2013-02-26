@@ -118,7 +118,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.mapping.synchronizeWithResourceModel();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncSpecifiedAttributes();
-		this.synchronizeNodesWithResourceModel(this.getDefaultAttributes());
+		this.synchronizeModelsWithResourceModel(this.getDefaultAttributes());
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public abstract class SpecifiedOrmPersistentType
 		super.update();
 		this.mapping.update();
 		this.setDefaultAccess(this.buildDefaultAccess());
-		this.updateNodes(this.getSpecifiedAttributes());
+		this.updateModels(this.getSpecifiedAttributes());
 		this.updateDefaultAttributes();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
@@ -159,7 +159,7 @@ public abstract class SpecifiedOrmPersistentType
 		OrmTypeMapping old = this.mapping;
 		OrmTypeMappingDefinition mappingDefinition = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
 		String className = this.getClass_();
-		this.xmlManagedType = mappingDefinition.buildResourceMapping(this.getResourceNodeFactory());
+		this.xmlManagedType = mappingDefinition.buildResourceMapping(this.getResourceModelFactory());
 		this.xmlManagedType.setClassName(className);
 		this.mapping = this.buildMapping(this.getXmlTypeMapping());
 		this.getEntityMappings().changeMapping(this, old, this.mapping);
@@ -168,7 +168,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected OrmTypeMapping buildMapping(XmlTypeMapping xmlTypeMapping) {
 		OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(xmlTypeMapping.getMappingKey());
-		return md.buildContextMapping(this, xmlTypeMapping, this.getContextNodeFactory());
+		return md.buildContextMapping(this, xmlTypeMapping, this.getContextModelFactory());
 	}
 
 	protected XmlTypeMapping getXmlTypeMapping() {
@@ -340,7 +340,7 @@ public abstract class SpecifiedOrmPersistentType
 
 		// silently add the specified attribute
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
-		XmlAttributeMapping xmlMapping = md.buildResourceMapping(this.getResourceNodeFactory());
+		XmlAttributeMapping xmlMapping = md.buildResourceMapping(this.getResourceModelFactory());
 
 		OrmPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
 		// we need to add the attribute to the right spot in the list - stupid spec...
@@ -477,7 +477,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Attributes buildXmlAttributes() {
-		return EmfTools.create(this.getResourceNodeFactory(), OrmPackage.eINSTANCE.getAttributes(), Attributes.class);
+		return EmfTools.create(this.getResourceModelFactory(), OrmPackage.eINSTANCE.getAttributes(), Attributes.class);
 	}
 
 	protected void removeXmlAttributesIfUnset() {
@@ -534,7 +534,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected OrmPersistentAttribute buildSpecifiedAttribute(XmlAttributeMapping xmlMapping) {
-		return this.getContextNodeFactory().buildOrmPersistentAttribute(this, xmlMapping);
+		return this.getContextModelFactory().buildOrmPersistentAttribute(this, xmlMapping);
 	}
 
 	protected void syncSpecifiedAttributes() {
@@ -871,11 +871,11 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected OrmReadOnlyPersistentAttribute buildDefaultAttribute(JavaResourceField javaResourceField) {
-		return this.getContextNodeFactory().buildVirtualOrmPersistentField(this, javaResourceField);
+		return this.getContextModelFactory().buildVirtualOrmPersistentField(this, javaResourceField);
 	}
 
 	protected OrmReadOnlyPersistentAttribute buildVirtualAttribute(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
-		return this.getContextNodeFactory().buildVirtualOrmPersistentProperty(this, javaResourceGetter, javaResourceSetter);
+		return this.getContextModelFactory().buildVirtualOrmPersistentProperty(this, javaResourceGetter, javaResourceSetter);
 	}
 
 	protected void removeDefaultAttribute(OrmReadOnlyPersistentAttribute defaultAttribute) {

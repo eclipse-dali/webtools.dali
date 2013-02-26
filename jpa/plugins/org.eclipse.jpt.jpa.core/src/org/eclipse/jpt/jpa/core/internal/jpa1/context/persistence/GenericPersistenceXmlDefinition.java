@@ -44,12 +44,12 @@ public class GenericPersistenceXmlDefinition
 		return this.getResourceType(XmlPersistence.CONTENT_TYPE, JPA.SCHEMA_VERSION);
 	}
 
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return PersistenceFactory.eINSTANCE;
 	}
 
 	@Override
-	protected PersistenceXmlContextModelFactory buildContextNodeFactory() {
+	protected PersistenceXmlContextModelFactory buildContextModelFactory() {
 		return new GenericPersistenceXmlContextModelFactory();
 	}
 }

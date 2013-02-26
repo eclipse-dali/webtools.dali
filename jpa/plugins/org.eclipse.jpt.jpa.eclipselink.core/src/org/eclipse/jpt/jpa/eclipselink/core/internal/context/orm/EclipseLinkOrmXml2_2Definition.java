@@ -43,8 +43,8 @@ public class EclipseLinkOrmXml2_2Definition
 	
 
 	@Override
-	protected OrmXmlContextModelFactory buildContextNodeFactory() {
-		return EclipseLinkOrmXml2_1Definition.instance().getContextNodeFactory();
+	protected OrmXmlContextModelFactory buildContextModelFactory() {
+		return EclipseLinkOrmXml2_1Definition.instance().getContextModelFactory();
 	}
 	
 	public JptResourceType getResourceType() {

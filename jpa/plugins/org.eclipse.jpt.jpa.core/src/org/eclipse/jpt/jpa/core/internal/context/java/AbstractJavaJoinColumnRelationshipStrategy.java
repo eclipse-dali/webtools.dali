@@ -57,7 +57,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedJoinColumns());
+		this.updateModels(this.getSpecifiedJoinColumns());
 		this.updateDefaultJoinColumn();
 	}
 

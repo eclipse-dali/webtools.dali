@@ -174,7 +174,7 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 	}
 
 	protected VirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
-		return this.getContextNodeFactory().buildOrmVirtualJoinColumn(this, columnOwner, joinColumn);
+		return this.getContextModelFactory().buildOrmVirtualJoinColumn(this, columnOwner, joinColumn);
 	}
 
 	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
@@ -205,6 +205,6 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
-		this.validateNodes(this.getJoinColumns(), messages, reporter);
+		this.validateModels(this.getJoinColumns(), messages, reporter);
 	}
 }

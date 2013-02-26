@@ -528,14 +528,14 @@ public final class MappingTools {
 	 * any messages for types in another project (e.g. referenced by
 	 * persistence.xml)
 	 */
-	public static boolean nodeIsInternalSource(JpaContextModel contextNode, JavaResourceModel resourceNode) {
-		IResource resource = contextNode.getResource();
+	public static boolean modelIsInternalSource(JpaContextModel contextModel, JavaResourceModel resourceModel) {
+		IResource resource = contextModel.getResource();
 		// 'resource' will be null if the node is "external" and binary;
 		// the resource will be in a different project if the node is "external" and source;
 		// the node will be binary if it is in a JAR in the current project
 		return (resource != null) &&
-				resource.getProject().equals(contextNode.getJpaProject().getProject()) &&
-				(resourceNode instanceof SourceModel);
+				resource.getProject().equals(contextModel.getJpaProject().getProject()) &&
+				(resourceModel instanceof SourceModel);
 	}
 
 	/**

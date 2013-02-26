@@ -220,7 +220,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlTypeMapping);
+		return this.getContextModelFactory().buildOrmGeneratorContainer(this, this.xmlTypeMapping);
 	}
 
 	@Override
@@ -239,7 +239,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected OrmQueryContainer buildQueryContainer() {
-		return this.getContextNodeFactory().buildOrmQueryContainer(this, this.xmlTypeMapping);
+		return this.getContextModelFactory().buildOrmQueryContainer(this, this.xmlTypeMapping);
 	}
 
 	@Override

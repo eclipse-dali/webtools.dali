@@ -329,7 +329,7 @@ public class GenericOrmOrderable
 	 */
 	protected OrmOrderColumn2_0 buildOrderColumn() {
 		return this.isOrmXml2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmOrderColumn(this, new OrderColumnOwner()) :
+				this.getContextModelFactory2_0().buildOrmOrderColumn(this, new OrderColumnOwner()) :
 				null;
 	}
 

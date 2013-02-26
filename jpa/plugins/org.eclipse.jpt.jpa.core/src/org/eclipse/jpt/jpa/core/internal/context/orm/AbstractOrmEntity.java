@@ -241,10 +241,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.setTableIsUndefined(this.buildTableIsUndefined());
 
 		this.updateVirtualSecondaryTables();
-		this.updateNodes(this.getSecondaryTables());
+		this.updateModels(this.getSecondaryTables());
 
 		this.updateDefaultPrimaryKeyJoinColumns();
-		this.updateNodes(this.getPrimaryKeyJoinColumns());
+		this.updateModels(this.getPrimaryKeyJoinColumns());
 
 		this.discriminatorColumn.update();
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
@@ -387,7 +387,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmTable buildTable() {
-		return this.getContextNodeFactory().buildOrmTable(this, this.buildTableOwner());
+		return this.getContextModelFactory().buildOrmTable(this, this.buildTableOwner());
 	}
 
 	protected Table.Owner buildTableOwner() {
@@ -555,7 +555,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmSecondaryTable buildSpecifiedSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
-		return this.getContextNodeFactory().buildOrmSecondaryTable(this, this.secondaryTableOwner, xmlSecondaryTable);
+		return this.getContextModelFactory().buildOrmSecondaryTable(this, this.secondaryTableOwner, xmlSecondaryTable);
 	}
 
 	protected void clearSpecifiedSecondaryTables() {
@@ -651,7 +651,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmVirtualSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
-		return this.getContextNodeFactory().buildOrmVirtualSecondaryTable(this, this.secondaryTableOwner, javaSecondaryTable);
+		return this.getContextModelFactory().buildOrmVirtualSecondaryTable(this, this.secondaryTableOwner, javaSecondaryTable);
 	}
 
 	protected void removeVirtualSecondaryTable(OrmVirtualSecondaryTable secondaryTable) {
@@ -757,7 +757,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
-		return this.getContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlPkJoinColumn);
+		return this.getContextModelFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlPkJoinColumn);
 	}
 
 
@@ -1009,7 +1009,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmVirtualPrimaryKeyJoinColumn buildVirtualPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
-		return this.getContextNodeFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaPrimaryKeyJoinColumn);
+		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaPrimaryKeyJoinColumn);
 	}
 
 	protected void removeVirtualPrimaryKeyJoinColumn(OrmVirtualPrimaryKeyJoinColumn pkJoinColumn) {
@@ -1229,7 +1229,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
-		return this.getContextNodeFactory().buildOrmDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
+		return this.getContextModelFactory().buildOrmDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
 	}
 
 	protected OrmDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
@@ -1288,7 +1288,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
 	}
 
 	protected TypeMapping getOverridableTypeMapping() {
@@ -1322,7 +1322,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return this.getContextNodeFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
+		return this.getContextModelFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
 	}
 
 	@Override
@@ -1361,7 +1361,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlTypeMapping);
+		return this.getContextModelFactory().buildOrmGeneratorContainer(this, this.xmlTypeMapping);
 	}
 
 	@Override
@@ -1381,7 +1381,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmQueryContainer buildQueryContainer() {
-		return this.getContextNodeFactory().buildOrmQueryContainer(this, this.xmlTypeMapping);
+		return this.getContextModelFactory().buildOrmQueryContainer(this, this.xmlTypeMapping);
 	}
 
 	public Iterable<Query> getQueries() {

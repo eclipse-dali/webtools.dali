@@ -96,7 +96,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		this.setDefaultName(this.buildDefaultName());
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.updateNodes(this.getUniqueConstraints());
+		this.updateModels(this.getUniqueConstraints());
 	}
 
 
@@ -314,7 +314,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlConstraint) {
-		return this.getContextNodeFactory().buildOrmUniqueConstraint(this, this, xmlConstraint);
+		return this.getContextModelFactory().buildOrmUniqueConstraint(this, this, xmlConstraint);
 	}
 
 	protected void syncUniqueConstraints() {

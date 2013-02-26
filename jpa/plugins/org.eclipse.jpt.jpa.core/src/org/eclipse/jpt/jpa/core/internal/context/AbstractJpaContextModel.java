@@ -45,9 +45,9 @@ public abstract class AbstractJpaContextModel
 	/**
 	 * convenience method
 	 */
-	protected void synchronizeNodesWithResourceModel(Iterable<? extends JpaContextModel> nodes) {
-		for (JpaContextModel node : nodes) {
-			node.synchronizeWithResourceModel();
+	protected void synchronizeModelsWithResourceModel(Iterable<? extends JpaContextModel> models) {
+		for (JpaContextModel model : models) {
+			model.synchronizeWithResourceModel();
 		}
 	}
 
@@ -58,9 +58,9 @@ public abstract class AbstractJpaContextModel
 	/**
 	 * convenience method
 	 */
-	protected void updateNodes(Iterable<? extends JpaContextModel> nodes) {
-		for (JpaContextModel node : nodes) {
-			node.update();
+	protected void updateModels(Iterable<? extends JpaContextModel> models) {
+		for (JpaContextModel model : models) {
+			model.update();
 		}
 	}
 
@@ -77,7 +77,7 @@ public abstract class AbstractJpaContextModel
 
 	/**
 	 * Overridden in:<ul>
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel#getResourceType() AbstractJavaJpaContextNode}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel#getResourceType() AbstractJavaJpaContextModel}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJarFile#getResourceType() GenericJarFile}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#getResourceType() GenericOrmXml}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#getResourceType() GenericPersistenceXml}
@@ -91,7 +91,7 @@ public abstract class AbstractJpaContextModel
 	 * Overridden in:<ul>
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#getPersistenceUnit() AbstractPersistenceUnit}
 	 * to return itself
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getPersistenceUnit() GenericRootContextNode}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getPersistenceUnit() GenericContextModelRoot}
 	 * to return <code>null</code>
 	 * </ul>
 	 */
@@ -103,7 +103,7 @@ public abstract class AbstractJpaContextModel
 	 * Overridden in:<ul>
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings#getMappingFileRoot() AbstractEntityMappings}
 	 * to return itself
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getMappingFileRoot() GenericRootContextNode}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericContextModelRoot#getMappingFileRoot() GenericContextModelRoot}
 	 * to return <code>null</code>
 	 * </ul>
 	 */
@@ -133,20 +133,20 @@ public abstract class AbstractJpaContextModel
 	}
 
 	/**
-	 * Validate the specified node if it is not <code>null</code>.
+	 * Validate the specified model if it is not <code>null</code>.
 	 */
-	protected void validateNode(JpaContextModel node, List<IMessage> messages, IReporter reporter) {
-		if (node != null) {
-			node.validate(messages, reporter);
+	protected void validateModel(JpaContextModel model, List<IMessage> messages, IReporter reporter) {
+		if (model != null) {
+			model.validate(messages, reporter);
 		}
 	}
 
 	/**
-	 * Validate the specified nodes.
+	 * Validate the specified models.
 	 */
-	protected void validateNodes(Iterable<? extends JpaContextModel> nodes, List<IMessage> messages, IReporter reporter) {
-		for (JpaContextModel node : nodes) {
-			node.validate(messages, reporter);
+	protected void validateModels(Iterable<? extends JpaContextModel> models, List<IMessage> messages, IReporter reporter) {
+		for (JpaContextModel model : models) {
+			model.validate(messages, reporter);
 		}
 	}
 

@@ -91,7 +91,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy
 	}
 
 	protected OrmJoinTable buildJoinTable() {
-		return this.getContextNodeFactory().buildOrmJoinTable(this, this);
+		return this.getContextModelFactory().buildOrmJoinTable(this, this);
 	}
 
 

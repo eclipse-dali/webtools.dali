@@ -50,8 +50,8 @@ public abstract class AbstractOrmXmlContextModel
 		return this.getOrmXml().getDefinition();
 	}
 
-	protected EFactory getResourceNodeFactory() {
-		return this.getMappingFileDefinition().getResourceNodeFactory();
+	protected EFactory getResourceModelFactory() {
+		return this.getMappingFileDefinition().getResourceModelFactory();
 	}
 
 	protected boolean isOrmXml2_0Compatible() {
@@ -65,18 +65,18 @@ public abstract class AbstractOrmXmlContextModel
 	/**
 	 * Call {@link #isOrmXml2_0Compatible()} before calling this method.
 	 */
-	protected OrmXmlContextModelFactory2_0 getContextNodeFactory2_0() {
-		return (OrmXmlContextModelFactory2_0) this.getContextNodeFactory();
+	protected OrmXmlContextModelFactory2_0 getContextModelFactory2_0() {
+		return (OrmXmlContextModelFactory2_0) this.getContextModelFactory();
 	}
 
 	/**
 	 * Call {@link #isOrmXml2_1Compatible()} before calling this method.
 	 */
-	protected OrmXmlContextModelFactory2_1 getContextNodeFactory2_1() {
-		return (OrmXmlContextModelFactory2_1) this.getContextNodeFactory();
+	protected OrmXmlContextModelFactory2_1 getContextModelFactory2_1() {
+		return (OrmXmlContextModelFactory2_1) this.getContextModelFactory();
 	}
 
-	protected OrmXmlContextModelFactory getContextNodeFactory() {
-		return this.getMappingFileDefinition().getContextNodeFactory();
+	protected OrmXmlContextModelFactory getContextModelFactory() {
+		return this.getMappingFileDefinition().getContextModelFactory();
 	}
 }

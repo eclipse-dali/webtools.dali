@@ -45,13 +45,13 @@ public class JpaNavigatorItemContentProviderFactory
 		// we hand JpaContextModelRootModel differently because it can exist when the
 		// JPA facet is present by the JPA project may not yet be present...
 		if (item instanceof JpaContextModelRootModel) {
-			return this.buildRootContextNodeModelProvider((JpaContextModelRootModel) item, manager);
+			return this.buildContextModelRootModelProvider((JpaContextModelRootModel) item, manager);
 		}
 		ItemTreeContentProviderFactory delegate = this.getDelegate(item);
 		return (delegate == null) ? null : delegate.buildProvider(item, manager);
 	}
 
-	protected ItemTreeContentProvider buildRootContextNodeModelProvider(JpaContextModelRootModel item, Manager manager) {
+	protected ItemTreeContentProvider buildContextModelRootModelProvider(JpaContextModelRootModel item, Manager manager) {
 		return new JpaContextModelRootModelItemContentProvider(item, manager);
 	}
 

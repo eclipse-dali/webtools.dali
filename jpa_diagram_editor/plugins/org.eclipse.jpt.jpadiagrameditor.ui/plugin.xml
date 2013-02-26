@@ -33,7 +33,7 @@
           adaptable="false"
           id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramOnJpaContentNode"
           nameFilter="*"
-          objectClass="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel">
+          objectClass="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel">
           
 			<enablement>
 				<test property="org.eclipse.jpt.jpadiagrameditor.ui.jpaContentNodeFacet" value="jpt.jpa"/>
@@ -53,7 +53,7 @@
           adaptable="false"
           id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramJpa"
           nameFilter="*"
-          objectClass="org.eclipse.jpt.jpa.core.JpaNode">
+          objectClass="org.eclipse.jpt.jpa.core.JpaModel">
           
 			<enablement>
 				<test property="org.eclipse.jpt.jpadiagrameditor.ui.jpaProjectFacet" value="jpt.jpa"/>
@@ -159,7 +159,7 @@
 <extension point="org.eclipse.core.expressions.propertyTesters">
     <propertyTester
       id="org.eclipse.jpt.jpadiagrameditor.ui.propertytester.JpaProjectFacetVersionPropertyTester"
-      type="org.eclipse.jpt.jpa.core.JpaNode"
+      type="org.eclipse.jpt.jpa.core.JpaModel"
       namespace="org.eclipse.jpt.jpadiagrameditor.ui"
       properties="jpaProjectFacet"
       class="org.eclipse.jpt.jpadiagrameditor.ui.internal.propertytester.JpaProjectFacetVersionPropertyTester">
@@ -169,7 +169,7 @@
           id="org.eclipse.jpt.jpadiagrameditor.ui.JpaContentNodeFacetVersionPropertyTester"
           namespace="org.eclipse.jpt.jpadiagrameditor.ui"
           properties="jpaContentNodeFacet"
-          type="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel">
+          type="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel">
     </propertyTester>
 </extension>
 

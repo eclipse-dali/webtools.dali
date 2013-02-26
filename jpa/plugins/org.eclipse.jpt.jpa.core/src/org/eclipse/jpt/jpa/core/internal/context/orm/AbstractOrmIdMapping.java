@@ -109,7 +109,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 	protected OrmColumn buildColumn() {
-		return this.getContextNodeFactory().buildOrmColumn(this, this);
+		return this.getContextModelFactory().buildOrmColumn(this, this);
 	}
 
 
@@ -120,7 +120,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlAttributeMapping);
+		return this.getContextModelFactory().buildOrmGeneratorContainer(this, this.xmlAttributeMapping);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue xmlGeneratedValue) {
-		return this.getContextNodeFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
+		return this.getContextModelFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
 	}
 
 	protected void syncGeneratedValue() {
@@ -215,7 +215,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	protected OrmConverter buildConverter(OrmConverter.Adapter converterAdapter) {
 		 return (converterAdapter != null) ?
-				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				converterAdapter.buildNewConverter(this, this.getContextModelFactory()) :
 				this.nullConverter;
 	}
 
@@ -232,7 +232,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 	protected OrmConverter buildConverter() {
-		OrmXmlContextModelFactory factory = this.getContextNodeFactory();
+		OrmXmlContextModelFactory factory = this.getContextModelFactory();
 		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
 			OrmConverter ormConverter = adapter.buildConverter(this, factory);
 			if (ormConverter != null) {
@@ -252,7 +252,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 			if (this.converter.getType() == adapter.getConverterType()) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
-				this.setConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}
 		}
 	}

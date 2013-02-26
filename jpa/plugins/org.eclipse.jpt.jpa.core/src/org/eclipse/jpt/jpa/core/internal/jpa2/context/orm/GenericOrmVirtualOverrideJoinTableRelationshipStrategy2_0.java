@@ -80,7 +80,7 @@ public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	protected VirtualJoinTable buildJoinTable(ReadOnlyJoinTable overriddenJoinTable) {
-		return this.getContextNodeFactory().buildOrmVirtualJoinTable(this, this, overriddenJoinTable);
+		return this.getContextModelFactory().buildOrmVirtualJoinTable(this, this, overriddenJoinTable);
 	}
 
 

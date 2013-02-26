@@ -63,7 +63,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getParameters());
+		this.updateModels(this.getParameters());
 	}
 
 

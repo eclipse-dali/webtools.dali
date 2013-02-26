@@ -76,7 +76,7 @@ public class GenericJavaJoinTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedInverseJoinColumns());
+		this.updateModels(this.getSpecifiedInverseJoinColumns());
 		this.updateDefaultInverseJoinColumn();
 	}
 
@@ -307,7 +307,7 @@ public class GenericJavaJoinTable
 	@Override
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
 		super.validateJoinColumns(messages, reporter);
-		this.validateNodes(this.getInverseJoinColumns(), messages, reporter);
+		this.validateModels(this.getInverseJoinColumns(), messages, reporter);
 	}
 
 	public boolean validatesAgainstDatabase() {

@@ -214,7 +214,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Connection buildEclipseLinkConnection() {
-		return (Connection) this.getContextNodeFactory().buildConnection(this);
+		return (Connection) this.getContextModelFactory().buildConnection(this);
 	}
 
 	protected Customization buildEclipseLinkCustomization() {
@@ -226,11 +226,11 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Logging buildEclipseLinkLogging() {
-		return (Logging) this.getContextNodeFactory().buildLogging(this);
+		return (Logging) this.getContextModelFactory().buildLogging(this);
 	}
 
 	protected Options buildEclipseLinkOptions() {
-		return (Options) this.getContextNodeFactory().buildOptions(this);
+		return (Options) this.getContextModelFactory().buildOptions(this);
 	}
 
 	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {
@@ -502,8 +502,8 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	public EclipseLinkPersistenceXmlContextModelFactory getContextNodeFactory() {
-		return (EclipseLinkPersistenceXmlContextModelFactory) super.getContextNodeFactory();
+	public EclipseLinkPersistenceXmlContextModelFactory getContextModelFactory() {
+		return (EclipseLinkPersistenceXmlContextModelFactory) super.getContextModelFactory();
 	}
 
 	@Override
@@ -978,7 +978,7 @@ public class EclipseLinkPersistenceUnit
 	 * because they cannot be "portable" (since only EclipseLink has converters).
 	 */
 	protected void validateConvertersWithSameName(String converterName, ArrayList<EclipseLinkConverter> dups, List<IMessage> messages) {
-		if (this.anyNodesAreInequivalent(dups)) {
+		if (this.anyModelsAreInequivalent(dups)) {
 			for (EclipseLinkConverter dup : dups) {
 				if (dup.supportsValidationMessages()) {
 					messages.add(
@@ -998,15 +998,15 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether all the specified nodes are "equivalent"
 	 * (i.e. they all have the same state).
 	 */
-	protected boolean allNodesAreEquivalent(ArrayList<? extends JpaNamedContextModel> nodes) {
-		return ! this.anyNodesAreInequivalent(nodes);
+	protected boolean allModelsAreEquivalent(ArrayList<? extends JpaNamedContextModel> models) {
+		return ! this.anyModelsAreInequivalent(models);
 	}
 
-	protected boolean anyNodesAreInequivalent(ArrayList<? extends JpaNamedContextModel> nodes) {
-		if (nodes.size() < 2) {
+	protected boolean anyModelsAreInequivalent(ArrayList<? extends JpaNamedContextModel> models) {
+		if (models.size() < 2) {
 			throw new IllegalArgumentException();
 		}
-		Iterator<? extends JpaNamedContextModel> stream = nodes.iterator();
+		Iterator<? extends JpaNamedContextModel> stream = models.iterator();
 		JpaNamedContextModel first = stream.next();
 		while (stream.hasNext()) {
 			if ( ! stream.next().isEquivalentTo(first)) {
@@ -1028,7 +1028,7 @@ public class EclipseLinkPersistenceUnit
 	 */
 	@Override
 	protected void validateGeneratorsWithSameName(String generatorName, ArrayList<Generator> dups, List<IMessage> messages) {
-		if (this.allNodesAreEquivalent(dups)) {
+		if (this.allModelsAreEquivalent(dups)) {
 			for (Generator dup : dups) {
 				if (dup.supportsValidationMessages()) {
 					messages.add(
@@ -1051,7 +1051,7 @@ public class EclipseLinkPersistenceUnit
 	 */
 	@Override
 	protected void validateQueriesWithSameName(String queryName, ArrayList<Query> dups, List<IMessage> messages) {
-		if (this.allNodesAreEquivalent(dups)) {
+		if (this.allModelsAreEquivalent(dups)) {
 			for (Query dup : dups) {
 				if (dup.supportsValidationMessages()) {
 					messages.add(
@@ -1117,7 +1117,7 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether the persistence unit has any equivalent Java generators.
 	 */
 	public boolean hasAnyEquivalentJavaQueries() {
-		return this.hasAnyEquivalentJavaNodes(this.getAllJavaQueries(), this.getMappingFileQueries());
+		return this.hasAnyEquivalentJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries());
 	}
 
 	/**
@@ -1155,10 +1155,10 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	/**
-	 * @see #extractEclipseLinkConvertibleJavaNodes(Iterable, Iterable)
+	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
 	 */
 	protected HashMap<String, ArrayList<JavaQuery>> getEclipseLinkConvertibleJavaQueries() {
-		return this.extractEclipseLinkConvertibleJavaNodes(this.getAllJavaQueries(), this.getMappingFileQueries());
+		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaQueries(), this.getMappingFileQueries());
 	}
 
 	// ***** generators
@@ -1175,7 +1175,7 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether the persistence unit has any equivalent Java generators.
 	 */
 	public boolean hasAnyEquivalentJavaGenerators() {
-		return this.hasAnyEquivalentJavaNodes(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+		return this.hasAnyEquivalentJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators());
 	}
 
 	/**
@@ -1212,10 +1212,10 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	/**
-	 * @see #extractEclipseLinkConvertibleJavaNodes(Iterable, Iterable)
+	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
 	 */
 	protected HashMap<String, ArrayList<JavaGenerator>> getEclipseLinkConvertibleJavaGenerators() {
-		return this.extractEclipseLinkConvertibleJavaNodes(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaGenerators(), this.getMappingFileGenerators());
 	}
 
 	// ***** converters
@@ -1231,7 +1231,7 @@ public class EclipseLinkPersistenceUnit
 	 * Return whether the persistence unit has any equivalent Java generators.
 	 */
 	public boolean hasAnyEquivalentJavaConverters() {
-		return this.hasAnyEquivalentJavaNodes(this.getAllJavaConverters(), this.getMappingFileConverters());
+		return this.hasAnyEquivalentJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters());
 	}
 
 	/**
@@ -1268,10 +1268,10 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	/**
-	 * @see #extractEclipseLinkConvertibleJavaNodes(Iterable, Iterable)
+	 * @see #extractEclipseLinkConvertibleJavaModels(Iterable, Iterable)
 	 */
 	protected HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> getEclipseLinkConvertibleJavaConverters() {
-		return this.extractEclipseLinkConvertibleJavaNodes(this.getAllJavaConverters(), this.getMappingFileConverters());
+		return this.extractEclipseLinkConvertibleJavaModels(this.getAllJavaConverters(), this.getMappingFileConverters());
 	}
 
 	protected int calculateCumulativeSize(Collection<? extends Collection<?>> collections) {
@@ -1282,9 +1282,9 @@ public class EclipseLinkPersistenceUnit
 		return cumulativeSize;
 	}
 
-	protected <N extends JpaNamedContextModel> boolean hasAnyEquivalentJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextModel> mappingFileNodes) {
-		HashMap<String, ArrayList<N>> convertibleJavaNodes = this.extractEclipseLinkConvertibleJavaNodes(allJavaNodes, mappingFileNodes);
-		for (Map.Entry<String, ArrayList<N>> entry : convertibleJavaNodes.entrySet()) {
+	protected <N extends JpaNamedContextModel> boolean hasAnyEquivalentJavaModels(Iterable<N> allJavaModels, Iterable<? extends JpaNamedContextModel> mappingFileModels) {
+		HashMap<String, ArrayList<N>> convertibleJavaModels = this.extractEclipseLinkConvertibleJavaModels(allJavaModels, mappingFileModels);
+		for (Map.Entry<String, ArrayList<N>> entry : convertibleJavaModels.entrySet()) {
 			if (entry.getValue().size() > 1) {
 				return true;
 			}
@@ -1297,28 +1297,28 @@ public class EclipseLinkPersistenceUnit
 	 * (by default any Java nodes with the same name are "duplicates");
 	 * but, in EclipseLink we return any "equivalent" nodes also.
 	 */
-	protected <N extends JpaNamedContextModel> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextModel> mappingFileNodes) {
-		HashMap<String, ArrayList<N>> convertibleNodes = new HashMap<String, ArrayList<N>>();
+	protected <N extends JpaNamedContextModel> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaModels(Iterable<N> allJavaModels, Iterable<? extends JpaNamedContextModel> mappingFileModels) {
+		HashMap<String, ArrayList<N>> convertibleModels = new HashMap<String, ArrayList<N>>();
 
-		HashSet<String> mappingFileNodeNames = this.convertToNames(ListTools.list(mappingFileNodes));
-		HashMap<String, ArrayList<N>> allJavaNodesByName = this.mapByName(allJavaNodes);
-		for (Map.Entry<String, ArrayList<N>> entry : allJavaNodesByName.entrySet()) {
-			String javaNodeName = entry.getKey();
-			if (StringTools.isBlank(javaNodeName)) {
+		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.list(mappingFileModels));
+		HashMap<String, ArrayList<N>> allJavaModelsByName = this.mapByName(allJavaModels);
+		for (Map.Entry<String, ArrayList<N>> entry : allJavaModelsByName.entrySet()) {
+			String javaModelName = entry.getKey();
+			if (StringTools.isBlank(javaModelName)) {
 				continue;  // ignore any nodes with an empty name(?)
 			}
-			if (mappingFileNodeNames.contains(javaNodeName)) {
+			if (mappingFileModelNames.contains(javaModelName)) {
 				continue;  // ignore any Java nodes overridden in the mapping file
 			}
-			ArrayList<N> javaNodesWithSameName = entry.getValue();
-			if ((javaNodesWithSameName.size() == 1) || this.allNodesAreEquivalent(javaNodesWithSameName)) {
-				convertibleNodes.put(javaNodeName, javaNodesWithSameName);
+			ArrayList<N> javaModelsWithSameName = entry.getValue();
+			if ((javaModelsWithSameName.size() == 1) || this.allModelsAreEquivalent(javaModelsWithSameName)) {
+				convertibleModels.put(javaModelName, javaModelsWithSameName);
 			} else {
 				// ignore multiple Java nodes with the same name but that are not all "equivalent"
 			}
 		}
 
-		return convertibleNodes;
+		return convertibleModels;
 	}
 
 	// ********** metamodel **********

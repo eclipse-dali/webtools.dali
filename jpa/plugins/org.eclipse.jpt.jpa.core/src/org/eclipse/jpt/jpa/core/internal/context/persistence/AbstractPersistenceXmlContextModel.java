@@ -35,11 +35,11 @@ public abstract class AbstractPersistenceXmlContextModel
 		return (PersistenceXmlDefinition) this.getJpaPlatform().getResourceDefinition(this.getResourceType());
 	}
 
-	protected EFactory getResourceNodeFactory() {
-		return this.getPersistenceXmlDefinition().getResourceNodeFactory();
+	protected EFactory getResourceModelFactory() {
+		return this.getPersistenceXmlDefinition().getResourceModelFactory();
 	}
 
-	protected PersistenceXmlContextModelFactory getContextNodeFactory() {
-		return this.getPersistenceXmlDefinition().getContextNodeFactory();
+	protected PersistenceXmlContextModelFactory getContextModelFactory() {
+		return this.getPersistenceXmlDefinition().getContextModelFactory();
 	}
 }

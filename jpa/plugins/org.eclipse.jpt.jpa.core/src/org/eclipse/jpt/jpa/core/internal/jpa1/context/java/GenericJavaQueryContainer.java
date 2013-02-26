@@ -66,9 +66,9 @@ public class GenericJavaQueryContainer
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getNamedQueries());
-		this.updateNodes(this.getNamedNativeQueries());
-		this.updateNodes(this.getNamedStoredProcedureQueries());
+		this.updateModels(this.getNamedQueries());
+		this.updateModels(this.getNamedNativeQueries());
+		this.updateModels(this.getNamedStoredProcedureQueries());
 	}
 
 

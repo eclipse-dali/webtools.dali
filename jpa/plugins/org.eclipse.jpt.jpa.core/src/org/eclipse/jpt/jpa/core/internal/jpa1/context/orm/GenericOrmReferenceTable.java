@@ -59,7 +59,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedJoinColumns());
+		this.updateModels(this.getSpecifiedJoinColumns());
 		this.updateDefaultJoinColumn();
 	}
 
@@ -234,7 +234,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	}
 
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
 	}
 
 	@Override
@@ -263,7 +263,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
-		this.validateNodes(this.getJoinColumns(), messages, reporter);
+		this.validateModels(this.getJoinColumns(), messages, reporter);
 	}
 
 	// ********** completion proposals **********

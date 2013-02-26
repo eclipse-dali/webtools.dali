@@ -67,10 +67,10 @@ public class JavaEclipseLinkConverterContainerImpl
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getCustomConverters());
-		this.updateNodes(this.getObjectTypeConverters());
-		this.updateNodes(this.getStructConverters());
-		this.updateNodes(this.getTypeConverters());
+		this.updateModels(this.getCustomConverters());
+		this.updateModels(this.getObjectTypeConverters());
+		this.updateModels(this.getStructConverters());
+		this.updateModels(this.getTypeConverters());
 	}
 
 

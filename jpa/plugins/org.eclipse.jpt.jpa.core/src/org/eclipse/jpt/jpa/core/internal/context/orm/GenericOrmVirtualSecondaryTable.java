@@ -193,7 +193,7 @@ public class GenericOrmVirtualSecondaryTable
 	}
 
 	protected OrmVirtualPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn javaColumn) {
-		return this.getContextNodeFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaColumn);
+		return this.getContextModelFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaColumn);
 	}
 
 
@@ -211,7 +211,7 @@ public class GenericOrmVirtualSecondaryTable
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
-			this.validateNodes(this.getPrimaryKeyJoinColumns(), messages, reporter);
+			this.validateModels(this.getPrimaryKeyJoinColumns(), messages, reporter);
 		}
 	}
 

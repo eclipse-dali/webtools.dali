@@ -213,7 +213,7 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	}
 
 	protected VirtualUniqueConstraint buildUniqueConstraint(ReadOnlyUniqueConstraint uniqueConstraint) {
-		return this.getContextNodeFactory().buildOrmVirtualUniqueConstraint(this, uniqueConstraint);
+		return this.getContextModelFactory().buildOrmVirtualUniqueConstraint(this, uniqueConstraint);
 	}
 
 	protected void removeUniqueConstraint(VirtualUniqueConstraint constraint) {

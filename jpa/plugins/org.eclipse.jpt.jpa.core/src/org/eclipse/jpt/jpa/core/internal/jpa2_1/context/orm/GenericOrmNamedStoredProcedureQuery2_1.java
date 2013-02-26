@@ -62,7 +62,7 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getParameters());
+		this.updateModels(this.getParameters());
 	}
 
 
@@ -128,7 +128,7 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 
 	protected OrmStoredProcedureParameter2_1 buildParameter(XmlStoredProcedureParameter xmlParameter) {
 		return this.isOrmXml2_1Compatible() ?
-				this.getContextNodeFactory2_1().buildOrmStoredProcedureParameter(this, xmlParameter) : 
+				this.getContextModelFactory2_1().buildOrmStoredProcedureParameter(this, xmlParameter) : 
 				null;
 	}
 

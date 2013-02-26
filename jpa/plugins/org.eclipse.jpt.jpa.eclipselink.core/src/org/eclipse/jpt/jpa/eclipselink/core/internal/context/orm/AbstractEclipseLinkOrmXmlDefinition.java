@@ -20,7 +20,7 @@ public abstract class AbstractEclipseLinkOrmXmlDefinition
 		super();
 	}
 
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return EclipseLinkOrmFactory.eINSTANCE;
 	}
 

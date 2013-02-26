@@ -102,7 +102,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedTenantDiscriminatorColumns());
+		this.updateModels(this.getSpecifiedTenantDiscriminatorColumns());
 		this.setSpecifiedMultitenant_(this.isMultitenantAnnotationSpecified());
 		this.setDefaultMultitenant(this.buildDefaultMultitenant());
 		this.setDefaultType(this.buildDefaultType());

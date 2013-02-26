@@ -58,7 +58,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(getSpecifiedJoinColumns());
+		this.updateModels(getSpecifiedJoinColumns());
 		this.updateDefaultJoinColumn();
 	}
 
@@ -239,7 +239,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 	}
 
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
-		return this.getContextNodeFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
+		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
 	}
 
 	public void initializeFrom(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {

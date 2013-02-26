@@ -69,9 +69,9 @@ public class GenericOrmQueryContainer
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getNamedQueries());
-		this.updateNodes(this.getNamedNativeQueries());
-		this.updateNodes(this.getNamedStoredProcedureQueries());
+		this.updateModels(this.getNamedQueries());
+		this.updateModels(this.getNamedNativeQueries());
+		this.updateModels(this.getNamedStoredProcedureQueries());
 	}
 
 
@@ -126,7 +126,7 @@ public class GenericOrmQueryContainer
 	}
 
 	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery xmlNamedQuery) {
-		return this.getContextNodeFactory().buildOrmNamedQuery(this, xmlNamedQuery);
+		return this.getContextModelFactory().buildOrmNamedQuery(this, xmlNamedQuery);
 	}
 
 	protected void syncNamedQueries() {
@@ -208,7 +208,7 @@ public class GenericOrmQueryContainer
 	}
 
 	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery xmlNamedNativeQuery) {
-		return this.getContextNodeFactory().buildOrmNamedNativeQuery(this, xmlNamedNativeQuery);
+		return this.getContextModelFactory().buildOrmNamedNativeQuery(this, xmlNamedNativeQuery);
 	}
 
 	protected void syncNamedNativeQueries() {
@@ -295,7 +295,7 @@ public class GenericOrmQueryContainer
 
 	protected OrmNamedStoredProcedureQuery2_1 buildNamedStoredProcedureQuery(XmlNamedStoredProcedureQuery xmlNamedQuery) {
 		return this.isOrmXml2_1Compatible() ?
-				this.getContextNodeFactory2_1().buildOrmNamedStoredProcedureQuery2_1(this, xmlNamedQuery) :
+				this.getContextModelFactory2_1().buildOrmNamedStoredProcedureQuery2_1(this, xmlNamedQuery) :
 				null;
 	}
 

@@ -102,7 +102,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedTenantDiscriminatorColumns());
+		this.updateModels(this.getSpecifiedTenantDiscriminatorColumns());
 
 		boolean xmlMultitenantNotSpecified = (this.getXmlMultitenant() == null);
 		JavaEclipseLinkMultitenancy2_3 javaMultitenantPolicy = this.getJavaMultitenancyPolicyForDefaults();
