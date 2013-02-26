@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
@@ -92,11 +92,11 @@ public abstract class AbstractOrmOverride<P extends OrmOverrideContainer, X exte
 		return this.xmlOverride;
 	}
 
-	protected void initializeFrom(ReadOnlyOverride oldOverride) {
+	protected void initializeFrom(Override_ oldOverride) {
 		this.setName(oldOverride.getName());
 	}
 
-	protected void initializeFromVirtual(ReadOnlyOverride virtualOverride) {
+	protected void initializeFromVirtual(Override_ virtualOverride) {
 		this.setName(virtualOverride.getName());
 	}
 

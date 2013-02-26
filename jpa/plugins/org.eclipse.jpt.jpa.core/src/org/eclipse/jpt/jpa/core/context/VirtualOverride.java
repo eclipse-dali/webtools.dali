@@ -21,7 +21,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualOverride
-	extends ReadOnlyOverride
+	extends Override_
 {
 	/**
 	 * Convert the <em>virtual</em> override to a <em>specified</em> override.

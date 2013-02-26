@@ -29,7 +29,7 @@ public interface ReadOnlyOverrideRelationship
 	String getAttributeName();
 
 	/**
-	 * @see ReadOnlyOverride#getTypeMapping()
+	 * @see Override_#getTypeMapping()
 	 */
 	TypeMapping getTypeMapping();
 

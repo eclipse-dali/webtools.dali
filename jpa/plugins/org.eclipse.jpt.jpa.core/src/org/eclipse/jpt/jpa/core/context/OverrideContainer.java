@@ -82,9 +82,9 @@ public interface OverrideContainer
 	 */
 	String getDefaultTableName();
 
-	JptValidator buildOverrideValidator(ReadOnlyOverride override);
+	JptValidator buildOverrideValidator(Override_ override);
 
-	JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner);
+	JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner);
 
 
 	// ********** overrides **********
@@ -92,7 +92,7 @@ public interface OverrideContainer
 	/**
 	 * Return the overrides, both <em>specified</em> and <em>virtual</em>.
 	 */
-	ListIterable<? extends ReadOnlyOverride> getOverrides();
+	ListIterable<? extends Override_> getOverrides();
 
 	/**
 	 * Return the number of overrides, both <em>specified</em> and <em>virtual</em>.
@@ -105,7 +105,7 @@ public interface OverrideContainer
 	 */
 	// TODO look into getting rid of this;
 	// we should probably use #getSpecifiedOverrideNamed(String)
-	ReadOnlyOverride getOverrideNamed(String name);
+	Override_ getOverrideNamed(String name);
 
 
 	// ********** specified overrides **********
@@ -226,8 +226,8 @@ public interface OverrideContainer
 
 		TextRange getValidationTextRange();
 
-		JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container);
+		JptValidator buildOverrideValidator(Override_ override, OverrideContainer container);
 
-		JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner);
+		JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner);
 	}
 }

@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
@@ -56,7 +56,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaOverrideContainer<
 			O extends JavaOverrideContainer.Owner,
-			R extends ReadOnlyOverride,
+			R extends Override_,
 			S extends JavaOverride,
 			V extends JavaVirtualOverride,
 			A extends OverrideAnnotation & NestableAnnotation
@@ -117,7 +117,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	public Iterable<String> getOverrideNames() {
-		return IterableTools.removeNulls(IterableTools.transform(this.getOverrides(), ReadOnlyOverride.NAME_TRANSFORMER));
+		return IterableTools.removeNulls(IterableTools.transform(this.getOverrides(), Override_.NAME_TRANSFORMER));
 	}
 
 
@@ -499,11 +499,11 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.owner.getDefaultTableName();
 	}
 
-	public JptValidator buildOverrideValidator(ReadOnlyOverride override) {
+	public JptValidator buildOverrideValidator(Override_ override) {
 		return this.owner.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
+	public JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
 		return this.owner.buildColumnValidator(override, column, columnOwner);
 	}
 

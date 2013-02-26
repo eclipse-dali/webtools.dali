@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
@@ -131,11 +131,11 @@ public abstract class AbstractJavaOverride<P extends JavaOverrideContainer, A ex
 		return this.overrideAnnotation;
 	}
 
-	protected void initializeFrom(ReadOnlyOverride oldOverride) {
+	protected void initializeFrom(Override_ oldOverride) {
 		this.setName(this.prefix(oldOverride.getName()));
 	}
 
-	protected void initializeFromVirtual(ReadOnlyOverride virtualOverride) {
+	protected void initializeFromVirtual(Override_ virtualOverride) {
 		this.setName(this.prefix(virtualOverride.getName()));
 	}
 

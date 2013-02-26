@@ -23,12 +23,8 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 2.3
  * @since 2.0
  */
-// the class name "Override" is sorta taken: java.lang.Override
-// maybe if it weren't in the java.lang package we would take it on, but... :)
-// very little code will directly refer to this interface, so the underscore
-// isn't *too* evil...
 public interface SpecifiedOverride
-	extends ReadOnlyOverride
+	extends Override_
 {
 	void setName(String value);
 

@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmOverrideContainer<
 			O extends OrmOverrideContainer.Owner,
-			R extends ReadOnlyOverride,
+			R extends Override_,
 			S extends OrmOverride,
 			V extends OrmVirtualOverride,
 			X extends XmlOverride
@@ -425,11 +425,11 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.owner.getDefaultTableName();
 	}
 
-	public JptValidator buildOverrideValidator(ReadOnlyOverride override) {
+	public JptValidator buildOverrideValidator(Override_ override) {
 		return this.owner.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
+	public JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
 		return this.owner.buildColumnValidator(override, column, columnOwner);
 	}
 

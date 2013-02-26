@@ -26,17 +26,21 @@ import org.eclipse.jpt.jpa.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ReadOnlyOverride
+// the class name "Override" is sorta taken: java.lang.Override
+// maybe if it weren't in the java.lang package we would take it on, but... :)
+// very little code will directly refer to this interface, so the underscore
+// isn't *too* evil...
+public interface Override_
 	extends JpaContextModel
 {
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-	Transformer<ReadOnlyOverride, String> NAME_TRANSFORMER = new NameTransformer();
+	Transformer<Override_, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
-		extends TransformerAdapter<ReadOnlyOverride, String>
+		extends TransformerAdapter<Override_, String>
 	{
 		@Override
-		public String transform(ReadOnlyOverride override) {
+		public String transform(Override_ override) {
 			return override.getName();
 		}
 	}

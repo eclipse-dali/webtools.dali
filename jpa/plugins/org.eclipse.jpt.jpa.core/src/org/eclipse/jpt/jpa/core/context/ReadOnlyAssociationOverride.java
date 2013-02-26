@@ -19,7 +19,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyAssociationOverride
-	extends ReadOnlyOverride
+	extends Override_
 {
 	/**
 	 * Return the overridden relationship mapping.
