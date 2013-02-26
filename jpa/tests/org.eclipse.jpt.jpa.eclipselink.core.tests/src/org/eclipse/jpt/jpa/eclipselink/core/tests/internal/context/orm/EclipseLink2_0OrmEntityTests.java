@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -1607,7 +1607,7 @@ public class EclipseLink2_0OrmEntityTests
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable2_0 = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
+		Cacheable2_0 cacheable2_0 = ((CacheableReference2_0) ormPersistentType.getMapping()).getCacheable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(null, cacheable2_0.getSpecifiedCacheable());
 		assertEquals(null, entityResource.getCacheable());
@@ -1629,7 +1629,7 @@ public class EclipseLink2_0OrmEntityTests
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) ormPersistentType.getMapping()).getCacheable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, entityResource.getCacheable());
@@ -1651,7 +1651,7 @@ public class EclipseLink2_0OrmEntityTests
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) ormPersistentType.getMapping()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
 		assertEquals(SharedCacheMode.DISABLE_SELECTIVE, persistenceUnit2_0.getSharedCacheMode());
 		assertEquals(true, cacheable.isDefaultCacheable());
@@ -1680,8 +1680,8 @@ public class EclipseLink2_0OrmEntityTests
 		
 		EclipseLinkEntity subEntity = (EclipseLinkEntity) subOrmPersistentType.getMapping();
 		EclipseLinkEntity entity = (EclipseLinkEntity) ormPersistentType.getMapping();
-		Cacheable2_0 subCacheable = ((CacheableHolder2_0) subEntity).getCacheable();
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) entity).getCacheable();
+		Cacheable2_0 subCacheable = ((CacheableReference2_0) subEntity).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) entity).getCacheable();
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
@@ -1722,10 +1722,10 @@ public class EclipseLink2_0OrmEntityTests
 		OrmPersistentType subOrmPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_SUB_TYPE_NAME);
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 subCacheable = ((CacheableHolder2_0) subOrmPersistentType.getMapping()).getCacheable();
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
+		Cacheable2_0 subCacheable = ((CacheableReference2_0) subOrmPersistentType.getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) ormPersistentType.getMapping()).getCacheable();
 		
-		Cacheable2_0 javaCacheable = ((CacheableHolder2_0) ormPersistentType.getJavaPersistentType().getMapping()).getCacheable();
+		Cacheable2_0 javaCacheable = ((CacheableReference2_0) ormPersistentType.getJavaPersistentType().getMapping()).getCacheable();
 		javaCacheable.setSpecifiedCacheable(Boolean.TRUE);
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
@@ -1768,8 +1768,8 @@ public class EclipseLink2_0OrmEntityTests
 		
 		EclipseLinkEntity subEntity = (EclipseLinkEntity) subOrmPersistentType.getMapping();
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		Cacheable2_0 subCacheable = ((CacheableHolder2_0) subEntity).getCacheable();
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) mappedSuperclass).getCacheable();
+		Cacheable2_0 subCacheable = ((CacheableReference2_0) subEntity).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) mappedSuperclass).getCacheable();
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		

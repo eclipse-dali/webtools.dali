@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
@@ -392,7 +392,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		ICompilationUnit cu = createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaPersistentType().getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaPersistentType().getMapping()).getCacheable();
 		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
@@ -420,7 +420,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		ICompilationUnit cu = createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaPersistentType().getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaPersistentType().getMapping()).getCacheable();
 		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
@@ -462,7 +462,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaPersistentType().getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaPersistentType().getMapping()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit = getPersistenceUnit();
 		assertEquals(SharedCacheMode.DISABLE_SELECTIVE, persistenceUnit.getSharedCacheMode());
 		assertEquals(true, cacheable.isDefaultCacheable());
@@ -489,8 +489,8 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 subCacheable = ((CacheableHolder2_0) getJavaPersistentType().getMapping()).getCacheable();
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaPersistentType().getSuperPersistentType().getMapping()).getCacheable();
+		Cacheable2_0 subCacheable = ((CacheableReference2_0) getJavaPersistentType().getMapping()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaPersistentType().getSuperPersistentType().getMapping()).getCacheable();
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 

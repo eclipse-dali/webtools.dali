@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -247,7 +247,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	public boolean calculateDefaultCacheable() {
-		return ((CacheableHolder2_0) this.getCaching()).calculateDefaultCacheable();
+		return ((CacheableReference2_0) this.getCaching()).calculateDefaultCacheable();
 	}
 
 	// ********** converter container parent adapter **********

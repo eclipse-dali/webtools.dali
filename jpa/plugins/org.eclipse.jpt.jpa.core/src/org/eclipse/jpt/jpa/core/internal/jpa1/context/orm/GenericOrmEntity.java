@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -59,7 +59,7 @@ public class GenericOrmEntity
 	}
 
 	public boolean calculateDefaultCacheable() {
-		CacheableHolder2_0 javaEntity = (CacheableHolder2_0) this.getJavaTypeMappingForDefaults();
+		CacheableReference2_0 javaEntity = (CacheableReference2_0) this.getJavaTypeMappingForDefaults();
 		if (javaEntity != null) {
 			return javaEntity.getCacheable().isCacheable();
 		}
@@ -71,7 +71,7 @@ public class GenericOrmEntity
 	}
 
 	protected Cacheable2_0 getParentCacheable() {
-		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) this.getParentEntity();
+		CacheableReference2_0 parentEntity = (CacheableReference2_0) this.getParentEntity();
 		return (parentEntity == null) ? null : parentEntity.getCacheable();
 	}
 

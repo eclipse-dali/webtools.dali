@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -658,24 +658,24 @@ public class OrmEclipseLinkCachingImpl
 	public boolean calculateDefaultCacheable() {
 		if ( ! this.getTypeMapping().isMetadataComplete()) {
 			JavaPersistentType javaPersistentType = this.getTypeMapping().getPersistentType().getJavaPersistentType();
-			if ((javaPersistentType != null) && (javaPersistentType.getMapping() instanceof CacheableHolder2_0)) {
-				return ((CacheableHolder2_0) javaPersistentType.getMapping()).getCacheable().isCacheable();
+			if ((javaPersistentType != null) && (javaPersistentType.getMapping() instanceof CacheableReference2_0)) {
+				return ((CacheableReference2_0) javaPersistentType.getMapping()).getCacheable().isCacheable();
 			}
 		}
-		CacheableHolder2_0 superCacheableHolder = this.getCacheableSuperPersistentType(this.getTypeMapping().getPersistentType());
+		CacheableReference2_0 superCacheableHolder = this.getCacheableSuperPersistentType(this.getTypeMapping().getPersistentType());
 		return (superCacheableHolder != null) ?
 				superCacheableHolder.getCacheable().isCacheable() :
 				((PersistenceUnit2_0) this.getPersistenceUnit()).calculateDefaultCacheable();
 	}
 
-	protected CacheableHolder2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
+	protected CacheableReference2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
 		PersistentType superPersistentType = persistentType.getSuperPersistentType();
 		if (superPersistentType == null) {
 			return null;
 		}
 		TypeMapping superMapping = superPersistentType.getMapping();
-		return (superMapping instanceof CacheableHolder2_0) ?
-				(CacheableHolder2_0) superMapping :
+		return (superMapping instanceof CacheableReference2_0) ?
+				(CacheableReference2_0) superMapping :
 				this.getCacheableSuperPersistentType(superPersistentType);  // recurse
 	}
 

@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 
@@ -65,7 +65,7 @@ public class GenericJavaEntity
 	}
 
 	protected Cacheable2_0 getParentCacheable() {
-		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) this.getParentEntity();
+		CacheableReference2_0 parentEntity = (CacheableReference2_0) this.getParentEntity();
 		return (parentEntity == null) ? null : parentEntity.getCacheable();
 	}
 }

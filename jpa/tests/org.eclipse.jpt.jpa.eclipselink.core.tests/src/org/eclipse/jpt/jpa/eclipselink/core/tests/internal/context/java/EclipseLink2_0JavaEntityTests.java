@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
@@ -1660,7 +1660,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		ICompilationUnit cu = createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaEntity()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaEntity()).getCacheable();
 		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
@@ -1688,7 +1688,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		ICompilationUnit cu = createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaEntity()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaEntity()).getCacheable();
 		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(JPA2_0.CACHEABLE);
 		assertEquals(null, cacheable.getSpecifiedCacheable());
 		assertEquals(null, cacheableAnnotation);
@@ -1730,7 +1730,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaEntity()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaEntity()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit = getPersistenceUnit();
 		assertEquals(SharedCacheMode.DISABLE_SELECTIVE, persistenceUnit.getSharedCacheMode());
 		assertEquals(true, cacheable.isDefaultCacheable());
@@ -1757,8 +1757,8 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 subCacheable = ((CacheableHolder2_0) getJavaEntity()).getCacheable();
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaEntity().getParentEntity()).getCacheable();
+		Cacheable2_0 subCacheable = ((CacheableReference2_0) getJavaEntity()).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableReference2_0) getJavaEntity().getParentEntity()).getCacheable();
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 

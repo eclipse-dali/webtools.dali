@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
@@ -522,20 +522,20 @@ public class JavaEclipseLinkCachingImpl
 	}
 
 	public boolean calculateDefaultCacheable() {
-		CacheableHolder2_0 superCacheableHolder = this.getCacheableSuperPersistentType(this.getPersistentType());
+		CacheableReference2_0 superCacheableHolder = this.getCacheableSuperPersistentType(this.getPersistentType());
 		return (superCacheableHolder != null) ?
 				superCacheableHolder.getCacheable().isCacheable() :
 				((PersistenceUnit2_0) this.getPersistenceUnit()).calculateDefaultCacheable();
 	}
 
-	protected CacheableHolder2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
+	protected CacheableReference2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
 		PersistentType superPersistentType = persistentType.getSuperPersistentType();
 		if (superPersistentType == null) {
 			return null;
 		}
 		TypeMapping superMapping = superPersistentType.getMapping();
-		return (superMapping instanceof CacheableHolder2_0) ?
-				(CacheableHolder2_0) superMapping :
+		return (superMapping instanceof CacheableReference2_0) ?
+				(CacheableReference2_0) superMapping :
 				this.getCacheableSuperPersistentType(superPersistentType);  // recurse
 	}
 

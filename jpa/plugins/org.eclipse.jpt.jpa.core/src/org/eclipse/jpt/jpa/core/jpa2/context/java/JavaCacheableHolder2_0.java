@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 
 /**
  * Java cacheable holder/parent
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
  * @since 2.3
  */
 public interface JavaCacheableHolder2_0
-	extends CacheableHolder2_0
+	extends CacheableReference2_0
 {
 	JavaResourceType getJavaResourceType();
 }
