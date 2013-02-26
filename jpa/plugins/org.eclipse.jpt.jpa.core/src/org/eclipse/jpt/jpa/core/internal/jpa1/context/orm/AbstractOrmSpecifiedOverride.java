@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified <code>orm.xml</code> override
  */
-public abstract class AbstractOrmOverride<P extends OrmOverrideContainer, X extends XmlOverride>
+public abstract class AbstractOrmSpecifiedOverride<P extends OrmOverrideContainer, X extends XmlOverride>
 	extends AbstractOrmXmlContextModel<P>
 	implements OrmSpecifiedOverride
 {
@@ -37,7 +37,7 @@ public abstract class AbstractOrmOverride<P extends OrmOverrideContainer, X exte
 	protected String name;
 
 
-	protected AbstractOrmOverride(P parent, X xmlOverride) {
+	protected AbstractOrmSpecifiedOverride(P parent, X xmlOverride) {
 		super(parent);
 		this.xmlOverride = xmlOverride;
 		this.name = xmlOverride.getName();

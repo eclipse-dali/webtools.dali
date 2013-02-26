@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Specified <code>orm.xml</code> association override
  */
 public class GenericOrmAssociationOverride
-	extends AbstractOrmOverride<OrmAssociationOverrideContainer, XmlAssociationOverride>
+	extends AbstractOrmSpecifiedOverride<OrmAssociationOverrideContainer, XmlAssociationOverride>
 	implements OrmSpecifiedAssociationOverride2_0
 {
 	protected final OrmOverrideRelationship relationship;

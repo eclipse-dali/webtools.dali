@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Specified <code>orm.xml</code> attribute override
  */
 public class GenericOrmAttributeOverride
-	extends AbstractOrmOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
+	extends AbstractOrmSpecifiedOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
 	implements OrmSpecifiedAttributeOverride, OrmColumn.Owner
 {
 	protected final OrmColumn column;
