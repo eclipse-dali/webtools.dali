@@ -47,7 +47,7 @@ public class NullJavaCacheable2_0
 
 	// ********** misc **********
 
-	protected JavaCacheableReference2_0 getCacheableHolder() {
+	protected JavaCacheableReference2_0 getCacheableReference() {
 		return this.parent;
 	}
 
@@ -55,6 +55,6 @@ public class NullJavaCacheable2_0
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.getCacheableHolder().getValidationTextRange();
+		return this.getCacheableReference().getValidationTextRange();
 	}
 }

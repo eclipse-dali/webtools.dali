@@ -105,7 +105,7 @@ public class GenericJavaCacheable2_0
 	}
 
 	protected boolean buildDefaultCacheable() {
-		return this.getCacheableHolder().calculateDefaultCacheable();
+		return this.getCacheableReference().calculateDefaultCacheable();
 	}
 
 
@@ -141,12 +141,12 @@ public class GenericJavaCacheable2_0
 
 	// ********** misc **********
 
-	protected JavaCacheableReference2_0 getCacheableHolder() {
+	protected JavaCacheableReference2_0 getCacheableReference() {
 		return this.parent;
 	}
 
 	protected JavaResourceType getJavaResourceType() {
-		return this.getCacheableHolder().getJavaResourceType();
+		return this.getCacheableReference().getJavaResourceType();
 	}
 
 
@@ -154,7 +154,7 @@ public class GenericJavaCacheable2_0
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getAnnotationTextRange();
-		return (textRange != null) ? textRange : this.getCacheableHolder().getValidationTextRange();
+		return (textRange != null) ? textRange : this.getCacheableReference().getValidationTextRange();
 	}
 
 	protected TextRange getAnnotationTextRange() {

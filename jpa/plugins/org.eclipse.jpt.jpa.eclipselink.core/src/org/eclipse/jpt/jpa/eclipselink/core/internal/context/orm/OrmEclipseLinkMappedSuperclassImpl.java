@@ -297,14 +297,14 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	public Cacheable2_0 getCacheable() {
-		return this.getCacheableHolder().getCacheable();
+		return this.getCacheableReference().getCacheable();
 	}
 
 	public boolean calculateDefaultCacheable() {
-		return this.getCacheableHolder().calculateDefaultCacheable();
+		return this.getCacheableReference().calculateDefaultCacheable();
 	}
 
-	protected OrmCacheableReference2_0 getCacheableHolder() {
+	protected OrmCacheableReference2_0 getCacheableReference() {
 		return (OrmCacheableReference2_0) this.caching;
 	}
 
@@ -321,7 +321,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return IterableTools.concatenate(
 				super.createRenameTypeEdits(originalType, newName),
 				this.createCustomizerRenameTypeEdits(originalType, newName),
-				this.createConverterHolderRenameTypeEdits(originalType, newName)
+				this.createConverterContainerRenameTypeEdits(originalType, newName)
 			);
 	}
 
@@ -329,7 +329,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return this.customizer.createRenameTypeEdits(originalType, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createConverterHolderRenameTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createConverterContainerRenameTypeEdits(IType originalType, String newName) {
 		return this.converterContainer.createRenameTypeEdits(originalType, newName);
 	}
 
@@ -340,7 +340,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return IterableTools.concatenate(
 				super.createMoveTypeEdits(originalType, newPackage),
 				this.createCustomizerMoveTypeEdits(originalType, newPackage),
-				this.createConverterHolderMoveTypeEdits(originalType, newPackage)
+				this.createConverterContainerMoveTypeEdits(originalType, newPackage)
 			);
 	}
 
@@ -348,7 +348,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return this.customizer.createMoveTypeEdits(originalType, newPackage);
 	}
 
-	protected Iterable<ReplaceEdit> createConverterHolderMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createConverterContainerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return this.converterContainer.createMoveTypeEdits(originalType, newPackage);
 	}
 
@@ -358,7 +358,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return IterableTools.concatenate(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createCustomizerRenamePackageEdits(originalPackage, newName),
-				this.createConverterHolderRenamePackageEdits(originalPackage, newName)
+				this.createConverterContainerRenamePackageEdits(originalPackage, newName)
 			);
 	}
 
@@ -366,7 +366,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return this.customizer.createRenamePackageEdits(originalPackage, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createConverterHolderRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createConverterContainerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.converterContainer.createRenamePackageEdits(originalPackage, newName);
 	}
 
