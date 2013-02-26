@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLin
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkMappedSuperclassImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.SpecifiedJavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkSpecifiedJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVersionMapping;
@@ -67,17 +67,17 @@ public class EclipseLinkJpaFactory
 
 	@Override
 	public JavaModifiablePersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
-		return new SpecifiedJavaEclipseLinkPersistentAttribute(parent, accessor);
+		return new EclipseLinkSpecifiedJavaPersistentAttribute(parent, accessor);
 	}
 
 	@Override
 	public JavaModifiablePersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
-		return new SpecifiedJavaEclipseLinkPersistentAttribute(parent, resourceField);
+		return new EclipseLinkSpecifiedJavaPersistentAttribute(parent, resourceField);
 	}
 
 	@Override
 	public JavaModifiablePersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
-		return new SpecifiedJavaEclipseLinkPersistentAttribute(parent, resourceGetter, resourceSetter);
+		return new EclipseLinkSpecifiedJavaPersistentAttribute(parent, resourceGetter, resourceSetter);
 	}
 
 	@Override

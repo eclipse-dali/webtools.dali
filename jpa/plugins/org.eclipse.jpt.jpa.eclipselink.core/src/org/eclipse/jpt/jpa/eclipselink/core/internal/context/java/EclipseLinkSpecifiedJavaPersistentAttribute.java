@@ -25,20 +25,20 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersiste
 /**
  * EclipseLink Java persistent attribute
  */
-public class SpecifiedJavaEclipseLinkPersistentAttribute
+public class EclipseLinkSpecifiedJavaPersistentAttribute
 	extends AbstractJavaPersistentAttribute
 	implements JavaEclipseLinkPersistentAttribute
 {
 
-	public SpecifiedJavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
+	public EclipseLinkSpecifiedJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
 		super(parent,resourceField);
 	}
 
-	public SpecifiedJavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	public EclipseLinkSpecifiedJavaPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent, resourceGetter, resourceSetter);
 	}
 
-	public SpecifiedJavaEclipseLinkPersistentAttribute(PersistentType parent, Accessor accessor) {
+	public EclipseLinkSpecifiedJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
 		super(parent, accessor);
 	}
 
