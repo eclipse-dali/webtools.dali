@@ -15,16 +15,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 public interface IBidirectionalRelation extends IRelation {
 	
-	public abstract JavaPersistentAttribute getOwnerAnnotatedAttribute();
+	public abstract JavaModifiablePersistentAttribute getOwnerAnnotatedAttribute();
 
-	public abstract JavaPersistentAttribute getInverseAnnotatedAttribute();
+	public abstract JavaModifiablePersistentAttribute getInverseAnnotatedAttribute();
 
-	public abstract void setOwnerAnnotatedAttribute(JavaPersistentAttribute ownerAnnotatedAttribute);
+	public abstract void setOwnerAnnotatedAttribute(JavaModifiablePersistentAttribute ownerAnnotatedAttribute);
 
-	public abstract void setInverseAnnotatedAttribute(JavaPersistentAttribute inverseAnnotatedAttribute);
+	public abstract void setInverseAnnotatedAttribute(JavaModifiablePersistentAttribute inverseAnnotatedAttribute);
 
 }

@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -113,7 +113,7 @@ public class AddAttributeCommand implements Command {
 					actName, cu, type, isCollection, attrTypes, contents);
 
 			if(jpt != null) {
-				JavaPersistentAttribute attr = jpt.getAttributeNamed(actName);
+				JavaModifiablePersistentAttribute attr = jpt.getAttributeNamed(actName);
 				int cnt = 0;
 				while ((attr == null) && (cnt < 25)) {
 					try {

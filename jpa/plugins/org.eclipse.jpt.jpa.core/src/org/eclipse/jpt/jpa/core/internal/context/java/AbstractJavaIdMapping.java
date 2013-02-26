@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
@@ -70,7 +70,7 @@ public abstract class AbstractJavaIdMapping
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractJavaIdMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaIdMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.column = this.buildColumn();
 		this.generatorContainer = this.buildGeneratorContainer();

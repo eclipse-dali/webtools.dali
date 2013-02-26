@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.extension.resource;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
@@ -25,7 +25,7 @@ public class TestJpaFactory
 	}
 	
 	@Override
-	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
+	public JavaBasicMapping buildJavaBasicMapping(JavaModifiablePersistentAttribute parent) {
 		return new TestJavaBasicMapping(parent);
 	}
 	
@@ -33,7 +33,7 @@ public class TestJpaFactory
 		return new JavaTestTypeMapping(parent);
 	}
 	
-	public JavaTestAttributeMapping buildJavaTestAttributeMapping(JavaPersistentAttribute parent) {
+	public JavaTestAttributeMapping buildJavaTestAttributeMapping(JavaModifiablePersistentAttribute parent) {
 		return new JavaTestAttributeMapping(parent);
 	}
 }

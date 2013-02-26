@@ -29,7 +29,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModelIntegrationUtil;
@@ -62,9 +62,9 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	
     public Object remove(String key, boolean save);	
 
-	public IRelation getRelationRelatedToAttribute(JavaPersistentAttribute jpa);
+	public IRelation getRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa);
 	
-	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaPersistentAttribute jpa);
+	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa);
 	
 	public Object getBusinessObjectForKey(String key);
 
@@ -93,9 +93,9 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	
 	public int decreaseAttribsNum(Shape sh);
 	
-    public void replaceAttribute(JavaPersistentAttribute oldAt, JavaPersistentAttribute newAt);
+    public void replaceAttribute(JavaModifiablePersistentAttribute oldAt, JavaModifiablePersistentAttribute newAt);
     	
-	public void renewAttributeJoiningStrategyPropertyListener(JavaPersistentAttribute jpa);
+	public void renewAttributeJoiningStrategyPropertyListener(JavaModifiablePersistentAttribute jpa);
 	
 	public IPeService getPeService();
 

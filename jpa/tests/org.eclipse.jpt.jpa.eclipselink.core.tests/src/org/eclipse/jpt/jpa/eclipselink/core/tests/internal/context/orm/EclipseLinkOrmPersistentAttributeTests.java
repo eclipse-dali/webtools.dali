@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -263,7 +263,7 @@ public class EclipseLinkOrmPersistentAttributeTests
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
-		JavaPersistentAttribute javaPersistentAttribute = javaPersistentType.getAttributeNamed("id");
+		JavaModifiablePersistentAttribute javaPersistentAttribute = javaPersistentType.getAttributeNamed("id");
 			
 		//virtual orm attribute, access type matches java : FIELD, name matches java
 		assertTrue(ormPersistentAttribute.isVirtual());

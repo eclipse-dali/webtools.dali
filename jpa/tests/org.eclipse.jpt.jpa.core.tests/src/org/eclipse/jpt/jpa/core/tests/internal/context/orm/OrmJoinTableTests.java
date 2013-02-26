@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
@@ -221,7 +221,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultName());
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
 	
-		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) javaPersistentAttribute.getMapping();
 		JavaJoinTable javaJoinTable = javaManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("FOO");

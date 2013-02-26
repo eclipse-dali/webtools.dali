@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -109,7 +109,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("OneToOne"));
@@ -159,13 +159,13 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("OneToOne"));
 		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());
 		
-		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		JavaModifiablePersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
 		annotations = JpaArtifactFactory.instance().getAnnotationNames(inverseAt);
 		assertTrue(annotations.contains("OneToOne"));
@@ -219,7 +219,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("OneToMany"));
@@ -269,7 +269,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("ManyToOne"));
@@ -320,12 +320,12 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("ManyToOne"));
 		
-		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		JavaModifiablePersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
 		annotations = JpaArtifactFactory.instance().getAnnotationNames(inverseAt);
 		assertTrue(annotations.contains("OneToMany"));
@@ -379,7 +379,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("ManyToMany"));
@@ -430,13 +430,13 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		Set<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(ownerAt);
 		assertTrue(annotations.contains("ManyToMany"));
 		assertNull(((OwnableRelationshipMappingAnnotation)ownerAt.getMapping()).getMappedBy());
 		
-		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		JavaModifiablePersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
 		annotations = JpaArtifactFactory.instance().getAnnotationNames(inverseAt);
 		assertTrue(annotations.contains("ManyToMany"));

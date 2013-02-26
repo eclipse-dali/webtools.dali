@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
@@ -49,7 +49,7 @@ public class JavaManyToManyMappingDefinition
 		return ManyToManyAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -64,7 +64,7 @@ public class JavaManyToManyMappingDefinition
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
 		return factory.buildJavaManyToManyMapping(persistentAttribute);
 	}
 

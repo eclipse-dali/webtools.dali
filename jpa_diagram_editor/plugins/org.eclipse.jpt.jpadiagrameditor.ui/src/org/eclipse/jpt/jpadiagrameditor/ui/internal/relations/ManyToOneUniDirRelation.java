@@ -15,7 +15,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -34,11 +34,11 @@ public class ManyToOneUniDirRelation extends ManyToOneRelation implements IUnidi
 			createRelation(fp, isDerivedIdFeature);		
 	}	
 	
-	public JavaPersistentAttribute getAnnotatedAttribute() {
+	public JavaModifiablePersistentAttribute getAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}
 
-	public void setAnnotatedAttribute(JavaPersistentAttribute annotatedAttribute) {
+	public void setAnnotatedAttribute(JavaModifiablePersistentAttribute annotatedAttribute) {
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}
 

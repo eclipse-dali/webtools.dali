@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 public class GenericJavaElementCollectionMapping2_0
 	extends AbstractJavaElementCollectionMapping2_0
 {
-	public GenericJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
+	public GenericJavaElementCollectionMapping2_0(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 	}
 

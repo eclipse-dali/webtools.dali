@@ -18,7 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.command;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -31,14 +31,14 @@ public class SetMappedByNewValueCommand implements Command {
 	private PersistenceUnit pu;
 	private String inverseEntityName;
 	private String inverseAttributeName;
-	private JavaPersistentAttribute newAt;
-	private JavaPersistentAttribute oldAt;
+	private JavaModifiablePersistentAttribute newAt;
+	private JavaModifiablePersistentAttribute oldAt;
 	private IRelation rel;
 	
 	public SetMappedByNewValueCommand(IJPAEditorFeatureProvider fp,
 			PersistenceUnit pu, String inverseEntityName,
-			String inverseAttributeName, JavaPersistentAttribute newAt,
-			JavaPersistentAttribute oldAt,
+			String inverseAttributeName, JavaModifiablePersistentAttribute newAt,
+			JavaModifiablePersistentAttribute oldAt,
 			IRelation rel) {
 		super();
 		this.fp =fp;

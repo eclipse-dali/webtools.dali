@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 public class VirtualJavaPersistentAttribute
 	extends AbstractJavaContextModel<OrmPersistentType>
-	implements JavaPersistentAttribute, PersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
+	implements JavaModifiablePersistentAttribute, PersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
 {
 	private final XmlAttributeMapping xmlAttributeMapping;
 	
@@ -136,7 +136,7 @@ public class VirtualJavaPersistentAttribute
 		throw new UnsupportedOperationException();
 	}
 
-	public JavaPersistentAttribute getJavaPersistentAttribute() {
+	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
 		return this;
 	}
 

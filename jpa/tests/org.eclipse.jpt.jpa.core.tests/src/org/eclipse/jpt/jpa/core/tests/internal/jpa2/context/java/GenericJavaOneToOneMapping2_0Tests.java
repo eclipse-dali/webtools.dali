@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
@@ -544,7 +544,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA.ID));
@@ -566,7 +566,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA.ID));
@@ -586,7 +586,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
@@ -615,7 +615,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
@@ -642,7 +642,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		DerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
 		
@@ -682,7 +682,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		DerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
 		
@@ -719,7 +719,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
-		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaModifiablePersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		
 		((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).setValue("foo");
 		getJpaProject().synchronizeContextModel();

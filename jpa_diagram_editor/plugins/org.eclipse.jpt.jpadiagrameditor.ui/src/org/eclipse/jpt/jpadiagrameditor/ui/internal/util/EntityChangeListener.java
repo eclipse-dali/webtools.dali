@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -151,7 +151,7 @@ public class EntityChangeListener extends Thread {
 						String oldMappedBy = jptAndAttrib[3];
 						JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
 						if (jpt != null) {
-							JavaPersistentAttribute jpa = jpt.getAttributeNamed(attribName);
+							JavaModifiablePersistentAttribute jpa = jpt.getAttributeNamed(attribName);
 							if (jpa != null) {
 								JavaAttributeMapping mapping = jpa.getMapping();
 								if (OwnableRelationshipMappingAnnotation.class.isInstance(mapping.getMappingAnnotation())) {

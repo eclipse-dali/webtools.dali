@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
@@ -68,7 +68,7 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
-	public JavaEclipseLinkArrayMapping2_3(JavaPersistentAttribute parent) {
+	public JavaEclipseLinkArrayMapping2_3(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.column = this.buildColumn();
 		this.converter = this.buildConverter();

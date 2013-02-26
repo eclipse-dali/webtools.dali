@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 /**
  * Read-only context <code>orm.xml</code> persistent <em>attribute</em>
@@ -61,7 +61,7 @@ public interface OrmReadOnlyPersistentAttribute
 	 * be modified (nor are any of its parts [e.g. column]). The modifiable Java
 	 * attribute can be retrieved via {@link #resolveJavaPersistentAttribute()}.
 	 */
-	JavaPersistentAttribute getJavaPersistentAttribute();
+	JavaModifiablePersistentAttribute getJavaPersistentAttribute();
 		String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttribute"; //$NON-NLS-1$
 
 	/**
@@ -72,7 +72,7 @@ public interface OrmReadOnlyPersistentAttribute
 	 * This is probably useful only to tests; since nothing else will want to
 	 * modify the returned Java attribute.
 	 */
-	JavaPersistentAttribute resolveJavaPersistentAttribute();
+	JavaModifiablePersistentAttribute resolveJavaPersistentAttribute();
 
 	JavaResourceAttribute getJavaResourceAttribute();
 

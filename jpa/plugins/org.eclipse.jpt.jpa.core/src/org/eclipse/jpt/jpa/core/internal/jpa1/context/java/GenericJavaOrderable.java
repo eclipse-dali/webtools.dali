@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
@@ -386,7 +386,7 @@ public class GenericJavaOrderable
 		return this.parent;
 	}
 
-	protected JavaPersistentAttribute getPersistentAttribute() {
+	protected JavaModifiablePersistentAttribute getPersistentAttribute() {
 		return this.getAttributeMapping().getPersistentAttribute();
 	}
 
@@ -487,7 +487,7 @@ public class GenericJavaOrderable
 			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column);
 		}
 
-		protected JavaPersistentAttribute getPersistentAttribute() {
+		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
 			return GenericJavaOrderable.this.getPersistentAttribute();
 		}
 	}

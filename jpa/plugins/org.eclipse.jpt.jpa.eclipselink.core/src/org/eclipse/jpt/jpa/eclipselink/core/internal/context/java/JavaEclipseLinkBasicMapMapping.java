@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -30,7 +30,7 @@ public class JavaEclipseLinkBasicMapMapping
 
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 	
-	public JavaEclipseLinkBasicMapMapping(JavaPersistentAttribute parent) {
+	public JavaEclipseLinkBasicMapMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.converterContainer = this.buildConverterContainer();
 	}

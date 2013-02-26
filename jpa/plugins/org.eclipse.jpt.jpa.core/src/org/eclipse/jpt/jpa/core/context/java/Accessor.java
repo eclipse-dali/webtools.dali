@@ -47,7 +47,7 @@ public interface Accessor
 	 * attributes and behaves as though it has no annotations. This will cause
 	 * all the settings in the Java <em>context</em> attribute to default.
 	 */
-	JavaPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type);
+	JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute(PersistentType type);
 
 	AccessType getDefaultAccess();
 

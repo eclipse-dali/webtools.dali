@@ -17,15 +17,15 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
 import java.util.Hashtable;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 
 abstract public class AbstractRelation implements IRelation {
 	protected final static String SEPARATOR = ";"; //$NON-NLS-1$
 	protected JavaPersistentType owner;
 	protected JavaPersistentType inverse;
-	protected JavaPersistentAttribute ownerAnnotatedAttribute;
-	protected JavaPersistentAttribute inverseAnnotatedAttribute;
+	protected JavaModifiablePersistentAttribute ownerAnnotatedAttribute;
+	protected JavaModifiablePersistentAttribute inverseAnnotatedAttribute;
 
 	protected String ownerAttributeName;
 	protected String inverseAttributeName;
@@ -61,21 +61,21 @@ abstract public class AbstractRelation implements IRelation {
 		return inverse; 
 	}	
 	
-	public JavaPersistentAttribute getInverseAnnotatedAttribute() {
+	public JavaModifiablePersistentAttribute getInverseAnnotatedAttribute() {
 		return inverseAnnotatedAttribute;
 	}
 	
-	public JavaPersistentAttribute getOwnerAnnotatedAttribute() {
+	public JavaModifiablePersistentAttribute getOwnerAnnotatedAttribute() {
 		return ownerAnnotatedAttribute;
 	}	
 	
 	public void setOwnerAnnotatedAttribute(
-			JavaPersistentAttribute ownerAnnotatedAttribute) {
+			JavaModifiablePersistentAttribute ownerAnnotatedAttribute) {
 		this.ownerAnnotatedAttribute = ownerAnnotatedAttribute;
 	}
 
 	public void setInverseAnnotatedAttribute(
-			JavaPersistentAttribute inverseAnnotatedAttribute) {
+			JavaModifiablePersistentAttribute inverseAnnotatedAttribute) {
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 

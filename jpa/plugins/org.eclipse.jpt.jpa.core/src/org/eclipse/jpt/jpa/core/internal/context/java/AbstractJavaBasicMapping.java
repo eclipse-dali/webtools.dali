@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
@@ -63,7 +63,7 @@ public abstract class AbstractJavaBasicMapping
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractJavaBasicMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaBasicMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.column = this.buildColumn();
 		this.specifiedFetch = this.buildSpecifiedFetch();

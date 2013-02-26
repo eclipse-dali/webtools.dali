@@ -34,10 +34,10 @@ public interface JavaPersistentType
 
 	JavaTypeMapping getMapping();
 	
-	ListIterable<JavaPersistentAttribute> getAttributes();
+	ListIterable<JavaModifiablePersistentAttribute> getAttributes();
 		String ATTRIBUTES_LIST = "attributes"; //$NON-NLS-1$
 	
-	JavaPersistentAttribute getAttributeNamed(String attributeName);
+	JavaModifiablePersistentAttribute getAttributeNamed(String attributeName);
 	
 	
 	// ********** Java **********
@@ -47,5 +47,5 @@ public interface JavaPersistentType
 	 */
 	boolean hasAnyAnnotatedAttributes();
 	
-	JavaPersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute);
+	JavaModifiablePersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute);
 }

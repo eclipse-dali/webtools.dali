@@ -15,7 +15,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 
 public interface IRelation {
@@ -34,17 +34,17 @@ public interface IRelation {
 
 	public abstract JavaPersistentType getInverse();
 	
-	public void setOwnerAnnotatedAttribute(JavaPersistentAttribute ownerAnnotatedAttribute);
+	public void setOwnerAnnotatedAttribute(JavaModifiablePersistentAttribute ownerAnnotatedAttribute);
 	
-	public JavaPersistentAttribute getOwnerAnnotatedAttribute();
+	public JavaModifiablePersistentAttribute getOwnerAnnotatedAttribute();
 		
-	public void setInverseAnnotatedAttribute(JavaPersistentAttribute inverseAnnotatedAttribute);
+	public void setInverseAnnotatedAttribute(JavaModifiablePersistentAttribute inverseAnnotatedAttribute);
 				
 	public void setOwnerAttributeName(String ownerAttributeName);
 		
 	public void setInverseAttributeName(String inverseAttributeName);
 	
-	public abstract JavaPersistentAttribute getInverseAnnotatedAttribute();
+	public abstract JavaModifiablePersistentAttribute getInverseAnnotatedAttribute();
 
 	public abstract String getOwnerAttributeName();
 

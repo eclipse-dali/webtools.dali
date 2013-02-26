@@ -46,7 +46,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -285,9 +285,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	private void addCompartmentChildren(
 			ContainerShape containerShape, JavaPersistentType jpt,
 			String attributeAnnotations, String[] excludeAnnotations) {
-		List<JavaPersistentAttribute> attributes = new ArrayList<JavaPersistentAttribute>();
+		List<JavaModifiablePersistentAttribute> attributes = new ArrayList<JavaModifiablePersistentAttribute>();
 
-		for (JavaPersistentAttribute attribute : jpt.getAttributes()) {
+		for (JavaModifiablePersistentAttribute attribute : jpt.getAttributes()) {
 			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
 			if (annotations.contains(attributeAnnotations) && canAddAttribute(annotations, excludeAnnotations)) {
 				attributes.add(attribute);
@@ -308,9 +308,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 	
 	private void addBasicAttributes(ContainerShape containerShape, JavaPersistentType jpt){
-		List<JavaPersistentAttribute> attributes = new ArrayList<JavaPersistentAttribute>();
+		List<JavaModifiablePersistentAttribute> attributes = new ArrayList<JavaModifiablePersistentAttribute>();
 		
-		for (JavaPersistentAttribute attribute : jpt.getAttributes()){
+		for (JavaModifiablePersistentAttribute attribute : jpt.getAttributes()){
 			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
 			if(!(annotations.contains(JPAEditorConstants.ANNOTATION_ID))&& !(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) && 
 					!(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY))&&
@@ -322,9 +322,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 	
 	private void addAttributes(ContainerShape entityShape,
-			List<JavaPersistentAttribute> attributes) {
+			List<JavaModifiablePersistentAttribute> attributes) {
 		for (int i = 0; i < attributes.size(); i++) {
-			JavaPersistentAttribute jpa = attributes.get(i);
+			JavaModifiablePersistentAttribute jpa = attributes.get(i);
 			addAttribute(jpa, entityShape);
 		}
 	}
@@ -433,7 +433,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 	}
 
-	private void addAttribute(JavaPersistentAttribute pa,
+	private void addAttribute(JavaModifiablePersistentAttribute pa,
 			ContainerShape compartmentShape) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
 		fp.putKeyToBusinessObject(fp.getKeyForBusinessObject(pa), pa);

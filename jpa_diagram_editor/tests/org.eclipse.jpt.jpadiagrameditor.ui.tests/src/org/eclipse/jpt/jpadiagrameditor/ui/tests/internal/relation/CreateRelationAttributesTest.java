@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -107,7 +107,7 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute attr = JpaArtifactFactory.instance().
 				addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "add", "add", false, 
 						createCompilationUnitFrom(customerFile));
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
@@ -149,7 +149,7 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute attr = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "address", "address", false, 						
 					createCompilationUnitFrom((IFile)t1.getResource()));		
 		assertNotNull(attr);
@@ -199,12 +199,12 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute attr = JpaArtifactFactory.instance().
 			addAttribute( featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "creditCard", "creditCard", false,
 					createCompilationUnitFrom((IFile)t1.getResource()));		
 		assertNotNull(attr);
 
-		JavaPersistentAttribute attr2 = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute attr2 = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)t2, (JavaPersistentType)t1, null, "customer", "customer", false, 
 					createCompilationUnitFrom((IFile)t2.getResource()));		
 		assertNotNull(attr2);
@@ -219,7 +219,7 @@ public class CreateRelationAttributesTest {
 		
 		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("creditCard");
 		assertNotNull(ownerPersistentAttribute);
-		assertTrue(ownerPersistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(ownerPersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping ownerSideMapping = ownerPersistentAttribute.getMapping();
 		assertTrue(ownerSideMapping instanceof JavaOneToOneMapping); 
@@ -234,7 +234,7 @@ public class CreateRelationAttributesTest {
 		
 		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("customer");
 		assertNotNull(inversePersistentAttribute);
-		assertTrue(inversePersistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(inversePersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping inverseSideMapping = inversePersistentAttribute.getMapping();
 		assertTrue(inverseSideMapping instanceof JavaOneToOneMapping); 
@@ -274,7 +274,7 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "phones", "phones", true, 
+		JavaModifiablePersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "phones", "phones", true, 
 				createCompilationUnitFrom((IFile)t1.getResource()));		
 		assertNotNull(attr);
 			
@@ -327,12 +327,12 @@ public class CreateRelationAttributesTest {
 			manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute singleSideAttribute = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute singleSideAttribute = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)singleSidePersistentType, (JavaPersistentType)manySidePersistentType, null, "reservations", "reservations", true, 
 				createCompilationUnitFrom((IFile)singleSidePersistentType.getResource()));		
 		assertNotNull(singleSideAttribute);
 
-		JavaPersistentAttribute manySideAttribute = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute manySideAttribute = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)manySidePersistentType, (JavaPersistentType)singleSidePersistentType, null, "cruise", "cruise", false, 
 				createCompilationUnitFrom((IFile)manySidePersistentType.getResource()));		
 		assertNotNull(manySideAttribute);
@@ -348,7 +348,7 @@ public class CreateRelationAttributesTest {
 		
 		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
 		assertNotNull(inversePersistentAttribute);
-		assertTrue(inversePersistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(inversePersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping inverseSideMapping = inversePersistentAttribute.getMapping();
 		assertTrue(inverseSideMapping instanceof JavaOneToManyMapping); 
@@ -374,7 +374,7 @@ public class CreateRelationAttributesTest {
 		}		
 		
 		assertNotNull(ownerPersistentAttribute);
-		assertTrue(ownerPersistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(ownerPersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping ownerSideMapping = ownerPersistentAttribute.getMapping();
 		c = 0;
@@ -420,7 +420,7 @@ public class CreateRelationAttributesTest {
 			singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute mappedAttribute = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute mappedAttribute = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)manySidePersistentType, (JavaPersistentType)singleSidePersistentType, null, "ship", "ship", true, 
 					createCompilationUnitFrom((IFile)manySidePersistentType.getResource()));		
 		assertNotNull(mappedAttribute);
@@ -485,12 +485,12 @@ public class CreateRelationAttributesTest {
 			inverseSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute ownerSideAttribute = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute ownerSideAttribute = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)ownerSidePersistentType, (JavaPersistentType)inverseSidePersistentType, null, "customers", "customers", true,
 					createCompilationUnitFrom((IFile)ownerSidePersistentType.getResource()));		
 		assertNotNull(ownerSideAttribute);
 
-		JavaPersistentAttribute inverseSideAttributes = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)inverseSidePersistentType, (JavaPersistentType)ownerSidePersistentType, null, "reservations", "reservations", true, 
+		JavaModifiablePersistentAttribute inverseSideAttributes = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)inverseSidePersistentType, (JavaPersistentType)ownerSidePersistentType, null, "reservations", "reservations", true, 
 				createCompilationUnitFrom((IFile)inverseSidePersistentType.getResource()));		
 		assertNotNull(inverseSideAttributes);
 		
@@ -504,7 +504,7 @@ public class CreateRelationAttributesTest {
 		
 		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("customers");
 		assertNotNull(ownerPersistentAttribute);
-		assertTrue(ownerPersistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(ownerPersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping ownerSideMapping = ownerPersistentAttribute.getMapping();
 		assertTrue(ownerSideMapping instanceof JavaManyToManyMapping); 
@@ -519,7 +519,7 @@ public class CreateRelationAttributesTest {
 		
 		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
 		assertNotNull(inversePersistentAttribute);
-		assertTrue(inversePersistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(inversePersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping inverseSideMapping = inversePersistentAttribute.getMapping();
 		assertTrue(inverseSideMapping instanceof JavaManyToManyMapping); 
@@ -556,7 +556,7 @@ public class CreateRelationAttributesTest {
 			referencedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cabinType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute annotatedSideAttribute = JpaArtifactFactory.instance().
+		JavaModifiablePersistentAttribute annotatedSideAttribute = JpaArtifactFactory.instance().
 			addAttribute(featureProvider, (JavaPersistentType)annotatedPersistentType, (JavaPersistentType)referencedPersistentType, null, "cabins", "cabins", true,
 					createCompilationUnitFrom((IFile)annotatedPersistentType.getResource()));		
 		assertNotNull(annotatedSideAttribute);
@@ -571,7 +571,7 @@ public class CreateRelationAttributesTest {
 		
 		ReadOnlyPersistentAttribute persistentAttribute = persistentType.resolveAttribute("cabins");
 		assertNotNull(persistentAttribute);
-		assertTrue(persistentAttribute instanceof JavaPersistentAttribute);
+		assertTrue(persistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
 		AttributeMapping mapping = persistentAttribute.getMapping();
 		assertTrue(mapping instanceof JavaManyToManyMapping); 

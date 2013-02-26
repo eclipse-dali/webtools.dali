@@ -39,7 +39,7 @@ import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToOneAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -201,7 +201,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		if (RelDir.UNI.equals(direction)) {
 			isOptional = true;
 		} else {
-			JavaPersistentAttribute inverse = rel.getInverse().getAttributeNamed(rel.getInverseAttributeName());
+			JavaModifiablePersistentAttribute inverse = rel.getInverse().getAttributeNamed(rel.getInverseAttributeName());
 			JavaAttributeMapping mapping = inverse.getMapping();
 			a = (OneToOneAnnotation)mapping.getMappingAnnotation();
 			if (a != null) {
@@ -210,7 +210,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 				imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 0.0);				
 			}
 		}
-		JavaPersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
+		JavaModifiablePersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
 		owner.update();
 		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(owner);
 		if(isDerivedId(annotations)){
@@ -247,7 +247,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		boolean isOptional = false;
 		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_N, 0.0);
 		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);				
-		JavaPersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
+		JavaModifiablePersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
 
 		HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(owner);
 		if(isDerivedId(annotations)){

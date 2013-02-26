@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
@@ -26,7 +26,7 @@ public abstract class AbstractJavaOneToManyMapping
 	protected final OrphanRemovable2_0 orphanRemoval;
 
 
-	protected AbstractJavaOneToManyMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaOneToManyMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.orphanRemoval = this.buildOrphanRemoval();
 	}

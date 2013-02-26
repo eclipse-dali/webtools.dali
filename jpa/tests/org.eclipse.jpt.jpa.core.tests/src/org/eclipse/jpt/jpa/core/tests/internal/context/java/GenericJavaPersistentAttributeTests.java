@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -249,7 +249,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 
 		JavaResourceField resourceField = getJavaPersistentType().getJavaResourceType().getFields().iterator().next();
 		
-		JavaPersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
+		JavaModifiablePersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
 		assertTrue(attribute.isFor(resourceField));
 	}
 	
@@ -260,7 +260,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourceMethod resourceGetter = methods.next();
 		JavaResourceMethod resourceSetter = methods.next();
-		JavaPersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
+		JavaModifiablePersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("foo");
 	
 		assertTrue(attribute.isFor(resourceGetter, resourceSetter));
 	}
@@ -325,13 +325,13 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 				IterableTools.get(getPersistenceUnit().getClassRefs(), 1).getJavaPersistentType();
 		
 		// generic field
-		JavaPersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");
+		JavaModifiablePersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");
 		assertEquals("java.lang.Number", genericAttribute.getTypeName());
 		assertEquals("java.lang.Number", genericAttribute.getTypeName(superclassPT));
 		assertEquals("java.lang.Long", genericAttribute.getTypeName(subclassPT));
 		
 		// nongeneric field
-		JavaPersistentAttribute nongenericAttribute = superclassPT.getAttributeNamed("nongenericField");
+		JavaModifiablePersistentAttribute nongenericAttribute = superclassPT.getAttributeNamed("nongenericField");
 		assertEquals("java.lang.Number", nongenericAttribute.getTypeName());
 		assertEquals("java.lang.Number", nongenericAttribute.getTypeName(superclassPT));
 		assertEquals("java.lang.Number", nongenericAttribute.getTypeName(subclassPT));

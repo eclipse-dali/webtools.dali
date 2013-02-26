@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaCascade;
@@ -54,7 +54,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	protected FetchType defaultFetch;
 
 
-	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaRelationshipMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.specifiedTargetEntity = this.buildSpecifiedTargetEntity();
 		this.relationship = this.buildRelationship();

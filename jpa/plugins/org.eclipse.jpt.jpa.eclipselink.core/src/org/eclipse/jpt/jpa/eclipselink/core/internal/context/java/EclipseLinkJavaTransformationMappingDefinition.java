@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
@@ -47,7 +47,7 @@ public class EclipseLinkJavaTransformationMappingDefinition
 		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -55,7 +55,7 @@ public class EclipseLinkJavaTransformationMappingDefinition
 		return EmptyIterable.instance();
 	}
 
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
 		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkTransformationMapping(persistentAttribute);
 	}
 

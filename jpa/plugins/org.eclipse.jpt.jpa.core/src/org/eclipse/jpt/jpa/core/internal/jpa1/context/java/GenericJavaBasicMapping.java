@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBasicMapping;
 
 public class GenericJavaBasicMapping
 	extends AbstractJavaBasicMapping
 {
-	public GenericJavaBasicMapping(JavaPersistentAttribute parent) {
+	public GenericJavaBasicMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 	}
 }

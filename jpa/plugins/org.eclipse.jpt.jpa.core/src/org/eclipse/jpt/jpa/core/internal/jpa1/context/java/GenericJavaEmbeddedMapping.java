@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddedMapping;
 
 /**
@@ -19,7 +19,7 @@ public class GenericJavaEmbeddedMapping
 	extends AbstractJavaEmbeddedMapping
 {
 
-	public GenericJavaEmbeddedMapping(JavaPersistentAttribute parent) {
+	public GenericJavaEmbeddedMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 	}
 }

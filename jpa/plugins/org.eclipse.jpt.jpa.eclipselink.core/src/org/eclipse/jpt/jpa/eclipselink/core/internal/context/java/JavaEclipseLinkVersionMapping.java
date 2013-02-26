@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
@@ -34,7 +34,7 @@ public class JavaEclipseLinkVersionMapping
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
 
-	public JavaEclipseLinkVersionMapping(JavaPersistentAttribute parent) {
+	public JavaEclipseLinkVersionMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.mutable = new JavaEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();

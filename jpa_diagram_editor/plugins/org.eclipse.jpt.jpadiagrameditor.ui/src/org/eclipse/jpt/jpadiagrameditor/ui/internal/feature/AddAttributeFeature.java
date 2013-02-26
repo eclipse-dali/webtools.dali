@@ -31,7 +31,7 @@ import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
 
@@ -54,10 +54,10 @@ public class AddAttributeFeature extends AbstractAddShapeFeature {
 
 	public PictogramElement add(final IAddContext context) {
 		Object o = context.getNewObject();
-		if (!(o instanceof JavaPersistentAttribute)) {
+		if (!(o instanceof JavaModifiablePersistentAttribute)) {
 			return null;
 		}
-		final JavaPersistentAttribute newAttr = (JavaPersistentAttribute) o;
+		final JavaModifiablePersistentAttribute newAttr = (JavaModifiablePersistentAttribute) o;
 
 		getFeatureProvider().putKeyToBusinessObject(getFeatureProvider().getKeyForBusinessObject(newAttr), newAttr);
 		PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(newAttr); 
@@ -78,14 +78,14 @@ public class AddAttributeFeature extends AbstractAddShapeFeature {
 		return (PictogramElement)wrp.getObj();
 	}
 
-	private void expand(JavaPersistentAttribute jpa) {
+	private void expand(JavaModifiablePersistentAttribute jpa) {
 		ContainerShape attributeShape = (ContainerShape) getFeatureProvider().getPictogramElementForBusinessObject(jpa);
 
 		ICustomContext customContext = new CustomContext(new PictogramElement[] { attributeShape.getContainer() });
 		expandCompartmentFeature.execute(customContext);
 	}
 
-	private ContainerShape graphicalAdd(ContainerShape entityShape, JavaPersistentAttribute newAttr) {
+	private ContainerShape graphicalAdd(ContainerShape entityShape, JavaModifiablePersistentAttribute newAttr) {
 		AddContext context = new AddContext();
 		context.setNewObject(newAttr);
 		context.setTargetContainer(entityShape);
@@ -112,7 +112,7 @@ public class AddAttributeFeature extends AbstractAddShapeFeature {
 
 	public boolean canAdd(IAddContext context) {
 		Object o = context.getNewObject();
-		return o instanceof JavaPersistentAttribute;
+		return o instanceof JavaModifiablePersistentAttribute;
 	}
 
 }

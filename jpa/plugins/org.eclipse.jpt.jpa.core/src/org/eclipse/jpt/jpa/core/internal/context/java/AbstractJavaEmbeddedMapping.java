@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -57,7 +57,7 @@ public abstract class AbstractJavaEmbeddedMapping
 	protected final JavaAssociationOverrideContainer associationOverrideContainer;
 
 
-	protected AbstractJavaEmbeddedMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaEmbeddedMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.associationOverrideContainer = this.buildAssociationOverrideContainer();
 	}
@@ -290,7 +290,7 @@ public abstract class AbstractJavaEmbeddedMapping
 			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (ReadOnlyJoinTable) table);
 		}
 
-		protected JavaPersistentAttribute getPersistentAttribute() {
+		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractJavaEmbeddedMapping.this.getPersistentAttribute();
 		}
 	}

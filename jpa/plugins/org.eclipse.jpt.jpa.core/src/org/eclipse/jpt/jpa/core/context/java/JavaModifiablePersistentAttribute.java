@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
  * @version 3.3
  * @since 2.0
  */
-public interface JavaPersistentAttribute
+public interface JavaModifiablePersistentAttribute
 	extends ModifiablePersistentAttribute, JavaElementReference
 {
 	// ********** covariant overrides **********

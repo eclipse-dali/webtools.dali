@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 public abstract class DefaultJavaAttributeMappingDefinitionWrapper
 	extends JavaAttributeMappingDefinitionWrapper
@@ -23,7 +23,7 @@ public abstract class DefaultJavaAttributeMappingDefinitionWrapper
 	@Override
 	protected abstract DefaultJavaAttributeMappingDefinition getDelegate();
 
-	public boolean isDefault(JavaPersistentAttribute persistentAttribute) {
+	public boolean isDefault(JavaModifiablePersistentAttribute persistentAttribute) {
 		return this.getDelegate().isDefault(persistentAttribute);
 	}
 }

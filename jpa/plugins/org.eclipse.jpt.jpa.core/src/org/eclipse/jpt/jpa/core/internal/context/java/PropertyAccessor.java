@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentPropertyValidator;
 
@@ -64,7 +64,7 @@ public class PropertyAccessor
 		return this.resourceSetter;
 	}
 
-	public JavaPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
+	public JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
 		return this.buildJavaAttribute(type, this.buildUnannotatedJavaResourceGetter(), this.buildUnannotatedJavaResourceSetter());
 	}
 
@@ -86,7 +86,7 @@ public class PropertyAccessor
 		return new UnannotatedJavaResourceMethod(this.resourceSetter);
 	}
 
-	protected JavaPersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
+	protected JavaModifiablePersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
 		return this.getJpaFactory().buildJavaPersistentProperty(type, getterMethod, setterMethod);
 	}
 

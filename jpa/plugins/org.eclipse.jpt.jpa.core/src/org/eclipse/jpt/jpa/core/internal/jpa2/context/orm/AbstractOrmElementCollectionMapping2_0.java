@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -301,7 +301,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected String buildDefaultTargetClass() {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMultiReferenceTargetTypeName();
 	}
 
@@ -863,7 +863,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected String buildDefaultMapKeyClass() {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMultiReferenceMapKeyTypeName();
 	}
 
@@ -1460,7 +1460,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
 				this.buildValidationMessage(
@@ -1616,7 +1616,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 			this.validateMapKeyClass_(messages);
 		}

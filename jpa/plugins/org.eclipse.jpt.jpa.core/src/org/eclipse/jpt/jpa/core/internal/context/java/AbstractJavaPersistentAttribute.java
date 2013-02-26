@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
@@ -51,7 +51,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaPersistentAttribute
 		extends AbstractJavaContextModel<PersistentType>
-		implements JavaPersistentAttribute, PersistentAttribute2_0 {
+		implements JavaModifiablePersistentAttribute, PersistentAttribute2_0 {
 	
 	protected final Accessor accessor;
 
@@ -449,8 +449,8 @@ public abstract class AbstractJavaPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<JavaPersistentAttribute> getType() {
-		return JavaPersistentAttribute.class;
+	public Class<JavaModifiablePersistentAttribute> getType() {
+		return JavaModifiablePersistentAttribute.class;
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {
@@ -587,7 +587,7 @@ public abstract class AbstractJavaPersistentAttribute
 		return this.getOwningPersistentType().getMapping();
 	}
 
-	public JavaPersistentAttribute getJavaPersistentAttribute() {
+	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
 		return this;
 	}
 

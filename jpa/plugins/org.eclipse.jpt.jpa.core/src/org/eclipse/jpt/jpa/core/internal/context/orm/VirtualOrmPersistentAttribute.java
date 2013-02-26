@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -57,7 +57,7 @@ public class VirtualOrmPersistentAttribute
 	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
 	 * with any changes made via the Java context model.
 	 */
-	protected final JavaPersistentAttribute annotatedJavaAttribute;
+	protected final JavaModifiablePersistentAttribute annotatedJavaAttribute;
 
 	/**
 	 * This is the "original" Java persistent attribute corresponding to
@@ -70,7 +70,7 @@ public class VirtualOrmPersistentAttribute
 	 * is no Java context attribute, the Java resource model can only be
 	 * modified via source code editing and we will <em>sync</em> appropriately).
 	 */
-	protected JavaPersistentAttribute originalJavaAttribute;
+	protected JavaModifiablePersistentAttribute originalJavaAttribute;
 	protected StateChangeListener originalJavaAttributeListener;
 
 	/**
@@ -82,7 +82,7 @@ public class VirtualOrmPersistentAttribute
 	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
 	 * with any changes made via the Java context model.
 	 */
-	protected JavaPersistentAttribute unannotatedJavaAttribute;
+	protected JavaModifiablePersistentAttribute unannotatedJavaAttribute;
 
 	protected JavaAttributeMapping mapping;  // never null
 
@@ -154,13 +154,13 @@ public class VirtualOrmPersistentAttribute
 
 	// ********** Java persistent attribute **********
 
-	public JavaPersistentAttribute getJavaPersistentAttribute() {
+	public JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
 		return this.getOwningTypeMapping().isMetadataComplete() ?
 				this.getUnannotatedJavaAttribute() :
 				this.annotatedJavaAttribute;
 	}
 
-	public JavaPersistentAttribute resolveJavaPersistentAttribute() {
+	public JavaModifiablePersistentAttribute resolveJavaPersistentAttribute() {
 		JavaPersistentType javaType = this.getOwningPersistentType().getJavaPersistentType();
 		return (javaType == null) ? null : javaType.getAttributeFor(this.getJavaResourceAttribute());
 	}
@@ -169,23 +169,23 @@ public class VirtualOrmPersistentAttribute
 		return (PersistentAttribute2_0) this.getJavaPersistentAttribute();
 	}
 
-	protected JavaPersistentAttribute buildAnnotatedJavaAttribute() {
+	protected JavaModifiablePersistentAttribute buildAnnotatedJavaAttribute() {
 		return buildJavaAttribute(this.javaAccessor);
 	}
 
-	protected JavaPersistentAttribute getUnannotatedJavaAttribute() {
+	protected JavaModifiablePersistentAttribute getUnannotatedJavaAttribute() {
 		if (this.unannotatedJavaAttribute == null) {
 			this.unannotatedJavaAttribute = this.buildUnannotatedJavaAttribute();
 		}
 		return this.unannotatedJavaAttribute;
 	}
 
-	protected JavaPersistentAttribute buildUnannotatedJavaAttribute() {
+	protected JavaModifiablePersistentAttribute buildUnannotatedJavaAttribute() {
 		// pass in the orm persistent type as the parent...
 		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getOwningPersistentType());
 	}
 
-	protected JavaPersistentAttribute buildJavaAttribute(Accessor accessor) {
+	protected JavaModifiablePersistentAttribute buildJavaAttribute(Accessor accessor) {
 		// pass in the orm persistent type as the parent...
 		return this.getJpaFactory().buildJavaPersistentAttribute(this.getOwningPersistentType(), accessor);
 	}
@@ -223,7 +223,7 @@ public class VirtualOrmPersistentAttribute
 	// ********** original Java persistent attribute **********
 
 	protected void updateOriginalJavaAttribute() {
-		JavaPersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute(); //yes, this is the "original" java attribute
+		JavaModifiablePersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute(); //yes, this is the "original" java attribute
 		if (newJavaAttribute != this.originalJavaAttribute) {
 			if (newJavaAttribute == null) {
 				this.originalJavaAttribute.removeStateChangeListener(this.getOriginalJavaAttributeListener());

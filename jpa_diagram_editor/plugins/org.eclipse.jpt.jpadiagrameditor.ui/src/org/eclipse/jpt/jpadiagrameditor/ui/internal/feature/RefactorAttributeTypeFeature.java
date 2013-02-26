@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.dialog.SelectTypeDialog;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -52,9 +52,9 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 	public void execute(ICustomContext context) {
 		PictogramElement pe = context.getPictogramElements()[0];
 		Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
-		if ((bo == null) || (!(bo instanceof JavaPersistentAttribute)))
+		if ((bo == null) || (!(bo instanceof JavaModifiablePersistentAttribute)))
 				return;
-		JavaPersistentAttribute jpa = (JavaPersistentAttribute)bo;
+		JavaModifiablePersistentAttribute jpa = (JavaModifiablePersistentAttribute)bo;
 		String typeName = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa);
 		String msg = MessageFormat.format(JPAEditorMessages.SelectTypeDialog_chooseAttributeTypeDialogText, 
 				jpa.getName(), JPAEditorUtil.returnSimpleName(((PersistentType)jpa.getParent()).getName()));		
@@ -74,7 +74,7 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		JpaArtifactFactory.instance().deleteAttribute((JavaPersistentType)jpa.getParent(), jpa.getName(),
 				getFeatureProvider());
 		
-		JavaPersistentAttribute newAt = JpaArtifactFactory.instance().makeNewAttribute(getFeatureProvider(), (JavaPersistentType)jpa.getParent(),
+		JavaModifiablePersistentAttribute newAt = JpaArtifactFactory.instance().makeNewAttribute(getFeatureProvider(), (JavaPersistentType)jpa.getParent(),
 				null, jpa.getName(), newTypeName, jpa.getName(), newTypeName, attributeTypeTypeNames, annotations, false);
 		
 		getFeatureProvider().replaceAttribute(jpa, newAt);

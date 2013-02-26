@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
@@ -115,7 +115,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaMultiRelationshipMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.orderable = this.buildOrderable();
 
@@ -966,7 +966,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
@@ -1104,7 +1104,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 
-		protected JavaPersistentAttribute getPersistentAttribute() {
+		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractJavaMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 	}

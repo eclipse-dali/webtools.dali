@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -493,7 +493,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		((BaseTemporalConverter) ((OrmBasicMapping) startDateAttribute.getMapping()).getConverter()).setTemporalType(TemporalType.DATE);
 		
 		OrmReadOnlyPersistentAttribute idAttribute = employeePersistentType.getAttributeNamed("id");
-		JavaPersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();
 		assertNotNull(javaPersistentAttribute);
 		assertEquals("id", javaPersistentAttribute.getName());
 		assertEquals("test.Employee", javaPersistentAttribute.getOwningPersistentType().getName());

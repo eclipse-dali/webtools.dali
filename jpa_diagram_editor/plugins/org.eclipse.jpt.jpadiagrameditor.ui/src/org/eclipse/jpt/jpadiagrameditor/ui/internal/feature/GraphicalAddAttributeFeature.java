@@ -29,7 +29,7 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
@@ -54,7 +54,7 @@ public class GraphicalAddAttributeFeature extends AbstractAddShapeFeature {
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				JavaPersistentAttribute newAttr = (JavaPersistentAttribute) context.getNewObject();
+				JavaModifiablePersistentAttribute newAttr = (JavaModifiablePersistentAttribute) context.getNewObject();
 				String txt = JPAEditorUtil.getText(newAttr);
 				HashSet<String> annots = JpaArtifactFactory.instance().getAnnotationNames(newAttr);
 				ContainerShape textShape = null;

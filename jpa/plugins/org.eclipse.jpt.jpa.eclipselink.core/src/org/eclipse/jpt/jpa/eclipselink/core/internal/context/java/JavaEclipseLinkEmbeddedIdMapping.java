@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -26,7 +26,7 @@ public class JavaEclipseLinkEmbeddedIdMapping
 
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
-	public JavaEclipseLinkEmbeddedIdMapping(JavaPersistentAttribute parent) {
+	public JavaEclipseLinkEmbeddedIdMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.converterContainer = this.buildConverterContainer();
 	}

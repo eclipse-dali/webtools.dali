@@ -47,9 +47,9 @@ public interface JavaAttributeMappingDefinition
 	 * <p>
 	 * <strong>NB:</strong> A mapping is not necessarily "specified" if its
 	 * annotation is present
-	 * (see {@link org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0#isSpecified(JavaPersistentAttribute)})
+	 * (see {@link org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0#isSpecified(JavaModifiablePersistentAttribute)})
 	 */
-	boolean isSpecified(JavaPersistentAttribute persistentAttribute);
+	boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute);
 
 	/**
 	 * Build a Java attribute mapping for the specified persistent attribute.
@@ -57,5 +57,5 @@ public interface JavaAttributeMappingDefinition
 	 * the appropriate factory method instead of building a definition for the
 	 * same key.
 	 */
-	JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory);
+	JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory);
 }

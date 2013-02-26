@@ -99,7 +99,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
@@ -134,10 +134,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	private Hashtable<String, Object> keyToBO;
 	private WeakHashMap<JpaProject, WeakReference<CollectionChangeListener>> projectToEntityListener;
 	private WeakHashMap<JavaPersistentType, WeakReference<PropertyChangeListener>> entityToPropListener;
-	private WeakHashMap<JavaPersistentAttribute, WeakReference<AttributePropertyChangeListener>> attributeToPropListener;
-	private WeakHashMap<JavaPersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>> attributeMappingOptionalityToPropListener;		
-	private WeakHashMap<JavaPersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>> attributeJoiningStrategyToPropListener;	
-	private WeakHashMap<JavaPersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>> attributeRelationshipReferenceToPropListener;
+	private WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributePropertyChangeListener>> attributeToPropListener;
+	private WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>> attributeMappingOptionalityToPropListener;		
+	private WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>> attributeJoiningStrategyToPropListener;	
+	private WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>> attributeRelationshipReferenceToPropListener;
 	private WeakHashMap<JavaPersistentType, WeakReference<ListChangeListener>> entityToAtListener;
 	private WeakHashMap<JavaPersistentType, WeakReference<StateChangeListener>> entityToStateListener;
 	private EntityChangeListener entityNameListener;
@@ -181,10 +181,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		keyToBO = new Hashtable<String, Object>();
 		projectToEntityListener = new WeakHashMap<JpaProject, WeakReference<CollectionChangeListener>>();
 		entityToPropListener = new WeakHashMap<JavaPersistentType, WeakReference<PropertyChangeListener>>();
-		attributeToPropListener = new WeakHashMap<JavaPersistentAttribute, WeakReference<AttributePropertyChangeListener>>();
-		attributeMappingOptionalityToPropListener = new WeakHashMap<JavaPersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>>();
-		attributeJoiningStrategyToPropListener = new WeakHashMap<JavaPersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>>();
-		attributeRelationshipReferenceToPropListener = new WeakHashMap<JavaPersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>>(); 
+		attributeToPropListener = new WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributePropertyChangeListener>>();
+		attributeMappingOptionalityToPropListener = new WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributeMappingOptionalityChangeListener>>();
+		attributeJoiningStrategyToPropListener = new WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributeJoiningStrategyPropertyChangeListener>>();
+		attributeRelationshipReferenceToPropListener = new WeakHashMap<JavaModifiablePersistentAttribute, WeakReference<AttributeRelationshipReferencePropertyChangeListener>>(); 
 		entityToAtListener = new WeakHashMap<JavaPersistentType, WeakReference<ListChangeListener>>();
 		entityToStateListener = new WeakHashMap<JavaPersistentType, WeakReference<StateChangeListener>>();
 		entityNameListener = new EntityChangeListener(this);
@@ -294,8 +294,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			return ((HasReferanceRelation)bo).getId();
 		} else if (bo instanceof IsARelation) {
 			return ((IsARelation)bo).getId();
-		} else if (bo instanceof JavaPersistentAttribute) {
-			JavaPersistentAttribute at = (JavaPersistentAttribute) bo;
+		} else if (bo instanceof JavaModifiablePersistentAttribute) {
+			JavaModifiablePersistentAttribute at = (JavaModifiablePersistentAttribute) bo;
 			return (((PersistentType)at.getParent()).getName() + "-" + at.getName()); //$NON-NLS-1$
 		}
 		return bo.toString();
@@ -357,8 +357,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		} else if (bo instanceof IsARelation) {
 			IsARelation rel = (IsARelation) bo;
 			attribToIsARel.put(produceKeyForIsARel(rel), rel);
-		} else if (bo instanceof JavaPersistentAttribute) {
-			addPropertiesListenerToAttribute((JavaPersistentAttribute)bo);
+		} else if (bo instanceof JavaModifiablePersistentAttribute) {
+			addPropertiesListenerToAttribute((JavaModifiablePersistentAttribute)bo);
 		}
 	}
 
@@ -368,7 +368,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		Object o = keyToBO.remove(key);
 		if (o instanceof JavaPersistentType) {
 			JavaPersistentType jpt = (JavaPersistentType) o;
-			for (JavaPersistentAttribute at : jpt.getAttributes()) {
+			for (JavaModifiablePersistentAttribute at : jpt.getAttributes()) {
 				String k = getKeyForBusinessObject(at);
 				remove(k);
 			}
@@ -397,8 +397,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		} else if (o instanceof IsARelation) {
 			IsARelation rel = (IsARelation) o;
 			attribToIsARel.remove(produceKeyForIsARel(rel));
-		} else if (o instanceof JavaPersistentAttribute) {
-			removeListenersFromAttribute((JavaPersistentAttribute)o);
+		} else if (o instanceof JavaModifiablePersistentAttribute) {
+			removeListenersFromAttribute((JavaModifiablePersistentAttribute)o);
 		}
 		return o;
 	}
@@ -407,12 +407,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		return util.getCompilationUnit(jpt);
 	}
 
-	public boolean isRelationRelatedToAttribute(JavaPersistentAttribute jpa) {
+	public boolean isRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
 		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
 		return attribToRel.containsKey(key);
 	}
 	
-	public IRelation getRelationRelatedToAttribute(JavaPersistentAttribute jpa, IJPAEditorFeatureProvider fp) {
+	public IRelation getRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa, IJPAEditorFeatureProvider fp) {
 		String key = findRelationshipKey(jpa, fp);
 		return attribToRel.get(key);
 	}
@@ -426,11 +426,11 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	 * that consists of the name of the attribute which will be renamed and the name of the attribute in the embeddable class. If such an attribute
 	 * exists, the unique key for the existing relationship must be ganerated by the target entity and the name of the found attribute.
 	 * Otherwise the key must be generated by the name of the attribute that will be renamed and its parent entity.
-	 * @param jpa - the {@link JavaPersistentAttribute} which will be renamed
+	 * @param jpa - the {@link JavaModifiablePersistentAttribute} which will be renamed
 	 * @param fp
 	 * @return the unique key for the relationship.
 	 */
-	private String findRelationshipKey(JavaPersistentAttribute jpa, IJPAEditorFeatureProvider fp){
+	private String findRelationshipKey(JavaModifiablePersistentAttribute jpa, IJPAEditorFeatureProvider fp){
 		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
 		if(jpaFactory.isEmbeddedAttribute(jpa)){
 			Annotation embeddedAn = null;
@@ -441,7 +441,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			JavaPersistentType embeddableClass = jpaFactory.findJPT(jpa, fp, embeddedAn);
 			if(embeddableClass == null)
 				return ""; //$NON-NLS-1$
-			for (JavaPersistentAttribute relEntAt : embeddableClass.getAttributes())	{
+			for (JavaModifiablePersistentAttribute relEntAt : embeddableClass.getAttributes())	{
 				IResource r = relEntAt.getParent().getResource();
 				if (!r.exists())
 					throw new RuntimeException();
@@ -452,7 +452,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 						JavaPersistentType jpt = jpaFactory.findJPT(relEntAt, fp, an);
 						if(jpt == null)
 							return ""; //$NON-NLS-1$
-						for(JavaPersistentAttribute attribute : jpt.getAttributes()){
+						for(JavaModifiablePersistentAttribute attribute : jpt.getAttributes()){
 							Annotation[] inverseAnns = jpaFactory.getAnnotations(attribute);
 							for(Annotation inverseAn : inverseAnns){
 								String inverseAnName = JPAEditorUtil.returnSimpleName(inverseAn.getAnnotationName());
@@ -481,7 +481,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 
 	
-	public HasReferanceRelation getEmbeddedRelationToAttribute(JavaPersistentAttribute jpa) {
+	public HasReferanceRelation getEmbeddedRelationToAttribute(JavaModifiablePersistentAttribute jpa) {
 		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
 		return attribToEmbeddedRel.get(key);
 	}
@@ -490,12 +490,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		return keyToBO.values();
 	}	
 	
-	public void renewAttributeMappingPropListener(JavaPersistentAttribute jpa) {
+	public void renewAttributeMappingPropListener(JavaModifiablePersistentAttribute jpa) {
 		renewAttributeJoiningStrategyPropertyListener(jpa);
 		renewAttributeMappingOptPropListener(jpa);
 	}
 	
-	public void renewAttributeJoiningStrategyPropertyListener(JavaPersistentAttribute jpa) {
+	public void renewAttributeJoiningStrategyPropertyListener(JavaModifiablePersistentAttribute jpa) {
 		AttributeJoiningStrategyPropertyChangeListener lsn = null;
 		if (attributeJoiningStrategyToPropListener == null) 
 			return;
@@ -525,7 +525,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		
 	}
 	
-	public void renewAttributeMappingOptPropListener(JavaPersistentAttribute jpa) {
+	public void renewAttributeMappingOptPropListener(JavaModifiablePersistentAttribute jpa) {
 		AttributeMappingOptionalityChangeListener lsn = null;
 		WeakReference<AttributeMappingOptionalityChangeListener> ref = attributeMappingOptionalityToPropListener.remove(jpa);
 		if (ref != null)
@@ -602,14 +602,14 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 	}
 
-	private void addPropertiesListenerToAttribute(JavaPersistentAttribute jpa) {
+	private void addPropertiesListenerToAttribute(JavaModifiablePersistentAttribute jpa) {
 		addPropertiesListenerToAttributeItself(jpa);
 		addPropertiesListenerToJoiningStrategy(jpa);		
 		addPropertiesListenerToRelationshipReference(jpa);
 		addOptPropListenerToAttributeMapping(jpa);			
 	}
 	
-	private void addPropertiesListenerToAttributeItself(JavaPersistentAttribute jpa) {
+	private void addPropertiesListenerToAttributeItself(JavaModifiablePersistentAttribute jpa) {
 		WeakReference<AttributePropertyChangeListener> lsnrRef = attributeToPropListener.get(jpa);
 		AttributePropertyChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -622,7 +622,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}				
 	}
 	
-	private void addOptPropListenerToAttributeMapping(JavaPersistentAttribute jpa) {
+	private void addOptPropListenerToAttributeMapping(JavaModifiablePersistentAttribute jpa) {
 		WeakReference<AttributeMappingOptionalityChangeListener> lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
 		AttributeMappingOptionalityChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -642,7 +642,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 	
 	
-	private void addPropertiesListenerToJoiningStrategy(JavaPersistentAttribute jpa) {
+	private void addPropertiesListenerToJoiningStrategy(JavaModifiablePersistentAttribute jpa) {
 		
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
 		AttributeJoiningStrategyPropertyChangeListener lsnr = null;
@@ -667,7 +667,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 	
 	
-	private void addPropertiesListenerToRelationshipReference(JavaPersistentAttribute jpa) {
+	private void addPropertiesListenerToRelationshipReference(JavaModifiablePersistentAttribute jpa) {
 		
 		WeakReference<AttributeRelationshipReferencePropertyChangeListener> lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
 		AttributeRelationshipReferencePropertyChangeListener lsnr = null;
@@ -711,7 +711,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		removeStateListenerFromEntity(jpt);
 	}
 	
-	private void removeListenersFromAttribute(JavaPersistentAttribute jpa) {
+	private void removeListenersFromAttribute(JavaModifiablePersistentAttribute jpa) {
 		removePropListenerFromAttribute(jpa);
 	}	
 
@@ -741,14 +741,14 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 	}
 		
-	private void removePropListenerFromAttribute(JavaPersistentAttribute jpa) {
+	private void removePropListenerFromAttribute(JavaModifiablePersistentAttribute jpa) {
 		removePropListenerFromAttributeItself(jpa);
 		removePropListenerFromJoiningStrategy(jpa);
 		removePropListenerFromRelationshipReference(jpa);
 		removeOptPropListenerFromAttributeMapping(jpa);
 	}	
 	
-	private void removePropListenerFromAttributeItself(JavaPersistentAttribute jpa) {
+	private void removePropListenerFromAttributeItself(JavaModifiablePersistentAttribute jpa) {
 		WeakReference<AttributePropertyChangeListener> lsnrRef = attributeToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;
 		if (lsnrRef != null)
@@ -763,7 +763,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		}
 	}	
 	
-	private void removePropListenerFromJoiningStrategy(JavaPersistentAttribute jpa) {
+	private void removePropListenerFromJoiningStrategy(JavaModifiablePersistentAttribute jpa) {
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeJoiningStrategyToPropListener.get(jpa);
@@ -789,7 +789,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		
 	}
 	
-	private void removeOptPropListenerFromAttributeMapping(JavaPersistentAttribute jpa) {
+	private void removeOptPropListenerFromAttributeMapping(JavaModifiablePersistentAttribute jpa) {
 		WeakReference<AttributeMappingOptionalityChangeListener> lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeMappingOptionalityToPropListener.get(jpa);
@@ -809,7 +809,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}	
 	
 	
-	private void removePropListenerFromRelationshipReference(JavaPersistentAttribute jpa) {
+	private void removePropListenerFromRelationshipReference(JavaModifiablePersistentAttribute jpa) {
 		WeakReference<AttributeRelationshipReferencePropertyChangeListener> lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
 		PropertyChangeListener lsnr = null;		
 		lsnrRef = attributeRelationshipReferenceToPropListener.get(jpa);
@@ -879,13 +879,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 	
 	private void removeAttributePropChangeListeners() {
-		Iterator<JavaPersistentAttribute> it = attributeToPropListener.keySet().iterator();
-		Set<JavaPersistentAttribute> s = new HashSet<JavaPersistentAttribute>();
+		Iterator<JavaModifiablePersistentAttribute> it = attributeToPropListener.keySet().iterator();
+		Set<JavaModifiablePersistentAttribute> s = new HashSet<JavaModifiablePersistentAttribute>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaPersistentAttribute jpa = it.next();
+			JavaModifiablePersistentAttribute jpa = it.next();
 			WeakReference<AttributePropertyChangeListener> ref = attributeToPropListener.remove(jpa);
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
@@ -900,13 +900,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}	
 	
 	private void removeAttributeJoiningStrategyPropChangeListeners() {
-		Iterator<JavaPersistentAttribute> it = attributeJoiningStrategyToPropListener.keySet().iterator();
-		Set<JavaPersistentAttribute> s = new HashSet<JavaPersistentAttribute>();
+		Iterator<JavaModifiablePersistentAttribute> it = attributeJoiningStrategyToPropListener.keySet().iterator();
+		Set<JavaModifiablePersistentAttribute> s = new HashSet<JavaModifiablePersistentAttribute>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaPersistentAttribute jpa = it.next();
+			JavaModifiablePersistentAttribute jpa = it.next();
 			WeakReference<AttributeJoiningStrategyPropertyChangeListener> ref = attributeJoiningStrategyToPropListener.remove(jpa);
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
@@ -921,13 +921,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}		
 	
 	private void removeOptPropListeners() {
-		Iterator<JavaPersistentAttribute> it = this.attributeMappingOptionalityToPropListener.keySet().iterator();
-		Set<JavaPersistentAttribute> s = new HashSet<JavaPersistentAttribute>();
+		Iterator<JavaModifiablePersistentAttribute> it = this.attributeMappingOptionalityToPropListener.keySet().iterator();
+		Set<JavaModifiablePersistentAttribute> s = new HashSet<JavaModifiablePersistentAttribute>();
 		while(it.hasNext()) 
 			s.add(it.next());
 		it = s.iterator();		
 		while(it.hasNext()) {
-			JavaPersistentAttribute jpa = it.next();
+			JavaModifiablePersistentAttribute jpa = it.next();
 			WeakReference<AttributeMappingOptionalityChangeListener> ref = attributeMappingOptionalityToPropListener.remove(jpa);
 			if (ref == null)
 				continue;
@@ -1184,10 +1184,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		synchronized public void propertyChanged(PropertyChangeEvent event) {
 			
 			Model source = event.getSource();
-			if (!JavaPersistentAttribute.class.isInstance(source))
+			if (!JavaModifiablePersistentAttribute.class.isInstance(source))
 				return;
 			PictogramElement pe = featureProvider
-					.getPictogramElementForBusinessObject(((JavaPersistentAttribute) source)
+					.getPictogramElementForBusinessObject(((JavaModifiablePersistentAttribute) source)
 							.getParent());	
 			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider);
 			final CustomContext ctx = new CustomContext();
@@ -1200,7 +1200,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			Display.getDefault().asyncExec(runnable);
 			String propName = event.getPropertyName();
 			if (propName.equals(ModifiablePersistentAttribute.MAPPING_PROPERTY)) {
-				renewAttributeMappingPropListener((JavaPersistentAttribute) source);
+				renewAttributeMappingPropListener((JavaModifiablePersistentAttribute) source);
 			}
 		}
 	}	
@@ -1223,9 +1223,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (nd == null)
 				return;
 			nd = nd.getParent();
-			if ((nd == null) || !JavaPersistentAttribute.class.isInstance(nd))
+			if ((nd == null) || !JavaModifiablePersistentAttribute.class.isInstance(nd))
 				return;			
-			JavaPersistentAttribute at = (JavaPersistentAttribute)nd;
+			JavaModifiablePersistentAttribute at = (JavaModifiablePersistentAttribute)nd;
 			if (!at.getParent().getParent().getResource().exists())
 				return;
 			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(at.getParent());
@@ -1256,9 +1256,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			p = p.getParent();
 			if (p == null)
 				return;
-			if (!JavaPersistentAttribute.class.isInstance(p))
+			if (!JavaModifiablePersistentAttribute.class.isInstance(p))
 				return;
-			JavaPersistentAttribute jpa = (JavaPersistentAttribute)p;
+			JavaModifiablePersistentAttribute jpa = (JavaModifiablePersistentAttribute)p;
 			renewAttributeJoiningStrategyPropertyListener(jpa);
 			if (!jpa.getParent().getParent().getResource().exists())
 				return;
@@ -1287,7 +1287,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			Boolean optional = (Boolean)event.getNewValue();
 			boolean isOptional = (optional == null) ? true : optional.booleanValue();
 			OptionalMapping nm = (OptionalMapping)event.getSource();
-			JavaPersistentAttribute jpa = (JavaPersistentAttribute)nm.getParent();
+			JavaModifiablePersistentAttribute jpa = (JavaModifiablePersistentAttribute)nm.getParent();
 			IRelation rel = featureProvider.getRelationRelatedToAttribute(jpa);
 			boolean atBeginning = !rel.getOwner().equals(jpa.getParent()) || 
 								  !rel.getOwnerAttributeName().equals(jpa.getName());
@@ -1331,10 +1331,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		@SuppressWarnings("unchecked")
 		synchronized public void run() {
 			try {
-				Iterator<JavaPersistentAttribute> it = (Iterator<JavaPersistentAttribute>) event.getItems().iterator();
+				Iterator<JavaModifiablePersistentAttribute> it = (Iterator<JavaModifiablePersistentAttribute>) event.getItems().iterator();
 				Set<Shape> shapesToRemove = new HashSet<Shape>();
 				while (it.hasNext()) {
-					JavaPersistentAttribute at = it.next();
+					JavaModifiablePersistentAttribute at = it.next();
 					/*
 					String key = getKeyForBusinessObject(at);
 					remove(key);
@@ -1347,7 +1347,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					
 					
 					JavaPersistentType jpt = (JavaPersistentType)event.getSource();
-					JavaPersistentAttribute newAt = jpt.getAttributeNamed(at.getName());
+					JavaModifiablePersistentAttribute newAt = jpt.getAttributeNamed(at.getName());
 					if (newAt != null) {
 						RemoveAttributeFeature ft = new RemoveAttributeFeature(featureProvider, true, true);
 						RemoveContext c = new RemoveContext(atShape);
@@ -1410,9 +1410,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				ContainerShape entShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(jpt);
 				
 				// remove invalidated relations (if any)
-				Iterator<JavaPersistentAttribute> it = (Iterator<JavaPersistentAttribute>) event.getItems().iterator();
+				Iterator<JavaModifiablePersistentAttribute> it = (Iterator<JavaModifiablePersistentAttribute>) event.getItems().iterator();
 				while (it.hasNext()) {
-					JavaPersistentAttribute at = it.next();
+					JavaModifiablePersistentAttribute at = it.next();
 					if(at.getMapping() == null || at.getMapping().getMappingAnnotation() == null){
 						at.getResourceAttribute().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 					}

@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
@@ -101,7 +101,7 @@ public abstract class JpaMapping implements IMapping {
 	}
 
 	protected ITypeDeclaration[] buildGenericTypeDeclarations() {
-		JavaPersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
 		JavaResourceAttribute resource = javaPersistentAttribute == null ? null : javaPersistentAttribute.getResourceAttribute();
 		List<ITypeDeclaration> declarations = ListTools.list(buildGenericTypeDeclarations(resource));
 		return declarations.toArray(new ITypeDeclaration[declarations.size()]);

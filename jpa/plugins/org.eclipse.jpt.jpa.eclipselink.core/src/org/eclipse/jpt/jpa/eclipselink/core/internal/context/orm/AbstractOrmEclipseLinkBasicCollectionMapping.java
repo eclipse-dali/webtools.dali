@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
@@ -59,7 +59,7 @@ public abstract class AbstractOrmEclipseLinkBasicCollectionMapping
 	@Override
 	public String getMetamodelTypeName() {
 		String targetTypeName = null;
-		JavaPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
 		if (javaPersistentAttribute != null) {
 			if(((PersistentType2_0)javaPersistentAttribute).getMetamodelType() == null) { // dynamic type
 				return null;

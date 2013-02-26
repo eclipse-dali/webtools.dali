@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -116,7 +116,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		createTestEntityWithConvertAndObjectTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		JavaModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkObjectTypeConverter converter = basicMapping.getConverterContainer().getObjectTypeConverters().iterator().next();
 		

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -255,8 +255,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());	
 		
@@ -267,8 +267,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -290,8 +290,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -313,8 +313,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -336,8 +336,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -359,8 +359,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -382,8 +382,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -405,8 +405,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
@@ -428,8 +428,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
-		JavaPersistentAttribute persistentAttribute = attributes.next();
+		Iterator<JavaModifiablePersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
+		JavaModifiablePersistentAttribute persistentAttribute = attributes.next();
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		

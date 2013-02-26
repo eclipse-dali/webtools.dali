@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
@@ -117,7 +117,7 @@ public class OrmEclipseLinkPersistentAttribute
 
 
 	@Override
-	protected JavaPersistentAttribute getCachedJavaAttribute() {
+	protected JavaModifiablePersistentAttribute getCachedJavaAttribute() {
 		if (this.getAccess() == EclipseLinkAccessType.VIRTUAL) {
 			//if VIRTUAL we will always have to build and cache the 'javaAttribute'
 			//we clear out the cached 'javaAttribute in setSpecifiedAccess_() and setDefaultAccess_()

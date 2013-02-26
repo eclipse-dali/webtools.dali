@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
@@ -48,7 +48,7 @@ public class EclipseLinkJavaVariableOneToOneMappingDefinition
 		return EclipseLinkVariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaModifiablePersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -56,11 +56,11 @@ public class EclipseLinkJavaVariableOneToOneMappingDefinition
 		return EmptyIterable.instance();
 	}
 
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaModifiablePersistentAttribute persistentAttribute, JpaFactory factory) {
 		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkVariableOneToOneMapping(persistentAttribute);
 	}
 
-	public boolean isDefault(JavaPersistentAttribute persistentAttribute) {
+	public boolean isDefault(JavaModifiablePersistentAttribute persistentAttribute) {
 		return ((JavaEclipseLinkPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
 	}
 

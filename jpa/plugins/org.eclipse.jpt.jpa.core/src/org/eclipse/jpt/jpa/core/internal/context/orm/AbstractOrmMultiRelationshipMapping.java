@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
@@ -447,7 +447,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected String buildDefaultMapKeyClass() {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMultiReferenceMapKeyTypeName();
 	}
 
@@ -695,7 +695,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected AttributeMapping getJavaAttributeMapping() {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMapping();
 	}
 	// ********** map key join columns **********
@@ -977,7 +977,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			messages.add(
 				this.buildValidationMessage(
@@ -1015,7 +1015,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
 		if (this.isJpa2_0Compatible()) {
-			JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+			JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 			if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 				this.validateMapKeyClass_(messages);
 			}

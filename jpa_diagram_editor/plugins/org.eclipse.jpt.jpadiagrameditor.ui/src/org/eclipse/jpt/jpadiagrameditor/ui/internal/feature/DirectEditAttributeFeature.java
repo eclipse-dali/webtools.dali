@@ -30,7 +30,7 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -60,7 +60,7 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 
 	public String getInitialValue(IDirectEditingContext context) {
 		PictogramElement pe = context.getPictogramElement();
-		JavaPersistentAttribute jpa = (JavaPersistentAttribute)getFeatureProvider().
+		JavaModifiablePersistentAttribute jpa = (JavaModifiablePersistentAttribute)getFeatureProvider().
 											getBusinessObjectForPictogramElement(pe);
 		isMethodAnnotated = JpaArtifactFactory.instance().isMethodAnnotated(jpa);
 		Text txt = (Text) pe.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
@@ -85,8 +85,8 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 
 	private IStatus checkDuplicateAttribute(String value, IDirectEditingContext context) {
 		PictogramElement pe = context.getPictogramElement();
-		JavaPersistentAttribute oldAt = (JavaPersistentAttribute) getBusinessObjectForPictogramElement(pe);
-		JavaPersistentAttribute newAl = ((JavaPersistentType)oldAt.getParent()).getAttributeNamed(value);
+		JavaModifiablePersistentAttribute oldAt = (JavaModifiablePersistentAttribute) getBusinessObjectForPictogramElement(pe);
+		JavaModifiablePersistentAttribute newAl = ((JavaPersistentType)oldAt.getParent()).getAttributeNamed(value);
 		if (newAl != null && !newAl.equals(oldAt)) {
 			String message = MessageFormat.format(JPAEditorMessages.DirectEditAttributeFeature_attributeExists, value);
 			return new Status(IStatus.ERROR, JPADiagramEditorPlugin.PLUGIN_ID, message);
@@ -104,7 +104,7 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 		if (isMethodAnnotated)
 			value = JPAEditorUtil.produceValidAttributeName(value);
 		PictogramElement pe = context.getPictogramElement();
-		JavaPersistentAttribute oldAt = (JavaPersistentAttribute) getBusinessObjectForPictogramElement(pe);
+		JavaModifiablePersistentAttribute oldAt = (JavaModifiablePersistentAttribute) getBusinessObjectForPictogramElement(pe);
 
 		IRelation rel = getFeatureProvider().getRelationRelatedToAttribute(oldAt);
 		String inverseJPTName = null;

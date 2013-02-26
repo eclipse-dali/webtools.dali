@@ -34,7 +34,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToManyBiDirRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateManyToManyUniDirRelationFeature;
@@ -143,7 +143,7 @@ public class CreateRelationFeaturesTest {
 		assertSame(rel.getInverse(), t2);
 		assertNotNull(t1.getAttributeNamed(rel.getOwnerAttributeName()));
 		assertTrue(JpaArtifactFactory.instance().isMethodAnnotated(t1));
-		JavaPersistentAttribute jpa = t1.getAttributeNamed("id");
+		JavaModifiablePersistentAttribute jpa = t1.getAttributeNamed("id");
 		assertFalse(isRelationAnnotated(jpa));
 		jpa = t1.getAttributeNamed(rel.getOwnerAttributeName());
 		assertTrue(isRelationAnnotated(jpa));
@@ -549,7 +549,7 @@ public class CreateRelationFeaturesTest {
 		return JavaCore.createCompilationUnitFrom(file);
 	}
 
-	private boolean isRelationAnnotated(JavaPersistentAttribute jpa) {
+	private boolean isRelationAnnotated(JavaModifiablePersistentAttribute jpa) {
 		
 		HashSet<String> anNames = JpaArtifactFactory.instance().getAnnotationNames(jpa);
 		Iterator<String> it = anNames.iterator();

@@ -60,7 +60,7 @@ import org.eclipse.graphiti.tb.IContextMenuEntry;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.ImageDecorator;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
@@ -466,8 +466,8 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 				}
 				return JPAEditorUtil.getTooltipText((JavaPersistentType)bo, superPersistentTypeName);
 			} else {
-				if (bo instanceof JavaPersistentAttribute) {
-					return JPAEditorUtil.getTooltipText((JavaPersistentAttribute)bo);
+				if (bo instanceof JavaModifiablePersistentAttribute) {
+					return JPAEditorUtil.getTooltipText((JavaModifiablePersistentAttribute)bo);
 				}
 			}
 		}
@@ -683,8 +683,8 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		PictogramElement pe = context.getPictogramElements()[0];
 		Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(
 				pe);
-		if (bo instanceof JavaPersistentAttribute) {
-			JavaPersistentAttribute jpa = (JavaPersistentAttribute) bo;
+		if (bo instanceof JavaModifiablePersistentAttribute) {
+			JavaModifiablePersistentAttribute jpa = (JavaModifiablePersistentAttribute) bo;
 			IFile file = (IFile) jpa.getResource();
 			try {
 				file.setSessionProperty(new QualifiedName(null, JPAEditorMatchingStrategy.DOUBLE_CLICK), "true");	//$NON-NLS-1$			

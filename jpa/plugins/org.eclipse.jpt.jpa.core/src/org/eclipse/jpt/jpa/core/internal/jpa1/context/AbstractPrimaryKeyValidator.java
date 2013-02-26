@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
@@ -192,7 +192,7 @@ public abstract class AbstractPrimaryKeyValidator
 			return;
 		}
 
-		for (JavaPersistentAttribute idClassAttribute : this.getAllIdClassAttributes(idClass)) {
+		for (JavaModifiablePersistentAttribute idClassAttribute : this.getAllIdClassAttributes(idClass)) {
 			boolean foundMatch = false;
 			for (AttributeMapping attributeMapping : getAttributeMappings(typeMapping())) {
 				if (idClassAttribute.getName().equals(attributeMapping.getName())) {
@@ -364,7 +364,7 @@ public abstract class AbstractPrimaryKeyValidator
 	protected void validateIdClassPropertyMethods(
 			JavaPersistentType idClass, List<IMessage> messages, IReporter reporter) {
 
-			for (JavaPersistentAttribute attribute : getAllIdClassAttributes(idClass)) {
+			for (JavaModifiablePersistentAttribute attribute : getAllIdClassAttributes(idClass)) {
 				PropertyAccessor accessor = (PropertyAccessor)attribute.getAccessor();
 
 				// validate getter method
@@ -403,8 +403,8 @@ public abstract class AbstractPrimaryKeyValidator
 		return IterableTools.transform(getAllIdClassAttributes(idClass), ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
 	}
 
-	protected Iterable<JavaPersistentAttribute> getAllIdClassAttributes(JavaPersistentType idClass) {
-		return new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaPersistentAttribute>(idClass.getAllAttributes());
+	protected Iterable<JavaModifiablePersistentAttribute> getAllIdClassAttributes(JavaPersistentType idClass) {
+		return new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaModifiablePersistentAttribute>(idClass.getAllAttributes());
 	}
 
 	protected Iterable<String> getIdClassFieldNames(JavaPersistentType idClass) {

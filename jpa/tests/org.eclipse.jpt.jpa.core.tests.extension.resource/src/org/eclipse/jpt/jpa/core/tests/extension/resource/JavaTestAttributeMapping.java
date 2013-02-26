@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.tests.extension.resource;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 
 public class JavaTestAttributeMapping
@@ -20,7 +20,7 @@ public class JavaTestAttributeMapping
 	public static final String TEST_ATTRIBUTE_ANNOTATION_NAME = "test.TestAttribute"; //$NON-NLS-1$
 
 
-	public JavaTestAttributeMapping(JavaPersistentAttribute parent) {
+	public JavaTestAttributeMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 	}
 

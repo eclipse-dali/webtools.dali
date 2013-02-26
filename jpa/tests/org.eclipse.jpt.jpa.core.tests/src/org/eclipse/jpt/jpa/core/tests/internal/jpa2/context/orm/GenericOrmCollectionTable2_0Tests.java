@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -152,7 +152,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(TYPE_NAME + "_id", virtualJoinColumn.getDefaultName());
 		assertEquals("id", virtualJoinColumn.getDefaultReferencedColumnName());
 	
-		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) javaPersistentAttribute.getMapping();
 		JavaCollectionTable2_0 javaCollectionTable = javaElementCollectionMapping.getCollectionTable();
 		javaCollectionTable.setSpecifiedName("FOO");

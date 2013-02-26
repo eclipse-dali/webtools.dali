@@ -74,7 +74,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -331,7 +331,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	} else if ((bo instanceof AbstractRelation) ||
     			(bo instanceof HasReferanceRelation || (bo instanceof IsARelation))) {
     		return new DeleteRelationFeature(this);
-    	} else if (bo instanceof JavaPersistentAttribute) {
+    	} else if (bo instanceof JavaModifiablePersistentAttribute) {
     		return new ClickRemoveAttributeButtonFeature(this);
     	}
 		return null;
@@ -470,7 +470,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     		return super.getDirectEditingFeature(context);
         Object bo = getBusinessObjectForPictogramElement(pe);
         if (bo != null) {
-        	if (bo instanceof JavaPersistentAttribute) {
+        	if (bo instanceof JavaModifiablePersistentAttribute) {
         		return new DirectEditAttributeFeature(this);
         	}
         }
@@ -487,7 +487,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         return super.getDirectEditingFeature(context);
     }
     
-	public void renewAttributeJoiningStrategyPropertyListener(JavaPersistentAttribute jpa) {
+	public void renewAttributeJoiningStrategyPropertyListener(JavaModifiablePersistentAttribute jpa) {
 		((JPASolver)getIndependenceSolver()).renewAttributeJoiningStrategyPropertyListener(jpa);
 	}
     
@@ -595,7 +595,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	return ((JPASolver)getIndependenceSolver()).containsKey(name);
     }
     
-    public void replaceAttribute(final JavaPersistentAttribute oldAt, final JavaPersistentAttribute newAt) {
+    public void replaceAttribute(final JavaModifiablePersistentAttribute oldAt, final JavaModifiablePersistentAttribute newAt) {
     	final PictogramElement pe = this.getPictogramElementForBusinessObject(oldAt);
     	if (pe == null) {
     		//System.err.println("PictogramElement is null\n");
@@ -639,15 +639,15 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
     	return (getBusinessObjectForKey(id) != null);
     }
     
-	public boolean isRelationRelatedToAttribute(JavaPersistentAttribute jpa) {
+	public boolean isRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).isRelationRelatedToAttribute(jpa);
 	}
 
-	public IRelation getRelationRelatedToAttribute(JavaPersistentAttribute jpa) {
+	public IRelation getRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).getRelationRelatedToAttribute(jpa, this);
 	}    
 		
-	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaPersistentAttribute jpa) {
+	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaModifiablePersistentAttribute jpa) {
 		return ((JPASolver)getIndependenceSolver()).getEmbeddedRelationToAttribute(jpa);
 	}
 	

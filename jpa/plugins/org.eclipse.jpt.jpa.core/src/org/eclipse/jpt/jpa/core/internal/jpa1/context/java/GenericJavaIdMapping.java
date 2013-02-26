@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 
 
 public class GenericJavaIdMapping
 	extends AbstractJavaIdMapping
 {	
-	public GenericJavaIdMapping(JavaPersistentAttribute parent) {
+	public GenericJavaIdMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 	}
 }

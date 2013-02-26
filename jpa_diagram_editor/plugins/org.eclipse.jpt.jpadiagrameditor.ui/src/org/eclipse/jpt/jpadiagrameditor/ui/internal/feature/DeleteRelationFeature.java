@@ -22,7 +22,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -105,7 +105,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
     
 	private void deleteEmbeddedRelation(Object businessObjectForPictogramElement) {
 		HasReferanceRelation rel = (HasReferanceRelation)businessObjectForPictogramElement;
-		JavaPersistentAttribute attribute = rel.getEmbeddedAnnotatedAttribute();
+		JavaModifiablePersistentAttribute attribute = rel.getEmbeddedAnnotatedAttribute();
 		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);
 		if(textShape == null)
 			return;
@@ -119,7 +119,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 		
         if (rel instanceof IUnidirectionalRelation) {
         	IUnidirectionalRelation relation = (IUnidirectionalRelation)rel;
-    		JavaPersistentAttribute attribute = relation.getAnnotatedAttribute();
+    		JavaModifiablePersistentAttribute attribute = relation.getAnnotatedAttribute();
     		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);
     		if(textShape == null)
     			return;
@@ -132,14 +132,14 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         	IBidirectionalRelation relation = (IBidirectionalRelation)(rel);
         	ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
         	
-    		JavaPersistentAttribute ownerAttribute = relation.getOwnerAnnotatedAttribute();
+    		JavaModifiablePersistentAttribute ownerAttribute = relation.getOwnerAnnotatedAttribute();
     		PictogramElement ownerAttributeTextShape = getFeatureProvider().getPictogramElementForBusinessObject(ownerAttribute);
     		if(ownerAttributeTextShape == null)
     			return;
     		IDeleteContext deleteOwnerAttributeContext = new DeleteContext(ownerAttributeTextShape);
     		feat.delete(deleteOwnerAttributeContext, false);
     		
-    		JavaPersistentAttribute inverseAttribute = relation.getInverseAnnotatedAttribute();
+    		JavaModifiablePersistentAttribute inverseAttribute = relation.getInverseAnnotatedAttribute();
     		PictogramElement inverseAttributeTextShape = getFeatureProvider().getPictogramElementForBusinessObject(inverseAttribute);
     		if(inverseAttributeTextShape == null)
     			return;

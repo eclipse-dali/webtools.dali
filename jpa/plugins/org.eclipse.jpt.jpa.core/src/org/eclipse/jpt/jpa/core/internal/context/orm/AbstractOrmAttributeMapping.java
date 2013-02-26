@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -275,7 +275,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.getPersistentAttribute().getOwningTypeMapping();
 	}
 
-	protected JavaPersistentAttribute getJavaPersistentAttribute() {
+	protected JavaModifiablePersistentAttribute getJavaPersistentAttribute() {
 		return this.getPersistentAttribute().getJavaPersistentAttribute();
 	}
 

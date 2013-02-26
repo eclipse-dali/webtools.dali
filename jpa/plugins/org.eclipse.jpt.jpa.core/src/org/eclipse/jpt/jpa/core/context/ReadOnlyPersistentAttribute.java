@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 /**
  * Read-only context persistent <em>attribute</em> (field or property).
@@ -142,5 +142,5 @@ public interface ReadOnlyPersistentAttribute
 	 */
 	boolean isVirtual();
 
-	JavaPersistentAttribute getJavaPersistentAttribute();
+	JavaModifiablePersistentAttribute getJavaPersistentAttribute();
 }

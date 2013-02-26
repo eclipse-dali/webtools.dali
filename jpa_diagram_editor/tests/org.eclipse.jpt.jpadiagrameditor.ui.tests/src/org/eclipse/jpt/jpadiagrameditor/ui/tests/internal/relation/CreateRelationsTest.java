@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -144,7 +144,7 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		OneToOneAnnotation an = (OneToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
@@ -160,13 +160,13 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		OneToOneAnnotation an = (OneToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertNull(an.getMappedBy());
 				
-		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		JavaModifiablePersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
 		an = (OneToOneAnnotation)inverseAt.getResourceAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
@@ -182,7 +182,7 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		
 		OneToManyAnnotation an = (OneToManyAnnotation)ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
@@ -198,7 +198,7 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		ManyToOneAnnotation an = (ManyToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
@@ -211,13 +211,13 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		ManyToOneAnnotation an = (ManyToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		
 		assertEquals("customer", rel.getInverseAttributeName());
-		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		JavaModifiablePersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
 		OneToManyAnnotation an1 = (OneToManyAnnotation)inverseAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an1);
@@ -231,7 +231,7 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		ManyToManyAnnotation an = (ManyToManyAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
@@ -245,13 +245,13 @@ public class CreateRelationsTest {
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
 		assertEquals("address", rel.getOwnerAttributeName());
-		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+		JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		ManyToManyAnnotation an = (ManyToManyAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertNull(an.getMappedBy());
 				
-		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
+		JavaModifiablePersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
 		an = (ManyToManyAnnotation)inverseAt.getResourceAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
@@ -300,7 +300,7 @@ public class CreateRelationsTest {
 			assertSame(t1, rel.getOwner());
 			assertSame(t2, rel.getInverse());
 			assertEquals("address", rel.getOwnerAttributeName());
-			JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
+			JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("address");
 			assertNotNull(ownerAt);
 			
 			Object o1 = ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
@@ -362,7 +362,7 @@ public class CreateRelationsTest {
 			assertSame(t1, rel.getOwner());
 			assertSame(t2, rel.getInverse());
 			assertEquals("project", rel.getOwnerAttributeName());
-			JavaPersistentAttribute ownerAt = t1.getAttributeNamed("project");
+			JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("project");
 			assertNotNull(ownerAt);
 			
 			Object o1 = ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
@@ -422,7 +422,7 @@ public class CreateRelationsTest {
 			assertSame(t1, rel.getOwner());
 			assertSame(t2, rel.getInverse());
 			assertEquals("person", rel.getOwnerAttributeName());
-		    JavaPersistentAttribute ownerAt = t1.getAttributeNamed("person");
+		    JavaModifiablePersistentAttribute ownerAt = t1.getAttributeNamed("person");
 			assertNotNull(ownerAt);
 						
 			Object o1 = ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);

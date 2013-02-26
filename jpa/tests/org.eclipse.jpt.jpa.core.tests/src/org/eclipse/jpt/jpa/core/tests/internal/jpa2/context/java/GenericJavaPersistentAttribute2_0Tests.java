@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
@@ -130,7 +130,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		createTestEntityForDerivedId();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaPersistentAttribute id = getJavaPersistentType().getAttributeNamed("id");
+		JavaModifiablePersistentAttribute id = getJavaPersistentType().getAttributeNamed("id");
 		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		
 		id.getResourceAttribute().addAnnotation(JPA.ID);

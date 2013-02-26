@@ -66,7 +66,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
@@ -189,33 +189,33 @@ public interface JpaFactory
 	
 	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
 
-	JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor);
+	JavaModifiablePersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor);
 	
-	JavaPersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField);
+	JavaModifiablePersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField);
 	
-	JavaPersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
+	JavaModifiablePersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
 	
-	JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent);
+	JavaBasicMapping buildJavaBasicMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaPersistentAttribute parent);
+	JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaPersistentAttribute parent);
+	JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent);
+	JavaIdMapping buildJavaIdMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaManyToManyMapping buildJavaManyToManyMapping(JavaPersistentAttribute parent);
+	JavaManyToManyMapping buildJavaManyToManyMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent);
+	JavaManyToOneMapping buildJavaManyToOneMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent);
+	JavaOneToManyMapping buildJavaOneToManyMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent);
+	JavaOneToOneMapping buildJavaOneToOneMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaTransientMapping buildJavaTransientMapping(JavaPersistentAttribute parent);
+	JavaTransientMapping buildJavaTransientMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaVersionMapping buildJavaVersionMapping(JavaPersistentAttribute parent);
+	JavaVersionMapping buildJavaVersionMapping(JavaModifiablePersistentAttribute parent);
 	
-	JavaAttributeMapping buildJavaNullAttributeMapping(JavaPersistentAttribute parent);
+	JavaAttributeMapping buildJavaNullAttributeMapping(JavaModifiablePersistentAttribute parent);
 	
 	JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.ParentAdapter parentAdapter);
 

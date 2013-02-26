@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -56,7 +56,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	protected Embeddable targetEmbeddable;
 
 
-	protected AbstractJavaBaseEmbeddedMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaBaseEmbeddedMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.attributeOverrideContainer = this.buildAttributeOverrideContainer();
 	}
@@ -314,7 +314,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 
-		protected JavaPersistentAttribute getPersistentAttribute() {
+		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractJavaBaseEmbeddedMapping.this.getPersistentAttribute();
 		}
 	}

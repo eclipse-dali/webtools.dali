@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
@@ -26,7 +26,7 @@ public class JavaEclipseLinkVariableOneToOneMapping
 	
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
-	public JavaEclipseLinkVariableOneToOneMapping(JavaPersistentAttribute parent) {
+	public JavaEclipseLinkVariableOneToOneMapping(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.converterContainer = this.buildConverterContainer();
 	}

@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -169,7 +169,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
+	protected AbstractJavaElementCollectionMapping2_0(JavaModifiablePersistentAttribute parent) {
 		super(parent);
 		this.specifiedTargetClass = this.buildSpecifiedTargetClass();
 		this.specifiedFetch = this.buildSpecifiedFetch();
@@ -1570,7 +1570,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		JavaModifiablePersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
@@ -1800,7 +1800,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return AbstractJavaElementCollectionMapping2_0.this.getCollectionTable();
 		}
 
-		protected JavaPersistentAttribute getPersistentAttribute() {
+		protected JavaModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 	}

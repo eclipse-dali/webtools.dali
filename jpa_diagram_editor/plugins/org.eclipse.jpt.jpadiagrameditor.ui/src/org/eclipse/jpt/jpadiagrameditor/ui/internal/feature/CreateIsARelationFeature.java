@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -75,7 +75,7 @@ public class CreateIsARelationFeature extends AbstractCreateConnectionFeature {
 		JavaPersistentType subclass = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
 		
 		if(JpaArtifactFactory.instance().hasOrInheritsPrimaryKey(superclass)){
-			for(JavaPersistentAttribute jpa : subclass.getAttributes()){
+			for(JavaModifiablePersistentAttribute jpa : subclass.getAttributes()){
 				if(jpa.getMappingKey().equals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)){
 					jpa.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 				} else if(jpa.getMappingKey().equals(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {

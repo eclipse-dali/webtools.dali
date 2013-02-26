@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
@@ -70,9 +70,9 @@ public abstract class AbstractJavaPersistentType
 
 	protected JavaTypeMapping mapping;  // never null
 
-	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
+	protected final Vector<JavaModifiablePersistentAttribute> attributes = new Vector<JavaModifiablePersistentAttribute>();
 
-	protected final Vector<JavaPersistentAttribute> children = new Vector<JavaPersistentAttribute>();
+	protected final Vector<JavaModifiablePersistentAttribute> children = new Vector<JavaModifiablePersistentAttribute>();
 
 
 	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourceType resourceType) {
@@ -352,7 +352,7 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** attributes **********
 
-	public ListIterable<JavaPersistentAttribute> getAttributes() {
+	public ListIterable<JavaModifiablePersistentAttribute> getAttributes() {
 		return IterableTools.cloneLive(this.attributes);
 	}
 
@@ -364,13 +364,13 @@ public abstract class AbstractJavaPersistentType
 		return this.convertToNames(this.getAttributes());
 	}
 
-	public JavaPersistentAttribute getAttributeNamed(String attributeName) {
-		Iterator<JavaPersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
+	public JavaModifiablePersistentAttribute getAttributeNamed(String attributeName) {
+		Iterator<JavaModifiablePersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
 		return stream.hasNext() ? stream.next() : null;
 	}
 
-	public JavaPersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute) {
-		for (JavaPersistentAttribute javaAttribute : this.getAttributes()) {
+	public JavaModifiablePersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute) {
+		for (JavaModifiablePersistentAttribute javaAttribute : this.getAttributes()) {
 			if (javaAttribute.getResourceAttribute() == javaResourceAttribute) {
 				return javaAttribute;
 			}
@@ -389,14 +389,14 @@ public abstract class AbstractJavaPersistentType
 		return this.convertToNames(this.getAllAttributes());
 	}
 
-	protected Iterable<JavaPersistentAttribute> getAttributesNamed(String attributeName) {
+	protected Iterable<JavaModifiablePersistentAttribute> getAttributesNamed(String attributeName) {
 		return IterableTools.filter(this.getAttributes(), new ReadOnlyPersistentAttribute.NameEquals(attributeName));
 	}
 
 	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
-		Iterator<JavaPersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
+		Iterator<JavaModifiablePersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
 		if (stream.hasNext()) {
-			JavaPersistentAttribute attribute = stream.next();
+			JavaModifiablePersistentAttribute attribute = stream.next();
 			// return null if we have more than one
 			return stream.hasNext() ? null : attribute;
 		}
@@ -408,11 +408,11 @@ public abstract class AbstractJavaPersistentType
 		return IterableTools.transform(attrs, ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
 	}
 
-	protected JavaPersistentAttribute buildField(JavaResourceField resourceField) {
+	protected JavaModifiablePersistentAttribute buildField(JavaResourceField resourceField) {
 		return this.getJpaFactory().buildJavaPersistentField(this, resourceField);
 	}
 
-	protected JavaPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	protected JavaModifiablePersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		return this.getJpaFactory().buildJavaPersistentProperty(this, resourceGetter, resourceSetter);
 	}
 
@@ -420,15 +420,15 @@ public abstract class AbstractJavaPersistentType
 		return this.resourceType.hasAnyAnnotatedFields() || this.resourceType.hasAnyAnnotatedMethods();
 	}
 
-	protected void moveAttribute(int index, JavaPersistentAttribute attribute) {
+	protected void moveAttribute(int index, JavaModifiablePersistentAttribute attribute) {
 		this.moveItemInList(index, attribute, this.attributes, ATTRIBUTES_LIST);
 	}
 
-	protected void addAttribute(int index, JavaPersistentAttribute persistentAttribute) {
+	protected void addAttribute(int index, JavaModifiablePersistentAttribute persistentAttribute) {
 		this.addItemToList(index, persistentAttribute, this.attributes, ATTRIBUTES_LIST);
 	}
 
-	protected void removeAttribute(JavaPersistentAttribute attribute) {
+	protected void removeAttribute(JavaModifiablePersistentAttribute attribute) {
 		this.removeItemFromList(attribute, this.attributes, ATTRIBUTES_LIST);
 	}
 
@@ -524,7 +524,7 @@ public abstract class AbstractJavaPersistentType
 	 * 2. all annotated methods(getters/setters)
 	 */
 	private void syncFieldAccessAttributes() {
-		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		HashSet<JavaModifiablePersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
 
 		this.syncFieldAttributes(contextAttributes, buildNonTransientNonStaticResourceFieldsFilter());
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
@@ -537,7 +537,7 @@ public abstract class AbstractJavaPersistentType
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
 	private void syncPropertyAccessAttributes() {
-		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		HashSet<JavaModifiablePersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
 
 		this.syncFieldAttributes(contextAttributes, ANNOTATED_RESOURCE_FIELDS_FILTER);
 
@@ -547,8 +547,8 @@ public abstract class AbstractJavaPersistentType
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
 			if (methodsArePersistableProperties(getterMethod, setterMethod)) {
 				boolean match = false;
-				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JavaPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaModifiablePersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaModifiablePersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -566,15 +566,15 @@ public abstract class AbstractJavaPersistentType
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncAnnotatedPropertyAttributes(HashSet<JavaPersistentAttribute> contextAttributes) {
+	private void syncAnnotatedPropertyAttributes(HashSet<JavaModifiablePersistentAttribute> contextAttributes) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
 			if (getterMethod.isAnnotated() || ((setterMethod != null) && setterMethod.isAnnotated())) {
 				boolean match = false;
-				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JavaPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaModifiablePersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaModifiablePersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -592,11 +592,11 @@ public abstract class AbstractJavaPersistentType
 		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldAttributes(HashSet<JavaPersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
+	private void syncFieldAttributes(HashSet<JavaModifiablePersistentAttribute> contextAttributes, Predicate<JavaResourceField> filter) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			boolean match = false;
-			for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
-				JavaPersistentAttribute contextAttribute = stream.next();
+			for (Iterator<JavaModifiablePersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
+				JavaModifiablePersistentAttribute contextAttribute = stream.next();
 				if (contextAttribute.isFor(resourceField)) {
 					match = true;
 					contextAttribute.update();
@@ -613,15 +613,15 @@ public abstract class AbstractJavaPersistentType
 		}
 	}
 
-	private void syncRemainingResourceMethods(HashSet<JavaPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
+	private void syncRemainingResourceMethods(HashSet<JavaModifiablePersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
 		//iterate through remaining resource methods and search for those that are annotated.
 		//all getter methods will already be used.
 		for (JavaResourceMethod resourceMethod : resourceMethods) {
 			if (resourceMethod.isAnnotated()) {
 				boolean match = false;
 				//annotated setter(or other random method) with no corresponding getter, bring into context model for validation purposes
-				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
-					JavaPersistentAttribute contextAttribute = stream.next();
+				for (Iterator<JavaModifiablePersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
+					JavaModifiablePersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(null, resourceMethod)) {
 						match = true;
 						contextAttribute.update();
@@ -636,7 +636,7 @@ public abstract class AbstractJavaPersistentType
 		}
 
 		// remove any leftover context attributes
-		for (JavaPersistentAttribute contextAttribute : contextAttributes) {
+		for (JavaModifiablePersistentAttribute contextAttribute : contextAttributes) {
 			this.removeAttribute(contextAttribute);
 		}
 	}
@@ -963,7 +963,7 @@ public abstract class AbstractJavaPersistentType
 		this.synchronizeCollection(this.attributes, this.children, CHILDREN_COLLECTION);
 	}
 
-	public Iterable<JavaPersistentAttribute> getChildren() {
+	public Iterable<JavaModifiablePersistentAttribute> getChildren() {
 		return IterableTools.cloneLive(this.children);
 	}
 
@@ -984,7 +984,7 @@ public abstract class AbstractJavaPersistentType
 		if (values != null) {
 			return values;
 		}
-		for (JavaPersistentAttribute attribute : this.getAttributes()) {
+		for (JavaModifiablePersistentAttribute attribute : this.getAttributes()) {
 			values = attribute.getCompletionProposals(pos);
 			if (values != null) {
 				return values;
@@ -1014,12 +1014,12 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected void validateAttributes(List<IMessage> messages, IReporter reporter) {
-		for (JavaPersistentAttribute attribute : this.getAttributes()) {
+		for (JavaModifiablePersistentAttribute attribute : this.getAttributes()) {
 			this.validateAttribute(attribute, reporter, messages);
 		}
 	}
 
-	protected void validateAttribute(JavaPersistentAttribute attribute, IReporter reporter, List<IMessage> messages) {
+	protected void validateAttribute(JavaModifiablePersistentAttribute attribute, IReporter reporter, List<IMessage> messages) {
 		try {
 			attribute.validate(messages, reporter);
 		} catch(Throwable t) {
