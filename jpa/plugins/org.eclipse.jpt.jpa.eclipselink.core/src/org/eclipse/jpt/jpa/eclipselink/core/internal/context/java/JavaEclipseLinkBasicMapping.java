@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValueHolder;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValueMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBasicMapping;
@@ -35,7 +35,7 @@ public class JavaEclipseLinkBasicMapping
 		EclipseLinkBasicMapping,
 		EclipseLinkJavaConvertibleMapping,
 		JavaGeneratorContainer.ParentAdapter,
-		JavaGeneratedValueHolder
+		JavaGeneratedValueMapping
 {
 	protected final JavaEclipseLinkMutable mutable;
 	

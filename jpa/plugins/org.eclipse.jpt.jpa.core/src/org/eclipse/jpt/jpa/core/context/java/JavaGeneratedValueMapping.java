@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.GeneratedValueMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaGeneratedValueHolder
+public interface JavaGeneratedValueMapping
 	extends GeneratedValueMapping, JavaAttributeMapping
 {
 	JavaGeneratedValue getGeneratedValue();
