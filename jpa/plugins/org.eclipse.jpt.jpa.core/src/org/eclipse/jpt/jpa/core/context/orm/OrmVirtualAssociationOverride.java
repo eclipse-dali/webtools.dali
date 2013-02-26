@@ -25,5 +25,5 @@ public interface OrmVirtualAssociationOverride
 			OrmVirtualOverride
 {
 
-	OrmAssociationOverride convertToSpecified();
+	OrmSpecifiedAssociationOverride convertToSpecified();
 }

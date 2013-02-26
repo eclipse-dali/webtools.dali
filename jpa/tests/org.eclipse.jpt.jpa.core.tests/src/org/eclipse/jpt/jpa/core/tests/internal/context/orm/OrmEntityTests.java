@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -2017,7 +2017,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
@@ -2052,7 +2052,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getAssociationOverrides().get(1).setName("BAR");
 		entityResource.getAssociationOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmOverrideRelationship
-	extends AbstractOrmXmlContextModel<OrmAssociationOverride>
+	extends AbstractOrmXmlContextModel<OrmSpecifiedAssociationOverride>
 	implements OrmOverrideRelationship2_0
 {
 	protected RelationshipStrategy strategy;
@@ -54,7 +54,7 @@ public class GenericOrmOverrideRelationship
 	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 
-	public GenericOrmOverrideRelationship(OrmAssociationOverride parent) {
+	public GenericOrmOverrideRelationship(OrmSpecifiedAssociationOverride parent) {
 		super(parent);
 		this.joinColumnStrategy = this.buildJoinColumnStrategy();
 		this.joinTableStrategy = this.buildJoinTableStrategy();
@@ -220,7 +220,7 @@ public class GenericOrmOverrideRelationship
 
 	// ********** misc **********
 
-	protected OrmAssociationOverride getAssociationOverride() {
+	protected OrmSpecifiedAssociationOverride getAssociationOverride() {
 		return this.parent;
 	}
 

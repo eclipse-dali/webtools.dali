@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -32,7 +32,7 @@ public class GenericOrmAssociationOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAssociationOverrideContainer.Owner,
 			ReadOnlyAssociationOverride,
-			OrmAssociationOverride,
+			OrmSpecifiedAssociationOverride,
 			OrmVirtualAssociationOverride,
 			XmlAssociationOverride
 		>
@@ -79,12 +79,12 @@ public class GenericOrmAssociationOverrideContainer
 	}
 
 	@Override
-	protected OrmAssociationOverride buildSpecifiedOverride(XmlAssociationOverride xmlOverride) {
+	protected OrmSpecifiedAssociationOverride buildSpecifiedOverride(XmlAssociationOverride xmlOverride) {
 		return this.getContextModelFactory().buildOrmAssociationOverride(this, xmlOverride);
 	}
 
 	@Override
-	protected void initializeSpecifiedOverride(OrmAssociationOverride specifiedOverride, OrmVirtualAssociationOverride virtualOverride) {
+	protected void initializeSpecifiedOverride(OrmSpecifiedAssociationOverride specifiedOverride, OrmVirtualAssociationOverride virtualOverride) {
 		specifiedOverride.initializeFromVirtual(virtualOverride);
 	}
 

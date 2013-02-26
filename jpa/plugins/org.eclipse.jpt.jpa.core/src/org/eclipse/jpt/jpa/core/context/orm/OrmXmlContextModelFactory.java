@@ -143,11 +143,11 @@ public interface OrmXmlContextModelFactory
 
 	OrmVirtualAttributeOverride buildOrmVirtualAttributeOverride(OrmAttributeOverrideContainer parent, String name);
 
-	OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride);
+	OrmSpecifiedAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride);
 
 	OrmVirtualAssociationOverride buildOrmVirtualAssociationOverride(OrmAssociationOverrideContainer parent, String name);
 
-	OrmOverrideRelationship buildOrmOverrideRelationship(OrmAssociationOverride parent);
+	OrmOverrideRelationship buildOrmOverrideRelationship(OrmSpecifiedAssociationOverride parent);
 
 	VirtualOverrideRelationship buildOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent);
 

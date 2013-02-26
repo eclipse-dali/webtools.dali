@@ -32,12 +32,12 @@ public interface OrmAssociationOverrideContainer
 	extends AssociationOverrideContainer, OrmOverrideContainer
 {
 	// covariant overrides
-	ListIterable<OrmAssociationOverride> getSpecifiedOverrides();
-	OrmAssociationOverride getSpecifiedOverride(int index);
-	OrmAssociationOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<OrmSpecifiedAssociationOverride> getSpecifiedOverrides();
+	OrmSpecifiedAssociationOverride getSpecifiedOverride(int index);
+	OrmSpecifiedAssociationOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<OrmVirtualAssociationOverride> getVirtualOverrides();
 	OrmVirtualAssociationOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	OrmAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	OrmSpecifiedAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** owner **********

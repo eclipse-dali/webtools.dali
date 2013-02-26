@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -1130,7 +1130,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		ListIterator<OrmAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -1401,7 +1401,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("address2", entityResource.getAssociationOverrides().get(0).getName());
 		assertEquals(1, entityResource.getAssociationOverrides().size());
 
-		Iterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<OrmSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
@@ -1429,7 +1429,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
-		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertEquals("address", associationOverrides.next().getName());
 
@@ -1463,7 +1463,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		entityResource.getAssociationOverrides().add(2, OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		entityResource.getAssociationOverrides().get(2).setName("BAZ");
 			
-		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
@@ -1953,7 +1953,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		resourceEntity.getAssociationOverrides().add((XmlAssociationOverride) resourceAssociationOverride);
 		((XmlAssociationOverride) resourceAssociationOverride).setName("a");
 		
-		OrmAssociationOverride associationOverride = entity.getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
+		OrmSpecifiedAssociationOverride associationOverride = entity.getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("a", associationOverride.getName());
 		
 		XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();

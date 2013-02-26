@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
@@ -259,7 +259,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualAttributeOverride(parent, name);
 	}
 	
-	public OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride) {
+	public OrmSpecifiedAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride) {
 		return new GenericOrmAssociationOverride(parent, xmlOverride);
 	}
 	
@@ -267,7 +267,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmVirtualAssociationOverride(parent, name);
 	}
 	
-	public OrmOverrideRelationship buildOrmOverrideRelationship(OrmAssociationOverride parent) {
+	public OrmOverrideRelationship buildOrmOverrideRelationship(OrmSpecifiedAssociationOverride parent) {
 		return new GenericOrmOverrideRelationship(parent);
 	}
 	

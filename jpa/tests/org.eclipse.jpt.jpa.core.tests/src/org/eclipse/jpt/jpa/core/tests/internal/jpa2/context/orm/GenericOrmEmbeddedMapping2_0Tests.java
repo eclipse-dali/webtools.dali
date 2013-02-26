@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -1022,7 +1022,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 
 		OrmAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
-		ListIterator<OrmAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -1285,7 +1285,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("addresses", embeddedResource.getAssociationOverrides().get(0).getName());
 		assertEquals(1, embeddedResource.getAssociationOverrides().size());
 
-		Iterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<OrmSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("addresses", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
