@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmAssociationOverride
 	extends AbstractOrmOverride<OrmAssociationOverrideContainer, XmlAssociationOverride>
-	implements OrmAssociationOverride2_0
+	implements OrmSpecifiedAssociationOverride2_0
 {
 	protected final OrmOverrideRelationship relationship;
 

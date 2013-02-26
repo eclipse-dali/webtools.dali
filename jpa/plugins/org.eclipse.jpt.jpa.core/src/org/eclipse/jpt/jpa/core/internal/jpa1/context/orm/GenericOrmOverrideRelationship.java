@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOverrideJoinColum
 import org.eclipse.jpt.jpa.core.internal.context.orm.NullOrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.jpa.db.Table;
@@ -224,8 +224,8 @@ public class GenericOrmOverrideRelationship
 		return this.parent;
 	}
 
-	protected OrmAssociationOverride2_0 getAssociationOverride2_0() {
-		return (OrmAssociationOverride2_0) this.getAssociationOverride();
+	protected OrmSpecifiedAssociationOverride2_0 getAssociationOverride2_0() {
+		return (OrmSpecifiedAssociationOverride2_0) this.getAssociationOverride();
 	}
 
 	public XmlAssociationOverride getXmlContainer() {
