@@ -7,19 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.persistence;
+package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.JpaSchemaGeneration2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_5ForJpa2_1PlatformFactory;
 
 /**
- *  Generic2_1SchemaGenerationTests
+ *  EclipseLink2_5SchemaGenerationTests
  */
-public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
+public class EclipseLink2_5SchemaGenerationTests
+			extends EclipseLink2_5PersistenceUnitTestCase
 {
+	public static final String JPA_PLATFORM_ID =  EclipseLink2_5ForJpa2_1PlatformFactory.ID;
+	
 	JpaSchemaGeneration2_1 schemaGeneration;
 
 	public static final String SCHEMAGEN_DATABASE_ACTION_KEY = JpaSchemaGeneration2_1.PERSISTENCE_SCHEMAGEN_DATABASE_ACTION;
@@ -78,10 +82,14 @@ public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
 	public static final String SQL_LOAD_SCRIPT_SOURCE_TEST_VALUE = "SqlLoadScriptSource";
 	public static final String SQL_LOAD_SCRIPT_SOURCE_TEST_VALUE_2 = "SqlLoadScriptSource_2";
 
-
 	// ********** constructors **********
-	public Generic2_1SchemaGenerationTests(String name) {
+	public EclipseLink2_5SchemaGenerationTests(String name) {
 		super(name);
+	}
+
+	@Override
+	protected String getJpaPlatformID() {
+		return JPA_PLATFORM_ID;
 	}
 
 	// ********** behavior **********
@@ -462,4 +470,3 @@ public class Generic2_1SchemaGenerationTests extends PersistenceUnit2_1TestCase
 		return this.schemaGeneration;
 	}
 }
-
