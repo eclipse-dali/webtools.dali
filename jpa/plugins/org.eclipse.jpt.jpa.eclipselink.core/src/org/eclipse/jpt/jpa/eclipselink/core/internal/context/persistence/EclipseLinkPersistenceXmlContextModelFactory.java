@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
 
 
-public class EclipseLinkPersistenceXmlContextNodeFactory
+public class EclipseLinkPersistenceXmlContextModelFactory
 		extends AbstractEclipseLinkPersistenceXmlContextModelFactory {
 
 	@Override
