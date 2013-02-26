@@ -151,7 +151,7 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	private void disableUnvalidRelationTargets(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(embeddingEntity.getJpaProject(), JPAEditorUtil.JPA_PROJECT_FACET_10);
 		if(JpaArtifactFactory.instance().hasEntityAnnotation(embeddingEntity)
@@ -189,7 +189,7 @@ public class EmbedSingleObjectFeature extends AbstractCreateConnectionFeature {
 	private void disableAllMappedSuperclasses() {
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName()), JPAEditorUtil.JPA_PROJECT_FACET_10);
 		for (ClassRef classRef : unit.getClassRefs()) {

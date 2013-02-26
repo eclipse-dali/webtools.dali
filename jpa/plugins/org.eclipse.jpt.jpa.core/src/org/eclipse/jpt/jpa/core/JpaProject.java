@@ -158,16 +158,16 @@ public interface JpaProject
 	/**
 	 * Return the root of the JPA project's context model.
 	 */
-	JpaContextModelRoot getRootContextNode();
+	JpaContextModelRoot getContextModelRoot();
 
-	Transformer<JpaProject, JpaContextModelRoot> ROOT_CONTEXT_NODE_TRANSFORMER = new RootContextNodeTransformer();
+	Transformer<JpaProject, JpaContextModelRoot> CONTEXT_MODEL_ROOT_TRANSFORMER = new ContextModelRootTransformer();
 
-	class RootContextNodeTransformer
+	class ContextModelRootTransformer
 		extends AbstractTransformer<JpaProject, JpaContextModelRoot>
 	{
 		@Override
 		protected JpaContextModelRoot transform_(JpaProject jpaProject) {
-			return jpaProject.getRootContextNode();
+			return jpaProject.getContextModelRoot();
 		}
 	}
 

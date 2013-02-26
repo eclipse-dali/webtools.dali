@@ -179,7 +179,7 @@ public class JpaRenameMappingFileParticipant
 	}
 
 	private PersistenceUnit getPersistenceUnit(JpaProject jpaProject) {
-		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			return null;
 		}

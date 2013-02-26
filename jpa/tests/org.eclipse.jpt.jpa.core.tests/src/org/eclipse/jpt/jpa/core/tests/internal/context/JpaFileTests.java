@@ -147,7 +147,7 @@ public class JpaFileTests
 	public void testUpdatePersistenceRootStructureNodePersistenceRemoved() throws Exception {
 		IFile file = getPersistenceXmlResource().getFile();
 		JpaFile persistenceXmlJpaFile = this.getJpaFile(file);
-		assertEquals(getRootContextNode().getPersistenceXml().getRoot(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
+		assertEquals(getContextModelRoot().getPersistenceXml().getRoot(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
 		
 		JptXmlResource resource = (JptXmlResource) persistenceXmlJpaFile.getResourceModel();
 		resource.getContents().remove(resource.getRootObject());
@@ -190,8 +190,8 @@ public class JpaFileTests
 	public void testPersistenceRootStructureNodeRemovedFromResourceModel() throws Exception {
 		IFile file = getPersistenceXmlResource().getFile();
 		JpaFile persistenceXmlJpaFile = this.getJpaFile(file);
-		getRootContextNode().getPersistenceXml().getRoot();
-		assertEquals(getRootContextNode().getPersistenceXml().getRoot(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
+		getContextModelRoot().getPersistenceXml().getRoot();
+		assertEquals(getContextModelRoot().getPersistenceXml().getRoot(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
 		
 		getPersistenceXmlResource().getContents().remove(getXmlPersistence());
 		
@@ -347,7 +347,7 @@ public class JpaFileTests
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.getRootStructureNodes().iterator().next());
 		
-		getJpaProject().getRootContextNode().getPersistenceXml().getRoot().removePersistenceUnit(0);
+		getJpaProject().getContextModelRoot().getPersistenceXml().getRoot().removePersistenceUnit(0);
 
 		assertFalse(javaJpaFile.getRootStructureNodes().iterator().hasNext());
 		assertEquals(0, javaJpaFile.getRootStructureNodesSize());

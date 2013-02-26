@@ -150,7 +150,7 @@ public class PackageGenerator {
 			return;
 		}
 
-		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getRoot();
+		Persistence persistence = this.jpaProject.getContextModelRoot().getPersistenceXml().getRoot();
 		if (persistence == null) {
 			// invalid content, do not attempt to update
 			return;
@@ -228,7 +228,7 @@ public class PackageGenerator {
 			return;
 		}
 
-		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getRoot();
+		Persistence persistence = this.jpaProject.getContextModelRoot().getPersistenceXml().getRoot();
 		if (persistence == null) {
 			// invalid content, do not attempt to update
 			return;

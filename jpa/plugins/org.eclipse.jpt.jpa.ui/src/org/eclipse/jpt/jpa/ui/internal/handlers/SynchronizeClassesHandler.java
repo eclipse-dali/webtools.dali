@@ -151,7 +151,7 @@ public class SynchronizeClassesHandler extends AbstractHandler
 			}
 			sm.worked(1);
 			
-			PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+			PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
 			if (persistenceXml == null) {
 				return;  // unlikely...
 			}

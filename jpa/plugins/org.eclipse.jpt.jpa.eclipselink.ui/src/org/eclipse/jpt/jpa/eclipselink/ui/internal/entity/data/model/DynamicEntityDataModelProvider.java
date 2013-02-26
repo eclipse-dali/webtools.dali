@@ -659,7 +659,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		JpaContextModelRoot rcn = this.getJpaProject().getRootContextNode();
+		JpaContextModelRoot rcn = this.getJpaProject().getContextModelRoot();
 		return (rcn == null) ? null : rcn.getPersistenceXml();
 	}
 	

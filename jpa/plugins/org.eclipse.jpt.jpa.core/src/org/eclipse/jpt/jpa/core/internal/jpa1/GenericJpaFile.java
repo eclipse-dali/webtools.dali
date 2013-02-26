@@ -110,7 +110,7 @@ public class GenericJpaFile
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		return this.getParent().getRootContextNode().getPersistenceXml();
+		return this.getParent().getContextModelRoot().getPersistenceXml();
 	}
 
 	/**

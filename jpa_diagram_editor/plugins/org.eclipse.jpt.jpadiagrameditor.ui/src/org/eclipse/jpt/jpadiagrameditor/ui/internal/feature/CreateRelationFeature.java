@@ -184,7 +184,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	private void disableUnvalidRelationTargets(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		if(JpaArtifactFactory.instance().hasEntityAnnotation(owner)){
 			disableAllJPTsThatAreNotEntities(unit);
@@ -244,7 +244,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	private void disableAllEmbeddables() {
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		boolean isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName()), JPAEditorUtil.JPA_PROJECT_FACET_10);
 

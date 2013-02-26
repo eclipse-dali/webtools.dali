@@ -187,7 +187,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceUnit getPersistenceUnit() {
-		return getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator().next();
+		return getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator().next();
 	}
 	
 	protected ClassRef getSpecifiedClassRef() {
@@ -232,8 +232,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 	}
 
-	protected JpaContextModelRoot getRootContextNode() {
-		return getJavaProject().getJpaProject().getRootContextNode();
+	protected JpaContextModelRoot getContextModelRoot() {
+		return getJavaProject().getJpaProject().getContextModelRoot();
 	}
 	
 	@Override

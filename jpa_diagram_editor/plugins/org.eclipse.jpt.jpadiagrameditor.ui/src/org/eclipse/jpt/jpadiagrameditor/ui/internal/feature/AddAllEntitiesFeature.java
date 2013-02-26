@@ -73,7 +73,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 	public void execute(ICustomContext context) {
 		Diagram d = getDiagram();
 		JpaProject project = getTargetJPAProject();
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		
 		

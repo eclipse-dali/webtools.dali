@@ -67,7 +67,7 @@ public class GenericJpaDatabaseIdentifierAdapter
 		// the root context node can be null during construction;
 		// this shouldn't be a problem since the default-delimiters flag
 		// is recalculated during the initial, post-project construction, "update"
-		JpaContextModelRoot rcn = this.dataSource.getJpaProject().getRootContextNode();
+		JpaContextModelRoot rcn = this.dataSource.getJpaProject().getContextModelRoot();
 		return (rcn == null) ? null : rcn.getPersistenceXml();
 	}
 

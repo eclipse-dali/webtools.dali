@@ -608,7 +608,7 @@ public class JpaArtifactFactory {
 		HashSet<JavaPersistentType> embeddingEntities = new HashSet<JavaPersistentType>();
 		if(!hasEmbeddableAnnotation(embeddable))
 			return embeddingEntities;
-		ListIterator<PersistenceUnit> lit = embeddable.getJpaProject().getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
+		ListIterator<PersistenceUnit> lit = embeddable.getJpaProject().getContextModelRoot().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		for(PersistentType jpt : pu.getPersistentTypes()){
 			if(!jpt.equals(embeddable)){
@@ -1605,9 +1605,9 @@ public class JpaArtifactFactory {
 	}
 	
 	public PersistenceUnit getPersistenceUnit(JpaProject project) {
-		if(project.getRootContextNode().getPersistenceXml() == null)
+		if(project.getContextModelRoot().getPersistenceXml() == null)
 			return null;
-		return project.getRootContextNode().getPersistenceXml().getRoot()
+		return project.getContextModelRoot().getPersistenceXml().getRoot()
 				.getPersistenceUnits().iterator().next();
 	}
 	

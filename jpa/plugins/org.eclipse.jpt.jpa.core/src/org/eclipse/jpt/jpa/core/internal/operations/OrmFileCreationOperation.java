@@ -54,7 +54,7 @@ public class OrmFileCreationOperation
 	protected PersistenceUnit getPersistenceUnit() throws ExecutionException {
 		String pUnitName = getDataModel().getStringProperty(PERSISTENCE_UNIT);
 		JpaProject jpaProject = getJpaProject();
-		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			throw new ExecutionException("Project does not have a persistence.xml file"); //$NON-NLS-1$
 		}

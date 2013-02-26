@@ -23,7 +23,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	protected PersistenceXml getPersistenceXml() {
-		return getRootContextNode().getPersistenceXml();
+		return getContextModelRoot().getPersistenceXml();
 	}
 	
 	public void testUpdateAddPersistence() throws Exception {

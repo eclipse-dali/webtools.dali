@@ -173,7 +173,7 @@ public abstract class AbstractJpaProject
 	 * The root of the model representing the collated resources associated with
 	 * the JPA project.
 	 */
-	protected final JpaContextModelRoot rootContextNode;
+	protected final JpaContextModelRoot contextModelRoot;
 
 	/**
 	 * A repeating command that keeps the JPA project's context model
@@ -254,7 +254,7 @@ public abstract class AbstractJpaProject
 			}
 		}
 
-		this.rootContextNode = this.buildRootContextNode();
+		this.contextModelRoot = this.buildRootContextNode();
 
 		this.updateCommandListener = this.buildUpdateCommandListener();
 		this.initializeContextModel();
@@ -765,8 +765,8 @@ public abstract class AbstractJpaProject
 
 	// ********** context model **********
 
-	public JpaContextModelRoot getRootContextNode() {
-		return this.rootContextNode;
+	public JpaContextModelRoot getContextModelRoot() {
+		return this.contextModelRoot;
 	}
 
 
@@ -1041,7 +1041,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void initializeMetamodel() {
-		((JpaContextModelRoot2_0) this.rootContextNode).initializeMetamodel();
+		((JpaContextModelRoot2_0) this.contextModelRoot).initializeMetamodel();
 	}
 
 	/**
@@ -1109,11 +1109,11 @@ public abstract class AbstractJpaProject
 	 * Called by the {@link SynchronizeMetamodelJob#runInWorkspace(IProgressMonitor)}.
 	 */
 	protected IStatus synchronizeMetamodel_(IProgressMonitor monitor) {
-		return ((JpaContextModelRoot2_0) this.rootContextNode).synchronizeMetamodel(monitor);
+		return ((JpaContextModelRoot2_0) this.contextModelRoot).synchronizeMetamodel(monitor);
 	}
 
 	protected void disposeMetamodel() {
-		((JpaContextModelRoot2_0) this.rootContextNode).disposeMetamodel();
+		((JpaContextModelRoot2_0) this.contextModelRoot).disposeMetamodel();
 	}
 
 	public IPackageFragmentRoot getMetamodelPackageFragmentRoot() {
@@ -1466,7 +1466,7 @@ public abstract class AbstractJpaProject
 		}
 		this.validateLibraryProvider(messages);
 		this.validateConnection(messages);
-		this.rootContextNode.validate(messages, reporter);
+		this.contextModelRoot.validate(messages, reporter);
 	}
 
 	protected void validateLibraryProvider(List<IMessage> messages) {
@@ -1923,7 +1923,7 @@ public abstract class AbstractJpaProject
 	 */
 	// TODO pass the monitor down
 	protected IStatus synchronizeContextModel(@SuppressWarnings("unused") IProgressMonitor monitor) {
-		this.rootContextNode.synchronizeWithResourceModel();
+		this.contextModelRoot.synchronizeWithResourceModel();
 		return Status.OK_STATUS;
 	}
 
@@ -2001,7 +2001,7 @@ public abstract class AbstractJpaProject
 	 */
 	// TODO pass the monitor down
 	protected IStatus update(@SuppressWarnings("unused") IProgressMonitor monitor) {
-		this.rootContextNode.update();
+		this.contextModelRoot.update();
 		this.updateRootStructureNodes();
 		return Status.OK_STATUS;
 	}

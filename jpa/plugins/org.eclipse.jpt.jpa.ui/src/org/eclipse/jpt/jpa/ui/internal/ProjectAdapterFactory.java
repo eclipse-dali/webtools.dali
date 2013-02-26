@@ -142,7 +142,7 @@ public class ProjectAdapterFactory
 		implements JpaRootContextNodeModel
 	{
 		JpaRootContextNodeModelAdapter(JpaProjectModel jpaProjectsModel) {
-			super(jpaProjectsModel, JpaProject.ROOT_CONTEXT_NODE_TRANSFORMER);
+			super(jpaProjectsModel, JpaProject.CONTEXT_MODEL_ROOT_TRANSFORMER);
 		}
 
 		public IProject getProject() {

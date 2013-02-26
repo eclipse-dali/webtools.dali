@@ -125,7 +125,7 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	private void disableAllNotValidJPTs(){
 		Diagram d = getDiagram();
 		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+		PersistenceUnit unit = project.getContextModelRoot().getPersistenceXml().
 								getRoot().getPersistenceUnits().iterator().next();
 		disableAllEmbeddables(unit);
 	}

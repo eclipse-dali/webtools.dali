@@ -896,7 +896,7 @@ public class JpaMakePersistentWizardPage
 		}
 
 		protected PersistenceXml getPersistenceXml() {
-			JpaContextModelRoot rcn = this.jpaProject.getRootContextNode();
+			JpaContextModelRoot rcn = this.jpaProject.getContextModelRoot();
 			return (rcn == null) ? null : rcn.getPersistenceXml();
 		}
 

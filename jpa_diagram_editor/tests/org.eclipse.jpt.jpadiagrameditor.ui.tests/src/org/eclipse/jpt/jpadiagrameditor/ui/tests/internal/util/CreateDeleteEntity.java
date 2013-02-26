@@ -51,7 +51,7 @@ public class CreateDeleteEntity {
 		assertNotNull(jpaProject);
 //		SynchronousJpaProjectUpdater updater = new SynchronousJpaProjectUpdater(jpaProject);
 //		updater.start();
-		JpaContextModelRoot jpaProjectContent = jpaProject.getRootContextNode();
+		JpaContextModelRoot jpaProjectContent = jpaProject.getContextModelRoot();
 		assertNotNull(jpaProjectContent);		
 //		if(jpaProjectContent.getPersistenceXml() == null) {		
 //			updater = new SynchronousJpaProjectUpdater(jpaProject);

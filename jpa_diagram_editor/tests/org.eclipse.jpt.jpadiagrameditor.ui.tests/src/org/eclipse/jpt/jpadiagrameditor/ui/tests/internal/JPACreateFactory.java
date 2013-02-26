@@ -226,7 +226,7 @@ public class JPACreateFactory {
 		String name = nameElements.get(Math.max(0, nameElements.size()-1));
 //		SynchronousJpaProjectUpdater updater = new SynchronousJpaProjectUpdater(jpaProject);
 //		updater.start();
-		JpaContextModelRoot jpaProjectContent = jpaProject.getRootContextNode();
+		JpaContextModelRoot jpaProjectContent = jpaProject.getContextModelRoot();
 		PersistenceXml persXML = jpaProjectContent.getPersistenceXml();
 		int cnt = 0;
 		while ((persXML == null) && (cnt < 100)) {		
