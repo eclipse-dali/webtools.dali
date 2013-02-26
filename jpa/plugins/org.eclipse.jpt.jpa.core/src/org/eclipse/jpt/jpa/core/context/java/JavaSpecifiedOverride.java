@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
  * @version 3.3
  * @since 2.3
  */
-public interface JavaOverride
+public interface JavaSpecifiedOverride
 	extends SpecifiedOverride
 {
 	OverrideAnnotation getOverrideAnnotation();

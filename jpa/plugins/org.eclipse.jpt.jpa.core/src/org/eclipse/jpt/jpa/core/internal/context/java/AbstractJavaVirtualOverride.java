@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -45,7 +45,7 @@ public abstract class AbstractJavaVirtualOverride<P extends JavaOverrideContaine
 		return true;
 	}
 
-	public JavaOverride convertToSpecified() {
+	public JavaSpecifiedOverride convertToSpecified() {
 		return this.getContainer().convertOverrideToSpecified(this);
 	}
 

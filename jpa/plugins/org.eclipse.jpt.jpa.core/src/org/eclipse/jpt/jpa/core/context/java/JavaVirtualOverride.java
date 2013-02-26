@@ -25,5 +25,5 @@ import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 public interface JavaVirtualOverride
 	extends VirtualOverride
 {
-	JavaOverride convertToSpecified();
+	JavaSpecifiedOverride convertToSpecified();
 }

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
@@ -57,7 +57,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractJavaOverrideContainer<
 			O extends JavaOverrideContainer.Owner,
 			R extends Override_,
-			S extends JavaOverride,
+			S extends JavaSpecifiedOverride,
 			V extends JavaVirtualOverride,
 			A extends OverrideAnnotation & NestableAnnotation
 		>

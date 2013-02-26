@@ -41,12 +41,12 @@ public interface JavaOverrideContainer
 	Iterable<String> getOverrideNames();
 
 	// covariant overrides
-	ListIterable<? extends JavaOverride> getSpecifiedOverrides();
-	JavaOverride getSpecifiedOverride(int index);
-	JavaOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<? extends JavaSpecifiedOverride> getSpecifiedOverrides();
+	JavaSpecifiedOverride getSpecifiedOverride(int index);
+	JavaSpecifiedOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<? extends JavaVirtualOverride> getVirtualOverrides();
 	JavaVirtualOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	JavaOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	JavaSpecifiedOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** owner **********
