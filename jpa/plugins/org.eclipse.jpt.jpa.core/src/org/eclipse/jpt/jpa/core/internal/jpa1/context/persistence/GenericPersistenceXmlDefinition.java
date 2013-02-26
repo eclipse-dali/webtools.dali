@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.GenericPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.GenericPersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -50,6 +50,6 @@ public class GenericPersistenceXmlDefinition
 
 	@Override
 	protected PersistenceXmlContextModelFactory buildContextNodeFactory() {
-		return new GenericPersistenceXmlContextNodeFactory();
+		return new GenericPersistenceXmlContextModelFactory();
 	}
 }
