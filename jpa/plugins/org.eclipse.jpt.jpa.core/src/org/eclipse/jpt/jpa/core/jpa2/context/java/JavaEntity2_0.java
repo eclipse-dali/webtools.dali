@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
  * @since 3.3
  */
 public interface JavaEntity2_0
-	extends JavaEntity, JavaCacheableHolder2_0
+	extends JavaEntity, JavaCacheableReference2_0
 {
 	//combine interfaces
 }

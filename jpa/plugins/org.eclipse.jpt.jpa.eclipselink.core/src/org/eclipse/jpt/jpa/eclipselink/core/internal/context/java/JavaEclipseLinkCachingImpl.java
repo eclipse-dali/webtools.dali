@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationType2_2;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkCachingImpl
 	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
-	implements JavaEclipseLinkCaching, JavaCacheableHolder2_0
+	implements JavaEclipseLinkCaching, JavaCacheableReference2_0
 {
 	protected EclipseLinkCacheType specifiedType;
 	protected Integer specifiedSize;

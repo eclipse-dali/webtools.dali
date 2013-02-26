@@ -12,16 +12,16 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
 
 /**
  * null Java cacheable
  */
 public class NullJavaCacheable2_0
-	extends AbstractJavaContextModel<JavaCacheableHolder2_0>
+	extends AbstractJavaContextModel<JavaCacheableReference2_0>
 	implements Cacheable2_0
 {
-	public NullJavaCacheable2_0(JavaCacheableHolder2_0 parent) {
+	public NullJavaCacheable2_0(JavaCacheableReference2_0 parent) {
 		super(parent);
 	}
 	
@@ -47,7 +47,7 @@ public class NullJavaCacheable2_0
 
 	// ********** misc **********
 
-	protected JavaCacheableHolder2_0 getCacheableHolder() {
+	protected JavaCacheableReference2_0 getCacheableHolder() {
 		return this.parent;
 	}
 

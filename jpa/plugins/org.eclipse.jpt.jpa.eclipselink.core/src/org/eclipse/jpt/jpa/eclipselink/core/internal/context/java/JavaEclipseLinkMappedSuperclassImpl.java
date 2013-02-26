@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -47,7 +47,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	extends AbstractJavaMappedSuperclass
 	implements 
 		JavaEclipseLinkMappedSuperclass, 
-		JavaCacheableHolder2_0, 
+		JavaCacheableReference2_0, 
 		JavaEclipseLinkConverterContainer.ParentAdapter,
 		JavaGeneratorContainer.ParentAdapter
 {
@@ -243,7 +243,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	public Cacheable2_0 getCacheable() {
-		return ((JavaCacheableHolder2_0) this.getCaching()).getCacheable();
+		return ((JavaCacheableReference2_0) this.getCaching()).getCacheable();
 	}
 
 	public boolean calculateDefaultCacheable() {

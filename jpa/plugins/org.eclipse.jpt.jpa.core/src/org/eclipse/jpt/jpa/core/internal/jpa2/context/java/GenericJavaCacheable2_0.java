@@ -13,21 +13,21 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
 
 /**
  * Java cacheable
  */
 public class GenericJavaCacheable2_0
-	extends AbstractJavaContextModel<JavaCacheableHolder2_0>
+	extends AbstractJavaContextModel<JavaCacheableReference2_0>
 	implements Cacheable2_0
 {
 	protected Boolean specifiedCacheable;
 	protected boolean defaultCacheable;
 
 
-	public GenericJavaCacheable2_0(JavaCacheableHolder2_0 parent) {
+	public GenericJavaCacheable2_0(JavaCacheableReference2_0 parent) {
 		super(parent);
 		this.specifiedCacheable = this.buildSpecifiedCacheable();
 	}
@@ -141,7 +141,7 @@ public class GenericJavaCacheable2_0
 
 	// ********** misc **********
 
-	protected JavaCacheableHolder2_0 getCacheableHolder() {
+	protected JavaCacheableReference2_0 getCacheableHolder() {
 		return this.parent;
 	}
 

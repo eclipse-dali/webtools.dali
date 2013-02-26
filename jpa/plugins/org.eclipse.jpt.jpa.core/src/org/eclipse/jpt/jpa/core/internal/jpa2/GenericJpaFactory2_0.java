@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0.Owner;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
@@ -123,7 +123,7 @@ public class GenericJpaFactory2_0
 		return new GenericJavaElementCollectionMapping2_0(parent);
 	}
 
-	public Cacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
+	public Cacheable2_0 buildJavaCacheable(JavaCacheableReference2_0 parent) {
 		return new GenericJavaCacheable2_0(parent);
 	}
 
