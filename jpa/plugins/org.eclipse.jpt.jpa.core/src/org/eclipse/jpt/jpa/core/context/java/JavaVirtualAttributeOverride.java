@@ -24,5 +24,5 @@ public interface JavaVirtualAttributeOverride
 	extends VirtualAttributeOverride,
 			JavaVirtualOverride
 {
-	JavaAttributeOverride convertToSpecified();
+	JavaSpecifiedAttributeOverride convertToSpecified();
 }

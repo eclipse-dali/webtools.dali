@@ -39,12 +39,12 @@ public interface JavaAttributeOverrideContainer
 	ReadOnlyColumn getOverrideColumn(String overrideName);
 
 	// covariant overrides
-	ListIterable<JavaAttributeOverride> getSpecifiedOverrides();
-	JavaAttributeOverride getSpecifiedOverride(int index);
-	JavaAttributeOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<JavaSpecifiedAttributeOverride> getSpecifiedOverrides();
+	JavaSpecifiedAttributeOverride getSpecifiedOverride(int index);
+	JavaSpecifiedAttributeOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<JavaVirtualAttributeOverride> getVirtualOverrides();
 	JavaVirtualAttributeOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	JavaAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	JavaSpecifiedAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** Java owner **********

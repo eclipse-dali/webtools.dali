@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -25,7 +25,7 @@ public class GenericJavaAttributeOverrideContainer
 	extends AbstractJavaOverrideContainer<
 			JavaAttributeOverrideContainer.Owner,
 			ReadOnlyAttributeOverride,
-			JavaAttributeOverride,
+			JavaSpecifiedAttributeOverride,
 			JavaVirtualAttributeOverride,
 			AttributeOverrideAnnotation
 		>
@@ -50,12 +50,12 @@ public class GenericJavaAttributeOverrideContainer
 	}
 
 	@Override
-	protected JavaAttributeOverride buildSpecifiedOverride(AttributeOverrideAnnotation overrideAnnotation) {
+	protected JavaSpecifiedAttributeOverride buildSpecifiedOverride(AttributeOverrideAnnotation overrideAnnotation) {
 		return this.getJpaFactory().buildJavaAttributeOverride(this, overrideAnnotation);
 	}
 
 	@Override
-	protected void initializeSpecifiedOverride(JavaAttributeOverride specifiedOverride, JavaVirtualAttributeOverride virtualOverride) {
+	protected void initializeSpecifiedOverride(JavaSpecifiedAttributeOverride specifiedOverride, JavaVirtualAttributeOverride virtualOverride) {
 		specifiedOverride.initializeFromVirtual(virtualOverride);
 	}
 

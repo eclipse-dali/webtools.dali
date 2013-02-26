@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
@@ -681,7 +681,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return new MapKeyAttributeOverrideContainerOwner();
 	}
 
-	protected JavaAttributeOverride getSpecifiedJavaMapKeyAttributeOverrideNamed(String attributeName) {
+	protected JavaSpecifiedAttributeOverride getSpecifiedJavaMapKeyAttributeOverrideNamed(String attributeName) {
 		JavaCollectionMapping2_0 javaCollectionMapping = this.getJavaCollectionMapping();
 		return (javaCollectionMapping == null) ? null :
 			javaCollectionMapping.getMapKeyAttributeOverrideContainer().getSpecifiedOverrideNamed(attributeName);
@@ -1197,7 +1197,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return (overriddenTypeMapping != null) ? overriddenTypeMapping.getAllOverridableAttributeNames() : EmptyIterable.<String>instance();
 		}
 
-		protected JavaAttributeOverride getSpecifiedJavaAttributeOverrideNamed(String attributeName) {
+		protected JavaSpecifiedAttributeOverride getSpecifiedJavaAttributeOverrideNamed(String attributeName) {
 			return AbstractOrmMultiRelationshipMapping.this.getSpecifiedJavaMapKeyAttributeOverrideNamed(attributeName);
 		}
 

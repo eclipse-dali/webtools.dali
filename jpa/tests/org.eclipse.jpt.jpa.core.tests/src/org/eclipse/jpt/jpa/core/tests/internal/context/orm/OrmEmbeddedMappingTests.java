@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
@@ -447,7 +447,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
-		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		SpecifiedAttributeOverride attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
 		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
@@ -566,8 +566,8 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 
-		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
-		JavaAttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
+		ListIterator<JavaSpecifiedAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		JavaSpecifiedAttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
 		Column column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getSpecifiedName());

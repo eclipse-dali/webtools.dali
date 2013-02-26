@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -44,8 +44,8 @@ public class GenericJavaVirtualAttributeOverride
 	}
 
 	@Override
-	public JavaAttributeOverride convertToSpecified() {
-		return (JavaAttributeOverride) super.convertToSpecified();
+	public JavaSpecifiedAttributeOverride convertToSpecified() {
+		return (JavaSpecifiedAttributeOverride) super.convertToSpecified();
 	}
 
 

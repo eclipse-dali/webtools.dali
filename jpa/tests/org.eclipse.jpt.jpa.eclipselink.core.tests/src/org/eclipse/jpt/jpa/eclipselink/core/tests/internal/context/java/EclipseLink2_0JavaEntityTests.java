@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
@@ -469,7 +469,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
@@ -757,7 +757,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());
 		assertFalse(attributeOverrideResources.hasNext());
 		
-		Iterator<JavaAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<JavaSpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());		
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());

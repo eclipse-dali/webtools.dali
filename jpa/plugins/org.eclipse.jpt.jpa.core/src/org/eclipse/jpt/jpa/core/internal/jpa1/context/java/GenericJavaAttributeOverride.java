@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaAttributeOverride
 	extends AbstractJavaOverride<JavaAttributeOverrideContainer, AttributeOverrideAnnotation>
-	implements JavaAttributeOverride, JavaColumn.Owner
+	implements JavaSpecifiedAttributeOverride, JavaColumn.Owner
 {
 	protected final JavaColumn column;
 

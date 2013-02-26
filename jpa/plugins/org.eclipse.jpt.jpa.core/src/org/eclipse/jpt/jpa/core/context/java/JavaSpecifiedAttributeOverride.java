@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
  * @version 3.3
  * @since 2.0
  */
-public interface JavaAttributeOverride
+public interface JavaSpecifiedAttributeOverride
 	extends SpecifiedAttributeOverride, JavaSpecifiedOverride
 {
 	JavaVirtualAttributeOverride convertToVirtual();
