@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -47,8 +47,8 @@ public class GenericJavaVirtualAssociationOverride
 	}
 
 	@Override
-	public JavaAssociationOverride convertToSpecified() {
-		return (JavaAssociationOverride) super.convertToSpecified();
+	public JavaSpecifiedAssociationOverride convertToSpecified() {
+		return (JavaSpecifiedAssociationOverride) super.convertToSpecified();
 	}
 
 	public RelationshipMapping getMapping() {

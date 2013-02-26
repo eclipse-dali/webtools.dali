@@ -39,12 +39,12 @@ public interface JavaAssociationOverrideContainer
 	ReadOnlyOverrideRelationship getOverrideRelationship(String overrideName);
 
 	// covariant overrides
-	ListIterable<JavaAssociationOverride> getSpecifiedOverrides();
-	JavaAssociationOverride getSpecifiedOverride(int index);
-	JavaAssociationOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<JavaSpecifiedAssociationOverride> getSpecifiedOverrides();
+	JavaSpecifiedAssociationOverride getSpecifiedOverride(int index);
+	JavaSpecifiedAssociationOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<JavaVirtualAssociationOverride> getVirtualOverrides();
 	JavaVirtualAssociationOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	JavaAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	JavaSpecifiedAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** owner **********

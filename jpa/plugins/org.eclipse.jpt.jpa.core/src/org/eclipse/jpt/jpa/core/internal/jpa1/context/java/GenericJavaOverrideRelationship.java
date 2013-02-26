@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaOverrideRelationship
-	extends AbstractJavaContextModel<JavaAssociationOverride>
+	extends AbstractJavaContextModel<JavaSpecifiedAssociationOverride>
 	implements JavaOverrideRelationship2_0
 {
 	protected RelationshipStrategy strategy;
@@ -53,7 +53,7 @@ public class GenericJavaOverrideRelationship
 	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
 
-	public GenericJavaOverrideRelationship(JavaAssociationOverride parent) {
+	public GenericJavaOverrideRelationship(JavaSpecifiedAssociationOverride parent) {
 		super(parent);
 		this.joinColumnStrategy = this.buildJoinColumnStrategy();
 		this.joinTableStrategy = this.buildJoinTableStrategy();
@@ -217,7 +217,7 @@ public class GenericJavaOverrideRelationship
 
 	// ********** misc **********
 
-	protected JavaAssociationOverride getAssociationOverride() {
+	protected JavaSpecifiedAssociationOverride getAssociationOverride() {
 		return this.parent;
 	}
 

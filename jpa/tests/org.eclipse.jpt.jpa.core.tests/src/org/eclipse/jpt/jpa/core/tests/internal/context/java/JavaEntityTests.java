@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -2398,7 +2398,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ListIterator<JavaAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -2697,7 +2697,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("manyToOne", ((AssociationOverrideAnnotation) associationOverrideResources.next()).getName());		
 		assertFalse(associationOverrideResources.hasNext());
 
-		Iterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("manyToOne", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
@@ -2730,7 +2730,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
-		ListIterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("manyToOne", associationOverrides.next().getName());
 		assertEquals("oneToOne", associationOverrides.next().getName());
 
@@ -2761,7 +2761,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((AssociationOverrideAnnotation) resourceType.addAnnotation(2, AssociationOverrideAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		ListIterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());

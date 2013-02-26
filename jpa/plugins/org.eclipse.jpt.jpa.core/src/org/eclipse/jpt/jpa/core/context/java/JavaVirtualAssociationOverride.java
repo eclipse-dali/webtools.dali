@@ -25,5 +25,5 @@ public interface JavaVirtualAssociationOverride
 			JavaVirtualOverride
 {
 
-	JavaAssociationOverride convertToSpecified();
+	JavaSpecifiedAssociationOverride convertToSpecified();
 }

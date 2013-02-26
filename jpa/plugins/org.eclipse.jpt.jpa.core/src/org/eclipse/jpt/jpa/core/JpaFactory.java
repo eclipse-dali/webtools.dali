@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
@@ -253,11 +253,11 @@ public interface JpaFactory
 	
 	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JpaContextModel parent, JavaAssociationOverrideContainer.Owner owner);
 
-	JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation);
+	JavaSpecifiedAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation);
 	
 	JavaVirtualAssociationOverride buildJavaVirtualAssociationOverride(JavaAssociationOverrideContainer parent, String name);
 	
-	JavaOverrideRelationship buildJavaOverrideRelationship(JavaAssociationOverride parent);
+	JavaOverrideRelationship buildJavaOverrideRelationship(JavaSpecifiedAssociationOverride parent);
 	
 	VirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent);
 	

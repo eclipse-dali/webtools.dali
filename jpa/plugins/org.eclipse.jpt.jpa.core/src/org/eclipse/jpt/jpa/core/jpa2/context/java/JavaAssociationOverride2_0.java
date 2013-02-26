@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaAssociationOverride2_0
-	extends JavaAssociationOverride, ReadOnlyAssociationOverride2_0
+	extends JavaSpecifiedAssociationOverride, ReadOnlyAssociationOverride2_0
 {
 	// combine interfaces
 }

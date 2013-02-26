@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -2138,7 +2138,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		ormEntity.getJavaTypeMapping().getAssociationOverrideContainer().getVirtualOverrides().iterator().next().convertToSpecified();
 		
 
-		JavaAssociationOverride javaAssociationOverride = ormEntity.getJavaTypeMapping().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
+		JavaSpecifiedAssociationOverride javaAssociationOverride = ormEntity.getJavaTypeMapping().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		JavaJoinColumnRelationshipStrategy javaJoiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnStrategy();
 		JavaJoinColumn javaJoinColumn = javaJoiningStrategy.getJoinColumns().iterator().next();
 		javaJoinColumn.setSpecifiedName("FOO");

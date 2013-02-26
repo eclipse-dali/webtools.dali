@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
@@ -357,7 +357,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualAttributeOverride(parent, name);
 	}
 	
-	public JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
+	public JavaSpecifiedAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
 		return new GenericJavaAssociationOverride(parent, annotation);
 	}
 	
@@ -365,7 +365,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualAssociationOverride(parent, name);
 	}
 	
-	public JavaOverrideRelationship buildJavaOverrideRelationship(JavaAssociationOverride parent) {
+	public JavaOverrideRelationship buildJavaOverrideRelationship(JavaSpecifiedAssociationOverride parent) {
 		return new GenericJavaOverrideRelationship(parent);
 	}
 	

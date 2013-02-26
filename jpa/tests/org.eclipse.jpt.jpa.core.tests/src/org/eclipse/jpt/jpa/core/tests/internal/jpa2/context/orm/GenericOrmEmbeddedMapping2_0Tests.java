@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -1521,7 +1521,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		JavaEmbeddedMapping2_0 javaEmbeddedMapping = (JavaEmbeddedMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		ListIterator<? extends ReadOnlyAssociationOverride> javaAssociationOverrides = javaEmbeddedMapping.getAssociationOverrideContainer().getOverrides().iterator();
 		javaAssociationOverrides.next();
-		JavaAssociationOverride javaAssociationOverride = ((JavaVirtualAssociationOverride) javaAssociationOverrides.next()).convertToSpecified();
+		JavaSpecifiedAssociationOverride javaAssociationOverride = ((JavaVirtualAssociationOverride) javaAssociationOverrides.next()).convertToSpecified();
 		assertEquals("addresses", javaAssociationOverride.getName());
 		JavaJoinTable javaJoinTable = ((JavaOverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("JAVA_FOO");

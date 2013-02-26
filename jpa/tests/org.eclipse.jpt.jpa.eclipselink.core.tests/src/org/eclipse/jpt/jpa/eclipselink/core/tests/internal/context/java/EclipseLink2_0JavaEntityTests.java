@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -966,7 +966,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ListIterator<JavaAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -1238,7 +1238,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrideResources.next()).getName());		
 		assertFalse(associationOverrideResources.hasNext());
 
-		Iterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
@@ -1271,7 +1271,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
-		Iterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertEquals("address", associationOverrides.next().getName());
 
@@ -1302,7 +1302,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		((AssociationOverrideAnnotation) resourceType.addAnnotation(2, AssociationOverrideAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		Iterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());

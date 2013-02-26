@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
  * @version 3.3
  * @since 2.0
  */
-public interface JavaAssociationOverride
+public interface JavaSpecifiedAssociationOverride
 	extends SpecifiedAssociationOverride, JavaSpecifiedOverride
 {
 	JavaVirtualAssociationOverride convertToVirtual();

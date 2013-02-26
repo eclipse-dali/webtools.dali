@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -178,7 +178,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();	
 		JavaAssociationOverrideContainer overrideContainer = entity.getAssociationOverrideContainer();
 		JavaVirtualAssociationOverride virtualOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		JavaAssociationOverride specifiedOverride = virtualOverride.convertToSpecified();
+		JavaSpecifiedAssociationOverride specifiedOverride = virtualOverride.convertToSpecified();
 		JavaJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
@@ -227,7 +227,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();	
 		JavaAssociationOverrideContainer overrideContainer = entity.getAssociationOverrideContainer();
 		JavaVirtualAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		JavaAssociationOverride specifiedOverride = javaAssociationOverride.convertToSpecified();
+		JavaSpecifiedAssociationOverride specifiedOverride = javaAssociationOverride.convertToSpecified();
 		JavaJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
@@ -266,7 +266,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();	
 		JavaAssociationOverrideContainer overrideContainer = entity.getAssociationOverrideContainer();
 		JavaVirtualAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		JavaAssociationOverride specifiedOverride = javaAssociationOverride.convertToSpecified();
+		JavaSpecifiedAssociationOverride specifiedOverride = javaAssociationOverride.convertToSpecified();
 		JavaJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
@@ -310,7 +310,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();	
 		JavaAssociationOverrideContainer overrideContainer = entity.getAssociationOverrideContainer();
 		JavaVirtualAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		JavaAssociationOverride specifiedOverride = javaAssociationOverride.convertToSpecified();
+		JavaSpecifiedAssociationOverride specifiedOverride = javaAssociationOverride.convertToSpecified();
 		JavaJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);

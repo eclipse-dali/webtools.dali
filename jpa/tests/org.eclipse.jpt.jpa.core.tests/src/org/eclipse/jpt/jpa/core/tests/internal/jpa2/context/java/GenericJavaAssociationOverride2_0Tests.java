@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
@@ -330,7 +330,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		JavaVirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		JavaAssociationOverride specifiedAssociationOverride = virtualAssociationOverride.convertToSpecified();
+		JavaSpecifiedAssociationOverride specifiedAssociationOverride = virtualAssociationOverride.convertToSpecified();
 		JavaJoinColumnRelationshipStrategy joiningStrategy = specifiedAssociationOverride.getRelationship().getJoinColumnStrategy();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);

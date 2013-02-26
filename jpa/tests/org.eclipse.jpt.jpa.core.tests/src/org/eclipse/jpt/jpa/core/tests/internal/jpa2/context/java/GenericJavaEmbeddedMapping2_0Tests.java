@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -953,7 +953,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
-		ListIterator<JavaAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -1219,7 +1219,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals("addresses", ((AssociationOverrideAnnotation) associationOverrideResources.next()).getName());		
 		assertFalse(associationOverrideResources.hasNext());
 
-		Iterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("addresses", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
@@ -1253,7 +1253,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
-		ListIterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("addresses", associationOverrides.next().getName());
 		assertEquals("address", associationOverrides.next().getName());
 
@@ -1289,7 +1289,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		((AssociationOverrideAnnotation) resourceField.addAnnotation(2, JPA.ASSOCIATION_OVERRIDE)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		ListIterator<JavaAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<JavaSpecifiedAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());

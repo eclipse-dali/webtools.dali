@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -2034,7 +2034,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntityWithAssociationOverride();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaAssociationOverride associationOverride = getJavaEntity().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
+		JavaSpecifiedAssociationOverride associationOverride = getJavaEntity().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("a", associationOverride.getName());
 		
 		AssociationOverride2_0Annotation annotation = (AssociationOverride2_0Annotation) getJavaPersistentType().getJavaResourceType().getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);

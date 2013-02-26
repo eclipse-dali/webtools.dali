@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -31,7 +31,7 @@ public class GenericJavaAssociationOverrideContainer
 	extends AbstractJavaOverrideContainer<
 			JavaAssociationOverrideContainer.Owner,
 			ReadOnlyAssociationOverride,
-			JavaAssociationOverride,
+			JavaSpecifiedAssociationOverride,
 			JavaVirtualAssociationOverride,
 			AssociationOverrideAnnotation
 		>
@@ -77,12 +77,12 @@ public class GenericJavaAssociationOverrideContainer
 	}
 
 	@Override
-	protected JavaAssociationOverride buildSpecifiedOverride(AssociationOverrideAnnotation overrideAnnotation) {
+	protected JavaSpecifiedAssociationOverride buildSpecifiedOverride(AssociationOverrideAnnotation overrideAnnotation) {
 		return this.getJpaFactory().buildJavaAssociationOverride(this, overrideAnnotation);
 	}
 
 	@Override
-	protected void initializeSpecifiedOverride(JavaAssociationOverride specifiedOverride, JavaVirtualAssociationOverride virtualOverride) {
+	protected void initializeSpecifiedOverride(JavaSpecifiedAssociationOverride specifiedOverride, JavaVirtualAssociationOverride virtualOverride) {
 		specifiedOverride.initializeFromVirtual(virtualOverride);
 	}
 
