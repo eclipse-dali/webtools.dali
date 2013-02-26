@@ -19,7 +19,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnectio
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 
 
-public class Generic2_0PersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextModelFactory
+public class GenericPersistenceXmlContextModelFactory2_0
+	extends AbstractPersistenceXmlContextModelFactory
 {
 		
 	public JpaConnection2_0 buildConnection(PersistenceUnit parent) {
@@ -29,9 +30,8 @@ public class Generic2_0PersistenceXmlContextNodeFactory extends AbstractPersiste
 	public JpaOptions2_0 buildOptions(PersistenceUnit parent) {
 		return new GenericOptions2_0(parent);
 	}
-	
+
 	public PersistenceUnitProperties buildSchemaGeneration(PersistenceUnit parent) {
 		return new NullGenericSchemaGeneration2_1(parent);
 	}
-
 }
