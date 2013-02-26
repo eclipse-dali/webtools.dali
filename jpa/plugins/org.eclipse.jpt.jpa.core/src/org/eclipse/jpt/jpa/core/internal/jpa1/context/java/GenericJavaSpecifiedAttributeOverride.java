@@ -28,14 +28,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified Java attribute override
  */
-public class GenericJavaAttributeOverride
+public class GenericJavaSpecifiedAttributeOverride
 	extends AbstractJavaSpecifiedOverride<JavaAttributeOverrideContainer, AttributeOverrideAnnotation>
 	implements JavaSpecifiedAttributeOverride, JavaColumn.Owner
 {
 	protected final JavaColumn column;
 
 
-	public GenericJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverrideAnnotation annotation) {
+	public GenericJavaSpecifiedAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverrideAnnotation annotation) {
 		super(parent, annotation);
 		this.column = this.buildColumn();
 	}
