@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
-import org.eclipse.jpt.jpa.core.context.GeneratedValueHolder;
+import org.eclipse.jpt.jpa.core.context.GeneratedValueMapping;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
  * @since 2.1
  */
 public interface EclipseLinkBasicMapping
-	extends BasicMapping, EclipseLinkConvertibleMapping, GeneratedValueHolder
+	extends BasicMapping, EclipseLinkConvertibleMapping, GeneratedValueMapping
 {
 	EclipseLinkMutable getMutable();
 

@@ -21,8 +21,8 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 3.3
  * @since 3.3
  */
-public interface GeneratedValueHolder
-	extends JpaContextModel
+public interface GeneratedValueMapping
+	extends AttributeMapping
 {
 	GeneratedValue getGeneratedValue();
 	GeneratedValue addGeneratedValue();

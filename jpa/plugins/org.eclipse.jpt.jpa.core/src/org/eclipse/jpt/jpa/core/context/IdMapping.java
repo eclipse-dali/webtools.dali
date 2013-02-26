@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface IdMapping
-	extends ColumnMapping, ConvertibleMapping, GeneratedValueHolder
+	extends ColumnMapping, ConvertibleMapping, GeneratedValueMapping
 {
 	GeneratorContainer getGeneratorContainer();
 }

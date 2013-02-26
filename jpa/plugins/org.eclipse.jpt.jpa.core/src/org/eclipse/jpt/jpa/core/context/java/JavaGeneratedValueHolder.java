@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.GeneratedValueHolder;
+import org.eclipse.jpt.jpa.core.context.GeneratedValueMapping;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.GeneratedValueHolder;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaGeneratedValueHolder
-	extends GeneratedValueHolder, JavaAttributeMapping
+	extends GeneratedValueMapping, JavaAttributeMapping
 {
 	JavaGeneratedValue getGeneratedValue();
 	JavaGeneratedValue addGeneratedValue();

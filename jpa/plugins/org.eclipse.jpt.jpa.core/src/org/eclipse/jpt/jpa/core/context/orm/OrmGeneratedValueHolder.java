@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.GeneratedValueHolder;
+import org.eclipse.jpt.jpa.core.context.GeneratedValueMapping;
 
 /**
  * <code>orm.xml</code> ID mapping
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.GeneratedValueHolder;
  * @since 3.3
  */
 public interface OrmGeneratedValueHolder 
-	extends GeneratedValueHolder
+	extends GeneratedValueMapping
 {	
 	OrmGeneratedValue getGeneratedValue();
 	OrmGeneratedValue addGeneratedValue();	
