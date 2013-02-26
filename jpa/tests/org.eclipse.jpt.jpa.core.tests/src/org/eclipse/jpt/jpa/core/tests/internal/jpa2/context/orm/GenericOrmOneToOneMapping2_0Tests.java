@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
@@ -451,7 +451,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testMorphMapping() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = (OrmPersistentAttribute) contextType.getAttributeNamed("oneToOne");
+		OrmModifiablePersistentAttribute contextAttribute = (OrmModifiablePersistentAttribute) contextType.getAttributeNamed("oneToOne");
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		
 		XmlOneToOne resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
@@ -580,7 +580,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testUpdateSpecifiedOrphanRemoval() throws Exception {
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(ormOneToOneMapping);
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
@@ -601,7 +601,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testModifySpecifiedOrphanRemoval() throws Exception {
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(ormOneToOneMapping);
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
@@ -679,7 +679,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		createTestEntityWithValidOneToOneMapping();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		((OneToOneRelationship2_0) ormOneToOneMapping.getRelationship()).setStrategyToJoinTable();
@@ -955,7 +955,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertTrue(virtualPersistentAttribute.isVirtual());
 
 		virtualPersistentAttribute.addToXml(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
@@ -378,7 +378,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 	public void testMorphMapping() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = (OrmPersistentAttribute) contextType.getAttributeNamed("oneToOne");
+		OrmModifiablePersistentAttribute contextAttribute = (OrmModifiablePersistentAttribute) contextType.getAttributeNamed("oneToOne");
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		
 		XmlOneToOne resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
@@ -509,7 +509,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		createTestTypeWithOneToOneAttribute();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("oneToOne"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("oneToOne"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(ormOneToOneMapping);
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
@@ -531,7 +531,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		createTestTypeWithOneToOneAttribute();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("oneToOne"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("oneToOne"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(ormOneToOneMapping);
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
@@ -609,7 +609,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		((OneToOneRelationship2_0) ormOneToOneMapping.getRelationship()).setStrategyToJoinTable();
 		OrmJoinTable ormJoinTable = ((OrmOneToOneRelationship2_0) ormOneToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();

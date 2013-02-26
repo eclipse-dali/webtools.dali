@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
  * @version 3.0
  * @since 2.0
  */
-public interface OrmPersistentAttribute
+public interface OrmModifiablePersistentAttribute
 	extends ModifiablePersistentAttribute, OrmReadOnlyPersistentAttribute, TypeRefactoringParticipant
 {
 	/**

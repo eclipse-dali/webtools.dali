@@ -41,7 +41,7 @@ public interface OrmAttributeMappingDefinition
 	 * Build a context mapping.
 	 */
 	OrmAttributeMapping buildContextMapping(
-			OrmPersistentAttribute parent, 
+			OrmModifiablePersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextModelFactory factory);	
 	

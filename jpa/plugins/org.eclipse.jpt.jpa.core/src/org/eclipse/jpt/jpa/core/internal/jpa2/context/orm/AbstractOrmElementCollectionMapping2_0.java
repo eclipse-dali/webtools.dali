@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
@@ -171,7 +171,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmElementCollectionMapping2_0(OrmModifiablePersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.specifiedTargetClass = xmlMapping.getTargetClass();
 		this.specifiedFetch = this.buildSpecifiedFetch();

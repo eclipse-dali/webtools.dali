@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -248,7 +248,7 @@ public class GenericOrmPersistentType2_0Tests
 		assertFalse(virtualAttributes.hasNext());
 		
 		
-		OrmPersistentAttribute specifiedAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
+		OrmModifiablePersistentAttribute specifiedAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("id", specifiedAttribute.getName());
 		assertEquals(AccessType.PROPERTY, specifiedAttribute.getSpecifiedAccess());
 		

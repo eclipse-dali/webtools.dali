@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
@@ -65,7 +65,7 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
 
-	protected AbstractOrmBasicMapping(OrmPersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmBasicMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.column = this.buildColumn();
 		this.specifiedFetch = this.buildSpecifiedFetch();

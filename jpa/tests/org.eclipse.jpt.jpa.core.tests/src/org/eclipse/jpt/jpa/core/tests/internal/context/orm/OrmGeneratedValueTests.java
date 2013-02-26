@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -65,7 +65,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 	public void testUpdateSpecifiedName() throws Exception {
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
@@ -85,7 +85,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 	public void testModifySpecifiedName() throws Exception {
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
@@ -127,7 +127,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
 		
-		((OrmPersistentAttribute) ormIdAttribute).removeFromXml();
+		((OrmModifiablePersistentAttribute) ormIdAttribute).removeFromXml();
 		ormIdAttribute = ormPersistentType.getAttributeNamed("id");
 		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals("Foo", ormIdMapping.getGeneratedValue().getSpecifiedGenerator());

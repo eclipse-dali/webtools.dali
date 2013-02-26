@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
@@ -54,7 +54,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class SpecifiedOrmPersistentAttribute
 		extends AbstractOrmXmlContextModel<OrmPersistentType>
-		implements OrmPersistentAttribute, PersistentAttribute2_0 {
+		implements OrmModifiablePersistentAttribute, PersistentAttribute2_0 {
 	
 	protected OrmAttributeMapping mapping;  // never null
 
@@ -426,11 +426,11 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this.getOwningPersistentType().removeAttributeFromXml(this);
 	}
 
-	public OrmPersistentAttribute addToXml() {
+	public OrmModifiablePersistentAttribute addToXml() {
 		throw new UnsupportedOperationException();
 	}
 
-	public OrmPersistentAttribute addToXml(String mappingKey) {
+	public OrmModifiablePersistentAttribute addToXml(String mappingKey) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -441,8 +441,8 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<OrmPersistentAttribute> getType() {
-		return OrmPersistentAttribute.class;
+	public Class<OrmModifiablePersistentAttribute> getType() {
+		return OrmModifiablePersistentAttribute.class;
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {

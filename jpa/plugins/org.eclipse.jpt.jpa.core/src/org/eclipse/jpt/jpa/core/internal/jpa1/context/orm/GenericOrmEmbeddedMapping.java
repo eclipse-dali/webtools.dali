@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded;
 
 /**
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded;
 public class GenericOrmEmbeddedMapping
 	extends AbstractOrmEmbeddedMapping<XmlEmbedded>
 {
-	public GenericOrmEmbeddedMapping(OrmPersistentAttribute parent, XmlEmbedded xmlMapping) {
+	public GenericOrmEmbeddedMapping(OrmModifiablePersistentAttribute parent, XmlEmbedded xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }

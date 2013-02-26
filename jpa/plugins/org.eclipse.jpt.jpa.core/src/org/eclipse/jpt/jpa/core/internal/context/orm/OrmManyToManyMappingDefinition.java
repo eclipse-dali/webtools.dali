@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
@@ -56,7 +56,7 @@ public class OrmManyToManyMappingDefinition
 	}
 	
 	public OrmAttributeMapping buildContextMapping(
-			OrmPersistentAttribute parent, 
+			OrmModifiablePersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextModelFactory factory) {
 		return factory.buildOrmManyToManyMapping(parent, (XmlManyToMany) resourceMapping);

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValueMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBasicMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -53,7 +53,7 @@ public class OrmEclipseLinkBasicMapping
 
 	protected OrmGeneratedValue generatedValue;//supported in EL 1.1 and higher
 
-	public OrmEclipseLinkBasicMapping(OrmPersistentAttribute parent, XmlBasic xmlMapping) {
+	public OrmEclipseLinkBasicMapping(OrmModifiablePersistentAttribute parent, XmlBasic xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new OrmEclipseLinkMutable(this);
 		this.converterContainer = this.buildConverterContainer();

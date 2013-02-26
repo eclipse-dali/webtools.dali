@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
@@ -33,7 +33,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<X extends AbstractXml
 	protected final OrmDerivedIdentity2_0 derivedIdentity;
 
 
-	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmSingleRelationshipMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.specifiedOptional = xmlMapping.getOptional();
 		this.derivedIdentity = this.buildDerivedIdentity();

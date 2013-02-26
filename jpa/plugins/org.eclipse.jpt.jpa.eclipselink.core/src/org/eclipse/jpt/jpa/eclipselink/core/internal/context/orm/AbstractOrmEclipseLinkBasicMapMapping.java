@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.ArrayList;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -26,7 +26,7 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 	extends AbstractOrmAttributeMapping<XmlBasicMap> 
 	implements EclipseLinkBasicMapMapping
 {
-	protected AbstractOrmEclipseLinkBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap xmlMapping) {
+	protected AbstractOrmEclipseLinkBasicMapMapping(OrmModifiablePersistentAttribute parent, XmlBasicMap xmlMapping) {
 		super(parent, xmlMapping);
 	}
 	

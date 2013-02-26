@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
@@ -48,7 +48,7 @@ public class OrmEclipseLinkOneToManyMapping
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
 
-	public OrmEclipseLinkOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany xmlMapping) {
+	public OrmEclipseLinkOneToManyMapping(OrmModifiablePersistentAttribute parent, XmlOneToMany xmlMapping) {
 		super(parent, xmlMapping);
 		this.privateOwned = new OrmEclipseLinkPrivateOwned(this);
 		this.joinFetch = new OrmEclipseLinkJoinFetch(this);

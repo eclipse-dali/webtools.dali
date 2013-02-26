@@ -91,7 +91,7 @@ public interface OrmReadOnlyPersistentAttribute
 	 * @see #isVirtual()
 	 * @throw IllegalStateException if the attribute is already specified
 	 */
-	OrmPersistentAttribute addToXml();
+	OrmModifiablePersistentAttribute addToXml();
 
 	/**
 	 * Convert the (currently virtual) persistent attribute to a specified
@@ -102,7 +102,7 @@ public interface OrmReadOnlyPersistentAttribute
 	 * @see #isVirtual()
 	 * @throw IllegalStateException if the attribute is already specified
 	 */
-	OrmPersistentAttribute addToXml(String mappingKey);
+	OrmModifiablePersistentAttribute addToXml(String mappingKey);
 
 	//TODO would like to remove this eventually
 	void dispose();

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId;
 
 /**
@@ -19,7 +19,7 @@ public class GenericOrmEmbeddedIdMapping
 	extends AbstractOrmEmbeddedIdMapping<XmlEmbeddedId>
 {
 
-	public GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent, XmlEmbeddedId xmlMapping) {
+	public GenericOrmEmbeddedIdMapping(OrmModifiablePersistentAttribute parent, XmlEmbeddedId xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
@@ -25,7 +25,7 @@ public abstract class AbstractOrmManyToOneMapping<X extends XmlManyToOne>
 	extends AbstractOrmSingleRelationshipMapping<X>
 	implements ManyToOneMapping2_0, OrmManyToOneMapping
 {
-	protected AbstractOrmManyToOneMapping(OrmPersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmManyToOneMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

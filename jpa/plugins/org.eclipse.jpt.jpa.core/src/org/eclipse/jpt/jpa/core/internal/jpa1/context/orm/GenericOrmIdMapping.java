@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmIdMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
 
@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
 public class GenericOrmIdMapping
 	extends AbstractOrmIdMapping<XmlId>
 {
-	public GenericOrmIdMapping(OrmPersistentAttribute parent, XmlId xmlMapping) {
+	public GenericOrmIdMapping(OrmModifiablePersistentAttribute parent, XmlId xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }

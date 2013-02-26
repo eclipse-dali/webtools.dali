@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -121,7 +121,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	};
 	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = IterableTools.iterable(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
-	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, X xmlMapping) {
+	protected AbstractOrmMultiRelationshipMapping(OrmModifiablePersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.orderable = this.buildOrderable();
 
@@ -1144,7 +1144,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 
-		protected OrmPersistentAttribute getPersistentAttribute() {
+		protected OrmModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 	}

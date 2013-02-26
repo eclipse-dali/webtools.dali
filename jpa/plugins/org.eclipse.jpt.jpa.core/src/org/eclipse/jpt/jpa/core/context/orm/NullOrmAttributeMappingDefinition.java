@@ -56,7 +56,7 @@ public class NullOrmAttributeMappingDefinition
 		throw new UnsupportedOperationException();
 	}
 	
-	public OrmAttributeMapping buildContextMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextModelFactory factory) {
+	public OrmAttributeMapping buildContextMapping(OrmModifiablePersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextModelFactory factory) {
 		return factory.buildOrmNullAttributeMapping(parent, (XmlNullAttributeMapping) resourceMapping);
 	}
 	

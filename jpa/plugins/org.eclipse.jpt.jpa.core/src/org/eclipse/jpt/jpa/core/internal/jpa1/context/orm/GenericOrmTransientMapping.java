@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
@@ -25,7 +25,7 @@ public class GenericOrmTransientMapping
 	extends AbstractOrmAttributeMapping<XmlTransient>
 	implements OrmTransientMapping
 {
-	public GenericOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient xmlMapping) {
+	public GenericOrmTransientMapping(OrmModifiablePersistentAttribute parent, XmlTransient xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

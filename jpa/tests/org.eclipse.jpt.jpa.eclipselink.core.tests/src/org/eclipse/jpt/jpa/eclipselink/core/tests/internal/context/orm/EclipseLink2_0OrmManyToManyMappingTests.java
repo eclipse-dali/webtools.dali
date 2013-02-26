@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
@@ -353,7 +353,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -420,7 +420,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -509,7 +509,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -563,7 +563,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -586,13 +586,13 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestEntityPrintJob();
 
 		OrmPersistentType printQueuePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintQueue");
-		OrmPersistentAttribute jobsPersistentAttribute = printQueuePersistentType.addAttributeToXml(printQueuePersistentType.getAttributeNamed("jobs"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute jobsPersistentAttribute = printQueuePersistentType.addAttributeToXml(printQueuePersistentType.getAttributeNamed("jobs"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToManyMapping jobsMapping = (OrmManyToManyMapping) jobsPersistentAttribute.getMapping();
 		jobsMapping.getRelationship().setStrategyToMappedBy();
 		jobsMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("queues");
 
 		OrmPersistentType printJobPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintJob");
-		OrmPersistentAttribute queuesPersistentAttribute = printJobPersistentType.addAttributeToXml(printJobPersistentType.getAttributeNamed("queues"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute queuesPersistentAttribute = printJobPersistentType.addAttributeToXml(printJobPersistentType.getAttributeNamed("queues"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToManyMapping queuesMapping = (OrmManyToManyMapping) queuesPersistentAttribute.getMapping();
 
 		getOrmXmlResource().save(null);
@@ -647,11 +647,11 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestEntityPrintJob();
 
 		OrmPersistentType printQueuePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintQueue");
-		OrmPersistentAttribute jobsPersistentAttribute = printQueuePersistentType.addAttributeToXml(printQueuePersistentType.getAttributeNamed("jobs"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute jobsPersistentAttribute = printQueuePersistentType.addAttributeToXml(printQueuePersistentType.getAttributeNamed("jobs"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToManyMapping jobsMapping = (OrmManyToManyMapping) jobsPersistentAttribute.getMapping();
 
 		OrmPersistentType printJobPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintJob");
-		OrmPersistentAttribute queuesPersistentAttribute = printJobPersistentType.addAttributeToXml(printJobPersistentType.getAttributeNamed("queues"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute queuesPersistentAttribute = printJobPersistentType.addAttributeToXml(printJobPersistentType.getAttributeNamed("queues"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToManyMapping queuesMapping = (OrmManyToManyMapping) queuesPersistentAttribute.getMapping();
 
 		Orderable2_0 jobsOrderable = ((Orderable2_0) jobsMapping.getOrderable());
@@ -849,7 +849,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 
 		OrmCollectionMapping2_0 addressesVirtualMapping = (OrmCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
@@ -966,7 +966,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertTrue(virtualPersistentAttribute.isVirtual());
 
 		virtualPersistentAttribute.addToXml(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		OrmPersistentAttribute ormPersistentAttribute= ormPersistentType.getSpecifiedAttributes().iterator().next();
+		OrmModifiablePersistentAttribute ormPersistentAttribute= ormPersistentType.getSpecifiedAttributes().iterator().next();
 
 		OrmEclipseLinkManyToManyMapping ormManyToManyMapping = (OrmEclipseLinkManyToManyMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormManyToManyMapping.getName());
@@ -992,7 +992,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -1018,7 +1018,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -1045,7 +1045,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
@@ -1075,7 +1075,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		createTestTypeWithCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("manyToManyMapping"), MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmCollectionMapping2_0 ormManyToManyMapping = (OrmCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		

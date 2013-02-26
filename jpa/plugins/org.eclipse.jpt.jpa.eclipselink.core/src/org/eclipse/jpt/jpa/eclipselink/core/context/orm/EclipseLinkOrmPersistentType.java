@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkModifiableAccessMethodsContainer;
@@ -57,7 +57,7 @@ public interface EclipseLinkOrmPersistentType
 	 * @see OrmAttributeMappingDefinition#isSingleRelationshipMapping()
 	 * @see OrmAttributeMappingDefinition#isCollectionMapping()
 	*/
-	OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType);
+	OrmModifiablePersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType);
 
 	//*************** covariant overrides *****************
 

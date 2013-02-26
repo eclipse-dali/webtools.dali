@@ -60,7 +60,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
@@ -195,7 +195,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmEmbeddable(parent, resourceMapping);
 	}
 	
-	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
+	public OrmModifiablePersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		return new GenericOrmPersistentAttribute(parent, xmlMapping);
 	}
 	
@@ -319,51 +319,51 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmQueryHint(parent, resourceQueryHint);
 	}
 	
-	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
+	public OrmBasicMapping buildOrmBasicMapping(OrmModifiablePersistentAttribute parent, XmlBasic resourceMapping) {
 		return new GenericOrmBasicMapping(parent, resourceMapping);
 	}
 	
-	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent, XmlEmbedded resourceMapping) {
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmModifiablePersistentAttribute parent, XmlEmbedded resourceMapping) {
 		return new GenericOrmEmbeddedMapping(parent, resourceMapping);
 	}
 	
-	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
+	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmModifiablePersistentAttribute parent, XmlEmbeddedId resourceMapping) {
 		return new GenericOrmEmbeddedIdMapping(parent, resourceMapping);
 	}
 	
-	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
+	public OrmIdMapping buildOrmIdMapping(OrmModifiablePersistentAttribute parent, XmlId resourceMapping) {
 		return new GenericOrmIdMapping(parent, resourceMapping);
 	}
 	
-	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
+	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmModifiablePersistentAttribute parent, XmlManyToMany resourceMapping) {
 		return new GenericOrmManyToManyMapping(parent, resourceMapping);
 	}
 	
-	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmModifiablePersistentAttribute parent, XmlManyToOne resourceMapping) {
 		return new GenericOrmManyToOneMapping(parent, resourceMapping);
 	}
 	
-	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmModifiablePersistentAttribute parent, XmlOneToMany resourceMapping) {
 		return new GenericOrmOneToManyMapping(parent, resourceMapping);
 	}
 	
-	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmModifiablePersistentAttribute parent, XmlOneToOne resourceMapping) {
 		return new GenericOrmOneToOneMapping(parent, resourceMapping);
 	}
 	
-	public OrmTransientMapping buildOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
+	public OrmTransientMapping buildOrmTransientMapping(OrmModifiablePersistentAttribute parent, XmlTransient resourceMapping) {
 		return new GenericOrmTransientMapping(parent, resourceMapping);
 	}
 	
-	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
+	public OrmVersionMapping buildOrmVersionMapping(OrmModifiablePersistentAttribute parent, XmlVersion resourceMapping) {
 		return new GenericOrmVersionMapping(parent, resourceMapping);
 	}
 	
-	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
+	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmModifiablePersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
 		return new GenericOrmNullAttributeMapping(parent, resourceMapping);
 	}
 	
-	public OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
+	public OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmModifiablePersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
 		return new UnsupportedOrmAttributeMapping(parent, resourceMapping);
 	}
 	

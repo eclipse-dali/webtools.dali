@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
@@ -373,7 +373,7 @@ public class GenericOrmOrderable
 		return this.parent;
 	}
 
-	protected OrmPersistentAttribute getPersistentAttribute() {
+	protected OrmModifiablePersistentAttribute getPersistentAttribute() {
 		return this.getAttributeMapping().getPersistentAttribute();
 	}
 
@@ -465,7 +465,7 @@ public class GenericOrmOrderable
 			GenericOrmOrderable.this.removeXmlOrderColumn();
 		}
 
-		protected OrmPersistentAttribute getPersistentAttribute() {
+		protected OrmModifiablePersistentAttribute getPersistentAttribute() {
 			return GenericOrmOrderable.this.getPersistentAttribute();
 		}
 	}

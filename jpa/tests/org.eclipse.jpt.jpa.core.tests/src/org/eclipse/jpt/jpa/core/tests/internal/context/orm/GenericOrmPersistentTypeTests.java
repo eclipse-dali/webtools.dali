@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -172,7 +172,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals("id",  entity.getAttributes().getIds().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
+		((OrmModifiablePersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
@@ -184,7 +184,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals("id",  entity.getAttributes().getBasics().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
+		((OrmModifiablePersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
@@ -196,7 +196,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals("id",  entity.getAttributes().getVersions().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
+		((OrmModifiablePersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
@@ -208,7 +208,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals("id",  entity.getAttributes().getEmbeddeds().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
+		((OrmModifiablePersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
@@ -220,7 +220,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals("id",  entity.getAttributes().getTransients().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
+		((OrmModifiablePersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 
@@ -484,11 +484,11 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		OrmPersistentType employeePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_EMPLOYEE_TYPE_NAME);
 
 		
-		OrmPersistentAttribute attribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute attribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		attribute.getMapping().setName("id");
 		attribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		attribute.getMapping().setName("name");
-		OrmPersistentAttribute startDateAttribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		OrmModifiablePersistentAttribute startDateAttribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		((OrmBasicMapping) startDateAttribute.getMapping()).setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) ((OrmBasicMapping) startDateAttribute.getMapping()).getConverter()).setTemporalType(TemporalType.DATE);
 		

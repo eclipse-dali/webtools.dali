@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
@@ -278,14 +278,14 @@ public class VirtualOrmPersistentAttribute
 		return true;
 	}
 
-	public OrmPersistentAttribute addToXml() {
+	public OrmModifiablePersistentAttribute addToXml() {
 		if (this.mapping.getKey() == null) {
 			throw new IllegalStateException("Use addToXml(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 		return this.getOwningPersistentType().addAttributeToXml(this);
 	}
 
-	public OrmPersistentAttribute addToXml(String mappingKey) {
+	public OrmModifiablePersistentAttribute addToXml(String mappingKey) {
 		return this.getOwningPersistentType().addAttributeToXml(this, mappingKey);
 	}
 
@@ -296,8 +296,8 @@ public class VirtualOrmPersistentAttribute
 		return new ContextType(this);
 	}
 
-	public Class<OrmPersistentAttribute> getType() {
-		return OrmPersistentAttribute.class;
+	public Class<OrmModifiablePersistentAttribute> getType() {
+		return OrmModifiablePersistentAttribute.class;
 	}
 
 	public Iterable<JpaStructureNode> getChildren() {

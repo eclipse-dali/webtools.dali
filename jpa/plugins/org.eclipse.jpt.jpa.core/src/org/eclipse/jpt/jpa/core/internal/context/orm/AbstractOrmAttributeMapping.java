@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
@@ -60,7 +60,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
-	extends AbstractOrmXmlContextModel<OrmPersistentAttribute>
+	extends AbstractOrmXmlContextModel<OrmModifiablePersistentAttribute>
 	implements OrmAttributeMapping, AttributeMapping2_0
 {
 	// never null
@@ -73,7 +73,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	protected String fullyQualifiedAttributeType;
 
 
-	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent, X xmlAttributeMapping) {
+	protected AbstractOrmAttributeMapping(OrmModifiablePersistentAttribute parent, X xmlAttributeMapping) {
 		super(parent);
 		this.xmlAttributeMapping = xmlAttributeMapping;
 		this.name = xmlAttributeMapping.getName();
@@ -267,7 +267,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.xmlAttributeMapping;
 	}
 
-	public OrmPersistentAttribute getPersistentAttribute() {
+	public OrmModifiablePersistentAttribute getPersistentAttribute() {
 		return this.parent;
 	}
 

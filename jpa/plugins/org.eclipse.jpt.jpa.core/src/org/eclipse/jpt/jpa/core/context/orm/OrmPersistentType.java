@@ -58,7 +58,7 @@ public interface OrmPersistentType
 	/**
 	 * Return the persistent type's specified attributes.
 	 */
-	ListIterable<OrmPersistentAttribute> getSpecifiedAttributes();
+	ListIterable<OrmModifiablePersistentAttribute> getSpecifiedAttributes();
 
 	/**
 	 * Return the number of the persistent type's specified attributes.
@@ -92,10 +92,10 @@ public interface OrmPersistentType
 	 * <p>
 	 * Throw an {@link IllegalArgumentException} if the attribute is virtual
 	 *
-	 * @see OrmPersistentAttribute#removeFromXml()
+	 * @see OrmModifiablePersistentAttribute#removeFromXml()
 	 * @see ModifiablePersistentAttribute#isVirtual()
 	 */
-	OrmReadOnlyPersistentAttribute removeAttributeFromXml(OrmPersistentAttribute specifiedAttribute);
+	OrmReadOnlyPersistentAttribute removeAttributeFromXml(OrmModifiablePersistentAttribute specifiedAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code>.
@@ -107,9 +107,9 @@ public interface OrmPersistentType
 	 * Throw an {@link IllegalArgumentException} if the attribute is already
 	 * specified.
 	 *
-	 * @see OrmPersistentAttribute#addToXml()
+	 * @see OrmModifiablePersistentAttribute#addToXml()
 	 */
-	OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute);
+	OrmModifiablePersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code> with
@@ -120,9 +120,9 @@ public interface OrmPersistentType
 	 * Throw an {@link IllegalArgumentException} if the attribute is already
 	 * specified.
 	 *
-	 * @see OrmPersistentAttribute#addToXml(String)
+	 * @see OrmModifiablePersistentAttribute#addToXml(String)
 	 */
-	OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey);
+	OrmModifiablePersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey);
 
 
 	// ********** mapping morphing **********
@@ -131,7 +131,7 @@ public interface OrmPersistentType
 	 * This is called whenever the specified persistent attribute's mapping is
 	 * changed as specified.
 	 */
-	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
+	void changeMapping(OrmModifiablePersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
 
 
 	// ********** misc **********

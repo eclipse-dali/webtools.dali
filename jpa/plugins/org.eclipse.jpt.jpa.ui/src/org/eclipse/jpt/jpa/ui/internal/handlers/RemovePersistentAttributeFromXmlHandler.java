@@ -15,7 +15,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -41,7 +41,7 @@ public class RemovePersistentAttributeFromXmlHandler
 		ArrayList<OrmReadOnlyPersistentAttribute> virtualAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		for (Object each : selection.toList()) {
-			OrmPersistentAttribute attribute = (OrmPersistentAttribute) each;
+			OrmModifiablePersistentAttribute attribute = (OrmModifiablePersistentAttribute) each;
 			OrmReadOnlyPersistentAttribute newAttribute = attribute.removeFromXml();
 			if (newAttribute != null) {
 				virtualAttributes.add(newAttribute);

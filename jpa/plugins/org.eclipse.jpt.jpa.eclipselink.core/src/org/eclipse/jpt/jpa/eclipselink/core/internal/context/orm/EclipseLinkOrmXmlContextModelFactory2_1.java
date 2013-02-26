@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 
@@ -18,12 +18,12 @@ public class EclipseLinkOrmXmlContextModelFactory2_1
 {
 
 	@Override
-	public AbstractOrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
+	public AbstractOrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmModifiablePersistentAttribute parent, XmlBasicCollection resourceMapping) {
 		return new OrmEclipseLinkBasicCollectionMapping2_1(parent, resourceMapping);
 	}
 
 	@Override
-	public AbstractOrmEclipseLinkBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
+	public AbstractOrmEclipseLinkBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmModifiablePersistentAttribute parent, XmlBasicMap resourceMapping) {
 		return new OrmEclipseLinkBasicMapMapping2_1(parent, resourceMapping);
 	}
 }

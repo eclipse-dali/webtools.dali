@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 
 public class GenericOrmOneToManyMapping
 	extends AbstractOrmOneToManyMapping<XmlOneToMany>
 {
-	public GenericOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany xmlMapping) {
+	public GenericOrmOneToManyMapping(OrmModifiablePersistentAttribute parent, XmlOneToMany xmlMapping) {
 		super(parent, xmlMapping);
 	}
 }
