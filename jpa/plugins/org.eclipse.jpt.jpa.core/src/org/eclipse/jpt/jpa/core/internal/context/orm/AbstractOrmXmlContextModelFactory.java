@@ -81,7 +81,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericEntityMappings;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
@@ -260,7 +260,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 	}
 	
 	public OrmSpecifiedAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride) {
-		return new GenericOrmAssociationOverride(parent, xmlOverride);
+		return new GenericOrmSpecifiedAssociationOverride(parent, xmlOverride);
 	}
 	
 	public OrmVirtualAssociationOverride buildOrmVirtualAssociationOverride(OrmAssociationOverrideContainer parent, String name) {

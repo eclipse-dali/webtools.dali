@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,14 +27,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified <code>orm.xml</code> association override
  */
-public class GenericOrmAssociationOverride
+public class GenericOrmSpecifiedAssociationOverride
 	extends AbstractOrmSpecifiedOverride<OrmAssociationOverrideContainer, XmlAssociationOverride>
 	implements OrmSpecifiedAssociationOverride2_0
 {
 	protected final OrmOverrideRelationship relationship;
 
 
-	public GenericOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride) {
+	public GenericOrmSpecifiedAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride) {
 		super(parent, xmlOverride);
 		this.relationship = this.buildRelationship();
 	}
