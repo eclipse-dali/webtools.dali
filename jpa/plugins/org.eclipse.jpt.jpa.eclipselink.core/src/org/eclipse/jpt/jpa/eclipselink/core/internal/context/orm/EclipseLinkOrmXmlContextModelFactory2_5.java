@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedStoredProcedureQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
-public class EclipseLinkOrmXml2_5ContextNodeFactory
+public class EclipseLinkOrmXmlContextModelFactory2_5
 	extends EclipseLinkOrmXmlContextModelFactory2_4
 	implements OrmXmlContextModelFactory2_1
 {
