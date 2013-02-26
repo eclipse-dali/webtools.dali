@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnectio
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 
 
-public class EclipseLink2_0PersistenceXmlContextNodeFactory 
+public class EclipseLinkPersistenceXmlContextModelFactory2_0 
 		extends AbstractEclipseLinkPersistenceXmlContextModelFactory {
 
 	@Override

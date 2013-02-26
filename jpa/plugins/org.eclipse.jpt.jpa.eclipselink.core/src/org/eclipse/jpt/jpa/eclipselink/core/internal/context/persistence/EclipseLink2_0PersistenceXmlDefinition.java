@@ -48,6 +48,6 @@ public class EclipseLink2_0PersistenceXmlDefinition
 
 	@Override
 	protected PersistenceXmlContextModelFactory buildContextNodeFactory() {
-		return new EclipseLink2_0PersistenceXmlContextNodeFactory();
+		return new EclipseLinkPersistenceXmlContextModelFactory2_0();
 	}
 }
