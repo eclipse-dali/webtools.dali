@@ -61,7 +61,7 @@ public class EclipseLinkOrmXmlContextModelFactory
 	
 	@Override
 	public OrmModifiablePersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping resourceMapping) {
-		return new OrmEclipseLinkPersistentAttribute(parent, (XmlAttributeMapping) resourceMapping);
+		return new EclipseLinkOrmPersistentAttribute(parent, (XmlAttributeMapping) resourceMapping);
 	}
 
 	@Override

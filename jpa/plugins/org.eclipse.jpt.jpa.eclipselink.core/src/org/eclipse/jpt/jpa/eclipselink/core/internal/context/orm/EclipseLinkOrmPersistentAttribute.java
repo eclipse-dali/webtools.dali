@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
  * EclipseLink
  * <code>orm.xml</code> persistent attribute
  */
-public class OrmEclipseLinkPersistentAttribute
+public class EclipseLinkOrmPersistentAttribute
 	extends SpecifiedOrmPersistentAttribute
 	implements EclipseLinkModifiableAccessMethodsContainer
 {
@@ -32,7 +32,7 @@ public class OrmEclipseLinkPersistentAttribute
 	protected String specifiedGetMethod;
 	protected String specifiedSetMethod;
 
-	public OrmEclipseLinkPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
+	public EclipseLinkOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		super(parent, xmlMapping);
 		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
 		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
