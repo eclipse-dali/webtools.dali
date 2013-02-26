@@ -22,7 +22,7 @@ public interface VirtualAttributeOverride
 	extends VirtualOverride, ReadOnlyAttributeOverride
 {
 	// covariant overrides
-	AttributeOverride convertToSpecified();
+	SpecifiedAttributeOverride convertToSpecified();
 
 	VirtualColumn getColumn();
 }

@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
@@ -329,7 +329,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -350,7 +350,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -371,7 +371,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -392,7 +392,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -413,7 +413,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -437,7 +437,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -458,7 +458,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -479,7 +479,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -498,7 +498,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(embeddedIdMapping.isDefault());
 		XmlEmbeddedId embeddedIdResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride attributeOverride = embeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
@@ -680,7 +680,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
 
 		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
-		AttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
+		SpecifiedAttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", specifiedAttributeOverride.getName());
 
 		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
@@ -798,7 +798,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 
 		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
-		AttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
+		SpecifiedAttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
 		Column column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getSpecifiedName());

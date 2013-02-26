@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -350,11 +350,11 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		};
 	}
 	
-	private ListValueModel<AttributeOverride> buildSpecifiedAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
+	private ListValueModel<SpecifiedAttributeOverride> buildSpecifiedAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AttributeOverrideContainer, SpecifiedAttributeOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
-			protected ListIterable<AttributeOverride> getListIterable() {
-				return new SuperListIterableWrapper<AttributeOverride>(this.subject.getSpecifiedOverrides());
+			protected ListIterable<SpecifiedAttributeOverride> getListIterable() {
+				return new SuperListIterableWrapper<SpecifiedAttributeOverride>(this.subject.getSpecifiedOverrides());
 			}
 			
 			@Override

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
@@ -1067,7 +1067,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertFalse(virtualAttributeOverrides.hasNext());
 
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertFalse(specifiedAttributeOverride.isVirtual());
 		
 		

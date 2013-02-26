@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.swt.widgets.Composite;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see AttributeOverride
+ * @see SpecifiedAttributeOverride
  * @see EntityOverridesComposite - The parent container
  * @see ColumnComposite
  *

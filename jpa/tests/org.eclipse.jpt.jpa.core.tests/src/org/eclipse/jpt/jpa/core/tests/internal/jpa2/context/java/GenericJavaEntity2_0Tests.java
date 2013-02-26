@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
@@ -718,7 +718,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		ListIterator<? extends AttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends SpecifiedAttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
@@ -1008,7 +1008,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());
 		assertFalse(attributeOverrideResources.hasNext());
 		
-		Iterator<? extends AttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<? extends SpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());		
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
@@ -1052,7 +1052,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<? extends AttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends SpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
@@ -1087,7 +1087,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		((AttributeOverrideAnnotation) resourceType.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 			
-		ListIterator<? extends AttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends SpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
@@ -1150,7 +1150,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertFalse(virtualAttributeOverrides.hasNext());
 
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		SpecifiedAttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertFalse(specifiedAttributeOverride.isVirtual());
 		
 		
@@ -1713,7 +1713,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
 		
 		//set an attribute override on Address.zipCode embedded mapping
-		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
+		SpecifiedAttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");
@@ -1825,7 +1825,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
 		
 		//set an attribute override on Address.zipCode embedded mapping
-		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
+		SpecifiedAttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");

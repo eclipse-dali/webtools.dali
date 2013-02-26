@@ -38,12 +38,12 @@ public interface AttributeOverrideContainer
 	// covariant overrides
 	ListIterable<? extends ReadOnlyAttributeOverride> getOverrides();
 	ReadOnlyAttributeOverride getOverrideNamed(String name);
-	ListIterable<? extends AttributeOverride> getSpecifiedOverrides();
-	AttributeOverride getSpecifiedOverride(int index);
-	AttributeOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<? extends SpecifiedAttributeOverride> getSpecifiedOverrides();
+	SpecifiedAttributeOverride getSpecifiedOverride(int index);
+	SpecifiedAttributeOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<? extends VirtualAttributeOverride> getVirtualOverrides();
 	VirtualAttributeOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	AttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	SpecifiedAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** owner **********

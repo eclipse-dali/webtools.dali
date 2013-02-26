@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
@@ -1537,7 +1537,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			// strip off the first segment
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
-				AttributeOverride override = this.attributeOverrideContainer.getSpecifiedOverrideNamed(attributeName.substring(dotIndex + 1));
+				SpecifiedAttributeOverride override = this.attributeOverrideContainer.getSpecifiedOverrideNamed(attributeName.substring(dotIndex + 1));
 				if (override != null) {
 					return override.getColumn();
 				}

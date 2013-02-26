@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
  * @since 2.0
  */
 public interface OrmAttributeOverride
-	extends AttributeOverride, OrmOverride
+	extends SpecifiedAttributeOverride, OrmOverride
 {
 	OrmVirtualAttributeOverride convertToVirtual();
 

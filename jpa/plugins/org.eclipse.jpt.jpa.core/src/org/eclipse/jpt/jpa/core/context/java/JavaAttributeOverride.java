@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
  * @since 2.0
  */
 public interface JavaAttributeOverride
-	extends AttributeOverride, JavaOverride
+	extends SpecifiedAttributeOverride, JavaOverride
 {
 	JavaVirtualAttributeOverride convertToVirtual();
 

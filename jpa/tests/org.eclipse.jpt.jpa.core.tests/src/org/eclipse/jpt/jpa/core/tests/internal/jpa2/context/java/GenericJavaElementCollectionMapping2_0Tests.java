@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
@@ -2124,7 +2124,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		ListIterator<? extends AttributeOverride> specifiedOverrides = valueAttributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends SpecifiedAttributeOverride> specifiedOverrides = valueAttributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("parcelNumber", specifiedOverrides.next().getName());
 		assertEquals("size", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());
