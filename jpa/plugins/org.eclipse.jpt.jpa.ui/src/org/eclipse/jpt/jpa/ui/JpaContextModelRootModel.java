@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
  * </pre>
  * @see org.eclipse.jpt.jpa.ui.internal.ProjectAdapterFactory
  */
-public interface JpaRootContextNodeModel
+public interface JpaContextModelRootModel
 	extends PropertyValueModel<JpaContextModelRoot>
 {
 	/**

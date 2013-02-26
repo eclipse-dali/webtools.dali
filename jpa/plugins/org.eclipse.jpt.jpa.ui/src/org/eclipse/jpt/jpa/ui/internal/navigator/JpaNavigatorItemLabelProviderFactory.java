@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 
 /**
  * @see JpaNavigatorItemContentProviderFactory
@@ -36,17 +36,17 @@ public class JpaNavigatorItemLabelProviderFactory
 	}
 
 	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
-		// we hand JpaRootContextNodeModel differently because it can exist when the
+		// we hand JpaContextModelRootModel differently because it can exist when the
 		// JPA facet is present by the JPA project may not yet be present...
-		if (item instanceof JpaRootContextNodeModel) {
-			return this.buildRootContextNodeModelProvider((JpaRootContextNodeModel) item, manager);
+		if (item instanceof JpaContextModelRootModel) {
+			return this.buildRootContextNodeModelProvider((JpaContextModelRootModel) item, manager);
 		}
 		ItemExtendedLabelProviderFactory delegate = this.getDelegate(item);
 		return (delegate == null) ? null : delegate.buildProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildRootContextNodeModelProvider(JpaRootContextNodeModel item, ItemExtendedLabelProvider.Manager manager) {
-		return new JpaRootContextNodeModelItemLabelProvider(item, manager);
+	protected ItemExtendedLabelProvider buildRootContextNodeModelProvider(JpaContextModelRootModel item, ItemExtendedLabelProvider.Manager manager) {
+		return new JpaContextModelRootModelItemLabelProvider(item, manager);
 	}
 
 	private ItemExtendedLabelProviderFactory getDelegate(Object item) {

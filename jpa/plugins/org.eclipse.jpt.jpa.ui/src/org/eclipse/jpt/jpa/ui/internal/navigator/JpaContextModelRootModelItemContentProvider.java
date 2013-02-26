@@ -17,12 +17,12 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 
-public class JpaRootContextNodeModelItemContentProvider
-	extends AbstractItemTreeContentProvider<JpaRootContextNodeModel, PersistenceXml>
+public class JpaContextModelRootModelItemContentProvider
+	extends AbstractItemTreeContentProvider<JpaContextModelRootModel, PersistenceXml>
 {
-	public JpaRootContextNodeModelItemContentProvider(JpaRootContextNodeModel rootContextModel, Manager manager) {
+	public JpaContextModelRootModelItemContentProvider(JpaContextModelRootModel rootContextModel, Manager manager) {
 		super(rootContextModel, manager);
 	}
 	

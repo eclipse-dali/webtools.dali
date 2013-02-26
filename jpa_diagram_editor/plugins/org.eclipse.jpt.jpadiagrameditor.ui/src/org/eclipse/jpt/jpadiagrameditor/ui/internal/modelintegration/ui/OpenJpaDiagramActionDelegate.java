@@ -45,7 +45,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -178,8 +178,8 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 	protected PersistenceUnit obtainJpaProjectAndPersistenceUnit(ISelection selection) throws CoreException {
 		JpaProject jpaProject = null;
 		Object firstElement = ((IStructuredSelection) selection).getFirstElement();
-		if(firstElement instanceof JpaRootContextNodeModel){
-			jpaProject = JpaArtifactFactory.instance().getJpaProject(((JpaRootContextNodeModel)firstElement).getProject());
+		if(firstElement instanceof JpaContextModelRootModel){
+			jpaProject = JpaArtifactFactory.instance().getJpaProject(((JpaContextModelRootModel)firstElement).getProject());
 		} else if (firstElement instanceof JpaModel) {
         	jpaProject = ((JpaModel)firstElement).getJpaProject();
         } else if (firstElement instanceof IProject) {

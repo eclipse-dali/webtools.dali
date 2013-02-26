@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
-import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 
 /**
  * Factory to build Dali adapters for an {@link IProject}:<ul>
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
  *     This adapter should be used by any process that can temporarily ignore
  *     any uncreated JPA projects but should be notified if the JPA project
  *     <em>is</em> ever created (e.g. UI views).
- * <li>{@link org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel JpaRootContextNodeModel} -
+ * <li>{@link org.eclipse.jpt.jpa.ui.JpaContextModelRootModel JpaRootContextNodeModel} -
  *     This adapter is much like the {@link org.eclipse.jpt.jpa.ui.JpaProjectModel JpaProjectModel}
  *     adapter described above.
  * </ul>
@@ -42,7 +42,7 @@ public class ProjectAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
 			JpaProjectModel.class,
-			JpaRootContextNodeModel.class
+			JpaContextModelRootModel.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -60,7 +60,7 @@ public class ProjectAdapterFactory
 		if (adapterType == JpaProjectModel.class) {
 			return this.getJpaProjectModel(project);
 		}
-		if (adapterType == JpaRootContextNodeModel.class) {
+		if (adapterType == JpaContextModelRootModel.class) {
 			return this.getJpaRootContextNodeModel(project);
 		}
 		return null;
@@ -74,8 +74,8 @@ public class ProjectAdapterFactory
 		return (JpaProjectsModel) workspace.getAdapter(JpaProjectsModel.class);
 	}
 
-	private JpaRootContextNodeModel getJpaRootContextNodeModel(IProject project) {
-		return new JpaRootContextNodeModelAdapter(this.getJpaProjectModel(project));
+	private JpaContextModelRootModel getJpaRootContextNodeModel(IProject project) {
+		return new JpaContextModelRootModelAdapter(this.getJpaProjectModel(project));
 	}
 
 
@@ -125,7 +125,7 @@ public class ProjectAdapterFactory
 	// ********** JPA root context node model **********
 
 	/**
-	 * Implement a property value model for the JPA root context node
+	 * Implement a property value model for the JPA context model root
 	 * corresponding to a {@link JpaProject JPA project}. The model will fire
 	 * change events when the corresponding JPA project is added or removed
 	 * from the JPA project manager. This is useful for UI code that does not
@@ -137,11 +137,11 @@ public class ProjectAdapterFactory
 	 * since it will be kept synchronized with the JPA manager's collection of
 	 * JPA projects in the end.
 	 */
-	/* CU private */ static class JpaRootContextNodeModelAdapter
+	/* CU private */ static class JpaContextModelRootModelAdapter
 		extends TransformationPropertyValueModel<JpaProject, JpaContextModelRoot>
-		implements JpaRootContextNodeModel
+		implements JpaContextModelRootModel
 	{
-		JpaRootContextNodeModelAdapter(JpaProjectModel jpaProjectsModel) {
+		JpaContextModelRootModelAdapter(JpaProjectModel jpaProjectsModel) {
 			super(jpaProjectsModel, JpaProject.CONTEXT_MODEL_ROOT_TRANSFORMER);
 		}
 

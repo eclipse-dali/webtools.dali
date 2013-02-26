@@ -18,14 +18,14 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
-import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 
-public class JpaRootContextNodeModelItemLabelProvider
-	extends AbstractItemExtendedLabelProvider<JpaRootContextNodeModel>
+public class JpaContextModelRootModelItemLabelProvider
+	extends AbstractItemExtendedLabelProvider<JpaContextModelRootModel>
 {
-	public JpaRootContextNodeModelItemLabelProvider(JpaRootContextNodeModel rootContextNodeModel, ItemExtendedLabelProvider.Manager manager) {
+	public JpaContextModelRootModelItemLabelProvider(JpaContextModelRootModel rootContextNodeModel, ItemExtendedLabelProvider.Manager manager) {
 		super(rootContextNodeModel, manager);
 	}
 	

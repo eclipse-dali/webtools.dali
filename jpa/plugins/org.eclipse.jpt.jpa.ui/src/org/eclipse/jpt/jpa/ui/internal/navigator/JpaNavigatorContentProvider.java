@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
+import org.eclipse.jpt.jpa.ui.JpaContextModelRootModel;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -59,7 +59,7 @@ public class JpaNavigatorContentProvider
 	extends NavigatorContentProvider
 {
 	private volatile IResourceChangeListener resourceChangeListener;
-	private final HashMap<IProject, JpaRootContextNodeModel[]> projectChildren = new HashMap<IProject, JpaRootContextNodeModel[]>();
+	private final HashMap<IProject, JpaContextModelRootModel[]> projectChildren = new HashMap<IProject, JpaContextModelRootModel[]>();
 
 
 	public JpaNavigatorContentProvider() {
@@ -127,8 +127,8 @@ public class JpaNavigatorContentProvider
 	/**
 	 * Pre-condition: {@link #projectChildren} is <code>synchronized</code>
 	 */
-	private JpaRootContextNodeModel[] getChildren_(IProject project) {
-		JpaRootContextNodeModel[] children = this.projectChildren.get(project);
+	private JpaContextModelRootModel[] getChildren_(IProject project) {
+		JpaContextModelRootModel[] children = this.projectChildren.get(project);
 		if (children == null) {
 			children = this.buildChildren(project);
 			this.projectChildren.put(project, children);
@@ -136,8 +136,8 @@ public class JpaNavigatorContentProvider
 		return children;
 	}
 
-	private JpaRootContextNodeModel[] buildChildren(IProject project) {
-		return new JpaRootContextNodeModel[] {this.buildChild(project)};
+	private JpaContextModelRootModel[] buildChildren(IProject project) {
+		return new JpaContextModelRootModel[] {this.buildChild(project)};
 	}
 
 	/**
@@ -153,8 +153,8 @@ public class JpaNavigatorContentProvider
 	 * dispose the node's content and label providers (which are listening to
 	 * the node for changes etc.).
 	 */
-	private JpaRootContextNodeModel buildChild(IProject project) {
-		return (JpaRootContextNodeModel) project.getAdapter(JpaRootContextNodeModel.class);
+	private JpaContextModelRootModel buildChild(IProject project) {
+		return (JpaContextModelRootModel) project.getAdapter(JpaContextModelRootModel.class);
 	}
 
 
@@ -181,7 +181,7 @@ public class JpaNavigatorContentProvider
 	 * Pre-condition: {@link #projectChildren} is <code>synchronized</code>
 	 */
 	private void jpaFacetIsPresent_(IProject project) {
-		JpaRootContextNodeModel[] children = this.projectChildren.get(project);
+		JpaContextModelRootModel[] children = this.projectChildren.get(project);
 		if (children == null) {
 			this.delegate.updateChildren(project);  // force the viewer to refresh the project
 		}
@@ -200,9 +200,9 @@ public class JpaNavigatorContentProvider
 	 * Pre-condition: {@link #projectChildren} is <code>synchronized</code>
 	 */
 	private void jpaFacetIsAbsent_(IProject project) {
-		JpaRootContextNodeModel[] children = this.projectChildren.remove(project);
+		JpaContextModelRootModel[] children = this.projectChildren.remove(project);
 		if (children != null) {
-			for (JpaRootContextNodeModel child : children) {  // should be only one...
+			for (JpaContextModelRootModel child : children) {  // should be only one...
 				this.delegate.dispose(child);
 			}
 			this.delegate.updateChildren(project);  // force the viewer to refresh the project

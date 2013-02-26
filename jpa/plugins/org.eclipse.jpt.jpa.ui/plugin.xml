@@ -64,7 +64,7 @@
 			adaptableType="org.eclipse.core.resources.IProject"
 			class="org.eclipse.jpt.jpa.ui.internal.ProjectAdapterFactory">
 			<adapter type="org.eclipse.jpt.jpa.ui.JpaProjectModel"/>
-			<adapter type="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel"/>
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel"/>
 		</factory>
 
 		<!-- IFile -> JpaFileModel -->
@@ -930,7 +930,7 @@
 			<triggerPoints>
 				<or>
 					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
-					<instanceof value="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel"/>
+					<instanceof value="org.eclipse.jpt.jpa.ui.JpaContextModelRootModel"/>
 					<adapt type="org.eclipse.core.resources.IProject"> 
 						<reference definitionId="org.eclipse.jpt.jpa.reference.hasJpaFacet"/>
 					</adapt>
