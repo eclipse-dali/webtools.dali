@@ -42,7 +42,7 @@ public interface AttributeOverrideContainer
 	AttributeOverride getSpecifiedOverride(int index);
 	AttributeOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<? extends VirtualAttributeOverride> getVirtualOverrides();
-	VirtualAttributeOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	VirtualAttributeOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
 	AttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 

@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -376,7 +376,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 			
 			ReadOnlyOverride newOverride = convertToSpecified ?
 					((VirtualOverride) override).convertToSpecified() :
-					((Override_) override).convertToVirtual();
+					((SpecifiedOverride) override).convertToVirtual();
 			this.selectedOverrideModel.setValue(newOverride);
 		}
 		finally {

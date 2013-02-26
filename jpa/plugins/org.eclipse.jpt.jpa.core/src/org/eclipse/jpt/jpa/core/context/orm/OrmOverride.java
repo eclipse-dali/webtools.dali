@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmOverride
-	extends Override_
+	extends SpecifiedOverride
 {
 	XmlOverride getXmlOverride();
 

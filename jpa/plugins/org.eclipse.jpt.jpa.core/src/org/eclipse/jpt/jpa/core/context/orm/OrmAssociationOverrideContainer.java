@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 
@@ -36,7 +36,7 @@ public interface OrmAssociationOverrideContainer
 	OrmAssociationOverride getSpecifiedOverride(int index);
 	OrmAssociationOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<OrmVirtualAssociationOverride> getVirtualOverrides();
-	OrmVirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	OrmVirtualAssociationOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
 	OrmAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 

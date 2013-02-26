@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface AssociationOverride
-	extends Override_, ReadOnlyAssociationOverride
+	extends SpecifiedOverride, ReadOnlyAssociationOverride
 {
 	void initializeFrom(ReadOnlyAssociationOverride oldOverride);
 

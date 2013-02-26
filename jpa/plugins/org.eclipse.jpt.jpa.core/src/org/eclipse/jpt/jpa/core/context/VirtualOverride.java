@@ -28,5 +28,5 @@ public interface VirtualOverride
 	 * Return the new <em>specified</em> override.
 	 * @see #isVirtual()
 	 */
-	Override_ convertToSpecified();
+	SpecifiedOverride convertToSpecified();
 }

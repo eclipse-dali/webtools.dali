@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -128,7 +128,7 @@ public abstract class AbstractJavaOverrideContainer<
 	 * specified override, or the <em>update</em> will discover the missing
 	 * virtual override and add it preemptively.
 	 */
-	public V convertOverrideToVirtual(Override_ override) {
+	public V convertOverrideToVirtual(SpecifiedOverride override) {
 		if (override.isVirtual()) {
 			throw new IllegalArgumentException("Override is already virtual: " + override); //$NON-NLS-1$
 		}

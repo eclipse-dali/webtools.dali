@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 
@@ -43,7 +43,7 @@ public interface JavaAttributeOverrideContainer
 	JavaAttributeOverride getSpecifiedOverride(int index);
 	JavaAttributeOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<JavaVirtualAttributeOverride> getVirtualOverrides();
-	JavaVirtualAttributeOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	JavaVirtualAttributeOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
 	JavaAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 

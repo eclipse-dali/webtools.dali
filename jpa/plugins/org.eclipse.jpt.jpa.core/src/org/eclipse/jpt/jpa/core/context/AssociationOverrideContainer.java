@@ -47,7 +47,7 @@ public interface AssociationOverrideContainer
 	AssociationOverride getSpecifiedOverride(int index);
 	AssociationOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<? extends VirtualAssociationOverride> getVirtualOverrides();
-	VirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	VirtualAssociationOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
 	AssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 

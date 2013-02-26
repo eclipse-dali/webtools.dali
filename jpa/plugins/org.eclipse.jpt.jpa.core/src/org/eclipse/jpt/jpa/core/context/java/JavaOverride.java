@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
  * @since 2.3
  */
 public interface JavaOverride
-	extends Override_
+	extends SpecifiedOverride
 {
 	OverrideAnnotation getOverrideAnnotation();
 

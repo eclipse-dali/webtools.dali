@@ -46,7 +46,7 @@ public interface ReadOnlyOverride
 	 * the override's parent (i.e. it occurs by default); return <code>false</code>
 	 * if the override is explicitly specified on the override's parent.
 	 * 
-	 * @see Override_#convertToVirtual()
+	 * @see SpecifiedOverride#convertToVirtual()
 	 * @see VirtualOverride#convertToSpecified()
 	 */
 	// TODO bjv rename?

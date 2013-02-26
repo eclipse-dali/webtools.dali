@@ -117,9 +117,9 @@ public interface OverrideContainer
 	 * attribute names returned by the container's parent. <em>Specified</em>
 	 * overrides can be created via {@link VirtualOverride#convertToSpecified()}.
 	 * <em>Specified</em> overrides can be remvoed via
-	 * {@link Override_#convertToVirtual()}.
+	 * {@link SpecifiedOverride#convertToVirtual()}.
 	 */
-	ListIterable<? extends Override_> getSpecifiedOverrides();
+	ListIterable<? extends SpecifiedOverride> getSpecifiedOverrides();
 		String SPECIFIED_OVERRIDES_LIST = "specifiedOverrides"; //$NON-NLS-1$
 
 	/**
@@ -130,7 +130,7 @@ public interface OverrideContainer
 	/**
 	 * Return the <em>specified</em> override at the specified index.
 	 */
-	Override_ getSpecifiedOverride(int index);
+	SpecifiedOverride getSpecifiedOverride(int index);
 
 	/**
 	 * Move the <em>specified</em> override from the source index to the
@@ -141,13 +141,13 @@ public interface OverrideContainer
 	/**
 	 * Return the <em>specified</em> override at the specified index.
 	 */
-	Override_ getSpecifiedOverrideNamed(String name);
+	SpecifiedOverride getSpecifiedOverrideNamed(String name);
 
 	/**
 	 * Convert the specified <em>specified</em> override to <em>virtual</em>.
 	 * Return the new override.
 	 */
-	VirtualOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	VirtualOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
 
 
 	// ********** virtual overrides **********
@@ -168,7 +168,7 @@ public interface OverrideContainer
 	 * Convert the specified <em>virtual</em> override to <em>specified</em>.
 	 * Return the new override.
 	 */
-	Override_ convertOverrideToSpecified(VirtualOverride virtualOverride);
+	SpecifiedOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** container owner **********
