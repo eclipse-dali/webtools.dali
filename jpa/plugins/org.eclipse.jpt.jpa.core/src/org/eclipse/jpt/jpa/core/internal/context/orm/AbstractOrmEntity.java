@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
@@ -1309,7 +1309,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 	}
 
-	protected ReadOnlyAttributeOverride getJavaAttributeOverrideNamedForVirtual(String attributeName) {
+	protected AttributeOverride getJavaAttributeOverrideNamedForVirtual(String attributeName) {
 		JavaEntity javaEntity = this.getJavaTypeMappingForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getAttributeOverrideContainer().getOverrideNamed(attributeName);
 	}
@@ -2034,11 +2034,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 
 		public JptValidator buildOverrideValidator(Override_ override, OverrideContainer container) {
-			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
+			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
 		public JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
-			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, new EntityTableDescriptionProvider());
+			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 
 		public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {

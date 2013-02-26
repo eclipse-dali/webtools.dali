@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
@@ -1278,7 +1278,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
 		ListIterator<? extends SpecifiedAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
-		ReadOnlyAttributeOverride attributeOverride = specifiedAttributeOverrides.next();
+		AttributeOverride attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
 		ListIterator<? extends VirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		attributeOverride = virtualAttributeOverrides.next();
@@ -1340,7 +1340,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(4, attributeOverrideContainer.getVirtualOverridesSize());
 		assertEquals(0, attributeOverrideContainer.getSpecifiedOverridesSize());
 		virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
-		ReadOnlyAttributeOverride virtualOverride = virtualAttributeOverrides.next();
+		AttributeOverride virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("city", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("state.name", virtualOverride.getName());

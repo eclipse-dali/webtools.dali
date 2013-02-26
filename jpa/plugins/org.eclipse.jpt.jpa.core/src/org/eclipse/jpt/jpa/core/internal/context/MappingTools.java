@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
@@ -462,7 +462,7 @@ public final class MappingTools {
 			if (current != null) {
 				// 229423 - if the attribute is a primary key, but it has an attribute override,
 				// use the override column instead
-				ReadOnlyAttributeOverride attributeOverride = entity.getAttributeOverrideContainer().getOverrideNamed(attribute.getName());
+				AttributeOverride attributeOverride = entity.getAttributeOverrideContainer().getOverrideNamed(attribute.getName());
 				if (attributeOverride != null) {
 					current = attributeOverride.getColumn().getName();
 				}

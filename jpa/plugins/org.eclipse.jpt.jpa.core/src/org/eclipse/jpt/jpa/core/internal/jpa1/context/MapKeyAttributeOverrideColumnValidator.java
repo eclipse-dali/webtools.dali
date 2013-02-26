@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -21,7 +21,7 @@ public class MapKeyAttributeOverrideColumnValidator
 {
 	public MapKeyAttributeOverrideColumnValidator(
 				PersistentAttribute persistentAttribute,
-				ReadOnlyAttributeOverride override,
+				AttributeOverride override,
 				ReadOnlyBaseColumn column,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, override, column, provider);

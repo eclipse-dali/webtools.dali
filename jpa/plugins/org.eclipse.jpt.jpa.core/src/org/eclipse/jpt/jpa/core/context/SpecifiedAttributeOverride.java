@@ -22,11 +22,11 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedAttributeOverride
-	extends SpecifiedOverride, ReadOnlyAttributeOverride
+	extends SpecifiedOverride, AttributeOverride
 {
-	void initializeFrom(ReadOnlyAttributeOverride oldOverride);
+	void initializeFrom(AttributeOverride oldOverride);
 
-	void initializeFromVirtual(ReadOnlyAttributeOverride oldOverride);
+	void initializeFromVirtual(AttributeOverride oldOverride);
 
 	// covariant overrides
 	VirtualAttributeOverride convertToVirtual();

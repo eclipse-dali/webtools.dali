@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
@@ -77,12 +77,12 @@ public class GenericOrmAttributeOverride
 
 	// ********** misc **********
 
-	public void initializeFrom(ReadOnlyAttributeOverride oldOverride) {
+	public void initializeFrom(AttributeOverride oldOverride) {
 		super.initializeFrom(oldOverride);
 		this.column.initializeFrom(oldOverride.getColumn());
 	}
 
-	public void initializeFromVirtual(ReadOnlyAttributeOverride oldOverride) {
+	public void initializeFromVirtual(AttributeOverride oldOverride) {
 		super.initializeFromVirtual(oldOverride);
 		this.column.initializeFromVirtual(oldOverride.getColumn());
 	}

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
@@ -19,7 +19,7 @@ public class AttributeOverrideValidator
 	extends OverrideValidator
 {
 	public AttributeOverrideValidator(
-				ReadOnlyAttributeOverride override,
+				AttributeOverride override,
 				AttributeOverrideContainer container,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
 		super(override, container, overrideDescriptionProvider);
@@ -27,7 +27,7 @@ public class AttributeOverrideValidator
 
 	public AttributeOverrideValidator(
 				PersistentAttribute persistentAttribute,
-				ReadOnlyAttributeOverride override,
+				AttributeOverride override,
 				AttributeOverrideContainer container,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
 		super(persistentAttribute, override, container, overrideDescriptionProvider);

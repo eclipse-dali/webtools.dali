@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
@@ -1872,7 +1872,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		OrmEntity childEntity = (OrmEntity) childType.getMapping();	
 		OrmAttributeOverrideContainer childOverrideContainer = childEntity.getAttributeOverrideContainer();
-		ReadOnlyAttributeOverride attributeOverride = childOverrideContainer.getVirtualOverrides().iterator().next();
+		AttributeOverride attributeOverride = childOverrideContainer.getVirtualOverrides().iterator().next();
 		((OrmPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).addToXml();
 		BasicMapping basicMapping = (BasicMapping) ((OrmPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).getMapping();
 		basicMapping.getColumn().setSpecifiedName("MY_COLUMN");

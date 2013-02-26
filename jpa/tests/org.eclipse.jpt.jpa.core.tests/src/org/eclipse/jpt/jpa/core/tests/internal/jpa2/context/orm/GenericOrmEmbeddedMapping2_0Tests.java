@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
@@ -579,10 +579,10 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
-		ListIterator<? extends ReadOnlyAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
-		ReadOnlyAttributeOverride attributeOverride = specifiedAttributeOverrides.next();
+		ListIterator<? extends AttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		AttributeOverride attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
-		ListIterator<? extends ReadOnlyAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
+		ListIterator<? extends AttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
@@ -642,7 +642,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(4, attributeOverrideContainer.getVirtualOverridesSize());
 		assertEquals(0, attributeOverrideContainer.getSpecifiedOverridesSize());
 		virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
-		ReadOnlyAttributeOverride virtualOverride = virtualAttributeOverrides.next();
+		AttributeOverride virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("city", virtualOverride.getName());
@@ -695,14 +695,14 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 
 		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
-		ListIterator<? extends ReadOnlyAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends AttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 
-		ReadOnlyAttributeOverride override = specifiedAttributeOverrides.next();
+		AttributeOverride override = specifiedAttributeOverrides.next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, override.getName());
 		ReadOnlyColumn column = override.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getSpecifiedName());
 
-		ListIterator<? extends ReadOnlyAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
+		ListIterator<? extends AttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		override = virtualAttributeOverrides.next();
 		assertEquals("id", override.getName());
 		column = override.getColumn();

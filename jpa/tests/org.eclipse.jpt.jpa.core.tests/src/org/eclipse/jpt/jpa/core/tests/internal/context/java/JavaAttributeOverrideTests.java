@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
@@ -176,7 +176,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", attributeOverride.getColumn().getDefaultName());
 		
 		
@@ -199,7 +199,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTableName());
 
 		
@@ -222,7 +222,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", attributeOverride.getName());
 	}
 	
@@ -237,7 +237,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertTrue(attributeOverride.isVirtual());
 	}
 	

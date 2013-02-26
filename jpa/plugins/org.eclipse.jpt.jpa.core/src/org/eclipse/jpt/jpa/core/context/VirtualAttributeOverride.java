@@ -19,7 +19,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualAttributeOverride
-	extends VirtualOverride, ReadOnlyAttributeOverride
+	extends VirtualOverride, AttributeOverride
 {
 	// covariant overrides
 	SpecifiedAttributeOverride convertToSpecified();

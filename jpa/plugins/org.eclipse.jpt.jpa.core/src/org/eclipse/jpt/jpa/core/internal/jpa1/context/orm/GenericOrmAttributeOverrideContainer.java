@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 public class GenericOrmAttributeOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAttributeOverrideContainer.Owner,
-			ReadOnlyAttributeOverride,
+			AttributeOverride,
 			OrmSpecifiedAttributeOverride,
 			OrmVirtualAttributeOverride,
 			XmlAttributeOverride

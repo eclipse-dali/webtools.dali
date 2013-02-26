@@ -36,8 +36,8 @@ public interface AttributeOverrideContainer
 	ReadOnlyColumn resolveOverriddenColumn(String attributeName);
 
 	// covariant overrides
-	ListIterable<? extends ReadOnlyAttributeOverride> getOverrides();
-	ReadOnlyAttributeOverride getOverrideNamed(String name);
+	ListIterable<? extends AttributeOverride> getOverrides();
+	AttributeOverride getOverrideNamed(String name);
 	ListIterable<? extends SpecifiedAttributeOverride> getSpecifiedOverrides();
 	SpecifiedAttributeOverride getSpecifiedOverride(int index);
 	SpecifiedAttributeOverride getSpecifiedOverrideNamed(String name);
