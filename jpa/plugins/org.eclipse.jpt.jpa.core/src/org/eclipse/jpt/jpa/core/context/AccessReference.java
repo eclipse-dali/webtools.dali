@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 3.2
  * @since 2.2
  */
-public interface ReadOnlyAccessHolder
+public interface AccessReference
 	extends JpaContextModel
 {
 	/**

@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.2
  */
 public interface ModifiableAccessReference
-	extends ReadOnlyAccessHolder
+	extends AccessReference
 {
 	/**
 	 * Return the specified access type;
