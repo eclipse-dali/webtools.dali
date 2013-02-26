@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.persistence.Generic2
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.JpaProject2_1Tests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.java.Generic2_1JavaContextModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.orm.Generic2_1OrmContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.persistence.Generic2_1PersistenceContextModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.persistence.JptJpa2_1ContextPersistenceModelTests;
 
 /**
@@ -47,6 +48,7 @@ public class JptJpaCoreContextModelTests
 			suite.addTest(JptJpa2_1ContextPersistenceModelTests.suite());
 			suite.addTest(Generic2_1JavaContextModelTests.suite());
 			suite.addTest(Generic2_1OrmContextModelTests.suite());
+			suite.addTest(Generic2_1PersistenceContextModelTests.suite());
 		} else {
 			suite.addTest(TestSuite.warning(JptJpaCoreTests.buildMissingJarErrorMessage()));
 		}

@@ -205,7 +205,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		return new TransformationPropertyValueModel<PersistenceUnit, SchemaGeneration>(getSubjectHolder()) {
 			@Override
 			protected SchemaGeneration transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getSchemaGeneration();
+				return ((EclipseLinkPersistenceUnit) value).getEclipseLinkSchemaGeneration();
 			}
 		};
 	}

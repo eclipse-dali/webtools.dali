@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,7 +48,7 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		this.schemaGeneration = this.subject.getSchemaGeneration();
+		this.schemaGeneration = this.subject.getEclipseLinkSchemaGeneration();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);

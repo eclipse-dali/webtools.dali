@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence;
+package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
@@ -49,6 +49,7 @@ public class GenericPersistenceXml2_1Definition
 
 	@Override
 	protected PersistenceXmlContextNodeFactory buildContextNodeFactory() {
-		return new Generic2_0PersistenceXmlContextNodeFactory();
+		return new Generic2_1PersistenceXmlContextNodeFactory();
 	}
-}
+	}
+

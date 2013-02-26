@@ -115,7 +115,7 @@ public class EclipseLinkPersistenceUnit
 	private Customization customization;
 	private Caching caching;
 	private Logging logging;
-	private SchemaGeneration schemaGeneration;
+	private SchemaGeneration eclipseLinkSchemaGeneration;
 
 	/* global converter definitions, defined elsewhere in model */
 	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
@@ -205,8 +205,8 @@ public class EclipseLinkPersistenceUnit
 		return (Options) super.getOptions();
 	}
 
-	public SchemaGeneration getSchemaGeneration() {
-		return this.schemaGeneration;
+	public SchemaGeneration getEclipseLinkSchemaGeneration() {
+		return this.eclipseLinkSchemaGeneration;
 	}
 
 	protected GeneralProperties buildEclipseLinkGeneralProperties() {
@@ -244,7 +244,7 @@ public class EclipseLinkPersistenceUnit
 		this.customization = this.buildEclipseLinkCustomization();
 		this.caching = this.buildEclipseLinkCaching();
 		this.logging = this.buildEclipseLinkLogging();
-		this.schemaGeneration = this.buildEclipseLinkSchemaGeneration();
+		this.eclipseLinkSchemaGeneration = this.buildEclipseLinkSchemaGeneration();
 	}
 
 	@Override
@@ -254,7 +254,7 @@ public class EclipseLinkPersistenceUnit
 		this.customization.propertyValueChanged(propertyName, newValue);
 		this.caching.propertyValueChanged(propertyName, newValue);
 		this.logging.propertyValueChanged(propertyName, newValue);
-		this.schemaGeneration.propertyValueChanged(propertyName, newValue);
+		this.eclipseLinkSchemaGeneration.propertyValueChanged(propertyName, newValue);
 	}
 
 	@Override
@@ -264,7 +264,7 @@ public class EclipseLinkPersistenceUnit
 		this.customization.propertyRemoved(propertyName);
 		this.caching.propertyRemoved(propertyName);
 		this.logging.propertyRemoved(propertyName);
-		this.schemaGeneration.propertyRemoved(propertyName);
+		this.eclipseLinkSchemaGeneration.propertyRemoved(propertyName);
 	}
 
 

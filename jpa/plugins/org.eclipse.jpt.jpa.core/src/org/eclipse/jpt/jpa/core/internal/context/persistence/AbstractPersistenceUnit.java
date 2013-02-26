@@ -97,6 +97,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -120,7 +121,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractPersistenceUnit
 	extends AbstractPersistenceXmlContextNode
-	implements PersistenceUnit2_0
+	implements PersistenceUnit2_0, PersistenceUnit2_1
 {
 	protected final XmlPersistenceUnit xmlPersistenceUnit;
 
@@ -192,6 +193,9 @@ public abstract class AbstractPersistenceUnit
 	protected PersistenceUnitProperties connection;
 	protected PersistenceUnitProperties options;
 
+	//****** JPA 2.1 features
+	protected PersistenceUnitProperties genericSchemaGeneration;
+	
 	protected SharedCacheMode specifiedSharedCacheMode;
 	protected SharedCacheMode defaultSharedCacheMode;
 
@@ -1206,6 +1210,7 @@ public abstract class AbstractPersistenceUnit
 	public void propertyValueChanged(String propertyName, String newValue) {
 		this.connection.propertyValueChanged(propertyName, newValue);
 		this.options.propertyValueChanged(propertyName, newValue);
+		this.genericSchemaGeneration.propertyValueChanged(propertyName, newValue);
 	}
 
 	protected void propertyAdded(String propertyName, String value) {
@@ -1215,11 +1220,13 @@ public abstract class AbstractPersistenceUnit
 	protected void propertyRemoved(String propertyName) {
 		this.connection.propertyRemoved(propertyName);
 		this.options.propertyRemoved(propertyName);
+		this.genericSchemaGeneration.propertyRemoved(propertyName);
 	}
 
 	protected void initializeProperties() {
 		this.connection = this.getContextNodeFactory().buildConnection(this);
 		this.options = this.getContextNodeFactory().buildOptions(this);
+		this.genericSchemaGeneration = this.getContextNodeFactory().buildSchemaGeneration(this);
 	}
 
 	protected void syncProperties() {
@@ -1412,6 +1419,14 @@ public abstract class AbstractPersistenceUnit
 	public PersistenceUnitProperties getOptions() {
 		return this.options;
 	}
+
+
+	// ********** PersistenceUnit2_1 implementation **********
+
+	public PersistenceUnitProperties getSchemaGeneration() {
+		return this.genericSchemaGeneration;
+	}
+
 
 
 	// ********** shared cache mode **********
