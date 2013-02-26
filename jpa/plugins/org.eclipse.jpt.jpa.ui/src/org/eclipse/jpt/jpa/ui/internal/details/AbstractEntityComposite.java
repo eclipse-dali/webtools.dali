@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
@@ -257,10 +257,10 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected abstract Control initializeSecondaryTablesSection(Composite container);
 
 
-	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, ModifiableAccessReference>(getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected ModifiableAccessReference buildValue_() {
 				return this.subject.getPersistentType();
 			}
 		};

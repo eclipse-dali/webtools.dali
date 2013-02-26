@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneRelationship;
@@ -82,10 +82,10 @@ public abstract class AbstractManyToOneMappingComposite<T extends ManyToOneMappi
 		};
 	}
 
-	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<ManyToOneMapping, AccessHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<ManyToOneMapping, ModifiableAccessReference>(getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected ModifiableAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};

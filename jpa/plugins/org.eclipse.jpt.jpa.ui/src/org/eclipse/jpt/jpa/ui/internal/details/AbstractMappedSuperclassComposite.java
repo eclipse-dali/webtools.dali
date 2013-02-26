@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -71,10 +71,10 @@ public abstract class AbstractMappedSuperclassComposite<T extends MappedSupercla
 		};
 	}
 
-	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, AccessHolder>(this.getSubjectHolder()) {
+	protected PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<T, ModifiableAccessReference>(this.getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected ModifiableAccessReference buildValue_() {
 				return this.subject.getPersistentType();
 			}
 		};

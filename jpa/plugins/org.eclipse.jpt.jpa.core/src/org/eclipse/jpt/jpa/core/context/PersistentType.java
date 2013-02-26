@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  * @since 2.0
  */
 public interface PersistentType
-	extends ManagedType, JpaStructureNode, AccessHolder
+	extends ManagedType, JpaStructureNode, ModifiableAccessReference
 {
 	Class<? extends PersistentType> getType();
 

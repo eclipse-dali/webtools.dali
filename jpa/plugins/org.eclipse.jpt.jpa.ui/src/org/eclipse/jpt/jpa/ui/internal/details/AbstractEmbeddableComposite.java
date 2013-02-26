@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -53,10 +53,10 @@ public abstract class AbstractEmbeddableComposite<E extends Embeddable>
 	
 	protected abstract Control buildEmbeddableSectionClient(Section embeddableSection);
 
-	protected PropertyValueModel<AccessHolder> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<E, AccessHolder>(this.getSubjectHolder()) {
+	protected PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel() {
+		return new PropertyAspectAdapter<E, ModifiableAccessReference>(this.getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected ModifiableAccessReference buildValue_() {
 				return this.subject.getPersistentType();
 			}
 		};

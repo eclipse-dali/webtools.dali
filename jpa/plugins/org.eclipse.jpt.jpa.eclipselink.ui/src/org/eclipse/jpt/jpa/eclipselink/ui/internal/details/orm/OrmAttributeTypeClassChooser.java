@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.swt.widgets.Composite;
@@ -94,20 +94,20 @@ public class OrmAttributeTypeClassChooser
 		return getSubject().getJpaProject().getJavaProject();
 	}
 
-	private static PropertyValueModel<AccessHolder> buildAccessHolderHolder(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
-		return new PropertyAspectAdapter<AttributeMapping, AccessHolder>(mappingHolder) {
+	private static PropertyValueModel<ModifiableAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
+		return new PropertyAspectAdapter<AttributeMapping, ModifiableAccessReference>(mappingHolder) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected ModifiableAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};
 	}
 
 	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
-		return new PropertyAspectAdapter<AccessHolder, Boolean>(
-			buildAccessHolderHolder(mappingHolder),
-			AccessHolder.SPECIFIED_ACCESS_PROPERTY,
-			AccessHolder.DEFAULT_ACCESS_PROPERTY) {
+		return new PropertyAspectAdapter<ModifiableAccessReference, Boolean>(
+			buildAccessReferenceModel(mappingHolder),
+			ModifiableAccessReference.SPECIFIED_ACCESS_PROPERTY,
+			ModifiableAccessReference.DEFAULT_ACCESS_PROPERTY) {
 			@Override
 				protected Boolean buildValue() {
 					if (this.subject == null) {

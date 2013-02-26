@@ -14,22 +14,22 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.ModifiableAccessReference;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.swt.widgets.Composite;
 
 public final class AccessTypeComboViewer
-	extends EnumFormComboViewer<AccessHolder, AccessType>
+	extends EnumFormComboViewer<ModifiableAccessReference, AccessType>
 {
-	public AccessTypeComboViewer(Pane<?> parentPane, PropertyValueModel<? extends AccessHolder> subjectHolder, Composite parent) {
+	public AccessTypeComboViewer(Pane<?> parentPane, PropertyValueModel<? extends ModifiableAccessReference> subjectHolder, Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}
 
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(AccessHolder.DEFAULT_ACCESS_PROPERTY);
-		propertyNames.add(AccessHolder.SPECIFIED_ACCESS_PROPERTY);
+		propertyNames.add(ModifiableAccessReference.DEFAULT_ACCESS_PROPERTY);
+		propertyNames.add(ModifiableAccessReference.SPECIFIED_ACCESS_PROPERTY);
 	}
 
 	@Override

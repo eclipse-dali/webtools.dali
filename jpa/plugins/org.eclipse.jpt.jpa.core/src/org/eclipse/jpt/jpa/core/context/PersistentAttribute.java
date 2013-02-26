@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface PersistentAttribute
-	extends ReadOnlyPersistentAttribute, AccessHolder
+	extends ReadOnlyPersistentAttribute, ModifiableAccessReference
 {
 	/**
 	 * Set the attribute's mapping.
