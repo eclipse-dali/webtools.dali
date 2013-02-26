@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmVirtualOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.AssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -172,8 +172,8 @@ public class GenericOrmVirtualOverrideRelationship
 		return this.parent;
 	}
 
-	protected ReadOnlyAssociationOverride2_0 getAssociationOverride2_0() {
-		return (ReadOnlyAssociationOverride2_0) this.getAssociationOverride();
+	protected AssociationOverride2_0 getAssociationOverride2_0() {
+		return (AssociationOverride2_0) this.getAssociationOverride();
 	}
 
 	public TypeMapping getTypeMapping() {

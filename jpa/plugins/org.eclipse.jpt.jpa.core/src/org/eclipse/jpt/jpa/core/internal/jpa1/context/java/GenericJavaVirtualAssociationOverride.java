@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualOverride;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.AssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaVirtualAssociationOverride
 	extends AbstractJavaVirtualOverride<JavaAssociationOverrideContainer>
-	implements JavaVirtualAssociationOverride, ReadOnlyAssociationOverride2_0
+	implements JavaVirtualAssociationOverride, AssociationOverride2_0
 {
 	protected final VirtualOverrideRelationship relationship;
 
