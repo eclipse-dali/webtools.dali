@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -221,8 +221,8 @@ public class GenericJavaOverrideRelationship
 		return this.parent;
 	}
 
-	protected JavaAssociationOverride2_0 getAssociationOverride2_0() {
-		return (JavaAssociationOverride2_0) this.getAssociationOverride();
+	protected JavaSpecifiedAssociationOverride2_0 getAssociationOverride2_0() {
+		return (JavaSpecifiedAssociationOverride2_0) this.getAssociationOverride();
 	}
 
 	public TypeMapping getTypeMapping() {
