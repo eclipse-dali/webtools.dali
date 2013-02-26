@@ -13,9 +13,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 
 public class JavaPersistentTypeDefinition implements JavaManagedTypeDefinition
 {
@@ -45,6 +45,6 @@ public class JavaPersistentTypeDefinition implements JavaManagedTypeDefinition
 	}
 
 	public JavaPersistentType buildContextManagedType(JpaContextNode parent, JavaResourceType jrt, JpaFactory factory) {
-		return factory.buildJavaPersistentType((ClassRef) parent, jrt);
+		return factory.buildJavaPersistentType((PersistentType.Owner) parent, jrt);
 	}
 }
