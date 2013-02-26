@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -63,7 +63,7 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 
 	protected TextRange getAttributeMappingTextRange(AttributeMapping attributeMapping) {
-		ReadOnlyPersistentAttribute attribute = attributeMapping.getPersistentAttribute();
+		PersistentAttribute attribute = attributeMapping.getPersistentAttribute();
 		if (attribute.isVirtual()) {
 			return attribute.getValidationTextRange();
 		}
@@ -400,11 +400,11 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 
 	protected Iterable<String> getIdClassAttributeNames(JavaPersistentType idClass) {
-		return IterableTools.transform(getAllIdClassAttributes(idClass), ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
+		return IterableTools.transform(getAllIdClassAttributes(idClass), PersistentAttribute.NAME_TRANSFORMER);
 	}
 
 	protected Iterable<JavaModifiablePersistentAttribute> getAllIdClassAttributes(JavaPersistentType idClass) {
-		return new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaModifiablePersistentAttribute>(idClass.getAllAttributes());
+		return new SubIterableWrapper<PersistentAttribute, JavaModifiablePersistentAttribute>(idClass.getAllAttributes());
 	}
 
 	protected Iterable<String> getIdClassFieldNames(JavaPersistentType idClass) {

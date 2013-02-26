@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -29,13 +29,13 @@ import org.eclipse.swt.widgets.Composite;
  * mapping type for an attribute.
  */
 public class PersistentAttributeMapAsComposite 
-	extends MapAsComposite<ReadOnlyPersistentAttribute>
+	extends MapAsComposite<PersistentAttribute>
 {
-	public PersistentAttributeMapAsComposite(Pane<? extends ReadOnlyPersistentAttribute> parentPane, Composite parent) {
+	public PersistentAttributeMapAsComposite(Pane<? extends PersistentAttribute> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
-	public PersistentAttributeMapAsComposite(Pane<? extends ReadOnlyPersistentAttribute> parentPane, Composite parent, PropertyValueModel<Boolean> enabledModel) {
+	public PersistentAttributeMapAsComposite(Pane<? extends PersistentAttribute> parentPane, Composite parent, PropertyValueModel<Boolean> enabledModel) {
 		super(parentPane, parent, enabledModel);
 	}
 	
@@ -120,18 +120,18 @@ public class PersistentAttributeMapAsComposite
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(ReadOnlyPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY);
-		propertyNames.add(ReadOnlyPersistentAttribute.MAPPING_PROPERTY);
-		propertyNames.add(ReadOnlyPersistentAttribute.NAME_PROPERTY);
+		propertyNames.add(PersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY);
+		propertyNames.add(PersistentAttribute.MAPPING_PROPERTY);
+		propertyNames.add(PersistentAttribute.NAME_PROPERTY);
 	}
 
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == ReadOnlyPersistentAttribute.MAPPING_PROPERTY ||
-		    propertyName == ReadOnlyPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY   ||
-		    propertyName == ReadOnlyPersistentAttribute.NAME_PROPERTY) {
+		if (propertyName == PersistentAttribute.MAPPING_PROPERTY ||
+		    propertyName == PersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY   ||
+		    propertyName == PersistentAttribute.NAME_PROPERTY) {
 
 			updateDescription();
 		}

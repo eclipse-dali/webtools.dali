@@ -21,19 +21,19 @@ import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 
 public abstract class AbstractAccessor
-	extends AbstractJavaContextModel<ReadOnlyPersistentAttribute>
+	extends AbstractJavaContextModel<PersistentAttribute>
 	implements Accessor
 {
 
-	protected AbstractAccessor(ReadOnlyPersistentAttribute parent) {
+	protected AbstractAccessor(PersistentAttribute parent) {
 		super(parent);
 	}
 
-	public ReadOnlyPersistentAttribute getAttribute() {
+	public PersistentAttribute getAttribute() {
 		return this.parent;
 	}
 

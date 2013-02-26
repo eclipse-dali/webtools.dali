@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 
 /**
  * JPA 2.0
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyPersistentAttribute2_0
-	extends ReadOnlyPersistentAttribute
+	extends PersistentAttribute
 {
 	/**
 	 * Return the name of the container type to be used in the metamodel field

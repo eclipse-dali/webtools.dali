@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
@@ -532,9 +532,9 @@ public class JPACreateFactory {
 		}
 	}
 	
-	public static ReadOnlyPersistentAttribute getPersistentAttribute(IFile entity, String attributeName){
-		Set<ReadOnlyPersistentAttribute> result = getEntityFields(entity);
-		for(ReadOnlyPersistentAttribute attribute : result){
+	public static PersistentAttribute getPersistentAttribute(IFile entity, String attributeName){
+		Set<PersistentAttribute> result = getEntityFields(entity);
+		for(PersistentAttribute attribute : result){
 			if(attributeName.equals(attribute.getName())){
 				return attribute;
 			}
@@ -558,15 +558,15 @@ public class JPACreateFactory {
 		return jpaFile.getRootStructureNodes();
 	}
 	
-	public static Set<ReadOnlyPersistentAttribute> getEntityFields(IFile file){
-		Set<ReadOnlyPersistentAttribute> result = new HashSet<ReadOnlyPersistentAttribute>();
+	public static Set<PersistentAttribute> getEntityFields(IFile file){
+		Set<PersistentAttribute> result = new HashSet<PersistentAttribute>();
 		JpaFile jpaFile = getJpaFile(file);
 		if(jpaFile == null){
 			return result;
 		}
 		for (JpaStructureNode node : getRootNodes(jpaFile)) {
 			PersistentType entity = (PersistentType) node;
-			for (ReadOnlyPersistentAttribute attribute : entity.getAllAttributes()) {
+			for (PersistentAttribute attribute : entity.getAllAttributes()) {
 				result.add(attribute);
 			}
 		}

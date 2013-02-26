@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
@@ -30,7 +30,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 	}
 
 	protected BaseJoinColumnValidator(
-				ReadOnlyPersistentAttribute persistentAttribute,
+				PersistentAttribute persistentAttribute,
 				C column,
 				ReadOnlyBaseJoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -62,8 +62,8 @@ public class GenericNavigatorItemLabelProviderFactory
 		if (item instanceof ManagedType) { //check instanceof PersistentType first, then ManagedType
 			return this.buildManagedTypeProvider((ManagedType) item, manager);
 		}
-		if (item instanceof ReadOnlyPersistentAttribute) {
-			return this.buildPersistentAttributeProvider((ReadOnlyPersistentAttribute) item, manager);
+		if (item instanceof PersistentAttribute) {
+			return this.buildPersistentAttributeProvider((PersistentAttribute) item, manager);
 		}
 		if (item instanceof JarFile) {
 			return this.buildJarFileProvider((JarFile) item, manager);
@@ -91,7 +91,7 @@ public class GenericNavigatorItemLabelProviderFactory
 		return new ManagedTypeItemLabelProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildPersistentAttributeProvider(ReadOnlyPersistentAttribute item, ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildPersistentAttributeProvider(PersistentAttribute item, ItemExtendedLabelProvider.Manager manager) {
 		return new PersistentAttributeItemLabelProvider(item, manager);
 	}
 

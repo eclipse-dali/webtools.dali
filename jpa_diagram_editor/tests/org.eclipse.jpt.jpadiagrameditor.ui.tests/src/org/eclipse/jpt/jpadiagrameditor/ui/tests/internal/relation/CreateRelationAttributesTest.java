@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
@@ -162,7 +162,7 @@ public class CreateRelationAttributesTest {
 			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute cPersistentAttribute = pt.resolveAttribute("address");	
+		PersistentAttribute cPersistentAttribute = pt.resolveAttribute("address");	
 		assertNotNull(cPersistentAttribute);
 
 	}	
@@ -217,7 +217,7 @@ public class CreateRelationAttributesTest {
 			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("creditCard");
+		PersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("creditCard");
 		assertNotNull(ownerPersistentAttribute);
 		assertTrue(ownerPersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
@@ -232,7 +232,7 @@ public class CreateRelationAttributesTest {
 			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("customer");
+		PersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("customer");
 		assertNotNull(inversePersistentAttribute);
 		assertTrue(inversePersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
@@ -286,7 +286,7 @@ public class CreateRelationAttributesTest {
 			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute cPersistentAttribute = pt.resolveAttribute("phones");		
+		PersistentAttribute cPersistentAttribute = pt.resolveAttribute("phones");		
 		assertNotNull(cPersistentAttribute);
 		
 		AttributeMapping mapping = cPersistentAttribute.getMapping();
@@ -346,7 +346,7 @@ public class CreateRelationAttributesTest {
 			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
+		PersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
 		assertNotNull(inversePersistentAttribute);
 		assertTrue(inversePersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
@@ -365,7 +365,7 @@ public class CreateRelationAttributesTest {
 		}
 		assertNotNull(ownerPersistentType);
 		
-		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("cruise");
+		PersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("cruise");
 		c = 0;
 		while ((ownerPersistentAttribute == null) && (c < 50)) {
 			Thread.sleep(200);
@@ -433,7 +433,7 @@ public class CreateRelationAttributesTest {
 			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute cPersistentAttribute = pt.resolveAttribute("ship");	
+		PersistentAttribute cPersistentAttribute = pt.resolveAttribute("ship");	
 		int cnt = 0;
 		while ((cPersistentAttribute == null) && (cnt < 100)) {
 			Thread.sleep(250);
@@ -502,7 +502,7 @@ public class CreateRelationAttributesTest {
 			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("customers");
+		PersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("customers");
 		assertNotNull(ownerPersistentAttribute);
 		assertTrue(ownerPersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
@@ -517,7 +517,7 @@ public class CreateRelationAttributesTest {
 			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
+		PersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
 		assertNotNull(inversePersistentAttribute);
 		assertTrue(inversePersistentAttribute instanceof JavaModifiablePersistentAttribute);
 		
@@ -569,7 +569,7 @@ public class CreateRelationAttributesTest {
 			persistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
 		
-		ReadOnlyPersistentAttribute persistentAttribute = persistentType.resolveAttribute("cabins");
+		PersistentAttribute persistentAttribute = persistentType.resolveAttribute("cabins");
 		assertNotNull(persistentAttribute);
 		assertTrue(persistentAttribute instanceof JavaModifiablePersistentAttribute);
 		

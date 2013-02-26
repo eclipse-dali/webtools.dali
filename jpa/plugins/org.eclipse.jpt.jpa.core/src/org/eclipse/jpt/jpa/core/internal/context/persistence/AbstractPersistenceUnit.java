@@ -67,7 +67,7 @@ import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
@@ -2890,7 +2890,7 @@ public abstract class AbstractPersistenceUnit
 			return null;
 		}
 
-		public ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes() {
+		public ListIterable<? extends PersistentAttribute> getAttributes() {
 			return EmptyListIterable.instance();
 		}
 

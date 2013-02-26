@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -212,7 +212,7 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 			return null;
 		}
 
-		ReadOnlyPersistentAttribute pAttribute = javaType.resolveAttribute(name);
+		PersistentAttribute pAttribute = javaType.resolveAttribute(name);
 		JavaModifiablePersistentAttribute javaAttribute = (pAttribute == null) ? null : pAttribute.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && (javaAttribute.getAccess() == this.getAccess())) {
 			// we only want to cache the Java persistent attribute if we built it

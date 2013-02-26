@@ -22,7 +22,7 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
@@ -346,7 +346,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 			return null;
 		}
 
-		ReadOnlyPersistentAttribute attribute = entity.getPersistentType().getAttributeNamed(memberName);
+		PersistentAttribute attribute = entity.getPersistentType().getAttributeNamed(memberName);
 
 		if (attribute == null) {
 			return null;

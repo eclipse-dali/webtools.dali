@@ -44,7 +44,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -327,7 +327,7 @@ public final class MappingTools {
 		if (targetEntity == null) {
 			return null;
 		}
-		for (ReadOnlyPersistentAttribute attribute : targetEntity.getPersistentType().getAllAttributes()) {
+		for (PersistentAttribute attribute : targetEntity.getPersistentType().getAllAttributes()) {
 			if (attribute.getMapping().isOwnedBy(relationshipMapping)) {
 				return attribute.getName();
 			}
@@ -357,7 +357,7 @@ public final class MappingTools {
 		if ((attributeName == null) || (persistentType == null)) {
 			return null;
 		}
-		for (ReadOnlyPersistentAttribute persAttribute : persistentType.getAllAttributes()) {
+		for (PersistentAttribute persAttribute : persistentType.getAllAttributes()) {
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {
 					return (ColumnMapping) persAttribute.getMapping();
@@ -412,7 +412,7 @@ public final class MappingTools {
 			String mapKeyClass = mapping.getFullyQualifiedMapKeyClass();
 			return mapKeyClass != null ? mapKeyClass : MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		ReadOnlyPersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
+		PersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
 		if (mapKeyAttribute == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
@@ -457,7 +457,7 @@ public final class MappingTools {
 
 	public static String getPrimaryKeyColumnName(Entity entity) {
 		String pkColumnName = null;
-		for (ReadOnlyPersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
+		for (PersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
 			String current = attribute.getPrimaryKeyColumnName();
 			if (current != null) {
 				// 229423 - if the attribute is a primary key, but it has an attribute override,

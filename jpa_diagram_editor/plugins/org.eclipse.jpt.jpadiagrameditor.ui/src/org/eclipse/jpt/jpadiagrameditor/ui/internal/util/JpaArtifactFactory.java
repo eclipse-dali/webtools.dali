@@ -69,7 +69,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -1810,10 +1810,10 @@ public class JpaArtifactFactory {
 	
 	// returns true even if the primary key is inherited
 	public boolean hasOrInheritsPrimaryKey(JavaPersistentType jpt) {
-		Iterable<ReadOnlyPersistentAttribute> attributes = jpt.getAllAttributes();
-		Iterator<ReadOnlyPersistentAttribute> it = attributes.iterator();
+		Iterable<PersistentAttribute> attributes = jpt.getAllAttributes();
+		Iterator<PersistentAttribute> it = attributes.iterator();
 		while (it.hasNext()) {
-			ReadOnlyPersistentAttribute at = it.next();
+			PersistentAttribute at = it.next();
 			if (isId(at))
 				return true;
 		}
@@ -1844,11 +1844,11 @@ public class JpaArtifactFactory {
 		return null;
 	}
 	
-	public boolean isId(ReadOnlyPersistentAttribute jpa) {
+	public boolean isId(PersistentAttribute jpa) {
 		return isSimpleId(jpa) || isEmbeddedId(jpa);
 	}
 	
-	public boolean isSimpleId(ReadOnlyPersistentAttribute jpa) {
+	public boolean isSimpleId(PersistentAttribute jpa) {
 		return (jpa.getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 	}
 	
@@ -1870,7 +1870,7 @@ public class JpaArtifactFactory {
 		return null;
 	}
 	
-	public boolean isEmbeddedId(ReadOnlyPersistentAttribute jpa) {
+	public boolean isEmbeddedId(PersistentAttribute jpa) {
 		return (jpa.getMappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 	}
 	

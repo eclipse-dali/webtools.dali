@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -25,7 +25,7 @@ public abstract class OverrideValidator
 	implements JptValidator
 {
 	/** this is <code>null</code> for overrides defined on entities */
-	protected final ReadOnlyPersistentAttribute persistentAttribute;
+	protected final PersistentAttribute persistentAttribute;
 
 	protected final ReadOnlyOverride override;
 
@@ -42,7 +42,7 @@ public abstract class OverrideValidator
 
 
 	protected OverrideValidator(
-				ReadOnlyPersistentAttribute persistentAttribute,
+				PersistentAttribute persistentAttribute,
 				ReadOnlyOverride override,
 				OverrideContainer container,
 				OverrideDescriptionProvider overrideDescriptionProvider) {

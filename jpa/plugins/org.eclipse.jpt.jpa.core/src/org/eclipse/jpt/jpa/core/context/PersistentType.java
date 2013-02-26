@@ -63,13 +63,13 @@ public interface PersistentType
 	/**
 	 * Return the persistent type's persistent attributes.
 	 */
-	ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes();
-	Transformer<PersistentType, ListIterable<? extends ReadOnlyPersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
+	ListIterable<? extends PersistentAttribute> getAttributes();
+	Transformer<PersistentType, ListIterable<? extends PersistentAttribute>> ATTRIBUTES_TRANSFORMER = new AttributesTransformer();
 	class AttributesTransformer
-		extends TransformerAdapter<PersistentType, ListIterable<? extends ReadOnlyPersistentAttribute>>
+		extends TransformerAdapter<PersistentType, ListIterable<? extends PersistentAttribute>>
 	{
 		@Override
-		public ListIterable<? extends ReadOnlyPersistentAttribute> transform(PersistentType type) {
+		public ListIterable<? extends PersistentAttribute> transform(PersistentType type) {
 			return type.getAttributes();
 		}
 	}
@@ -88,7 +88,7 @@ public interface PersistentType
 	 * Return all the persistent attributes in the persistent type's
 	 * inheritance hierarchy.
 	 */
-	Iterable<ReadOnlyPersistentAttribute> getAllAttributes();
+	Iterable<PersistentAttribute> getAllAttributes();
 
 	/**
 	 * Return the names of all the persistent attributes in the
@@ -101,18 +101,18 @@ public interface PersistentType
 	 * if it exists locally on the persistent type (as opposed to in its
 	 * inheritance hierarchy).
 	 */
-	ReadOnlyPersistentAttribute getAttributeNamed(String attributeName);
+	PersistentAttribute getAttributeNamed(String attributeName);
 
 	/**
 	 * Resolve and return the persistent attribute with the specified name, if it
 	 * is distinct and exists within the context of the persistent type.
 	 */
-	ReadOnlyPersistentAttribute resolveAttribute(String attributeName);
+	PersistentAttribute resolveAttribute(String attributeName);
 	
 	/**
 	 * Return qualified type name of given attribute within the context of this type.
 	 */
-	TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute);
+	TypeBinding getAttributeTypeBinding(PersistentAttribute attribute);
 
 
 	// ********** inheritance **********

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -30,7 +30,7 @@ public class FieldAccessor
 	private final JavaResourceField resourceField;
 
 
-	public FieldAccessor(ReadOnlyPersistentAttribute parent, JavaResourceField resourceField) {
+	public FieldAccessor(PersistentAttribute parent, JavaResourceField resourceField) {
 		super(parent);
 		this.resourceField = resourceField;
 	}

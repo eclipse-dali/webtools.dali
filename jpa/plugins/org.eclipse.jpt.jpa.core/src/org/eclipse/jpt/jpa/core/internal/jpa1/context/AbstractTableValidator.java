@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -23,7 +23,7 @@ public abstract class AbstractTableValidator
 	implements JptValidator
 {
 	/** this is <code>null</code> for tables defined on entities */
-	protected final ReadOnlyPersistentAttribute persistentAttribute;
+	protected final PersistentAttribute persistentAttribute;
 
 	protected final ReadOnlyTable table;
 
@@ -33,7 +33,7 @@ public abstract class AbstractTableValidator
 	}
 
 	protected AbstractTableValidator(
-				ReadOnlyPersistentAttribute persistentAttribute,
+				PersistentAttribute persistentAttribute,
 				ReadOnlyTable table) {
 		super();
 		this.persistentAttribute = persistentAttribute;

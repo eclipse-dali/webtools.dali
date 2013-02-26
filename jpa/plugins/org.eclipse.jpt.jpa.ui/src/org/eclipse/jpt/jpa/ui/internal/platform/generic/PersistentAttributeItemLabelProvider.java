@@ -19,14 +19,14 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 
 public class PersistentAttributeItemLabelProvider
-	extends AbstractItemExtendedLabelProvider<ReadOnlyPersistentAttribute>
+	extends AbstractItemExtendedLabelProvider<PersistentAttribute>
 {
-	public PersistentAttributeItemLabelProvider(ReadOnlyPersistentAttribute persistentAttribute, ItemExtendedLabelProvider.Manager manager) {
+	public PersistentAttributeItemLabelProvider(PersistentAttribute persistentAttribute, ItemExtendedLabelProvider.Manager manager) {
 		super(persistentAttribute, manager);
 	}
 
@@ -43,10 +43,10 @@ public class PersistentAttributeItemLabelProvider
 	}
 
 	protected static class MappingModel
-		extends PropertyAspectAdapter<ReadOnlyPersistentAttribute, AttributeMapping>
+		extends PropertyAspectAdapter<PersistentAttribute, AttributeMapping>
 	{
-		public MappingModel(ReadOnlyPersistentAttribute subject) {
-			super(ReadOnlyPersistentAttribute.MAPPING_PROPERTY, subject);
+		public MappingModel(PersistentAttribute subject) {
+			super(PersistentAttribute.MAPPING_PROPERTY, subject);
 		}
 		@Override
 		protected AttributeMapping buildValue_() {
@@ -87,10 +87,10 @@ public class PersistentAttributeItemLabelProvider
 	}
 
 	protected static class TextModel
-		extends PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>
+		extends PropertyAspectAdapter<PersistentAttribute, String>
 	{
-		public TextModel(ReadOnlyPersistentAttribute subject) {
-			super(ReadOnlyPersistentAttribute.NAME_PROPERTY, subject);
+		public TextModel(PersistentAttribute subject) {
+			super(PersistentAttribute.NAME_PROPERTY, subject);
 		}
 		@Override
 		protected String buildValue_() {

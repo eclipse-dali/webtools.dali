@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -137,13 +137,13 @@ public interface JpaPlatformUi {
 	 * <p>
 	 * @see #getAttributeMappingUiDefinitions(JptResourceType)
 	 */
-	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute persistentAttribute);
+	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(PersistentAttribute persistentAttribute);
 
 	/**
 	 * Return the list of all the possible attribute mapping ui definitions
 	 * for the given JptResourceType.
 	 * <p>
-	 * @see #getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute)
+	 * @see #getAttributeMappingUiDefinitions(PersistentAttribute)
 	 */
 	Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(JptResourceType resourceType);
 

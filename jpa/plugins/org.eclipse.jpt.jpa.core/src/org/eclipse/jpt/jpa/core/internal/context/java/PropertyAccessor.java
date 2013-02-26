@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -34,7 +34,7 @@ public class PropertyAccessor
 	private final JavaResourceMethod resourceSetter;
 
 
-	public PropertyAccessor(ReadOnlyPersistentAttribute parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	public PropertyAccessor(PersistentAttribute parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent);
 		this.resourceGetter = resourceGetter;
 		this.resourceSetter = resourceSetter;

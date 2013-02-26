@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
@@ -28,7 +28,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 	implements JptValidator
 {
 	/** this is <code>null</code> for columns defined on entities and secondary tables */
-	protected final ReadOnlyPersistentAttribute persistentAttribute;
+	protected final PersistentAttribute persistentAttribute;
 
 	protected final C column;
 
@@ -49,13 +49,13 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 	}
 
 	protected AbstractNamedColumnValidator(
-				ReadOnlyPersistentAttribute persistentAttribute,
+				PersistentAttribute persistentAttribute,
 				C column) {
 		this(persistentAttribute, column, TableDescriptionProvider.Null.instance());
 	}
 
 	protected AbstractNamedColumnValidator(
-				ReadOnlyPersistentAttribute persistentAttribute,
+				PersistentAttribute persistentAttribute,
 				C column,
 				TableDescriptionProvider tableDescriptionProvider) {
 		this.persistentAttribute = persistentAttribute;

@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -170,7 +170,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 	
 	@Override
-	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
 		if (isDynamic()) {
 			PersistentType superPT = getSuperPersistentType();
 			return (superPT == null) ? null : superPT.getAttributeTypeBinding(attribute);

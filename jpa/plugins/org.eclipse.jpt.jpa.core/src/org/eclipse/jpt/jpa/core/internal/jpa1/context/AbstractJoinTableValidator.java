@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public abstract class AbstractJoinTableValidator
@@ -21,7 +21,7 @@ public abstract class AbstractJoinTableValidator
 		super(table);
 	}
 
-	protected AbstractJoinTableValidator(ReadOnlyPersistentAttribute persistentAttribute, ReadOnlyJoinTable table) {
+	protected AbstractJoinTableValidator(PersistentAttribute persistentAttribute, ReadOnlyJoinTable table) {
 		super(persistentAttribute, table);
 	}
 

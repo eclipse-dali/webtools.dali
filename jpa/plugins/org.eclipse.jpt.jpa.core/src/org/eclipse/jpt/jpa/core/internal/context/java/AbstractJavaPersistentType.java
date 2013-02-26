@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -378,7 +378,7 @@ public abstract class AbstractJavaPersistentType
 		return null;
 	}
 
-	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
+	public Iterable<PersistentAttribute> getAllAttributes() {
 		return IterableTools.children(
 					this.getInheritanceHierarchy(),
 					PersistentType.ATTRIBUTES_TRANSFORMER
@@ -390,10 +390,10 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterable<JavaModifiablePersistentAttribute> getAttributesNamed(String attributeName) {
-		return IterableTools.filter(this.getAttributes(), new ReadOnlyPersistentAttribute.NameEquals(attributeName));
+		return IterableTools.filter(this.getAttributes(), new PersistentAttribute.NameEquals(attributeName));
 	}
 
-	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
+	public PersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<JavaModifiablePersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
 		if (stream.hasNext()) {
 			JavaModifiablePersistentAttribute attribute = stream.next();
@@ -404,8 +404,8 @@ public abstract class AbstractJavaPersistentType
 		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
 	}
 
-	protected Iterable<String> convertToNames(Iterable<? extends ReadOnlyPersistentAttribute> attrs) {
-		return IterableTools.transform(attrs, ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
+	protected Iterable<String> convertToNames(Iterable<? extends PersistentAttribute> attrs) {
+		return IterableTools.transform(attrs, PersistentAttribute.NAME_TRANSFORMER);
 	}
 
 	protected JavaModifiablePersistentAttribute buildField(JavaResourceField resourceField) {
@@ -871,7 +871,7 @@ public abstract class AbstractJavaPersistentType
 		return (JavaResourceType) this.getJpaProject().getJavaResourceType(jrtName, JavaResourceAbstractType.AstNodeType.TYPE);
 	}
 
-	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
 		JavaResourceAttribute resourceAttribute = attribute.getJavaPersistentAttribute().getResourceAttribute();
 		if (resourceAttribute == null) {
 			return null;

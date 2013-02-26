@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeDetailsPageManager;
@@ -64,7 +64,7 @@ public class OrmPersistentAttributeDetailsPageManager
 		super.initializeLayout(container);
 	}
 
-	protected Pane<ReadOnlyPersistentAttribute> buildMapAsPane(Composite parent) {
+	protected Pane<PersistentAttribute> buildMapAsPane(Composite parent) {
 		return new PersistentAttributeMapAsComposite(this, parent, this.getMappingCompositeEnabledModel());		
 	}
 	

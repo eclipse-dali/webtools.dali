@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 /**
- * Read-only context persistent <em>attribute</em> (field or property).
+ * Context persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
  * @version 3.3
  * @since ... a while?
  */
-public interface ReadOnlyPersistentAttribute
+public interface PersistentAttribute
 	extends JpaStructureNode, AccessReference
 {
 	// ********** name **********
@@ -36,18 +36,18 @@ public interface ReadOnlyPersistentAttribute
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
-		Transformer<ReadOnlyPersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
+		Transformer<PersistentAttribute, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
-		extends TransformerAdapter<ReadOnlyPersistentAttribute, String>
+		extends TransformerAdapter<PersistentAttribute, String>
 	{
 		@Override
-		public String transform(ReadOnlyPersistentAttribute attribute) {
+		public String transform(PersistentAttribute attribute) {
 			return attribute.getName();
 		}
 	}
 
 	class NameEquals
-		extends Predicate.Adapter<ReadOnlyPersistentAttribute>
+		extends Predicate.Adapter<PersistentAttribute>
 	{
 		private final String attributeName;
 		public NameEquals(String attributeName) {
@@ -55,7 +55,7 @@ public interface ReadOnlyPersistentAttribute
 			this.attributeName = attributeName;
 		}
 		@Override
-		public boolean evaluate(ReadOnlyPersistentAttribute attribute) {
+		public boolean evaluate(PersistentAttribute attribute) {
 			return ObjectTools.equals(this.attributeName, attribute.getName());
 		}
 	}
@@ -71,12 +71,12 @@ public interface ReadOnlyPersistentAttribute
 	 */
 	AttributeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
-	Transformer<ReadOnlyPersistentAttribute, AttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
+	Transformer<PersistentAttribute, AttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
 	class MappingTransformer
-		extends TransformerAdapter<ReadOnlyPersistentAttribute, AttributeMapping>
+		extends TransformerAdapter<PersistentAttribute, AttributeMapping>
 	{
 		@Override
-		public AttributeMapping transform(ReadOnlyPersistentAttribute pa) {
+		public AttributeMapping transform(PersistentAttribute pa) {
 			return pa.getMapping();
 		}
 	}

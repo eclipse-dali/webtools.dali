@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -166,7 +166,7 @@ public class EmbedCollectionOfObjectsFeature extends AbstractCreateConnectionFea
 	private boolean isNotAllowed(JavaPersistentType embeddingEntity, JavaPersistentType embeddable){
 		boolean notAllowed = false;
 		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(embeddable)){
-			for(ReadOnlyPersistentAttribute attr : embeddable.getAllAttributes()){
+			for(PersistentAttribute attr : embeddable.getAllAttributes()){
 				if(attr.getMappingKey().equals(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY)){
 					return true;
 				}

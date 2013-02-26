@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.context;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 
 /**
- * Property tester for {@link ReadOnlyPersistentAttribute}.
+ * Property tester for {@link PersistentAttribute}.
  * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class PersistentAttributePropertyTester
@@ -26,13 +26,13 @@ public class PersistentAttributePropertyTester
 
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (receiver instanceof ReadOnlyPersistentAttribute) {
-			return this.test((ReadOnlyPersistentAttribute) receiver, property, expectedValue);
+		if (receiver instanceof PersistentAttribute) {
+			return this.test((PersistentAttribute) receiver, property, expectedValue);
 		}
 		return false;
 	}
 
-	protected boolean test(ReadOnlyPersistentAttribute attribute, String property, Object expectedValue) {
+	protected boolean test(PersistentAttribute attribute, String property, Object expectedValue) {
 		if (property.equals(IS_NOT_MAPPED)) {
 			return ! this.test(attribute, IS_MAPPED, expectedValue);
 		}

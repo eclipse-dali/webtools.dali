@@ -228,7 +228,7 @@
 
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.PersistentAttribute"
-			type="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"
+			type="org.eclipse.jpt.jpa.core.context.PersistentAttribute"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="isMapped, isNotMapped, isVirtual, isNotVirtual"
 			class="org.eclipse.jpt.jpa.core.internal.context.PersistentAttributePropertyTester"/>

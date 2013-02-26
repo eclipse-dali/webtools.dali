@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -52,7 +52,7 @@ public interface MetamodelSourceType {
 	/**
 	 * Return the source type's attributes.
 	 */
-	ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes();
+	ListIterable<? extends PersistentAttribute> getAttributes();
 
 	/**
 	 * Return the file generated as a result of the metamodel synchronization.

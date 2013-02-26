@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmReadOnlyPersistentAttribute
-	extends ReadOnlyPersistentAttribute
+	extends PersistentAttribute
 {
 	/**
 	 * A <em>specified</em> <code>orm.xml</code> attribute will return an

@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
@@ -227,7 +227,7 @@ public class VirtualJavaPersistentType
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
+	public Iterable<PersistentAttribute> getAllAttributes() {
 		return EmptyIterable.instance();
 	}
 
@@ -235,11 +235,11 @@ public class VirtualJavaPersistentType
 		return EmptyIterable.instance();
 	}
 
-	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
+	public PersistentAttribute resolveAttribute(String attributeName) {
 		return null;
 	}
 
-	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
 		return null;
 	}
 

@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.collection.LinkedStack;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
@@ -343,14 +343,14 @@ public class GenericMetamodelSynchronizer
 	 */
 	protected boolean printAttributesOn(BodySourceWriter pw) {
 		boolean printed = false;
-		for (ReadOnlyPersistentAttribute att : this.sourceType.getAttributes()) {
+		for (PersistentAttribute att : this.sourceType.getAttributes()) {
 			this.printAttributeOn(att, pw);
 			printed = true;
 		}
 		return printed;
 	}
 
-	protected void printAttributeOn(ReadOnlyPersistentAttribute persistentAttribute, BodySourceWriter pw) {
+	protected void printAttributeOn(PersistentAttribute persistentAttribute, BodySourceWriter pw) {
 		AttributeMapping attributeMapping = persistentAttribute.getMapping();
 		if (attributeMapping != null) {  // probably shouldn't be null?
 			this.printAttributeMappingOn(attributeMapping, pw);

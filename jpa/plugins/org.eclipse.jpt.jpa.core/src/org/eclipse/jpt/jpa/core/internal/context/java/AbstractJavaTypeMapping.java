@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -150,7 +150,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute mappings **********
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings() {
-		return IterableTools.downCast(IterableTools.transform(this.getPersistentType().getAttributes(), ReadOnlyPersistentAttribute.MAPPING_TRANSFORMER));
+		return IterableTools.downCast(IterableTools.transform(this.getPersistentType().getAttributes(), PersistentAttribute.MAPPING_TRANSFORMER));
 	}
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings(String mappingKey) {

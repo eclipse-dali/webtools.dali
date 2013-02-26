@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTableValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 public class CollectionTableValidator
 	extends AbstractTableValidator
 {
-	public CollectionTableValidator(ReadOnlyPersistentAttribute persistentAttribute, CollectionTable2_0 table) {
+	public CollectionTableValidator(PersistentAttribute persistentAttribute, CollectionTable2_0 table) {
 		super(persistentAttribute, table);
 	}
 

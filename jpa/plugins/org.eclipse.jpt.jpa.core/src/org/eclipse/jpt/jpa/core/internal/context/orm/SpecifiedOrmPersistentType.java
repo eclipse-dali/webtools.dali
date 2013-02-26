@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -279,7 +279,7 @@ public abstract class SpecifiedOrmPersistentType
 		return stream.hasNext() ? stream.next() : null;
 	}
 
-	public Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
+	public Iterable<PersistentAttribute> getAllAttributes() {
 		return IterableTools.children(this.getInheritanceHierarchy(), PersistentType.ATTRIBUTES_TRANSFORMER);
 	}
 
@@ -288,10 +288,10 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<OrmReadOnlyPersistentAttribute> getAttributesNamed(final String attributeName) {
-		return IterableTools.filter(this.getAttributes(), new ReadOnlyPersistentAttribute.NameEquals(attributeName));
+		return IterableTools.filter(this.getAttributes(), new PersistentAttribute.NameEquals(attributeName));
 	}
 
-	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
+	public PersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<OrmReadOnlyPersistentAttribute> attributes = this.getAttributesNamed(attributeName).iterator();
 		if (attributes.hasNext()) {
 			OrmReadOnlyPersistentAttribute attribute = attributes.next();
@@ -301,11 +301,11 @@ public abstract class SpecifiedOrmPersistentType
 		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
 	}
 
-	protected Iterable<String> convertToNames(Iterable<? extends ReadOnlyPersistentAttribute> attributes) {
-		return IterableTools.transform(attributes, ReadOnlyPersistentAttribute.NAME_TRANSFORMER);
+	protected Iterable<String> convertToNames(Iterable<? extends PersistentAttribute> attributes) {
+		return IterableTools.transform(attributes, PersistentAttribute.NAME_TRANSFORMER);
 	}
 	
-	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
 		return (this.getJavaPersistentType() == null) ? null : this.getJavaPersistentType().getAttributeTypeBinding(attribute);
 	}
 	

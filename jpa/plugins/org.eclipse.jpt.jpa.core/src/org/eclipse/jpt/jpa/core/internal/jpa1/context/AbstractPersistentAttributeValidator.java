@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -21,11 +21,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractPersistentAttributeValidator
 	implements JptValidator
 {
-	protected ReadOnlyPersistentAttribute persistentAttribute;
+	protected PersistentAttribute persistentAttribute;
 
 
 	protected AbstractPersistentAttributeValidator(
-		ReadOnlyPersistentAttribute persistentAttribute) {
+		PersistentAttribute persistentAttribute) {
 		this.persistentAttribute = persistentAttribute;
 	}
 

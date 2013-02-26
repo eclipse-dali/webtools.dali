@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistentAttributeItemLabelProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistentTypeItemLabelProvider;
 
@@ -32,8 +32,8 @@ public abstract class MappingStructureItemLabelProviderFactory
 		if (item instanceof PersistentType) {
 			return this.buildPersistentTypeProvider((PersistentType) item, manager);
 		}
-		if (item instanceof ReadOnlyPersistentAttribute) {
-			return this.buildPersistentAttributeProvider((ReadOnlyPersistentAttribute) item, manager);
+		if (item instanceof PersistentAttribute) {
+			return this.buildPersistentAttributeProvider((PersistentAttribute) item, manager);
 		}
 		return null;
 	}
@@ -42,7 +42,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 		return new PersistentTypeItemLabelProvider(item, manager);
 	}
 
-	protected ItemExtendedLabelProvider buildPersistentAttributeProvider(ReadOnlyPersistentAttribute item, ItemExtendedLabelProvider.Manager manager) {
+	protected ItemExtendedLabelProvider buildPersistentAttributeProvider(PersistentAttribute item, ItemExtendedLabelProvider.Manager manager) {
 		return new PersistentAttributeItemLabelProvider(item, manager);
 	}
 

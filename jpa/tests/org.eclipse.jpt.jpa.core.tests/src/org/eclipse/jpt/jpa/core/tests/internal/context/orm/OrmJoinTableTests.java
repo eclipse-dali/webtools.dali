@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -1187,7 +1187,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		createTestEntityWithValidManyToMany();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		ReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
+		PersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) virtualAttribute.getMapping();
 		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		

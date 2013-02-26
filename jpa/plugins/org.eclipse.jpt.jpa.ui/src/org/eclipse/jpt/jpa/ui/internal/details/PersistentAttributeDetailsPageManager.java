@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
-public abstract class PersistentAttributeDetailsPageManager<A extends ReadOnlyPersistentAttribute>
+public abstract class PersistentAttributeDetailsPageManager<A extends PersistentAttribute>
 	extends AbstractJpaDetailsPageManager<A>
 {
 	private final HashMap<String, JpaComposite> mappingComposites = new HashMap<String, JpaComposite>();
@@ -118,7 +118,7 @@ public abstract class PersistentAttributeDetailsPageManager<A extends ReadOnlyPe
 	private ModifiablePropertyValueModel<AttributeMapping> buildMappingHolder() {
 		return new PropertyAspectAdapter<A, AttributeMapping>(
 			getSubjectHolder(),
-			ReadOnlyPersistentAttribute.MAPPING_PROPERTY)
+			PersistentAttribute.MAPPING_PROPERTY)
 		{
 			@Override
 			protected AttributeMapping buildValue_() {

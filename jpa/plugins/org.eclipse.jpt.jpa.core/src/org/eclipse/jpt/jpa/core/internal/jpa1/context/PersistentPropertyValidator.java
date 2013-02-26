@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -22,7 +22,7 @@ public class PersistentPropertyValidator
 	protected PropertyAccessor propertyAccessor;
 
 	public PersistentPropertyValidator(
-		ReadOnlyPersistentAttribute persistentAttribute, PropertyAccessor propertyAccessor)
+		PersistentAttribute persistentAttribute, PropertyAccessor propertyAccessor)
 	{
 		super(persistentAttribute);
 		this.propertyAccessor = propertyAccessor;

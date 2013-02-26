@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
@@ -134,7 +134,7 @@ public abstract class AbstractJpaPlatformUi
 		return this.getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(mappingKey, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 
-	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(ReadOnlyPersistentAttribute persistentAttribute) {
+	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions(PersistentAttribute persistentAttribute) {
 		return IterableTools.filter(this.getAttributeMappingUiDefinitions(persistentAttribute.getResourceType()), new UiDefinitionFilter(persistentAttribute));
 	}
 

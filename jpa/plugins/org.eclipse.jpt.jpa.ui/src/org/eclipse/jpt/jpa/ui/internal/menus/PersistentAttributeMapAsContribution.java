@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.menus;
 
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
@@ -24,7 +24,7 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
  * {@link ModifiablePersistentAttribute}s.
  */
 public class PersistentAttributeMapAsContribution
-	extends MapAsContribution<ReadOnlyPersistentAttribute>
+	extends MapAsContribution<PersistentAttribute>
 {
 	public PersistentAttributeMapAsContribution() {
 		super();
@@ -52,12 +52,12 @@ public class PersistentAttributeMapAsContribution
 	}
 	
 	@Override
-	protected Iterable<MappingUiDefinition> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, ReadOnlyPersistentAttribute node) {
+	protected Iterable<MappingUiDefinition> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUI, PersistentAttribute node) {
 		return jpaPlatformUI.getAttributeMappingUiDefinitions(node);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, ReadOnlyPersistentAttribute node) {
+	protected DefaultMappingUiDefinition getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUI, PersistentAttribute node) {
 		return getDefaultMappingUiDefinition(jpaPlatformUI, ((ModifiablePersistentAttribute) node).getDefaultMappingKey(), node.getResourceType());
 	}
 	

@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
@@ -235,7 +235,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		if (entity == null) {
 			return null;
 		}
-		for (ReadOnlyPersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
+		for (PersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
 			AttributeMapping mapping = attribute.getMapping();
 			if (this.isOwnedBy(mapping)) {
 				return (RelationshipMapping) mapping;
