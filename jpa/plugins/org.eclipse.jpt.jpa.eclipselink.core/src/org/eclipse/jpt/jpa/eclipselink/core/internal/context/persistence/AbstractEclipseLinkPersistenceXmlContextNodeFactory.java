@@ -13,14 +13,14 @@ import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceXmlContextNodeFactory;
 
  public abstract class AbstractEclipseLinkPersistenceXmlContextNodeFactory extends
-		AbstractPersistenceXmlContextNodeFactory implements
+		AbstractPersistenceXmlContextModelFactory implements
 		EclipseLinkPersistenceXmlContextNodeFactory {
 
 	@Override

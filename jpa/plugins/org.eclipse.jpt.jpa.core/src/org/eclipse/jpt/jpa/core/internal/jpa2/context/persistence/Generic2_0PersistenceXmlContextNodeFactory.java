@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.connection.GenericConnection2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options.GenericOptions2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnectio
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 
 
-public class Generic2_0PersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextNodeFactory
+public class Generic2_0PersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextModelFactory
 {
 		
 	public JpaConnection2_0 buildConnection(PersistenceUnit parent) {

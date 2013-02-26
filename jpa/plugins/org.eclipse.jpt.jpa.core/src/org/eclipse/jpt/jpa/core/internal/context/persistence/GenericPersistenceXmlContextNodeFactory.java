@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options.NullOp
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
 
 
-public class GenericPersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextNodeFactory
+public class GenericPersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextModelFactory
 {
 
 	public PersistenceUnitProperties buildConnection(PersistenceUnit parent) {

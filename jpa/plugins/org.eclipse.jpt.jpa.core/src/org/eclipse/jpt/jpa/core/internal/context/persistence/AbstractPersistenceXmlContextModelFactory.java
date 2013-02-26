@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
 
-public abstract class AbstractPersistenceXmlContextNodeFactory
+public abstract class AbstractPersistenceXmlContextModelFactory
 	implements PersistenceXmlContextModelFactory
 {
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
