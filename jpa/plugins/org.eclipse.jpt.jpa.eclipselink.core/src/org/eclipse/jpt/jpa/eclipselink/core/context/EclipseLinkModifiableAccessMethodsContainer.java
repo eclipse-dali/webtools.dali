@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context;
  * @since 3.2 
  */
 public interface EclipseLinkModifiableAccessMethodsContainer
-	extends EclipseLinkReadOnlyAccessMethodsHolder
+	extends EclipseLinkAccessMethodsContainer
 {
 	/**
 	 * Return the specified get method;
