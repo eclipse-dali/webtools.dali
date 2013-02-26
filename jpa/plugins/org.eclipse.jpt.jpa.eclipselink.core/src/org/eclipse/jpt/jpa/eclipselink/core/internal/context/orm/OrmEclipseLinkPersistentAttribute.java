@@ -122,7 +122,7 @@ public class OrmEclipseLinkPersistentAttribute
 			//if VIRTUAL we will always have to build and cache the 'javaAttribute'
 			//we clear out the cached 'javaAttribute in setSpecifiedAccess_() and setDefaultAccess_()
 			if (this.cachedJavaPersistentAttribute == null) {
-				this.cachedJavaPersistentAttribute = new VirtualJavaPersistentAttribute(this.parent, this.getXmlAttributeMapping());
+				this.cachedJavaPersistentAttribute = new EclipseLinkVirtualJavaPersistentAttribute(this.parent, this.getXmlAttributeMapping());
 			}
 			return this.cachedJavaPersistentAttribute;
 		}

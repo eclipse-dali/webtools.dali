@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersiste
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
-public class VirtualJavaPersistentAttribute
+public class EclipseLinkVirtualJavaPersistentAttribute
 	extends AbstractJavaContextModel<OrmPersistentType>
 	implements JavaModifiablePersistentAttribute, ModifiablePersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
 {
@@ -50,7 +50,7 @@ public class VirtualJavaPersistentAttribute
 
 	private JpaContainerDefinition jpaContainerDefinition = JpaContainerDefinition.Null.instance();
 
-	public VirtualJavaPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlAttributeMapping) {
+	public EclipseLinkVirtualJavaPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlAttributeMapping) {
 		super(parent);
 		this.xmlAttributeMapping = xmlAttributeMapping;
 		this.attributeMapping = new GenericJavaNullAttributeMapping(this);
