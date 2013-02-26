@@ -59,7 +59,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
@@ -573,7 +573,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmPersistentType persistentType2 = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		
 		//embedded mapping is virtual, specified attribute overrides should exist
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("address");
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		AttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
@@ -687,7 +687,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		EmbeddedMapping virtualEmbeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();	
 		AttributeOverrideContainer attributeOverrideContainer = virtualEmbeddedMapping.getAttributeOverrideContainer();
@@ -728,7 +728,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		EmbeddedMapping virtualEmbeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", virtualEmbeddedMapping.getName());

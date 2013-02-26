@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.PersistentAttributeMapAsComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see PersistentAttributeMapAsComposite
  */
 public class OrmPersistentAttributeDetailsPageManager
-	extends PersistentAttributeDetailsPageManager<OrmReadOnlyPersistentAttribute>
+	extends PersistentAttributeDetailsPageManager<OrmPersistentAttribute>
 {
 	private PropertyValueModel<Boolean> virtualAttributeEnabledModel;
 
@@ -69,9 +69,9 @@ public class OrmPersistentAttributeDetailsPageManager
 	}
 	
 	private PropertyValueModel<Boolean> buildVirtualAttributeEnabledModel() {
-		return new TransformationPropertyValueModel<OrmReadOnlyPersistentAttribute, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<OrmPersistentAttribute, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform_(OrmReadOnlyPersistentAttribute attribute) {
+			protected Boolean transform_(OrmPersistentAttribute attribute) {
 				return Boolean.valueOf( ! attribute.isVirtual());
 			}
 		};

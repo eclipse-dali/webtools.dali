@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -436,7 +436,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(2, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", basicMapping.getName());
@@ -463,7 +463,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", basicMapping.getName());

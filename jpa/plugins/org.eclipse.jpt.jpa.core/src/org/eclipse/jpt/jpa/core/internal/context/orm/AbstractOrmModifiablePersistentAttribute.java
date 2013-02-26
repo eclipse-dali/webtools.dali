@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
@@ -422,7 +422,7 @@ public abstract class AbstractOrmModifiablePersistentAttribute
 		return false;
 	}
 
-	public OrmReadOnlyPersistentAttribute removeFromXml() {
+	public OrmPersistentAttribute removeFromXml() {
 		return this.getOwningPersistentType().removeAttributeFromXml(this);
 	}
 

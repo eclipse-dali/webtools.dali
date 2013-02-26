@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
@@ -141,7 +141,7 @@ public class EclipseLinkOrmIdMappingTests
 		// remove attribute from xml, test default mutable from java
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		EclipseLinkIdMapping virtualIdMapping = (EclipseLinkIdMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceId.getMutable());
@@ -240,7 +240,7 @@ public class EclipseLinkOrmIdMappingTests
 		// remove attribute from xml, test default mutable from java
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
 		EclipseLinkIdMapping virtualIdMapping = (EclipseLinkIdMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceId.getMutable());
@@ -342,7 +342,7 @@ public class EclipseLinkOrmIdMappingTests
 		
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		IdMapping virtualIdMapping = (IdMapping) ormPersistentAttribute2.getMapping();
 		
 		assertEquals(EclipseLinkConvert.class, virtualIdMapping.getConverter().getType());

@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
@@ -640,11 +640,11 @@ public class OrmColumnTests extends ContextModelTestCase
 		createTestEntity();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		Iterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.getDefaultAttributes().iterator();
+		Iterator<OrmPersistentAttribute> attributes = ormPersistentType.getDefaultAttributes().iterator();
 		attributes.next();	
 		
 		//virtual attribute in orm.xml, java attribute has no Column annotation
-		OrmReadOnlyPersistentAttribute namePersistentAttribute = attributes.next();
+		OrmPersistentAttribute namePersistentAttribute = attributes.next();
 		BasicMapping nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		Column virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("name", virtualColumn.getName());
@@ -799,7 +799,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//virtual attribute in orm.xml, java attribute has no Column annotation
-		OrmReadOnlyPersistentAttribute nameOrmAttribute = ormPersistentType.getAttributeNamed("name");
+		OrmPersistentAttribute nameOrmAttribute = ormPersistentType.getAttributeNamed("name");
 		BasicMapping nameVirtualMapping = (BasicMapping) nameOrmAttribute.getMapping();	
 		Column virtualColumn = nameVirtualMapping.getColumn();
 		

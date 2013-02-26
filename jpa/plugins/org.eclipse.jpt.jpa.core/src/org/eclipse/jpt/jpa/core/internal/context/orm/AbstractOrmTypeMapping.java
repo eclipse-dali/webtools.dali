@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -295,7 +295,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<AttributeMapping> getAttributeMappings() {
-		return IterableTools.transform(this.getPersistentType().getAttributes(), OrmReadOnlyPersistentAttribute.MAPPING_TRANSFORMER);
+		return IterableTools.transform(this.getPersistentType().getAttributes(), OrmPersistentAttribute.MAPPING_TRANSFORMER);
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings() {

@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
@@ -370,7 +370,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", virtualElementCollectionMapping.getName());
@@ -395,7 +395,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		
@@ -858,7 +858,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
-		OrmReadOnlyPersistentAttribute attribute = ormPersistentType.getAttributeNamed("addresses");
+		OrmPersistentAttribute attribute = ormPersistentType.getAttributeNamed("addresses");
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) attribute.getMapping();
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
@@ -1008,7 +1008,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(true, orderable.isNoOrdering());
 
 		ormPersistentAttribute.removeFromXml();		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("addresses");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("addresses");
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute2.getMapping();
 		orderable = (Orderable2_0) virtualElementCollectionMapping.getOrderable();
 		assertEquals(true, orderable.isOrderColumnOrdering());
@@ -1027,7 +1027,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//virtual attrubte in orm.xml, java attribute has no value Column annotation
-		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column virtualColumn = addressesVirtualMapping.getValueColumn();
 		assertEquals("addresses", virtualColumn.getName());
@@ -1123,7 +1123,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//default attribute in orm.xml, java attribute has no Column annotation
-		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		Column virtualColumn = addressesVirtualMapping.getValueColumn();
 		
@@ -1271,7 +1271,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType persistentType3 = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
 		
 		//embedded mapping is virtual, specified attribute overrides should exist
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("addresses");
+		OrmPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("addresses");
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
@@ -1381,7 +1381,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
 		//virtual attribute in orm.xml, java attribute has no value Column annotation
-		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertEquals("addresses_KEY", virtualColumn.getName());
@@ -1477,7 +1477,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
 		//virtual attribute in orm.xml, java attribute has no Column annotation
-		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 
@@ -1655,7 +1655,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("address");
 		EclipseLinkElementCollectionMapping2_0 virtualElementCollectionMapping = (EclipseLinkElementCollectionMapping2_0) ormPersistentAttribute2.getMapping();
 		
 		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getType());

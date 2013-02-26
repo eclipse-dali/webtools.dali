@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
@@ -1873,8 +1873,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity childEntity = (OrmEntity) childType.getMapping();	
 		OrmAttributeOverrideContainer childOverrideContainer = childEntity.getAttributeOverrideContainer();
 		ReadOnlyAttributeOverride attributeOverride = childOverrideContainer.getVirtualOverrides().iterator().next();
-		((OrmReadOnlyPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).addToXml();
-		BasicMapping basicMapping = (BasicMapping) ((OrmReadOnlyPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).getMapping();
+		((OrmPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).addToXml();
+		BasicMapping basicMapping = (BasicMapping) ((OrmPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).getMapping();
 		basicMapping.getColumn().setSpecifiedName("MY_COLUMN");
 		basicMapping.getColumn().setSpecifiedTableName("BAR");
 		

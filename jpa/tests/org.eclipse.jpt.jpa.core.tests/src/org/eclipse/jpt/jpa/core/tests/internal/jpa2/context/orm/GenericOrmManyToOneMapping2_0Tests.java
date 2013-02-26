@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
@@ -73,7 +73,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -98,7 +98,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -142,7 +142,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -208,7 +208,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testUpdateId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -232,7 +232,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testSetDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -252,7 +252,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testUpdateMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -280,7 +280,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testSetMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -308,7 +308,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testUpdatePredominantDerivedIdentityStrategy() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		DerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -352,7 +352,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testSetPredominantDerivedIdentityStrategy() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		DerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -425,7 +425,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		ManyToOneMapping2_0 javaManyToOneMapping = ((ManyToOneMapping2_0) ormPersistentAttribute.getJavaPersistentAttribute().getMapping());
 		ManyToOneMapping2_0 virtualManyToOneMapping = (ManyToOneMapping2_0) ormPersistentAttribute.getMapping();
 		((ManyToOneRelationship2_0) javaManyToOneMapping.getRelationship()).setStrategyToJoinTable();
@@ -514,7 +514,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		//remove m-m mapping from the orm.xml file
 		ormPersistentAttribute.removeFromXml();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		ManyToOneMapping2_0 virtualManyToOneMapping = (ManyToOneMapping2_0) virtualPersistentAttribute.getMapping();
 		JoinTable virtualJoinTable = ((ManyToOneRelationship2_0) virtualManyToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertTrue(virtualPersistentAttribute.isVirtual());
@@ -538,7 +538,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testModifyPredominantJoiningStrategy() throws Exception {
 		createTestEntityWithManyToOneMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		OrmManyToOneRelationship2_0 rel = (OrmManyToOneRelationship2_0) contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -571,7 +571,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
 		createTestEntityWithManyToOneMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		OrmManyToOneRelationship2_0 rel = (OrmManyToOneRelationship2_0) contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -611,7 +611,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 
 		ManyToOneMapping virtualManyToOneMapping = (ManyToOneMapping) virtualPersistentAttribute.getMapping();	
 		assertEquals("address", virtualManyToOneMapping.getName());
@@ -646,7 +646,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
 		assertTrue(virtualPersistentAttribute.isVirtual());

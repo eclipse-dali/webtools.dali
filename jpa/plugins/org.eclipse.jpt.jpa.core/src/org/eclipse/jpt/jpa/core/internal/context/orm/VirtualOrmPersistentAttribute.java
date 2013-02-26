@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class VirtualOrmPersistentAttribute
 	extends AbstractOrmXmlContextModel<OrmPersistentType>
-	implements OrmReadOnlyPersistentAttribute, ReadOnlyPersistentAttribute2_0
+	implements OrmPersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
 	protected final Accessor javaAccessor; // never null
 

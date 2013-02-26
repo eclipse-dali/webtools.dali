@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded;
@@ -233,7 +233,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getBasics().add(basic);
 		basic.setName("basicAttribute");
 			
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = entityPersistentType.getAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = entityPersistentType.getAttributes().iterator().next();
 		assertEquals("basicAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		
@@ -241,7 +241,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getEmbeddeds().add(embedded);
 		embedded.setName("embeddedAttribute");
 		
-		Iterator<OrmReadOnlyPersistentAttribute> attributes = entityPersistentType.getAttributes().iterator();
+		Iterator<OrmPersistentAttribute> attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -492,7 +492,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		((OrmBasicMapping) startDateAttribute.getMapping()).setConverter(BaseTemporalConverter.class);
 		((BaseTemporalConverter) ((OrmBasicMapping) startDateAttribute.getMapping()).getConverter()).setTemporalType(TemporalType.DATE);
 		
-		OrmReadOnlyPersistentAttribute idAttribute = employeePersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute idAttribute = employeePersistentType.getAttributeNamed("id");
 		JavaModifiablePersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();
 		assertNotNull(javaPersistentAttribute);
 		assertEquals("id", javaPersistentAttribute.getName());

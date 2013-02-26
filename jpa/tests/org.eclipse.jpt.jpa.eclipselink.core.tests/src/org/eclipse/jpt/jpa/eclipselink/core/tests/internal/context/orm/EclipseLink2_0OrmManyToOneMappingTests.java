@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
@@ -72,7 +72,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -97,7 +97,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -174,7 +174,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -209,7 +209,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 	public void testUpdateDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -233,7 +233,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 	public void testSetDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -253,7 +253,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 	public void testUpdateMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -277,7 +277,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 	public void testSetMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -337,7 +337,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		ManyToOneMapping2_0 javaManyToOneMapping = ((ManyToOneMapping2_0) ormPersistentAttribute.getJavaPersistentAttribute().getMapping());
 		ManyToOneMapping2_0 virtualManyToOneMapping = (ManyToOneMapping2_0) ormPersistentAttribute.getMapping();
 		((ManyToOneRelationship2_0) javaManyToOneMapping.getRelationship()).setStrategyToJoinTable();
@@ -426,7 +426,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 		//remove m-m mapping from the orm.xml file
 		ormPersistentAttribute.removeFromXml();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("address");
 		ManyToOneMapping2_0 virtualManyToOneMapping = (ManyToOneMapping2_0) ormPersistentAttribute2.getMapping();
 		ormJoinTable = ((ManyToOneRelationship2_0) virtualManyToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertTrue(ormPersistentAttribute2.isVirtual());
@@ -450,7 +450,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 	public void testModifyPredominantJoiningStrategy() throws Exception {
 		createTestEntityWithManyToOneMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		OrmManyToOneRelationship2_0 rel = (OrmManyToOneRelationship2_0) contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -483,7 +483,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
 		createTestEntityWithManyToOneMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		ManyToOneMapping2_0 contextMapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		OrmManyToOneRelationship2_0 rel = (OrmManyToOneRelationship2_0) contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -523,7 +523,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 
 		ManyToOneMapping2_0 virtualManyToOneMapping = (ManyToOneMapping2_0) virtualPersistentAttribute.getMapping();	
 		assertEquals("address", virtualManyToOneMapping.getName());
@@ -560,7 +560,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
 		assertTrue(virtualPersistentAttribute.isVirtual());

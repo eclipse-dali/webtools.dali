@@ -15,7 +15,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -38,10 +38,10 @@ public class AddPersistentAttributeToXmlHandler
 	}
 
 	private void execute_(ExecutionEvent event) throws ExecutionException {
-		ArrayList<OrmReadOnlyPersistentAttribute> specifiedAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
+		ArrayList<OrmPersistentAttribute> specifiedAttributes = new ArrayList<OrmPersistentAttribute>();
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		for (Object each : selection.toList()) {
-			OrmReadOnlyPersistentAttribute attribute = (OrmReadOnlyPersistentAttribute) each;
+			OrmPersistentAttribute attribute = (OrmPersistentAttribute) each;
 			specifiedAttributes.add(attribute.addToXml());
 		}
 

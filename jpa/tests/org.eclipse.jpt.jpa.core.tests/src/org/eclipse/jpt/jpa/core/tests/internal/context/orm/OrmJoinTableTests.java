@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.VirtualOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -198,7 +198,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) ormPersistentAttribute.getMapping();
 		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
@@ -286,7 +286,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		//remove m-m mapping from the orm.xml file
 		ormPersistentAttribute.removeFromXml();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("projects");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("projects");
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) ormPersistentAttribute2.getMapping();
 		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertTrue(ormPersistentAttribute2.isVirtual());

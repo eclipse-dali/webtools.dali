@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -672,7 +672,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType embeddableAddressType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME_ + "Address");
 		
 		//embedded mapping is virtual, attribute overrides should exist
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("address");
 		JavaEmbeddedIdMapping embeddedIdMapping = (JavaEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedIdMapping.getAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
@@ -787,7 +787,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME_ + "Address");
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		JavaEmbeddedIdMapping embeddedIdMapping = (JavaEmbeddedIdMapping) ormPersistentAttribute.getMapping();	
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedIdMapping.getAttributeOverrideContainer();
@@ -833,7 +833,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		assertTrue(ormPersistentAttribute.isVirtual());
 
 		//will be an OrmEmbeddedMapping instead of OrmEmbeddedIdMapping since that is the default

@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
@@ -106,7 +106,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormIdAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute ormIdAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		IdMapping ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals(null, ormIdMapping.getGeneratedValue());
 		

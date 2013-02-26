@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
@@ -145,7 +145,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
+		for (OrmPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.addToXml();
 		}
 	}
@@ -429,7 +429,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
 		OrmPersistentType departmentPersistentType = getEntityMappings().getPersistentTypes().iterator().next();
-		OrmReadOnlyPersistentAttribute attribute = departmentPersistentType.getAttributeNamed("employees");
+		OrmPersistentAttribute attribute = departmentPersistentType.getAttributeNamed("employees");
 		OneToManyMapping oneToMany = (OneToManyMapping) attribute.getMapping();
 		
 		assertEquals(true, attribute.isVirtual());
@@ -589,7 +589,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 	public void testModifyPredominantJoiningStrategy() throws Exception {
 		createTestEntityWithOneToManyMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		OrmEclipseLinkOneToManyMapping contextMapping = (OrmEclipseLinkOneToManyMapping) contextAttribute.getMapping();
 		EclipseLinkOneToManyRelationship2_0 rel = contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -630,7 +630,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
 		createTestEntityWithOneToManyMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		OrmEclipseLinkOneToManyMapping contextMapping = (OrmEclipseLinkOneToManyMapping) contextAttribute.getMapping();
 		EclipseLinkOneToManyRelationship2_0 rel = contextMapping.getRelationship();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
@@ -705,7 +705,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 
 		EclipseLinkOneToManyMapping virtualOneToManyMapping = (EclipseLinkOneToManyMapping) virtualPersistentAttribute.getMapping();	
 		assertEquals("address", virtualOneToManyMapping.getName());
@@ -735,7 +735,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
 		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
 

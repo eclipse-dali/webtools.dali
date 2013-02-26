@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
@@ -119,7 +119,7 @@ public class GenericOrmPersistentType2_0Tests
 		assertEquals(null, javaPersistentType.getSpecifiedAccess());
 		
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		ormPersistentAttribute.addToXml();
 		assertEquals(AccessType.FIELD, ormPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
@@ -140,7 +140,7 @@ public class GenericOrmPersistentType2_0Tests
 		assertEquals(AccessType.PROPERTY, javaPersistentType.getSpecifiedAccess());
 		
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		ormPersistentAttribute.addToXml();
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
@@ -155,8 +155,8 @@ public class GenericOrmPersistentType2_0Tests
 		createTestEntityAnnotatedFieldPropertySpecified();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
+		OrmPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
 		assertEquals("name", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 		
@@ -185,8 +185,8 @@ public class GenericOrmPersistentType2_0Tests
 		createTestEntityPropertySpecified();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
+		OrmPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
 		
@@ -218,8 +218,8 @@ public class GenericOrmPersistentType2_0Tests
 		createTestEntityFieldSpecifiedPropertyAnnotated();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
-		OrmReadOnlyPersistentAttribute virtualAttribute = virtualAttributes.next();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
+		OrmPersistentAttribute virtualAttribute = virtualAttributes.next();
 		assertEquals("id", virtualAttribute.getName());
 		assertEquals(AccessType.FIELD, virtualAttribute.getAccess());
 		

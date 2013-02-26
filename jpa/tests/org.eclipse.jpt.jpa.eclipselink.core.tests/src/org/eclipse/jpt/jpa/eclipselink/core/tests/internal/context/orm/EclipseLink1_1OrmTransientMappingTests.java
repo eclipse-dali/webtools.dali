@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 
@@ -49,7 +49,7 @@ public class EclipseLink1_1OrmTransientMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute persistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertTrue(persistentAttribute.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		

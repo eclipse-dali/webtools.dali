@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
@@ -526,7 +526,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		assertEquals("FOO_FOO", joinTable.getName());
 		
 		PersistentType mappedSuperclass = ormPersistentType.getSuperPersistentType();
-		((OrmReadOnlyPersistentAttribute)  mappedSuperclass.getAttributeNamed("address")).addToXml();
+		((OrmPersistentAttribute)  mappedSuperclass.getAttributeNamed("address")).addToXml();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) mappedSuperclass.getAttributeNamed("address").getMapping();
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("BAR");
 		assertEquals("BAR", manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().getName());

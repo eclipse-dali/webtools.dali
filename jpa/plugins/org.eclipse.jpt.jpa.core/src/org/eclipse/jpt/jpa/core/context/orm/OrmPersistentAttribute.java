@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 
 /**
- * Read-only context <code>orm.xml</code> persistent <em>attribute</em>
+ * Context <code>orm.xml</code> persistent <em>attribute</em>
  * (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmReadOnlyPersistentAttribute
+public interface OrmPersistentAttribute
 	extends PersistentAttribute
 {
 	/**
@@ -41,12 +41,12 @@ public interface OrmReadOnlyPersistentAttribute
 	 * {@link #resolveJavaPersistentAttribute()}.
 	 */
 	AttributeMapping getMapping();
-	Transformer<OrmReadOnlyPersistentAttribute, AttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
+	Transformer<OrmPersistentAttribute, AttributeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
 	class MappingTransformer
-		extends TransformerAdapter<OrmReadOnlyPersistentAttribute, AttributeMapping>
+		extends TransformerAdapter<OrmPersistentAttribute, AttributeMapping>
 	{
 		@Override
-		public AttributeMapping transform(OrmReadOnlyPersistentAttribute attribute) {
+		public AttributeMapping transform(OrmPersistentAttribute attribute) {
 			return attribute.getMapping();
 		}
 	}

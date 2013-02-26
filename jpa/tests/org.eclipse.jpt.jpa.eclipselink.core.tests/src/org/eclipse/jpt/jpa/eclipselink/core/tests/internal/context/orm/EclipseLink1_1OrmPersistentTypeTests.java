@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 
@@ -128,7 +128,7 @@ public class EclipseLink1_1OrmPersistentTypeTests
 		assertEquals(null, javaPersistentType.getSpecifiedAccess());
 		
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		ormPersistentAttribute.addToXml();
 		assertEquals(AccessType.FIELD, ormPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());

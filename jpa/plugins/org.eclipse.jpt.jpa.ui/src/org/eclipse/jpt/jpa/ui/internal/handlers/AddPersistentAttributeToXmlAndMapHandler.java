@@ -16,7 +16,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.dialogs.AddPersistentAttributeToXmlAndMapDialog;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -40,11 +40,11 @@ public class AddPersistentAttributeToXmlAndMapHandler
 
 	private void execute_(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		ArrayList<OrmReadOnlyPersistentAttribute> newAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
+		ArrayList<OrmPersistentAttribute> newAttributes = new ArrayList<OrmPersistentAttribute>();
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		for (Object each : selection.toList()) {
-			OrmReadOnlyPersistentAttribute attribute = (OrmReadOnlyPersistentAttribute) each;
-			OrmReadOnlyPersistentAttribute newAttribute = this.addAndMap(attribute, window);
+			OrmPersistentAttribute attribute = (OrmPersistentAttribute) each;
+			OrmPersistentAttribute newAttribute = this.addAndMap(attribute, window);
 			if (newAttribute != null) {
 				newAttributes.add(newAttribute);
 			}
@@ -56,7 +56,7 @@ public class AddPersistentAttributeToXmlAndMapHandler
 		}
 	}
 
-	private OrmReadOnlyPersistentAttribute addAndMap(OrmReadOnlyPersistentAttribute attribute, IWorkbenchWindow window) {
+	private OrmPersistentAttribute addAndMap(OrmPersistentAttribute attribute, IWorkbenchWindow window) {
 		OrmPersistentType type = attribute.getOwningPersistentType();
 		String attributeName = attribute.getName();
 		

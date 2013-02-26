@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
@@ -141,7 +141,7 @@ public class EclipseLinkOrmBasicMappingTests
 		// remove attribute from xml, test default mutable from java
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		EclipseLinkBasicMapping virtualContextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceBasic.getMutable());
@@ -239,7 +239,7 @@ public class EclipseLinkOrmBasicMappingTests
 		// remove attribute from xml, test default mutable from java
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
 		EclipseLinkBasicMapping virtualContextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceBasic.getMutable());
@@ -341,7 +341,7 @@ public class EclipseLinkOrmBasicMappingTests
 		
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		EclipseLinkBasicMapping virtualBasicMapping = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		
 		assertEquals(EclipseLinkConvert.class, virtualBasicMapping.getConverter().getType());

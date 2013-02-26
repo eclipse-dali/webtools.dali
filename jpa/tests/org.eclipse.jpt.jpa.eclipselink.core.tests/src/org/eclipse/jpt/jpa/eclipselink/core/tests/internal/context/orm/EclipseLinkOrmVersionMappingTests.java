@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
@@ -141,7 +141,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		// remove attribute from xml, test default mutable from java
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		EclipseLinkVersionMapping virtualContextVersion = (EclipseLinkVersionMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceVersion.getMutable());
@@ -239,7 +239,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		// remove attribute from xml, test default mutable from java
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
 		EclipseLinkVersionMapping virtualContextVersion = (EclipseLinkVersionMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceVersion.getMutable());
@@ -342,7 +342,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		
 		ormPersistentAttribute.removeFromXml();
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		VersionMapping virtualVersionMapping = (VersionMapping) ormPersistentAttribute2.getMapping();
 		
 		assertEquals(EclipseLinkConvert.class, virtualVersionMapping.getConverter().getType());

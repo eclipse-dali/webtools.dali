@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -570,7 +570,7 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
+		OrmPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		IdMapping virtualIdMapping = (IdMapping) virtualAttribute.getMapping();
 
 		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();

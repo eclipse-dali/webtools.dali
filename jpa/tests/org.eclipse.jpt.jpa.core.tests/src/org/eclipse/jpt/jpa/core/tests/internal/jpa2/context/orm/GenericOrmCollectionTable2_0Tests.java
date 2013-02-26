@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
@@ -139,7 +139,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		CollectionTable2_0 virtualCollectionTable = virtualElementCollectionMapping.getCollectionTable();
 		
@@ -203,7 +203,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		//remove element collection mapping from the orm.xml file
 		ormPersistentAttribute.removeFromXml();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("projects");
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("projects");
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute2.getMapping();
 		CollectionTable2_0 virtualCollectionTable = virtualElementCollectionMapping.getCollectionTable();
 		assertTrue(ormPersistentAttribute2.isVirtual());
@@ -738,7 +738,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		createTestEntityWithValidElementCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
+		OrmPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		assertTrue(virtualAttribute.isVirtual());
 		
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) virtualAttribute.getMapping();

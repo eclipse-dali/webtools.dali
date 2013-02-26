@@ -66,7 +66,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
@@ -199,11 +199,11 @@ public abstract class AbstractOrmXmlContextModelFactory
 		return new GenericOrmPersistentAttribute(parent, xmlMapping);
 	}
 	
-	public OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentField(OrmPersistentType parent, JavaResourceField javaResourceField) {
+	public OrmPersistentAttribute buildVirtualOrmPersistentField(OrmPersistentType parent, JavaResourceField javaResourceField) {
 		return new VirtualOrmPersistentAttribute(parent, javaResourceField);
 	}
 
-	public OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+	public OrmPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
 		return new VirtualOrmPersistentAttribute(parent, javaResourceGetter, javaResourceSetter);
 	}
 

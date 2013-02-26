@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
@@ -39,11 +39,11 @@ import com.ibm.icu.text.Collator;
 
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 {
-	private OrmReadOnlyPersistentAttribute unmappedPersistentAttribute;
+	private OrmPersistentAttribute unmappedPersistentAttribute;
 	private Text attributeText;
 	private ComboViewer mappingCombo;
 
-	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmReadOnlyPersistentAttribute unmappedPersistentAttribute) {
+	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmPersistentAttribute unmappedPersistentAttribute) {
 		super(parentShell);
 		this.unmappedPersistentAttribute = unmappedPersistentAttribute;
 		setTitle(JptJpaUiMessages.AddPersistentAttributeDialog_title);

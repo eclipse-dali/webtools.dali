@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
  * @since 2.0
  */
 public interface OrmModifiablePersistentAttribute
-	extends ModifiablePersistentAttribute, OrmReadOnlyPersistentAttribute, TypeRefactoringParticipant
+	extends ModifiablePersistentAttribute, OrmPersistentAttribute, TypeRefactoringParticipant
 {
 	/**
 	 * Return an <code>orm.xml</code> mapping since the attribute is
@@ -45,7 +45,7 @@ public interface OrmModifiablePersistentAttribute
 	 * @see #isVirtual()
 	 * @see #setMappingKey(String)
 	 */
-	OrmReadOnlyPersistentAttribute removeFromXml();
+	OrmPersistentAttribute removeFromXml();
 
 	OrmAttributeMapping setMappingKey(String key);
 

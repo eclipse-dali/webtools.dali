@@ -46,9 +46,9 @@ public interface OrmPersistentType
 	 * <em>default</em> attributes are those derived from the corresponding
 	 * Java persistent type.
 	 */
-	ListIterable<OrmReadOnlyPersistentAttribute> getAttributes();
+	ListIterable<OrmPersistentAttribute> getAttributes();
 
-	OrmReadOnlyPersistentAttribute getAttributeNamed(String attributeName);
+	OrmPersistentAttribute getAttributeNamed(String attributeName);
 
 
 	// ********** specified attributes **********
@@ -75,7 +75,7 @@ public interface OrmPersistentType
 	 * are attributes that exist in the corresponding Java class, but are not
 	 * specified in the <code>orm.xml</code>.
 	 */
-	ListIterable<OrmReadOnlyPersistentAttribute> getDefaultAttributes();
+	ListIterable<OrmPersistentAttribute> getDefaultAttributes();
 
 	/**
 	 * Return the number of default <code>orm.xml</code> persistent attributes.
@@ -95,7 +95,7 @@ public interface OrmPersistentType
 	 * @see OrmModifiablePersistentAttribute#removeFromXml()
 	 * @see ModifiablePersistentAttribute#isVirtual()
 	 */
-	OrmReadOnlyPersistentAttribute removeAttributeFromXml(OrmModifiablePersistentAttribute specifiedAttribute);
+	OrmPersistentAttribute removeAttributeFromXml(OrmModifiablePersistentAttribute specifiedAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code>.
@@ -109,7 +109,7 @@ public interface OrmPersistentType
 	 *
 	 * @see OrmModifiablePersistentAttribute#addToXml()
 	 */
-	OrmModifiablePersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute);
+	OrmModifiablePersistentAttribute addAttributeToXml(OrmPersistentAttribute virtualAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code> with
@@ -122,7 +122,7 @@ public interface OrmPersistentType
 	 *
 	 * @see OrmModifiablePersistentAttribute#addToXml(String)
 	 */
-	OrmModifiablePersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey);
+	OrmModifiablePersistentAttribute addAttributeToXml(OrmPersistentAttribute virtualAttribute, String mappingKey);
 
 
 	// ********** mapping morphing **********
