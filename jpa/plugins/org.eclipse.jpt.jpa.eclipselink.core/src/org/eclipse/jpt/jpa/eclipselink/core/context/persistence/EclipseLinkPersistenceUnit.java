@@ -502,8 +502,8 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	public EclipseLinkPersistenceXmlContextNodeFactory getContextNodeFactory() {
-		return (EclipseLinkPersistenceXmlContextNodeFactory) super.getContextNodeFactory();
+	public EclipseLinkPersistenceXmlContextModelFactory getContextNodeFactory() {
+		return (EclipseLinkPersistenceXmlContextModelFactory) super.getContextNodeFactory();
 	}
 
 	@Override

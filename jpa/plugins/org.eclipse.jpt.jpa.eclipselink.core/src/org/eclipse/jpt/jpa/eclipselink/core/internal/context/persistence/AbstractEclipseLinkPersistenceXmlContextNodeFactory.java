@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistence
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceXmlContextModelFactory;
 
  public abstract class AbstractEclipseLinkPersistenceXmlContextNodeFactory extends
 		AbstractPersistenceXmlContextModelFactory implements
-		EclipseLinkPersistenceXmlContextNodeFactory {
+		EclipseLinkPersistenceXmlContextModelFactory {
 
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
