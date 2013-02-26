@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaSingleRelationshipMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 
 public class NullJavaDerivedIdentity2_0
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaSingleRelationshipMapping>
 	implements JavaDerivedIdentity2_0
 {
 	public NullJavaDerivedIdentity2_0(JavaSingleRelationshipMapping mapping) {
@@ -77,16 +77,11 @@ public class NullJavaDerivedIdentity2_0
 
 	// ********** misc **********
 
-	@Override
-	public JavaSingleRelationshipMapping getParent() {
-		return (JavaSingleRelationshipMapping) super.getParent();
-	}
-
 	public JavaSingleRelationshipMapping2_0 getMapping() {
 		return null;
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getParent().getValidationTextRange();
+		return this.parent.getValidationTextRange();
 	}
 }

@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>persistence</code> element
  */
 public class GenericPersistence
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<PersistenceXml>
 	implements Persistence2_0
 {
 	protected final XmlPersistence xmlPersistence;
@@ -229,13 +229,8 @@ public class GenericPersistence
 
 	// ********** XmlContextNode implementation **********
 
-	@Override
-	public PersistenceXml getParent() {
-		return (PersistenceXml) super.getParent();
-	}
-
 	public PersistenceXml getPersistenceXml() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public TextRange getValidationTextRange() {
@@ -292,8 +287,8 @@ public class GenericPersistence
 	}
 
 	public void dispose() {
-		for (PersistenceUnit persistenceUnit : this.getPersistenceUnits()) {
-			persistenceUnit.dispose();
+		for (PersistenceUnit pu : this.getPersistenceUnits()) {
+			pu.dispose();
 		}
 	}
 

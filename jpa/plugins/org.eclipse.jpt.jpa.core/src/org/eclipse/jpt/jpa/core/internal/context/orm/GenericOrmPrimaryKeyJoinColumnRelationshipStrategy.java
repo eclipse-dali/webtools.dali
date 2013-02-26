@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmPrimaryKeyJoinColumnRelationship>
 	implements MappingRelationshipStrategy2_0, OrmPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
@@ -165,13 +165,8 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public OrmPrimaryKeyJoinColumnRelationship getParent() {
-		return (OrmPrimaryKeyJoinColumnRelationship) super.getParent();
-	}
-
 	public OrmPrimaryKeyJoinColumnRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {

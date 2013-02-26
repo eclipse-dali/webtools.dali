@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaMappedByRelationshipStrategy
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaMappedByRelationship>
 	implements MappingRelationshipStrategy2_0, MappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;
@@ -90,13 +90,8 @@ public class GenericJavaMappedByRelationshipStrategy
 		return this.getRelationship().getMappingAnnotationForUpdate();
 	}
 
-	@Override
-	public JavaMappedByRelationship getParent() {
-		return (JavaMappedByRelationship) super.getParent();
-	}
-
 	public JavaMappedByRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public void initializeFrom(MappedByRelationshipStrategy oldStrategy) {

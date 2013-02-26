@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
  * <code>orm.xml</code> column or join column
  */
 public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends ReadOnlyBaseColumn.Owner>
-	extends AbstractOrmNamedColumn<X, O>
+	extends AbstractOrmNamedColumn<JpaContextModel, X, O>
 	implements OrmBaseColumn
 {
 	protected String specifiedTableName;

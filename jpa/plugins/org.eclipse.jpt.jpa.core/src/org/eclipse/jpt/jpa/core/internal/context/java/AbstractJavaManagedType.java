@@ -23,8 +23,8 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
-public abstract class AbstractJavaManagedType
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaManagedType<P extends JpaContextModel>
+	extends AbstractJavaContextModel<P>
 	implements JavaManagedType
 {
 	protected final JavaResourceType resourceType;
@@ -32,7 +32,7 @@ public abstract class AbstractJavaManagedType
 	protected String name;
 
 
-	protected AbstractJavaManagedType(JpaContextModel parent, JavaResourceType resourceType) {
+	protected AbstractJavaManagedType(P parent, JavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
 		this.name = this.resourceType.getTypeBinding().getQualifiedName();

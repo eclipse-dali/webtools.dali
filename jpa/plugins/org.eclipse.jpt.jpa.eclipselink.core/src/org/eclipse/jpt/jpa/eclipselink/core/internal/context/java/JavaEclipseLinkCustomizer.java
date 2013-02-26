@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkCustomizer
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<EclipseLinkJavaTypeMapping>
 	implements EclipseLinkCustomizer
 {
 	private String specifiedCustomizerClass;
@@ -135,13 +135,8 @@ public class JavaEclipseLinkCustomizer
 
 	// ********** misc **********
 
-	@Override
-	public EclipseLinkJavaTypeMapping getParent() {
-		return (EclipseLinkJavaTypeMapping) super.getParent();
-	}
-
 	protected EclipseLinkJavaTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaResourceType getJavaResourceType() {

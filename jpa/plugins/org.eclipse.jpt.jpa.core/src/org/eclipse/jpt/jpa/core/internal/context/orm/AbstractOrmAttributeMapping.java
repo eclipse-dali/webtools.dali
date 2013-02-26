@@ -60,7 +60,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmPersistentAttribute>
 	implements OrmAttributeMapping, AttributeMapping2_0
 {
 	// never null
@@ -267,13 +267,8 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.xmlAttributeMapping;
 	}
 
-	@Override
-	public OrmPersistentAttribute getParent() {
-		return (OrmPersistentAttribute) super.getParent();
-	}
-
 	public OrmPersistentAttribute getPersistentAttribute() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public OrmTypeMapping getTypeMapping() {

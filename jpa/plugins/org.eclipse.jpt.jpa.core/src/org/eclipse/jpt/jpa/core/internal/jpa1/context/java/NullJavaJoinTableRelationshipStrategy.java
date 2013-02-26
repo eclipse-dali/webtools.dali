@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,14 +17,14 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class NullJavaJoinTableRelationshipStrategy
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaJoinTableRelationship>
 	implements MappingRelationshipStrategy2_0, JavaJoinTableRelationshipStrategy
 {
 	public NullJavaJoinTableRelationshipStrategy(JavaJoinTableRelationship parent) {
@@ -52,13 +52,8 @@ public class NullJavaJoinTableRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public JavaJoinTableRelationship getParent() {
-		return (JavaJoinTableRelationship) super.getParent();
-	}
-
 	public JavaJoinTableRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public void initializeFrom(ReadOnlyJoinTableRelationshipStrategy oldStrategy) {

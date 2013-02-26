@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
@@ -48,7 +48,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class VirtualJavaPersistentType
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<EclipseLinkOrmPersistentType>
 	implements JavaPersistentType, PersistentType2_0
 {
 	private final XmlTypeMapping xmlTypeMapping;
@@ -63,13 +63,8 @@ public class VirtualJavaPersistentType
 		this.mapping = new JavaNullTypeMapping(this);
 	}
 
-	@Override
-	public EclipseLinkOrmPersistentType getParent() {
-		return (EclipseLinkOrmPersistentType) super.getParent();
-	}
-
 	protected EclipseLinkEntityMappings getEntityMappings() {
-		return (EclipseLinkEntityMappings) this.getParent().getMappingFileRoot();
+		return (EclipseLinkEntityMappings) this.parent.getMappingFileRoot();
 	}
 
 
@@ -97,15 +92,15 @@ public class VirtualJavaPersistentType
 	//rebuilds if the name has changed. We don't need to rebuild the virtual java persistent
 	//type based on a name change, it will get rebuilt if the dynamic state changes.
 	public String getName() {
-		return this.getParent().getName();
+		return this.parent.getName();
 	}
 
 	public String getSimpleName() {
-		return this.getParent().getSimpleName();
+		return this.parent.getSimpleName();
 	}
 
 	public String getTypeQualifiedName() {
-		return this.getParent().getTypeQualifiedName();
+		return this.parent.getTypeQualifiedName();
 	}
 
 

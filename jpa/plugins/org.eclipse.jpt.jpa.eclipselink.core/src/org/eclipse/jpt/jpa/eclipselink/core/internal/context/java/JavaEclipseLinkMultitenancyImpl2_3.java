@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
@@ -53,7 +53,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkMultitenancyImpl2_3
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
 	implements JavaEclipseLinkMultitenancy2_3
 {
 	protected boolean defaultMultitenant;
@@ -425,7 +425,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected boolean buildSpecifiedTenantDiscriminatorColumnsAllowed() {
-		return this.getParent().isMultitenantMetadataAllowed();
+		return this.parent.isMultitenantMetadataAllowed();
 	}
 
 
@@ -563,13 +563,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 	// ********** misc **********
 
-	@Override
-	public JavaEclipseLinkNonEmbeddableTypeMapping getParent() {
-		return (JavaEclipseLinkNonEmbeddableTypeMapping) super.getParent();
-	}
-
 	protected JavaEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaPersistentType getPersistentType() {
@@ -601,28 +596,28 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected boolean isInheritanceStrategyTablePerClass() {
-		return this.getParent().getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
+		return this.parent.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
 	}
 
 	protected boolean isRootEntityMultitenant() {
 		EclipseLinkEntity rootEntity = this.getRootEntity();
-		return rootEntity != null && rootEntity != getParent() && rootEntity.getMultitenancy().isMultitenant();
+		return rootEntity != null && rootEntity != this.parent && rootEntity.getMultitenancy().isMultitenant();
 	}
 
 	protected EclipseLinkEntity getRootEntity() {
 		//instanceof check in case the rootEntity is in an orm.xml instead of an eclipselinkorm.xml file.
-		Entity entity = getParent().getRootEntity();
+		Entity entity = this.parent.getRootEntity();
 		return entity instanceof EclipseLinkEntity ? (EclipseLinkEntity) entity : null;
 	}
 
 
 	protected boolean isSuperMappedSuperclassMultitenant() {
-		EclipseLinkMappedSuperclass mappedSuperclass = this.getSuperMappedSuperclass(getParent());
+		EclipseLinkMappedSuperclass mappedSuperclass = this.getSuperMappedSuperclass(this.parent);
 		return mappedSuperclass != null && mappedSuperclass.getMultitenancy().isMultitenant();
 	}
 
 	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass() {
-		return this.getSuperMappedSuperclass(this.getParent());
+		return this.getSuperMappedSuperclass(this.parent);
 	}
 
 	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass(TypeMapping typeMapping) {

@@ -47,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * JPA <code>orm.xml</code> file.
  */
 public class GenericOrmXml
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<MappingFileRef>
 	implements OrmXml
 {
 	/**
@@ -219,11 +219,6 @@ public class GenericOrmXml
 		if ( ! resource.getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE)) {
 			throw new IllegalArgumentException("Content type is not 'mapping file': " + resource); //$NON-NLS-1$
 		}
-	}
-
-	@Override
-	public MappingFileRef getParent() {
-		return (MappingFileRef) super.getParent();
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> virtual secondary table
  */
 public class GenericOrmVirtualSecondaryTable
-	extends AbstractOrmVirtualTable<JavaSecondaryTable>
+	extends AbstractOrmVirtualTable<OrmEntity, JavaSecondaryTable>
 	implements OrmVirtualSecondaryTable
 {
 
@@ -175,13 +175,8 @@ public class GenericOrmVirtualSecondaryTable
 
 	// ********** misc **********
 
-	@Override
-	public OrmEntity getParent() {
-		return (OrmEntity) super.getParent();
-	}
-
 	protected OrmEntity getEntity() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public boolean isVirtual() {

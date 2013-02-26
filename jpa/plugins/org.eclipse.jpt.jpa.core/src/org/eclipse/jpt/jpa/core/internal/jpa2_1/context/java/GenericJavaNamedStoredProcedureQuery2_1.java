@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1
  * <code>orm.xml</code> named stored procedure query
  */
 public class GenericJavaNamedStoredProcedureQuery2_1
-	extends AbstractJavaQuery<NamedStoredProcedureQuery2_1Annotation>
+	extends AbstractJavaQuery<JavaQueryContainer2_1, NamedStoredProcedureQuery2_1Annotation>
 	implements JavaNamedStoredProcedureQuery2_1
 {
 	protected String procedureName;
@@ -281,7 +281,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	}
 
 	public void delete() {
-		this.getParent().removeNamedStoredProcedureQuery(this);
+		this.parent.removeNamedStoredProcedureQuery(this);
 	}
 
 
@@ -320,10 +320,4 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	public Class<NamedStoredProcedureQuery2_1> getType() {
 		return NamedStoredProcedureQuery2_1.class;
 	}
-	
-	@Override
-	public JavaQueryContainer2_1 getParent() {
-		return (JavaQueryContainer2_1) super.getParent();
-	}
-
 }

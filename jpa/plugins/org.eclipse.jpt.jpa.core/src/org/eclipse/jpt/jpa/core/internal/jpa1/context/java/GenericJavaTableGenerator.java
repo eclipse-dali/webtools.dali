@@ -547,7 +547,7 @@ public class GenericJavaTableGenerator
 	}
 
 	public void delete() {
-		this.getParent().removeTableGenerator();
+		this.parent.removeTableGenerator();
 	}
 	
 	// ********** misc **********

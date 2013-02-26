@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
  * <code>orm.xml</code> collection table
  */
 public class GenericOrmCollectionTable2_0
-	extends GenericOrmReferenceTable<XmlCollectionTable>
+	extends GenericOrmReferenceTable<OrmElementCollectionMapping2_0, XmlCollectionTable>
 	implements OrmCollectionTable2_0
 {
 	public GenericOrmCollectionTable2_0(OrmElementCollectionMapping2_0 parent, Owner owner) {
@@ -76,13 +76,8 @@ public class GenericOrmCollectionTable2_0
 		return this.getElementCollectionMapping().getPersistentAttribute();
 	}
 
-	@Override
-	public OrmElementCollectionMapping2_0 getParent() {
-		return (OrmElementCollectionMapping2_0) super.getParent();
-	}
-
 	protected OrmElementCollectionMapping2_0 getElementCollectionMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	@Override

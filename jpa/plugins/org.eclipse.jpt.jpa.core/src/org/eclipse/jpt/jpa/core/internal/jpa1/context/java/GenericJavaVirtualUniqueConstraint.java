@@ -40,7 +40,7 @@ public class GenericJavaVirtualUniqueConstraint
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.getParent().getValidationTextRange();
+		return this.parent.getValidationTextRange();
 	}
 
 

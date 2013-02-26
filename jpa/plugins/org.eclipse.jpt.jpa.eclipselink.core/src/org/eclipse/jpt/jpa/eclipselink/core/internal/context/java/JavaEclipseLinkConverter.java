@@ -14,10 +14,9 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -39,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </code>
  */
 public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConverterAnnotation>
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaEclipseLinkConverterContainer>
 	implements EclipseLinkConverter
 {
 	protected final A converterAnnotation;
@@ -47,7 +46,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	protected String name;
 
 
-	protected JavaEclipseLinkConverter(JpaContextModel parent, A converterAnnotation) {
+	protected JavaEclipseLinkConverter(JavaEclipseLinkConverterContainer parent, A converterAnnotation) {
 		super(parent);
 		this.converterAnnotation = converterAnnotation;
 		this.name = converterAnnotation.getName();
@@ -87,11 +86,6 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaEclipseLinkConverterContainer getParent() {
-		return (JavaEclipseLinkConverterContainer) super.getParent();
-	}
 
 	public A getConverterAnnotation() {
 		return this.converterAnnotation;
@@ -147,7 +141,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.converterAnnotation.getTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange(){

@@ -50,7 +50,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java persistent attributes
  */
 public abstract class AbstractJavaPersistentAttribute
-		extends AbstractJavaJpaContextModel
+		extends AbstractJavaContextModel<PersistentType>
 		implements JavaPersistentAttribute, PersistentAttribute2_0 {
 	
 	protected final Accessor accessor;
@@ -579,13 +579,8 @@ public abstract class AbstractJavaPersistentAttribute
 
 	// ********** misc **********
 
-	@Override
-	public PersistentType getParent() {
-		return (PersistentType) super.getParent();
-	}
-
 	public PersistentType getOwningPersistentType() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public TypeMapping getOwningTypeMapping() {
@@ -610,7 +605,7 @@ public abstract class AbstractJavaPersistentAttribute
 	
 	public String getTypeName(PersistentType contextType) {
 		while (contextType != null) {
-			if (contextType == getParent()) {
+			if (contextType == this.parent) {
 				return getTypeName();
 			}
 			TypeBinding typeBinding = contextType.getAttributeTypeBinding(this);

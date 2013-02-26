@@ -146,6 +146,6 @@ public class JavaEclipseLinkTypeConverter
 	
 	@Override
 	public void delete() {
-		this.getParent().removeTypeConverter(this);
+		this.parent.removeTypeConverter(this);
 	}
 }

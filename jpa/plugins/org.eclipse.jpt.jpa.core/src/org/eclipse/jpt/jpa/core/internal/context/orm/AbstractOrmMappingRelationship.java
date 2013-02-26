@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,14 +26,14 @@ import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
  * end of their constructors; otherwise, it will be <code>null</code> until it
  * is set during {@link #update()}.
  */
-public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMapping>
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmMappingRelationship<P extends OrmRelationshipMapping>
+	extends AbstractOrmXmlContextModel<P>
 	implements OrmMappingRelationship
 {
 	protected RelationshipStrategy strategy;
 
 
-	protected AbstractOrmMappingRelationship(M parent) {
+	protected AbstractOrmMappingRelationship(P parent) {
 		super(parent);
 	}
 
@@ -91,14 +91,8 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 
 	// ********** misc **********
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public M getParent() {
-		return (M) super.getParent();
-	}
-
-	public M getMapping() {
-		return this.getParent();
+	public P getMapping() {
+		return this.parent;
 	}
 
 	protected AbstractXmlRelationshipMapping getXmlMapping() {

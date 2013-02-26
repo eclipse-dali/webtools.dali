@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkConversionValue
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaEclipseLinkObjectTypeConverter>
 	implements EclipseLinkConversionValue
 {
 	private final EclipseLinkConversionValueAnnotation conversionValueAnnotation;
@@ -85,13 +85,8 @@ public class JavaEclipseLinkConversionValue
 
 	// ********** misc **********
 
-	@Override
-	public JavaEclipseLinkObjectTypeConverter getParent() {
-		return (JavaEclipseLinkObjectTypeConverter) super.getParent();
-	}
-
 	protected JavaEclipseLinkObjectTypeConverter getObjectTypeConverter() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public EclipseLinkConversionValueAnnotation getConversionValueAnnotation() {

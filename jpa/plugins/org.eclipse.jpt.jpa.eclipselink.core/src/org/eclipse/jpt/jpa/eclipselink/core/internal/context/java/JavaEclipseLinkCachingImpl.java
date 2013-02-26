@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkCachingImpl
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaEclipseLinkNonEmbeddableTypeMapping>
 	implements JavaEclipseLinkCaching, JavaCacheableHolder2_0
 {
 	protected EclipseLinkCacheType specifiedType;
@@ -607,13 +607,8 @@ public class JavaEclipseLinkCachingImpl
 
 	// ********** misc **********
 
-	@Override
-	public JavaEclipseLinkNonEmbeddableTypeMapping getParent() {
-		return (JavaEclipseLinkNonEmbeddableTypeMapping) super.getParent();
-	}
-
 	protected JavaEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaPersistentType getPersistentType() {

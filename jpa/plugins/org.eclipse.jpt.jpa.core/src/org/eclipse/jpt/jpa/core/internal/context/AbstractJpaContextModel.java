@@ -27,11 +27,11 @@ import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledExcepti
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJpaContextModel
-	extends AbstractJpaModel
+public abstract class AbstractJpaContextModel<P extends JpaContextModel>
+	extends AbstractJpaModel<P>
 	implements JpaContextModel
 {
-	protected AbstractJpaContextModel(JpaModel parent) {
+	protected AbstractJpaContextModel(P parent) {
 		super(parent);
 	}
 
@@ -68,23 +68,15 @@ public abstract class AbstractJpaContextModel
 	// ********** containment hierarchy **********
 
 	/**
-	 * covariant override
-	 */
-	@Override
-	public JpaContextModel getParent() {
-		return (JpaContextModel) super.getParent();
-	}
-
-	/**
 	 * Overridden in:<ul>
-	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel#getResourceType() AbstractJavaJpaContextModel}
+	 * <li>{@link org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel#getResourceType() AbstractJavaJpaContextModel}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJarFile#getResourceType() GenericJarFile}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#getResourceType() GenericOrmXml}
 	 * <li>{@link org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#getResourceType() GenericPersistenceXml}
 	 * </ul>
 	 */
 	public JptResourceType getResourceType() {
-		return this.getParent().getResourceType();
+		return this.parent.getResourceType();
 	}
 	
 	/**
@@ -96,7 +88,7 @@ public abstract class AbstractJpaContextModel
 	 * </ul>
 	 */
 	public PersistenceUnit getPersistenceUnit() {
-		return this.getParent().getPersistenceUnit();
+		return this.parent.getPersistenceUnit();
 	}
 
 	/**
@@ -108,7 +100,7 @@ public abstract class AbstractJpaContextModel
 	 * </ul>
 	 */
 	public MappingFile.Root getMappingFileRoot() {
-		return this.getParent().getMappingFileRoot();
+		return this.parent.getMappingFileRoot();
 	}
 
 

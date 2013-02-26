@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>jar-file</code> element
  */
 public abstract class AbstractJarFileRef
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<PersistenceUnit>
 	implements JarFileRef
 {
 	protected final XmlJarFileRef xmlJarFileRef;
@@ -391,14 +391,8 @@ public abstract class AbstractJarFileRef
 	// ********** overrides **********
 
 	@Override
-	public PersistenceUnit getParent() {
-		return (PersistenceUnit) super.getParent();
-	}
-
-	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(this.fileName);
 	}
-
 }

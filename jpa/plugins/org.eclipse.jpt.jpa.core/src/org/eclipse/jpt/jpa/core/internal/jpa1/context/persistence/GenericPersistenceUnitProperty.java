@@ -24,7 +24,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * Notifies the persistence unit of any changes to the property.
  */
 public class GenericPersistenceUnitProperty
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<PersistenceUnit>
 	implements PersistenceUnit.Property
 {
 	protected final XmlProperty xmlProperty;
@@ -37,11 +37,6 @@ public class GenericPersistenceUnitProperty
 		this.xmlProperty = xmlProperty;
 		this.name = xmlProperty.getName();
 		this.value = xmlProperty.getValue();
-	}
-
-	@Override
-	public PersistenceUnit getParent() {
-		return (PersistenceUnit) super.getParent();
 	}
 
 	public XmlProperty getXmlProperty() {

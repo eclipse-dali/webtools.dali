@@ -41,8 +41,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  *     is initialized
  * </ul>
  */
-public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O extends ReadOnlyNamedColumn.Owner>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A extends NamedColumnAnnotation, O extends ReadOnlyNamedColumn.Owner>
+	extends AbstractJavaContextModel<P>
 	implements JavaNamedColumn
 {
 	protected final O owner;
@@ -54,11 +54,11 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 
 	protected Table dbTable;
 
-	protected AbstractJavaNamedColumn(JpaContextModel parent, O owner) {
+	protected AbstractJavaNamedColumn(P parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaNamedColumn(JpaContextModel parent, O owner, A columnAnnotation) {
+	protected AbstractJavaNamedColumn(P parent, O owner, A columnAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setColumnAnnotation(columnAnnotation);

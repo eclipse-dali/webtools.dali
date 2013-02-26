@@ -234,11 +234,6 @@ public class GenericJavaOneToOneRelationship
 
 	// ********** misc **********
 
-	@Override
-	public JavaOneToOneMapping getMapping() {
-		return this.getParent();
-	}
-
 	public OwnableRelationshipMappingAnnotation getMappingAnnotation() {
 		return this.getMapping().getMappingAnnotation();
 	}

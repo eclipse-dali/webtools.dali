@@ -144,11 +144,6 @@ public class GenericJavaManyToManyRelationship
 
 	// ********** misc **********
 
-	@Override
-	public JavaManyToManyMapping getMapping() {
-		return this.getParent();
-	}
-
 	public OwnableRelationshipMappingAnnotation getMappingAnnotation() {
 		return this.getMapping().getMappingAnnotation();
 	}

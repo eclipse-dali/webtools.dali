@@ -107,6 +107,6 @@ public class JavaEclipseLinkCustomConverter
 	
 	@Override
 	public void delete() {
-		this.getParent().removeCustomConverter(this);
+		this.parent.removeCustomConverter(this);
 	}
 }

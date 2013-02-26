@@ -44,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>mapping-file</code> element
  */
 public abstract class AbstractMappingFileRef<MF extends MappingFile>
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<PersistenceUnit>
 	implements MappingFileRef
 {
 	protected String fileName;
@@ -242,11 +242,6 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 
 	public PersistentType getPersistentType(String typeName) {
 		return (this.mappingFile == null) ? null : this.mappingFile.getPersistentType(typeName);
-	}
-
-	@Override
-	public PersistenceUnit getParent() {
-		return (PersistenceUnit) super.getParent();
 	}
 
 	public Iterable<? extends PersistentType> getPersistentTypes() {

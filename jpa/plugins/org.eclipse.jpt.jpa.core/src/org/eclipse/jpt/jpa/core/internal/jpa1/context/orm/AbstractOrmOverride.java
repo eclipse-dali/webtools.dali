@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,8 +28,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified <code>orm.xml</code> override
  */
-public abstract class AbstractOrmOverride<C extends OrmOverrideContainer, X extends XmlOverride>
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmOverride<P extends OrmOverrideContainer, X extends XmlOverride>
+	extends AbstractOrmXmlContextModel<P>
 	implements OrmOverride
 {
 	protected final X xmlOverride;
@@ -37,7 +37,7 @@ public abstract class AbstractOrmOverride<C extends OrmOverrideContainer, X exte
 	protected String name;
 
 
-	protected AbstractOrmOverride(C parent, X xmlOverride) {
+	protected AbstractOrmOverride(P parent, X xmlOverride) {
 		super(parent);
 		this.xmlOverride = xmlOverride;
 		this.name = xmlOverride.getName();
@@ -84,14 +84,8 @@ public abstract class AbstractOrmOverride<C extends OrmOverrideContainer, X exte
 
 	// ********** misc **********
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public C getParent() {
-		return (C) super.getParent();
-	}
-
-	protected C getContainer() {
-		return this.getParent();
+	protected P getContainer() {
+		return this.parent;
 	}
 
 	public X getXmlOverride() {

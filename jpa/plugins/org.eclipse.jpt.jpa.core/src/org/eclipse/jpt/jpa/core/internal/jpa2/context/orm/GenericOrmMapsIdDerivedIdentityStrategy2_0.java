@@ -36,7 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmMapsIdDerivedIdentityStrategy2_0
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmDerivedIdentity2_0>
 	implements OrmMapsIdDerivedIdentityStrategy2_0
 {
 	protected String specifiedIdAttributeName;
@@ -92,13 +92,8 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 
 	// ********** misc **********
 
-	@Override
-	public OrmDerivedIdentity2_0 getParent() {
-		return (OrmDerivedIdentity2_0) super.getParent();
-	}
-
 	protected OrmDerivedIdentity2_0 getDerivedIdentity() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public OrmSingleRelationshipMapping2_0 getMapping() {

@@ -38,14 +38,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its table
  * annotation must:<ul>
  * <li>call the "super" constructor that takes a table annotation
- *     {@link #AbstractJavaTable(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.Table.Owner, BaseTableAnnotation)}
+ *     {@link #AbstractJavaTable(JpaContextModel, org.eclipse.jpt.jpa.core.context.Table.Owner, BaseTableAnnotation)}
  * <li>override {@link #setTableAnnotation(BaseTableAnnotation)} to set the table
  *     annotation so it is in place before the table's state
  *     (e.g. {@link #specifiedName}) is initialized
  * </ul>
  */
-public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaTable<P extends JpaContextModel, A extends BaseTableAnnotation>
+	extends AbstractJavaContextModel<P>
 	implements JavaTable, UniqueConstraint.Owner
 {
 	protected final Owner owner;
@@ -62,11 +62,11 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
-	protected AbstractJavaTable(JpaContextModel parent, Owner owner) {
+	protected AbstractJavaTable(P parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaTable(JpaContextModel parent, Owner owner, A tableAnnotation) {
+	protected AbstractJavaTable(P parent, Owner owner, A tableAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setTableAnnotation(tableAnnotation);
@@ -483,7 +483,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getTableAnnotation().getTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameValidationTextRange() {

@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -40,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaMapsIdDerivedIdentityStrategy2_0
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaDerivedIdentity2_0>
 	implements MapsIdDerivedIdentityStrategy2_0
 {
 	protected String specifiedIdAttributeName;
@@ -151,13 +151,8 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 
 	// ********** misc **********
 
-	@Override
-	public JavaDerivedIdentity2_0 getParent() {
-		return (JavaDerivedIdentity2_0) super.getParent();
-	}
-
 	protected JavaDerivedIdentity2_0 getDerivedIdentity() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaSingleRelationshipMapping2_0 getMapping() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
  * <code>persistence-unit-metadata</code> element
  */
 public abstract class AbstractOrmPersistenceUnitMetadata
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<EntityMappings>
 	implements OrmPersistenceUnitMetadata2_0
 {
 	protected boolean xmlMappingMetadataComplete;
@@ -158,13 +158,8 @@ public abstract class AbstractOrmPersistenceUnitMetadata
 
 	// ********** misc **********
 
-	@Override
-	public EntityMappings getParent() {
-		return (EntityMappings) super.getParent();
-	}
-
 	protected EntityMappings getEntityMappings() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public XmlEntityMappings getXmlEntityMappings() {

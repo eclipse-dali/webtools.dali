@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,10 +24,10 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> primary key join column
  */
 public class GenericOrmPrimaryKeyJoinColumn
-	extends AbstractOrmNamedColumn<XmlPrimaryKeyJoinColumn, ReadOnlyBaseJoinColumn.Owner>
+	extends AbstractOrmNamedColumn<JpaContextModel, XmlPrimaryKeyJoinColumn, ReadOnlyBaseJoinColumn.Owner>
 	implements OrmPrimaryKeyJoinColumn
 {
-	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(XmlContextNode, org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn) */
+	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn) */
 	protected /* final */ XmlPrimaryKeyJoinColumn xmlColumn;  // null for default pk join columns
 
 	protected String specifiedReferencedColumnName;

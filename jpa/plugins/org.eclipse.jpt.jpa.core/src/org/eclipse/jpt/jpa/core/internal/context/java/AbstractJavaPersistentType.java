@@ -59,7 +59,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-	extends AbstractJavaManagedType
+	extends AbstractJavaManagedType<PersistentType.Owner>
 	implements JavaPersistentType
 {
 
@@ -1030,17 +1030,12 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** misc **********
 
-	@Override
-	public PersistentType.Owner getParent() {
-		return (PersistentType.Owner) super.getParent();
-	}
-
 	public AccessType getOwnerOverrideAccess() {
-		return this.getParent().getOverridePersistentTypeAccess();
+		return this.parent.getOverridePersistentTypeAccess();
 	}
 
 	public AccessType getOwnerDefaultAccess() {
-		return this.getParent().getDefaultPersistentTypeAccess();
+		return this.parent.getDefaultPersistentTypeAccess();
 	}
 
 	public PersistentType getOverriddenPersistentType() {

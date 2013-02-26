@@ -51,16 +51,16 @@ import org.eclipse.jpt.jpa.db.Database;
  * <li>update triggers
  * </ul>
  */
-public abstract class AbstractJpaModel
+public abstract class AbstractJpaModel<P extends JpaModel>
 	extends AbstractModel
 	implements JpaModel
 {
-	protected final JpaModel parent;
+	protected final P parent;
 
 
 	// ********** constructor/initialization **********
 
-	protected AbstractJpaModel(JpaModel parent) {
+	protected AbstractJpaModel(P parent) {
 		super();
 		this.checkParent(parent);
 		this.parent = parent;
@@ -110,7 +110,7 @@ public abstract class AbstractJpaModel
 
 	// ********** JpaNode implementation **********
 
-	public JpaModel getParent() {
+	public P getParent() {
 		return this.parent;
 	}
 
@@ -230,13 +230,15 @@ public abstract class AbstractJpaModel
 			if (nonUpdateAspectNames == null) {
 				nonUpdateAspectNames = new HashSet<String>();
 				this.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-				NON_UPDATE_ASPECT_NAME_SETS.put(this.getClass(), nonUpdateAspectNames);
+				@SuppressWarnings("unchecked")
+				Class<? extends AbstractJpaModel<?>> thisClass = (Class<? extends AbstractJpaModel<?>>) this.getClass();
+				NON_UPDATE_ASPECT_NAME_SETS.put(thisClass, nonUpdateAspectNames);
 			}
 			return nonUpdateAspectNames;
 		}
 	}
 
-	private static final HashMap<Class<? extends AbstractJpaModel>, HashSet<String>> NON_UPDATE_ASPECT_NAME_SETS = new HashMap<Class<? extends AbstractJpaModel>, HashSet<String>>();
+	private static final HashMap<Class<? extends AbstractJpaModel<?>>, HashSet<String>> NON_UPDATE_ASPECT_NAME_SETS = new HashMap<Class<? extends AbstractJpaModel<?>>, HashSet<String>>();
 
 	protected void addNonUpdateAspectNamesTo(@SuppressWarnings("unused") Set<String> nonUpdateAspectNames) {
 	// when you override this method, don't forget to include:

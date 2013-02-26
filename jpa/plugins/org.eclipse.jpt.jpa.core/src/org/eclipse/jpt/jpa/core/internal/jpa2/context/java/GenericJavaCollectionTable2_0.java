@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
  * Java collection table
  */
 public class GenericJavaCollectionTable2_0
-	extends GenericJavaReferenceTable<CollectionTable2_0Annotation>
+	extends GenericJavaReferenceTable<JavaElementCollectionMapping2_0, CollectionTable2_0Annotation>
 	implements JavaCollectionTable2_0
 {
 	public GenericJavaCollectionTable2_0(JavaElementCollectionMapping2_0 parent, Owner owner) {
@@ -62,13 +62,8 @@ public class GenericJavaCollectionTable2_0
 		return this.getElementCollectionMapping().getPersistentAttribute();
 	}
 
-	@Override
-	public JavaElementCollectionMapping2_0 getParent() {
-		return (JavaElementCollectionMapping2_0) super.getParent();
-	}
-
 	protected JavaElementCollectionMapping2_0 getElementCollectionMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	@Override

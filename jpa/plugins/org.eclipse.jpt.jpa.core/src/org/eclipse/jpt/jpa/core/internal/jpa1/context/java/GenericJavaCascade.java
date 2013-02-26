@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 
 public class GenericJavaCascade
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaRelationshipMapping>
 	implements Cascade2_0
 {
 	protected boolean all;
@@ -222,13 +222,8 @@ public class GenericJavaCascade
 
 	// ********** misc **********
 
-	@Override
-	public JavaRelationshipMapping getParent() {
-		return (JavaRelationshipMapping) super.getParent();
-	}
-
 	protected JavaRelationshipMapping getMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected RelationshipMappingAnnotation getMappingAnnotation() {

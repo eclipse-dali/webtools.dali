@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java named query
  */
 public class GenericJavaNamedQuery
-	extends AbstractJavaQuery<NamedQueryAnnotation>
+	extends AbstractJavaQuery<JavaQueryContainer, NamedQueryAnnotation>
 	implements JavaNamedQuery2_0
 {
 	protected String query;
@@ -134,7 +134,7 @@ public class GenericJavaNamedQuery
 	}
 
 	public void delete() {
-		this.getParent().removeNamedQuery(this);
+		this.parent.removeNamedQuery(this);
 	}
 
 	// ********** validation **********

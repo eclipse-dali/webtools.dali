@@ -31,8 +31,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * <code>orm.xml</code> join table or collection table
  */
-public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTable>
-	extends AbstractOrmTable<X>
+public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X extends AbstractXmlReferenceTable>
+	extends AbstractOrmTable<P, X>
 	implements OrmReferenceTable
 {
 	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
@@ -41,7 +41,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	protected OrmJoinColumn defaultJoinColumn;
 
 
-	protected GenericOrmReferenceTable(JpaContextModel parent, Owner owner) {
+	protected GenericOrmReferenceTable(P parent, Owner owner) {
 		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();

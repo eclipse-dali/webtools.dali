@@ -26,8 +26,8 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmVirtualTable<P extends JpaContextModel, T extends ReadOnlyTable>
+	extends AbstractOrmXmlContextModel<P>
 	implements VirtualTable
 {
 	protected final Owner owner;
@@ -46,10 +46,10 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	protected final ContextListContainer<VirtualUniqueConstraint, ReadOnlyUniqueConstraint> uniqueConstraintContainer;
 
 
-	protected AbstractOrmVirtualTable(JpaContextModel parent, Owner owner, T overridenTable) {
+	protected AbstractOrmVirtualTable(P parent, Owner owner, T overriddenTable) {
 		super(parent);
 		this.owner = owner;
-		this.overriddenTable = overridenTable;
+		this.overriddenTable = overriddenTable;
 		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
 
@@ -324,7 +324,7 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getParent().getValidationTextRange();
+		return this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameValidationTextRange() {

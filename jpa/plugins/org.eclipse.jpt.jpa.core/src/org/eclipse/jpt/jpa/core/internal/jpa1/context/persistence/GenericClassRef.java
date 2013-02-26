@@ -47,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>class</code> element
  */
 public class GenericClassRef
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<PersistenceUnit>
 	implements ClassRef
 {
 	/**
@@ -230,11 +230,6 @@ public class GenericClassRef
 
 
 	// ********** misc **********
-
-	@Override
-	public PersistenceUnit getParent() {
-		return (PersistenceUnit) super.getParent();
-	}
 
 	public XmlJavaClassRef getXmlClassRef() {
 		return this.xmlJavaClassRef;

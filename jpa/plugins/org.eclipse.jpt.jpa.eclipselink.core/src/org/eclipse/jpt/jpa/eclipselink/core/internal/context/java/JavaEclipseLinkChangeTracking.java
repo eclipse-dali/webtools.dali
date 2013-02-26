@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,14 +13,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 
 public class JavaEclipseLinkChangeTracking
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaTypeMapping>
 	implements EclipseLinkChangeTracking
 {
 	protected EclipseLinkChangeTrackingType specifiedType;
@@ -109,13 +109,8 @@ public class JavaEclipseLinkChangeTracking
 
 	// ********** misc **********  
 
-	@Override
-	public JavaTypeMapping getParent() {
-		return (JavaTypeMapping) super.getParent();
-	}
-
 	protected JavaTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaPersistentType getPersistentType() {

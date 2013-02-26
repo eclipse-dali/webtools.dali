@@ -26,8 +26,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java sequence or table generator
  */
-public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaGenerator<P extends JavaGeneratorContainer, A extends GeneratorAnnotation>
+	extends AbstractJavaContextModel<P>
 	implements JavaGenerator
 {
 	protected final A generatorAnnotation;
@@ -35,7 +35,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	protected String name;
 
 
-	protected AbstractJavaGenerator(JavaGeneratorContainer parent, A generatorAnnotation) {
+	protected AbstractJavaGenerator(P parent, A generatorAnnotation) {
 		super(parent);
 		this.generatorAnnotation = generatorAnnotation;
 		this.name = generatorAnnotation.getName();
@@ -91,7 +91,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.generatorAnnotation.getTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
@@ -111,11 +111,6 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaGeneratorContainer getParent() {
-		return (JavaGeneratorContainer) super.getParent();
-	}
 
 	public A getGeneratorAnnotation() {
 		return this.generatorAnnotation;

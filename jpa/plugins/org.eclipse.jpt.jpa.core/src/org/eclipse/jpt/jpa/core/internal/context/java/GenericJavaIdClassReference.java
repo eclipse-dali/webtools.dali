@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java ID class reference
  */
 public class GenericJavaIdClassReference
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaTypeMapping>
 	implements JavaIdClassReference
 {
 	protected String idClassName;
@@ -211,13 +211,8 @@ public class GenericJavaIdClassReference
 
 	// ********** misc **********
 
-	@Override
-	public JavaTypeMapping getParent() {
-		return (JavaTypeMapping) super.getParent();
-	}
-
 	protected JavaTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaPersistentType getPersistentType() {

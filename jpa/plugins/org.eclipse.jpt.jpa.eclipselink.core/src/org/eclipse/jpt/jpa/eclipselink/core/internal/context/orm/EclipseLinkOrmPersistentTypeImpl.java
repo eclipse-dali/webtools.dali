@@ -172,8 +172,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 	@Override
 	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
 		if (isDynamic()) {
-			PersistentType superPersistentType = getSuperPersistentType();
-			return (superPersistentType == null) ? null : superPersistentType.getAttributeTypeBinding(attribute);
+			PersistentType superPT = getSuperPersistentType();
+			return (superPT == null) ? null : superPT.getAttributeTypeBinding(attribute);
 		}
 		return super.getAttributeTypeBinding(attribute);
 	}
@@ -182,8 +182,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 	//*************** get method *****************
 
 	public String getGetMethod() {
-		String specifiedGetMethod = this.getSpecifiedGetMethod();
-		return (specifiedGetMethod != null) ? specifiedGetMethod : this.defaultGetMethod;
+		String getMethod = this.getSpecifiedGetMethod();
+		return (getMethod != null) ? getMethod : this.defaultGetMethod;
 	}
 
 	public String getDefaultGetMethod() {
@@ -193,8 +193,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 	//TODO get the default get method from the java VirtualAccessMethods annotation and from the super type
 	protected String buildDefaultGetMethod() {
 		if (getAccess() == EclipseLinkAccessType.VIRTUAL) {
-			String defaultGetMethod = getEntityMappings().getDefaultGetMethod();
-			return defaultGetMethod != null ? defaultGetMethod : DEFAULT_GET_METHOD;
+			String method = getEntityMappings().getDefaultGetMethod();
+			return (method != null) ? method : DEFAULT_GET_METHOD;
 		}
 		return null;
 	}
@@ -233,8 +233,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 	//*************** set method *****************
 
 	public String getSetMethod() {
-		String specifiedSetMethod = this.getSpecifiedSetMethod();
-		return (specifiedSetMethod != null) ? specifiedSetMethod : this.defaultSetMethod;
+		String setMethod = this.getSpecifiedSetMethod();
+		return (setMethod != null) ? setMethod : this.defaultSetMethod;
 	}
 
 	public String getDefaultSetMethod() {
@@ -250,8 +250,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 	protected String buildDefaultSetMethod() {
 		if (getAccess() == EclipseLinkAccessType.VIRTUAL) {
 			//TODO get the default set method from the java VirtualAccessMethods annotation/super persistent type, embedded parent, etc
-			String defaultSetMethod = getEntityMappings().getDefaultSetMethod();
-			return defaultSetMethod != null ? defaultSetMethod : DEFAULT_SET_METHOD;
+			String method = this.getEntityMappings().getDefaultSetMethod();
+			return method != null ? method : DEFAULT_SET_METHOD;
 		}
 		return null;
 	}

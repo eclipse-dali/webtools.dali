@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
 
 public class JavaEclipseLinkJoinFetch
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaAttributeMapping>
 	implements EclipseLinkJoinFetch
 {
 	protected EclipseLinkJoinFetchType value;
@@ -107,13 +107,8 @@ public class JavaEclipseLinkJoinFetch
 
 	// ********** misc **********
 
-	@Override
-	public JavaAttributeMapping getParent() {
-		return (JavaAttributeMapping) super.getParent();
-	}
-
 	protected JavaAttributeMapping getAttributeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaResourceAttribute getResourceAttribute() {

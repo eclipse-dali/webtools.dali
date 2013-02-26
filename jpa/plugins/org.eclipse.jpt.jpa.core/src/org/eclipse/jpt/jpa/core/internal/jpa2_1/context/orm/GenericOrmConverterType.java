@@ -17,7 +17,8 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmConverterType2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
-public class GenericOrmConverterType extends AbstractOrmManagedType
+public class GenericOrmConverterType
+	extends AbstractOrmManagedType<EntityMappings2_1>
 	implements OrmConverterType2_1
 {
 	protected boolean autoApply;

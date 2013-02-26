@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
  * Java column or join column
  */
 public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends ReadOnlyBaseColumn.Owner>
-	extends AbstractJavaNamedColumn<A, O>
+	extends AbstractJavaNamedColumn<JpaContextModel, A, O>
 	implements JavaBaseColumn
 {
 	protected String specifiedTableName;

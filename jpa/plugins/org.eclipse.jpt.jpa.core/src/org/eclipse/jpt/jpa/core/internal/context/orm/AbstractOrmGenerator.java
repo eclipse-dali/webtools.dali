@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> sequence or table generator
  */
 public abstract class AbstractOrmGenerator<X extends XmlGenerator>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmGenerator
 {
 	protected final X xmlGenerator;
@@ -92,7 +92,7 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlGenerator.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {

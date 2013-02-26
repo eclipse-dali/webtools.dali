@@ -47,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * {@link JavaPersistentAttribute#setMappingKey(String)}.
  */
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaPersistentAttribute>
 	implements JavaAttributeMapping, AttributeMapping2_0
 {
 	protected boolean default_;
@@ -134,13 +134,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	// ********** misc **********
 
-	@Override
-	public JavaPersistentAttribute getParent() {
-		return (JavaPersistentAttribute) super.getParent();
-	}
-
 	public JavaPersistentAttribute getPersistentAttribute() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public TypeMapping getTypeMapping() {

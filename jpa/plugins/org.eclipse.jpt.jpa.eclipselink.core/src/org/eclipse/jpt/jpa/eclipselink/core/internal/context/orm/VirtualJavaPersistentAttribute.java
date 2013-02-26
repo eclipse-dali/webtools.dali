@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCor
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 public class VirtualJavaPersistentAttribute
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<OrmPersistentType>
 	implements JavaPersistentAttribute, PersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
 {
 	private final XmlAttributeMapping xmlAttributeMapping;
@@ -411,13 +411,8 @@ public class VirtualJavaPersistentAttribute
 
 	// ********** misc **********
 
-	@Override
-	public OrmPersistentType getParent() {
-		return (OrmPersistentType) super.getParent();
-	}
-
 	public OrmPersistentType getOwningPersistentType() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public TypeMapping getOwningTypeMapping() {
@@ -425,7 +420,7 @@ public class VirtualJavaPersistentAttribute
 	}
 
 	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) getParent().getMappingFileRoot();
+		return (EntityMappings) this.parent.getMappingFileRoot();
 	}
 
 	public String getPrimaryKeyColumnName() {

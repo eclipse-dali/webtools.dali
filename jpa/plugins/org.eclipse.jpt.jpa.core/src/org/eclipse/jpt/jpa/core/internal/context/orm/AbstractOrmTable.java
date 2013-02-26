@@ -38,14 +38,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <p>
  * <strong>NB:</strong> any subclass that directly holds its XML table must:<ul>
  * <li>call the "super" constructor that takes an XML table
- *     {@link #AbstractOrmTable(XmlContextNode, Owner, AbstractXmlTable)}
+ *     {@link #AbstractOrmTable(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, AbstractXmlTable)}
  * <li>override {@link #setXmlTable(AbstractXmlTable)} to set the XML table
  *     so it is in place before the table's state (e.g. {@link #specifiedName})
  *     is initialized
  * </ul>
  */
-public abstract class AbstractOrmTable<X extends AbstractXmlTable>
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmTable<P extends JpaContextModel, X extends AbstractXmlTable>
+	extends AbstractOrmXmlContextModel<P>
 	implements OrmTable, UniqueConstraint.Owner
 {
 	protected final Owner owner;
@@ -64,11 +64,11 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmTable(JpaContextModel parent, Owner owner) {
+	protected AbstractOrmTable(P parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmTable(JpaContextModel parent, Owner owner, X xmlTable) {
+	protected AbstractOrmTable(P parent, Owner owner, X xmlTable) {
 		super(parent);
 		this.owner = owner;
 		this.setXmlTable(xmlTable);
@@ -430,7 +430,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getXmlTableValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	protected TextRange getXmlTableValidationTextRange() {

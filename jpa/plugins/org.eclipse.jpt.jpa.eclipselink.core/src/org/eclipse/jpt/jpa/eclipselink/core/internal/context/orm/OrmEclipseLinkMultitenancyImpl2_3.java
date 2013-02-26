@@ -54,7 +54,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkMultitenancyImpl2_3
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmEclipseLinkNonEmbeddableTypeMapping>
 	implements OrmEclipseLinkMultitenancy2_3
 {
 	protected boolean specifiedMultitenant;
@@ -478,7 +478,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected boolean buildSpecifiedTenantDiscriminatorColumnsAllowed() {
-		return this.getParent().isMultitenantMetadataAllowed();
+		return this.parent.isMultitenantMetadataAllowed();
 	}
 
 
@@ -601,13 +601,8 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 	// ********** misc **********
 
-	@Override
-	public OrmEclipseLinkNonEmbeddableTypeMapping getParent() {
-		return (OrmEclipseLinkNonEmbeddableTypeMapping) super.getParent();
-	}
-
 	protected OrmEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected XmlTypeMapping getXmlTypeMapping() {
@@ -640,27 +635,27 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected boolean isInheritanceStrategyTablePerClass() {
-		return this.getParent().getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
+		return this.getTypeMapping().getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
 	}
 
 	protected boolean isRootEntityMultitenant() {
 		EclipseLinkEntity rootEntity = this.getRootEntity();
-		return rootEntity != null && rootEntity != getParent() && rootEntity.getMultitenancy().isMultitenant();
+		return (rootEntity != null) && (rootEntity != this.getTypeMapping()) && rootEntity.getMultitenancy().isMultitenant();
 	}
 
 	protected EclipseLinkEntity getRootEntity() {
 		//instanceof check in case the rootEntity is in an orm.xml instead of an eclipselinkorm.xml file.
-		Entity entity = getParent().getRootEntity();
-		return entity instanceof EclipseLinkEntity ? (EclipseLinkEntity) entity : null;
+		Entity entity = this.getTypeMapping().getRootEntity();
+		return (entity instanceof EclipseLinkEntity) ? (EclipseLinkEntity) entity : null;
 	}
 
 	protected boolean isSuperMappedSuperclassMultitenant() {
-		EclipseLinkMappedSuperclass mappedSuperclass = this.getSuperMappedSuperclass(getParent());
+		EclipseLinkMappedSuperclass mappedSuperclass = this.getSuperMappedSuperclass(this.getTypeMapping());
 		return mappedSuperclass != null && mappedSuperclass.getMultitenancy().isMultitenant();
 	}
 
 	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass() {
-		return this.getSuperMappedSuperclass(this.getParent());
+		return this.getSuperMappedSuperclass(this.getTypeMapping());
 	}
 
 	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass(TypeMapping typeMapping) {

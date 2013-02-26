@@ -40,8 +40,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Typically, a column belonging to a list of columns will directly hold its XML
  * column; since the context column only exists if the XML column exists.
  */
-public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends ReadOnlyNamedColumn.Owner>
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extends XmlNamedColumn, O extends ReadOnlyNamedColumn.Owner>
+	extends AbstractOrmXmlContextModel<P>
 	implements OrmNamedColumn
 {
 	protected final O owner;
@@ -55,11 +55,11 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmNamedColumn(JpaContextModel parent, O owner) {
+	protected AbstractOrmNamedColumn(P parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmNamedColumn(JpaContextModel parent, O owner, X xmlColumn) {
+	protected AbstractOrmNamedColumn(P parent, O owner, X xmlColumn) {
 		super(parent);
 		this.owner = owner;
 		this.setXmlColumn(xmlColumn);

@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Context JAR file
  */
 public class GenericJarFile
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<JarFileRef>
 	implements JarFile, PersistentType.Owner
 {
 	protected final JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;
@@ -225,13 +225,8 @@ public class GenericJarFile
 
 	// ********** JpaNode implementation **********
 
-	@Override
-	public JarFileRef getParent() {
-		return (JarFileRef) super.getParent();
-	}
-
 	protected JarFileRef getJarFileRef() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	@Override

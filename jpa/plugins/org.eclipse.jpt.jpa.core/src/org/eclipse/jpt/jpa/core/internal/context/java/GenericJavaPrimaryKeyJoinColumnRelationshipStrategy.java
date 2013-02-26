@@ -38,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaPrimaryKeyJoinColumnRelationship>
 	implements MappingRelationshipStrategy2_0, JavaPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
@@ -176,13 +176,8 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public JavaPrimaryKeyJoinColumnRelationship getParent() {
-		return (JavaPrimaryKeyJoinColumnRelationship) super.getParent();
-	}
-
 	public JavaPrimaryKeyJoinColumnRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaRelationshipMapping getRelationshipMapping() {

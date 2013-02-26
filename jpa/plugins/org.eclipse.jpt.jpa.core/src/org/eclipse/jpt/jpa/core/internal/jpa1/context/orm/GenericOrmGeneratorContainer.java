@@ -26,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmGeneratorContainer
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmGeneratorContainer
 {
 	protected final XmlGeneratorContainer xmlGeneratorContainer;
@@ -207,7 +207,7 @@ public class GenericOrmGeneratorContainer
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlGeneratorContainer.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	// ********** completion proposals **********

@@ -26,14 +26,14 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJavaJoinTableRelationshipStrategy
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJoinTableRelationship>
+	extends AbstractJavaContextModel<P>
 	implements JavaJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected JavaJoinTable joinTable;
 
 
-	protected AbstractJavaJoinTableRelationshipStrategy(JavaJoinTableRelationship parent) {
+	protected AbstractJavaJoinTableRelationshipStrategy(P parent) {
 		super(parent);
 	}
 
@@ -104,13 +104,8 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public JavaJoinTableRelationship getParent() {
-		return (JavaJoinTableRelationship) super.getParent();
-	}
-
 	public JavaJoinTableRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public RelationshipMapping getRelationshipMapping() {

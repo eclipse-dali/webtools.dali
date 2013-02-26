@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> named native query
  */
 public class GenericJavaNamedNativeQuery
-	extends AbstractJavaQuery<NamedNativeQueryAnnotation>
+	extends AbstractJavaQuery<JavaQueryContainer, NamedNativeQueryAnnotation>
 	implements JavaNamedNativeQuery
 {
 	protected String query;
@@ -141,7 +141,7 @@ public class GenericJavaNamedNativeQuery
 	}
 
 	public void delete() {
-		this.getParent().removeNamedNativeQuery(this);
+		this.parent.removeNamedNativeQuery(this);
 	}
 
 	// ********** validation **********

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * 
  */
 public class NullJavaMapKeyColumn2_0
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaRelationshipMapping>
 	implements JavaColumn
 {
 	public NullJavaMapKeyColumn2_0(JavaRelationshipMapping parent) {
@@ -33,7 +33,7 @@ public class NullJavaMapKeyColumn2_0
 	// ********** column annotation **********
 
 	public ColumnAnnotation getColumnAnnotation() {
-		return (ColumnAnnotation) this.getParent().getPersistentAttribute().getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) this.parent.getPersistentAttribute().getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	public boolean isVirtual() {
@@ -224,11 +224,6 @@ public class NullJavaMapKeyColumn2_0
 
 	// ********** misc **********
 
-	@Override
-	public JavaRelationshipMapping getParent() {
-		return (JavaRelationshipMapping) super.getParent();
-	}
-
 	public void initializeFrom(ReadOnlyColumn oldColumn) {
 		// NOP
 	}
@@ -260,7 +255,7 @@ public class NullJavaMapKeyColumn2_0
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.getParent().getValidationTextRange();
+		return this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameValidationTextRange() {

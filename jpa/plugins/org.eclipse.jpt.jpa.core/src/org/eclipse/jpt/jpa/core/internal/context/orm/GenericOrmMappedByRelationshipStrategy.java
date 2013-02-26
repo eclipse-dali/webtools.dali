@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmMappedByRelationshipStrategy
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmMappedByRelationship>
 	implements MappingRelationshipStrategy2_0, MappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;
@@ -73,13 +73,8 @@ public class GenericOrmMappedByRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public OrmMappedByRelationship getParent() {
-		return (OrmMappedByRelationship) super.getParent();
-	}
-
 	public OrmMappedByRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected XmlMappedByMapping getXmlMappedByMapping() {

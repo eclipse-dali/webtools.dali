@@ -25,7 +25,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> generated value
  */
 public class GenericOrmGeneratedValue
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmGeneratedValue
 {
 	protected final XmlGeneratedValue xmlGeneratedValue;
@@ -166,7 +166,7 @@ public class GenericOrmGeneratedValue
 
 		messages.add(
 			this.buildValidationMessage(
-				this.getParent(),
+				this.parent,
 				this.getGeneratorTextRange(),
 				JptJpaCoreValidationMessages.UNRESOLVED_GENERATOR_NAME,
 				generator
@@ -176,7 +176,7 @@ public class GenericOrmGeneratedValue
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlGeneratedValue.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getGeneratorTextRange() {

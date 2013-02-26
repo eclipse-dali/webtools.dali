@@ -15,7 +15,8 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManagedType;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.java.JavaConverterType2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.Converter2_1Annotation;
 
-public class GenericJavaConverterType extends AbstractJavaManagedType
+public class GenericJavaConverterType
+	extends AbstractJavaManagedType<JpaContextModel>
 	implements JavaConverterType2_1
 {
 

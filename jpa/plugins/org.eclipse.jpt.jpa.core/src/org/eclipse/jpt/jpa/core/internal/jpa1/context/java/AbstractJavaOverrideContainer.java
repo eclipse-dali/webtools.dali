@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -61,7 +61,7 @@ public abstract class AbstractJavaOverrideContainer<
 			V extends JavaVirtualOverride,
 			A extends OverrideAnnotation & NestableAnnotation
 		>
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JpaContextModel>
 	implements JavaOverrideContainer2_0
 {
 	/**

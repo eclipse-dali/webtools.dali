@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,14 +25,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Virtual Java override
  */
-public abstract class AbstractJavaVirtualOverride<C extends JavaOverrideContainer>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaVirtualOverride<P extends JavaOverrideContainer>
+	extends AbstractJavaContextModel<P>
 	implements JavaVirtualOverride
 {
 	protected final String name;  // never null
 
 
-	protected AbstractJavaVirtualOverride(C parent, String name) {
+	protected AbstractJavaVirtualOverride(P parent, String name) {
 		super(parent);
 		this.name = name;
 	}
@@ -49,14 +49,8 @@ public abstract class AbstractJavaVirtualOverride<C extends JavaOverrideContaine
 		return this.getContainer().convertOverrideToSpecified(this);
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public C getParent() {
-		return (C) super.getParent();
-	}
-
-	protected C getContainer() {
-		return this.getParent();
+	protected P getContainer() {
+		return this.parent;
 	}
 
 	public TypeMapping getTypeMapping() {

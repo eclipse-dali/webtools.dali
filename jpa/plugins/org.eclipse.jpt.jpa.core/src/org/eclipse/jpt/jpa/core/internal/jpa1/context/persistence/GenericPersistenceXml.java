@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * context model <code>persistence.xml</code> file
  */
 public class GenericPersistenceXml
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<JpaContextModelRoot>
 	implements PersistenceXml2_0
 {
 	/**

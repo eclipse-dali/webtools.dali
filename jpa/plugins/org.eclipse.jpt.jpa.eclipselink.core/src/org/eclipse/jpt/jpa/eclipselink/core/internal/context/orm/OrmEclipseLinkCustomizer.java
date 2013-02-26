@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkCustomizer
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<EclipseLinkOrmTypeMapping>
 	implements EclipseLinkCustomizer, TypeRefactoringParticipant
 {
 	protected String specifiedCustomizerClass;
@@ -171,13 +171,8 @@ public class OrmEclipseLinkCustomizer
 
 	// ********** misc **********
 
-	@Override
-	public EclipseLinkOrmTypeMapping getParent() {
-		return (EclipseLinkOrmTypeMapping) super.getParent();
-	}
-
 	protected EclipseLinkOrmTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected XmlTypeMapping getXmlTypeMapping() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java primary key join column
  */
 public class GenericJavaPrimaryKeyJoinColumn
-	extends AbstractJavaNamedColumn<PrimaryKeyJoinColumnAnnotation, ReadOnlyBaseJoinColumn.Owner>
+	extends AbstractJavaNamedColumn<JpaContextModel, PrimaryKeyJoinColumnAnnotation, ReadOnlyBaseJoinColumn.Owner>
 	implements JavaPrimaryKeyJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */

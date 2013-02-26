@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmMappingJoinColumnRelationshipStrategy
-	extends AbstractOrmJoinColumnRelationshipStrategy
+	extends AbstractOrmJoinColumnRelationshipStrategy<OrmMappingJoinColumnRelationship>
 	implements MappingRelationshipStrategy2_0
 {
 	protected final boolean targetForeignKey;

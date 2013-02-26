@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,10 +34,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java secondary table
  */
 public class GenericJavaSecondaryTable
-	extends AbstractJavaTable<SecondaryTableAnnotation>
+	extends AbstractJavaTable<JavaEntity, SecondaryTableAnnotation>
 	implements JavaSecondaryTable
 {
-	/** @see AbstractJavaTable#AbstractJavaTable(org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.Table.Owner, org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation) */
+	/** @see AbstractJavaTable#AbstractJavaTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation) */
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
 
 	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
@@ -255,13 +255,8 @@ public class GenericJavaSecondaryTable
 
 	// ********** misc **********
 
-	@Override
-	public JavaEntity getParent() {
-		return (JavaEntity) super.getParent();
-	}
-
 	protected JavaEntity getEntity() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public boolean isVirtual() {

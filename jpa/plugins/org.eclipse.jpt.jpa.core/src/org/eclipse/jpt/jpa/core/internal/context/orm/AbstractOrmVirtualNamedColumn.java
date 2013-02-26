@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * is derived from the resource model).
  */
 public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends ReadOnlyNamedColumn>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements VirtualNamedColumn
 {
 	protected final O owner;
@@ -162,7 +162,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getParent().getValidationTextRange();
+		return this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameValidationTextRange() {

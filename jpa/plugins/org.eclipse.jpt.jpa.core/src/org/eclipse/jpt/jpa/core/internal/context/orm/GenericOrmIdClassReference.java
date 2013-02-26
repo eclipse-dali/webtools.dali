@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
@@ -39,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> ID class reference
  */
 public class GenericOrmIdClassReference
-	extends AbstractJpaContextModel
+	extends AbstractOrmXmlContextModel<OrmTypeMapping>
 	implements OrmIdClassReference
 {
 	protected final Owner owner;
@@ -264,13 +263,8 @@ public class GenericOrmIdClassReference
 
 	// ********** misc **********
 
-	@Override
-	public OrmTypeMapping getParent() {
-		return (OrmTypeMapping) super.getParent();
-	}
-
 	protected OrmTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected OrmPersistentType getPersistentType() {
@@ -282,7 +276,7 @@ public class GenericOrmIdClassReference
 	}
 
 	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) this.getMappingFileRoot();
+		return this.getMappingFileRoot();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,8 +30,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java join table or collection table
  */
-public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotation>
-	extends AbstractJavaTable<A>
+public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A extends ReferenceTableAnnotation>
+	extends AbstractJavaTable<P, A>
 	implements JavaReferenceTable
 {
 	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
@@ -40,7 +40,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	protected JavaJoinColumn defaultJoinColumn;
 
 
-	protected GenericJavaReferenceTable(JpaContextModel parent, Owner owner) {
+	protected GenericJavaReferenceTable(P parent, Owner owner) {
 		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();

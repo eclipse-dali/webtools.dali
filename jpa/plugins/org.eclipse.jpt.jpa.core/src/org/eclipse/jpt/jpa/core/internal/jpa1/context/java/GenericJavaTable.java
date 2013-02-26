@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
  * Java table
  */
 public class GenericJavaTable
-	extends AbstractJavaTable<TableAnnotation>
+	extends AbstractJavaTable<JavaEntity, TableAnnotation>
 {
 	public GenericJavaTable(JavaEntity parent, Owner owner) {
 		super(parent, owner);
@@ -88,16 +88,7 @@ public class GenericJavaTable
 
 	// ********** misc **********
 
-	/**
-	 * covariant override
-	 */
-	@Override
-	public JavaEntity getParent() {
-		return (JavaEntity) super.getParent();
-	}
-
 	protected JavaEntity getEntity() {
-		return this.getParent();
+		return this.parent;
 	}
-
 }

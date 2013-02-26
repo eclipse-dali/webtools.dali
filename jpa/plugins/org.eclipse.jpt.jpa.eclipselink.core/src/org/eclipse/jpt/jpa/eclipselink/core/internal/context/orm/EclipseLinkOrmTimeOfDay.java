@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class EclipseLinkOrmTimeOfDay
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<EclipseLinkCaching>
 	implements EclipseLinkTimeOfDay
 {
 	protected final XmlTimeOfDay xmlTimeOfDay;
@@ -123,13 +123,8 @@ public class EclipseLinkOrmTimeOfDay
 
 	// ********** misc **********
 
-	@Override
-	public EclipseLinkCaching getParent() {
-		return (EclipseLinkCaching) super.getParent();
-	}
-
 	protected EclipseLinkCaching getCaching() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public XmlTimeOfDay getXmlTimeOfDay() {

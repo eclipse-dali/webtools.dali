@@ -85,7 +85,7 @@ public class GenericOrmUniqueConstraint
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlUniqueConstraint.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public boolean isEquivalentTo(UniqueConstraint uniqueConstraint) {

@@ -23,10 +23,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscr
  * Java tenant discriminator column
  */
 public class EclipseLinkJavaTenantDiscriminatorColumn2_3
-	extends AbstractJavaNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumnAnnotation2_3, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
+	extends AbstractJavaNamedDiscriminatorColumn<JavaEclipseLinkMultitenancyImpl2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
 	implements JavaTenantDiscriminatorColumn2_3
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextNode, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation;  // never null
 
 	protected String specifiedTableName;
@@ -222,13 +222,8 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 
 	// ********** misc **********
 
-	@Override
-	public JavaEclipseLinkMultitenancyImpl2_3 getParent() {
-		return (JavaEclipseLinkMultitenancyImpl2_3) super.getParent();
-	}
-
 	protected JavaResourceType getJavaResourceType() {
-		return this.getParent().getJavaResourceType();
+		return this.parent.getJavaResourceType();
 	}
 
 

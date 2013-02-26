@@ -119,7 +119,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>persistence-unit</code> element
  */
 public abstract class AbstractPersistenceUnit
-	extends AbstractPersistenceXmlContextModel
+	extends AbstractPersistenceXmlContextModel<Persistence>
 	implements PersistenceUnit2_1
 {
 	protected final XmlPersistenceUnit xmlPersistenceUnit;
@@ -317,13 +317,8 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** JpaContextModel implementation **********
 
-	@Override
-	public Persistence getParent() {
-		return (Persistence) super.getParent();
-	}
-
 	protected Persistence getPersistence() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	@Override

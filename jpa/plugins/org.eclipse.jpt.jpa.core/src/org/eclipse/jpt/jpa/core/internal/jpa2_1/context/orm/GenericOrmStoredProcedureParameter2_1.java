@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlStoredProcedureParameter;
 
 public class GenericOrmStoredProcedureParameter2_1
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmQuery>
 	implements OrmStoredProcedureParameter2_1
 {
 
@@ -178,13 +178,8 @@ public class GenericOrmStoredProcedureParameter2_1
 
 	// ********** misc **********
 
-	@Override
-	public OrmQuery getParent() {
-		return (OrmQuery) super.getParent();
-	}
-
 	protected OrmQuery getQuery() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public XmlStoredProcedureParameter getXmlStoredProcedureParameter() {

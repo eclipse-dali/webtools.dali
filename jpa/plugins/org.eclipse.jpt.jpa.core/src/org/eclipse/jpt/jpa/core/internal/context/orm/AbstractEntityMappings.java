@@ -94,7 +94,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>entity-mappings</code> element
  */
 public abstract class AbstractEntityMappings
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmXml>
 	implements EntityMappings2_1
 {
 	protected final XmlEntityMappings xmlEntityMappings;
@@ -207,13 +207,8 @@ public abstract class AbstractEntityMappings
 	// ********** overrides **********
 
 	@Override
-	public OrmXml getParent() {
-		return (OrmXml) super.getParent();
-	}
-
-	@Override
 	public OrmXml getOrmXml() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	@Override

@@ -82,6 +82,6 @@ public class JavaEclipseLinkStructConverter
 	
 	@Override
 	public void delete() {
-		this.getParent().removeStructConverter(this);
+		this.parent.removeStructConverter(this);
 	}
 }

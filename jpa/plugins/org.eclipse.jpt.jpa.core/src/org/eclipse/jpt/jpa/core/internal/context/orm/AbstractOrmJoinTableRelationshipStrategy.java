@@ -26,14 +26,14 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmJoinTableRelationshipStrategy
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoinTableRelationship>
+	extends AbstractOrmXmlContextModel<P>
 	implements OrmJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected OrmJoinTable joinTable;
 
 
-	protected AbstractOrmJoinTableRelationshipStrategy(OrmJoinTableRelationship parent) {
+	protected AbstractOrmJoinTableRelationshipStrategy(P parent) {
 		super(parent);
 	}
 
@@ -143,13 +143,8 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public OrmJoinTableRelationship getParent() {
-		return (OrmJoinTableRelationship) super.getParent();
-	}
-
 	public OrmJoinTableRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {

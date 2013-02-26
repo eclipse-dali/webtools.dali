@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,14 +25,14 @@ import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
  * end of their constructors; otherwise, it will be <code>null</code> until it
  * is set during {@link #update()}.
  */
-public abstract class AbstractJavaMappingRelationship<M extends JavaRelationshipMapping>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaMappingRelationship<P extends JavaRelationshipMapping>
+	extends AbstractJavaContextModel<P>
 	implements JavaMappingRelationship
 {
 	protected RelationshipStrategy strategy;
 
 
-	public AbstractJavaMappingRelationship(M parent) {
+	public AbstractJavaMappingRelationship(P parent) {
 		super(parent);
 	}
 
@@ -90,14 +90,8 @@ public abstract class AbstractJavaMappingRelationship<M extends JavaRelationship
 
 	// ********** misc **********
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public M getParent() {
-		return (M) super.getParent();
-	}
-
-	public JavaRelationshipMapping getMapping() {
-		return this.getParent();
+	public P getMapping() {
+		return this.parent;
 	}
 
 	public TypeMapping getTypeMapping() {

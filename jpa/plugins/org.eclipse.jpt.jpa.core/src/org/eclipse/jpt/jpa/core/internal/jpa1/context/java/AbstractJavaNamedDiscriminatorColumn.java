@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,8 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 /**
  * Java named discriminator column
  */
-public abstract class AbstractJavaNamedDiscriminatorColumn<A extends DiscriminatorColumnAnnotation, O extends ReadOnlyNamedDiscriminatorColumn.Owner>
-	extends AbstractJavaNamedColumn<A, O>
+public abstract class AbstractJavaNamedDiscriminatorColumn<P extends JpaContextModel, A extends DiscriminatorColumnAnnotation, O extends ReadOnlyNamedDiscriminatorColumn.Owner>
+	extends AbstractJavaNamedColumn<P, A, O>
 	implements NamedDiscriminatorColumn
 {
 	protected DiscriminatorType specifiedDiscriminatorType;
@@ -29,11 +29,11 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<A extends Discriminat
 	protected Integer specifiedLength;
 	protected int defaultLength = DEFAULT_LENGTH;
 
-	protected AbstractJavaNamedDiscriminatorColumn(JpaContextModel parent, O owner) {
+	protected AbstractJavaNamedDiscriminatorColumn(P parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaNamedDiscriminatorColumn(JpaContextModel parent, O owner, A columnAnnotation) {
+	protected AbstractJavaNamedDiscriminatorColumn(P parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 

@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmEclipseLinkConverterContainerImpl
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmEclipseLinkConverterContainer
 {
 
@@ -517,7 +517,7 @@ public abstract class AbstractOrmEclipseLinkConverterContainerImpl
 	
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlConverterContainer.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 

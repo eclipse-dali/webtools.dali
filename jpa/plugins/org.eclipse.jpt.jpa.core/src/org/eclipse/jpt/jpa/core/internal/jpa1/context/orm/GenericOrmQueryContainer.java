@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> query container
  */
 public class GenericOrmQueryContainer
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmQueryContainer2_1
 {
 	protected final XmlQueryContainer xmlQueryContainer;
@@ -353,7 +353,7 @@ public class GenericOrmQueryContainer
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlQueryContainer.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 }

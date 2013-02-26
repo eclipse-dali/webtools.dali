@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -21,7 +21,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaIdDerivedIdentityStrategy2_0
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaDerivedIdentity2_0>
 	implements IdDerivedIdentityStrategy2_0
 {
 	protected boolean value;
@@ -91,13 +91,8 @@ public class GenericJavaIdDerivedIdentityStrategy2_0
 
 	// ********** misc **********
 
-	@Override
-	public JavaDerivedIdentity2_0 getParent() {
-		return (JavaDerivedIdentity2_0) super.getParent();
-	}
-
 	protected JavaDerivedIdentity2_0 getDerivedIdentity() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaSingleRelationshipMapping2_0 getMapping() {

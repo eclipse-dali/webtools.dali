@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <em>virtual</em> <code>orm.xml</code> persistent attribute
  */
 public class VirtualOrmPersistentAttribute
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmPersistentType>
 	implements OrmReadOnlyPersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
 	protected final Accessor javaAccessor; // never null
@@ -365,13 +365,8 @@ public class VirtualOrmPersistentAttribute
 
 	// ********** misc **********
 
-	@Override
-	public OrmPersistentType getParent() {
-		return (OrmPersistentType) super.getParent();
-	}
-
 	public OrmPersistentType getOwningPersistentType() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public OrmTypeMapping getOwningTypeMapping() {
@@ -388,8 +383,8 @@ public class VirtualOrmPersistentAttribute
 	
 	public String getTypeName(PersistentType contextType) {
 		while (contextType != null) {
-			if (contextType == getParent()) {
-				return getTypeName();
+			if (contextType == this.getOwningPersistentType()) {
+				return this.getTypeName();
 			}
 			TypeBinding typeBinding = contextType.getAttributeTypeBinding(this);
 			if (typeBinding != null) {

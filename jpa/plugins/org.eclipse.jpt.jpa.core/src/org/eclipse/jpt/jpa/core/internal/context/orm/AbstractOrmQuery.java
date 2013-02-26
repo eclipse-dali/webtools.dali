@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> query
  */
 public abstract class AbstractOrmQuery<X extends XmlQuery>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmQuery
 {
 	protected final X xmlQuery;
@@ -208,7 +208,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlQuery.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {

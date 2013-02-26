@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,8 +29,8 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJavaJoinColumnRelationshipStrategy
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJoinColumnRelationship>
+	extends AbstractJavaContextModel<P>
 	implements JavaJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
@@ -39,7 +39,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	protected JavaJoinColumn defaultJoinColumn;
 
 
-	protected AbstractJavaJoinColumnRelationshipStrategy(JavaJoinColumnRelationship parent) {
+	protected AbstractJavaJoinColumnRelationshipStrategy(P parent) {
 		super(parent);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
@@ -227,13 +227,8 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public JavaJoinColumnRelationship getParent() {
-		return (JavaJoinColumnRelationship) super.getParent();
-	}
-
 	public JavaJoinColumnRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {

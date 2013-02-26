@@ -334,6 +334,6 @@ public class JavaEclipseLinkObjectTypeConverter
 
 	@Override
 	public void delete() {
-		this.getParent().removeObjectTypeConverter(this);
+		this.parent.removeObjectTypeConverter(this);
 	}
 }

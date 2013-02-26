@@ -41,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java type mapping
  */
 public abstract class AbstractJavaTypeMapping<A extends Annotation>
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaPersistentType>
 	implements JavaTypeMapping
 {
 	// this can be null for a "null" type mapping
@@ -56,13 +56,8 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 
 	// ********** misc **********
 
-	@Override
-	public JavaPersistentType getParent() {
-		return (JavaPersistentType) super.getParent();
-	}
-
 	public JavaPersistentType getPersistentType() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public JavaResourceType getJavaResourceType() {

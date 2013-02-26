@@ -37,10 +37,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <li>Java managed type
  * </ul>
  */
-public abstract class AbstractOrmManagedType
-		extends AbstractOrmXmlContextModel
-		implements OrmManagedType {
-
+public abstract class AbstractOrmManagedType<P extends EntityMappings>
+	extends AbstractOrmXmlContextModel<P>
+	implements OrmManagedType
+{
 	protected XmlManagedType xmlManagedType;
 
 	protected String class_;
@@ -50,7 +50,7 @@ public abstract class AbstractOrmManagedType
 	protected JavaManagedType javaManagedType;
 
 
-	protected AbstractOrmManagedType(EntityMappings parent, XmlManagedType xmlManagedType) {
+	protected AbstractOrmManagedType(P parent, XmlManagedType xmlManagedType) {
 		super(parent);
 		this.xmlManagedType = xmlManagedType;
 		this.class_ = this.xmlManagedType.getClassName();
@@ -331,13 +331,8 @@ public abstract class AbstractOrmManagedType
 
 	// ********** misc **********
 
-	@Override
-	public EntityMappings getParent() {
-		return (EntityMappings) super.getParent();
-	}
-
 	protected EntityMappings getEntityMappings() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public String getDefaultPackage() {

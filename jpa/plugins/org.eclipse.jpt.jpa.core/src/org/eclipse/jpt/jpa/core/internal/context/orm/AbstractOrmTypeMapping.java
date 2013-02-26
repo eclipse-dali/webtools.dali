@@ -46,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> type mapping
  */
 public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmPersistentType>
 	implements OrmTypeMapping
 {
 	// never null
@@ -221,13 +221,8 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 
 	// ********** misc **********
 
-	@Override
-	public OrmPersistentType getParent() {
-		return (OrmPersistentType) super.getParent();
-	}
-
 	public OrmPersistentType getPersistentType() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public String getName() {
@@ -244,7 +239,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	protected EntityMappings getEntityMappings() {
-		return getPersistentType().getParent();
+		return this.getPersistentType().getParent();
 	}
 
 	public boolean isMapped() {

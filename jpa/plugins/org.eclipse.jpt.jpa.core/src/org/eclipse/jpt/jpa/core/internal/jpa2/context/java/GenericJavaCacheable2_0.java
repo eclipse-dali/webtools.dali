@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
  * Java cacheable
  */
 public class GenericJavaCacheable2_0
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaCacheableHolder2_0>
 	implements Cacheable2_0
 {
 	protected Boolean specifiedCacheable;
@@ -141,13 +141,8 @@ public class GenericJavaCacheable2_0
 
 	// ********** misc **********
 
-	@Override
-	public JavaCacheableHolder2_0 getParent() {
-		return (JavaCacheableHolder2_0) super.getParent();
-	}
-
 	protected JavaCacheableHolder2_0 getCacheableHolder() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected JavaResourceType getJavaResourceType() {

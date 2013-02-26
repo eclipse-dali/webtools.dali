@@ -30,8 +30,8 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmJoinColumnRelationshipStrategy
-	extends AbstractOrmXmlContextModel
+public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoinColumnRelationship>
+	extends AbstractOrmXmlContextModel<P>
 	implements OrmJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
@@ -40,7 +40,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 	protected OrmJoinColumn defaultJoinColumn;
 
 
-	protected AbstractOrmJoinColumnRelationshipStrategy(OrmJoinColumnRelationship parent) {
+	protected AbstractOrmJoinColumnRelationshipStrategy(P parent) {
 		super(parent);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
@@ -229,13 +229,8 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public OrmJoinColumnRelationship getParent() {
-		return (OrmJoinColumnRelationship) super.getParent();
-	}
-
 	public OrmJoinColumnRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {

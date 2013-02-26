@@ -154,6 +154,6 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	}
 
 	public void delete() {
-		this.getParent().removeSequenceGenerator();	
+		this.parent.removeSequenceGenerator();	
 	}
 }

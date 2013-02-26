@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
  * <code>orm.xml</code> orphan removal
  */
 public class GenericOrmOrphanRemoval2_0
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrphanRemovalHolder2_0>
 	implements OrphanRemovable2_0
 {
 	protected Boolean specifiedOrphanRemoval;
@@ -91,13 +91,8 @@ public class GenericOrmOrphanRemoval2_0
 
 	// ********** misc **********
 
-	@Override
-	public OrphanRemovalHolder2_0 getParent() {
-		return (OrphanRemovalHolder2_0) super.getParent();
-	}
-
 	protected OrmAttributeMapping getMapping() {
-		return (OrmAttributeMapping) this.getParent();
+		return (OrmAttributeMapping) this.parent;
 	}
 
 	protected XmlAttributeMapping getXmlMapping() {

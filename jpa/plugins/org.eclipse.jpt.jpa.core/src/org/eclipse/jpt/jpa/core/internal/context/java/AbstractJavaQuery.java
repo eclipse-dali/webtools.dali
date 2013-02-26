@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
@@ -34,8 +33,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java query
  */
-public abstract class AbstractJavaQuery<A extends QueryAnnotation>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends QueryAnnotation>
+	extends AbstractJavaContextModel<P>
 	implements JavaQuery
 {
 	protected final A queryAnnotation;
@@ -45,7 +44,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	protected final ContextListContainer<JavaQueryHint, QueryHintAnnotation> hintContainer;
 
 
-	protected AbstractJavaQuery(JpaContextModel parent, A queryAnnotation) {
+	protected AbstractJavaQuery(P parent, A queryAnnotation) {
 		super(parent);
 		this.queryAnnotation = queryAnnotation;
 		this.name = queryAnnotation.getName();
@@ -190,7 +189,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.queryAnnotation.getTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
@@ -225,11 +224,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaQueryContainer getParent() {
-		return (JavaQueryContainer) super.getParent();
-	}
 
 	public A getQueryAnnotation() {
 		return this.queryAnnotation;

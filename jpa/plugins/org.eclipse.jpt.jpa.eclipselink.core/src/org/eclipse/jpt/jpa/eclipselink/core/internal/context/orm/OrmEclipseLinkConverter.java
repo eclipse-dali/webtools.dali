@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements EclipseLinkConverter, TypeRefactoringParticipant
 {
 	protected final X xmlConverter;
@@ -126,7 +126,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlConverter.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {

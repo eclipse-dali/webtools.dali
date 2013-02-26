@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * Java sequence or table generator
  */
 public abstract class AbstractJavaDbGenerator<A extends DbGeneratorAnnotation>
-	extends AbstractJavaGenerator<A>
+	extends AbstractJavaGenerator<JavaGeneratorContainer, A>
 	implements JavaDbGenerator
 {
 

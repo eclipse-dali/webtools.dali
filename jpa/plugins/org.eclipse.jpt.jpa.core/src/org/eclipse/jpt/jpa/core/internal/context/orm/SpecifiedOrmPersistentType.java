@@ -77,9 +77,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class SpecifiedOrmPersistentType
-		extends AbstractOrmManagedType
-		implements OrmPersistentType, PersistentType2_0 {
-	
+	extends AbstractOrmManagedType<EntityMappings>
+	implements OrmPersistentType, PersistentType2_0
+{
 	protected OrmTypeMapping mapping;  // never null
 
 	protected AccessType specifiedAccess;
@@ -243,7 +243,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	/**
-	 * pre-condition: {@link #javaPersistentType} is not <code>null</code>
+	 * pre-condition: {@link #getJavaPersistentType()} is not <code>null</code>
 	 */
 	protected boolean javaPersistentTypeHasSpecifiedAccess() {
 		return (this.getJavaPersistentType().getSpecifiedAccess() != null) ||

@@ -148,11 +148,6 @@ public class GenericJavaManyToOneRelationship
 
 	// ********** misc **********
 
-	@Override
-	public JavaManyToOneMapping getMapping() {
-		return this.getParent();
-	}
-
 	public boolean isOwner() {
 		return true;
 	}

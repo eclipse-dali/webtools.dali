@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 public class EclipseLinkJavaTimeOfDay
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaEclipseLinkCaching>
 	implements EclipseLinkTimeOfDay
 {
 	protected final EclipseLinkTimeOfDayAnnotation todAnnotation;
@@ -123,13 +123,8 @@ public class EclipseLinkJavaTimeOfDay
 
 	// ********** misc **********
 
-	@Override
-	public JavaEclipseLinkCaching getParent() {
-		return (JavaEclipseLinkCaching) super.getParent();
-	}
-
 	public JavaEclipseLinkCaching getCaching() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public EclipseLinkTimeOfDayAnnotation getTimeOfDayAnnotation() {

@@ -19,12 +19,12 @@ import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
  * Use this abstract class for context models that are part of an
  * <code>persistence.xml</code> file.
  */
-public abstract class AbstractPersistenceXmlContextModel
-	extends AbstractJpaContextModel
+public abstract class AbstractPersistenceXmlContextModel<P extends JpaContextModel>
+	extends AbstractJpaContextModel<P>
 {
 	// ********** constructor **********
 
-	protected AbstractPersistenceXmlContextModel(JpaContextModel parent) {
+	protected AbstractPersistenceXmlContextModel(P parent) {
 		super(parent);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,19 +14,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 
 public class NullJavaConverter
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaAttributeMapping>
 	implements JavaConverter
 {
 	public NullJavaConverter(JavaAttributeMapping parent) {
 		super(parent);
-	}
-
-	@Override
-	public JavaAttributeMapping getParent() {
-		return (JavaAttributeMapping) super.getParent();
 	}
 
 	public Class<? extends Converter> getType() {
@@ -42,6 +37,6 @@ public class NullJavaConverter
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getParent().getValidationTextRange();
+		return this.parent.getValidationTextRange();
 	}
 }

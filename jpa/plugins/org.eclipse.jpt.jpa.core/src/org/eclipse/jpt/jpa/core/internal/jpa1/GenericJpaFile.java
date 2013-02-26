@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaModel;
  * context model.
  */
 public class GenericJpaFile
-	extends AbstractJpaModel
+	extends AbstractJpaModel<JpaProject>
 	implements JpaFile
 {
 	/**
@@ -74,11 +74,6 @@ public class GenericJpaFile
 		nonUpdateAspectNames.add(ROOT_STRUCTURE_NODES_COLLECTION);
 	}
 
-	@Override
-	public JpaProject getParent() {
-		return (JpaProject) super.getParent();
-	}
-
 
 	// ********** file **********
 
@@ -110,7 +105,7 @@ public class GenericJpaFile
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		return this.getParent().getContextModelRoot().getPersistenceXml();
+		return this.parent.getContextModelRoot().getPersistenceXml();
 	}
 
 	/**

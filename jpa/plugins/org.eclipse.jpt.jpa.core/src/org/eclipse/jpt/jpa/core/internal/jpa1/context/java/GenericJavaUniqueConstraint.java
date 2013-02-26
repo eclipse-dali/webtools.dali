@@ -113,7 +113,7 @@ public class GenericJavaUniqueConstraint
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.uniqueConstraintAnnotation.getTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.parent.getValidationTextRange();
 	}
 
 	public boolean isEquivalentTo(UniqueConstraint uniqueConstraint) {

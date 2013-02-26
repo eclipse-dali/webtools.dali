@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 
 public class OrmEclipseLinkChangeTracking
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<EclipseLinkOrmTypeMapping>
 	implements EclipseLinkChangeTracking
 {
 	protected EclipseLinkChangeTrackingType specifiedType;
@@ -131,13 +131,8 @@ public class OrmEclipseLinkChangeTracking
 
 	// ********** misc **********
 
-	@Override
-	public EclipseLinkOrmTypeMapping getParent() {
-		return (EclipseLinkOrmTypeMapping) super.getParent();
-	}
-
 	protected EclipseLinkOrmTypeMapping getTypeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected XmlTypeMapping getXmlTypeMapping() {

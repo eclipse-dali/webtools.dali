@@ -42,7 +42,7 @@ public abstract class AbstractOrmOverrideContainer<
 			V extends OrmVirtualOverride,
 			X extends XmlOverride
 		>
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements OrmOverrideContainer
 {
 	// this can be null if the container is "read-only" (i.e. a "null" container)

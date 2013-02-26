@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmDerivedIdentity2_0
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmSingleRelationshipMapping2_0>
 	implements OrmDerivedIdentity2_0
 {
 	protected DerivedIdentityStrategy2_0 strategy;
@@ -140,13 +140,8 @@ public class GenericOrmDerivedIdentity2_0
 
 	// ********** misc **********
 
-	@Override
-	public OrmSingleRelationshipMapping2_0 getParent() {
-		return (OrmSingleRelationshipMapping2_0) super.getParent();
-	}
-
 	public OrmSingleRelationshipMapping2_0 getMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public void initializeFrom(OrmDerivedIdentity2_0 oldDerivedIdentity) {

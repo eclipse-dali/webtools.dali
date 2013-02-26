@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class NullOrmJoinTableRelationshipStrategy
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmJoinTableRelationship>
 	implements MappingRelationshipStrategy2_0, OrmJoinTableRelationshipStrategy
 {
 	public NullOrmJoinTableRelationshipStrategy(OrmJoinTableRelationship parent) {
@@ -70,13 +70,8 @@ public class NullOrmJoinTableRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public OrmJoinTableRelationship getParent() {
-		return (OrmJoinTableRelationship) super.getParent();
-	}
-
 	public OrmJoinTableRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public void initializeFrom(ReadOnlyJoinTableRelationshipStrategy oldStrategy) {

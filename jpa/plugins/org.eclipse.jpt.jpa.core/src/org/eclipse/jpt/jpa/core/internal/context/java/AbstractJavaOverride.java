@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,8 +30,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified Java override
  */
-public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A extends OverrideAnnotation>
-	extends AbstractJavaJpaContextModel
+public abstract class AbstractJavaOverride<P extends JavaOverrideContainer, A extends OverrideAnnotation>
+	extends AbstractJavaContextModel<P>
 	implements JavaOverride
 {
 	protected final A overrideAnnotation;
@@ -39,7 +39,7 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	protected String name;
 
 
-	protected AbstractJavaOverride(C parent, A overrideAnnotation) {
+	protected AbstractJavaOverride(P parent, A overrideAnnotation) {
 		super(parent);
 		this.overrideAnnotation = overrideAnnotation;
 		this.name = this.buildName();
@@ -119,14 +119,8 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 
 	// ********** misc **********
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public C getParent() {
-		return (C) super.getParent();
-	}
-
-	protected C getContainer() {
-		return this.getParent();
+	protected P getContainer() {
+		return this.parent;
 	}
 
 	protected JavaOverrideContainer2_0 getContainer2_0() {

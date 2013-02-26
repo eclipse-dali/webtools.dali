@@ -27,10 +27,10 @@ import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
  * Do not use this for a pure {@link org.eclipse.jpt.jpa.core.context.MappingFile}
  * implementation.
  */
-public abstract class AbstractOrmXmlContextModel
-	extends AbstractJpaContextModel
+public abstract class AbstractOrmXmlContextModel<P extends JpaContextModel>
+	extends AbstractJpaContextModel<P>
 {
-	protected AbstractOrmXmlContextModel(JpaContextModel parent) {
+	protected AbstractOrmXmlContextModel(P parent) {
 		super(parent);
 	}
 

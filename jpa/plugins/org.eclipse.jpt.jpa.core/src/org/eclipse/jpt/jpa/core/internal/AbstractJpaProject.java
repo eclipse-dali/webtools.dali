@@ -75,6 +75,7 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFile;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -124,7 +125,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * The data source is an adapter to the DTP meta-data model.
  */
 public abstract class AbstractJpaProject
-	extends AbstractJpaModel
+	extends AbstractJpaModel<JpaModel>
 	implements JpaProject2_1
 {
 	/**

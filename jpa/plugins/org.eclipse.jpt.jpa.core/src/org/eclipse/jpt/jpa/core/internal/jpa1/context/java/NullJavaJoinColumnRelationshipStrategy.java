@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.db.Table;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * in a JPA 1.0 project.
  */
 public class NullJavaJoinColumnRelationshipStrategy
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaJoinColumnRelationship>
 	implements MappingRelationshipStrategy2_0, JavaJoinColumnRelationshipStrategy
 {
 	public NullJavaJoinColumnRelationshipStrategy(JavaJoinColumnRelationship parent) {
@@ -105,13 +105,8 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	// ********** misc **********
 
-	@Override
-	public JavaJoinColumnRelationship getParent() {
-		return (JavaJoinColumnRelationship) super.getParent();
-	}
-
 	public JavaJoinColumnRelationship getRelationship() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {

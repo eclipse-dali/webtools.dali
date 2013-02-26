@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * both are ignored.
  */
 public class GenericOrmOrderable
-	extends AbstractOrmXmlContextModel
+	extends AbstractOrmXmlContextModel<OrmAttributeMapping>
 	implements OrmOrderable2_0
 {
 	protected String specifiedOrderBy;
@@ -369,13 +369,8 @@ public class GenericOrmOrderable
 
 	// ********** misc **********
 
-	@Override
-	public OrmAttributeMapping getParent() {
-		return (OrmAttributeMapping) super.getParent();
-	}
-
 	protected OrmAttributeMapping getAttributeMapping() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	protected OrmPersistentAttribute getPersistentAttribute() {

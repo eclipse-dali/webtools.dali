@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ public class GenericJavaJoinColumn
 	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, ReadOnlyJoinColumn.Owner>
 	implements JavaJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ CompleteJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
@@ -42,17 +42,17 @@ public class GenericJavaJoinColumn
 	}
 
 	@Override
-	protected void initialize(CompleteJoinColumnAnnotation columnAnnotation) {
-		super.initialize(columnAnnotation);
-		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName(columnAnnotation);
+	protected void initialize(CompleteJoinColumnAnnotation colAnnotation) {
+		super.initialize(colAnnotation);
+		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName(colAnnotation);
 	}
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel(CompleteJoinColumnAnnotation columnAnnotation) {
-		super.synchronizeWithResourceModel(columnAnnotation);
-		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName(columnAnnotation));
+	public void synchronizeWithResourceModel(CompleteJoinColumnAnnotation colAnnotation) {
+		super.synchronizeWithResourceModel(colAnnotation);
+		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName(colAnnotation));
 	}
 
 	@Override
@@ -104,8 +104,8 @@ public class GenericJavaJoinColumn
 		this.firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, old, name);
 	}
 
-	protected String buildSpecifiedReferencedColumnName(CompleteJoinColumnAnnotation columnAnnotation) {
-		return columnAnnotation.getReferencedColumnName();
+	protected String buildSpecifiedReferencedColumnName(CompleteJoinColumnAnnotation colAnnotation) {
+		return colAnnotation.getReferencedColumnName();
 	}
 
 	public String getDefaultReferencedColumnName() {

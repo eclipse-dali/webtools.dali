@@ -38,10 +38,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <code>orm.xml</code> secondary table
  */
 public class GenericOrmSecondaryTable
-	extends AbstractOrmTable<XmlSecondaryTable>
+	extends AbstractOrmTable<OrmEntity, XmlSecondaryTable>
 	implements OrmSecondaryTable
 {
-	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.XmlContextNode, org.eclipse.jpt.jpa.core.context.Table.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
+	/** @see AbstractOrmTable#AbstractOrmTable(org.eclipse.jpt.jpa.core.context.JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyTable.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable) */
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;
 
 	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
@@ -273,13 +273,8 @@ public class GenericOrmSecondaryTable
 
 	// ********** misc **********
 
-	@Override
-	public OrmEntity getParent() {
-		return (OrmEntity) super.getParent();
-	}
-
 	protected OrmEntity getEntity() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public boolean isVirtual() {

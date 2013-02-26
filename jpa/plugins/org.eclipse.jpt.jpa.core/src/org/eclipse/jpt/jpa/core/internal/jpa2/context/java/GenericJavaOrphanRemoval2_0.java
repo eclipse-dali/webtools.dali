@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0Annotation;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0A
  * Java orphan removal
  */
 public class GenericJavaOrphanRemoval2_0
-		extends AbstractJavaJpaContextModel
+		extends AbstractJavaContextModel<OrphanRemovalHolder2_0>
 		implements OrphanRemovable2_0
 {
 	protected Boolean specifiedOrphanRemoval;
@@ -93,13 +93,8 @@ public class GenericJavaOrphanRemoval2_0
 
 	// ********** misc **********
 
-	@Override
-	public OrphanRemovalHolder2_0 getParent() {
-		return (OrphanRemovalHolder2_0) super.getParent();
-	}
-
 	protected JavaAttributeMapping getMapping() {
-		return (JavaAttributeMapping) this.getParent();
+		return (JavaAttributeMapping) this.parent;
 	}
 
 	protected OwningRelationshipMapping2_0Annotation getMappingAnnotation() {

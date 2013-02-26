@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2_1.ParameterMode2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.StoredProcedureParameter2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1Annotation;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameter2_1
  * Java stored procedure parameter
  */
 public class GenericJavaStoredProcedureParameter2_1
-	extends AbstractJavaJpaContextModel
+	extends AbstractJavaContextModel<JavaNamedStoredProcedureQuery2_1>
 	implements JavaStoredProcedureParameter2_1
 {
 	protected final StoredProcedureParameter2_1Annotation parameterAnnotation;
@@ -170,17 +170,11 @@ public class GenericJavaStoredProcedureParameter2_1
 
 	// ********** misc **********
 
-	@Override
-	public JavaNamedStoredProcedureQuery2_1 getParent() {
-		return (JavaNamedStoredProcedureQuery2_1) super.getParent();
-	}
-
 	protected JavaNamedStoredProcedureQuery2_1 getQuery() {
-		return this.getParent();
+		return this.parent;
 	}
 
 	public StoredProcedureParameter2_1Annotation getStoredProcedureParameter2_1Annotation() {
 		return this.parameterAnnotation;
 	}
-
 }
