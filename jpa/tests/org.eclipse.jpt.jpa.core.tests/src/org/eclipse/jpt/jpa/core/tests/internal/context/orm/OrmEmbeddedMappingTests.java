@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
@@ -340,7 +340,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(3, embeddedResource.getAttributeOverrides().size());		
 		
 		attributeOverrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -377,7 +377,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		embeddedResource.getAttributeOverrides().get(1).setName("BAR");
 		embeddedResource.getAttributeOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());

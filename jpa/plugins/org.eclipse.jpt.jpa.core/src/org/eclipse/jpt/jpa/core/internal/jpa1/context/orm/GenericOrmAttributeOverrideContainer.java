@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -26,7 +26,7 @@ public class GenericOrmAttributeOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAttributeOverrideContainer.Owner,
 			ReadOnlyAttributeOverride,
-			OrmAttributeOverride,
+			OrmSpecifiedAttributeOverride,
 			OrmVirtualAttributeOverride,
 			XmlAttributeOverride
 		>
@@ -53,18 +53,18 @@ public class GenericOrmAttributeOverrideContainer
 	}
 
 	@Override
-	protected OrmAttributeOverride buildSpecifiedOverride(XmlAttributeOverride xmlOverride) {
+	protected OrmSpecifiedAttributeOverride buildSpecifiedOverride(XmlAttributeOverride xmlOverride) {
 		return this.getContextModelFactory().buildOrmAttributeOverride(this, xmlOverride);
 	}
 
 	public void initializeFrom(OrmAttributeOverrideContainer oldContainer) {
-		for (OrmAttributeOverride oldOverride : oldContainer.getSpecifiedOverrides()) {
+		for (OrmSpecifiedAttributeOverride oldOverride : oldContainer.getSpecifiedOverrides()) {
 			this.addSpecifiedOverride().initializeFrom(oldOverride);
 		}
 	}
 
 	@Override
-	protected void initializeSpecifiedOverride(OrmAttributeOverride specifiedOverride, OrmVirtualAttributeOverride virtualOverride) {
+	protected void initializeSpecifiedOverride(OrmSpecifiedAttributeOverride specifiedOverride, OrmVirtualAttributeOverride virtualOverride) {
 		specifiedOverride.initializeFromVirtual(virtualOverride);
 	}
 

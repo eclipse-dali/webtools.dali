@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -662,7 +662,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		OrmEntity entity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		
-		ListIterator<OrmAttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
@@ -932,7 +932,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("foo", entityResource.getAttributeOverrides().get(1).getName());
 		assertEquals(2, entityResource.getAttributeOverrides().size());
 		
-		Iterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		Iterator<OrmSpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());		
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
@@ -972,7 +972,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
@@ -1008,7 +1008,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		entityResource.getAttributeOverrides().add(2, OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(2).setName("BAZ");
 			
-		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
@@ -1616,7 +1616,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		//set an attribute override on Address.zipCode embedded mapping
 		addressPersistentType.getAttributeNamed("zipCode").addToXml();
-		OrmAttributeOverride specifiedAttributeOverride = ((OrmVirtualAttributeOverride) ((OrmEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
+		OrmSpecifiedAttributeOverride specifiedAttributeOverride = ((OrmVirtualAttributeOverride) ((OrmEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");
@@ -1724,7 +1724,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		//set an attribute override on Address.zipCode embedded mapping
 		addressPersistentType.getAttributeNamed("zipCode").addToXml();
-		OrmAttributeOverride specifiedAttributeOverride = ((OrmVirtualAttributeOverride) ((OrmEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
+		OrmSpecifiedAttributeOverride specifiedAttributeOverride = ((OrmVirtualAttributeOverride) ((OrmEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");

@@ -34,12 +34,12 @@ public interface OrmAttributeOverrideContainer
 	void initializeFrom(OrmAttributeOverrideContainer oldContainer);
 
 	// covariant overrides
-	ListIterable<OrmAttributeOverride> getSpecifiedOverrides();
-	OrmAttributeOverride getSpecifiedOverride(int index);
-	OrmAttributeOverride getSpecifiedOverrideNamed(String name);
+	ListIterable<OrmSpecifiedAttributeOverride> getSpecifiedOverrides();
+	OrmSpecifiedAttributeOverride getSpecifiedOverride(int index);
+	OrmSpecifiedAttributeOverride getSpecifiedOverrideNamed(String name);
 	ListIterable<OrmVirtualAttributeOverride> getVirtualOverrides();
 	OrmVirtualAttributeOverride convertOverrideToVirtual(SpecifiedOverride specifiedOverride);
-	OrmAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+	OrmSpecifiedAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 
 	// ********** owner **********

@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -43,8 +43,8 @@ public class GenericOrmVirtualAttributeOverride
 	}
 
 	@Override
-	public OrmAttributeOverride convertToSpecified() {
-		return (OrmAttributeOverride) super.convertToSpecified();
+	public OrmSpecifiedAttributeOverride convertToSpecified() {
+		return (OrmSpecifiedAttributeOverride) super.convertToSpecified();
 	}
 
 

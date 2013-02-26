@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -46,7 +46,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
-		OrmAttributeOverride ormAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		OrmSpecifiedAttributeOverride ormAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
@@ -80,7 +80,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
-		OrmAttributeOverride ormAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		OrmSpecifiedAttributeOverride ormAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());

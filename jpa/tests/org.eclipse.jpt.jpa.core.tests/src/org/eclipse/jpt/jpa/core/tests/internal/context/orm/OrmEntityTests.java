@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
@@ -1591,7 +1591,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -1626,7 +1626,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getAttributeOverrides().get(1).setName("BAR");
 		entityResource.getAttributeOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
@@ -1846,7 +1846,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		OrmAttributeOverride attributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
+		OrmSpecifiedAttributeOverride attributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals("foo", attributeOverride.getColumn().getDefaultName());
 		assertEquals(CHILD_TYPE_NAME, attributeOverride.getColumn().getDefaultTableName());
 		

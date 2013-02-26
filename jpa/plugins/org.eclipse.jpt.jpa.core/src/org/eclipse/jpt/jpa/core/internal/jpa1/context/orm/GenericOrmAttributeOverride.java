@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmAttributeOverride
 	extends AbstractOrmOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
-	implements OrmAttributeOverride, OrmColumn.Owner
+	implements OrmSpecifiedAttributeOverride, OrmColumn.Owner
 {
 	protected final OrmColumn column;
 

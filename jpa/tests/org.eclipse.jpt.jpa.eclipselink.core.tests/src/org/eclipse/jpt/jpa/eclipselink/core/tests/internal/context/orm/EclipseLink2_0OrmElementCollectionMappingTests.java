@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -1168,7 +1168,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(3, elementCollectionResource.getAttributeOverrides().size());		
 		
 		attributeOverrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -1206,7 +1206,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		elementCollectionResource.getAttributeOverrides().get(1).setName("BAR");
 		elementCollectionResource.getAttributeOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<OrmSpecifiedAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());

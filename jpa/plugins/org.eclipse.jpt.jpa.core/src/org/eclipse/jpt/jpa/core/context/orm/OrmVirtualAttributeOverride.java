@@ -24,5 +24,5 @@ public interface OrmVirtualAttributeOverride
 	extends VirtualAttributeOverride,
 			OrmVirtualOverride
 {
-	OrmAttributeOverride convertToSpecified();
+	OrmSpecifiedAttributeOverride convertToSpecified();
 }
