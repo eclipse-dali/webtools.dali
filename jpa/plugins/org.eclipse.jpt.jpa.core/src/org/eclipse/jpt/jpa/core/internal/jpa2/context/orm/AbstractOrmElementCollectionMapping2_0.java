@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
@@ -1842,7 +1842,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getCollectionTable();
 		}
 
-		protected PersistentAttribute getPersistentAttribute() {
+		protected ModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 
@@ -2043,7 +2043,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getName();
 		}
 
-		protected PersistentAttribute getPersistentAttribute() {
+		protected ModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 

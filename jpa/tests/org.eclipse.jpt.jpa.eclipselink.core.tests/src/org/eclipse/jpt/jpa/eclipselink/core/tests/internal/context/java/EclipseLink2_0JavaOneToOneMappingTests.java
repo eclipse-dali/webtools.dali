@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -426,7 +426,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = (getJavaPersistentType()).getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = (getJavaPersistentType()).getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -467,7 +467,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = (getJavaPersistentType()).getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = (getJavaPersistentType()).getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -508,7 +508,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		assertEquals(false, this.getOrphanRemovalOf(oneToOneMapping).isDefaultOrphanRemoval());
 	}
@@ -517,7 +517,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		assertEquals(false, this.getOrphanRemovalOf(oneToOneMapping).isDefaultOrphanRemoval());
 	}
@@ -526,7 +526,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 
@@ -540,7 +540,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 
@@ -559,7 +559,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntityWithValidOneToOneMappingOrphanRemovalSpecified();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(Boolean.FALSE, this.getOrphanRemovalOf(oneToOneMapping).getSpecifiedOrphanRemoval());
@@ -569,7 +569,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
@@ -590,7 +590,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
@@ -615,7 +615,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 
@@ -648,7 +648,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(JPA.ONE_TO_ONE);
-		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		OneToOneRelationship2_0 rel = (OneToOneRelationship2_0) mapping.getRelationship();
 		
@@ -709,7 +709,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOneAnnotation annotation = (OneToOneAnnotation) resourceField.getAnnotation(JPA.ONE_TO_ONE);
-		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		OneToOneRelationship2_0 rel = (OneToOneRelationship2_0) mapping.getRelationship();
 		

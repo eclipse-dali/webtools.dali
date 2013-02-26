@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -78,7 +78,7 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getRelationshipMapping().validatesAgainstDatabase();
 	}
 
-	protected PersistentAttribute getPersistentAttribute() {
+	protected ModifiablePersistentAttribute getPersistentAttribute() {
 		return this.getRelationshipMapping().getPersistentAttribute();
 	}
 

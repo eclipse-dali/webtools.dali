@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
@@ -407,7 +407,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -431,7 +431,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -453,7 +453,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -477,7 +477,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -501,7 +501,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -525,7 +525,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -549,7 +549,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -573,7 +573,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -597,7 +597,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -621,7 +621,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -646,7 +646,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -673,7 +673,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -699,7 +699,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestTargetEmbeddableAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		//targetEntity not in the persistence unit, default still set, handled by validation
@@ -729,7 +729,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(elementCollectionMapping.getDefaultTargetClass());
@@ -741,7 +741,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
@@ -753,7 +753,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(elementCollectionMapping.getDefaultTargetClass());
@@ -765,7 +765,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
@@ -776,7 +776,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestTargetEmbeddableAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getTargetClass());
@@ -796,7 +796,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithGenericEmbeddableElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		//target embeddable not in the persistence unit
@@ -828,7 +828,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithGenericBasicElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		//target is a basic type, so resolved target embeddable is null
@@ -839,7 +839,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -871,7 +871,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -901,7 +901,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestTargetEmbeddableAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.EMBEDDABLE_TYPE, elementCollectionMapping.getValueType());
@@ -912,7 +912,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestTargetEmbeddableAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.NO_TYPE, elementCollectionMapping.getValueType());
@@ -926,7 +926,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestTargetEmbeddableAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.BASIC_TYPE, elementCollectionMapping.getValueType());
@@ -936,7 +936,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -975,7 +975,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -1007,7 +1007,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping2_0 = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		Iterator<String> mapKeyNames = 
@@ -1028,7 +1028,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping2_0 = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		Iterator<String> mapKeyNames = elementCollectionMapping2_0.getCandidateMapKeyNames().iterator();
@@ -1052,7 +1052,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -1093,7 +1093,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -1120,7 +1120,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEmbeddableState();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals("java.lang.Integer", elementCollectionMapping.getDefaultMapKeyClass());
@@ -1134,7 +1134,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithGenericBasicElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(elementCollectionMapping.getDefaultMapKeyClass());
@@ -1144,7 +1144,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithValidGenericMapElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals("java.lang.Integer", elementCollectionMapping.getMapKeyClass());
@@ -1160,7 +1160,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithGenericEmbeddableElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		Orderable2_0 orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
@@ -1184,7 +1184,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		assertNull(elementCollectionMapping.getValueColumn().getSpecifiedName());
@@ -1623,7 +1623,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithValidGenericMapElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		
 		assertNull(elementCollectionMapping.getMapKeyColumn().getSpecifiedName());
@@ -2196,7 +2196,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithValidGenericMapElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
 		
@@ -2224,7 +2224,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithValidGenericMapElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
@@ -2250,7 +2250,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithValidGenericMapElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
 		
@@ -2274,7 +2274,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithValidGenericMapElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
@@ -2300,7 +2300,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		ListIterator<? extends JoinColumn> specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
@@ -2369,7 +2369,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(0, elementCollectionMapping.getSpecifiedMapKeyJoinColumnsSize());
@@ -2387,7 +2387,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals(1, elementCollectionMapping.getMapKeyJoinColumnsSize());
@@ -2407,7 +2407,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -2429,7 +2429,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -2451,7 +2451,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -2498,7 +2498,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -2540,7 +2540,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -2597,7 +2597,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertTrue(elementCollectionMapping.getDefaultMapKeyJoinColumn().isVirtual());

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
  * @since 2.0
  */
 public interface OrmPersistentAttribute
-	extends PersistentAttribute, OrmReadOnlyPersistentAttribute, TypeRefactoringParticipant
+	extends ModifiablePersistentAttribute, OrmReadOnlyPersistentAttribute, TypeRefactoringParticipant
 {
 	/**
 	 * Return an <code>orm.xml</code> mapping since the attribute is

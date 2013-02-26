@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
@@ -335,7 +335,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
-		PersistentAttribute attribute = this.getPersistentAttribute();
+		ModifiablePersistentAttribute attribute = this.getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
 				JptJpaCoreValidationArgumentMessages.VIRTUAL_ATTRIBUTE_DESC :
 				JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC;

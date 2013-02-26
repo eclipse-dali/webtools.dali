@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
@@ -90,7 +90,7 @@ public class PropertyAccessor
 		return this.getJpaFactory().buildJavaPersistentProperty(type, getterMethod, setterMethod);
 	}
 
-	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute) {
+	public JptValidator buildAttributeValidator(ModifiablePersistentAttribute persistentAttribute) {
 		return new PersistentPropertyValidator(persistentAttribute, this);
 	}
 

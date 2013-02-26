@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationship;
@@ -234,7 +234,7 @@ public class GenericJavaMappedByRelationshipStrategy
 	}
 
 	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
-		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
+		ModifiablePersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
 				JptJpaCoreValidationArgumentMessages.VIRTUAL_ATTRIBUTE_DESC :
 				JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC;

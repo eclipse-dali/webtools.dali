@@ -89,7 +89,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -616,7 +616,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			lsnr = lsnrRef.get();
 		if (lsnr == null) {
 			lsnr = new AttributePropertyChangeListener();
-			jpa.addPropertyChangeListener(PersistentAttribute.MAPPING_PROPERTY, lsnr);
+			jpa.addPropertyChangeListener(ModifiablePersistentAttribute.MAPPING_PROPERTY, lsnr);
 			lsnrRef = new WeakReference<AttributePropertyChangeListener>(lsnr);
 			attributeToPropListener.put(jpa, lsnrRef);
 		}				
@@ -756,7 +756,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (lsnr != null) {
 			attributeToPropListener.remove(jpa);
 			try {
-				jpa.removePropertyChangeListener(PersistentAttribute.MAPPING_PROPERTY, lsnr);				
+				jpa.removePropertyChangeListener(ModifiablePersistentAttribute.MAPPING_PROPERTY, lsnr);				
 			} catch (IllegalArgumentException e) {
 				//$NON-NLS-1$
 			}		
@@ -890,7 +890,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			PropertyChangeListener lsn = ref.get();
 			if (lsn != null) 
 				try {
-					jpa.removePropertyChangeListener(PersistentAttribute.MAPPING_PROPERTY, lsn);
+					jpa.removePropertyChangeListener(ModifiablePersistentAttribute.MAPPING_PROPERTY, lsn);
 				} catch (IllegalArgumentException e) {
 					//$NON-NLS-1$
 				}
@@ -1199,7 +1199,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			};
 			Display.getDefault().asyncExec(runnable);
 			String propName = event.getPropertyName();
-			if (propName.equals(PersistentAttribute.MAPPING_PROPERTY)) {
+			if (propName.equals(ModifiablePersistentAttribute.MAPPING_PROPERTY)) {
 				renewAttributeMappingPropListener((JavaPersistentAttribute) source);
 			}
 		}

@@ -34,7 +34,7 @@ public interface AttributeMapping
 	 * Return the mapping's attribute (typically its parent node in the
 	 * containment hierarchy).
 	 */
-	PersistentAttribute getPersistentAttribute();
+	ModifiablePersistentAttribute getPersistentAttribute();
 
 	/**
 	 * Return the mapping's name, which corresponds to the name of the

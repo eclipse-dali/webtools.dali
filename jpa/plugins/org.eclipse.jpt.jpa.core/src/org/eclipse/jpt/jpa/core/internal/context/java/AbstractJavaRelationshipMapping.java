@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -269,11 +269,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 	
 	protected String getTargetEntityIdAttributeName() {
-		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
+		ModifiablePersistentAttribute attribute = this.getTargetEntityIdAttribute();
 		return (attribute == null) ? null : attribute.getName();
 	}
 
-	protected PersistentAttribute getTargetEntityIdAttribute() {
+	protected ModifiablePersistentAttribute getTargetEntityIdAttribute() {
 		Entity entity = this.getResolvedTargetEntity();
 		return (entity == null) ? null : entity.getIdAttribute();
 	}

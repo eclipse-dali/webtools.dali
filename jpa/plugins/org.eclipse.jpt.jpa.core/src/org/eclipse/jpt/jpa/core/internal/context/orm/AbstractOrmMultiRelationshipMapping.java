@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -1252,7 +1252,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getName();
 		}
 
-		protected PersistentAttribute getPersistentAttribute() {
+		protected ModifiablePersistentAttribute getPersistentAttribute() {
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 

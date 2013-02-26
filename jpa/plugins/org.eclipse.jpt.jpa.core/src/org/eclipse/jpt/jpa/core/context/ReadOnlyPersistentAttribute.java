@@ -67,7 +67,7 @@ public interface ReadOnlyPersistentAttribute
 	/**
 	 * Return the attribute's mapping. This is never <code>null</code>
 	 * (although, it may be a <em>null</em> mapping).
-	 * Set the mapping via {@link PersistentAttribute#setMappingKey(String)}.
+	 * Set the mapping via {@link ModifiablePersistentAttribute#setMappingKey(String)}.
 	 */
 	AttributeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$

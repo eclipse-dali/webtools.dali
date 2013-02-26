@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 
 /**
  * JPA 2.0
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
  * @since 2.3
  */
 public interface PersistentAttribute2_0
-	extends PersistentAttribute, ReadOnlyPersistentAttribute2_0
+	extends ModifiablePersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
 	// combine various interfaces
 }

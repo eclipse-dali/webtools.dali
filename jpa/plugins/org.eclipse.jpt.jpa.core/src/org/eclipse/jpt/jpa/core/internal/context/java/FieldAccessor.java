@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
@@ -59,7 +59,7 @@ public class FieldAccessor
 		return this.resourceField.isFinal();
 	}
 
-	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute) {
+	public JptValidator buildAttributeValidator(ModifiablePersistentAttribute persistentAttribute) {
 		return new PersistentFieldValidator(persistentAttribute, this);
 	}
 

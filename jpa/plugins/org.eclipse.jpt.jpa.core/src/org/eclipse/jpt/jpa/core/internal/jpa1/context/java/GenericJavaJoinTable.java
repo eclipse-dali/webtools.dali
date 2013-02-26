@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -274,7 +274,7 @@ public class GenericJavaJoinTable
 		return this.getRelationshipStrategy().getRelationship().getMapping();
 	}
 
-	public PersistentAttribute getPersistentAttribute() {
+	public ModifiablePersistentAttribute getPersistentAttribute() {
 		return this.getRelationshipMapping().getPersistentAttribute();
 	}
 

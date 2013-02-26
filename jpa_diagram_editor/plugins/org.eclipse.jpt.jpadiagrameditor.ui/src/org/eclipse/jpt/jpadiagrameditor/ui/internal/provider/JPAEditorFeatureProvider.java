@@ -71,7 +71,7 @@ import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -297,7 +297,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
         	 return new AddRelationFeature(this);
         } else if (newObj instanceof HasReferanceRelation) {
         	return new AddHasReferenceRelationFeature(this);
-        } else if (newObj instanceof PersistentAttribute) { 
+        } else if (newObj instanceof ModifiablePersistentAttribute) { 
         	if (Diagram.class.isInstance(context.getTargetContainer())) {     			
         		return null;
         	}

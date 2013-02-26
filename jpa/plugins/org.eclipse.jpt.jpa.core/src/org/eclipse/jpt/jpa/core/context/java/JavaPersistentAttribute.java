@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
  * @since 2.0
  */
 public interface JavaPersistentAttribute
-	extends PersistentAttribute, JavaElementReference
+	extends ModifiablePersistentAttribute, JavaElementReference
 {
 	// ********** covariant overrides **********
 

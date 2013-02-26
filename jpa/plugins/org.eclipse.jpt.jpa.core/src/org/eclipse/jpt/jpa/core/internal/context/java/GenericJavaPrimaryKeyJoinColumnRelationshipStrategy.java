@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -286,7 +286,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 			return this.getRelationshipMapping().getName();
 		}
 
-		protected PersistentAttribute getPersistentAttribute() {
+		protected ModifiablePersistentAttribute getPersistentAttribute() {
 			return this.getRelationshipMapping().getPersistentAttribute();
 		}
 

@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -58,7 +58,7 @@ public class GenericJavaCollectionTable2_0
 
 	// ********** misc **********
 
-	public PersistentAttribute getPersistentAttribute() {
+	public ModifiablePersistentAttribute getPersistentAttribute() {
 		return this.getElementCollectionMapping().getPersistentAttribute();
 	}
 
@@ -146,7 +146,7 @@ public class GenericJavaCollectionTable2_0
 			//return GenericJavaCollectionTable2_0.this.getParent().getName();
 		}
 
-		protected PersistentAttribute getPersistentAttribute() {
+		protected ModifiablePersistentAttribute getPersistentAttribute() {
 			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getPersistentAttribute();
 		}
 

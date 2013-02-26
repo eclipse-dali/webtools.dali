@@ -27,7 +27,7 @@ public interface ReadOnlyReferenceTable
 	extends ReadOnlyTable
 {
 	// TODO is this method necessary?
-	PersistentAttribute getPersistentAttribute();
+	ModifiablePersistentAttribute getPersistentAttribute();
 	
 
 	// ********** join columns **********

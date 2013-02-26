@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
@@ -59,7 +59,7 @@ public class GenericJavaCascade2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOne2_0Annotation annotation = (OneToOne2_0Annotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		Cascade2_0 cascade = (Cascade2_0) mapping.getCascade();
 		
@@ -87,7 +87,7 @@ public class GenericJavaCascade2_0Tests
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		OneToOne2_0Annotation annotation = (OneToOne2_0Annotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
 		Cascade2_0 cascade = (Cascade2_0) mapping.getCascade();
 		

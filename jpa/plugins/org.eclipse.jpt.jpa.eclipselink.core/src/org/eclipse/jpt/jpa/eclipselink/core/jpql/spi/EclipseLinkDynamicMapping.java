@@ -16,7 +16,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 import java.lang.annotation.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaTypeDeclaration;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaTypeRepository;
@@ -147,9 +147,9 @@ public class EclipseLinkDynamicMapping implements IMapping {
 	/**
 	 * Returns the mapping's attribute (typically its parent node in the containment hierarchy).
 	 *
-	 * @return The {@link PersistentAttribute}
+	 * @return The {@link ModifiablePersistentAttribute}
 	 */
-	public PersistentAttribute getAttribute() {
+	public ModifiablePersistentAttribute getAttribute() {
 		return delegate.getMapping().getPersistentAttribute();
 	}
 

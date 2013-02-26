@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -74,7 +74,7 @@ public class PersistentAttributeMapAsComposite
 		}
 		
 		public void morphMapping(MappingUiDefinition definition) {
-			((PersistentAttribute) getSubject()).setMappingKey(definition.getKey());
+			((ModifiablePersistentAttribute) getSubject()).setMappingKey(definition.getKey());
 		}
 		
 		public String getName() {

@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
@@ -124,7 +124,7 @@ public abstract class JpaMapping implements IMapping {
 
 	protected IType buildType(boolean resolveRelationshipType) {
 
-		PersistentAttribute property = mapping.getPersistentAttribute();
+		ModifiablePersistentAttribute property = mapping.getPersistentAttribute();
 		String typeName = property.getTypeName();
 
 		// The attribute could be virtual, incorrectly specified in the orm.xml
@@ -158,7 +158,7 @@ public abstract class JpaMapping implements IMapping {
 
 	protected ITypeDeclaration buildTypeDeclaration() {
 
-		PersistentAttribute property = mapping.getPersistentAttribute();
+		ModifiablePersistentAttribute property = mapping.getPersistentAttribute();
 		String typeName = property.getTypeName();
 
 		// The attribute could be virtual, incorrectly specified in the orm.xml

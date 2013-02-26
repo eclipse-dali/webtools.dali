@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
@@ -119,7 +119,7 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getRelationshipMapping().getName();
 		}
 
-		protected PersistentAttribute getPersistentAttribute() {
+		protected ModifiablePersistentAttribute getPersistentAttribute() {
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getRelationshipMapping().getPersistentAttribute();
 		}
 

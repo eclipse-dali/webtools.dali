@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -479,7 +479,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 
 		
 		//remove @Id annotation
-		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
 		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(defaultPkJoinColumn.getDefaultName());
@@ -493,7 +493,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 		
 		//remove @Id annotation
-		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
 		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(defaultPkJoinColumn.getDefaultReferencedColumnName());

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -98,12 +98,12 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		createTestEntitySpecifiedAccessField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute namePersistentAttribute = getJavaPersistentType().getAttributeNamed("name");
+		ModifiablePersistentAttribute namePersistentAttribute = getJavaPersistentType().getAttributeNamed("name");
 		assertEquals(AccessType.FIELD, namePersistentAttribute.getAccess());
 		assertEquals(AccessType.FIELD, namePersistentAttribute.getDefaultAccess());
 		assertEquals(null, namePersistentAttribute.getSpecifiedAccess());
 		
-		PersistentAttribute idPersistentAttribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute idPersistentAttribute = getJavaPersistentType().getAttributeNamed("id");
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, idPersistentAttribute.getMappingKey());
 		assertEquals(AccessType.PROPERTY, idPersistentAttribute.getAccess());
 		assertEquals(AccessType.PROPERTY, idPersistentAttribute.getDefaultAccess());
@@ -114,12 +114,12 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		createTestEntitySpecifiedAccessProperty();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute namePersistentAttribute = getJavaPersistentType().getAttributeNamed("name");
+		ModifiablePersistentAttribute namePersistentAttribute = getJavaPersistentType().getAttributeNamed("name");
 		assertEquals(AccessType.FIELD, namePersistentAttribute.getAccess());
 		assertEquals(AccessType.FIELD, namePersistentAttribute.getDefaultAccess());
 		assertEquals(AccessType.FIELD, namePersistentAttribute.getSpecifiedAccess());
 		
-		PersistentAttribute idPersistentAttribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute idPersistentAttribute = getJavaPersistentType().getAttributeNamed("id");
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, idPersistentAttribute.getMappingKey());
 		assertEquals(AccessType.PROPERTY, idPersistentAttribute.getAccess());
 		assertEquals(AccessType.PROPERTY, idPersistentAttribute.getDefaultAccess());

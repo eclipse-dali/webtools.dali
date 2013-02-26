@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -773,7 +773,7 @@ public class GenericJavaPersistentType2_0Tests extends Generic2_0ContextModelTes
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("id");
 		
 		assertEquals("id", attribute.getName());
 		assertNull(getJavaPersistentType().getAttributeNamed("name"));
@@ -784,7 +784,7 @@ public class GenericJavaPersistentType2_0Tests extends Generic2_0ContextModelTes
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		PersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("name");
+		ModifiablePersistentAttribute attribute = getJavaPersistentType().getAttributeNamed("name");
 		
 		assertEquals("name", attribute.getName());
 		

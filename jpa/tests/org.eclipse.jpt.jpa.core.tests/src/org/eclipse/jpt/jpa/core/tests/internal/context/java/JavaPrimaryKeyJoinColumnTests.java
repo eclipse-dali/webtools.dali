@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
@@ -105,7 +105,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("id", specifiedPkJoinColumn.getDefaultName());
 		
 		//remove @Id annotation
-		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
 		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(specifiedPkJoinColumn.getDefaultName());
@@ -216,7 +216,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		
 		
 		//remove @Id annotation
-		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
+		ModifiablePersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
 		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(specifiedPkJoinColumn.getDefaultReferencedColumnName());

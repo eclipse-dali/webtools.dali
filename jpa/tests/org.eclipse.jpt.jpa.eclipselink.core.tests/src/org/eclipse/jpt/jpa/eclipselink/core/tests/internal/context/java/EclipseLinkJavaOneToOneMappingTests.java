@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.As
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
@@ -107,7 +107,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithPrivateOwnedOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		EclipseLinkPrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
 		assertEquals(true, privateOwnable.isPrivateOwned());
@@ -117,7 +117,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithPrivateOwnedOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		EclipseLinkPrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
 		assertEquals(true, privateOwnable.isPrivateOwned());
@@ -138,7 +138,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithPrivateOwnedOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		EclipseLinkPrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
 		assertEquals(true, privateOwnable.isPrivateOwned());
@@ -160,7 +160,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithJoinFetchOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getMapping();
 		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -209,7 +209,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		createTestEntityWithJoinFetchOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getMapping();
 		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);

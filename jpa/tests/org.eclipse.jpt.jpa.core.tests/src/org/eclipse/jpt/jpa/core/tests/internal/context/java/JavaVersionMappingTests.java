@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
@@ -92,7 +92,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -116,7 +116,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -139,7 +139,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -163,7 +163,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -186,7 +186,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -209,7 +209,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -232,7 +232,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -255,7 +255,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -278,7 +278,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -301,7 +301,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
@@ -325,7 +325,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithTemporal();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
 		assertEquals(TemporalType.TIMESTAMP, ((BaseTemporalConverter) versionMapping.getConverter()).getTemporalType());
@@ -335,7 +335,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertNull(versionMapping.getConverter().getType());
 		
@@ -356,7 +356,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
 		assertNull(versionMapping.getConverter().getType());
@@ -382,7 +382,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		
 		assertNull(versionMapping.getColumn().getSpecifiedName());

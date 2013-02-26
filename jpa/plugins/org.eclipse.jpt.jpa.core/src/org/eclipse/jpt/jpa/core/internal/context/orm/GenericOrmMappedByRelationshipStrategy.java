@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
@@ -201,7 +201,7 @@ public class GenericOrmMappedByRelationshipStrategy
 	}
 
 	protected IMessage buildMessage(ValidationMessage msg, Object[] args) {
-		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
+		ModifiablePersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
 		String attributeDescription = NLS.bind(JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC, attribute.getName());
 		args = ArrayTools.add(args, 0, attributeDescription);
 		return this.buildValidationMessage(this.getValidationTextRange(), msg, args);

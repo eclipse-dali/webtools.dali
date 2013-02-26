@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
@@ -183,7 +183,7 @@ public class GenericOrmOrderColumn2_0
 		return this.getOrderable().getParent();
 	}
 
-	protected PersistentAttribute getPersistentAttribute() {
+	protected ModifiablePersistentAttribute getPersistentAttribute() {
 		return this.getAttributeMapping().getPersistentAttribute();
 	}
 

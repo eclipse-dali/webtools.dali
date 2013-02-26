@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -251,7 +251,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
 		
@@ -285,7 +285,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ModifiablePersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
 		

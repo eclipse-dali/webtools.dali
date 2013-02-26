@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -93,7 +93,7 @@ public interface OrmPersistentType
 	 * Throw an {@link IllegalArgumentException} if the attribute is virtual
 	 *
 	 * @see OrmPersistentAttribute#removeFromXml()
-	 * @see PersistentAttribute#isVirtual()
+	 * @see ModifiablePersistentAttribute#isVirtual()
 	 */
 	OrmReadOnlyPersistentAttribute removeAttributeFromXml(OrmPersistentAttribute specifiedAttribute);
 

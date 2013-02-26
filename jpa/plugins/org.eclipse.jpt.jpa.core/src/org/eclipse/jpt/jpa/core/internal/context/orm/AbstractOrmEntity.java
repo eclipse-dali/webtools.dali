@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -1497,10 +1497,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return MappingTools.getPrimaryKeyColumnName(this);
 	}
 
-	public PersistentAttribute getIdAttribute() {
+	public ModifiablePersistentAttribute getIdAttribute() {
 		Iterator<AttributeMapping> idAttributeMappings = this.getAllAttributeMappings(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY).iterator();
 		if (idAttributeMappings.hasNext()) {
-			PersistentAttribute attribute = idAttributeMappings.next().getPersistentAttribute();
+			ModifiablePersistentAttribute attribute = idAttributeMappings.next().getPersistentAttribute();
 			return idAttributeMappings.hasNext() ? null /*more than one*/: attribute;
 		}
 		return null;
