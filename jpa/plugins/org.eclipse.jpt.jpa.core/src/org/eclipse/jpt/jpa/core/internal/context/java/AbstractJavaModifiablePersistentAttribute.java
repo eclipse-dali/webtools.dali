@@ -49,7 +49,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java persistent attributes
  */
-public abstract class AbstractJavaPersistentAttribute
+public abstract class AbstractJavaModifiablePersistentAttribute
 		extends AbstractJavaContextModel<PersistentType>
 		implements JavaModifiablePersistentAttribute, ModifiablePersistentAttribute2_0 {
 	
@@ -63,19 +63,19 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected JpaContainerDefinition jpaContainerDefinition = JpaContainerDefinition.Null.instance();
 
-	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
+	protected AbstractJavaModifiablePersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
 		super(parent);
 		this.accessor = new FieldAccessor(this, resourceField);
 		this.initialize();
 	}
 
-	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	protected AbstractJavaModifiablePersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent);
 		this.accessor = new PropertyAccessor(this, resourceGetter, resourceSetter);
 		this.initialize();
 	}
 
-	protected AbstractJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+	protected AbstractJavaModifiablePersistentAttribute(PersistentType parent, Accessor accessor) {
 		super(parent);
 		this.accessor = accessor;
 		this.initialize();
