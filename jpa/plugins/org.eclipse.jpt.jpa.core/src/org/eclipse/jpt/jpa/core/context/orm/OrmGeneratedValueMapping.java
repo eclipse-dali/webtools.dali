@@ -23,8 +23,8 @@ import org.eclipse.jpt.jpa.core.context.GeneratedValueMapping;
  * @version 3.3
  * @since 3.3
  */
-public interface OrmGeneratedValueHolder 
-	extends GeneratedValueMapping
+public interface OrmGeneratedValueMapping
+	extends GeneratedValueMapping, OrmAttributeMapping
 {	
 	OrmGeneratedValue getGeneratedValue();
 	OrmGeneratedValue addGeneratedValue();	

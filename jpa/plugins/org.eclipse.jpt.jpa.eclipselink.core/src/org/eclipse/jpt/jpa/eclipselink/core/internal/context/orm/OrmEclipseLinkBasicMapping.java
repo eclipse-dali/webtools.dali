@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
-import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValueHolder;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValueMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -43,7 +43,7 @@ public class OrmEclipseLinkBasicMapping
 		EclipseLinkBasicMapping, 
 		EclipseLinkOrmConvertibleMapping, 
 		OrmEclipseLinkConverterContainer.Owner,
-		OrmGeneratedValueHolder
+		OrmGeneratedValueMapping
 {
 	protected final OrmEclipseLinkMutable mutable;
 	

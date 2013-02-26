@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
  * @since 2.0
  */
 public interface OrmIdMapping 
-	extends IdMapping, OrmColumnMapping, OrmConvertibleMapping, OrmGeneratedValueHolder
+	extends IdMapping, OrmColumnMapping, OrmConvertibleMapping, OrmGeneratedValueMapping
 {
 	XmlId getXmlAttributeMapping();
 
