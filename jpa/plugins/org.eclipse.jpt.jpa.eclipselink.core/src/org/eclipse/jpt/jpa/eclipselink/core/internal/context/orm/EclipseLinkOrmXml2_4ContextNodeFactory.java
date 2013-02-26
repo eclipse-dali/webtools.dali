@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
 
 public class EclipseLinkOrmXml2_4ContextNodeFactory
-	extends EclipseLinkOrmXml2_3ContextNodeFactory
+	extends EclipseLinkOrmXmlContextModelFactory2_3
 {
 
 	@Override
