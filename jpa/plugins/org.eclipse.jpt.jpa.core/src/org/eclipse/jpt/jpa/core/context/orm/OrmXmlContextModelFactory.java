@@ -99,21 +99,21 @@ public interface OrmXmlContextModelFactory
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
-	 * @see org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0
+	 * @see org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0
 	 */
 	OrmModifiablePersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
-	 * @see org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0
+	 * @see org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0
 	 */
 	OrmPersistentAttribute buildVirtualOrmPersistentField(OrmPersistentType parent, JavaResourceField javaResourceField);
 
 	/**
 	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
 	 * must build objects that implement the appropriate behavior.
-	 * @see org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0
+	 * @see org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0
 	 */
 	OrmPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter);
 
