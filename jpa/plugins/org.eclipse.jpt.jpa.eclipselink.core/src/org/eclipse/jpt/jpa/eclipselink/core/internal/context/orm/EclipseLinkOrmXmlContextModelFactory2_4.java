@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
 
-public class EclipseLinkOrmXml2_4ContextNodeFactory
+public class EclipseLinkOrmXmlContextModelFactory2_4
 	extends EclipseLinkOrmXmlContextModelFactory2_3
 {
 
