@@ -28,14 +28,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified <code>orm.xml</code> attribute override
  */
-public class GenericOrmAttributeOverride
+public class GenericOrmSpecifiedAttributeOverride
 	extends AbstractOrmSpecifiedOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
 	implements OrmSpecifiedAttributeOverride, OrmColumn.Owner
 {
 	protected final OrmColumn column;
 
 
-	public GenericOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride) {
+	public GenericOrmSpecifiedAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride) {
 		super(parent, xmlOverride);
 		this.column = this.buildColumn();
 	}

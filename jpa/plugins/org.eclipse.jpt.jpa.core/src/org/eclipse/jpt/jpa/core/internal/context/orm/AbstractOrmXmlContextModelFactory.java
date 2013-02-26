@@ -83,7 +83,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBaseTemporalConverter;
@@ -252,7 +252,7 @@ public abstract class AbstractOrmXmlContextModelFactory
 	}
 	
 	public OrmSpecifiedAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride) {
-		return new GenericOrmAttributeOverride(parent, xmlOverride);
+		return new GenericOrmSpecifiedAttributeOverride(parent, xmlOverride);
 	}
 	
 	public OrmVirtualAttributeOverride buildOrmVirtualAttributeOverride(OrmAttributeOverrideContainer parent, String name) {
