@@ -52,10 +52,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * <em>specified</em> <code>orm.xml</code> persistent attribute
  */
-public abstract class SpecifiedOrmPersistentAttribute
-		extends AbstractOrmXmlContextModel<OrmPersistentType>
-		implements OrmModifiablePersistentAttribute, ModifiablePersistentAttribute2_0 {
-	
+public abstract class AbstractOrmModifiablePersistentAttribute
+	extends AbstractOrmXmlContextModel<OrmPersistentType>
+	implements OrmModifiablePersistentAttribute, ModifiablePersistentAttribute2_0
+{
 	protected OrmAttributeMapping mapping;  // never null
 
 	/**
@@ -80,7 +80,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	protected AccessType defaultAccess;
 
 
-	protected SpecifiedOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
+	protected AbstractOrmModifiablePersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		super(parent);
 		this.mapping = this.buildMapping(xmlMapping);
 		this.specifiedAccess = this.buildSpecifiedAccess();
