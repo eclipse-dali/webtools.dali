@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -1341,7 +1341,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
 		ListIterator<JavaVirtualAssociationOverride> virtualAssociationOverrides = overrideContainer.getVirtualOverrides().iterator();	
-		ReadOnlyAssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
+		AssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
 

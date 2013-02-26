@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see ReadOnlyAssociationOverride
+ * @see AssociationOverride
  * @see JoinTableRelationship
  */
 public interface ReadOnlyJoinTableRelationshipStrategy

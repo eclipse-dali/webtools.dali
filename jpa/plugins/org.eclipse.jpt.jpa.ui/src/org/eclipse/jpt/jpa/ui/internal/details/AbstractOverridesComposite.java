@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
@@ -58,7 +58,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 	extends Pane<T>
 {
 	private Pane<ReadOnlyAttributeOverride> attributeOverridePane;
-	private Pane<ReadOnlyAssociationOverride> associationOverridePane;
+	private Pane<AssociationOverride> associationOverridePane;
 	
 	private ModifiablePropertyValueModel<Override_> selectedOverrideModel;
 	private ModifiablePropertyValueModel<Boolean> overrideVirtualOverrideHolder;
@@ -149,15 +149,15 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		};
 	}
 
-	protected Pane<ReadOnlyAssociationOverride> getAssociationOverridePane(PageBook pageBook) {
+	protected Pane<AssociationOverride> getAssociationOverridePane(PageBook pageBook) {
 		if (this.associationOverridePane == null) {
-			PropertyValueModel<ReadOnlyAssociationOverride> associationOverrideModel = buildAssociationOverrideModel();
+			PropertyValueModel<AssociationOverride> associationOverrideModel = buildAssociationOverrideModel();
 			this.associationOverridePane = buildAssociationOverridePane(pageBook, associationOverrideModel);
 		}
 		return this.associationOverridePane;
 	}
 
-	protected Pane<ReadOnlyAssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<ReadOnlyAssociationOverride> overrideHolder) {
+	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> overrideHolder) {
 		return new AssociationOverrideComposite(this, overrideHolder, buildOverrideBooleanHolder(overrideHolder), pageBook);		
 	}
 	
@@ -171,11 +171,11 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 				pageBook);
 	}
 	
-	private PropertyValueModel<ReadOnlyAssociationOverride> buildAssociationOverrideModel() {
-		return new TransformationPropertyValueModel<Override_, ReadOnlyAssociationOverride>(this.selectedOverrideModel) {
+	private PropertyValueModel<AssociationOverride> buildAssociationOverrideModel() {
+		return new TransformationPropertyValueModel<Override_, AssociationOverride>(this.selectedOverrideModel) {
 			@Override
-			protected ReadOnlyAssociationOverride transform_(Override_ v) {
-				return (v instanceof ReadOnlyAssociationOverride) ? (ReadOnlyAssociationOverride) v : null;
+			protected AssociationOverride transform_(Override_ v) {
+				return (v instanceof AssociationOverride) ? (AssociationOverride) v : null;
 			}
 		};
 	}
@@ -242,7 +242,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		String overrideType;
 		
 		// Retrieve the type
-		if (override instanceof ReadOnlyAssociationOverride) {
+		if (override instanceof AssociationOverride) {
 			overrideType = JptJpaUiDetailsMessages.OverridesComposite_association;
 		}
 		else {
@@ -329,7 +329,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 			return AbstractOverridesComposite.this.getAttributeOverridePane(pageBook).getControl();
 		}
 		
-		if (selectedOverride instanceof ReadOnlyAssociationOverride) {
+		if (selectedOverride instanceof AssociationOverride) {
 			return AbstractOverridesComposite.this.getAssociationOverridePane(pageBook).getControl();
 		}
 		

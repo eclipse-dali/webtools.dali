@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
@@ -426,7 +426,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", associationOverride.getName());
 	}
 	
@@ -441,7 +441,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertTrue(associationOverride.isVirtual());
 	}
 }

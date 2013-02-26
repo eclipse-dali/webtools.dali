@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @see ReadOnlyAssociationOverride
+ * @see AssociationOverride
  * @see JoinColumnRelationship
  */
 public interface ReadOnlyJoinColumnRelationshipStrategy

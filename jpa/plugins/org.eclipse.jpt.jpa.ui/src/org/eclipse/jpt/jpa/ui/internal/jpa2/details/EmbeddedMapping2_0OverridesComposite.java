@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingOverridesComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -47,7 +47,7 @@ public class EmbeddedMapping2_0OverridesComposite
 	}
 	
 	@Override
-	protected Pane<ReadOnlyAssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<ReadOnlyAssociationOverride> associationOverrideHolder) {
+	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
 		return new AssociationOverride2_0Composite(this, associationOverrideHolder, pageBook);
 	}
 	

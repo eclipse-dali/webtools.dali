@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 public class GenericOrmAssociationOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAssociationOverrideContainer.Owner,
-			ReadOnlyAssociationOverride,
+			AssociationOverride,
 			OrmSpecifiedAssociationOverride,
 			OrmVirtualAssociationOverride,
 			XmlAssociationOverride
@@ -55,15 +55,15 @@ public class GenericOrmAssociationOverrideContainer
 		return (OrmAssociationOverrideContainer2_0.Owner) this.owner;
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner columnOwner) {
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner columnOwner) {
 		return this.getOwner2_0().buildJoinTableJoinColumnValidator(override, column, columnOwner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner columnOwner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner columnOwner) {
 		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, columnOwner);
 	}
 
-	public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table) {
+	public JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table) {
 		return this.getOwner2_0().buildJoinTableValidator(override, table);
 	}
 

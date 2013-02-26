@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
@@ -135,7 +135,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		javaAssociationOverride = ((VirtualAssociationOverride) javaAssociationOverride).convertToSpecified();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", AstNodeType.TYPE);
@@ -445,7 +445,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", associationOverride.getName());
 	}
 	
@@ -460,7 +460,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertEquals("AnnotationTestTypeChild", entity.getName());
 		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertTrue(associationOverride.isVirtual());
 	}
 	
@@ -472,7 +472,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		javaAssociationOverride = ((VirtualAssociationOverride) javaAssociationOverride).convertToSpecified();
 		JoinTableRelationshipStrategy joiningStrategy = ((OverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy();
 		
@@ -493,7 +493,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		javaAssociationOverride = ((VirtualAssociationOverride) javaAssociationOverride).convertToSpecified();
 		JoinTableRelationshipStrategy joiningStrategy = ((OverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy();
 		
@@ -561,7 +561,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		VirtualOverrideRelationship2_0 rel = (VirtualOverrideRelationship2_0) javaAssociationOverride.getRelationship();
 		VirtualJoinTable joinTable = rel.getJoinTableStrategy().getJoinTable();
 		

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -84,12 +84,12 @@ public class GenericOrmAssociationOverride
 		return this.getContainer().getRelationshipMapping(this.name);
 	}
 
-	public void initializeFrom(ReadOnlyAssociationOverride oldOverride) {
+	public void initializeFrom(AssociationOverride oldOverride) {
 		super.initializeFrom(oldOverride);
 		this.relationship.initializeFrom(oldOverride.getRelationship());
 	}
 
-	public void initializeFromVirtual(ReadOnlyAssociationOverride virtualOverride) {
+	public void initializeFromVirtual(AssociationOverride virtualOverride) {
 		super.initializeFromVirtual(virtualOverride);
 		this.relationship.initializeFromVirtual(virtualOverride.getRelationship());
 	}

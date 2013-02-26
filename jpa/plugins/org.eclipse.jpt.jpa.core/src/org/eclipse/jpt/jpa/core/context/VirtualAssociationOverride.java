@@ -19,7 +19,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualAssociationOverride
-	extends VirtualOverride, ReadOnlyAssociationOverride
+	extends VirtualOverride, AssociationOverride
 {
 	ReadOnlyRelationship resolveOverriddenRelationship();
 

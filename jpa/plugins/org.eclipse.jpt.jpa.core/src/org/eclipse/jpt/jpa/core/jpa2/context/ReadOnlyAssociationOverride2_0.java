@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyAssociationOverride2_0
-	extends ReadOnlyAssociationOverride
+	extends AssociationOverride
 {
 	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
 

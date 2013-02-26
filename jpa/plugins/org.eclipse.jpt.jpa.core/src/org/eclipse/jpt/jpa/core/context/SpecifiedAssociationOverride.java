@@ -22,11 +22,11 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedAssociationOverride
-	extends SpecifiedOverride, ReadOnlyAssociationOverride
+	extends SpecifiedOverride, AssociationOverride
 {
-	void initializeFrom(ReadOnlyAssociationOverride oldOverride);
+	void initializeFrom(AssociationOverride oldOverride);
 
-	void initializeFromVirtual(ReadOnlyAssociationOverride virtualOverride);
+	void initializeFromVirtual(AssociationOverride virtualOverride);
 
 	// covariant overrides
 	VirtualAssociationOverride convertToVirtual();

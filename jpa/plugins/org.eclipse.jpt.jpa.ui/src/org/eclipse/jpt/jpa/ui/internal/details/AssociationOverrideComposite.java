@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class AssociationOverrideComposite
-	extends Pane<ReadOnlyAssociationOverride>
+	extends Pane<AssociationOverride>
 {
 	/**
 	 * Creates a new <code>AssociationOverrideComposite</code>.
@@ -46,14 +46,14 @@ public class AssociationOverrideComposite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverrideComposite(Pane<?> parentPane, 
-			PropertyValueModel<? extends ReadOnlyAssociationOverride> subjectHolder,
+			PropertyValueModel<? extends AssociationOverride> subjectHolder,
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
 	}
 
 	public AssociationOverrideComposite(Pane<?> parentPane, 
-		PropertyValueModel<? extends ReadOnlyAssociationOverride> subjectHolder,
+		PropertyValueModel<? extends AssociationOverride> subjectHolder,
 		PropertyValueModel<Boolean> enabledModel,
 		Composite parent) {
 	
@@ -81,9 +81,9 @@ public class AssociationOverrideComposite
 	}
 	
 	private PropertyValueModel<ReadOnlyJoinColumnRelationship> buildRelationshipModel() {
-		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinColumnRelationship>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<AssociationOverride, ReadOnlyJoinColumnRelationship>(getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinColumnRelationship transform_(ReadOnlyAssociationOverride value) {
+			protected ReadOnlyJoinColumnRelationship transform_(AssociationOverride value) {
 				// with virtual overrides: m:m mappings do not support join columns, so we need to check
 				ReadOnlyRelationship relationship = value.getRelationship();
 				return (relationship instanceof ReadOnlyJoinColumnRelationship) ?

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -21,10 +21,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class AssociationOverrideInverseJoinColumnValidator
 	extends InverseJoinColumnValidator
 {
-	final ReadOnlyAssociationOverride override;
+	final AssociationOverride override;
 
 	public AssociationOverrideInverseJoinColumnValidator(
-				ReadOnlyAssociationOverride override,
+				AssociationOverride override,
 				ReadOnlyJoinColumn column,
 				ReadOnlyJoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
@@ -34,7 +34,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 
 	public AssociationOverrideInverseJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
-				ReadOnlyAssociationOverride override,
+				AssociationOverride override,
 				ReadOnlyJoinColumn column,
 				ReadOnlyJoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {

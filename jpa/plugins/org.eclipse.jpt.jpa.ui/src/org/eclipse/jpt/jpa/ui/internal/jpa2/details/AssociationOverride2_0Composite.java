@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityOverridesComposite;
@@ -49,7 +49,7 @@ public class AssociationOverride2_0Composite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverride2_0Composite(Pane<?> parentPane, 
-			PropertyValueModel<? extends ReadOnlyAssociationOverride> subjectHolder,
+			PropertyValueModel<? extends AssociationOverride> subjectHolder,
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
@@ -67,9 +67,9 @@ public class AssociationOverride2_0Composite
 	}
 	
 	private PropertyValueModel<ReadOnlyJoinTableRelationship> buildRelationshipModel() {
-		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinTableRelationship>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<AssociationOverride, ReadOnlyJoinTableRelationship>(getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinTableRelationship transform_(ReadOnlyAssociationOverride value) {
+			protected ReadOnlyJoinTableRelationship transform_(AssociationOverride value) {
 				// all specified and virtual (mappings) overrides support join tables
 				return (ReadOnlyJoinTableRelationship) value.getRelationship();
 			}

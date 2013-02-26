@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
@@ -416,7 +416,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		assertEquals("AnnotationTestTypeChild", ormEntity.getName());
 		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertTrue(associationOverride.isVirtual());
 	}
 	
@@ -514,7 +514,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
+		AssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		VirtualJoinTableRelationshipStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 
 		VirtualJoinTable joinTable = joiningStrategy.getJoinTable();

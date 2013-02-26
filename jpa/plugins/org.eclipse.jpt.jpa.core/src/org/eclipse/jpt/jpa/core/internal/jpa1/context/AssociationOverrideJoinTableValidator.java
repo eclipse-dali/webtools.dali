@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -20,10 +20,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class AssociationOverrideJoinTableValidator
 	extends AbstractJoinTableValidator
 {
-	private final ReadOnlyAssociationOverride override;
+	private final AssociationOverride override;
 
 	public AssociationOverrideJoinTableValidator(
-				ReadOnlyAssociationOverride override,
+				AssociationOverride override,
 				ReadOnlyJoinTable table) {
 		super(table);
 		this.override = override;
@@ -31,7 +31,7 @@ public class AssociationOverrideJoinTableValidator
 
 	public AssociationOverrideJoinTableValidator(
 				PersistentAttribute persistentAttribute,
-				ReadOnlyAssociationOverride override, 
+				AssociationOverride override, 
 				ReadOnlyJoinTable table) {
 		super(persistentAttribute, table);
 		this.override = override;

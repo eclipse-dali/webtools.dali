@@ -41,8 +41,8 @@ public interface AssociationOverrideContainer
 	ReadOnlyRelationship resolveOverriddenRelationship(String attributeName);
 
 	// covariant overrides
-	ListIterable<? extends ReadOnlyAssociationOverride> getOverrides();
-	ReadOnlyAssociationOverride getOverrideNamed(String name);
+	ListIterable<? extends AssociationOverride> getOverrides();
+	AssociationOverride getOverrideNamed(String name);
 	ListIterable<? extends SpecifiedAssociationOverride> getSpecifiedOverrides();
 	SpecifiedAssociationOverride getSpecifiedOverride(int index);
 	SpecifiedAssociationOverride getSpecifiedOverrideNamed(String name);

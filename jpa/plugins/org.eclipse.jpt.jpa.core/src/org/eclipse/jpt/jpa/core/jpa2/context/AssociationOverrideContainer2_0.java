@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -29,11 +29,11 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 public interface AssociationOverrideContainer2_0
 	extends AssociationOverrideContainer
 {
-	JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table);
+	JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table);
 
-	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owne);
+	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owne);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+	JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
 
 
 	// ********** owner **********
@@ -41,10 +41,10 @@ public interface AssociationOverrideContainer2_0
 	interface Owner
 		extends AssociationOverrideContainer.Owner
 	{
-		JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table);
+		JptValidator buildJoinTableValidator(AssociationOverride override, ReadOnlyTable table);
 
-		JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
 
-		JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
 	}
 }
