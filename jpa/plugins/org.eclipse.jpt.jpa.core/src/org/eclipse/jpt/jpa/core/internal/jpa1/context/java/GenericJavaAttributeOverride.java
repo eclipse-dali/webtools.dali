@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOverride;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSpecifiedOverride;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Specified Java attribute override
  */
 public class GenericJavaAttributeOverride
-	extends AbstractJavaOverride<JavaAttributeOverrideContainer, AttributeOverrideAnnotation>
+	extends AbstractJavaSpecifiedOverride<JavaAttributeOverrideContainer, AttributeOverrideAnnotation>
 	implements JavaSpecifiedAttributeOverride, JavaColumn.Owner
 {
 	protected final JavaColumn column;

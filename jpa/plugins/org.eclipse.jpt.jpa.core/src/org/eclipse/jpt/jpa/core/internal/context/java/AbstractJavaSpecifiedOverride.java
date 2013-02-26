@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Specified Java override
  */
-public abstract class AbstractJavaOverride<P extends JavaOverrideContainer, A extends OverrideAnnotation>
+public abstract class AbstractJavaSpecifiedOverride<P extends JavaOverrideContainer, A extends OverrideAnnotation>
 	extends AbstractJavaContextModel<P>
 	implements JavaSpecifiedOverride
 {
@@ -39,7 +39,7 @@ public abstract class AbstractJavaOverride<P extends JavaOverrideContainer, A ex
 	protected String name;
 
 
-	protected AbstractJavaOverride(P parent, A overrideAnnotation) {
+	protected AbstractJavaSpecifiedOverride(P parent, A overrideAnnotation) {
 		super(parent);
 		this.overrideAnnotation = overrideAnnotation;
 		this.name = this.buildName();
