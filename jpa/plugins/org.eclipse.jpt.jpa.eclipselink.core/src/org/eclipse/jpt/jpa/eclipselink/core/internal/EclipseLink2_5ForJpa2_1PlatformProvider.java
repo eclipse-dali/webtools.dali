@@ -62,17 +62,17 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmX
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_5Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_4PersistenceXmlDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_5PersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_5ForJpa2_1PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
 /**
- * EclipseLink 2.5 platform config
+ * EclipseLink 2.5 platform config for JPA 2.1 facet
  */
-public class EclipseLink2_5JpaPlatformProvider
+public class EclipseLink2_5ForJpa2_1PlatformProvider
 	extends AbstractJpaPlatformProvider
 {
 	// singleton
-	private static final JpaPlatformProvider INSTANCE = new EclipseLink2_5JpaPlatformProvider();
+	private static final JpaPlatformProvider INSTANCE = new EclipseLink2_5ForJpa2_1PlatformProvider();
 
 	/**
 	 * Return the singleton
@@ -84,7 +84,7 @@ public class EclipseLink2_5JpaPlatformProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLink2_5JpaPlatformProvider() {
+	private EclipseLink2_5ForJpa2_1PlatformProvider() {
 		super();
 	}
 
@@ -132,7 +132,7 @@ public class EclipseLink2_5JpaPlatformProvider
 		JarDefinition.instance(),
 		EclipseLinkPersistenceXmlDefinition.instance(),
 		EclipseLink2_4PersistenceXmlDefinition.instance(),
-		EclipseLink2_5PersistenceXmlDefinition.instance(),
+		EclipseLink2_5ForJpa2_1PersistenceXmlDefinition.instance(),
 		GenericOrmXmlDefinition.instance(),
 		GenericOrmXml2_0Definition.instance(),
 		GenericOrmXml2_1Definition.instance(),

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 Oracle. All rights reserved.
+ *  Copyright (c) 2012, 2013 Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXml
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.EclipseLinkPersistenceXml2_4UiDefinition;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.EclipseLinkPersistenceXml2_5UiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.EclipseLinkPersistenceXml2_5ForJpa2_1UiDefinition;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractJpaPlatformUiProvider;
@@ -31,11 +31,11 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_1UiDefinition;
 
 
-public class EclipseLink2_5JpaPlatformUiProvider
+public class EclipseLink2_5ForJpa2_1PlatformUiProvider
 		extends AbstractJpaPlatformUiProvider {
 
 	// singleton
-	private static final JpaPlatformUiProvider INSTANCE = new EclipseLink2_5JpaPlatformUiProvider();
+	private static final JpaPlatformUiProvider INSTANCE = new EclipseLink2_5ForJpa2_1PlatformUiProvider();
 
 
 	/**
@@ -49,7 +49,7 @@ public class EclipseLink2_5JpaPlatformUiProvider
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLink2_5JpaPlatformUiProvider() {
+	private EclipseLink2_5ForJpa2_1PlatformUiProvider() {
 		super();
 	}
 
@@ -73,6 +73,6 @@ public class EclipseLink2_5JpaPlatformUiProvider
 		definitions.add(EclipseLinkOrmXml2_5UiDefinition.instance());
 		definitions.add(EclipseLinkPersistenceXmlUiDefinition.instance());
 		definitions.add(EclipseLinkPersistenceXml2_4UiDefinition.instance());
-		definitions.add(EclipseLinkPersistenceXml2_5UiDefinition.instance());
+		definitions.add(EclipseLinkPersistenceXml2_5ForJpa2_1UiDefinition.instance());
 	}
 }
