@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
  * @version 2.3
  * @since 2.3
  */
-public interface PersistentAttribute2_0
+public interface ModifiablePersistentAttribute2_0
 	extends ModifiablePersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
 	// combine various interfaces

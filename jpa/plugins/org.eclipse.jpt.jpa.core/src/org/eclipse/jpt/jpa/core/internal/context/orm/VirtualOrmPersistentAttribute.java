@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -165,8 +165,8 @@ public class VirtualOrmPersistentAttribute
 		return (javaType == null) ? null : javaType.getAttributeFor(this.getJavaResourceAttribute());
 	}
 
-	protected PersistentAttribute2_0 getJavaPersistentAttribute2_0() {
-		return (PersistentAttribute2_0) this.getJavaPersistentAttribute();
+	protected ModifiablePersistentAttribute2_0 getJavaPersistentAttribute2_0() {
+		return (ModifiablePersistentAttribute2_0) this.getJavaPersistentAttribute();
 	}
 
 	protected JavaModifiablePersistentAttribute buildAnnotatedJavaAttribute() {

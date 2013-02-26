@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ModifiablePersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -54,7 +54,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class SpecifiedOrmPersistentAttribute
 		extends AbstractOrmXmlContextModel<OrmPersistentType>
-		implements OrmModifiablePersistentAttribute, PersistentAttribute2_0 {
+		implements OrmModifiablePersistentAttribute, ModifiablePersistentAttribute2_0 {
 	
 	protected OrmAttributeMapping mapping;  // never null
 
@@ -548,7 +548,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	public String getMetamodelTypeName() {
-		PersistentAttribute2_0 javaAttribute = (PersistentAttribute2_0) this.javaPersistentAttribute;
+		ModifiablePersistentAttribute2_0 javaAttribute = (ModifiablePersistentAttribute2_0) this.javaPersistentAttribute;
 		return (javaAttribute != null) ?
 				javaAttribute.getMetamodelTypeName() :
 				MetamodelField.DEFAULT_TYPE_NAME;
