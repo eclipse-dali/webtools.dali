@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -65,10 +65,10 @@ public class AttributeOverrideComposite extends Pane<AttributeOverride>
 		//see addContainer(Composite) - reducing USER handles
 	}
 	
-	private PropertyValueModel<ReadOnlyColumn> buildColumnHolder() {
-		return new TransformationPropertyValueModel<AttributeOverride, ReadOnlyColumn>(getSubjectHolder()) {
+	private PropertyValueModel<Column> buildColumnHolder() {
+		return new TransformationPropertyValueModel<AttributeOverride, Column>(getSubjectHolder()) {
 			@Override
-			protected ReadOnlyColumn transform_(AttributeOverride value) {
+			protected Column transform_(AttributeOverride value) {
 				return value.getColumn();
 			}
 		};

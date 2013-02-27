@@ -19,9 +19,9 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualColumn
-	extends VirtualBaseColumn, ReadOnlyColumn
+	extends VirtualBaseColumn, Column
 {
-	ReadOnlyColumn getOverriddenColumn();
+	Column getOverriddenColumn();
 
 
 	// ********** owner **********
@@ -35,6 +35,6 @@ public interface VirtualColumn
 		/**
 		 * Return the column overridden by the virtual column.
 		 */
-		ReadOnlyColumn resolveOverriddenColumn();
+		Column resolveOverriddenColumn();
 	}
 }

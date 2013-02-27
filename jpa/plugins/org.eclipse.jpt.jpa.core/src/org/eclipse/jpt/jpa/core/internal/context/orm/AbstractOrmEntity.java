@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -1296,7 +1296,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return (superPersistentType == null) ? null : superPersistentType.getMapping();
 	}
 
-	protected ReadOnlyColumn resolveOverriddenColumnForAttributeOverride(String attributeName) {
+	protected Column resolveOverriddenColumnForAttributeOverride(String attributeName) {
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
@@ -2041,7 +2041,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 
-		public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {
+		public Column resolveOverriddenColumn(String attributeName) {
 			JavaEntity javaEntity = this.getJavaOverrideContainerEntity();
 			return (javaEntity != null) ? 
 					javaEntity.getAttributeOverrideContainer().getOverrideColumn(attributeName) :

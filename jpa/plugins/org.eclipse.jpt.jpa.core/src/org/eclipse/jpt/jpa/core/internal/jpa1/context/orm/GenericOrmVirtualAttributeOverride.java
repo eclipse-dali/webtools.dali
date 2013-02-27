@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
@@ -72,7 +72,7 @@ public class GenericOrmVirtualAttributeOverride
 	}
 
 	protected String getOverriddenColumnTableName() {
-		ReadOnlyColumn overriddenColumn = this.resolveOverriddenColumn();
+		Column overriddenColumn = this.resolveOverriddenColumn();
 		// pretty sure this is the *specified* table...
 		return (overriddenColumn == null) ? null : overriddenColumn.getSpecifiedTableName();
 	}
@@ -83,11 +83,11 @@ public class GenericOrmVirtualAttributeOverride
 	}
 
 	protected String getOverriddenColumnName() {
-		ReadOnlyColumn overriddenColumn = this.resolveOverriddenColumn();
+		Column overriddenColumn = this.resolveOverriddenColumn();
 		return (overriddenColumn == null) ? null : overriddenColumn.getName();
 	}
 
-	public ReadOnlyColumn resolveOverriddenColumn() {
+	public Column resolveOverriddenColumn() {
 		return this.getContainer().resolveOverriddenColumn(this.name);
 	}
 

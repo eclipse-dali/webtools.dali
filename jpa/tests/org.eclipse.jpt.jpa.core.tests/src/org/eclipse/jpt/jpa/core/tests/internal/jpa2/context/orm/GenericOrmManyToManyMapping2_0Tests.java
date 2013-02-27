@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
@@ -773,9 +773,9 @@ public class GenericOrmManyToManyMapping2_0Tests
 		assertTrue(ormColumn.isUpdatable());
 		assertTrue(ormColumn.isNullable());
 		assertFalse(ormColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getScale());
 
 		//set Column annotation in Java
 		JavaCollectionMapping2_0 javaManyToManyMapping = (JavaCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
@@ -840,9 +840,9 @@ public class GenericOrmManyToManyMapping2_0Tests
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());

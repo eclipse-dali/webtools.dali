@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
@@ -39,20 +39,20 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class ColumnComposite
-	extends Pane<ReadOnlyColumn>
+	extends Pane<Column>
 {
 	public ColumnComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
+			PropertyValueModel<? extends Column> subjectHolder,
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
 	}
 	
 	
-	private ColumnCombo<ReadOnlyColumn> addColumnCombo(Composite container) {
+	private ColumnCombo<Column> addColumnCombo(Composite container) {
 		
-		return new ColumnCombo<ReadOnlyColumn>(this, container) {
+		return new ColumnCombo<Column>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -82,7 +82,7 @@ public class ColumnComposite
 			
 			@Override
 			protected Table getDbTable_() {
-				ReadOnlyColumn column = this.getSubject();
+				Column column = this.getSubject();
 				return (column == null) ? null : column.getDbTable();
 			}
 
@@ -116,7 +116,7 @@ public class ColumnComposite
 	});
 
 	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -133,7 +133,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -160,7 +160,7 @@ public class ColumnComposite
 	}
 	
 	PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
 				BaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
@@ -176,7 +176,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
 			
@@ -206,7 +206,7 @@ public class ColumnComposite
 	}
 	
 	PropertyValueModel<Boolean> buildDefaultNullableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
 				BaseColumn.DEFAULT_NULLABLE_PROPERTY) {
@@ -221,9 +221,9 @@ public class ColumnComposite
 		};
 	}
 	
-	private Pane<ReadOnlyColumn> addTableCombo(Composite container) {
+	private Pane<Column> addTableCombo(Composite container) {
 		
-		return new DatabaseObjectCombo<ReadOnlyColumn>(this, container) {
+		return new DatabaseObjectCombo<Column>(this, container) {
 			
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -250,7 +250,7 @@ public class ColumnComposite
 			// TODO we need to listen for this list to change...
 			@Override
 			protected Iterable<String> getValues_() {
-				ReadOnlyColumn column = this.getSubject();
+				Column column = this.getSubject();
 				return (column != null) ? column.getCandidateTableNames() : EmptyIterable.<String> instance();
 			}
 			
@@ -274,7 +274,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
 			
@@ -306,7 +306,7 @@ public class ColumnComposite
 	}
 	
 	PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
 				BaseColumn.DEFAULT_UNIQUE_PROPERTY) {
@@ -322,7 +322,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
 				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
@@ -355,7 +355,7 @@ public class ColumnComposite
 	}
 	
 	PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
@@ -474,7 +474,7 @@ public class ColumnComposite
 	}
 	
 	private void addLengthCombo(Composite container) {
-		new IntegerCombo<ReadOnlyColumn>(this, container) {				
+		new IntegerCombo<Column>(this, container) {				
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
@@ -482,7 +482,7 @@ public class ColumnComposite
 			
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultLength());
@@ -492,7 +492,7 @@ public class ColumnComposite
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedLength();
@@ -508,7 +508,7 @@ public class ColumnComposite
 	}
 
 	private void addPrecisionCombo(Composite container) {
-		new IntegerCombo<ReadOnlyColumn>(this, container) {					
+		new IntegerCombo<Column>(this, container) {					
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
@@ -516,7 +516,7 @@ public class ColumnComposite
 			
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_PRECISION_PROPERTY) {
+				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultPrecision());
@@ -526,7 +526,7 @@ public class ColumnComposite
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_PRECISION_PROPERTY) {
+				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedPrecision();
@@ -542,7 +542,7 @@ public class ColumnComposite
 	}
 
 	private void addScaleCombo(Composite container) {
-		new IntegerCombo<ReadOnlyColumn>(this, container) {					
+		new IntegerCombo<Column>(this, container) {					
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
@@ -550,7 +550,7 @@ public class ColumnComposite
 			
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_SCALE_PROPERTY) {
+				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultScale());
@@ -560,7 +560,7 @@ public class ColumnComposite
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_SCALE_PROPERTY) {
+				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedScale();

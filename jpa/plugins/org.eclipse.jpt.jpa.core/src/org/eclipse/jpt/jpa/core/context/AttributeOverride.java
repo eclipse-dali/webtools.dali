@@ -21,5 +21,5 @@ package org.eclipse.jpt.jpa.core.context;
 public interface AttributeOverride
 	extends Override_
 {
-	ReadOnlyColumn getColumn();
+	Column getColumn();
 }

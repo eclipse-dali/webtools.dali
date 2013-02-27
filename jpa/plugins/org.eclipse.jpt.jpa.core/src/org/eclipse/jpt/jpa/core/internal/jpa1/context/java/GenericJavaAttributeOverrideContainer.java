@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
@@ -36,11 +36,11 @@ public class GenericJavaAttributeOverrideContainer
 	}
 
 
-	public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {
+	public Column resolveOverriddenColumn(String attributeName) {
 		return (attributeName == null) ? null : this.owner.resolveOverriddenColumn(attributeName);
 	}
 
-	public ReadOnlyColumn getOverrideColumn(String overrideName) {
+	public Column getOverrideColumn(String overrideName) {
 		return this.getOverrideNamed(overrideName).getColumn();
 	}
 

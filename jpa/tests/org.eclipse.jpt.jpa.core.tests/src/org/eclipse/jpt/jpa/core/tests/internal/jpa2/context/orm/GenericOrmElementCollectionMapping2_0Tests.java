@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
@@ -1009,9 +1009,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
@@ -1074,9 +1074,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());
@@ -1365,9 +1365,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
@@ -1430,9 +1430,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());

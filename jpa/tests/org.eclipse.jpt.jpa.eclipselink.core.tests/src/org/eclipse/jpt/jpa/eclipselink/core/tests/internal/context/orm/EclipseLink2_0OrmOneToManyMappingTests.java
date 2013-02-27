@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -654,9 +654,9 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertTrue(ormColumn.isUpdatable());
 		assertTrue(ormColumn.isNullable());
 		assertFalse(ormColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getScale());
 
 		//set Column annotation in Java
 		OneToManyMapping2_0 javaOneToManyMapping = (OneToManyMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
@@ -697,9 +697,9 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertTrue(ormColumn.isUpdatable());
 		assertTrue(ormColumn.isNullable());
 		assertFalse(ormColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getScale());
 	}
 	
 	public void testNullMapKeyColumnDefaults() throws Exception {
@@ -733,9 +733,9 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());

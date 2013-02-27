@@ -22,11 +22,11 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedColumn
-	extends SpecifiedBaseColumn, ReadOnlyColumn
+	extends SpecifiedBaseColumn, Column
 {
-	void initializeFrom(ReadOnlyColumn oldColumn);
+	void initializeFrom(Column oldColumn);
 
-	void initializeFromVirtual(ReadOnlyColumn oldColumn);
+	void initializeFromVirtual(Column oldColumn);
 
 	void setSpecifiedLength(Integer length);
 

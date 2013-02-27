@@ -33,7 +33,7 @@ public interface AttributeOverrideContainer
 	 * column mapping/attribute override will be found in the mapped superclass
 	 * (or embeddable), not in the owning entity.
 	 */
-	ReadOnlyColumn resolveOverriddenColumn(String attributeName);
+	Column resolveOverriddenColumn(String attributeName);
 
 	// covariant overrides
 	ListIterable<? extends AttributeOverride> getOverrides();
@@ -54,6 +54,6 @@ public interface AttributeOverrideContainer
 		/**
 		 * @see AttributeOverrideContainer#resolveOverriddenColumn(String)
 		 */
-		ReadOnlyColumn resolveOverriddenColumn(String attributeName);
+		Column resolveOverriddenColumn(String attributeName);
 	}
 }

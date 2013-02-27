@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
@@ -359,7 +359,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, basicMapping.getColumn().getLength());
+		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getLength());
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
 		assertEquals(55, basicMapping.getColumn().getLength());
 	}
@@ -370,10 +370,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
+		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
 		
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
+		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
 	}	
 	
 	public void testGetSpecifiedLength() throws Exception {
@@ -427,7 +427,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, basicMapping.getColumn().getPrecision());
+		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getPrecision());
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
 		assertEquals(55, basicMapping.getColumn().getPrecision());
 	}
@@ -438,10 +438,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
+		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
 		
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
+		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
 	}	
 	
 	public void testGetSpecifiedPrecision() throws Exception {
@@ -495,7 +495,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, basicMapping.getColumn().getScale());
+		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getScale());
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
 		assertEquals(55, basicMapping.getColumn().getScale());
 	}
@@ -506,10 +506,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
+		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
 		
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
+		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
 	}	
 	
 	public void testGetSpecifiedScale() throws Exception {

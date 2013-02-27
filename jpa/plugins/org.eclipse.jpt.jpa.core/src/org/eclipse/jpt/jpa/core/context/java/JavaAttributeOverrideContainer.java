@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 
 /**
@@ -36,7 +36,7 @@ public interface JavaAttributeOverrideContainer
 	 * when it is also using the Java container's override names.
 	 * @see #getOverrideNames()
 	 */
-	ReadOnlyColumn getOverrideColumn(String overrideName);
+	Column getOverrideColumn(String overrideName);
 
 	// covariant overrides
 	ListIterable<JavaSpecifiedAttributeOverride> getSpecifiedOverrides();

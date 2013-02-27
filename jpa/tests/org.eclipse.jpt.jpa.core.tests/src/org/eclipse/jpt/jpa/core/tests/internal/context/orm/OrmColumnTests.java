@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
@@ -654,9 +654,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		//set Column annotation in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
@@ -699,9 +699,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.FALSE);
@@ -714,9 +714,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
@@ -728,9 +728,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
 		
 		//set metadata-complete false, orm.xml virtual column gets setting from java annotation
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
@@ -778,9 +778,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());

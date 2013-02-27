@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
@@ -37,7 +37,7 @@ public class GenericOrmAttributeOverrideContainer
 	}
 
 
-	public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {
+	public Column resolveOverriddenColumn(String attributeName) {
 		return (attributeName == null) ? null : this.owner.resolveOverriddenColumn(attributeName);
 	}
 
