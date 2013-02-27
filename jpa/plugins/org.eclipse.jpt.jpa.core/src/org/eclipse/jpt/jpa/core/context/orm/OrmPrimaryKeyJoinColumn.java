@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
  * @since 2.0
  */
 public interface OrmPrimaryKeyJoinColumn
-	extends PrimaryKeyJoinColumn, OrmBaseJoinColumn
+	extends PrimaryKeyJoinColumn, OrmModifiableBaseJoinColumn
 {	
 	XmlPrimaryKeyJoinColumn getXmlColumn();
 
