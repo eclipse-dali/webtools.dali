@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
@@ -2045,7 +2045,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = getJavaEntity().getAssociationOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("a", associationOverride.getName());
-		JoinTable joinTable = ((JavaOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
+		JoinTable joinTable = ((JavaSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("BAR", joinTable.getInverseJoinColumns().iterator().next().getName());
 	}

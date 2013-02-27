@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOverrideJoinCol
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedAssociationOverride2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaOverrideRelationship
 	extends AbstractJavaContextModel<JavaSpecifiedAssociationOverride>
-	implements JavaOverrideRelationship2_0
+	implements JavaSpecifiedOverrideRelationship2_0
 {
 	protected SpecifiedRelationshipStrategy strategy;
 

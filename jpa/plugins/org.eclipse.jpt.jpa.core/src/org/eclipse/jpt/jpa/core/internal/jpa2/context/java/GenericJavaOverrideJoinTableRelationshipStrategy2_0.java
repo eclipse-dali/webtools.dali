@@ -14,14 +14,14 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
-	extends AbstractJavaJoinTableRelationshipStrategy<JavaOverrideRelationship2_0>
+	extends AbstractJavaJoinTableRelationshipStrategy<JavaSpecifiedOverrideRelationship2_0>
 {
-	public GenericJavaOverrideJoinTableRelationshipStrategy2_0(JavaOverrideRelationship2_0 parent) {
+	public GenericJavaOverrideJoinTableRelationshipStrategy2_0(JavaSpecifiedOverrideRelationship2_0 parent) {
 		super(parent);
 	}
 
@@ -51,7 +51,7 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 	// ********** misc **********
 
 	@Override
-	public JavaOverrideRelationship2_0 getRelationship() {
+	public JavaSpecifiedOverrideRelationship2_0 getRelationship() {
 		return this.parent;
 	}
 
