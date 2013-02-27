@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
 
 /**
  * <code>orm.xml</code> join column relationship strategy
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
  * @since 2.2
  */
 public interface OrmJoinColumnRelationshipStrategy
-	extends JoinColumnRelationshipStrategy
+	extends SpecifiedJoinColumnRelationshipStrategy
 {
 	ListIterable<OrmSpecifiedJoinColumn> getJoinColumns();
 

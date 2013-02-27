@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
  * -------------------------------------------------------------------------</pre>
  *
  * @see JoinColumnRelationship
- * @see JoinColumnRelationshipStrategy
+ * @see SpecifiedJoinColumnRelationshipStrategy
  * @see JoinColumnJoiningStrategyPane
  * @see JoinColumnInJoiningStrategyDialog
  *
@@ -100,7 +100,7 @@ public class JoiningStrategyJoinColumnsComposite
 			}
 
 			public void removeJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject, SpecifiedJoinColumn joinColumn) {
-				((JoinColumnRelationshipStrategy) subject).removeSpecifiedJoinColumn(joinColumn);
+				((SpecifiedJoinColumnRelationshipStrategy) subject).removeSpecifiedJoinColumn(joinColumn);
 			}
 
 			public ListIterable<JoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
@@ -125,7 +125,7 @@ public class JoiningStrategyJoinColumnsComposite
 	}
 	
 	SpecifiedJoinColumn addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
-		JoinColumnRelationshipStrategy subject = (JoinColumnRelationshipStrategy) getSubject();
+		SpecifiedJoinColumnRelationshipStrategy subject = (SpecifiedJoinColumnRelationshipStrategy) getSubject();
 		SpecifiedJoinColumn joinColumn = subject.addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 		return joinColumn;

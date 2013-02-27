@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -100,7 +100,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 			setPopulating(true);
 			
 			try {
-				JoinColumnRelationshipStrategy subject = (JoinColumnRelationshipStrategy) getSubject();
+				SpecifiedJoinColumnRelationshipStrategy subject = (SpecifiedJoinColumnRelationshipStrategy) getSubject();
 				if (selected) {
 					if (subject.getDefaultJoinColumn() != null) {//TODO can this be null, disable override default check box? or have it checked if there are not default join columns?
 						subject.convertDefaultJoinColumnsToSpecified();

@@ -33,7 +33,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface JoinColumnRelationship
 	extends ReadOnlyJoinColumnRelationship, Relationship
 {
-	JoinColumnRelationshipStrategy getJoinColumnStrategy();
+	SpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy();
 	
 	/**
 	 * Set the relationship's strategy to the join column strategy.

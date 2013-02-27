@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * relationship mapping.
  *
  * @see SpecifiedJoinColumn
- * @see JoinColumnRelationshipStrategy
+ * @see SpecifiedJoinColumnRelationshipStrategy
  * @see JoinColumnInJoiningStrategyDialog
  *
  * @version 2.3
@@ -49,8 +49,8 @@ public class JoinColumnInJoiningStrategyStateObject
 	
 	
 	@Override
-	public JoinColumnRelationshipStrategy getOwner() {
-		return (JoinColumnRelationshipStrategy) super.getOwner();
+	public SpecifiedJoinColumnRelationshipStrategy getOwner() {
+		return (SpecifiedJoinColumnRelationshipStrategy) super.getOwner();
 	}
 
 	@Override
