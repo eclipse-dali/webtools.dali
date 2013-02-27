@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
@@ -118,7 +118,7 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
-		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
+		return new PropertyAspectAdapter<SpecifiedJoinTableRelationship, Boolean>(
 				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {

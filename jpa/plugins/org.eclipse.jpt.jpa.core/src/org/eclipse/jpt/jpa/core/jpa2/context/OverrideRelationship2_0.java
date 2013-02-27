@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 
 /**
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
  */
 public interface OverrideRelationship2_0
 	extends OverrideRelationship,
-			JoinTableRelationship,
+			SpecifiedJoinTableRelationship,
 			ReadOnlyOverrideRelationship2_0
 {
 	// add join table support to JPA 1.0 association override

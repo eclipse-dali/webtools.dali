@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Control;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link JoinTableRelationship}
+ * @see {@link SpecifiedJoinTableRelationship}
  * @see {@link SpecifiedJoinTableRelationshipStrategy}
  * @see {@link ManyToOneJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
@@ -108,7 +108,7 @@ public class JoinTableJoiningStrategyPane
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					((JoinTableRelationship) this.subject).setStrategyToJoinTable();
+					((SpecifiedJoinTableRelationship) this.subject).setStrategyToJoinTable();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

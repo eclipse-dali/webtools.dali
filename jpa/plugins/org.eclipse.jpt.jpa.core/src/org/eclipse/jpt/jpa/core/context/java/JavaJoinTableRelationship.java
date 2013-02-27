@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 
 /**
  * Java join table relationship (1:1, 1:m, m:1, m:m)
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
  * @since 2.2
  */
 public interface JavaJoinTableRelationship
-	extends JoinTableRelationship
+	extends SpecifiedJoinTableRelationship
 {
 	JavaSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy();
 }

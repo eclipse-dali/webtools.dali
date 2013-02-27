@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTableContainer;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTableContainer;
  * @since 2.2
  */
 public interface OrmJoinTableRelationship
-	extends JoinTableRelationship
+	extends SpecifiedJoinTableRelationship
 {
 	XmlJoinTableContainer getXmlContainer();
 	

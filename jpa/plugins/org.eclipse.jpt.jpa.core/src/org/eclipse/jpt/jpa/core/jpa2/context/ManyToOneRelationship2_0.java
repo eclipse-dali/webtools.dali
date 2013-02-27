@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToOneRelationship;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneRelationship;
  * @since 2.3
  */
 public interface ManyToOneRelationship2_0
-	extends ManyToOneRelationship, JoinTableRelationship
+	extends ManyToOneRelationship, SpecifiedJoinTableRelationship
 {
 	// add join table support to JPA 1.0 m:1
 }

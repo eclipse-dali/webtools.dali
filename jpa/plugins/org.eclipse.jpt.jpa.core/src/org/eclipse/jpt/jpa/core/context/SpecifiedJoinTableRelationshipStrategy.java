@@ -20,7 +20,7 @@ package org.eclipse.jpt.jpa.core.context;
  * 
  * @see RelationshipMapping
  * @see SpecifiedAssociationOverride
- * @see JoinTableRelationship
+ * @see SpecifiedJoinTableRelationship
  * 
  * @version 2.3
  * @since 2.2

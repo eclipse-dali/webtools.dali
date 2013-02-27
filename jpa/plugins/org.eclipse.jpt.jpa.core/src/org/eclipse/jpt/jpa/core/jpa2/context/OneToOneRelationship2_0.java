@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
  * @since 2.3
  */
 public interface OneToOneRelationship2_0
-	extends OneToOneRelationship, JoinTableRelationship
+	extends OneToOneRelationship, SpecifiedJoinTableRelationship
 {
 	// add join table support to JPA 1.0 1:1
 }

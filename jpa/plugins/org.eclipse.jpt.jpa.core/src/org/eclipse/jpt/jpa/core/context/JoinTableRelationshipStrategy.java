@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see AssociationOverride
- * @see JoinTableRelationship
+ * @see SpecifiedJoinTableRelationship
  */
 public interface JoinTableRelationshipStrategy
 	extends RelationshipStrategy
