@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.MappingRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedRelationshipStrategy;
  * 
  * @see RelationshipMapping
  * @see SpecifiedAssociationOverride
- * @see MappingRelationship
+ * @see SpecifiedMappingRelationship
  */
 public interface SpecifiedMappingRelationshipStrategy2_0
 	extends SpecifiedRelationshipStrategy
