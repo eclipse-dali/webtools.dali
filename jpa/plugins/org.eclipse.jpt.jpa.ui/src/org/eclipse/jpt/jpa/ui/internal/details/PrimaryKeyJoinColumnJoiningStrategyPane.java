@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.swt.widgets.Composite;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link PrimaryKeyJoinColumnRelationship}
+ * @see {@link SpecifiedPrimaryKeyJoinColumnRelationship}
  * @see {@link SpecifiedPrimaryKeyJoinColumnRelationshipStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
@@ -36,10 +36,10 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PrimaryKeyJoinColumnJoiningStrategyPane 
 	extends AbstractJoiningStrategyPane
-		<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>
+		<SpecifiedPrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>
 {
 	public PrimaryKeyJoinColumnJoiningStrategyPane(
-			Pane<? extends PrimaryKeyJoinColumnRelationship> parentPane, 
+			Pane<? extends SpecifiedPrimaryKeyJoinColumnRelationship> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
@@ -51,7 +51,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 
 	protected PropertyValueModel<SpecifiedPrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>(
+				<SpecifiedPrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
 			protected SpecifiedPrimaryKeyJoinColumnRelationshipStrategy buildValue_() {
@@ -65,8 +65,8 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 		return null;
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
-		return new PropertyAspectAdapter<PrimaryKeyJoinColumnRelationship, Boolean>(
+	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends SpecifiedPrimaryKeyJoinColumnRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<SpecifiedPrimaryKeyJoinColumnRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
