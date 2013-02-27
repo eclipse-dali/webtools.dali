@@ -50,5 +50,5 @@ public interface SpecifiedMappingRelationshipStrategy2_0
 	 * match the name of an appropriate attribute mapping in the overridden
 	 * mapped superclass or embeddable type).
 	 */
-	RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship);
+	RelationshipStrategy selectOverrideStrategy(OverrideRelationship2_0 overrideRelationship);
 }

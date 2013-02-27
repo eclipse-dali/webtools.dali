@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -137,7 +137,7 @@ public class NullJavaJoinColumnRelationshipStrategy
 		// NOP
 	}
 
-	public RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+	public RelationshipStrategy selectOverrideStrategy(OverrideRelationship2_0 overrideRelationship) {
 		return null;
 	}
 

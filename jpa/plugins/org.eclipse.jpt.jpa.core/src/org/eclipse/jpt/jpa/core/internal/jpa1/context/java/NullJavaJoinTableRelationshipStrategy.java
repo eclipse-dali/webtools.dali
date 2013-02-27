@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipS
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -84,7 +84,7 @@ public class NullJavaJoinTableRelationshipStrategy
 		return null;
 	}
 
-	public RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+	public RelationshipStrategy selectOverrideStrategy(OverrideRelationship2_0 overrideRelationship) {
 		return null;
 	}
 

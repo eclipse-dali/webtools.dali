@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 
 public class GenericOrmMappingJoinTableRelationshipStrategy
 	extends AbstractOrmJoinTableRelationshipStrategy<OrmMappingJoinTableRelationship>
@@ -37,7 +37,7 @@ public class GenericOrmMappingJoinTableRelationshipStrategy
 		return this.getJpaPlatformVariation().isJoinTableOverridable();
 	}
 
-	public RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+	public RelationshipStrategy selectOverrideStrategy(OverrideRelationship2_0 overrideRelationship) {
 		return overrideRelationship.getJoinTableStrategy();
 	}
 

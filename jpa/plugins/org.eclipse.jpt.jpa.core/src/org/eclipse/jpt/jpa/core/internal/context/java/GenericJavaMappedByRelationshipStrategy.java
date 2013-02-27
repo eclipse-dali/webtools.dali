@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationship;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -143,7 +143,7 @@ public class GenericJavaMappedByRelationshipStrategy
 		return (entity == null) ? null : entity.getName();
 	}
 
-	public RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+	public RelationshipStrategy selectOverrideStrategy(OverrideRelationship2_0 overrideRelationship) {
 		return null;  // mapped-by strategies cannot be overridden
 	}
 

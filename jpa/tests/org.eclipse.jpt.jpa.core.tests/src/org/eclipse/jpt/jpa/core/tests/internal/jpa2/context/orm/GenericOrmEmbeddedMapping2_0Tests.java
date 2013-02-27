@@ -62,7 +62,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideRelationship2_0;
@@ -1576,7 +1576,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		overrideContainer = virtualEmbeddedMapping.getAssociationOverrideContainer();
 		SpecifiedAssociationOverride associationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals("addresses", associationOverride.getName());
-		JoinTableRelationshipStrategy strategy = ((ReadOnlyOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
+		JoinTableRelationshipStrategy strategy = ((OverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 		joinTable = strategy.getJoinTable();
 		assertEquals("JAVA_FOO", joinTable.getName());
 		assertEquals(2, joinTable.getJoinColumnsSize());

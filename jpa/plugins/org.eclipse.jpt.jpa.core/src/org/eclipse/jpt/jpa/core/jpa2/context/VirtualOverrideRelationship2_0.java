@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 public interface VirtualOverrideRelationship2_0
 	extends VirtualOverrideRelationship,
 			VirtualJoinTableRelationship,
-			ReadOnlyOverrideRelationship2_0
+			OverrideRelationship2_0
 {
 	// add join table support to JPA 1.0 association override
 }

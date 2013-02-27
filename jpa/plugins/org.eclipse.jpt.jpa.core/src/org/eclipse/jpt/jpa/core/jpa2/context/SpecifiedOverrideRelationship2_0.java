@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 public interface SpecifiedOverrideRelationship2_0
 	extends OverrideRelationship,
 			SpecifiedJoinTableRelationship,
-			ReadOnlyOverrideRelationship2_0
+			OverrideRelationship2_0
 {
 	// add join table support to JPA 1.0 association override
 }

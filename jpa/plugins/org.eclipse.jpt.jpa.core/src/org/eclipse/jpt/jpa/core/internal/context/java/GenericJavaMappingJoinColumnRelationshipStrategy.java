@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProv
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationArgumentMessages;
 import org.eclipse.jpt.jpa.db.Table;
@@ -128,7 +128,7 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 		return this.targetForeignKey;
 	}
 
-	public RelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+	public RelationshipStrategy selectOverrideStrategy(OverrideRelationship2_0 overrideRelationship) {
 		return overrideRelationship.getJoinColumnStrategy();
 	}
 
