@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
 
 /**
  * Java primary key join column relationship (1:1)
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshi
  * @since 2.2
  */
 public interface JavaPrimaryKeyJoinColumnRelationship
-	extends SpecifiedPrimaryKeyJoinColumnRelationship,
+	extends PrimaryKeyJoinColumnRelationship,
 		JavaMappingRelationship
 {
 	JavaSpecifiedPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy();

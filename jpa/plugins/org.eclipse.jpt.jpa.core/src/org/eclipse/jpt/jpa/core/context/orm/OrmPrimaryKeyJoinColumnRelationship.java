@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
  * @since 2.2
  */
 public interface OrmPrimaryKeyJoinColumnRelationship
-	extends SpecifiedPrimaryKeyJoinColumnRelationship, OrmMappingRelationship
+	extends PrimaryKeyJoinColumnRelationship, OrmMappingRelationship
 {
 	XmlPrimaryKeyJoinColumnContainer getXmlContainer();
 	

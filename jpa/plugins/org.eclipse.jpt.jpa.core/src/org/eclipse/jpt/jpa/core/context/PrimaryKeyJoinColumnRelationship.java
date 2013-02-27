@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 2.2
  * @since 2.2
  */
-public interface SpecifiedPrimaryKeyJoinColumnRelationship
+public interface PrimaryKeyJoinColumnRelationship
 	extends SpecifiedRelationship
 {
 	/**

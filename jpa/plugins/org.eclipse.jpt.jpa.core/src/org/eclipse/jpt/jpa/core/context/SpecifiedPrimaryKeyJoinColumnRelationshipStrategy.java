@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see RelationshipMapping
- * @see SpecifiedPrimaryKeyJoinColumnRelationship
+ * @see PrimaryKeyJoinColumnRelationship
  * 
  * @version 2.2
  * @since 2.2
