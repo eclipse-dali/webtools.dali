@@ -44,7 +44,7 @@ public interface Entity
 	 * Return the table for this entity, either specified or default.
 	 * This will not be null.
 	 */
-	Table getTable();
+	SpecifiedTable getTable();
 
 	/**
 	 * Return the name of the entity's primary key column.

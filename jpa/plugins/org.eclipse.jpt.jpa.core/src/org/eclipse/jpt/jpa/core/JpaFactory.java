@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
@@ -219,9 +219,9 @@ public interface JpaFactory
 	
 	JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.ParentAdapter parentAdapter);
 
-	JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner);
+	JavaTable buildJavaTable(JavaEntity parent, SpecifiedTable.Owner owner);
 	
-	JavaJoinTable buildJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, Table.Owner owner);
+	JavaJoinTable buildJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner);
 	
 	VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
 	
@@ -235,7 +235,7 @@ public interface JpaFactory
 	
 	VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn);
 	
-	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation);
+	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, SpecifiedTable.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	
 	JavaSequenceGenerator buildJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation);
 	

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
  * @since 2.0
  */
 public interface JavaTable
-	extends Table
+	extends SpecifiedTable
 {
 	BaseTableAnnotation getTableAnnotation();
 

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Group;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Table
+ * @see SpecifiedTable
  * @see TableCombo
  * @see CatalogCombo
  * @see SchemaCombo
@@ -84,7 +84,7 @@ public class TableComposite extends Pane<Entity>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Table> subjectHolder = buildTableHolder();
+		PropertyValueModel<SpecifiedTable> subjectHolder = buildTableHolder();
 		PropertyValueModel<Boolean> enabledModel = buildTableEnabledModel();
 
 		// Table widgets
@@ -100,11 +100,11 @@ public class TableComposite extends Pane<Entity>
 		this.addSchemaCombo(subjectHolder, enabledModel, container);
 	}
 	
-	protected ModifiablePropertyValueModel<Table> buildTableHolder() {
+	protected ModifiablePropertyValueModel<SpecifiedTable> buildTableHolder() {
 		
-		return new PropertyAspectAdapter<Entity, Table>(getSubjectHolder(), Entity.TABLE_IS_UNDEFINED_PROPERTY) {
+		return new PropertyAspectAdapter<Entity, SpecifiedTable>(getSubjectHolder(), Entity.TABLE_IS_UNDEFINED_PROPERTY) {
 			@Override
-			protected Table buildValue_() {
+			protected SpecifiedTable buildValue_() {
 				return this.subject.tableIsUndefined() ? null : this.subject.getTable();
 			}
 		};
@@ -119,8 +119,8 @@ public class TableComposite extends Pane<Entity>
 		};
 	}
 
-	private CatalogCombo<Table> addCatalogCombo(PropertyValueModel<Table> tableHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
-		return new CatalogCombo<Table>(this, tableHolder, enabledModel, container) {
+	private CatalogCombo<SpecifiedTable> addCatalogCombo(PropertyValueModel<SpecifiedTable> tableHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
+		return new CatalogCombo<SpecifiedTable>(this, tableHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -156,8 +156,8 @@ public class TableComposite extends Pane<Entity>
 		};
 	}
 
-	private SchemaCombo<Table> addSchemaCombo(PropertyValueModel<Table> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
-		return new SchemaCombo<Table>(this, subjectHolder, enabledModel, container) {
+	private SchemaCombo<SpecifiedTable> addSchemaCombo(PropertyValueModel<SpecifiedTable> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
+		return new SchemaCombo<SpecifiedTable>(this, subjectHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -213,8 +213,8 @@ public class TableComposite extends Pane<Entity>
 		ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY
 	});
 
-	private TableCombo<Table> addTableCombo(PropertyValueModel<Table> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
-		return new TableCombo<Table>(this, subjectHolder, enabledModel, container) {
+	private TableCombo<SpecifiedTable> addTableCombo(PropertyValueModel<SpecifiedTable> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
+		return new TableCombo<SpecifiedTable>(this, subjectHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {

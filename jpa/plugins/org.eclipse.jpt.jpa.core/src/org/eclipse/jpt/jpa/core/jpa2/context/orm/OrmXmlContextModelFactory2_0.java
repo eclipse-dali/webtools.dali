@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
@@ -49,5 +49,5 @@ public interface OrmXmlContextModelFactory2_0
 	
 	OrmSpecifiedOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmSpecifiedOrderColumn2_0.Owner owner);
 	
-	OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, Table.Owner owner);
+	OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner);
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -316,7 +316,7 @@ public class JavaTableTests extends ContextModelTestCase
 	public void testSetSpecifiedCatalog() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Table table = getJavaEntity().getTable();
+		SpecifiedTable table = getJavaEntity().getTable();
 		table.setSpecifiedCatalog("myCatalog");
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -356,7 +356,7 @@ public class JavaTableTests extends ContextModelTestCase
 	public void testSetSpecifiedSchema() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Table table = getJavaEntity().getTable();
+		SpecifiedTable table = getJavaEntity().getTable();
 		table.setSpecifiedSchema("mySchema");
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
@@ -407,7 +407,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = getJavaEntity().getTable();
+		SpecifiedTable table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(0).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
@@ -426,7 +426,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = getJavaEntity().getTable();
+		SpecifiedTable table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");

@@ -56,7 +56,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -120,7 +120,7 @@ public abstract class AbstractJavaEntity
 	protected boolean tableIsUndefined;
 
 	protected final ContextListContainer<JavaSecondaryTable, SecondaryTableAnnotation> specifiedSecondaryTableContainer;
-	protected final Table.Owner specifiedSecondaryTableOwner;
+	protected final SpecifiedTable.Owner specifiedSecondaryTableOwner;
 
 	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
@@ -493,7 +493,7 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
-	protected Table.Owner buildSpecifiedSecondaryTableOwner() {
+	protected SpecifiedTable.Owner buildSpecifiedSecondaryTableOwner() {
 		return new SecondaryTableOwner();
 	}
 

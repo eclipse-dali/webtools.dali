@@ -54,7 +54,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -411,7 +411,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.getJpaFactory().buildJavaCollectionTable(this, this.buildCollectionTableOwner());
 	}
 
-	protected Table.Owner buildCollectionTableOwner() {
+	protected SpecifiedTable.Owner buildCollectionTableOwner() {
 		return new CollectionTableOwner();
 	}
 

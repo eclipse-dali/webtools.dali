@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
@@ -80,7 +80,7 @@ public interface JpaFactory2_0
 	
 	JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, NamedColumn.Owner owner);
 	
-	JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner);
+	JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, SpecifiedTable.Owner owner);
 
 	JavaSpecifiedColumn buildJavaMapKeyColumn(JpaContextModel parent, JavaSpecifiedColumn.Owner owner);
 	

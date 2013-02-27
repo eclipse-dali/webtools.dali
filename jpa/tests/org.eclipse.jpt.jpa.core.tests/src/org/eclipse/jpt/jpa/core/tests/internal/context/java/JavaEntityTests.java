@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
@@ -699,7 +699,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		ICompilationUnit cu = createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Table table = getJavaEntity().getTable();
+		SpecifiedTable table = getJavaEntity().getTable();
 		assertEquals(TYPE_NAME, table.getName());
 		assertSourceDoesNotContain("@Table", cu);
 		

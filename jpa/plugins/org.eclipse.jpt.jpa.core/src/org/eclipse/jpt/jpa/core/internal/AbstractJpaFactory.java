@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
@@ -241,7 +241,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaEmbeddable(parent, embeddableAnnotation);
 	}
 	
-	public JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner) {
+	public JavaTable buildJavaTable(JavaEntity parent, SpecifiedTable.Owner owner) {
 		return new GenericJavaTable(parent, owner);
 	}
 	
@@ -265,7 +265,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	
-	public JavaJoinTable buildJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, Table.Owner owner) {
+	public JavaJoinTable buildJavaJoinTable(JavaSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner) {
 		return new GenericJavaJoinTable(parent, owner);
 	}
 	
@@ -273,7 +273,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
-	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation) {
+	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, SpecifiedTable.Owner owner, SecondaryTableAnnotation tableAnnotation) {
 		return new GenericJavaSecondaryTable(parent, owner, tableAnnotation);
 	}
 	

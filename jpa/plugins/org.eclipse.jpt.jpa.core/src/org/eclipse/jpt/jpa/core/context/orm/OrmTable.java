@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 
 /**
  * <code>orm.xml</code> table
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.Table;
  * @since 2.0
  */
 public interface OrmTable
-	extends Table
+	extends SpecifiedTable
 {
 	ListIterable<OrmUniqueConstraint> getUniqueConstraints();
 	OrmUniqueConstraint getUniqueConstraint(int index);

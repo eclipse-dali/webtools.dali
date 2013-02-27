@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
@@ -117,9 +117,9 @@ public interface OrmXmlContextModelFactory
 	 */
 	OrmPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter);
 
-	OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner);
+	OrmTable buildOrmTable(OrmEntity parent, SpecifiedTable.Owner owner);
 
-	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, Table.Owner owner, XmlSecondaryTable xmlSecondaryTable);
+	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, SpecifiedTable.Owner owner, XmlSecondaryTable xmlSecondaryTable);
 
 	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, ReadOnlyTable.Owner owner, JavaSecondaryTable javaSecondaryTable);
 
@@ -127,7 +127,7 @@ public interface OrmXmlContextModelFactory
 
 	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextModel parent, BaseJoinColumn.Owner owner, JavaSpecifiedPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
 
-	OrmJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, Table.Owner owner);
+	OrmJoinTable buildOrmJoinTable(OrmSpecifiedJoinTableRelationshipStrategy parent, SpecifiedTable.Owner owner);
 
 	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
 

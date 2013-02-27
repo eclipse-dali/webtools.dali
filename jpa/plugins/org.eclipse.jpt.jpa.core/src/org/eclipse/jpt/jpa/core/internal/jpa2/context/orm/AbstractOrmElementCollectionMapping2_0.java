@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -416,7 +416,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return this.getContextModelFactory2_0().buildOrmCollectionTable(this, this.buildCollectionTableOwner());
 	}
 
-	protected Table.Owner buildCollectionTableOwner() {
+	protected SpecifiedTable.Owner buildCollectionTableOwner() {
 		return new CollectionTableOwner();
 	}
 

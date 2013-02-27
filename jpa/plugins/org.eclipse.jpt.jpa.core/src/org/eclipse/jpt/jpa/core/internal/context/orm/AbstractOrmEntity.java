@@ -61,7 +61,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
@@ -390,7 +390,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.getContextModelFactory().buildOrmTable(this, this.buildTableOwner());
 	}
 
-	protected Table.Owner buildTableOwner() {
+	protected SpecifiedTable.Owner buildTableOwner() {
 		return new TableOwner();
 	}
 
@@ -729,7 +729,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		// the virtual secondary tables will be built during the update
 	}
 
-	protected Table.Owner buildSecondaryTableOwner() {
+	protected SpecifiedTable.Owner buildSecondaryTableOwner() {
 		return new SecondaryTableOwner();
 	}
 
