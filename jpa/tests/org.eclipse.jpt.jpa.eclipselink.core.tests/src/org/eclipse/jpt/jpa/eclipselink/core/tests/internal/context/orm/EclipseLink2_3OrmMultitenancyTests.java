@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUn
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant;
@@ -238,25 +238,25 @@ public class EclipseLink2_3OrmMultitenancyTests
 		OrmEclipseLinkMultitenancy2_3 ormMultitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
 		XmlMultitenant multitenantResource = multitenantHolder.getMultitenant();
 
-		OrmTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn = ormMultitenancy.addSpecifiedTenantDiscriminatorColumn(0);
+		OrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn = ormMultitenancy.addSpecifiedTenantDiscriminatorColumn(0);
 		tenantDiscriminatorColumn.setSpecifiedName("FOO");
 
 		assertEquals("FOO", multitenantResource.getTenantDiscriminatorColumns().get(0).getName());
 
-		OrmTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn2 = ormMultitenancy.addSpecifiedTenantDiscriminatorColumn(0);
+		OrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn2 = ormMultitenancy.addSpecifiedTenantDiscriminatorColumn(0);
 		tenantDiscriminatorColumn2.setSpecifiedName("BAR");
 
 		assertEquals("BAR", multitenantResource.getTenantDiscriminatorColumns().get(0).getName());
 		assertEquals("FOO", multitenantResource.getTenantDiscriminatorColumns().get(1).getName());
 
-		OrmTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn3 = ormMultitenancy.addSpecifiedTenantDiscriminatorColumn(1);
+		OrmSpecifiedTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn3 = ormMultitenancy.addSpecifiedTenantDiscriminatorColumn(1);
 		tenantDiscriminatorColumn3.setSpecifiedName("BAZ");
 
 		assertEquals("BAR", multitenantResource.getTenantDiscriminatorColumns().get(0).getName());
 		assertEquals("BAZ", multitenantResource.getTenantDiscriminatorColumns().get(1).getName());
 		assertEquals("FOO", multitenantResource.getTenantDiscriminatorColumns().get(2).getName());
 
-		ListIterator<OrmTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns = ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator();
+		ListIterator<OrmSpecifiedTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns = ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator();
 		assertEquals(tenantDiscriminatorColumn2, tenantDiscriminatorColumns.next());
 		assertEquals(tenantDiscriminatorColumn3, tenantDiscriminatorColumns.next());
 		assertEquals(tenantDiscriminatorColumn, tenantDiscriminatorColumns.next());
@@ -310,7 +310,7 @@ public class EclipseLink2_3OrmMultitenancyTests
 
 
 		ormMultitenancy.moveSpecifiedTenantDiscriminatorColumn(2, 0);
-		ListIterator<OrmTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns = ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator();
+		ListIterator<OrmSpecifiedTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns = ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator();
 		assertEquals("BAR", tenantDiscriminatorColumns.next().getName());
 		assertEquals("BAZ", tenantDiscriminatorColumns.next().getName());
 		assertEquals("FOO", tenantDiscriminatorColumns.next().getName());
@@ -347,7 +347,7 @@ public class EclipseLink2_3OrmMultitenancyTests
 		multitenantResource.getTenantDiscriminatorColumns().get(1).setName("BAR");
 		multitenantResource.getTenantDiscriminatorColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns = ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator();
+		ListIterator<OrmSpecifiedTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns = ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator();
 		assertEquals("FOO", tenantDiscriminatorColumns.next().getName());
 		assertEquals("BAR", tenantDiscriminatorColumns.next().getName());
 		assertEquals("BAZ", tenantDiscriminatorColumns.next().getName());

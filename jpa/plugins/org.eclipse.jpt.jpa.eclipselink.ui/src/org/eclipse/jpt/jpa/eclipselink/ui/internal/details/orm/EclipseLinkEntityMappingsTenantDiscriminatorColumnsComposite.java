@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
@@ -77,7 +77,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<EntityMappings> {
 
 		public ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(EntityMappings subject) {
-			OrmTenantDiscriminatorColumn2_3 column = ((EclipseLinkEntityMappings) subject).addSpecifiedTenantDiscriminatorColumn();
+			OrmSpecifiedTenantDiscriminatorColumn2_3 column = ((EclipseLinkEntityMappings) subject).addSpecifiedTenantDiscriminatorColumn();
 			column.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 			return column;
 		}
@@ -111,7 +111,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 
 		public void removeTenantDiscriminatorColumn(EntityMappings subject, ReadOnlyTenantDiscriminatorColumn2_3 column) {
-			((EclipseLinkEntityMappings) subject).removeSpecifiedTenantDiscriminatorColumn((OrmTenantDiscriminatorColumn2_3) column);
+			((EclipseLinkEntityMappings) subject).removeSpecifiedTenantDiscriminatorColumn((OrmSpecifiedTenantDiscriminatorColumn2_3) column);
 		}
 	}
 

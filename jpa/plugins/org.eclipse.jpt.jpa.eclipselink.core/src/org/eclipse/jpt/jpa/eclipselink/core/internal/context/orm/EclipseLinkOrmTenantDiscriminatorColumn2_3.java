@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
  */
 public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	extends AbstractOrmNamedDiscriminatorColumn<XmlTenantDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
-	implements OrmTenantDiscriminatorColumn2_3
+	implements OrmSpecifiedTenantDiscriminatorColumn2_3
 {
 	protected XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn;
 

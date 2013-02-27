@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminator
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 
 /**
- * orm tenant discriminator column
+ * <code>orm.xml</code> specified tenant discriminator column
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorC
  * @version 3.3
  * @since 3.1
  */
-public interface OrmTenantDiscriminatorColumn2_3
+public interface OrmSpecifiedTenantDiscriminatorColumn2_3
 	extends SpecifiedTenantDiscriminatorColumn2_3
 {
 	XmlTenantDiscriminatorColumn getXmlColumn();

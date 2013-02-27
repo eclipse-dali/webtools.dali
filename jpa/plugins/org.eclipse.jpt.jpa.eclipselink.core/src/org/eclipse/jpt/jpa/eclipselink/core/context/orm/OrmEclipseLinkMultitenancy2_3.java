@@ -16,7 +16,7 @@ public interface OrmEclipseLinkMultitenancy2_3
 	extends EclipseLinkMultitenancy2_3
 {
 
-	ListIterable<OrmTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
-	OrmTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
-	OrmTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
+	ListIterable<OrmSpecifiedTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
+	OrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
+	OrmSpecifiedTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
 }

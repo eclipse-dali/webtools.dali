@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
@@ -167,7 +167,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<OrmPersistenceUnitDefaults> {
 
 		public ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject) {
-			OrmTenantDiscriminatorColumn2_3 column = ((EclipseLinkPersistenceUnitDefaults) subject).addTenantDiscriminatorColumn();
+			OrmSpecifiedTenantDiscriminatorColumn2_3 column = ((EclipseLinkPersistenceUnitDefaults) subject).addTenantDiscriminatorColumn();
 			column.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 			return column;
 		}
@@ -201,7 +201,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 		}
 
 		public void removeTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject, ReadOnlyTenantDiscriminatorColumn2_3 column) {
-			((EclipseLinkPersistenceUnitDefaults) subject).removeTenantDiscriminatorColumn((OrmTenantDiscriminatorColumn2_3) column);
+			((EclipseLinkPersistenceUnitDefaults) subject).removeTenantDiscriminatorColumn((OrmSpecifiedTenantDiscriminatorColumn2_3) column);
 		}
 	}
 
