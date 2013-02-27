@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualJoinColumnRelationshipStrategy
-	extends ReadOnlyJoinColumnRelationshipStrategy, VirtualRelationshipStrategy
+	extends JoinColumnRelationshipStrategy, VirtualRelationshipStrategy
 {
 	ListIterable<? extends VirtualJoinColumn> getJoinColumns();
 	ListIterable<? extends VirtualJoinColumn> getSpecifiedJoinColumns();

@@ -34,7 +34,7 @@ public interface ReadOnlyJoinColumnRelationship
 	 * Return the (never <code>null</code>) strategy used to configure
 	 * the relationship's join column strategy.
 	 */
-	ReadOnlyJoinColumnRelationshipStrategy getJoinColumnStrategy();
+	JoinColumnRelationshipStrategy getJoinColumnStrategy();
 
 	/**
 	 * Return whether the join column strategy is the

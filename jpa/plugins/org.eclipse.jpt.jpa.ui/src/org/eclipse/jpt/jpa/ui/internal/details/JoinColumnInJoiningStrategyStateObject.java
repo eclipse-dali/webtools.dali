@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
@@ -42,7 +42,7 @@ public class JoinColumnInJoiningStrategyStateObject
 	 * used to create a new one
 	 */
 	public JoinColumnInJoiningStrategyStateObject(
-			ReadOnlyJoinColumnRelationshipStrategy joiningStrategy,
+			JoinColumnRelationshipStrategy joiningStrategy,
 		    JoinColumn joinColumn) {
 		super(joiningStrategy, joinColumn);
 	}

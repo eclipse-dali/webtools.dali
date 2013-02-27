@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -95,7 +95,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected ListIterable<JoinColumn> getOverriddenSpecifiedJoinColumns() {
-		ReadOnlyJoinColumnRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
+		JoinColumnRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
 		return (overriddenStrategy == null) ?
 				EmptyListIterable.<JoinColumn>instance() :
 				new SuperListIterableWrapper<JoinColumn>(overriddenStrategy.getSpecifiedJoinColumns());
@@ -172,7 +172,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	protected JoinColumn getOverriddenDefaultJoinColumn() {
-		ReadOnlyJoinColumnRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
+		JoinColumnRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
 		return (overriddenStrategy == null) ? null : overriddenStrategy.getDefaultJoinColumn();
 	}
 
@@ -183,7 +183,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 		return this.parent;
 	}
 
-	protected ReadOnlyJoinColumnRelationshipStrategy getOverriddenStrategy() {
+	protected JoinColumnRelationshipStrategy getOverriddenStrategy() {
 		ReadOnlyJoinColumnRelationship relationship = this.getOverriddenJoinColumnRelationship();
 		return (relationship == null) ? null : relationship.getJoinColumnStrategy();
 	}

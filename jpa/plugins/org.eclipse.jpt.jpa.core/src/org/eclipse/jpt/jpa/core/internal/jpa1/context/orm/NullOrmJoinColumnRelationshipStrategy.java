@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -121,11 +121,11 @@ public class NullOrmJoinColumnRelationshipStrategy
 		return this.parent;
 	}
 
-	public void initializeFrom(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
+	public void initializeFrom(JoinColumnRelationshipStrategy oldStrategy) {
 		// NOP
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
+	public void initializeFromVirtual(JoinColumnRelationshipStrategy oldStrategy) {
 		// NOP
 	}
 

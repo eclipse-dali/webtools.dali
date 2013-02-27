@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
@@ -237,13 +237,13 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
 	}
 
-	public void initializeFrom(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
+	public void initializeFrom(JoinColumnRelationshipStrategy oldStrategy) {
 		for (JoinColumn joinColumn : oldStrategy.getSpecifiedJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinColumnRelationshipStrategy virtualStrategy) {
+	public void initializeFromVirtual(JoinColumnRelationshipStrategy virtualStrategy) {
 		for (JoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
 		}

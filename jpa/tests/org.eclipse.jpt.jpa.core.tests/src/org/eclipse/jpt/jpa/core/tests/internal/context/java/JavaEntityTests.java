@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
@@ -2477,7 +2477,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		ReadOnlyJoinColumnRelationshipStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
+		JoinColumnRelationshipStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.getJoinColumnsSize());
 		JoinColumn virtualJoinColumn = joiningStrategy.getJoinColumns().iterator().next();
