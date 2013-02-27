@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java join column
  */
 public class GenericJavaJoinColumn
-	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, ReadOnlyJoinColumn.Owner>
+	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, JoinColumn.Owner>
 	implements JavaSpecifiedJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JpaContextModel, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
@@ -37,7 +37,7 @@ public class GenericJavaJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 
@@ -141,12 +141,12 @@ public class GenericJavaJoinColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(ReadOnlyJoinColumn oldColumn) {
+	public void initializeFrom(JoinColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinColumn virtualColumn) {
+	public void initializeFromVirtual(JoinColumn virtualColumn) {
 		super.initializeFromVirtual(virtualColumn);
 		this.setSpecifiedReferencedColumnName(virtualColumn.getReferencedColumnName());
 	}

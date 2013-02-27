@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
@@ -109,7 +109,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedMapKeyJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
+	protected final JoinColumn.Owner mapKeyJoinColumnOwner;
 
 	protected OrmSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
@@ -799,7 +799,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return this.getContextModelFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
 	}
 
-	protected ReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
+	protected JoinColumn.Owner buildMapKeyJoinColumnOwner() {
 		return new MapKeyJoinColumnOwner();
 	}
 
@@ -1234,7 +1234,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	// ********** map key join column owner **********
 
 	protected class MapKeyJoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected MapKeyJoinColumnOwner() {
 			super();
@@ -1291,7 +1291,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
-				(ReadOnlyJoinColumn) column,
+				(JoinColumn) column,
 				this,
 				new RelationshipStrategyTableDescriptionProvider(getRelationship().getStrategy()));
 		}

@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -150,7 +150,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
+	protected final JoinColumn.Owner mapKeyJoinColumnOwner;
 
 	protected JavaSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
@@ -1135,7 +1135,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.getJpaFactory().buildJavaJoinColumn(this, this.mapKeyJoinColumnOwner, joinColumnAnnotation);
 	}
 
-	protected ReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
+	protected JoinColumn.Owner buildMapKeyJoinColumnOwner() {
 		return new MapKeyJoinColumnOwner();
 	}
 
@@ -1930,14 +1930,14 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 
 		public JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) columnOwner, new CollectionTableTableDescriptionProvider());
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, new CollectionTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
 			return JptValidator.Null.instance();
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
 			return JptValidator.Null.instance();
 		}
 
@@ -1949,7 +1949,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** map key join column owner **********
 
 	protected class MapKeyJoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected MapKeyJoinColumnOwner() {
 			super();
@@ -2006,7 +2006,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
-				(ReadOnlyJoinColumn) column,
+				(JoinColumn) column,
 				this, 
 				new CollectionTableTableDescriptionProvider());
 		}

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
@@ -59,11 +59,11 @@ public class NullOrmJoinTableRelationshipStrategy
 		return this.getRelationship().getValidationTextRange();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		throw new UnsupportedOperationException();
 	}
 

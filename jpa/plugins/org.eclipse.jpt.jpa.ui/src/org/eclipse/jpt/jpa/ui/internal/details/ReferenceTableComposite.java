@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
@@ -89,11 +89,11 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		return new OverrideDefaultJoinColumnHolder();
 	}
 		
-	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
+	ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.subject.getSpecifiedJoinColumns());
+			protected ListIterable<JoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<JoinColumn>(this.subject.getSpecifiedJoinColumns());
 			}
 
 			@Override
@@ -254,7 +254,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY
 	));
 
-	void editJoinColumn(ReadOnlyJoinColumn joinColumn) {
+	void editJoinColumn(JoinColumn joinColumn) {
 
 		JoinColumnInReferenceTableDialog dialog = new JoinColumnInReferenceTableDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 
@@ -304,7 +304,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			return ReferenceTableComposite.this.addJoinColumn(subject);
 		}
 
-		public ReadOnlyJoinColumn getDefaultJoinColumn(T subject) {
+		public JoinColumn getDefaultJoinColumn(T subject) {
 			return subject.getDefaultJoinColumn();
 		}
 
@@ -312,7 +312,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			return ReadOnlyReferenceTable.DEFAULT_JOIN_COLUMN_PROPERTY;
 		}
 
-		public void editJoinColumn(T subject, ReadOnlyJoinColumn joinColumn) {
+		public void editJoinColumn(T subject, JoinColumn joinColumn) {
 			ReferenceTableComposite.this.editJoinColumn(joinColumn);
 		}
 
@@ -324,8 +324,8 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			((ReferenceTable) subject).removeSpecifiedJoinColumn(joinColumn);
 		}
 
-		public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(T subject) {
-			return new SuperListIterableWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
+		public ListIterable<JoinColumn> getSpecifiedJoinColumns(T subject) {
+			return new SuperListIterableWrapper<JoinColumn>(subject.getSpecifiedJoinColumns());
 		}
 
 		public int getSpecifiedJoinColumnsSize(T subject) {

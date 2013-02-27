@@ -50,7 +50,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
@@ -2082,14 +2082,14 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 
 		public JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
-			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, new EntityTableDescriptionProvider());
+			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
 			return new AssociationOverrideJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 

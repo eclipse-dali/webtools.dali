@@ -12,13 +12,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
- * @see ReadOnlyJoinColumn
+ * @see JoinColumn
  * @see ReadOnlyJoinTable
  * @see InverseJoinColumnInJoinTableDialog
  */
@@ -27,7 +27,7 @@ public class InverseJoinColumnInJoinTableStateObject
 {
 	public InverseJoinColumnInJoinTableStateObject(
 			ReadOnlyJoinTable joinTable,
-	        ReadOnlyJoinColumn joinColumn) {
+	        JoinColumn joinColumn) {
 		super(joinTable, joinColumn);
 	}
 	

@@ -33,7 +33,7 @@ public interface ReadOnlyJoinTable
 	/**
 	 * Return the join table's inverse join columns, whether specified or default.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getInverseJoinColumns();
+	ListIterable<? extends JoinColumn> getInverseJoinColumns();
 
 	/**
 	 * Return the number of inverse join columns, whether specified or default.
@@ -43,7 +43,7 @@ public interface ReadOnlyJoinTable
 	/**
 	 * Return the specified inverse join columns.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getSpecifiedInverseJoinColumns();
+	ListIterable<? extends JoinColumn> getSpecifiedInverseJoinColumns();
 		String SPECIFIED_INVERSE_JOIN_COLUMNS_LIST = "specifiedInverseJoinColumns"; //$NON-NLS-1$
 
 	/**
@@ -59,12 +59,12 @@ public interface ReadOnlyJoinTable
 	/**
 	 * Return the specified inverse join column at the specified index.
 	 */
-	ReadOnlyJoinColumn getSpecifiedInverseJoinColumn(int index);
+	JoinColumn getSpecifiedInverseJoinColumn(int index);
 
 	/**
 	 * Return the default inverse join column or null. A default inverse join column
 	 * only exists if there are no specified inverse join columns.
 	 */
-	ReadOnlyJoinColumn getDefaultInverseJoinColumn();
+	JoinColumn getDefaultInverseJoinColumn();
 		String DEFAULT_INVERSE_JOIN_COLUMN = "defaultInverseJoinColumn"; //$NON-NLS-1$
 }

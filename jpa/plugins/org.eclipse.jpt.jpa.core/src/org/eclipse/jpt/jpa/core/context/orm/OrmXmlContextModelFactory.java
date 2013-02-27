@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
@@ -131,9 +131,9 @@ public interface OrmXmlContextModelFactory
 
 	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
 
-	OrmSpecifiedJoinColumn buildOrmJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
+	OrmSpecifiedJoinColumn buildOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
 
-	VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
+	VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn);
 
 	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(JpaContextModel parent, OrmAttributeOverrideContainer.Owner owner);
 

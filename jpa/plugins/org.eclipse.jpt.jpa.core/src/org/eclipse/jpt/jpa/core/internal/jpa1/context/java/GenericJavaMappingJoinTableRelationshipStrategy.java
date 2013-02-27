@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
@@ -86,11 +86,11 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		return new JoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 }

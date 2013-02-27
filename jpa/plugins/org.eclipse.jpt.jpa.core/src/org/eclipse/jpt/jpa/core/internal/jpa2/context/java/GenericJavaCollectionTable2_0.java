@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -38,7 +38,7 @@ public class GenericJavaCollectionTable2_0
 	}
 
 	@Override
-	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected JoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -86,7 +86,7 @@ public class GenericJavaCollectionTable2_0
 	 * these point at the source/owning entity
 	 */
 	protected class JoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -103,7 +103,7 @@ public class GenericJavaCollectionTable2_0
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
-			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
+			return MappingTools.buildJoinColumnDefaultName((JoinColumn) column, this);
 		}
 
 		/**
@@ -155,7 +155,7 @@ public class GenericJavaCollectionTable2_0
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return new JoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyJoinColumn) column, this, new CollectionTableTableDescriptionProvider());
+			return new JoinColumnValidator(this.getPersistentAttribute(), (JoinColumn) column, this, new CollectionTableTableDescriptionProvider());
 		}
 	}
 }

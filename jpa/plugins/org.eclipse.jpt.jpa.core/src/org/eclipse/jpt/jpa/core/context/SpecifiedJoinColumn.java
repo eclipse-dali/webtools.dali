@@ -22,15 +22,15 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedJoinColumn
-	extends SpecifiedBaseJoinColumn, SpecifiedBaseColumn, ReadOnlyJoinColumn
+	extends SpecifiedBaseJoinColumn, SpecifiedBaseColumn, JoinColumn
 {
 	/**
 	 * Initialize the join column from the specified old join column.
 	 */
-	void initializeFrom(ReadOnlyJoinColumn oldJoinColumn);
+	void initializeFrom(JoinColumn oldJoinColumn);
 
 	/**
 	 * Initialize the join column from the specified old virtual join column.
 	 */
-	void initializeFromVirtual(ReadOnlyJoinColumn virtualJoinColumn);
+	void initializeFromVirtual(JoinColumn virtualJoinColumn);
 }

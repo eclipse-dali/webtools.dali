@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 
 /**
  * JPA 2.0 collection mapping (e.g. 1:m, m:m, element collection)
@@ -73,7 +73,7 @@ public interface CollectionMapping2_0
 	/**
 	 * Return the map key join columns whether specified or default.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getMapKeyJoinColumns();
+	ListIterable<? extends JoinColumn> getMapKeyJoinColumns();
 
 	/**
 	 * Return the number of map key join columns, whether specified and default.

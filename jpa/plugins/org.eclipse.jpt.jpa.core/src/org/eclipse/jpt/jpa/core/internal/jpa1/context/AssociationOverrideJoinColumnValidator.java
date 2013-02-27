@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -26,8 +26,8 @@ public class AssociationOverrideJoinColumnValidator
 
 	public AssociationOverrideJoinColumnValidator(
 				AssociationOverride override,
-				ReadOnlyJoinColumn column,
-				ReadOnlyJoinColumn.Owner joinColumnOwner,
+				JoinColumn column,
+				JoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(column, joinColumnOwner, provider);
 		this.override = override;
@@ -36,8 +36,8 @@ public class AssociationOverrideJoinColumnValidator
 	public AssociationOverrideJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				AssociationOverride override,
-				ReadOnlyJoinColumn column,
-				ReadOnlyJoinColumn.Owner joinColumnOwner,
+				JoinColumn column,
+				JoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, joinColumnOwner, provider);
 		this.override = override;

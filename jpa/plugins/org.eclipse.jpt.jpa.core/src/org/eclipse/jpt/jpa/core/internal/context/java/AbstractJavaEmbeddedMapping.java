@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -275,14 +275,14 @@ public abstract class AbstractJavaEmbeddedMapping
 		}
 
 		public JptValidator buildColumnValidator(Override_ override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, new EntityTableDescriptionProvider());
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner) {
 			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 

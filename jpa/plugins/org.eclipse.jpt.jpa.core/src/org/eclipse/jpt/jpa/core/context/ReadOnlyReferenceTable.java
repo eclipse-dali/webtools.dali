@@ -35,7 +35,7 @@ public interface ReadOnlyReferenceTable
 	/**
 	 * Return the reference table's join columns, whether specified or default.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getJoinColumns();
+	ListIterable<? extends JoinColumn> getJoinColumns();
 
 	/**
 	 * Return the number of join columns, whether specified or default.
@@ -45,7 +45,7 @@ public interface ReadOnlyReferenceTable
 	/**
 	 * Return the reference table's specified join columns.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getSpecifiedJoinColumns();
+	ListIterable<? extends JoinColumn> getSpecifiedJoinColumns();
 		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumns"; //$NON-NLS-1$
 
 	/**
@@ -61,12 +61,12 @@ public interface ReadOnlyReferenceTable
 	/**
 	 * Return the specified join column at the specified index.
 	 */
-	ReadOnlyJoinColumn getSpecifiedJoinColumn(int index);
+	JoinColumn getSpecifiedJoinColumn(int index);
 
 	/**
 	 * Return the default join column or <code>null</code>.
 	 * A default join column only exists if there are no specified join columns.
 	 */
-	ReadOnlyJoinColumn getDefaultJoinColumn();
+	JoinColumn getDefaultJoinColumn();
 		String DEFAULT_JOIN_COLUMN_PROPERTY = "defaultJoinColumn"; //$NON-NLS-1$
 }

@@ -56,7 +56,7 @@ public interface ReadOnlyJoinColumnRelationshipStrategy
 	/**
 	 * Return the join columns whether specified or default.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getJoinColumns();
+	ListIterable<? extends JoinColumn> getJoinColumns();
 
 	/**
 	 * Return the number of join columns, whether specified and default.
@@ -74,7 +74,7 @@ public interface ReadOnlyJoinColumnRelationshipStrategy
 	/**
 	 * Return the specified join columns.
 	 */
-	ListIterable<? extends ReadOnlyJoinColumn> getSpecifiedJoinColumns();
+	ListIterable<? extends JoinColumn> getSpecifiedJoinColumns();
 
 	/**
 	 * Return the number of specified join columns.
@@ -90,7 +90,7 @@ public interface ReadOnlyJoinColumnRelationshipStrategy
 	/**
 	 * Return the specified join column at the specified index.
 	 */
-	ReadOnlyJoinColumn getSpecifiedJoinColumn(int index);
+	JoinColumn getSpecifiedJoinColumn(int index);
 
 
 	// ********** default join column **********
@@ -106,5 +106,5 @@ public interface ReadOnlyJoinColumnRelationshipStrategy
 	 * times that there may be no default join column even if there are no
 	 * specified join columns.
 	 */
-	ReadOnlyJoinColumn getDefaultJoinColumn();
+	JoinColumn getDefaultJoinColumn();
 }

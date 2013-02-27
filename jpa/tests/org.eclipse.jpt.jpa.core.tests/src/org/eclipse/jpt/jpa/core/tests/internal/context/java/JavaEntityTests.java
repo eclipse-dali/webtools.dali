@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -2480,7 +2480,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		ReadOnlyJoinColumnRelationshipStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.getJoinColumnsSize());
-		ReadOnlyJoinColumn virtualJoinColumn = joiningStrategy.getJoinColumns().iterator().next();
+		JoinColumn virtualJoinColumn = joiningStrategy.getJoinColumns().iterator().next();
 		assertEquals("oneToOne_id", virtualJoinColumn.getName());
 		assertEquals("id", virtualJoinColumn.getReferencedColumnName());
 		assertEquals(SUB_TYPE_NAME, virtualJoinColumn.getTableName());

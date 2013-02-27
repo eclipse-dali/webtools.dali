@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -56,11 +56,11 @@ public class GenericOrmMappingJoinTableRelationshipStrategy
 		return getRelationshipMapping().getPersistentAttribute();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		return new JoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 

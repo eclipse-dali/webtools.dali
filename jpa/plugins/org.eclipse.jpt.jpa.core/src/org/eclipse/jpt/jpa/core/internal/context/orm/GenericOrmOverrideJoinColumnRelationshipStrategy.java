@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -30,7 +30,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected JoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -120,7 +120,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -131,7 +131,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
-			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
+			return MappingTools.buildJoinColumnDefaultName((JoinColumn) column, this);
 		}
 
 		public String getAttributeName() {

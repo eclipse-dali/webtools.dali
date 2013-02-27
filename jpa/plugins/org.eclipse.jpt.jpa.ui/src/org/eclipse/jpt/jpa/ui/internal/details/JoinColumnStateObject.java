@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 
 /**
  * The state object used to edit a <code>JoinColumn</code>.
@@ -46,7 +46,7 @@ public abstract class JoinColumnStateObject
 	 * @param owner The owner of the join column to create or where it is located
 	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnStateObject(Object owner, ReadOnlyJoinColumn joinColumn) {
+	public JoinColumnStateObject(Object owner, JoinColumn joinColumn) {
 		super(owner, joinColumn);
 	}
 
@@ -121,7 +121,7 @@ public abstract class JoinColumnStateObject
 		super.initialize(owner, baseJoinColumn);
 
 		if (baseJoinColumn != null) {
-			ReadOnlyJoinColumn joinColumn = (ReadOnlyJoinColumn) baseJoinColumn;
+			JoinColumn joinColumn = (JoinColumn) baseJoinColumn;
 
 			this.insertable       = joinColumn.getSpecifiedInsertable();
 			this.nullable         = joinColumn.getSpecifiedNullable();

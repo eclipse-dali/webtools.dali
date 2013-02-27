@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -42,7 +42,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	implements MappingRelationshipStrategy2_0, JavaPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final JoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
 	public GenericJavaPrimaryKeyJoinColumnRelationshipStrategy(JavaPrimaryKeyJoinColumnRelationship parent) {
@@ -142,7 +142,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected ReadOnlyJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected JoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -265,7 +265,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected PrimaryKeyJoinColumnOwner() {
 			super();

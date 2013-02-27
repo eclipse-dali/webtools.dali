@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 
@@ -27,9 +27,9 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 public interface AssociationOverride2_0
 	extends AssociationOverride
 {
-	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);
 
 	JptValidator buildJoinTableValidator(ReadOnlyJoinTable table);
 }

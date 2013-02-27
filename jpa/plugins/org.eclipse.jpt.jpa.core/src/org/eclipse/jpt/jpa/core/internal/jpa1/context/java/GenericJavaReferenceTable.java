@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReferenceTable;
@@ -35,7 +35,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 	implements JavaReferenceTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.Owner joinColumnOwner;
 
 	protected JavaSpecifiedJoinColumn defaultJoinColumn;
 
@@ -162,7 +162,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 		}
 	}
 
-	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.Owner buildJoinColumnOwner();
 
 	protected ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer(){
 		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
@@ -213,14 +213,14 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 
 	protected void initializeFrom(ReadOnlyReferenceTable oldTable) {
 		super.initializeFrom(oldTable);
-		for (ReadOnlyJoinColumn joinColumn : oldTable.getSpecifiedJoinColumns()) {
+		for (JoinColumn joinColumn : oldTable.getSpecifiedJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
 	protected void initializeFromVirtual(ReadOnlyReferenceTable virtualTable) {
 		super.initializeFromVirtual(virtualTable);
-		for (ReadOnlyJoinColumn joinColumn : virtualTable.getJoinColumns()) {
+		for (JoinColumn joinColumn : virtualTable.getJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
 		}
 	}
@@ -229,7 +229,7 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, A ext
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumnAnnotation);
 	}
 
-	protected JavaSpecifiedJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaSpecifiedJoinColumn buildJoinColumn(JoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this, jcOwner, joinColumnAnnotation);
 	}
 

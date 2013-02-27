@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -48,7 +48,7 @@ public class GenericJavaJoinTable
 	implements JavaJoinTable
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedInverseJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
+	protected final JoinColumn.Owner inverseJoinColumnOwner;
 
 	protected JavaSpecifiedJoinColumn defaultInverseJoinColumn;
 
@@ -60,7 +60,7 @@ public class GenericJavaJoinTable
 	}
 
 	@Override
-	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected JoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -192,7 +192,7 @@ public class GenericJavaJoinTable
 		}
 	}
 
-	protected ReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
+	protected JoinColumn.Owner buildInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
@@ -254,14 +254,14 @@ public class GenericJavaJoinTable
 
 	public void initializeFrom(ReadOnlyJoinTable oldTable) {
 		super.initializeFrom(oldTable);
-		for (ReadOnlyJoinColumn joinColumn : oldTable.getSpecifiedInverseJoinColumns()) {
+		for (JoinColumn joinColumn : oldTable.getSpecifiedInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
 	public void initializeFromVirtual(ReadOnlyJoinTable virtualTable) {
 		super.initializeFromVirtual(virtualTable);
-		for (ReadOnlyJoinColumn joinColumn : virtualTable.getInverseJoinColumns()) {
+		for (JoinColumn joinColumn : virtualTable.getInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFromVirtual(joinColumn);
 		}
 	}
@@ -316,14 +316,14 @@ public class GenericJavaJoinTable
 	 * just a little common behavior
 	 */
 	protected abstract class AbstractJoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected AbstractJoinColumnOwner() {
 			super();
 		}
 
 		public String getDefaultColumnName(NamedColumn column) {
-			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
+			return MappingTools.buildJoinColumnDefaultName((JoinColumn) column, this);
 		}
 
 		/**
@@ -401,7 +401,7 @@ public class GenericJavaJoinTable
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this);
+			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((JoinColumn) column, this);
 		}
 	}
 
@@ -437,7 +437,7 @@ public class GenericJavaJoinTable
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column) {
-			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this);
+			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((JoinColumn) column, this);
 		}
 	}
 }

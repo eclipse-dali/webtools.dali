@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
@@ -60,12 +60,12 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		return new OverrideDefaultJoinColumnHolder();
 	}
 	
-	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<ReadOnlyJoinColumnRelationshipStrategy, ReadOnlyJoinColumn>(
+	ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<ReadOnlyJoinColumnRelationshipStrategy, JoinColumn>(
 				getSubjectHolder(), ReadOnlyJoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.subject.getSpecifiedJoinColumns());
+			protected ListIterable<JoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<JoinColumn>(this.subject.getSpecifiedJoinColumns());
 			}
 
 			@Override

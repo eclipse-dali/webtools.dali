@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -91,7 +91,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 		return new SimpleCollectionValueModel<SpecifiedJoinColumn>();
 	}
 
-	String buildJoinColumnLabel(ReadOnlyJoinColumn joinColumn) {
+	String buildJoinColumnLabel(JoinColumn joinColumn) {
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
@@ -169,25 +169,25 @@ public class JoinColumnsComposite<T extends JpaModel>
 		};
 	}
 
-	private ListValueModel<ReadOnlyJoinColumn> buildJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<ReadOnlyJoinColumn>(buildJoinColumnsListHolder(),
+	private ListValueModel<JoinColumn> buildJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<JoinColumn>(buildJoinColumnsListHolder(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,
 			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
 			BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
 	}
 
-	private ListValueModel<ReadOnlyJoinColumn> buildJoinColumnsListHolder() {
-		java.util.List<ListValueModel<ReadOnlyJoinColumn>> list = new ArrayList<ListValueModel<ReadOnlyJoinColumn>>();
+	private ListValueModel<JoinColumn> buildJoinColumnsListHolder() {
+		java.util.List<ListValueModel<JoinColumn>> list = new ArrayList<ListValueModel<JoinColumn>>();
 		list.add(buildDefaultJoinColumnListHolder());
 		list.add(buildSpecifiedJoinColumnsListHolder());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getSpecifiedJoinColumnsListPropertyName()) {
+	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getSpecifiedJoinColumnsListPropertyName()) {
 			@Override
-			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
+			protected ListIterable<JoinColumn> getListIterable() {
 				return JoinColumnsComposite.this.joinColumnsEditor.getSpecifiedJoinColumns(this.subject);
 			}
 
@@ -199,15 +199,15 @@ public class JoinColumnsComposite<T extends JpaModel>
 	}
 
 
-	private ListValueModel<ReadOnlyJoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<ReadOnlyJoinColumn>(buildDefaultJoinColumnHolder());
+	private ListValueModel<JoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<JoinColumn>(buildDefaultJoinColumnHolder());
 
 	}
 
-	private PropertyValueModel<ReadOnlyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
+	private PropertyValueModel<JoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
 			@Override
-			protected ReadOnlyJoinColumn buildValue_() {
+			protected JoinColumn buildValue_() {
 				return JoinColumnsComposite.this.joinColumnsEditor.getDefaultJoinColumn(this.subject);
 			}
 		};
@@ -218,7 +218,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ReadOnlyJoinColumn joinColumn = (ReadOnlyJoinColumn) element;
+				JoinColumn joinColumn = (JoinColumn) element;
 
 				return buildJoinColumnLabel(joinColumn);
 			}
@@ -243,7 +243,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 		 * Edit the given join column, the Edit button was pressed
 		 * while this join column was selected.
 		 */
-		void editJoinColumn(T subject, ReadOnlyJoinColumn joinColumn);
+		void editJoinColumn(T subject, JoinColumn joinColumn);
 
 		/**
 		 * Return whether the subject has specified join columns
@@ -253,7 +253,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 		/**
 		 * Return the spcified join columns from the given subject
 		 */
-		ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(T subject);
+		ListIterable<JoinColumn> getSpecifiedJoinColumns(T subject);
 
 		/**
 		 * Return the number of specified join columns on the given subject
@@ -263,7 +263,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 		/**
 		 * Return the default join column from the given subject or null.
 		 */
-		ReadOnlyJoinColumn getDefaultJoinColumn(T subject);
+		JoinColumn getDefaultJoinColumn(T subject);
 
 		/**
 		 * Return the property name of the specified join columns list

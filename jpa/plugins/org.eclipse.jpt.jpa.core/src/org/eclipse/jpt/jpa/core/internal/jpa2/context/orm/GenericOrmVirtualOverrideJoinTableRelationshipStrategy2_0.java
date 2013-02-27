@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
@@ -135,11 +135,11 @@ public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		return this.getRelationship().buildJoinTableJoinColumnValidator(column, owner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner) {
 		return this.getRelationship().buildJoinTableInverseJoinColumnValidator(column, owner);
 	}
 }

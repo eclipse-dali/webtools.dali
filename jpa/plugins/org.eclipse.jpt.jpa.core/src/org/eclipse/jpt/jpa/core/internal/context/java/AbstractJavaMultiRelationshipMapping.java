@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
@@ -102,7 +102,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
+	protected final JoinColumn.Owner mapKeyJoinColumnOwner;
 
 	protected JavaSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
@@ -767,7 +767,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 	}
 
-	protected ReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
+	protected JoinColumn.Owner buildMapKeyJoinColumnOwner() {
 		return new MapKeyJoinColumnOwner();
 	}
 
@@ -1197,7 +1197,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** map key join column owner **********
 
 	protected class MapKeyJoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JoinColumn.Owner
 	{
 		protected MapKeyJoinColumnOwner() {
 			super();
@@ -1254,7 +1254,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
-				(ReadOnlyJoinColumn) column,
+				(JoinColumn) column,
 				this,
 				new RelationshipStrategyTableDescriptionProvider(getRelationship().getStrategy()));
 		}

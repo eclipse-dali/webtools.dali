@@ -45,7 +45,7 @@ public interface ReadOnlyJoinTableRelationshipStrategy
 
 	boolean validatesAgainstDatabase();
 
-	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
+	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);
 }

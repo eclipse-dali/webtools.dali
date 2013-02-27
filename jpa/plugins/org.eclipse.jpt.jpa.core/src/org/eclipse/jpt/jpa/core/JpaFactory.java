@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -231,9 +231,9 @@ public interface JpaFactory
 
 	JavaSpecifiedDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedDiscriminatorColumn.Owner owner);
 	
-	JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
+	JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
 	
-	VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
+	VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn);
 	
 	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	

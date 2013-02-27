@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -55,11 +55,11 @@ public class GenericOrmAssociationOverrideContainer
 		return (OrmAssociationOverrideContainer2_0.Owner) this.owner;
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner columnOwner) {
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner columnOwner) {
 		return this.getOwner2_0().buildJoinTableJoinColumnValidator(override, column, columnOwner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner columnOwner) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner columnOwner) {
 		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, columnOwner);
 	}
 

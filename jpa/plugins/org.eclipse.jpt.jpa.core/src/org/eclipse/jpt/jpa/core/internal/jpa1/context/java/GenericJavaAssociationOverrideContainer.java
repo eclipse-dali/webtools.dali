@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -59,11 +59,11 @@ public class GenericJavaAssociationOverrideContainer
 		return (JavaAssociationOverrideContainer2_0.Owner) super.getOwner2_0();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner o) {
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner o) {
 		return this.getOwner2_0().buildJoinTableJoinColumnValidator(override, column, o);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner o) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner o) {
 		return this.getOwner2_0().buildJoinTableInverseJoinColumnValidator(override, column, o);
 	}
 

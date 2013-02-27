@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -158,11 +158,11 @@ public class JoinTableComposite
 		return new OverrideDefaultInverseJoinColumnHolder();
 	}
 	
-	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
-		return new ListAspectAdapter<ReadOnlyJoinTable, ReadOnlyJoinColumn>(getSubjectHolder(), ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
+	ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
+		return new ListAspectAdapter<ReadOnlyJoinTable, JoinColumn>(getSubjectHolder(), ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.subject.getSpecifiedInverseJoinColumns());
+			protected ListIterable<JoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<JoinColumn>(this.subject.getSpecifiedInverseJoinColumns());
 			}
 
 			@Override
@@ -177,7 +177,7 @@ public class JoinTableComposite
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	void editInverseJoinColumn(ReadOnlyJoinColumn joinColumn) {
+	void editInverseJoinColumn(JoinColumn joinColumn) {
 
 		InverseJoinColumnInJoinTableDialog dialog = new InverseJoinColumnInJoinTableDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 
@@ -222,7 +222,7 @@ public class JoinTableComposite
 			return JoinTableComposite.this.addInverseJoinColumn(subject);
 		}
 
-		public ReadOnlyJoinColumn getDefaultJoinColumn(ReadOnlyJoinTable subject) {
+		public JoinColumn getDefaultJoinColumn(ReadOnlyJoinTable subject) {
 			return subject.getDefaultInverseJoinColumn();
 		}
 
@@ -230,7 +230,7 @@ public class JoinTableComposite
 			return ReadOnlyJoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
 		}
 
-		public void editJoinColumn(ReadOnlyJoinTable subject, ReadOnlyJoinColumn joinColumn) {
+		public void editJoinColumn(ReadOnlyJoinTable subject, JoinColumn joinColumn) {
 			JoinTableComposite.this.editInverseJoinColumn(joinColumn);
 		}
 
@@ -242,8 +242,8 @@ public class JoinTableComposite
 			((JoinTable) subject).removeSpecifiedInverseJoinColumn(joinColumn);
 		}
 
-		public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinTable subject) {
-			return new SuperListIterableWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedInverseJoinColumns());
+		public ListIterable<JoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinTable subject) {
+			return new SuperListIterableWrapper<JoinColumn>(subject.getSpecifiedInverseJoinColumns());
 		}
 
 		public int getSpecifiedJoinColumnsSize(ReadOnlyJoinTable subject) {

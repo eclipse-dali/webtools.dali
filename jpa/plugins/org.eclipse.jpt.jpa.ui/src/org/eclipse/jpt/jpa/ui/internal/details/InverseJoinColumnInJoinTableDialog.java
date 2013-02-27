@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 public class InverseJoinColumnInJoinTableDialog
-	extends BaseJoinColumnDialog<ReadOnlyJoinTable, ReadOnlyJoinColumn, InverseJoinColumnInJoinTableStateObject>
+	extends BaseJoinColumnDialog<ReadOnlyJoinTable, JoinColumn, InverseJoinColumnInJoinTableStateObject>
 {
 	/**
 	 * Use this constructor to create a <em>new</em> join column.
@@ -36,7 +36,7 @@ public class InverseJoinColumnInJoinTableDialog
 			Shell parentShell,
 			ResourceManager resourceManager,
 			ReadOnlyJoinTable joinTable,
-			ReadOnlyJoinColumn joinColumn) {
+			JoinColumn joinColumn) {
 		super(parentShell, resourceManager, joinTable, joinColumn);
 	}
 

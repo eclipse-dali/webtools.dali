@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -83,11 +83,11 @@ public class JoiningStrategyJoinColumnsComposite
 				return subject.hasSpecifiedJoinColumns();
 			}
 
-			public void editJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject, ReadOnlyJoinColumn joinColumn) {
+			public void editJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject, JoinColumn joinColumn) {
 				JoiningStrategyJoinColumnsComposite.this.editJoinColumn(subject, joinColumn);
 			}
 
-			public ReadOnlyJoinColumn getDefaultJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject) {
+			public JoinColumn getDefaultJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject) {
 				return subject.getDefaultJoinColumn();
 			}
 
@@ -103,8 +103,8 @@ public class JoiningStrategyJoinColumnsComposite
 				((JoinColumnRelationshipStrategy) subject).removeSpecifiedJoinColumn(joinColumn);
 			}
 
-			public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
-				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
+			public ListIterable<JoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
+				return new SuperListIterableWrapper<JoinColumn>(subject.getSpecifiedJoinColumns());
 			}
 
 			public int getSpecifiedJoinColumnsSize(ReadOnlyJoinColumnRelationshipStrategy subject) {
@@ -135,7 +135,7 @@ public class JoiningStrategyJoinColumnsComposite
 		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 	
-	void editJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy, ReadOnlyJoinColumn joinColumn) {
+	void editJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy, JoinColumn joinColumn) {
 		JoinColumnInJoiningStrategyDialog dialog = new JoinColumnInJoiningStrategyDialog(this.getShell(), this.getResourceManager(), joiningStrategy, joinColumn);
 
 		dialog.setBlockOnOpen(true);

@@ -10,26 +10,26 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class MapKeyJoinColumnValidator
-	extends BaseJoinColumnValidator<ReadOnlyJoinColumn>
+	extends BaseJoinColumnValidator<JoinColumn>
 {
 	protected MapKeyJoinColumnValidator(
-				ReadOnlyJoinColumn column,
-				ReadOnlyJoinColumn.Owner joinColumnOwner,
+				JoinColumn column,
+				JoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(column, joinColumnOwner, provider);
 	}
 
 	public MapKeyJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
-				ReadOnlyJoinColumn column,
-				ReadOnlyJoinColumn.Owner joinColumnOwner,
+				JoinColumn column,
+				JoinColumn.Owner joinColumnOwner,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, joinColumnOwner, provider);
 	}

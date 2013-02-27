@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -35,7 +35,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	implements OrmJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.Owner joinColumnOwner;
 
 	protected OrmSpecifiedJoinColumn defaultJoinColumn;
 
@@ -184,7 +184,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		}
 	}
 
-	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********
@@ -238,13 +238,13 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	}
 
 	public void initializeFrom(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
-		for (ReadOnlyJoinColumn joinColumn : oldStrategy.getSpecifiedJoinColumns()) {
+		for (JoinColumn joinColumn : oldStrategy.getSpecifiedJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
 	public void initializeFromVirtual(ReadOnlyJoinColumnRelationshipStrategy virtualStrategy) {
-		for (ReadOnlyJoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
+		for (JoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
 		}
 	}

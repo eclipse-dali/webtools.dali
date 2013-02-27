@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> join column
  */
 public class GenericOrmJoinColumn
-	extends AbstractOrmBaseColumn<XmlJoinColumn, ReadOnlyJoinColumn.Owner>
+	extends AbstractOrmBaseColumn<XmlJoinColumn, JoinColumn.Owner>
 	implements OrmSpecifiedJoinColumn
 {
 	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(XmlContextNode, org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn) */
@@ -34,11 +34,11 @@ public class GenericOrmJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner) {
 		this(parent, owner, null);
 	}
 
-	public GenericOrmJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
+	public GenericOrmJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
@@ -150,12 +150,12 @@ public class GenericOrmJoinColumn
 
 	// ********** misc **********
 
-	public void initializeFrom(ReadOnlyJoinColumn oldColumn) {
+	public void initializeFrom(JoinColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
 	}
 
-	public void initializeFromVirtual(ReadOnlyJoinColumn virtualColumn) {
+	public void initializeFromVirtual(JoinColumn virtualColumn) {
 		super.initializeFromVirtual(virtualColumn);
 		this.setSpecifiedReferencedColumnName(virtualColumn.getReferencedColumnName());
 	}

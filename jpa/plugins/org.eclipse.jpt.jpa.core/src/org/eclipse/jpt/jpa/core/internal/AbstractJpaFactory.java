@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -257,11 +257,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	
-	public JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
+	public JavaSpecifiedJoinColumn buildJavaJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
 		return new GenericJavaJoinColumn(parent, owner, joinColumnAnnotation);
 	}
 
-	public VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextModel parent, JoinColumn.Owner owner, JoinColumn overriddenColumn) {
 		return new GenericJavaVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	

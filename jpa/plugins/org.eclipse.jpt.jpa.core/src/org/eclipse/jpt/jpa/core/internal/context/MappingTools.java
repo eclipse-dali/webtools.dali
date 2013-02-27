@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
@@ -278,7 +278,7 @@ public final class MappingTools {
 	 * </pre>
 	 * @see #buildJoinTableDefaultName(ReadOnlyRelationship)
 	 */
-	public static String buildJoinColumnDefaultName(ReadOnlyJoinColumn joinColumn, ReadOnlyJoinColumn.Owner owner) {
+	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
 		if (owner.getJoinColumnsSize() != 1) {
 			return null;
 		}
@@ -342,7 +342,7 @@ public final class MappingTools {
 	 *     "The same name as the primary key column of the referenced table."<br>
 	 * We are assuming that the primary key column is defined by the mappings instead of the database.
 	 */
-	public static String buildJoinColumnDefaultReferencedColumnName(ReadOnlyJoinColumn.Owner joinColumnOwner) {
+	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
 		if (joinColumnOwner.getJoinColumnsSize() != 1) {
 			return null;
 		}

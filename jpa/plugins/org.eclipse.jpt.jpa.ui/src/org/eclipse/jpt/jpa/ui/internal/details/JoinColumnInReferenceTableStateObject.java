@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * The state object used to create or edit a primary key join column on a
  * joint table.
  *
- * @see ReadOnlyJoinColumn
+ * @see JoinColumn
  * @see ReadOnlyJoinTable
  * @see JoinColumnInReferenceTableDialog
  *
@@ -33,7 +33,7 @@ public class JoinColumnInReferenceTableStateObject
 {
 	public JoinColumnInReferenceTableStateObject(
 			ReadOnlyReferenceTable referenceTable,
-	        ReadOnlyJoinColumn joinColumn) {
+	        JoinColumn joinColumn) {
 		super(referenceTable, joinColumn);
 	}
 	

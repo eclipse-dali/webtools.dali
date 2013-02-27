@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
@@ -1444,7 +1444,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("addresses", virtualAssociationOverride.getName());
 		assertEquals("AnnotationTestType_Address", joinTable.getName());
 		assertEquals(1, joinTable.getJoinColumnsSize());
-		ReadOnlyJoinColumn virtualJoinColumn = joinTable.getJoinColumns().iterator().next();
+		JoinColumn virtualJoinColumn = joinTable.getJoinColumns().iterator().next();
 		assertEquals("AnnotationTestType_id", virtualJoinColumn.getName());
 		assertEquals("id", virtualJoinColumn.getReferencedColumnName());
 		assertEquals("AnnotationTestType_Address", virtualJoinColumn.getTableName());
@@ -1455,7 +1455,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(true, virtualJoinColumn.isNullable());
 		
 		assertEquals(1, joinTable.getInverseJoinColumnsSize());
-		ReadOnlyJoinColumn virtualInverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
+		JoinColumn virtualInverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		assertEquals("addresses_id", virtualInverseJoinColumn.getName());
 		assertEquals("id", virtualInverseJoinColumn.getReferencedColumnName());
 		assertEquals("AnnotationTestType_Address", virtualInverseJoinColumn.getTableName());
@@ -1580,7 +1580,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		joinTable = strategy.getJoinTable();
 		assertEquals("JAVA_FOO", joinTable.getName());
 		assertEquals(2, joinTable.getJoinColumnsSize());
-		ListIterator<? extends ReadOnlyJoinColumn> joinColumns = joinTable.getJoinColumns().iterator();
+		ListIterator<? extends JoinColumn> joinColumns = joinTable.getJoinColumns().iterator();
 		virtualJoinColumn = joinColumns.next();
 		assertEquals("JAVA_JOIN_COLUMN_NAME", virtualJoinColumn.getName());
 		assertEquals("JAVA_JOIN_COLUMN_REFERENCED_NAME", virtualJoinColumn.getReferencedColumnName());
@@ -1591,7 +1591,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("BAR", virtualJoinColumn.getTableName());
 
 		assertEquals(2, joinTable.getInverseJoinColumnsSize());
-		ListIterator<? extends ReadOnlyJoinColumn> inverseJoinColumns = joinTable.getInverseJoinColumns().iterator();
+		ListIterator<? extends JoinColumn> inverseJoinColumns = joinTable.getInverseJoinColumns().iterator();
 		virtualInverseJoinColumn = inverseJoinColumns.next();
 		assertEquals("JAVA_INVERSE_JOIN_COLUMN_NAME", virtualInverseJoinColumn.getName());
 		assertEquals("JAVA_INVERSE_JOIN_COLUMN_REFERENCED_NAME", virtualInverseJoinColumn.getReferencedColumnName());

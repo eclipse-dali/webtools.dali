@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -34,7 +34,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	implements JavaJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
-	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final JoinColumn.Owner joinColumnOwner;
 
 	protected JavaSpecifiedJoinColumn defaultJoinColumn;
 
@@ -169,7 +169,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		}
 	}
 
-	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********
@@ -236,13 +236,13 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	}
 
 	public void initializeFrom(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
-		for (ReadOnlyJoinColumn joinColumn : oldStrategy.getSpecifiedJoinColumns()) {
+		for (JoinColumn joinColumn : oldStrategy.getSpecifiedJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
 	public void initializeFromVirtual(ReadOnlyJoinColumnRelationshipStrategy virtualStrategy) {
-		for (ReadOnlyJoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
+		for (JoinColumn joinColumn : virtualStrategy.getJoinColumns()) {
 			this.addSpecifiedJoinColumn().initializeFromVirtual(joinColumn);
 		}
 	}
