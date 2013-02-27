@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.db.Table;
@@ -145,7 +145,7 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(getSubjectHolder(), SpecifiedBaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -174,8 +174,8 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
-			BaseColumn.DEFAULT_INSERTABLE_PROPERTY)
+			SpecifiedBaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+			SpecifiedBaseColumn.DEFAULT_INSERTABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -190,7 +190,7 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
+			SpecifiedBaseColumn.SPECIFIED_NULLABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -220,8 +220,8 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
-			BaseColumn.DEFAULT_NULLABLE_PROPERTY)
+			SpecifiedBaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+			SpecifiedBaseColumn.DEFAULT_NULLABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -237,8 +237,8 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
+			SpecifiedBaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+			SpecifiedBaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -270,8 +270,8 @@ public class OrderColumnComposite extends Pane<SpecifiedOrderColumn2_0> {
 	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY)
+			SpecifiedBaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+			SpecifiedBaseColumn.DEFAULT_UPDATABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

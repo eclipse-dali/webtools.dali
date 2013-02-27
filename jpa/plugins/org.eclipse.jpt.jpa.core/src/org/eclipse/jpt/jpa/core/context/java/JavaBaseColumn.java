@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
  * @since 2.0
  */
 public interface JavaBaseColumn
-	extends BaseColumn, JavaSpecifiedNamedColumn
+	extends SpecifiedBaseColumn, JavaSpecifiedNamedColumn
 {
 	BaseColumnAnnotation getColumnAnnotation();
 }

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
  * @since 2.0
  */
 public interface OrmBaseColumn
-	extends BaseColumn, OrmSpecifiedNamedColumn
+	extends SpecifiedBaseColumn, OrmSpecifiedNamedColumn
 {
 	XmlBaseColumn getXmlColumn();
 }
