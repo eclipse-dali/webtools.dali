@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmBaseColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
  */
 public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends ReadOnlyBaseColumn.Owner>
 	extends AbstractOrmNamedColumn<JpaContextModel, X, O>
-	implements OrmBaseColumn
+	implements OrmSpecifiedBaseColumn
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;

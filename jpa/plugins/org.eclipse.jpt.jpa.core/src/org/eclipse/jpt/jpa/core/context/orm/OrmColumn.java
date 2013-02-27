@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
  * @since 2.0
  */
 public interface OrmColumn
-	extends SpecifiedColumn, OrmBaseColumn
+	extends SpecifiedColumn, OrmSpecifiedBaseColumn
 {
 	XmlColumn getXmlColumn();
 

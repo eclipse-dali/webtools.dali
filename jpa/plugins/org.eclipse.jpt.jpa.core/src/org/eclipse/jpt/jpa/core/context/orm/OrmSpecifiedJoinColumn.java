@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
  * @since 2.0
  */
 public interface OrmSpecifiedJoinColumn
-	extends SpecifiedJoinColumn, OrmSpecifiedBaseJoinColumn, OrmBaseColumn
+	extends SpecifiedJoinColumn, OrmSpecifiedBaseJoinColumn, OrmSpecifiedBaseColumn
 {
 	XmlJoinColumn getXmlColumn();
 }
