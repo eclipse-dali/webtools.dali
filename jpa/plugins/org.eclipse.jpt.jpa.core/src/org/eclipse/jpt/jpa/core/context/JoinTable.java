@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.0
  */
 public interface JoinTable
-	extends ReferenceTable, ReadOnlyJoinTable
+	extends SpecifiedReferenceTable, ReadOnlyJoinTable
 {
 	SpecifiedJoinTableRelationshipStrategy getParent();
 

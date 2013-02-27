@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 
 /**
  * Used by element collection mappings.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ReferenceTable;
  * @since 2.3
  */
 public interface CollectionTable2_0
-	extends ReferenceTable
+	extends SpecifiedReferenceTable
 {
 	ElementCollectionMapping2_0 getParent();
 }

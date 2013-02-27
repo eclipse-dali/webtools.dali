@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
@@ -76,7 +76,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	}
 
 	SpecifiedJoinColumn addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
-		SpecifiedJoinColumn joinColumn = ((ReferenceTable) getSubject()).addSpecifiedJoinColumn();
+		SpecifiedJoinColumn joinColumn = ((SpecifiedReferenceTable) getSubject()).addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 		return joinColumn;
 	}
@@ -121,7 +121,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 			@Override
 			protected void setValue(String value) {
-				((ReferenceTable) this.getSubject()).setSpecifiedCatalog(value);
+				((SpecifiedReferenceTable) this.getSubject()).setSpecifiedCatalog(value);
 			}
 
 			@Override
@@ -164,7 +164,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 			@Override
 			protected void setValue(String value) {
-				((ReferenceTable) this.getSubject()).setSpecifiedSchema(value);
+				((SpecifiedReferenceTable) this.getSubject()).setSpecifiedSchema(value);
 			}
 
 			@Override
@@ -174,13 +174,13 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			
 			@Override
 			protected SchemaContainer getDbSchemaContainer_() {
-				ReferenceTable table = this.getTable();
+				SpecifiedReferenceTable table = this.getTable();
 				return (table == null) ? null : table.getDbSchemaContainer();
 			}
 
-			protected ReferenceTable getTable() {
+			protected SpecifiedReferenceTable getTable() {
 				ReadOnlyReferenceTable table = this.getSubject();
-				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
+				return (table instanceof SpecifiedReferenceTable) ? (SpecifiedReferenceTable) table : null;
 			}
 
 			@Override
@@ -223,7 +223,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 			@Override
 			protected void setValue(String value) {
-				((ReferenceTable) this.getSubject()).setSpecifiedName(value);
+				((SpecifiedReferenceTable) this.getSubject()).setSpecifiedName(value);
 			}
 
 			@Override
@@ -233,13 +233,13 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 			@Override
 			protected Schema getDbSchema_() {
-				ReferenceTable table = this.getTable();
+				SpecifiedReferenceTable table = this.getTable();
 				return (table == null) ? null : table.getDbSchema();
 			}
 
-			protected ReferenceTable getTable() {
+			protected SpecifiedReferenceTable getTable() {
 				ReadOnlyReferenceTable table = this.getSubject();
-				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
+				return (table instanceof SpecifiedReferenceTable) ? (SpecifiedReferenceTable) table : null;
 			}
 
 			@Override
@@ -274,7 +274,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			return;
 		}
 		
-		ReferenceTable referenceTable = (ReferenceTable) this.getSubject();
+		SpecifiedReferenceTable referenceTable = (SpecifiedReferenceTable) this.getSubject();
 		if (referenceTable == null) {
 			return;
 		}
@@ -321,7 +321,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		}
 
 		public void removeJoinColumn(T subject, SpecifiedJoinColumn joinColumn) {
-			((ReferenceTable) subject).removeSpecifiedJoinColumn(joinColumn);
+			((SpecifiedReferenceTable) subject).removeSpecifiedJoinColumn(joinColumn);
 		}
 
 		public ListIterable<JoinColumn> getSpecifiedJoinColumns(T subject) {

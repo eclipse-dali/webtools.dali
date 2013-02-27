@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.ReferenceTableAnnotation;
  * @since 2.3
  */
 public interface JavaReferenceTable
-	extends ReferenceTable, JavaTable
+	extends SpecifiedReferenceTable, JavaTable
 {
 	ReferenceTableAnnotation getTableAnnotation();
 

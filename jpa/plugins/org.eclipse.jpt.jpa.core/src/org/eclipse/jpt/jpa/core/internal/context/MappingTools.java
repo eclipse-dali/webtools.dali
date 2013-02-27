@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -383,7 +383,7 @@ public final class MappingTools {
 		return null;
 	}
 
-	public static void convertReferenceTableDefaultToSpecifiedJoinColumn(ReferenceTable referenceTable) {
+	public static void convertReferenceTableDefaultToSpecifiedJoinColumn(SpecifiedReferenceTable referenceTable) {
 		SpecifiedJoinColumn defaultJoinColumn = referenceTable.getDefaultJoinColumn();
 		if (defaultJoinColumn != null) {
 			String columnName = defaultJoinColumn.getDefaultName();

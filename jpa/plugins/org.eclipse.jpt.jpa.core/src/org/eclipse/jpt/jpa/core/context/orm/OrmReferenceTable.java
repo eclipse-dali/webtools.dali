@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
 
 /**
  * <code>orm.xml</code> join table or collection table
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ReferenceTable;
  * @since 2.3
  */
 public interface OrmReferenceTable
-	extends ReferenceTable, OrmTable
+	extends SpecifiedReferenceTable, OrmTable
 {
 	// ********** join columns **********
 
