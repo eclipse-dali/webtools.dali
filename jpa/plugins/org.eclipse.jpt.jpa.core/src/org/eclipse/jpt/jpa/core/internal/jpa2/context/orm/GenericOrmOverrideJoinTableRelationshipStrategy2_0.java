@@ -15,19 +15,19 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOverrideRelationship2_0;
 
 public class GenericOrmOverrideJoinTableRelationshipStrategy2_0
-	extends AbstractOrmJoinTableRelationshipStrategy<OrmOverrideRelationship2_0>
+	extends AbstractOrmJoinTableRelationshipStrategy<OrmSpecifiedOverrideRelationship2_0>
 {
-	public GenericOrmOverrideJoinTableRelationshipStrategy2_0(OrmOverrideRelationship2_0 parent) {
+	public GenericOrmOverrideJoinTableRelationshipStrategy2_0(OrmSpecifiedOverrideRelationship2_0 parent) {
 		super(parent);
 	}
 
 
 	@Override
-	public OrmOverrideRelationship2_0 getRelationship() {
-		return (OrmOverrideRelationship2_0) super.getRelationship();
+	public OrmSpecifiedOverrideRelationship2_0 getRelationship() {
+		return (OrmSpecifiedOverrideRelationship2_0) super.getRelationship();
 	}
 
 	public boolean isOverridable() {

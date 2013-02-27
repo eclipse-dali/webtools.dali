@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.NullOrmJoinTableRelationshi
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedAssociationOverride2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -44,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmOverrideRelationship
 	extends AbstractOrmXmlContextModel<OrmSpecifiedAssociationOverride>
-	implements OrmOverrideRelationship2_0
+	implements OrmSpecifiedOverrideRelationship2_0
 {
 	protected SpecifiedRelationshipStrategy strategy;
 

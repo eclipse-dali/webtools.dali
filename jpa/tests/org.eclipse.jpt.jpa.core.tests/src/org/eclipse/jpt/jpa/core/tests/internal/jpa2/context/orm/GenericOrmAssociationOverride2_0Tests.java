@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSpecifiedOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -454,8 +454,8 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 
 		OrmVirtualAssociationOverride virtualOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		OrmSpecifiedAssociationOverride associationOverride = virtualOverride.convertToSpecified();
-		((OrmOverrideRelationship2_0) associationOverride.getRelationship()).setStrategyToJoinTable();
-		OrmSpecifiedJoinTableRelationshipStrategy joiningStrategy = ((OrmOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
+		((OrmSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).setStrategyToJoinTable();
+		OrmSpecifiedJoinTableRelationshipStrategy joiningStrategy = ((OrmSpecifiedOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
