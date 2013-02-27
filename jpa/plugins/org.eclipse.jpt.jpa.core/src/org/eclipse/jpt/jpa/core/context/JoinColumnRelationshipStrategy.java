@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
  * @see AssociationOverride
- * @see JoinColumnRelationship
+ * @see SpecifiedJoinColumnRelationship
  */
 public interface JoinColumnRelationshipStrategy
 	extends RelationshipStrategy

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
  */
 public interface EclipseLinkOneToManyRelationship
 	extends OneToManyRelationship,
-			JoinColumnRelationship
+			SpecifiedJoinColumnRelationship
 {
 	// add join column support to JPA 1.0 1:m
 }

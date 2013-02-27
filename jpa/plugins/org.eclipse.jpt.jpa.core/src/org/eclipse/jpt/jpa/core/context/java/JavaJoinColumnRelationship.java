@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
 
 /**
  * Java join column relationship (1:1, 1:m, m:1, and association override)
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
  * @since 2.2
  */
 public interface JavaJoinColumnRelationship
-	extends JoinColumnRelationship
+	extends SpecifiedJoinColumnRelationship
 {
 	JavaSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy();
 }

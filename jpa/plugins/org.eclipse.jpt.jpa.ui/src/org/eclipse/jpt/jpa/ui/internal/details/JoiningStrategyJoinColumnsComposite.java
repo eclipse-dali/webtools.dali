@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * ---------------------------------------------------------------------
  * -------------------------------------------------------------------------</pre>
  *
- * @see JoinColumnRelationship
+ * @see SpecifiedJoinColumnRelationship
  * @see SpecifiedJoinColumnRelationshipStrategy
  * @see JoinColumnJoiningStrategyPane
  * @see JoinColumnInJoiningStrategyDialog

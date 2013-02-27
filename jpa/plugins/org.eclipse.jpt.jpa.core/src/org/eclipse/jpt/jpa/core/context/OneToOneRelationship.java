@@ -23,7 +23,7 @@ package org.eclipse.jpt.jpa.core.context;
  */
 public interface OneToOneRelationship
 	extends MappedByRelationship,
-			JoinColumnRelationship,
+			SpecifiedJoinColumnRelationship,
 			PrimaryKeyJoinColumnRelationship,
 			MappingRelationship
 {

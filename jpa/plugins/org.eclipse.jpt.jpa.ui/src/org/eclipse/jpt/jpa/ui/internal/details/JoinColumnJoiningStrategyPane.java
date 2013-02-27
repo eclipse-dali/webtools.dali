@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Control;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see JoinColumnRelationship
+ * @see SpecifiedJoinColumnRelationship
  * @see JoinColumnRelationshipStrategy
  * @see OneToOneJoiningStrategyPane
  * @see ManyToOneJoiningStrategyPane
@@ -144,7 +144,7 @@ public class JoinColumnJoiningStrategyPane
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					((JoinColumnRelationship) this.subject).setStrategyToJoinColumn();
+					((SpecifiedJoinColumnRelationship) this.subject).setStrategyToJoinColumn();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

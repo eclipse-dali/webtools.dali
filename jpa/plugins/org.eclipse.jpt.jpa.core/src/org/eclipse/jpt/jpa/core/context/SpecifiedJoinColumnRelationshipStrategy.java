@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  *
  * @see RelationshipMapping
  * @see SpecifiedAssociationOverride
- * @see JoinColumnRelationship
+ * @see SpecifiedJoinColumnRelationship
  *
  * @version 3.2
  * @since 2.2
