@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedNamedColumn;
 
 /**
- * order column
+ * Specified order column
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,8 +23,8 @@ import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
  * @version 2.3
  * @since 2.3
  */
-public interface ModifiableOrderColumn2_0
-	extends ModifiableNamedColumn
+public interface SpecifiedOrderColumn2_0
+	extends SpecifiedNamedColumn
 {
 	// ********** nullable **********
 

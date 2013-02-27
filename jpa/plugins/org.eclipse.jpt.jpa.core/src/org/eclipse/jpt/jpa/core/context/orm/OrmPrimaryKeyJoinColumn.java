@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
  * @since 2.0
  */
 public interface OrmPrimaryKeyJoinColumn
-	extends ModifiablePrimaryKeyJoinColumn, OrmModifiableBaseJoinColumn
+	extends SpecifiedPrimaryKeyJoinColumn, OrmSpecifiedBaseJoinColumn
 {	
 	XmlPrimaryKeyJoinColumn getXmlColumn();
 

@@ -210,20 +210,20 @@ public interface Entity
 
 	int getPrimaryKeyJoinColumnsSize();
 
-	ListIterable<? extends ModifiablePrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
+	ListIterable<? extends SpecifiedPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumns"; //$NON-NLS-1$
 
-	ModifiablePrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index);
+	SpecifiedPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index);
 
 	int getSpecifiedPrimaryKeyJoinColumnsSize();
 
-	ModifiablePrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	SpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 
-	ModifiablePrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
+	SpecifiedPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
 
 	void removeSpecifiedPrimaryKeyJoinColumn(int index);
 
-	void removeSpecifiedPrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn primaryKeyJoinColumn);
+	void removeSpecifiedPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn);
 
 	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 

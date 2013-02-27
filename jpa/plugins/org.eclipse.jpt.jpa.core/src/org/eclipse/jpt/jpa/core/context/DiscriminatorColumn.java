@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface DiscriminatorColumn
-	extends ModifiableNamedDiscriminatorColumn
+	extends SpecifiedNamedDiscriminatorColumn
 {
 	String DEFAULT_NAME = "DTYPE"; //$NON-NLS-1$
 

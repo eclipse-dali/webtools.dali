@@ -17,9 +17,9 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneRelationship;
@@ -323,25 +323,25 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmJoinColumnRelationshipStrategy strategy = ormManyToOneMapping.getRelationship().getJoinColumnStrategy();
 		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
-		OrmModifiableJoinColumn joinColumn = strategy.addSpecifiedJoinColumn(0);
+		OrmSpecifiedJoinColumn joinColumn = strategy.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(0).getName());
 		
-		OrmModifiableJoinColumn joinColumn2 = strategy.addSpecifiedJoinColumn(0);
+		OrmSpecifiedJoinColumn joinColumn2 = strategy.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(1).getName());
 		
-		OrmModifiableJoinColumn joinColumn3 = strategy.addSpecifiedJoinColumn(1);
+		OrmSpecifiedJoinColumn joinColumn3 = strategy.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmModifiableJoinColumn> joinColumns = strategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = strategy.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -435,7 +435,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		
 		
 		strategy.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmModifiableJoinColumn> joinColumns = strategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = strategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -509,7 +509,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, manyToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", manyToOneMapping.getSpecifiedTargetEntity());
 
-		ModifiableJoinColumn joinColumn = manyToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
+		SpecifiedJoinColumn joinColumn = manyToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("MY_COLUMN", joinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, joinColumn.getSpecifiedUnique());

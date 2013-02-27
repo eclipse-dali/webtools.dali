@@ -12,12 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
@@ -41,8 +41,8 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	public ListIterable<JavaModifiableJoinColumn> getJoinColumns() {
-		return EmptyListIterable.<JavaModifiableJoinColumn>instance();
+	public ListIterable<JavaSpecifiedJoinColumn> getJoinColumns() {
+		return EmptyListIterable.<JavaSpecifiedJoinColumn>instance();
 	}
 
 	public int getJoinColumnsSize() {
@@ -52,8 +52,8 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	// ********** specified join columns **********
 
-	public ListIterable<JavaModifiableJoinColumn> getSpecifiedJoinColumns() {
-		return EmptyListIterable.<JavaModifiableJoinColumn>instance();
+	public ListIterable<JavaSpecifiedJoinColumn> getSpecifiedJoinColumns() {
+		return EmptyListIterable.<JavaSpecifiedJoinColumn>instance();
 	}
 
 	public int getSpecifiedJoinColumnsSize() {
@@ -64,19 +64,19 @@ public class NullJavaJoinColumnRelationshipStrategy
 		return false;
 	}
 
-	public JavaModifiableJoinColumn getSpecifiedJoinColumn(int index) {
+	public JavaSpecifiedJoinColumn getSpecifiedJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JavaModifiableJoinColumn addSpecifiedJoinColumn() {
+	public JavaSpecifiedJoinColumn addSpecifiedJoinColumn() {
 		throw new UnsupportedOperationException();
 	}
 
-	public JavaModifiableJoinColumn addSpecifiedJoinColumn(int index) {
+	public JavaSpecifiedJoinColumn addSpecifiedJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
+	public void removeSpecifiedJoinColumn(SpecifiedJoinColumn joinColumn) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -98,7 +98,7 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	// ********** default join column **********
 
-	public JavaModifiableJoinColumn getDefaultJoinColumn() {
+	public JavaSpecifiedJoinColumn getDefaultJoinColumn() {
 		return null;
 	}
 

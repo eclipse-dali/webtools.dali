@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
@@ -701,7 +701,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) getJavaPersistentType().getAttributeNamed("jobs").getMapping();
 
 		Orderable2_0 orderable = ((Orderable2_0) oneToManyMapping.getOrderable());
-		ModifiableOrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		SpecifiedOrderColumn2_0 orderColumn = orderable.getOrderColumn();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
@@ -857,7 +857,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 
-		ModifiableJoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
+		SpecifiedJoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 
 		assertEquals("addresses_id", joinColumn.getDefaultName());
 		assertEquals("Address", joinColumn.getDefaultTableName());//target table name
@@ -914,7 +914,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
-		ModifiableOrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
+		SpecifiedOrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 
 		assertNull(orderColumn.getSpecifiedName());

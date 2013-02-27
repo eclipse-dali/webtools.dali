@@ -16,18 +16,18 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
@@ -213,11 +213,11 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertNull(virtualJoinTable.getSpecifiedSchema());
 		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
 		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
-		ModifiableJoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
+		SpecifiedJoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 //TODO need to test joinColumn defaults here as well as in java and all the relationship mapping types
 //		assertEquals("id_project_id", ormJoinColumn.getDefaultName());
 //		assertEquals("id_project_id", ormJoinColumn.getDefaultReferencedColumnName());
-		ModifiableJoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
+		SpecifiedJoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultName());
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
 	
@@ -227,10 +227,10 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		javaJoinTable.setSpecifiedName("FOO");
 		javaJoinTable.setSpecifiedCatalog("CATALOG");
 		javaJoinTable.setSpecifiedSchema("SCHEMA");
-		JavaModifiableJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
+		JavaSpecifiedJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
 		javaJoinColumn.setSpecifiedName("NAME");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCED_NAME");
-		JavaModifiableJoinColumn inverseJavaJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
+		JavaSpecifiedJoinColumn inverseJavaJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
 		inverseJavaJoinColumn.setSpecifiedName("INVERSE_NAME");
 		inverseJavaJoinColumn.setSpecifiedReferencedColumnName("INVERSE_REFERENCED_NAME");
 		
@@ -620,26 +620,26 @@ public class OrmJoinTableTests extends ContextModelTestCase
 
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		OrmModifiableJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
+		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(0).getName());
 		
-		OrmModifiableJoinColumn joinColumn2 = ormJoinTable.addSpecifiedJoinColumn(0);
+		OrmSpecifiedJoinColumn joinColumn2 = ormJoinTable.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", joinTableResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(1).getName());
 		
-		OrmModifiableJoinColumn joinColumn3 = ormJoinTable.addSpecifiedJoinColumn(1);
+		OrmSpecifiedJoinColumn joinColumn3 = ormJoinTable.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", joinTableResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", joinTableResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmModifiableJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -697,7 +697,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		ormJoinTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmModifiableJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -737,7 +737,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getInverseJoinColumns().get(1).setName("BAR");
 		joinTableResource.getInverseJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmModifiableJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -781,26 +781,26 @@ public class OrmJoinTableTests extends ContextModelTestCase
 
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
-		OrmModifiableJoinColumn joinColumn = ormJoinTable.addSpecifiedInverseJoinColumn(0);
+		OrmSpecifiedJoinColumn joinColumn = ormJoinTable.addSpecifiedInverseJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(0).getName());
 		
-		OrmModifiableJoinColumn joinColumn2 = ormJoinTable.addSpecifiedInverseJoinColumn(0);
+		OrmSpecifiedJoinColumn joinColumn2 = ormJoinTable.addSpecifiedInverseJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", joinTableResource.getInverseJoinColumns().get(0).getName());
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(1).getName());
 		
-		OrmModifiableJoinColumn joinColumn3 = ormJoinTable.addSpecifiedInverseJoinColumn(1);
+		OrmSpecifiedJoinColumn joinColumn3 = ormJoinTable.addSpecifiedInverseJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", joinTableResource.getInverseJoinColumns().get(0).getName());
 		assertEquals("BAZ", joinTableResource.getInverseJoinColumns().get(1).getName());
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(2).getName());
 		
-		ListIterator<OrmModifiableJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -858,7 +858,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		ormJoinTable.moveSpecifiedInverseJoinColumn(2, 0);
-		ListIterator<OrmModifiableJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -898,7 +898,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getJoinColumns().get(1).setName("BAR");
 		joinTableResource.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmModifiableJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -1262,8 +1262,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		ModifiableJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
-		ModifiableJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
+		SpecifiedJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
+		SpecifiedJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinColumn.getDefaultName());
@@ -1326,8 +1326,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormPersistentType.getAttributeNamed("projects").addToXml();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		ModifiableJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
-		ModifiableJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
+		SpecifiedJoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
+		SpecifiedJoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinColumn.getDefaultName());

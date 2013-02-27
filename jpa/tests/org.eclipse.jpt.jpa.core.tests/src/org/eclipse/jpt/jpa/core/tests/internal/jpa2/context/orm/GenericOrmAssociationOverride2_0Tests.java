@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -211,25 +211,25 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 
 		
-		ModifiableJoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(0);
+		SpecifiedJoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		
-		ModifiableJoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
+		SpecifiedJoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(1).getName());
 		
-		ModifiableJoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
+		SpecifiedJoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", xmlAssociationOverride.getJoinColumns().get(1).getName());
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -309,7 +309,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		
 		
 		joiningStrategy.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -348,8 +348,8 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 		
-		ListIterator<OrmModifiableJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
-		ModifiableJoinColumn joinColumn = joinColumns.next();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
+		SpecifiedJoinColumn joinColumn = joinColumns.next();
 		assertEquals("address_id", joinColumn.getSpecifiedName());
 		assertEquals("id", joinColumn.getSpecifiedReferencedColumnName());
 	
@@ -471,7 +471,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		xmlAssociationOverride.getJoinTable().getJoinColumns().get(1).setName("BAR");
 		xmlAssociationOverride.getJoinTable().getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmModifiableJoinColumn> joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
+		ListIterator<OrmSpecifiedJoinColumn> joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

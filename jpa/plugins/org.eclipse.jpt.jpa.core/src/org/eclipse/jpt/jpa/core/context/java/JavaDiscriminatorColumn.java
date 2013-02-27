@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
  * @since 2.0
  */
 public interface JavaDiscriminatorColumn
-	extends DiscriminatorColumn, JavaModifiableNamedColumn
+	extends DiscriminatorColumn, JavaSpecifiedNamedColumn
 {
 	DiscriminatorColumnAnnotation getColumnAnnotation();
 		

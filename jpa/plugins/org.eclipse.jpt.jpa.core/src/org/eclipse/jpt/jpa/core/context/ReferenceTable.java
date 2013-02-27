@@ -43,21 +43,21 @@ public interface ReferenceTable
 	 */
 	void clearSpecifiedJoinColumns();
 
-	ListIterable<? extends ModifiableJoinColumn> getJoinColumns();
+	ListIterable<? extends SpecifiedJoinColumn> getJoinColumns();
 
-	ListIterable<? extends ModifiableJoinColumn> getSpecifiedJoinColumns();
+	ListIterable<? extends SpecifiedJoinColumn> getSpecifiedJoinColumns();
 
-	ModifiableJoinColumn getSpecifiedJoinColumn(int index);
-
-	/**
-	 * Add and return a specified join column to the reference table.
-	 */
-	ModifiableJoinColumn addSpecifiedJoinColumn();
+	SpecifiedJoinColumn getSpecifiedJoinColumn(int index);
 
 	/**
 	 * Add and return a specified join column to the reference table.
 	 */
-	ModifiableJoinColumn addSpecifiedJoinColumn(int index);
+	SpecifiedJoinColumn addSpecifiedJoinColumn();
+
+	/**
+	 * Add and return a specified join column to the reference table.
+	 */
+	SpecifiedJoinColumn addSpecifiedJoinColumn(int index);
 
 	/**
 	 * Remove the join column at the specified index from the reference table.
@@ -67,7 +67,7 @@ public interface ReferenceTable
 	/**
 	 * Remove the specified join column from the reference table.
 	 */
-	void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn);
+	void removeSpecifiedJoinColumn(SpecifiedJoinColumn joinColumn);
 
 	/**
 	 * Move the join column at the specified source index to the
@@ -75,5 +75,5 @@ public interface ReferenceTable
 	 */
 	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
 
-	ModifiableJoinColumn getDefaultJoinColumn();
+	SpecifiedJoinColumn getDefaultJoinColumn();
 }

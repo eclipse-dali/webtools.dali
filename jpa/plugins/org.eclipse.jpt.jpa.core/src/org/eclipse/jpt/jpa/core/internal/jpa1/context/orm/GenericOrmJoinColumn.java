@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericOrmJoinColumn
 	extends AbstractOrmBaseColumn<XmlJoinColumn, ReadOnlyJoinColumn.Owner>
-	implements OrmModifiableJoinColumn
+	implements OrmSpecifiedJoinColumn
 {
 	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(XmlContextNode, org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn) */
 	protected /* final */ XmlJoinColumn xmlColumn;  // null for default join columns

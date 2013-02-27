@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 
 /**
@@ -31,10 +31,10 @@ public interface JavaCollectionMapping2_0
 {
 	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 	
-	ListIterable<? extends JavaModifiableJoinColumn> getSpecifiedMapKeyJoinColumns();
-	JavaModifiableJoinColumn getSpecifiedMapKeyJoinColumn(int index);
-	JavaModifiableJoinColumn addSpecifiedMapKeyJoinColumn();
-	JavaModifiableJoinColumn addSpecifiedMapKeyJoinColumn(int index);
+	ListIterable<? extends JavaSpecifiedJoinColumn> getSpecifiedMapKeyJoinColumns();
+	JavaSpecifiedJoinColumn getSpecifiedMapKeyJoinColumn(int index);
+	JavaSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn();
+	JavaSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn(int index);
 
-	JavaModifiableJoinColumn getDefaultMapKeyJoinColumn();
+	JavaSpecifiedJoinColumn getDefaultMapKeyJoinColumn();
 }

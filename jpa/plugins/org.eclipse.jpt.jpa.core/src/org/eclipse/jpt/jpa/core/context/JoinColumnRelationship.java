@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.core.context;
  * 
  * @see RelationshipMapping
  * @see Relationship
- * @see ModifiableJoinColumn
+ * @see SpecifiedJoinColumn
  * 
  * @version 2.2
  * @since 2.2

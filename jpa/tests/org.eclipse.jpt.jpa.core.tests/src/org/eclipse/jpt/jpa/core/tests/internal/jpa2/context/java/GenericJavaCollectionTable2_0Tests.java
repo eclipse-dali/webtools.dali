@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -310,27 +310,27 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		
-		ModifiableJoinColumn joinColumn = collectionTable.addSpecifiedJoinColumn(0);
+		SpecifiedJoinColumn joinColumn = collectionTable.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 
 		assertEquals("FOO", joinTableResource.joinColumnAt(0).getName());
 		
-		ModifiableJoinColumn joinColumn2 = collectionTable.addSpecifiedJoinColumn(0);
+		SpecifiedJoinColumn joinColumn2 = collectionTable.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", joinTableResource.joinColumnAt(0).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(1).getName());
 		
-		ModifiableJoinColumn joinColumn3 = collectionTable.addSpecifiedJoinColumn(1);
+		SpecifiedJoinColumn joinColumn3 = collectionTable.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", joinTableResource.joinColumnAt(0).getName());
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(2).getName());
 		
-		ListIterator<JavaModifiableJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaSpecifiedJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -390,7 +390,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		
 		
 		collectionTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JavaModifiableJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaSpecifiedJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -432,7 +432,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		joinTableResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JavaModifiableJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
+		ListIterator<JavaSpecifiedJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

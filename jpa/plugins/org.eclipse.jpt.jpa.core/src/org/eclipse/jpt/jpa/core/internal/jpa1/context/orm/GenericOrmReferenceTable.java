@@ -14,11 +14,11 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
@@ -35,10 +35,10 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 	extends AbstractOrmTable<P, X>
 	implements OrmReferenceTable
 {
-	protected final ContextListContainer<OrmModifiableJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
+	protected final ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
-	protected OrmModifiableJoinColumn defaultJoinColumn;
+	protected OrmSpecifiedJoinColumn defaultJoinColumn;
 
 
 	protected GenericOrmReferenceTable(P parent, Owner owner) {
@@ -66,7 +66,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 
 	// ********** join columns **********
 
-	public ListIterable<OrmModifiableJoinColumn> getJoinColumns() {
+	public ListIterable<OrmSpecifiedJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
@@ -81,7 +81,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 
 	// ********** specified join columns **********
 
-	public ListIterable<OrmModifiableJoinColumn> getSpecifiedJoinColumns() {
+	public ListIterable<OrmSpecifiedJoinColumn> getSpecifiedJoinColumns() {
 		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
@@ -93,18 +93,18 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
-	public OrmModifiableJoinColumn getSpecifiedJoinColumn(int index) {
+	public OrmSpecifiedJoinColumn getSpecifiedJoinColumn(int index) {
 		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
-	public OrmModifiableJoinColumn addSpecifiedJoinColumn() {
+	public OrmSpecifiedJoinColumn addSpecifiedJoinColumn() {
 		return this.addSpecifiedJoinColumn(this.getSpecifiedJoinColumnsSize());
 	}
 
-	public OrmModifiableJoinColumn addSpecifiedJoinColumn(int index) {
+	public OrmSpecifiedJoinColumn addSpecifiedJoinColumn(int index) {
 		X xmlTable = this.getXmlTableForUpdate();
 		XmlJoinColumn xmlJoinColumn = this.buildXmlJoinColumn();
-		OrmModifiableJoinColumn joinColumn = this.specifiedJoinColumnContainer.addContextElement(index, xmlJoinColumn);
+		OrmSpecifiedJoinColumn joinColumn = this.specifiedJoinColumnContainer.addContextElement(index, xmlJoinColumn);
 		xmlTable.getJoinColumns().add(index, xmlJoinColumn);
 		return joinColumn;
 	}
@@ -113,8 +113,8 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 		return OrmFactory.eINSTANCE.createXmlJoinColumn();
 	}
 
-	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmModifiableJoinColumn) joinColumn));
+	public void removeSpecifiedJoinColumn(SpecifiedJoinColumn joinColumn) {
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumnContainer.indexOfContextElement((OrmSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedJoinColumn(int index) {
@@ -145,7 +145,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 				IterableTools.cloneLive(xmlTable.getJoinColumns());
 	}
 
-	protected ContextListContainer<OrmModifiableJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
+	protected ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
 		SpecifiedJoinColumnContainer container =  new SpecifiedJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -155,14 +155,14 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 	 * specified join column container
 	 */
 	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<OrmModifiableJoinColumn, XmlJoinColumn>
+		extends ContextListContainer<OrmSpecifiedJoinColumn, XmlJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmModifiableJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
+		protected OrmSpecifiedJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
 			return GenericOrmReferenceTable.this.buildJoinColumn(resourceElement);
 		}
 		@Override
@@ -170,7 +170,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 			return GenericOrmReferenceTable.this.getXmlJoinColumns();
 		}
 		@Override
-		protected XmlJoinColumn getResourceElement(OrmModifiableJoinColumn contextElement) {
+		protected XmlJoinColumn getResourceElement(OrmSpecifiedJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
 		}
 	}
@@ -180,20 +180,20 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 
 	// ********** default join column **********
 
-	public OrmModifiableJoinColumn getDefaultJoinColumn() {
+	public OrmSpecifiedJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 
-	protected void setDefaultJoinColumn(OrmModifiableJoinColumn joinColumn) {
-		OrmModifiableJoinColumn old = this.defaultJoinColumn;
+	protected void setDefaultJoinColumn(OrmSpecifiedJoinColumn joinColumn) {
+		OrmSpecifiedJoinColumn old = this.defaultJoinColumn;
 		this.defaultJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<OrmModifiableJoinColumn> getDefaultJoinColumns() {
+	protected ListIterable<OrmSpecifiedJoinColumn> getDefaultJoinColumns() {
 		return (this.defaultJoinColumn != null) ?
-				new SingleElementListIterable<OrmModifiableJoinColumn>(this.defaultJoinColumn) :
-				EmptyListIterable.<OrmModifiableJoinColumn>instance();
+				new SingleElementListIterable<OrmSpecifiedJoinColumn>(this.defaultJoinColumn) :
+				EmptyListIterable.<OrmSpecifiedJoinColumn>instance();
 	}
 
 	protected int getDefaultJoinColumnsSize() {
@@ -233,7 +233,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 		}
 	}
 
-	protected OrmModifiableJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
+	protected OrmSpecifiedJoinColumn buildJoinColumn(XmlJoinColumn xmlJoinColumn) {
 		return this.getContextModelFactory().buildOrmJoinColumn(this, this.joinColumnOwner, xmlJoinColumn);
 	}
 
@@ -274,7 +274,7 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, X exte
 		if (result != null) {
 			return result;
 		}
-		for (OrmModifiableJoinColumn column : this.getJoinColumns()) {
+		for (OrmSpecifiedJoinColumn column : this.getJoinColumns()) {
 			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;

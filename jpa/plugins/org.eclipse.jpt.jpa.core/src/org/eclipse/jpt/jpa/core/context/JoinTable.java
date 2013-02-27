@@ -41,23 +41,23 @@ public interface JoinTable
 	 */
 	void convertDefaultInverseJoinColumnToSpecified();
 
-	ListIterable<? extends ModifiableJoinColumn> getInverseJoinColumns();
+	ListIterable<? extends SpecifiedJoinColumn> getInverseJoinColumns();
 
-	ListIterable<? extends ModifiableJoinColumn> getSpecifiedInverseJoinColumns();
+	ListIterable<? extends SpecifiedJoinColumn> getSpecifiedInverseJoinColumns();
 
-	ModifiableJoinColumn getSpecifiedInverseJoinColumn(int index);
-
-	/**
-	 * Add a specified inverse join column to the join table.
-	 * Return the newly-created join column.
-	 */
-	ModifiableJoinColumn addSpecifiedInverseJoinColumn();
+	SpecifiedJoinColumn getSpecifiedInverseJoinColumn(int index);
 
 	/**
 	 * Add a specified inverse join column to the join table.
 	 * Return the newly-created join column.
 	 */
-	ModifiableJoinColumn addSpecifiedInverseJoinColumn(int index);
+	SpecifiedJoinColumn addSpecifiedInverseJoinColumn();
+
+	/**
+	 * Add a specified inverse join column to the join table.
+	 * Return the newly-created join column.
+	 */
+	SpecifiedJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 	/**
 	 * Remove the inverse join column at the specified index from the join table.
@@ -67,7 +67,7 @@ public interface JoinTable
 	/**
 	 * Remove the specified inverse join column from the join table.
 	 */
-	void removeSpecifiedInverseJoinColumn(ModifiableJoinColumn joinColumn);
+	void removeSpecifiedInverseJoinColumn(SpecifiedJoinColumn joinColumn);
 
 	/**
 	 * Move an inverse join column from the specified source index to the
@@ -80,5 +80,5 @@ public interface JoinTable
 	 */
 	void clearSpecifiedInverseJoinColumns();
 
-	ModifiableJoinColumn getDefaultInverseJoinColumn();
+	SpecifiedJoinColumn getDefaultInverseJoinColumn();
 }

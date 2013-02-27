@@ -7,13 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context.java;
-
-import org.eclipse.jpt.jpa.core.context.ModifiableNamedColumn;
-import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
+package org.eclipse.jpt.jpa.core.context;
 
 /**
- * Java
+ * Specified
  * <ul>
  * <li>column
  * <li>join column
@@ -27,11 +24,13 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.3
+ * @version 2.3
  * @since 2.0
  */
-public interface JavaModifiableNamedColumn
-	extends ModifiableNamedColumn
+public interface SpecifiedNamedColumn
+	extends ReadOnlyNamedColumn
 {
-	NamedColumnAnnotation getColumnAnnotation();
+	void setSpecifiedName(String name);
+
+	void setColumnDefinition(String columnDefinition);
 }

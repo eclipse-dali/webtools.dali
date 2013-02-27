@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
@@ -597,11 +597,11 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 
 		getOrmXmlResource().save(null);
 		Orderable2_0 jobsOrderable = ((Orderable2_0) jobsMapping.getOrderable());
-		ModifiableOrderColumn2_0 jobsOrderColumn = jobsOrderable.getOrderColumn();
+		SpecifiedOrderColumn2_0 jobsOrderColumn = jobsOrderable.getOrderColumn();
 		assertEquals(false, jobsOrderable.isOrderColumnOrdering());
 		assertEquals(true, jobsOrderable.isNoOrdering());
 		Orderable2_0 queuesOrderable = ((Orderable2_0) queuesMapping.getOrderable());
-		ModifiableOrderColumn2_0 queuesOrderColumn = queuesOrderable.getOrderColumn();
+		SpecifiedOrderColumn2_0 queuesOrderColumn = queuesOrderable.getOrderColumn();
 		assertEquals(false, queuesOrderable.isOrderColumnOrdering());
 		assertEquals(true, queuesOrderable.isNoOrdering());
 

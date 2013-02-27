@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
-import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 /**
  * The state object used to edit a <code>JoinColumn</code>.
  *
- * @see ModifiableJoinColumn
+ * @see SpecifiedJoinColumn
  *
  * @version 2.0
  * @since 2.0
@@ -52,7 +52,7 @@ public abstract class JoinColumnStateObject
 
 	public boolean isDefaultInsertable() {
 
-		ModifiableJoinColumn joinColumn = getJoinColumn();
+		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.isDefaultInsertable();
@@ -63,7 +63,7 @@ public abstract class JoinColumnStateObject
 
 	public boolean isDefaultNullable() {
 
-		ModifiableJoinColumn joinColumn = getJoinColumn();
+		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.isDefaultNullable();
@@ -74,7 +74,7 @@ public abstract class JoinColumnStateObject
 
 	public boolean isDefaultUnique() {
 
-		ModifiableJoinColumn joinColumn = getJoinColumn();
+		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.isDefaultUnique();
@@ -85,7 +85,7 @@ public abstract class JoinColumnStateObject
 
 	public boolean isDefaultUpdatable() {
 
-		ModifiableJoinColumn joinColumn = getJoinColumn();
+		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.isDefaultUpdatable();
@@ -99,8 +99,8 @@ public abstract class JoinColumnStateObject
 	}
 
 	@Override
-	public ModifiableJoinColumn getJoinColumn() {
-		return (ModifiableJoinColumn) super.getJoinColumn();
+	public SpecifiedJoinColumn getJoinColumn() {
+		return (SpecifiedJoinColumn) super.getJoinColumn();
 	}
 
 	public Boolean getNullable() {
@@ -132,7 +132,7 @@ public abstract class JoinColumnStateObject
 
 	@Override
 	protected String getInitialTable() {
-		ModifiableJoinColumn joinColumn = getJoinColumn();
+		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn == null) {
 			return null;
@@ -175,11 +175,11 @@ public abstract class JoinColumnStateObject
 	}
 
 	@Override
-	public void updateJoinColumn(ModifiableBaseJoinColumn abstractJoinColumn) {
+	public void updateJoinColumn(SpecifiedBaseJoinColumn abstractJoinColumn) {
 
 		super.updateJoinColumn(abstractJoinColumn);
 
-		ModifiableJoinColumn joinColumn = (ModifiableJoinColumn) abstractJoinColumn;
+		SpecifiedJoinColumn joinColumn = (SpecifiedJoinColumn) abstractJoinColumn;
 
 		// Table
 		if (isTableEditable()) {

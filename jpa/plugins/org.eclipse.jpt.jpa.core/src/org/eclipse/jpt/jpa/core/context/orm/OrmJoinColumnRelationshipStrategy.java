@@ -27,12 +27,12 @@ import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 public interface OrmJoinColumnRelationshipStrategy
 	extends JoinColumnRelationshipStrategy
 {
-	ListIterable<OrmModifiableJoinColumn> getJoinColumns();
+	ListIterable<OrmSpecifiedJoinColumn> getJoinColumns();
 
-	ListIterable<OrmModifiableJoinColumn> getSpecifiedJoinColumns();
-	OrmModifiableJoinColumn getSpecifiedJoinColumn(int index);
-	OrmModifiableJoinColumn addSpecifiedJoinColumn();
-	OrmModifiableJoinColumn addSpecifiedJoinColumn(int index);
+	ListIterable<OrmSpecifiedJoinColumn> getSpecifiedJoinColumns();
+	OrmSpecifiedJoinColumn getSpecifiedJoinColumn(int index);
+	OrmSpecifiedJoinColumn addSpecifiedJoinColumn();
+	OrmSpecifiedJoinColumn addSpecifiedJoinColumn(int index);
 
-	OrmModifiableJoinColumn getDefaultJoinColumn();
+	OrmSpecifiedJoinColumn getDefaultJoinColumn();
 }

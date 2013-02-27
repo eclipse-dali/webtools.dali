@@ -31,8 +31,8 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
 public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	extends Pane<ReadOnlySecondaryTable>
 {
-	private ModifiableCollectionValueModel<ModifiablePrimaryKeyJoinColumn> selectedPkJoinColumnsModel;
+	private ModifiableCollectionValueModel<SpecifiedPrimaryKeyJoinColumn> selectedPkJoinColumnsModel;
 
 
 	public PrimaryKeyJoinColumnsInSecondaryTableComposite(
@@ -58,18 +58,18 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		super(parent, tableModel, parentComposite);
 	}
 
-	ModifiablePrimaryKeyJoinColumn addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
+	SpecifiedPrimaryKeyJoinColumn addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
 
 		SecondaryTable secondaryTable = (SecondaryTable) stateObject.getOwner();
 		int index = secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize();
 
-		ModifiablePrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
+		SpecifiedPrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
 
 		return joinColumn;
 	}
 
-	ModifiablePrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
+	SpecifiedPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getShell(), this.getResourceManager(), this.getSubject());
 		dialog.setBlockOnOpen(true);
 		dialog.open();
@@ -158,21 +158,21 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		return new OverrideDefaultJoinColumnHolder();
 	}
 
-	private AddRemovePane.Adapter<ModifiablePrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnAdapter() {
-		return new AddRemovePane.AbstractAdapter<ModifiablePrimaryKeyJoinColumn>() {
+	private AddRemovePane.Adapter<SpecifiedPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnAdapter() {
+		return new AddRemovePane.AbstractAdapter<SpecifiedPrimaryKeyJoinColumn>() {
 
-			public ModifiablePrimaryKeyJoinColumn addNewItem() {
+			public SpecifiedPrimaryKeyJoinColumn addNewItem() {
 				return addPrimaryKeyJoinColumn();
 			}
 
 			@Override
-			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<ModifiablePrimaryKeyJoinColumn> selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<SpecifiedPrimaryKeyJoinColumn> selectedItemsModel) {
 				//enable the remove button only when 1 item is selected, same as the optional button
 				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
 			}
 
-			public void removeSelectedItems(CollectionValueModel<ModifiablePrimaryKeyJoinColumn> selectedItemsModel) {
-				ModifiablePrimaryKeyJoinColumn pkJoinColumn = selectedItemsModel.iterator().next();
+			public void removeSelectedItems(CollectionValueModel<SpecifiedPrimaryKeyJoinColumn> selectedItemsModel) {
+				SpecifiedPrimaryKeyJoinColumn pkJoinColumn = selectedItemsModel.iterator().next();
 				((SecondaryTable) getSubject()).removeSpecifiedPrimaryKeyJoinColumn(pkJoinColumn);
 			}
 
@@ -187,14 +187,14 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 			}
 
 			@Override
-			public void optionOnSelection(CollectionValueModel<ModifiablePrimaryKeyJoinColumn> selectedItemsModel) {
+			public void optionOnSelection(CollectionValueModel<SpecifiedPrimaryKeyJoinColumn> selectedItemsModel) {
 				editPrimaryKeyJoinColumn(selectedItemsModel.iterator().next());
 			}
 		};
 	}
 
-	private ModifiableCollectionValueModel<ModifiablePrimaryKeyJoinColumn> buildSelectedPkJoinColumnsModel() {
-		return new SimpleCollectionValueModel<ModifiablePrimaryKeyJoinColumn>();
+	private ModifiableCollectionValueModel<SpecifiedPrimaryKeyJoinColumn> buildSelectedPkJoinColumnsModel() {
+		return new SimpleCollectionValueModel<SpecifiedPrimaryKeyJoinColumn>();
 	}
 
 	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
@@ -228,7 +228,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		};
 	}
 
-	void editPrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn joinColumn) {
+	void editPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getShell(), this.getResourceManager(), this.getSubject(), joinColumn);
 		dialog.setBlockOnOpen(true);
 		dialog.open();
@@ -238,7 +238,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
-		stateObject.updateJoinColumn((ModifiableBaseJoinColumn) stateObject.getJoinColumn());
+		stateObject.updateJoinColumn((SpecifiedBaseJoinColumn) stateObject.getJoinColumn());
 	}
 
 	@Override
@@ -270,7 +270,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		overrideDefaultCheckBox.setLayoutData(gridData);
 
 		// Primary Key Join Columns list pane
-		new AddRemoveListPane<ReadOnlySecondaryTable, ModifiablePrimaryKeyJoinColumn>(
+		new AddRemoveListPane<ReadOnlySecondaryTable, SpecifiedPrimaryKeyJoinColumn>(
 			this,
 			container,
 			buildPrimaryKeyJoinColumnAdapter(),

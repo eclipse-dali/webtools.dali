@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
@@ -1081,7 +1081,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) getJavaPersistentType().getAttributeNamed("jobs").getMapping();
 
 		Orderable2_0 orderable = ((Orderable2_0) oneToManyMapping.getOrderable());
-		ModifiableOrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		SpecifiedOrderColumn2_0 orderColumn = orderable.getOrderColumn();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
@@ -1235,7 +1235,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 
-		ModifiableJoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
+		SpecifiedJoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 
 		assertEquals("addresses_id", joinColumn.getDefaultName());
 		assertEquals("Address", joinColumn.getDefaultTableName());//target table name
@@ -1291,7 +1291,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
-		ModifiableOrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
+		SpecifiedOrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 
 		assertNull(orderColumn.getSpecifiedName());
@@ -1903,7 +1903,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
-		ListIterator<? extends ModifiableJoinColumn> specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends SpecifiedJoinColumn> specifiedMapKeyJoinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 
 		assertFalse(specifiedMapKeyJoinColumns.hasNext());
 
@@ -2070,7 +2070,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());
 		assertFalse(joinColumnResources.hasNext());
 
-		Iterator<? extends ModifiableJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		Iterator<? extends SpecifiedJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumnsIterator.next().getName());		
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
@@ -2113,7 +2113,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 
 
 		oneToManyMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
-		ListIterator<? extends ModifiableJoinColumn> joinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends SpecifiedJoinColumn> joinColumns = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getSpecifiedName());
 		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
 		assertEquals("FOO", joinColumns.next().getSpecifiedName());
@@ -2150,7 +2150,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
-		ListIterator<? extends ModifiableJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends SpecifiedJoinColumn> joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumnsIterator.next().getName());
 		assertEquals("BAR", joinColumnsIterator.next().getName());
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
@@ -2203,7 +2203,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertTrue(oneToManyMapping.getDefaultMapKeyJoinColumn().isVirtual());
 
 		oneToManyMapping.addSpecifiedMapKeyJoinColumn(0);
-		ModifiableJoinColumn specifiedJoinColumn = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
+		SpecifiedJoinColumn specifiedJoinColumn = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
 		assertFalse(specifiedJoinColumn.isVirtual());
 
 		assertNull(oneToManyMapping.getDefaultMapKeyJoinColumn());

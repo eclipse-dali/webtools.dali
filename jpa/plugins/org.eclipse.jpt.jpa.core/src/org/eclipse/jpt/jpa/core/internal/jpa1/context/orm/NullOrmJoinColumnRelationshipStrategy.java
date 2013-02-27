@@ -12,12 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextModel;
@@ -41,8 +41,8 @@ public class NullOrmJoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	public ListIterable<OrmModifiableJoinColumn> getJoinColumns() {
-		return EmptyListIterable.<OrmModifiableJoinColumn>instance();
+	public ListIterable<OrmSpecifiedJoinColumn> getJoinColumns() {
+		return EmptyListIterable.<OrmSpecifiedJoinColumn>instance();
 	}
 
 	public int getJoinColumnsSize() {
@@ -52,8 +52,8 @@ public class NullOrmJoinColumnRelationshipStrategy
 
 	// ********** specified join columns **********
 
-	public ListIterable<OrmModifiableJoinColumn> getSpecifiedJoinColumns() {
-		return EmptyListIterable.<OrmModifiableJoinColumn>instance();
+	public ListIterable<OrmSpecifiedJoinColumn> getSpecifiedJoinColumns() {
+		return EmptyListIterable.<OrmSpecifiedJoinColumn>instance();
 	}
 
 	public int getSpecifiedJoinColumnsSize() {
@@ -64,19 +64,19 @@ public class NullOrmJoinColumnRelationshipStrategy
 		return false;
 	}
 
-	public OrmModifiableJoinColumn getSpecifiedJoinColumn(int index) {
+	public OrmSpecifiedJoinColumn getSpecifiedJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public OrmModifiableJoinColumn addSpecifiedJoinColumn() {
+	public OrmSpecifiedJoinColumn addSpecifiedJoinColumn() {
 		throw new UnsupportedOperationException();
 	}
 
-	public OrmModifiableJoinColumn addSpecifiedJoinColumn(int index) {
+	public OrmSpecifiedJoinColumn addSpecifiedJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeSpecifiedJoinColumn(ModifiableJoinColumn joinColumn) {
+	public void removeSpecifiedJoinColumn(SpecifiedJoinColumn joinColumn) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -99,7 +99,7 @@ public class NullOrmJoinColumnRelationshipStrategy
 
 	// ********** default join column **********
 
-	public OrmModifiableJoinColumn getDefaultJoinColumn() {
+	public OrmSpecifiedJoinColumn getDefaultJoinColumn() {
 		return null;
 	}
 

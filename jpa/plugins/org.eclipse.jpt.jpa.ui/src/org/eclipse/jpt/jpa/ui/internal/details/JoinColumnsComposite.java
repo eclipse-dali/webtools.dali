@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -46,7 +46,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 	 */
 	JoinColumnsEditor<T> joinColumnsEditor;
 
-	ModifiableCollectionValueModel<ModifiableJoinColumn> selectedJoinColumnsModel;
+	ModifiableCollectionValueModel<SpecifiedJoinColumn> selectedJoinColumnsModel;
 
 
 	public JoinColumnsComposite(
@@ -76,7 +76,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 	}
 
 	private void initializeLayout2() {
-		new AddRemoveListPane<T, ModifiableJoinColumn>(
+		new AddRemoveListPane<T, SpecifiedJoinColumn>(
 			this,
 			getControl(),
 			buildJoinColumnsAdapter(),
@@ -87,8 +87,8 @@ public class JoinColumnsComposite<T extends JpaModel>
 		);
 	}
 
-	private ModifiableCollectionValueModel<ModifiableJoinColumn> buildSelectedJoinColumnsModel() {
-		return new SimpleCollectionValueModel<ModifiableJoinColumn>();
+	private ModifiableCollectionValueModel<SpecifiedJoinColumn> buildSelectedJoinColumnsModel() {
+		return new SimpleCollectionValueModel<SpecifiedJoinColumn>();
 	}
 
 	String buildJoinColumnLabel(ReadOnlyJoinColumn joinColumn) {
@@ -132,22 +132,22 @@ public class JoinColumnsComposite<T extends JpaModel>
 		);
 	}
 
-	private Adapter<ModifiableJoinColumn> buildJoinColumnsAdapter() {
-		return new AbstractAdapter<ModifiableJoinColumn>() {
+	private Adapter<SpecifiedJoinColumn> buildJoinColumnsAdapter() {
+		return new AbstractAdapter<SpecifiedJoinColumn>() {
 
-			public ModifiableJoinColumn addNewItem() {
+			public SpecifiedJoinColumn addNewItem() {
 				return JoinColumnsComposite.this.joinColumnsEditor.addJoinColumn(getSubject());
 			}
 
 			@Override
-			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<ModifiableJoinColumn> selectedItemsModel) {
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<SpecifiedJoinColumn> selectedItemsModel) {
 				//enable the remove button only when 1 item is selected, same as the optional button
 				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
 			}
 
-			public void removeSelectedItems(CollectionValueModel<ModifiableJoinColumn> selectedItemsModel) {
+			public void removeSelectedItems(CollectionValueModel<SpecifiedJoinColumn> selectedItemsModel) {
 				//assume only 1 item since remove button is disabled otherwise
-				ModifiableJoinColumn joinColumn = selectedItemsModel.iterator().next();
+				SpecifiedJoinColumn joinColumn = selectedItemsModel.iterator().next();
 				JoinColumnsComposite.this.joinColumnsEditor.removeJoinColumn(getSubject(), joinColumn);
 			}
 
@@ -162,8 +162,8 @@ public class JoinColumnsComposite<T extends JpaModel>
 			}
 
 			@Override
-			public void optionOnSelection(CollectionValueModel<ModifiableJoinColumn> selectedItemsModel) {
-				ModifiableJoinColumn joinColumn = selectedItemsModel.iterator().next();
+			public void optionOnSelection(CollectionValueModel<SpecifiedJoinColumn> selectedItemsModel) {
+				SpecifiedJoinColumn joinColumn = selectedItemsModel.iterator().next();
 				JoinColumnsComposite.this.joinColumnsEditor.editJoinColumn(getSubject(), joinColumn);
 			}
 		};
@@ -225,8 +225,8 @@ public class JoinColumnsComposite<T extends JpaModel>
 		};
 	}
 
-	public void setSelectedJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.selectedJoinColumnsModel.setValues(new SingleElementIterable<ModifiableJoinColumn>(joinColumn));
+	public void setSelectedJoinColumn(SpecifiedJoinColumn joinColumn) {
+		this.selectedJoinColumnsModel.setValues(new SingleElementIterable<SpecifiedJoinColumn>(joinColumn));
 	}
 
 	/**
@@ -237,7 +237,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 		/**
 		 * Add a join column to the given subject and return it
 		 */
-		ModifiableJoinColumn addJoinColumn(T subject);
+		SpecifiedJoinColumn addJoinColumn(T subject);
 
 		/**
 		 * Edit the given join column, the Edit button was pressed
@@ -278,6 +278,6 @@ public class JoinColumnsComposite<T extends JpaModel>
 		/**
 		 * Remove the join columns at the specified indices from the subject
 		 */
-		void removeJoinColumn(T subject, ModifiableJoinColumn joinColumn);
+		void removeJoinColumn(T subject, SpecifiedJoinColumn joinColumn);
 	}
 }

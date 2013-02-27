@@ -21,8 +21,8 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 2.3
  * @since 2.0
  */
-public interface ModifiableJoinColumn
-	extends ModifiableBaseJoinColumn, BaseColumn, ReadOnlyJoinColumn
+public interface SpecifiedJoinColumn
+	extends SpecifiedBaseJoinColumn, BaseColumn, ReadOnlyJoinColumn
 {
 	/**
 	 * Initialize the join column from the specified old join column.

@@ -7,13 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context.java;
+package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedNamedColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 
 /**
- * Java join column or primary key join column
- * <p>
+ * <code>orm.xml</code> specified
+ * <ul>
+ * <li>column
+ * <li>join column
+ * <li>primary key join column
+ * <li>discriminator column
+ * <li>order column
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -21,10 +28,10 @@ import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 3.3
- * @since 2.3
+ * @since 2.0
  */
-public interface JavaModifiableBaseJoinColumn
-	extends ModifiableBaseJoinColumn, JavaModifiableNamedColumn
+public interface OrmSpecifiedNamedColumn
+	extends SpecifiedNamedColumn
 {
-	// combine interfaces
+	XmlNamedColumn getXmlColumn();
 }

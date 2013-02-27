@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -767,7 +767,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
-	public ModifiablePrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
+	public SpecifiedPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
 		return this.specifiedPrimaryKeyJoinColumnContainer.get(index);
 	}
 
@@ -796,7 +796,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn();
 	}
 
-	public void removeSpecifiedPrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	public void removeSpecifiedPrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((OrmPrimaryKeyJoinColumn) primaryKeyJoinColumn));
 	}
 
@@ -810,7 +810,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			String columnName = defaultJoinColumn.getName();
 			String referencedColumnName = defaultJoinColumn.getReferencedColumnName();
 
-			ModifiablePrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn();
+			SpecifiedPrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn();
 			pkJoinColumn.setSpecifiedName(columnName);
 			pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}

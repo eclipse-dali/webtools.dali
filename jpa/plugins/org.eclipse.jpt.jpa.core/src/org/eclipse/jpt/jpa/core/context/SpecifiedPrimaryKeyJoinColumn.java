@@ -7,13 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context.java;
-
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
-import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
+package org.eclipse.jpt.jpa.core.context;
 
 /**
- * Java join column
+ * Specified primary key join column
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,11 +18,11 @@ import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.3
+ * @version 2.0
  * @since 2.0
  */
-public interface JavaModifiableJoinColumn
-	extends ModifiableJoinColumn, JavaModifiableBaseJoinColumn, JavaBaseColumn
+public interface SpecifiedPrimaryKeyJoinColumn
+	extends SpecifiedBaseJoinColumn, ReadOnlyPrimaryKeyJoinColumn
 {
-	CompleteJoinColumnAnnotation getColumnAnnotation();
+	// combine interfaces
 }

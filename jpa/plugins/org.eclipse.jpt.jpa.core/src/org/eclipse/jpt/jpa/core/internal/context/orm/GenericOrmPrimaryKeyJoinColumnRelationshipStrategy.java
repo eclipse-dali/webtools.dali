@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ModifiablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -100,7 +100,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn();
 	}
 
-	public void removePrimaryKeyJoinColumn(ModifiablePrimaryKeyJoinColumn joinColumn) {
+	public void removePrimaryKeyJoinColumn(SpecifiedPrimaryKeyJoinColumn joinColumn) {
 		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((OrmPrimaryKeyJoinColumn) joinColumn));
 	}
 

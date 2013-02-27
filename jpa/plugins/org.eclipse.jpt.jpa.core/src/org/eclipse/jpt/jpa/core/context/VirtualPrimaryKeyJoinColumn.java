@@ -28,5 +28,5 @@ public interface VirtualPrimaryKeyJoinColumn
 	 * This is not the best method name; we are simply overloading the meaning
 	 * of the inherited method.
 	 */
-	ModifiablePrimaryKeyJoinColumn getOverriddenColumn();
+	SpecifiedPrimaryKeyJoinColumn getOverriddenColumn();
 }

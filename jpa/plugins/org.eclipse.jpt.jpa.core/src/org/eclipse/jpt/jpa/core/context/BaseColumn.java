@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface BaseColumn
-	extends ModifiableTableColumn, ReadOnlyBaseColumn
+	extends SpecifiedTableColumn, ReadOnlyBaseColumn
 {
 	void setSpecifiedUnique(Boolean unique);
 	void setSpecifiedNullable(Boolean nullable);

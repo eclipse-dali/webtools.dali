@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 
 /**
@@ -91,7 +91,7 @@ public interface CollectionMapping2_0
 	/**
 	 * Return the specified map key join columns.
 	 */
-	ListIterable<? extends ModifiableJoinColumn> getSpecifiedMapKeyJoinColumns();
+	ListIterable<? extends SpecifiedJoinColumn> getSpecifiedMapKeyJoinColumns();
 
 	/**
 	 * Return the number of specified join columns.
@@ -107,17 +107,17 @@ public interface CollectionMapping2_0
 	/**
 	 * Return the specified map key join column at the specified index.
 	 */
-	ModifiableJoinColumn getSpecifiedMapKeyJoinColumn(int index);
+	SpecifiedJoinColumn getSpecifiedMapKeyJoinColumn(int index);
 
 	/**
 	 * Add a specified map key join column to the relationship.
 	 */
-	ModifiableJoinColumn addSpecifiedMapKeyJoinColumn();
+	SpecifiedJoinColumn addSpecifiedMapKeyJoinColumn();
 
 	/**
 	 * Add a specified map key join column to the relationship.
 	 */
-	ModifiableJoinColumn addSpecifiedMapKeyJoinColumn(int index);
+	SpecifiedJoinColumn addSpecifiedMapKeyJoinColumn(int index);
 
 	/**
 	 * Remove the specified map key join column.
@@ -127,7 +127,7 @@ public interface CollectionMapping2_0
 	/**
 	 * Remove the specified map key join column.
 	 */
-	void removeSpecifiedMapKeyJoinColumn(ModifiableJoinColumn joinColumn);
+	void removeSpecifiedMapKeyJoinColumn(SpecifiedJoinColumn joinColumn);
 
 	/**
 	 * Move the specified map key join column from the source index to the target index.
@@ -148,6 +148,6 @@ public interface CollectionMapping2_0
 	 * times that there may be no default map key join column even if there are no
 	 * specified map key join columns.
 	 */
-	ModifiableJoinColumn getDefaultMapKeyJoinColumn();
+	SpecifiedJoinColumn getDefaultMapKeyJoinColumn();
 
 }

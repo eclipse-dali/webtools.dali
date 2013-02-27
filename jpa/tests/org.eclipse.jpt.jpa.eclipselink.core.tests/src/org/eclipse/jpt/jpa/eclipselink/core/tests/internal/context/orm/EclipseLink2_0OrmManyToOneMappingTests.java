@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
@@ -354,11 +354,11 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 		assertNull(ormJoinTable.getSpecifiedSchema());
 		assertEquals(0, ormJoinTable.getSpecifiedJoinColumnsSize());
 		assertEquals(0, ormJoinTable.getSpecifiedInverseJoinColumnsSize());
-		ModifiableJoinColumn ormJoinColumn = ormJoinTable.getDefaultJoinColumn();
+		SpecifiedJoinColumn ormJoinColumn = ormJoinTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", ormJoinColumn.getDefaultTableName());
 		assertEquals(TYPE_NAME + "_id", ormJoinColumn.getDefaultName());
 		assertEquals("id", ormJoinColumn.getDefaultReferencedColumnName());
-		ModifiableJoinColumn inverseOrmJoinColumn = ormJoinTable.getDefaultInverseJoinColumn();
+		SpecifiedJoinColumn inverseOrmJoinColumn = ormJoinTable.getDefaultInverseJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", inverseOrmJoinColumn.getDefaultTableName());
 		assertEquals("address_id", inverseOrmJoinColumn.getDefaultName());
 		assertEquals("id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
@@ -367,10 +367,10 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 		javaJoinTable.setSpecifiedName("FOO");
 		javaJoinTable.setSpecifiedCatalog("CATALOG");
 		javaJoinTable.setSpecifiedSchema("SCHEMA");
-		JavaModifiableJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
+		JavaSpecifiedJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
 		javaJoinColumn.setSpecifiedName("NAME");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCED_NAME");
-		JavaModifiableJoinColumn inverseJavaJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
+		JavaSpecifiedJoinColumn inverseJavaJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
 		inverseJavaJoinColumn.setSpecifiedName("INVERSE_NAME");
 		inverseJavaJoinColumn.setSpecifiedReferencedColumnName("INVERSE_REFERENCED_NAME");
 
@@ -531,7 +531,7 @@ public class EclipseLink2_0OrmManyToOneMappingTests
 		assertEquals(Boolean.FALSE, virtualManyToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", virtualManyToOneMapping.getSpecifiedTargetEntity());
 
-		ModifiableJoinColumn virtualJoinColumn = virtualManyToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
+		SpecifiedJoinColumn virtualJoinColumn = virtualManyToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());

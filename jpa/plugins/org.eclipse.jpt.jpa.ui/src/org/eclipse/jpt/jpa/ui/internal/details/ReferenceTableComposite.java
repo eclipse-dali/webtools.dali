@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -66,7 +66,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		return new JoinColumnsEnabledModel();
 	}
 
-	ModifiableJoinColumn addJoinColumn(T referenceTable) {
+	SpecifiedJoinColumn addJoinColumn(T referenceTable) {
 
 		JoinColumnInReferenceTableDialog dialog = new JoinColumnInReferenceTableDialog(this.getShell(), this.getResourceManager(), referenceTable);
 
@@ -75,8 +75,8 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		return (dialog.wasConfirmed()) ? addJoinColumnFromDialog(dialog.getSubject()) : null;
 	}
 
-	ModifiableJoinColumn addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
-		ModifiableJoinColumn joinColumn = ((ReferenceTable) getSubject()).addSpecifiedJoinColumn();
+	SpecifiedJoinColumn addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
+		SpecifiedJoinColumn joinColumn = ((ReferenceTable) getSubject()).addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 		return joinColumn;
 	}
@@ -294,13 +294,13 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		}
 	}
 
-	private void setSelectedJoinColumn(ModifiableJoinColumn joinColumn) {
+	private void setSelectedJoinColumn(SpecifiedJoinColumn joinColumn) {
 		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
 	class JoinColumnsProvider implements JoinColumnsEditor<T> {
 
-		public ModifiableJoinColumn addJoinColumn(T subject) {
+		public SpecifiedJoinColumn addJoinColumn(T subject) {
 			return ReferenceTableComposite.this.addJoinColumn(subject);
 		}
 
@@ -320,7 +320,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			return subject.hasSpecifiedJoinColumns();
 		}
 
-		public void removeJoinColumn(T subject, ModifiableJoinColumn joinColumn) {
+		public void removeJoinColumn(T subject, SpecifiedJoinColumn joinColumn) {
 			((ReferenceTable) subject).removeSpecifiedJoinColumn(joinColumn);
 		}
 

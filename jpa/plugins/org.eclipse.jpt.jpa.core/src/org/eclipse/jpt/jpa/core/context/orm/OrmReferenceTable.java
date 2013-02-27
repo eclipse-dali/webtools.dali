@@ -29,12 +29,12 @@ public interface OrmReferenceTable
 {
 	// ********** join columns **********
 
-	ListIterable<OrmModifiableJoinColumn> getJoinColumns();
+	ListIterable<OrmSpecifiedJoinColumn> getJoinColumns();
 
-	ListIterable<OrmModifiableJoinColumn> getSpecifiedJoinColumns();
-	OrmModifiableJoinColumn getSpecifiedJoinColumn(int index);
-	OrmModifiableJoinColumn addSpecifiedJoinColumn();
-	OrmModifiableJoinColumn addSpecifiedJoinColumn(int index);
+	ListIterable<OrmSpecifiedJoinColumn> getSpecifiedJoinColumns();
+	OrmSpecifiedJoinColumn getSpecifiedJoinColumn(int index);
+	OrmSpecifiedJoinColumn addSpecifiedJoinColumn();
+	OrmSpecifiedJoinColumn addSpecifiedJoinColumn(int index);
 
-	OrmModifiableJoinColumn getDefaultJoinColumn();
+	OrmSpecifiedJoinColumn getDefaultJoinColumn();
 }

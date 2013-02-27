@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
@@ -1168,7 +1168,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(true, orderable.isNoOrdering());
 		
 		orderable.setOrderColumnOrdering(true);
-		ModifiableOrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		SpecifiedOrderColumn2_0 orderColumn = orderable.getOrderColumn();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
@@ -2303,7 +2303,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		ModifiablePersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		ListIterator<? extends ModifiableJoinColumn> specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends SpecifiedJoinColumn> specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
 
 		assertFalse(specifiedMapKeyJoinColumns.hasNext());
 
@@ -2470,7 +2470,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());
 		assertFalse(joinColumnResources.hasNext());
 
-		Iterator<? extends ModifiableJoinColumn> joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		Iterator<? extends SpecifiedJoinColumn> joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumnsIterator.next().getName());		
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
@@ -2513,7 +2513,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 
 
 		elementCollectionMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
-		ListIterator<? extends ModifiableJoinColumn> joinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends SpecifiedJoinColumn> joinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getSpecifiedName());
 		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
 		assertEquals("FOO", joinColumns.next().getSpecifiedName());
@@ -2550,7 +2550,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
-		ListIterator<? extends ModifiableJoinColumn> joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		ListIterator<? extends SpecifiedJoinColumn> joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertEquals("FOO", joinColumnsIterator.next().getName());
 		assertEquals("BAR", joinColumnsIterator.next().getName());
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
@@ -2603,7 +2603,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertTrue(elementCollectionMapping.getDefaultMapKeyJoinColumn().isVirtual());
 
 		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
-		ModifiableJoinColumn specifiedJoinColumn = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
+		SpecifiedJoinColumn specifiedJoinColumn = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
 		assertFalse(specifiedJoinColumn.isVirtual());
 
 		assertNull(elementCollectionMapping.getDefaultMapKeyJoinColumn());

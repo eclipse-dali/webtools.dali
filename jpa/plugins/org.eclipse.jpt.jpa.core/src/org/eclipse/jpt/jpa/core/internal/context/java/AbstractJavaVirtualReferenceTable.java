@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
@@ -91,7 +91,7 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 		this.specifiedJoinColumnContainer.moveContextElement(index, joinColumn);
 	}
 
-	protected VirtualJoinColumn addSpecifiedJoinColumn(int index, ModifiableJoinColumn joinColumn) {
+	protected VirtualJoinColumn addSpecifiedJoinColumn(int index, SpecifiedJoinColumn joinColumn) {
 		return this.specifiedJoinColumnContainer.addContextElement(index, joinColumn);
 	}
 

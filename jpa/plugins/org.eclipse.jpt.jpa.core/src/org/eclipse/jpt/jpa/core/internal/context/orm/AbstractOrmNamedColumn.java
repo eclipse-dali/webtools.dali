@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableNamedColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -42,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmNamedColumn<P extends JpaContextModel, X extends XmlNamedColumn, O extends ReadOnlyNamedColumn.Owner>
 	extends AbstractOrmXmlContextModel<P>
-	implements OrmModifiableNamedColumn
+	implements OrmSpecifiedNamedColumn
 {
 	protected final O owner;
 

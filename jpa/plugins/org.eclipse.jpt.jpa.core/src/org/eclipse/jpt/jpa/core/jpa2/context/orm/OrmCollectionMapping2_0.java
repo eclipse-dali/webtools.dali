@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 
 /**
@@ -31,10 +31,10 @@ public interface OrmCollectionMapping2_0
 {
 	OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 
-	ListIterable<? extends OrmModifiableJoinColumn> getSpecifiedMapKeyJoinColumns();
-	OrmModifiableJoinColumn getSpecifiedMapKeyJoinColumn(int index);
-	OrmModifiableJoinColumn addSpecifiedMapKeyJoinColumn();
-	OrmModifiableJoinColumn addSpecifiedMapKeyJoinColumn(int index);
+	ListIterable<? extends OrmSpecifiedJoinColumn> getSpecifiedMapKeyJoinColumns();
+	OrmSpecifiedJoinColumn getSpecifiedMapKeyJoinColumn(int index);
+	OrmSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn();
+	OrmSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn(int index);
 
-	OrmModifiableJoinColumn getDefaultMapKeyJoinColumn();
+	OrmSpecifiedJoinColumn getDefaultMapKeyJoinColumn();
 }

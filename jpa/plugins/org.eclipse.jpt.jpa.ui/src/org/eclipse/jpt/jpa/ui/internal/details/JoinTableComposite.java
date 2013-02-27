@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
@@ -124,7 +124,7 @@ public class JoinTableComposite
 		);
 	}
 
-	ModifiableJoinColumn addInverseJoinColumn(ReadOnlyJoinTable joinTable) {
+	SpecifiedJoinColumn addInverseJoinColumn(ReadOnlyJoinTable joinTable) {
 
 		InverseJoinColumnInJoinTableDialog dialog = new InverseJoinColumnInJoinTableDialog(this.getShell(), this.getResourceManager(), joinTable);
 
@@ -136,17 +136,17 @@ public class JoinTableComposite
 		return null;
 	}
 
-	ModifiableJoinColumn addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
+	SpecifiedJoinColumn addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
 		JoinTable subject = (JoinTable) getSubject();
 		int index = subject.getSpecifiedInverseJoinColumnsSize();
 
-		ModifiableJoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
+		SpecifiedJoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
 		return joinColumn;
 	}
 
-	private void setSelectedInverseJoinColumn(ModifiableJoinColumn joinColumn) {
+	private void setSelectedInverseJoinColumn(SpecifiedJoinColumn joinColumn) {
 		this.inverseJoinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
@@ -218,7 +218,7 @@ public class JoinTableComposite
 
 	class InverseJoinColumnsProvider implements JoinColumnsEditor<ReadOnlyJoinTable> {
 
-		public ModifiableJoinColumn addJoinColumn(ReadOnlyJoinTable subject) {
+		public SpecifiedJoinColumn addJoinColumn(ReadOnlyJoinTable subject) {
 			return JoinTableComposite.this.addInverseJoinColumn(subject);
 		}
 
@@ -238,7 +238,7 @@ public class JoinTableComposite
 			return subject.hasSpecifiedInverseJoinColumns();
 		}
 
-		public void removeJoinColumn(ReadOnlyJoinTable subject, ModifiableJoinColumn joinColumn) {
+		public void removeJoinColumn(ReadOnlyJoinTable subject, SpecifiedJoinColumn joinColumn) {
 			((JoinTable) subject).removeSpecifiedInverseJoinColumn(joinColumn);
 		}
 

@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -101,10 +101,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected final JavaColumn mapKeyColumn;
 	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
-	protected final ContextListContainer<JavaModifiableJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
+	protected final ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
 
-	protected JavaModifiableJoinColumn defaultMapKeyJoinColumn;
+	protected JavaSpecifiedJoinColumn defaultMapKeyJoinColumn;
 
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
@@ -683,7 +683,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	// ********** map key join columns **********
 
-	public ListIterable<JavaModifiableJoinColumn> getMapKeyJoinColumns() {
+	public ListIterable<JavaSpecifiedJoinColumn> getMapKeyJoinColumns() {
 		return this.hasSpecifiedMapKeyJoinColumns() ? this.getSpecifiedMapKeyJoinColumns() : this.getDefaultMapKeyJoinColumns();
 	}
 
@@ -694,7 +694,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	// ********** specified map key join columns **********
 
-	public ListIterable<JavaModifiableJoinColumn> getSpecifiedMapKeyJoinColumns() {
+	public ListIterable<JavaSpecifiedJoinColumn> getSpecifiedMapKeyJoinColumns() {
 		return this.specifiedMapKeyJoinColumnContainer.getContextElements();
 	}
 
@@ -706,21 +706,21 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return this.getSpecifiedMapKeyJoinColumnsSize() != 0;
 	}
 
-	public JavaModifiableJoinColumn getSpecifiedMapKeyJoinColumn(int index) {
+	public JavaSpecifiedJoinColumn getSpecifiedMapKeyJoinColumn(int index) {
 		return this.specifiedMapKeyJoinColumnContainer.getContextElement(index);
 	}
 
-	public JavaModifiableJoinColumn addSpecifiedMapKeyJoinColumn() {
+	public JavaSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn() {
 		return this.addSpecifiedMapKeyJoinColumn(this.getSpecifiedMapKeyJoinColumnsSize());
 	}
 
-	public JavaModifiableJoinColumn addSpecifiedMapKeyJoinColumn(int index) {
+	public JavaSpecifiedJoinColumn addSpecifiedMapKeyJoinColumn(int index) {
 		MapKeyJoinColumn2_0Annotation annotation = this.addMapKeyJoinColumnAnnotation(index);
 		return this.specifiedMapKeyJoinColumnContainer.addContextElement(index, annotation);
 	}
 
-	public void removeSpecifiedMapKeyJoinColumn(ModifiableJoinColumn joinColumn) {
-		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOfContextElement((JavaModifiableJoinColumn) joinColumn));
+	public void removeSpecifiedMapKeyJoinColumn(SpecifiedJoinColumn joinColumn) {
+		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOfContextElement((JavaSpecifiedJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedMapKeyJoinColumn(int index) {
@@ -737,7 +737,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected ContextListContainer<JavaModifiableJoinColumn, MapKeyJoinColumn2_0Annotation> buildSpecifiedMapKeyJoinColumnContainer() {
+	protected ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation> buildSpecifiedMapKeyJoinColumnContainer() {
 		SpecifiedMapKeyJoinColumnContainer container = new SpecifiedMapKeyJoinColumnContainer();
 		container.initialize();
 		return container;
@@ -747,14 +747,14 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	 * specified map key join column container
 	 */
 	protected class SpecifiedMapKeyJoinColumnContainer
-		extends ContextListContainer<JavaModifiableJoinColumn, MapKeyJoinColumn2_0Annotation>
+		extends ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumn2_0Annotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaModifiableJoinColumn buildContextElement(MapKeyJoinColumn2_0Annotation resourceElement) {
+		protected JavaSpecifiedJoinColumn buildContextElement(MapKeyJoinColumn2_0Annotation resourceElement) {
 			return AbstractJavaMultiRelationshipMapping.this.buildMapKeyJoinColumn(resourceElement);
 		}
 		@Override
@@ -762,7 +762,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getMapKeyJoinColumnAnnotations();
 		}
 		@Override
-		protected MapKeyJoinColumn2_0Annotation getResourceElement(JavaModifiableJoinColumn contextElement) {
+		protected MapKeyJoinColumn2_0Annotation getResourceElement(JavaSpecifiedJoinColumn contextElement) {
 			return (MapKeyJoinColumn2_0Annotation) contextElement.getColumnAnnotation();
 		}
 	}
@@ -774,20 +774,20 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	// ********** default map key join column **********
 
-	public JavaModifiableJoinColumn getDefaultMapKeyJoinColumn() {
+	public JavaSpecifiedJoinColumn getDefaultMapKeyJoinColumn() {
 		return this.defaultMapKeyJoinColumn;
 	}
 
-	protected void setDefaultMapKeyJoinColumn(JavaModifiableJoinColumn joinColumn) {
-		JavaModifiableJoinColumn old = this.defaultMapKeyJoinColumn;
+	protected void setDefaultMapKeyJoinColumn(JavaSpecifiedJoinColumn joinColumn) {
+		JavaSpecifiedJoinColumn old = this.defaultMapKeyJoinColumn;
 		this.defaultMapKeyJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_MAP_KEY_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<JavaModifiableJoinColumn> getDefaultMapKeyJoinColumns() {
+	protected ListIterable<JavaSpecifiedJoinColumn> getDefaultMapKeyJoinColumns() {
 		return (this.defaultMapKeyJoinColumn != null) ?
-				new SingleElementListIterable<JavaModifiableJoinColumn>(this.defaultMapKeyJoinColumn) :
-				EmptyListIterable.<JavaModifiableJoinColumn>instance();
+				new SingleElementListIterable<JavaSpecifiedJoinColumn>(this.defaultMapKeyJoinColumn) :
+				EmptyListIterable.<JavaSpecifiedJoinColumn>instance();
 	}
 
 	protected int getDefaultMapKeyJoinColumnsSize() {
@@ -812,7 +812,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 				getKeyType() == Type.ENTITY_TYPE;
 	}
 
-	protected JavaModifiableJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumn2_0Annotation joinColumnAnnotation) {
+	protected JavaSpecifiedJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumn2_0Annotation joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this, this.mapKeyJoinColumnOwner, joinColumnAnnotation);
 	}
 
@@ -904,7 +904,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		if (result != null) {
 			return result;
 		}
-		for (JavaModifiableJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+		for (JavaSpecifiedJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
 			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
@@ -1007,7 +1007,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			this.mapKeyConverter.validate(messages, reporter);
 		}
 		else if (this.getKeyType() == Type.ENTITY_TYPE) {
-			for (JavaModifiableJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+			for (JavaSpecifiedJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
 				joinColumn.validate(messages, reporter);
 			}
 		}

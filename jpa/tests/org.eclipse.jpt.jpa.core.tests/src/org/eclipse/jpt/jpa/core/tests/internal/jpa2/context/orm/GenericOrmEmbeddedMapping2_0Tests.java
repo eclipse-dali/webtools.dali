@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.ModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
@@ -48,7 +48,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaModifiableJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
@@ -1109,7 +1109,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 
 		JavaPersistentType javaEmbeddable = getPersistenceUnit().getSpecifiedClassRefs().iterator().next().getJavaPersistentType(); 
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) javaEmbeddable.getAttributeNamed("address").getMapping();
-		ModifiableJoinColumn joinColumn = oneToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
+		SpecifiedJoinColumn joinColumn = oneToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
 		joinColumn.setSpecifiedTableName("BAR");
@@ -1469,7 +1469,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) javaEmbeddable.getAttributeNamed("addresses").getMapping();
 		JoinTableRelationshipStrategy joinTableStrategy = oneToManyMapping.getRelationship().getJoinTableStrategy();
 		joinTableStrategy.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		ModifiableJoinColumn joinColumn = joinTableStrategy.getJoinTable().addSpecifiedJoinColumn(0);
+		SpecifiedJoinColumn joinColumn = joinTableStrategy.getJoinTable().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
 		joinColumn.setSpecifiedTableName("BAR");
@@ -1479,7 +1479,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		joinColumn.setSpecifiedUnique(Boolean.TRUE);
 		joinColumn.setSpecifiedNullable(Boolean.FALSE);
 		
-		ModifiableJoinColumn inverseJoinColumn = joinTableStrategy.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		SpecifiedJoinColumn inverseJoinColumn = joinTableStrategy.getJoinTable().addSpecifiedInverseJoinColumn(0);
 		inverseJoinColumn.setSpecifiedName("MY_INVERSE_JOIN_COLUMN");
 		inverseJoinColumn.setSpecifiedReferencedColumnName("MY_INVERSE_REFERENCE_COLUMN");
 		inverseJoinColumn.setSpecifiedTableName("INVERSE_BAR");
@@ -1525,10 +1525,10 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("addresses", javaAssociationOverride.getName());
 		JavaJoinTable javaJoinTable = ((JavaOverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("JAVA_FOO");
-		JavaModifiableJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
+		JavaSpecifiedJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
 		javaJoinColumn.setSpecifiedName("JAVA_JOIN_COLUMN_NAME");
 		javaJoinColumn.setSpecifiedReferencedColumnName("JAVA_JOIN_COLUMN_REFERENCED_NAME");
-		JavaModifiableJoinColumn javaInverseJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
+		JavaSpecifiedJoinColumn javaInverseJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
 		javaInverseJoinColumn.setSpecifiedName("JAVA_INVERSE_JOIN_COLUMN_NAME");
 		javaInverseJoinColumn.setSpecifiedReferencedColumnName("JAVA_INVERSE_JOIN_COLUMN_REFERENCED_NAME");
 		

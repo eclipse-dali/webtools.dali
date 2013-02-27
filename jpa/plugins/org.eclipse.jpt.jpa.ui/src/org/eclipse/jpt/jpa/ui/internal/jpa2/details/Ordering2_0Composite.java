@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.ModifiableOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -132,10 +132,10 @@ public class Ordering2_0Composite
 		};
 	}
 	
-	protected PropertyValueModel<ModifiableOrderColumn2_0> buildOrderColumnHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable2_0, ModifiableOrderColumn2_0>(orderableHolder) {
+	protected PropertyValueModel<SpecifiedOrderColumn2_0> buildOrderColumnHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable2_0, SpecifiedOrderColumn2_0>(orderableHolder) {
 			@Override
-			protected ModifiableOrderColumn2_0 buildValue_() {
+			protected SpecifiedOrderColumn2_0 buildValue_() {
 				return this.subject.getOrderColumn();
 			}
 		};
