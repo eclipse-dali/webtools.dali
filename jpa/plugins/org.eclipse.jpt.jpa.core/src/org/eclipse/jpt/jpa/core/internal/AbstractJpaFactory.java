@@ -68,7 +68,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
@@ -365,7 +365,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualAssociationOverride(parent, name);
 	}
 	
-	public JavaOverrideRelationship buildJavaOverrideRelationship(JavaSpecifiedAssociationOverride parent) {
+	public JavaSpecifiedOverrideRelationship buildJavaOverrideRelationship(JavaSpecifiedAssociationOverride parent) {
 		return new GenericJavaOverrideRelationship(parent);
 	}
 	

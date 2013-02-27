@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSpecifiedOverride;
@@ -32,7 +32,7 @@ public class GenericJavaSpecifiedAssociationOverride
 	extends AbstractJavaSpecifiedOverride<JavaAssociationOverrideContainer, AssociationOverrideAnnotation>
 	implements JavaSpecifiedAssociationOverride2_0
 {
-	protected final JavaOverrideRelationship relationship;
+	protected final JavaSpecifiedOverrideRelationship relationship;
 
 
 	public GenericJavaSpecifiedAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
@@ -66,11 +66,11 @@ public class GenericJavaSpecifiedAssociationOverride
 
 	// ********** relationship **********
 
-	public JavaOverrideRelationship getRelationship() {
+	public JavaSpecifiedOverrideRelationship getRelationship() {
 		return this.relationship;
 	}
 
-	protected JavaOverrideRelationship buildRelationship() {
+	protected JavaSpecifiedOverrideRelationship buildRelationship() {
 		return this.getJpaFactory().buildJavaOverrideRelationship(this);
 	}
 

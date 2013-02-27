@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedOverrideRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
@@ -27,9 +27,9 @@ import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericJavaOverrideJoinColumnRelationshipStrategy
-	extends AbstractJavaJoinColumnRelationshipStrategy<JavaOverrideRelationship>
+	extends AbstractJavaJoinColumnRelationshipStrategy<JavaSpecifiedOverrideRelationship>
 {
-	public GenericJavaOverrideJoinColumnRelationshipStrategy(JavaOverrideRelationship parent) {
+	public GenericJavaOverrideJoinColumnRelationshipStrategy(JavaSpecifiedOverrideRelationship parent) {
 		super(parent);
 	}
 
@@ -147,8 +147,8 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	public JavaOverrideRelationship getRelationship() {
-		return (JavaOverrideRelationship) super.getRelationship();
+	public JavaSpecifiedOverrideRelationship getRelationship() {
+		return (JavaSpecifiedOverrideRelationship) super.getRelationship();
 	}
 
 

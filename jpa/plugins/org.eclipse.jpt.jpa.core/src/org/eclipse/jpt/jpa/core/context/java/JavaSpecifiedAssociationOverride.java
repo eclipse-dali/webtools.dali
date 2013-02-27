@@ -31,5 +31,5 @@ public interface JavaSpecifiedAssociationOverride
 
 	AssociationOverrideAnnotation getOverrideAnnotation();
 
-	JavaOverrideRelationship getRelationship();
+	JavaSpecifiedOverrideRelationship getRelationship();
 }
