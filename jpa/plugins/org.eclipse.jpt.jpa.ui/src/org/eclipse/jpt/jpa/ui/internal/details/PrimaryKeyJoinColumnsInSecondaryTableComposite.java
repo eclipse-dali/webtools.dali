@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -238,7 +238,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
-		stateObject.updateJoinColumn((BaseJoinColumn) stateObject.getJoinColumn());
+		stateObject.updateJoinColumn((ModifiableBaseJoinColumn) stateObject.getJoinColumn());
 	}
 
 	@Override

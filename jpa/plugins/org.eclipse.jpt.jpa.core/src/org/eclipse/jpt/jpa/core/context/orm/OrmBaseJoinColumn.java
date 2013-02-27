@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseJoinColumn;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseJoinColumn;
  * @since 2.0
  */
 public interface OrmBaseJoinColumn
-	extends BaseJoinColumn, OrmNamedColumn
+	extends ModifiableBaseJoinColumn, OrmNamedColumn
 {
 	XmlBaseJoinColumn getXmlColumn();
 }

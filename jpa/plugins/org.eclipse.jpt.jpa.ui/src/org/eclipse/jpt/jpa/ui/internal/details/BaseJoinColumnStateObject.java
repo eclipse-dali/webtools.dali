@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -367,7 +367,7 @@ public abstract class BaseJoinColumnStateObject
 	 * Updates the given join column with the values contained in this state
 	 * object.
 	 */
-	public void updateJoinColumn(BaseJoinColumn jc) {
+	public void updateJoinColumn(ModifiableBaseJoinColumn jc) {
 
 		// Name
 		if (valuesAreDifferent(name, jc.getSpecifiedName())) {

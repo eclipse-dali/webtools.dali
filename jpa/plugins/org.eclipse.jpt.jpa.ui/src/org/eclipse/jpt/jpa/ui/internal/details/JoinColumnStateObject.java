@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -175,7 +175,7 @@ public abstract class JoinColumnStateObject
 	}
 
 	@Override
-	public void updateJoinColumn(BaseJoinColumn abstractJoinColumn) {
+	public void updateJoinColumn(ModifiableBaseJoinColumn abstractJoinColumn) {
 
 		super.updateJoinColumn(abstractJoinColumn);
 

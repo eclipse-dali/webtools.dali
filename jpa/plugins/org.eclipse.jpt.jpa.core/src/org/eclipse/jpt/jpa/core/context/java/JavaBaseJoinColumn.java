@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ModifiableBaseJoinColumn;
 
 /**
  * Java join column or primary key join column
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
  * @since 2.3
  */
 public interface JavaBaseJoinColumn
-	extends BaseJoinColumn, JavaNamedColumn
+	extends ModifiableBaseJoinColumn, JavaNamedColumn
 {
 	// combine interfaces
 }

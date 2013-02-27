@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface JoinColumn
-	extends BaseJoinColumn, BaseColumn, ReadOnlyJoinColumn
+	extends ModifiableBaseJoinColumn, BaseColumn, ReadOnlyJoinColumn
 {
 	/**
 	 * Initialize the join column from the specified old join column.
