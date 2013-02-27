@@ -28,7 +28,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.0
  */
 public interface SpecifiedNamedColumn
-	extends ReadOnlyNamedColumn
+	extends NamedColumn
 {
 	void setSpecifiedName(String name);
 

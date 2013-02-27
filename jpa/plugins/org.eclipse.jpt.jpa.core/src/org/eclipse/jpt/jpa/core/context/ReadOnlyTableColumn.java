@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyTableColumn
-	extends ReadOnlyNamedColumn
+	extends NamedColumn
 {
 	// ********** table **********
 
@@ -60,7 +60,7 @@ public interface ReadOnlyTableColumn
 	 * (e.g. basic mappings and attribute overrides).
 	 */
 	interface Owner
-		extends ReadOnlyNamedColumn.Owner
+		extends NamedColumn.Owner
 	{
 		/**
 		 * return whether the given table cannot be explicitly specified

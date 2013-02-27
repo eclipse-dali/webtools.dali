@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -298,7 +298,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return null;
 		}
 
@@ -310,7 +310,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return GenericOrmPrimaryKeyJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new OneToOnePrimaryKeyJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseJoinColumn) column, this);
 		}
 

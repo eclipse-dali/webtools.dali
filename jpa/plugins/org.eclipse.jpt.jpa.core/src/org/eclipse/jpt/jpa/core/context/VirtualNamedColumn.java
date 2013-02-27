@@ -21,10 +21,10 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualNamedColumn
-	extends ReadOnlyNamedColumn
+	extends NamedColumn
 {
 	/**
 	 * Return the virtual column's wrapped column.
 	 */
-	ReadOnlyNamedColumn getOverriddenColumn();
+	NamedColumn getOverriddenColumn();
 }

@@ -40,7 +40,7 @@ import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -1124,7 +1124,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			AbstractJavaMultiRelationshipMapping.this.removeMapKeyColumnAnnotation();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return AbstractJavaMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 
@@ -1132,7 +1132,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.getRelationshipStrategy().tableNameIsInvalid(tableName);
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
@@ -1207,7 +1207,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getStrategy().getTableName();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return AbstractJavaMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 
@@ -1251,7 +1251,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
 				(ReadOnlyJoinColumn) column,

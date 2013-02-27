@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -328,7 +328,7 @@ public class GenericOrmJoinTable
 			super();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
 
@@ -412,7 +412,7 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this);
 		}
 	}
@@ -458,7 +458,7 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getInverseJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this);
 		}
 	}

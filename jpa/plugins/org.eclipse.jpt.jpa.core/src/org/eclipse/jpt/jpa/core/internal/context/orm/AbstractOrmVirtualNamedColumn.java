@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Column;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * because <em>all</em> of its derived from the context model (i.e. none of it
  * is derived from the resource model).
  */
-public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends ReadOnlyNamedColumn>
+public abstract class AbstractOrmVirtualNamedColumn<O extends NamedColumn.Owner, C extends NamedColumn>
 	extends AbstractOrmXmlContextModel<JpaContextModel>
 	implements VirtualNamedColumn
 {

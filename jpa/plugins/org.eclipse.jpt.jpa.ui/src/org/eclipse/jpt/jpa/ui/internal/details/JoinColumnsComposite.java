@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -171,8 +171,8 @@ public class JoinColumnsComposite<T extends JpaModel>
 
 	private ListValueModel<ReadOnlyJoinColumn> buildJoinColumnsListModel() {
 		return new ItemPropertyListValueModelAdapter<ReadOnlyJoinColumn>(buildJoinColumnsListHolder(),
-			ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY,
-			ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY,
+			NamedColumn.SPECIFIED_NAME_PROPERTY,
+			NamedColumn.DEFAULT_NAME_PROPERTY,
 			ReadOnlyBaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
 			ReadOnlyBaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
 	}

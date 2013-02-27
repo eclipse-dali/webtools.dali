@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyBaseJoinColumn
-	extends ReadOnlyNamedColumn
+	extends NamedColumn
 {
 	// ********** referenced column name **********
 
@@ -63,7 +63,7 @@ public interface ReadOnlyBaseJoinColumn
 	 * (e.g. basic mappings and attribute overrides).
 	 */
 	interface Owner
-		extends ReadOnlyNamedColumn.Owner
+		extends NamedColumn.Owner
 	{
 		/**
 		 * Return the wrapper for the datasource table for the referenced column

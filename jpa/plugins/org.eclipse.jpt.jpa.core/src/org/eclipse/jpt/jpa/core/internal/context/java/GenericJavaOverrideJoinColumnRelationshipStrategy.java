@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
@@ -165,7 +165,7 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getTableName();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
 
@@ -206,7 +206,7 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this);
 		}
 	}

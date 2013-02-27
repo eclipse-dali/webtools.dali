@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -481,7 +481,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			return getTypeMapping().getPrimaryTableName();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME;
 		}
 
@@ -497,7 +497,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new TenantDiscriminatorColumnValidator2_3((ReadOnlyTenantDiscriminatorColumn2_3) column);
 		}
 

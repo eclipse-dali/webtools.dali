@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmModifiablePersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -441,7 +441,7 @@ public class GenericOrmOrderable
 			return GenericOrmOrderable.this.resolveDbTable(tableName);
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return this.getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
 		}
 
@@ -449,7 +449,7 @@ public class GenericOrmOrderable
 			return GenericOrmOrderable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new OrderColumnValidator(this.getPersistentAttribute(), (SpecifiedOrderColumn2_0) column);
 		}
 

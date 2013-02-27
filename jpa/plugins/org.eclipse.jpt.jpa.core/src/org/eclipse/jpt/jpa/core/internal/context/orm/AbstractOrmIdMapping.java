@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
@@ -352,7 +352,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
+	public String getDefaultColumnName(NamedColumn col) {
 		return (this.derived && ! this.isColumnSpecified()) ? null : this.name;
 	}
 
@@ -435,7 +435,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 		return JptJpaCoreValidationArgumentMessages.ATTRIBUTE_DESC;
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+	public JptValidator buildColumnValidator(NamedColumn col) {
 		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, new EntityTableDescriptionProvider());
 	}
 

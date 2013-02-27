@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterabl
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
@@ -353,7 +353,7 @@ public class GenericJavaSecondaryTable
 			return GenericJavaSecondaryTable.this.getPrimaryKeyJoinColumnsSize();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
@@ -364,7 +364,7 @@ public class GenericJavaSecondaryTable
 			return GenericJavaSecondaryTable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
 		}
 	}

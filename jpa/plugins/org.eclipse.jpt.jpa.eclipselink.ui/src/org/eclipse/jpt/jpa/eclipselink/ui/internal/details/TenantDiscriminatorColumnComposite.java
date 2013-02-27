@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.db.Table;
@@ -99,8 +99,8 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
 				propertyNames.addAll(COLUMN_PICK_LIST_PROPERTIES);
 			}
 
@@ -356,7 +356,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 	}
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<? extends ReadOnlyTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
-		return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();

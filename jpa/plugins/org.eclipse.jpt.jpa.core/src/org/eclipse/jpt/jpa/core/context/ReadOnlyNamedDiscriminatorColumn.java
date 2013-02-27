@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 3.1
  */
 public interface ReadOnlyNamedDiscriminatorColumn
-	extends ReadOnlyNamedColumn
+	extends NamedColumn
 {
 
 	// ********** discriminator type **********
@@ -60,7 +60,7 @@ public interface ReadOnlyNamedDiscriminatorColumn
 	 * (but pretty much just entities)
 	 */
 	interface Owner
-		extends ReadOnlyNamedColumn.Owner
+		extends NamedColumn.Owner
 	{
 		/**
 		 * Return the default discriminator column length

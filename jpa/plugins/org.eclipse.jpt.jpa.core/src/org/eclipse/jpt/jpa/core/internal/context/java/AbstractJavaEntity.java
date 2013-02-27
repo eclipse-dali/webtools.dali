@@ -49,7 +49,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
@@ -1584,7 +1584,7 @@ public abstract class AbstractJavaEntity
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements ReadOnlyNamedColumn.Owner
+		implements NamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
@@ -1615,7 +1615,7 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.getPrimaryKeyJoinColumnsSize();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
@@ -1623,7 +1623,7 @@ public abstract class AbstractJavaEntity
 			return (parentEntity == null) ? AbstractJavaEntity.this.getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this);
 		}
 	}
@@ -1635,7 +1635,7 @@ public abstract class AbstractJavaEntity
 		extends NamedColumnOwner
 		implements ReadOnlyNamedDiscriminatorColumn.Owner
 	{
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getName() :
 					this.discriminatorColumnIsUndefined() ? null : SpecifiedDiscriminatorColumn.DEFAULT_NAME;
@@ -1665,7 +1665,7 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.discriminatorColumnIsUndefined;
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new DiscriminatorColumnValidator(column);
 		}
 	}

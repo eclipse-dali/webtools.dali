@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
@@ -90,11 +90,11 @@ public class GenericJavaSpecifiedAttributeOverride
 
 	// ********** column owner implementation **********
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
+	public String getDefaultColumnName(NamedColumn col) {
 		return this.name;
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+	public JptValidator buildColumnValidator(NamedColumn col) {
 		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
 	}
 

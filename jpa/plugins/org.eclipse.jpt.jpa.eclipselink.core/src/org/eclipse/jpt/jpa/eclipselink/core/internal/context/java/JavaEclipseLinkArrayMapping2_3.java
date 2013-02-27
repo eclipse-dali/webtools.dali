@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
@@ -277,7 +277,7 @@ public class JavaEclipseLinkArrayMapping2_3
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
+	public String getDefaultColumnName(NamedColumn col) {
 		return this.getName();
 	}
 
@@ -293,7 +293,7 @@ public class JavaEclipseLinkArrayMapping2_3
 		return this.getTypeMapping().getAllAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+	public JptValidator buildColumnValidator(NamedColumn col) {
 		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, new EntityTableDescriptionProvider());
 	}
 

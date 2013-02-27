@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
@@ -38,7 +38,7 @@ public interface OrmSpecifiedOrderColumn2_0
 	 * interface allowing order columns to be used in multiple places
 	 */
 	interface Owner
-		extends ReadOnlyNamedColumn.Owner
+		extends NamedColumn.Owner
 	{
 		XmlOrderColumn getXmlColumn();
 		XmlOrderColumn buildXmlColumn();

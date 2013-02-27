@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
@@ -326,7 +326,7 @@ public abstract class AbstractJavaBasicMapping
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(NamedColumn column) {
 		return this.getName();
 	}
 
@@ -342,7 +342,7 @@ public abstract class AbstractJavaBasicMapping
 		return this.getTypeMapping().getAllAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+	public JptValidator buildColumnValidator(NamedColumn col) {
 		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, new EntityTableDescriptionProvider());
 	}
 

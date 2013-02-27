@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -56,8 +56,8 @@ public class ColumnComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
 				propertyNames.addAll(COLUMN_PICK_LIST_PROPERTIES);
 			}
 			
@@ -116,7 +116,7 @@ public class ColumnComposite
 	});
 
 	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<ReadOnlyColumn, String>(getSubjectHolder(), ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<ReadOnlyColumn, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();

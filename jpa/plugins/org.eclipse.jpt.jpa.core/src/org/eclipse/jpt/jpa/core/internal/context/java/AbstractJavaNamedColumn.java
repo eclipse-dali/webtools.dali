@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
@@ -35,13 +35,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its column annotation
  * must:<ul>
  * <li>call the "super" constructor that takes a column annotation
- *     {@link #AbstractJavaNamedColumn(JpaContextModel, ReadOnlyNamedColumn.Owner, NamedColumnAnnotation)}
+ *     {@link #AbstractJavaNamedColumn(JpaContextModel, NamedColumn.Owner, NamedColumnAnnotation)}
  * <li>override {@link #setColumnAnnotation(NamedColumnAnnotation)} to set the column annotation
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
  * </ul>
  */
-public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A extends NamedColumnAnnotation, O extends ReadOnlyNamedColumn.Owner>
+public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A extends NamedColumnAnnotation, O extends NamedColumn.Owner>
 	extends AbstractJavaContextModel<P>
 	implements JavaSpecifiedNamedColumn
 {
@@ -276,12 +276,12 @@ public abstract class AbstractJavaNamedColumn<P extends JpaContextModel, A exten
 		return !this.getColumnAnnotation().isSpecified();
 	}
 
-	protected void initializeFrom(ReadOnlyNamedColumn oldColumn) {
+	protected void initializeFrom(NamedColumn oldColumn) {
 		this.setSpecifiedName(oldColumn.getSpecifiedName());
 		this.setColumnDefinition(oldColumn.getColumnDefinition());
 	}
 
-	protected void initializeFromVirtual(ReadOnlyNamedColumn virtualColumn) {
+	protected void initializeFromVirtual(NamedColumn virtualColumn) {
 		this.setSpecifiedName(virtualColumn.getName());
 		this.setColumnDefinition(virtualColumn.getColumnDefinition());
 	}

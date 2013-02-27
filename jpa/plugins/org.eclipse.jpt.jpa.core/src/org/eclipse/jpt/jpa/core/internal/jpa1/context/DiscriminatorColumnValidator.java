@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.common.core.utility.ValidationMessage;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class DiscriminatorColumnValidator
-	extends AbstractNamedColumnValidator<ReadOnlyNamedColumn>
+	extends AbstractNamedColumnValidator<NamedColumn>
 {
 	public DiscriminatorColumnValidator(
-			ReadOnlyNamedColumn namedColumn) {
+			NamedColumn namedColumn) {
 		super(namedColumn);
 	}
 

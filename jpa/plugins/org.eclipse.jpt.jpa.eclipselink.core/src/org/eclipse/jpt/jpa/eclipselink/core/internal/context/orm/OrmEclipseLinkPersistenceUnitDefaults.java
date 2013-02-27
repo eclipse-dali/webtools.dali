@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -214,7 +214,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 			return null;
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME;
 		}
 
@@ -236,7 +236,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		/**
 		 * no column validation can be done in the context of the persistence unit defaults
 		 */
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return JptValidator.Null.instance();
 		}
 

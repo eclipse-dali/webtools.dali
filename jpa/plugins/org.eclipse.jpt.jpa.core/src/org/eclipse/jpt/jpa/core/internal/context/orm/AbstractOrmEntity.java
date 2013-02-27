@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
@@ -2105,7 +2105,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements ReadOnlyNamedColumn.Owner
+		implements NamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return AbstractOrmEntity.this.getPrimaryTableName();
@@ -2136,7 +2136,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.getPrimaryKeyJoinColumnsSize();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
@@ -2144,7 +2144,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return (parentEntity == null) ? AbstractOrmEntity.this.getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this);
 		}
 	}
@@ -2156,7 +2156,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		extends NamedColumnOwner
 		implements OrmSpecifiedDiscriminatorColumn.Owner
 	{
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			if (this.getXmlColumn() == null) {
 				JavaEntity javaEntity = this.getJavaEntityForDefaults();
 				if (javaEntity != null) {
@@ -2201,7 +2201,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 					this.isTablePerClass() ? null : ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new DiscriminatorColumnValidator(column);
 		}
 

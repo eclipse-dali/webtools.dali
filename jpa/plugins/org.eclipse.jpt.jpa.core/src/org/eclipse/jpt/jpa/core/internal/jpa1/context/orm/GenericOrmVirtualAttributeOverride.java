@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -77,7 +77,7 @@ public class GenericOrmVirtualAttributeOverride
 		return (overriddenColumn == null) ? null : overriddenColumn.getSpecifiedTableName();
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
+	public String getDefaultColumnName(NamedColumn col) {
 		String overriddenColumnName = this.getOverriddenColumnName();
 		return (overriddenColumnName != null) ? overriddenColumnName : this.name;
 	}
@@ -91,7 +91,7 @@ public class GenericOrmVirtualAttributeOverride
 		return this.getContainer().resolveOverriddenColumn(this.name);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+	public JptValidator buildColumnValidator(NamedColumn col) {
 		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
 	}
 

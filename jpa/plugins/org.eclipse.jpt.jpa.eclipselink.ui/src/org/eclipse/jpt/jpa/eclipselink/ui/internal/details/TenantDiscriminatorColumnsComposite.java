@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaModel;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.SpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
@@ -184,8 +184,8 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaModel>
 
 	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListModel() {
 		return new ItemPropertyListValueModelAdapter<ReadOnlyTenantDiscriminatorColumn2_3>(buildTenantDiscriminatorColumnsListHolder(),
-			ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY,
-			ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
+			NamedColumn.SPECIFIED_NAME_PROPERTY,
+			NamedColumn.DEFAULT_NAME_PROPERTY);
 	}
 
 	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListHolder() {

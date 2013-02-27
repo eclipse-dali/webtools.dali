@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
- * Read-only
  * <ul>
  * <li>column
  * <li>join column
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ReadOnlyNamedColumn
+public interface NamedColumn
 	extends JpaContextModel
 {
 	// ********** name **********
@@ -103,14 +102,14 @@ public interface ReadOnlyNamedColumn
 		/**
 		 * Return the default column name.
 		 */
-		String getDefaultColumnName(ReadOnlyNamedColumn column);
+		String getDefaultColumnName(NamedColumn column);
 
 		/**
 		 * Return the database table for the specified table name.
 		 */
 		Table resolveDbTable(String tableName);
 
-		JptValidator buildColumnValidator(ReadOnlyNamedColumn column);
+		JptValidator buildColumnValidator(NamedColumn column);
 
 		/**
 		 * Return the column owner's text range. This can be returned by the

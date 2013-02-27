@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaProject.Config;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -135,7 +135,7 @@ public class GenericJpaFactory2_0
 		return new GenericJavaCollectionTable2_0(parent, owner);
 	}
 
-	public JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, ReadOnlyNamedColumn.Owner owner) {
+	public JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, NamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
 

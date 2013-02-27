@@ -47,7 +47,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -1872,11 +1872,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			this.getXmlMapping().setColumn(null);
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return this.getMappingName();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -1902,11 +1902,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			this.getXmlMapping().setMapKeyColumn(null);
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return this.getMappingName() + "_KEY"; //$NON-NLS-1$
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, new CollectionTableTableDescriptionProvider());
 		}
 	}
@@ -2035,7 +2035,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getCollectionTable().getName();
 		}
 
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			return AbstractOrmElementCollectionMapping2_0.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 
@@ -2079,7 +2079,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+		public JptValidator buildColumnValidator(NamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
 				(ReadOnlyJoinColumn) column,

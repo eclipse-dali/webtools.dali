@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedNamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -144,14 +144,14 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyNamedColumn.DB_TABLE_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DB_TABLE_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName.equals(ReadOnlyNamedColumn.DB_TABLE_PROPERTY)) {
+				if (propertyName.equals(NamedColumn.DB_TABLE_PROPERTY)) {
 					this.doPopulate();
 				} else {
 					super.propertyChanged(propertyName);

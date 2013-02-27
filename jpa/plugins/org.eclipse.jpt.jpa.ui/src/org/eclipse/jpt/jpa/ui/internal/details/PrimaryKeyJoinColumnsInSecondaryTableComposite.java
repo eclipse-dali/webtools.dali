@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
@@ -207,8 +207,8 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
 		return new ItemPropertyListValueModelAdapter<ReadOnlyPrimaryKeyJoinColumn>(
 			buildPrimaryKeyJoinColumnsListHolder(),
-			ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY,
-			ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY,
+			NamedColumn.SPECIFIED_NAME_PROPERTY,
+			NamedColumn.DEFAULT_NAME_PROPERTY,
 			ReadOnlyBaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
 			ReadOnlyBaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
 		);
