@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
  */
 public class GenericJavaOrderColumn2_0
 	extends AbstractJavaNamedColumn<JavaOrderable2_0, OrderColumn2_0Annotation, ReadOnlyNamedColumn.Owner>
-	implements JavaOrderColumn2_0
+	implements JavaSpecifiedOrderColumn2_0
 {
 	protected Boolean specifiedNullable;
 	protected boolean defaultNullable;

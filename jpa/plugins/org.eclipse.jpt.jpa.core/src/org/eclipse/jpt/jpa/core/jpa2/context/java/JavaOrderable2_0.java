@@ -29,5 +29,5 @@ public interface JavaOrderable2_0
 {
 	JavaResourceAttribute getResourceAttribute();
 
-	JavaOrderColumn2_0 getOrderColumn();
+	JavaSpecifiedOrderColumn2_0 getOrderColumn();
 }

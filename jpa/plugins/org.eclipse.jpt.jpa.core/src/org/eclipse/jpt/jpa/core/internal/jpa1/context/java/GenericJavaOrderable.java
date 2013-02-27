@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
@@ -53,7 +53,7 @@ public class GenericJavaOrderable
 	// JPA 2.0
 	protected final Owner owner;  // this is null for JPA 1.0 mappings
 	protected boolean orderColumnOrdering = false;
-	protected final JavaOrderColumn2_0 orderColumn;
+	protected final JavaSpecifiedOrderColumn2_0 orderColumn;
 
 
 	/**
@@ -320,11 +320,11 @@ public class GenericJavaOrderable
 
 	// ********** order column **********
 
-	public JavaOrderColumn2_0 getOrderColumn() {
+	public JavaSpecifiedOrderColumn2_0 getOrderColumn() {
 		return this.orderColumn;
 	}
 
-	protected JavaOrderColumn2_0 buildOrderColumn() {
+	protected JavaSpecifiedOrderColumn2_0 buildOrderColumn() {
 		ReadOnlyNamedColumn.Owner columnOwner = new OrderColumnOwner();
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaOrderColumn(this, columnOwner) :
