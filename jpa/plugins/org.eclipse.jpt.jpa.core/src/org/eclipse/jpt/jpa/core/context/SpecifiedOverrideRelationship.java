@@ -24,10 +24,10 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.3
  */
 public interface SpecifiedOverrideRelationship
-	extends ReadOnlyOverrideRelationship,
+	extends OverrideRelationship,
 			SpecifiedJoinColumnRelationship
 {
-	void initializeFromVirtual(ReadOnlyOverrideRelationship virtualRelationship);
+	void initializeFromVirtual(OverrideRelationship virtualRelationship);
 
 	void initializeFromVirtualJoinColumnRelationship(JoinColumnRelationship virtualRelationship);
 

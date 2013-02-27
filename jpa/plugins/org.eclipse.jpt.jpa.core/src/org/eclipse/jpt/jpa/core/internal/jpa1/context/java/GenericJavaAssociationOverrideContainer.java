@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -50,7 +50,7 @@ public class GenericJavaAssociationOverrideContainer
 		return this.owner.resolveOverriddenRelationship(associationOverrideName);
 	}
 
-	public ReadOnlyOverrideRelationship getOverrideRelationship(String overrideName) {
+	public OverrideRelationship getOverrideRelationship(String overrideName) {
 		return this.getOverrideNamed(overrideName).getRelationship();
 	}
 

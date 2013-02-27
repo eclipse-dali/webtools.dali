@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 
 /**
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * @see SpecifiedAssociationOverride
  */
 public interface OverrideRelationship2_0
-	extends ReadOnlyOverrideRelationship,
+	extends OverrideRelationship,
 			JoinTableRelationship
 {
 	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner);

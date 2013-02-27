@@ -21,7 +21,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @see SpecifiedAssociationOverride
  */
 public interface VirtualOverrideRelationship
-	extends ReadOnlyOverrideRelationship,
+	extends OverrideRelationship,
 			VirtualJoinColumnRelationship
 {
 	// combine interfaces

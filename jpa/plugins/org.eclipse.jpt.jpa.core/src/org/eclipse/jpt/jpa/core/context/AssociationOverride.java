@@ -29,5 +29,5 @@ public interface AssociationOverride
 	 */
 	RelationshipMapping getMapping();
 
-	ReadOnlyOverrideRelationship getRelationship();
+	OverrideRelationship getRelationship();
 }

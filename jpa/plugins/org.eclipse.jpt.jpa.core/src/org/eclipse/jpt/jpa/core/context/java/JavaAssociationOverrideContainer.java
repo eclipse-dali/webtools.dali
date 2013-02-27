@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOverride;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 
 /**
@@ -36,7 +36,7 @@ public interface JavaAssociationOverrideContainer
 	 * when it is also using the Java container's override names.
 	 * @see #getOverrideNames()
 	 */
-	ReadOnlyOverrideRelationship getOverrideRelationship(String overrideName);
+	OverrideRelationship getOverrideRelationship(String overrideName);
 
 	// covariant overrides
 	ListIterable<JavaSpecifiedAssociationOverride> getSpecifiedOverrides();

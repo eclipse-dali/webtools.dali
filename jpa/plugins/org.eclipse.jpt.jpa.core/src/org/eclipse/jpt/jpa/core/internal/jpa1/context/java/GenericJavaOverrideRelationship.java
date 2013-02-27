@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.SpecifiedRelationship;
@@ -198,7 +198,7 @@ public class GenericJavaOverrideRelationship
 		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
-	public void initializeFromVirtual(ReadOnlyOverrideRelationship virtualRelationship) {
+	public void initializeFromVirtual(OverrideRelationship virtualRelationship) {
 		virtualRelationship.initializeOnSpecified(this);
 	}
 
